@@ -1,0 +1,43 @@
+{
+  "name": "field-astra-of-0ad137",
+  "role": "Field Astra",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "codex-harness",
+    "herdr",
+    "messaging",
+    "nix-workflow",
+    "operating-system",
+    "testing-long-run-progress",
+    "testing-flow-titles"
+  ],
+  "sourceManifest": [
+    "flows/00f95a/launches/field-astra-brief.md"
+  ],
+  "sourceAudit": {
+    "reviewedAt": "2026-09-25T20:04:00Z",
+    "newestApplicableVision": [
+      "flows/00f95a/launches/field-astra-brief.md"
+    ]
+  },
+  "flowRoot": "flows",
+  "predecessor": "0ad137",
+  "ancestor": "0ad137",
+  "fresh": false
+}

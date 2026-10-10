@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Intercom — Safe deployment for Athena</title>
+  <style>
+    :root {
+      --bg: #081018;
+      --panel: #101c27;
+      --panel-2: #152635;
+      --ink: #edf7ff;
+      --muted: #9bb0c1;
+      --line: #294052;
+      --cyan: #56e0d0;
+      --blue: #6caeff;
+      --violet: #b59cff;
+      --gold: #ffc966;
+      --rose: #ff758f;
+      --green: #89e078;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-snap-type: y mandatory; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(86, 224, 208, .10), transparent 28rem),
+        radial-gradient(circle at 88% 75%, rgba(108, 174, 255, .09), transparent 32rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    a { color: var(--cyan); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+
+    .slide {
+      width: 100vw;
+      min-height: 100vh;
+      aspect-ratio: 16 / 9;
+      padding: 5.2vh 5.5vw 4.5vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      scroll-snap-align: start;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .slide::after {
+      content: attr(data-page);
+      position: absolute;
+      right: 2.2vw;
+      bottom: 1.8vh;
+      color: #688094;
+      font: 600 12px/1.2 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .08em;
+    }
+
+    .eyebrow {
+      margin: 0 0 1.4vh;
+      color: var(--cyan);
+      font: 700 13px/1.2 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 2.6vh;
+      max-width: 12ch;
+      font-size: clamp(56px, 7vw, 116px);
+      line-height: .92;
+      letter-spacing: -.06em;
+      font-weight: 780;
+    }
+    h2 {
+      margin-bottom: 3.4vh;
+      max-width: 19ch;
+      font-size: clamp(36px, 4.2vw, 72px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 760;
+    }
+    h3 {
+      margin-bottom: 1.2vh;
+      font-size: clamp(20px, 1.65vw, 30px);
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+    p, li {
+      font-size: clamp(17px, 1.25vw, 23px);
+      line-height: 1.42;
+    }
+    .lead {
+      max-width: 47ch;
+      color: #c7d5e0;
+      font-size: clamp(22px, 2vw, 34px);
+      line-height: 1.32;
+    }
+    .muted { color: var(--muted); }
+    .small { font-size: clamp(12px, .78vw, 15px); line-height: 1.35; }
+    .tiny { font-size: clamp(10px, .65vw, 13px); line-height: 1.3; }
+    .accent { color: var(--cyan); }
+    .gold { color: var(--gold); }
+    .rose { color: var(--rose); }
+    .green { color: var(--green); }
+
+    .hero {
+      justify-content: center;
+      background:
+        linear-gradient(125deg, rgba(8, 16, 24, .96), rgba(8, 16, 24, .72)),
+        repeating-linear-gradient(90deg, transparent 0 6vw, rgba(86,224,208,.055) 6vw calc(6vw + 1px));
+    }
+    .hero .signal {
+      position: absolute;
+      right: -7vw;
+      top: 10vh;
+      width: 52vw;
+      height: 52vw;
+      border: 1px solid rgba(86,224,208,.18);
+      border-radius: 50%;
+    }
+    .hero .signal::before,
+    .hero .signal::after {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border: 1px solid rgba(108,174,255,.22);
+      border-radius: 50%;
+    }
+    .hero .signal::after { inset: 31%; border-color: rgba(181,156,255,.30); }
+    .hero .tagline { max-width: 32ch; margin-bottom: 5vh; }
+    .meta-row { display: flex; gap: 2.2vw; color: var(--muted); font-size: 14px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2vw; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4vw; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.1vw; }
+    .grow { flex: 1; }
+    .center { align-items: center; }
+
+    .card {
+      background: linear-gradient(145deg, rgba(21, 38, 53, .94), rgba(13, 26, 37, .92));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 2.4vh 1.7vw;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .16);
+    }
+    .card.cyan { border-top: 4px solid var(--cyan); }
+    .card.blue { border-top: 4px solid var(--blue); }
+    .card.violet { border-top: 4px solid var(--violet); }
+    .card.gold-line { border-top: 4px solid var(--gold); }
+    .card.rose-line { border-top: 4px solid var(--rose); }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card ul { padding-left: 1.2em; margin: 1vh 0 0; }
+    .card li { margin-bottom: .65vh; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .42em;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .38em .72em;
+      color: #c9d8e4;
+      background: rgba(8, 16, 24, .7);
+      font: 700 clamp(10px, .7vw, 13px)/1 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .03em;
+    }
+    .dot { width: .62em; height: .62em; border-radius: 50%; background: var(--muted); }
+    .dot.green { background: var(--green); }
+    .dot.gold { background: var(--gold); }
+    .dot.rose { background: var(--rose); }
+
+    .evidence {
+      display: grid;
+      grid-template-columns: 1.05fr 1.9fr;
+      gap: 1.6vw;
+      align-items: stretch;
+    }
+    .meter { display: grid; gap: 1.1vh; }
+    .meter-row {
+      display: grid;
+      grid-template-columns: 10.5em 1fr;
+      gap: 1em;
+      align-items: center;
+      color: #cbd8e2;
+      font-size: clamp(14px, 1vw, 19px);
+    }
+    .bar { height: 14px; border-radius: 999px; background: #203343; overflow: hidden; }
+    .bar > span { display: block; height: 100%; border-radius: inherit; }
+
+    .boundary {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 1.2vw;
+      align-items: stretch;
+      min-height: 45vh;
+    }
+    .wall {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      border-left: 2px dashed var(--rose);
+      border-right: 2px dashed var(--rose);
+      color: var(--rose);
+      font: 800 clamp(13px, 1vw, 18px)/1 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .stack-title { display: flex; justify-content: space-between; align-items: center; gap: 1em; }
+    .component {
+      margin-top: 1.2vh;
+      padding: 1.1vh 1vw;
+      border: 1px solid var(--line);
+      background: rgba(8,16,24,.46);
+      border-radius: 11px;
+      font-size: clamp(13px, .92vw, 18px);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 52px 1fr 52px 1fr;
+      align-items: center;
+      gap: .5vw;
+      margin-top: 2vh;
+    }
+    .node {
+      min-height: 17vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.5vh 1vw;
+    }
+    .arrow { color: var(--cyan); font-size: clamp(28px, 3vw, 52px); text-align: center; }
+
+    .command-map {
+      display: grid;
+      grid-template-columns: .9fr .9fr 1.4fr;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .command-map > div { background: #0f1b26; padding: 1.6vh 1.25vw; }
+    .command-map .head { background: #1a2c3a; color: var(--muted); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .command { color: var(--ink); font: 750 clamp(18px, 1.5vw, 27px)/1.2 "SFMono-Regular", Consolas, monospace; }
+
+    .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1vw; margin-top: 2.6vh; }
+    .phase { position: relative; min-height: 31vh; }
+    .phase::before {
+      content: "";
+      position: absolute;
+      top: 32px;
+      left: calc(50% + 21px);
+      width: calc(100% - 18px);
+      height: 2px;
+      background: var(--line);
+    }
+    .phase:last-child::before { display: none; }
+    .number {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--panel-2);
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      font: 800 22px/1 "SFMono-Regular", Consolas, monospace;
+      margin-bottom: 2vh;
+    }
+
+    .gate-list { display: grid; gap: 1.2vh; }
+    .gate {
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 1vw;
+      align-items: center;
+      padding: 1.35vh 1.2vw;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(16, 28, 39, .78);
+    }
+    .check { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: rgba(137,224,120,.12); color: var(--green); font-weight: 900; }
+
+    .quote {
+      margin: 0;
+      padding: 2.8vh 2vw;
+      border-left: 5px solid var(--violet);
+      background: rgba(181,156,255,.08);
+      border-radius: 0 16px 16px 0;
+      font-size: clamp(21px, 1.7vw, 31px);
+      line-height: 1.35;
+      color: #e7e0ff;
+    }
+
+    .source-strip {
+      position: absolute;
+      left: 5.5vw;
+      right: 5.5vw;
+      bottom: 2.1vh;
+      padding-top: 1vh;
+      border-top: 1px solid rgba(41,64,82,.72);
+      color: #7790a2;
+      font-size: clamp(9px, .62vw, 12px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .decision {
+      display: grid;
+      grid-template-columns: 1.35fr .9fr;
+      gap: 2vw;
+      align-items: stretch;
+      flex: 1;
+    }
+    .big-choice {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: 1px solid rgba(86,224,208,.5);
+      background: linear-gradient(145deg, rgba(86,224,208,.12), rgba(108,174,255,.06));
+      border-radius: 22px;
+      padding: 3.2vh 2.4vw;
+    }
+    .big-choice .verdict {
+      color: var(--cyan);
+      font-size: clamp(31px, 3.3vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      font-weight: 780;
+    }
+
+    .sources { columns: 2; column-gap: 3vw; }
+    .sources li { break-inside: avoid; margin-bottom: 1.5vh; font-size: clamp(13px, .92vw, 17px); }
+
+    .nav {
+      position: fixed;
+      z-index: 20;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      gap: 7px;
+    }
+    .nav button {
+      width: 9px;
+      height: 9px;
+      border: 0;
+      padding: 0;
+      border-radius: 50%;
+      background: #496174;
+      opacity: .55;
+      cursor: pointer;
+    }
+    .nav button.active { background: var(--cyan); opacity: 1; transform: scale(1.35); }
+
+    @media (max-width: 900px) {
+      .slide { aspect-ratio: auto; min-height: 100vh; height: auto; overflow: visible; }
+      .grid-3, .grid-4, .timeline { grid-template-columns: 1fr 1fr; }
+      .boundary, .decision { grid-template-columns: 1fr; }
+      .wall { writing-mode: horizontal-tb; min-height: 58px; border: 0; border-top: 2px dashed var(--rose); border-bottom: 2px dashed var(--rose); }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); }
+      .source-strip { position: static; margin-top: 2vh; white-space: normal; }
+    }
+
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { background: var(--bg); }
+      .slide { width: 13.333in; height: 7.5in; min-height: 7.5in; }
+      .nav { display: none; }
+      a { color: var(--cyan); text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Slide navigation"></nav>
+
+  <section class="slide hero" data-page="01 / 11">
+    <div class="signal" aria-hidden="true"></div>
+    <p class="eyebrow">Research synthesis · 10 August 2026</p>
+    <h1>Intercom without entanglement.</h1>
+    <p class="lead tagline">A safe, reversible way for Athena’s agents to speak now—without replacing the working CLIs or touching Messenger and Orchestrate.</p>
+    <div class="meta-row">
+      <span>ATHENA · REALIZER</span>
+      <span>PRIMARY-FUF</span>
+      <span>PROPOSED DEPLOYMENT</span>
+    </div>
+  </section>
+
+  <section class="slide" data-page="02 / 11">
+    <p class="eyebrow">What the research actually supports</p>
+    <h2>Promising architecture. Thin public adoption evidence.</h2>
+    <div class="evidence grow">
+      <div class="card violet">
+        <p class="eyebrow">Evidence ladder</p>
+        <div class="meter">
+          <div class="meter-row"><span>Source + docs</span><div class="bar"><span style="width:94%;background:var(--green)"></span></div></div>
+          <div class="meter-row"><span>Maintainer tests</span><div class="bar"><span style="width:78%;background:var(--cyan)"></span></div></div>
+          <div class="meter-row"><span>Independent use</span><div class="bar"><span style="width:18%;background:var(--gold)"></span></div></div>
+          <div class="meter-row"><span>Remote use</span><div class="bar"><span style="width:7%;background:var(--rose)"></span></div></div>
+        </div>
+        <p class="small muted" style="margin-top:2.6vh">The bars show evidence depth, not product quality or popularity.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card cyan">
+          <span class="badge"><span class="dot green"></span>strong upstream evidence</span>
+          <h3 style="margin-top:1.4vh">Local, named sessions</h3>
+          <p>Pi, Codex, Claude Code, and OpenCode share one local broker. Agents target stable names or IDs; delivery has inbox/outbox semantics.</p>
+        </div>
+        <div class="card blue">
+          <span class="badge"><span class="dot green"></span>strong upstream evidence</span>
+          <h3 style="margin-top:1.4vh">Manager-owned workers</h3>
+          <p>Fleet workers are intended to live in user-systemd cgroups with leases, cleanup, logs, and explicit manager ownership.</p>
+        </div>
+        <div class="card gold-line">
+          <span class="badge"><span class="dot gold"></span>one adjacent witness</span>
+          <h3 style="margin-top:1.4vh">Decision escalation</h3>
+          <p>An independent Pi subagent integration uses Intercom for child→supervisor questions. It references an older package, not this exact family.</p>
+        </div>
+        <div class="card rose-line">
+          <span class="badge"><span class="dot rose"></span>not independently witnessed</span>
+          <h3 style="margin-top:1.4vh">Broad + remote fleets</h3>
+          <p>Cross-client wakeability and remote operation are documented, but public operational deployments were not found.</p>
+        </div>
+      </div>
+    </div>
+    <div class="source-strip">Primary sources: dataforxyz Agent Intercom READMEs and source; independent pattern: pi-packages/nicobailon-pi-subagents. No independent public deployment of the scoped dataforxyz family was found.</div>
+  </section>
+
+  <section class="slide" data-page="03 / 11">
+    <p class="eyebrow">The non-negotiable boundary</p>
+    <h2>Two stacks. No connecting edge.</h2>
+    <div class="boundary grow">
+      <div class="card cyan">
+        <div class="stack-title"><h3>Agent Intercom</h3><span class="badge">third-party · now</span></div>
+        <p class="muted">A user-local harness and lifecycle plane.</p>
+        <div class="component">Local protocol-v3 broker</div>
+        <div class="component">Pi / Codex / Claude / OpenCode adapters</div>
+        <div class="component">Agent Intercom Orchestrator → fleet lifecycle</div>
+        <div class="component">State under <span class="mono">~/.pi/agent/intercom</span></div>
+      </div>
+      <div class="wall">no sockets · no state · no contracts</div>
+      <div class="card violet">
+        <div class="stack-title"><h3>Messenger + Orchestrate</h3><span class="badge">psyche-owned · later</span></div>
+        <p class="muted">Athena’s unfinished first-party messaging and coordination plane.</p>
+        <div class="component"><span class="mono">message-daemon</span> + Messenger Sema</div>
+        <div class="component"><span class="mono">orchestrate-daemon</span> + claims / lanes</div>
+        <div class="component">Signal contracts and first-party sockets</div>
+        <div class="component">Explicitly outside this deployment</div>
+      </div>
+    </div>
+    <div class="source-strip">Local evidence: CriomOS-home package/module inputs are independent. Naming rule: always say “Agent Intercom Orchestrator” versus “LiGoldragon Orchestrate.”</div>
+  </section>
+
+  <section class="slide" data-page="04 / 11">
+    <p class="eyebrow">How upstream expects people to use it</p>
+    <h2>Direct messages first. Fleet automation second.</h2>
+    <div class="flow">
+      <div class="node">
+        <span class="badge" style="align-self:center">1 · identify</span>
+        <h3 style="margin-top:1.5vh">Named sessions</h3>
+        <p class="small muted">Stable name or session ID; only connected peers appear.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <span class="badge" style="align-self:center">2 · coordinate</span>
+        <h3 style="margin-top:1.5vh">Send by default</h3>
+        <p class="small muted">Assignments, status, progress, and follow-ups. Ask only when a decision blocks work.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <span class="badge" style="align-self:center">3 · automate</span>
+        <h3 style="margin-top:1.5vh">Lease workers</h3>
+        <p class="small muted">A Pi/OpenCode manager owns systemd-scoped workers and cleanup.</p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:2.5vh">
+      <div class="card"><h3>Pi</h3><p class="small"><span class="mono">/intercom</span>, send/ask/reply, fleet manager.</p></div>
+      <div class="card"><h3>Codex</h3><p class="small">MCP queues to a live session; <span class="mono">coi</span> adds wakeability.</p></div>
+      <div class="card"><h3>Claude</h3><p class="small">MCP queues; <span class="mono">cci</span> resumes a headless conversation.</p></div>
+    </div>
+    <div class="source-strip">Maintainer guidance: Pi, Codex, Claude, OpenCode, and Agent Intercom Orchestrator READMEs. Adapters are labeled Preview.</div>
+  </section>
+
+  <section class="slide" data-page="05 / 11">
+    <p class="eyebrow">Executable ownership</p>
+    <h2>The fallback must always remain obvious.</h2>
+    <div class="command-map">
+      <div class="head">Human command</div><div class="head">Implementation</div><div class="head">Promise</div>
+      <div class="command">codex</div><div>Direct pinned Codex</div><div class="green">Always works without Intercom</div>
+      <div class="command">codex-intercom</div><div><span class="mono">coi</span></div><div>Explicit experimental wakeable Codex</div>
+      <div class="command">claude</div><div>Direct pinned Claude</div><div class="green">Always works without Intercom</div>
+      <div class="command">claude-intercom</div><div><span class="mono">cci</span></div><div>Explicit experimental wakeable Claude</div>
+      <div class="command">pi</div><div>Pi + opt-in extension</div><div>No executable replacement</div>
+      <div class="command">agent-intercom-fleet</div><div>Lifecycle CLI</div><div>On demand; never “orchestrator” in our docs</div>
+    </div>
+    <div class="grid-2" style="margin-top:2.2vh">
+      <div class="card cyan"><h3>Already repaired locally</h3><p class="small">The Home profile strips upstream’s internal <span class="mono">codex</span>/<span class="mono">claude</span> aliases. Current ordinary commands resolve directly.</p></div>
+      <div class="card gold-line"><h3>Presentation recommendation</h3><p class="small">Expose descriptive Nix-owned names while retaining raw <span class="mono">coi</span>/<span class="mono">cci</span> for upstream diagnostics.</p></div>
+    </div>
+    <div class="source-strip">Upstream recommends separate coi/cci commands and even a codex-intercom alias. “Cloud” was not found; the affected adapter is Claude.</div>
+  </section>
+
+  <section class="slide" data-page="06 / 11">
+    <p class="eyebrow">Best-fit system shape</p>
+    <h2>One local conversation plane, owned by the user session.</h2>
+    <div class="grid-3 grow">
+      <div class="card blue">
+        <span class="badge">entry</span>
+        <h3 style="margin-top:1.5vh">Designer</h3>
+        <p class="small">A named, persistent contact entered through an explicit Intercom client.</p>
+        <div class="component mono">codex-intercom</div>
+      </div>
+      <div class="card cyan" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+        <span class="badge" style="align-self:center">shared local broker</span>
+        <h3 style="margin-top:1.6vh">Address · queue · wake</h3>
+        <p class="small muted">Private Unix sockets<br>durable inbox/outbox<br>stable peer identity</p>
+        <div class="component mono">~/.pi/agent/intercom</div>
+      </div>
+      <div class="card violet">
+        <span class="badge">entry</span>
+        <h3 style="margin-top:1.5vh">Realizer</h3>
+        <p class="small">A separately named contact that can receive implementation handoffs and return evidence.</p>
+        <div class="component mono">codex-intercom</div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:1.6vh">
+      <div class="card"><p class="small"><strong>Manager:</strong> one explicit Pi manager only when workers are needed.</p></div>
+      <div class="card"><p class="small"><strong>State:</strong> Intercom-owned metadata only; no psyche or payload telemetry.</p></div>
+      <div class="card"><p class="small"><strong>Network:</strong> local sockets only; no remote gateway deployment.</p></div>
+    </div>
+    <div class="source-strip">Inference tailored to Athena: the transport carries live handoffs; awareness and psyche records remain deliberate continuity, not automatic message mirrors.</div>
+  </section>
+
+  <section class="slide" data-page="07 / 11">
+    <p class="eyebrow">Security and state</p>
+    <h2>Trusted-local—not a hostile-agent boundary.</h2>
+    <div class="grid-2 grow">
+      <div class="card cyan">
+        <h3>Inside the experiment</h3>
+        <ul>
+          <li>Same-user Unix sockets</li>
+          <li>Broker identity and delivery metadata</li>
+          <li>Worker ID, unit, lease, readiness, exit</li>
+          <li>Coordinated, immutable Nix pins</li>
+          <li>Previous Home generation as rollback</li>
+        </ul>
+      </div>
+      <div class="card rose-line">
+        <h3>Outside the experiment</h3>
+        <ul>
+          <li>Remote gateway, TCP, SSH, or tunnels</li>
+          <li>Messenger and Orchestrate sockets/state</li>
+          <li>Message payload collection</li>
+          <li>Automatic psyche or awareness logging</li>
+          <li>Blind deletion of broker PID/socket state</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote class="quote" style="margin-top:2vh">The system can coordinate trusted agents under one user. It should not be presented as protection from a malicious peer.</blockquote>
+    <div class="source-strip">Upstream trusted-local model; local checks reject configured remote topology. Current source still contains a local remote-gateway socket capability, so remote use remains deliberately disabled.</div>
+  </section>
+
+  <section class="slide" data-page="08 / 11">
+    <p class="eyebrow">What exists today</p>
+    <h2>Refresh a mixed generation—do not “install from zero.”</h2>
+    <div class="grid-2 grow">
+      <div class="card gold-line">
+        <span class="badge"><span class="dot gold"></span>current local snapshot</span>
+        <h3 style="margin-top:1.5vh">Substantially deployed</h3>
+        <ul>
+          <li>Six coordinated source pins in Nix</li>
+          <li>Broker socket listening</li>
+          <li>Codex desktop bridge active</li>
+          <li><span class="mono">coi</span>/<span class="mono">cci</span> distinct from normal CLIs</li>
+        </ul>
+      </div>
+      <div class="card rose-line">
+        <span class="badge"><span class="dot rose"></span>needs controlled repair</span>
+        <h3 style="margin-top:1.5vh">Not yet trusted</h3>
+        <ul>
+          <li>Broker process from an older Nix output</li>
+          <li>Fleet-cleanup service’s latest run failed</li>
+          <li>No safe end-to-end receipt witness</li>
+          <li>No independent public production record</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card blue" style="margin-top:2vh"><h3>Interpretation</h3><p>Redeploy means converge every adapter and broker on one reviewed generation, preserve normal agents, then prove one narrow path.</p></div>
+    <div class="source-strip">Local read-only audit, 2026-08-10. No live messages or payloads were inspected.</div>
+  </section>
+
+  <section class="slide" data-page="09 / 11">
+    <p class="eyebrow">Phased deployment</p>
+    <h2>Earn trust one boundary at a time.</h2>
+    <div class="timeline grow">
+      <div class="phase"><div class="number">0</div><h3>Baseline</h3><p class="small muted">Prove normal Codex and Claude before touching Intercom.</p></div>
+      <div class="phase"><div class="number">1</div><h3>Converge</h3><p class="small muted">One pinned family; static Nix checks; restart stale Intercom processes.</p></div>
+      <div class="phase"><div class="number">2</div><h3>Single peer</h3><p class="small muted">One disposable named <span class="mono">codex-intercom</span> session.</p></div>
+      <div class="phase"><div class="number">3</div><h3>Pair</h3><p class="small muted">Designer ↔ Realizer send, receipt, restart, replay.</p></div>
+      <div class="phase"><div class="number">4</div><h3>Fleet later</h3><p class="small muted">Lease and cleanup one read-only worker; graphical bridge last.</p></div>
+    </div>
+    <div class="card rose-line"><p style="margin:0"><strong class="rose">Hold:</strong> cross-host transport, remote gateway, broad profiles, and first-party integration remain outside every phase.</p></div>
+  </section>
+
+  <section class="slide" data-page="10 / 11">
+    <p class="eyebrow">Acceptance and rollback</p>
+    <h2>A failed experiment must leave Athena fully usable.</h2>
+    <div class="grid-2 grow">
+      <div class="gate-list">
+        <div class="gate"><div class="check">✓</div><div><strong>Fallback invariant</strong><br><span class="small muted">Normal codex/claude resolve identically before and after.</span></div><span class="badge">gate 1</span></div>
+        <div class="gate"><div class="check">✓</div><div><strong>Identity witness</strong><br><span class="small muted">Two explicit peers, no duplicate stable IDs.</span></div><span class="badge">gate 2</span></div>
+        <div class="gate"><div class="check">✓</div><div><strong>Delivery witness</strong><br><span class="small muted">Send, receipt, offline queue, reconnect, deduplication.</span></div><span class="badge">gate 3</span></div>
+        <div class="gate"><div class="check">✓</div><div><strong>Lifecycle witness</strong><br><span class="small muted">Lease expiry and cleanup without unrelated process loss.</span></div><span class="badge">gate 4</span></div>
+      </div>
+      <div class="card blue">
+        <h3>Rollback is one plane wide</h3>
+        <ol>
+          <li>Stop only Intercom-owned workers and bridge.</li>
+          <li>Restore the prior Home generation.</li>
+          <li>Leave broker state intact until ownership is understood.</li>
+          <li>Re-prove normal Codex and Claude.</li>
+          <li>Do not touch Messenger or Orchestrate stores.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="source-strip">Upstream requires client reload/restart after adapter upgrades; protocol v3 rejects incompatible adapters and protects live stable session IDs.</div>
+  </section>
+
+  <section class="slide" data-page="11 / 11">
+    <p class="eyebrow">Recommendation</p>
+    <h2>Deploy the conversation, not the whole ambition.</h2>
+    <div class="decision">
+      <div class="big-choice">
+        <p class="verdict">Proceed with phases 0–3.</p>
+        <p class="lead" style="margin-top:2.2vh">Refresh the local Agent Intercom generation, expose only explicit experimental names, and prove Designer ↔ Realizer communication.</p>
+        <div style="display:flex;gap:.7vw;flex-wrap:wrap;margin-top:1vh">
+          <span class="badge"><span class="dot green"></span>normal CLIs preserved</span>
+          <span class="badge"><span class="dot green"></span>local only</span>
+          <span class="badge"><span class="dot green"></span>reversible</span>
+          <span class="badge"><span class="dot green"></span>no first-party edge</span>
+        </div>
+      </div>
+      <div class="card violet">
+        <h3>Research sources</h3>
+        <ul class="sources">
+          <li><a href="https://github.com/dataforxyz/agent-intercom-pi">Pi adapter</a></li>
+          <li><a href="https://github.com/dataforxyz/agent-intercom-codex">Codex adapter</a></li>
+          <li><a href="https://github.com/dataforxyz/agent-intercom-claude">Claude adapter</a></li>
+          <li><a href="https://github.com/dataforxyz/agent-intercom-opencode">OpenCode adapter</a></li>
+          <li><a href="https://github.com/dataforxyz/agent-intercom-orchestrator">Agent Intercom Orchestrator</a></li>
+          <li><a href="https://github.com/pi-packages/nicobailon-pi-subagents">Independent escalation pattern</a></li>
+        </ul>
+        <p class="small muted">Method: primary public sources plus exact local Nix/source/runtime inspection. Maintainer intent, independent use, and local evidence are labeled separately.</p>
+      </div>
+    </div>
+    <div class="source-strip">Proposal—not an activation. Implementation requires an explicit deployment round.</div>
+  </section>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var nav = document.querySelector('.nav');
+      slides.forEach(function (slide, index) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.setAttribute('aria-label', 'Go to slide ' + (index + 1));
+        button.addEventListener('click', function () { slide.scrollIntoView({behavior: 'smooth'}); });
+        nav.appendChild(button);
+      });
+      var buttons = Array.prototype.slice.call(nav.querySelectorAll('button'));
+      function update() {
+        var index = Math.max(0, Math.min(slides.length - 1, Math.round(window.scrollY / window.innerHeight)));
+        buttons.forEach(function (button, i) { button.classList.toggle('active', i === index); });
+      }
+      window.addEventListener('scroll', update, {passive: true});
+      window.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowRight' && event.key !== 'ArrowUp' && event.key !== 'ArrowLeft' && event.key !== ' ') return;
+        event.preventDefault();
+        var current = Math.round(window.scrollY / window.innerHeight);
+        var forward = event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === ' ';
+        var next = Math.max(0, Math.min(slides.length - 1, current + (forward ? 1 : -1)));
+        slides[next].scrollIntoView({behavior: 'smooth'});
+      });
+      update();
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+$subflow FLOW_ID=504461 FLOW_DIRECTORY=/home/li/primary/flows/504461
+
+You are the sole bounded Terra implementation worker for the Home user-environment activation preflight and, only after every gate is witnessed, one typed activation. Parent Field 504461 remains the exclusive Home consumer/build/activation owner. Host/Flow manual cleanup belongs to b7da5d; do not perform it. Do not claim a Flow ID, create a main seat, delegate, reboot, perform emergency runtime mutation, alter routes, or launch extra tests.
+
+Authority and scope:
+- da88cf authorizes one combined activation only after a coordinated window with b7da5d.
+- Use only an independently verified immutable source. Do not follow moving main or waive the durable check.
+- New handoff claims Home main 5f14f9da, Flow 0.12.2 34aaf78, messenger 0.2.5 dfcf91f, field-clj inherited; focused and producer checks are remote-green but aggregate Home is blocked by Blueprint. Acquire each full immutable revision and determine whether Blueprint blocks this activation. Do not substitute a Home revision for the containing CriomOS revision expected by Deploy.UserEnvironment.
+- Review deployment 29: UserEnvironment.li on Ouranos, ActivateNow/LiveActivation/RequireImmutable, CriomOS 90702b6e9aa3aa9b82b4f17c5f2bd566d0abc030, terminal Failed Activate ActivationFailed, activation exit 1 with empty error. Correlated clobber/degraded-manager evidence is not an established cause; report recurrence and exact error without workaround.
+- Use the supported typed Deploy.UserEnvironment RequireImmutable contract. Verify admission and then ordinary terminal success; admission alone is not activation. Verify the exact installed Flow service version 0.12.2 and generation provenance after success.
+- Builds/evaluations/derivations use Prometheus. No local fallback without first reporting a witnessed remote-builder failure to da88cf; fetch/evaluation errors are not builder failure. No source repin, host activation, reboot, route change, or extra test launch.
+- Coordinate the activation window and cleanup boundary with b7da5d, but do not remove the manual flow-nexus drop-in or Flow profile element; cleanup is allowed only after the new-generation Flow Nexus 0.12.2 service is confirmed running.
+- Return preflight, source revisions, Blueprint relevance, locks/window, build and typed Lojix request/outcome, installed service/version/generation provenance, and every blocker. State plainly when activation did not occur. Report terminal/blocked state to e167d8 and da88cf only through supported routes and with honest transport grades; do not claim presentation/read without receipts.

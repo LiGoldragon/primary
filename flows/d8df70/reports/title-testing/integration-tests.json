@@ -1,0 +1,142 @@
+{
+  "finalization": [
+    {
+      "name": "Valid final title generation",
+      "expected_title": "Psyche High d8df70",
+      "passed": true,
+      "message": "Flow ID format valid"
+    },
+    {
+      "flow_id": "d8df70",
+      "description": "6 hex characters",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true
+    },
+    {
+      "flow_id": "000000",
+      "description": "Minimal hex",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true
+    },
+    {
+      "flow_id": "ffffff",
+      "description": "Maximum hex",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true
+    },
+    {
+      "flow_id": "d8df7",
+      "description": "Too short (5 chars)",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "flow_id": "d8df700",
+      "description": "Too long (7 chars)",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "flow_id": "gggggg",
+      "description": "Invalid hex characters",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "flow_id": "d8df7g",
+      "description": "Mixed valid/invalid hex",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "flow_id": "d8df-0",
+      "description": "Contains dash",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    }
+  ],
+  "mutation": [
+    {
+      "scenario": "Provisional to final (success)",
+      "steps": 2,
+      "expected_success": true,
+      "message": "Would need live session to fully verify",
+      "requires_live_session": true
+    },
+    {
+      "scenario": "Provisional to final to another final (should fail & rollback)",
+      "steps": 3,
+      "expected_success": false,
+      "message": "Would need live session to fully verify",
+      "requires_live_session": true
+    },
+    {
+      "scenario": "Wrong aspect in finalization",
+      "steps": 2,
+      "expected_success": false,
+      "message": "Would need live session to fully verify",
+      "requires_live_session": true
+    }
+  ],
+  "receipt": [
+    {
+      "test_name": "Valid manifest",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true
+    },
+    {
+      "test_name": "Missing role",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "test_name": "Invalid role",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true
+    },
+    {
+      "test_name": "Valid receipt",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "details": {
+        "session_match": true,
+        "readiness_ok": true,
+        "has_skill": true
+      }
+    },
+    {
+      "test_name": "Session ID mismatch",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "details": {
+        "session_match": false,
+        "readiness_ok": true,
+        "has_skill": true
+      }
+    },
+    {
+      "test_name": "Wrong readiness state",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "details": {
+        "session_match": true,
+        "readiness_ok": false,
+        "has_skill": true
+      }
+    }
+  ]
+}

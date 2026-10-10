@@ -1,0 +1,11 @@
+[Unit]
+Description=Run bounded Field Luna research every 30 minutes
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=30m
+Persistent=true
+Unit=field-luna-research.service
+
+[Install]
+WantedBy=timers.target

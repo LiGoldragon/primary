@@ -1,0 +1,90 @@
+<title>The Situation at a Glance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--paper:#f7f6f2;--ink:#22252a;--muted:#6e6a63;--rule:#dcd9d1;--accent:#2f6b74;--accent-soft:#e2eeef;--ask:#5a4a8c;--ask-soft:#ebe7f6;--box:#ffffff;--amber:#a2681c;--amber-soft:#f5ead6;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#17191c;--ink:#e4e1da;--muted:#9a958c;--rule:#33373d;--accent:#7cc3cb;--accent-soft:#1f3236;--ask:#b3a3e6;--ask-soft:#2a2540;--box:#22262b;--amber:#dba64a;--amber-soft:#3a2d16;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#17191c;--ink:#e4e1da;--muted:#9a958c;--rule:#33373d;--accent:#7cc3cb;--accent-soft:#1f3236;--ask:#b3a3e6;--ask-soft:#2a2540;--box:#22262b;--amber:#dba64a;--amber-soft:#3a2d16;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;font-size:18px;line-height:1.5;margin:0}
+main{max-width:36rem;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:2rem;line-height:1.1;margin:.4rem 0 .6rem;text-wrap:balance}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.35rem;line-height:1.15;margin:0 0 .8rem;text-wrap:balance}
+.lede{color:var(--muted);margin:0 0 1.4rem;font-size:1rem}
+a{color:var(--accent)}
+section{padding:1.3rem 0;border-top:1px solid var(--rule)}
+.now{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:0 0 .4rem}
+.now div{background:var(--box);border:1px solid var(--rule);border-radius:6px;padding:.6rem .8rem}
+.now .lbl{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;font-weight:600;color:var(--muted);margin:0 0 .2rem}
+.now p{margin:0;font-size:.95rem}
+.now div.q{border-color:var(--amber);background:var(--amber-soft)}
+ol.ask{list-style:none;padding:0;margin:0;counter-reset:q}
+ol.ask li{counter-increment:q;position:relative;margin:.55rem 0;padding:.6rem .9rem .6rem 2.6rem;background:var(--ask-soft);border-left:3px solid var(--ask);border-radius:0 6px 6px 0}
+ol.ask li::before{content:counter(q);position:absolute;left:.85rem;top:.6rem;font-weight:600;color:var(--ask);font-size:.9rem}
+ol.ask li small{display:block;color:var(--muted);font-size:.85rem;margin-top:.15rem}
+ul.plain{padding-left:1.1rem}ul.plain li{margin:.3rem 0}
+.ready{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+.ready span{border:1px solid var(--rule);border-radius:6px;padding:.2rem .6rem;font-size:.9rem;background:var(--box)}
+.ready span.go{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.ready span.wait{border-style:dashed;color:var(--muted)}
+@media (max-width:420px){.now{grid-template-columns:1fr} body{font-size:17px}}
+nav.web{display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:center;font-size:.8rem;margin:0 0 1.2rem;padding:.55rem .7rem;border:1px solid var(--rule);border-radius:6px;background:var(--code-bg,var(--box))}
+nav.web b{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:.3rem;font-weight:600}
+nav.web a{text-decoration:none;color:var(--accent);padding:.1rem .45rem;border-radius:4px;border:1px solid transparent}
+nav.web a[aria-current="page"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+nav.web a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav.web b.also{flex-basis:100%;margin-top:.3rem}
+
+</style>
+<main>
+<nav class="web"><b>Web of vision</b><a href="https://claude.ai/code/artifact/10c1001a-335a-46cc-8571-4690f951380a">Vision, easy</a><a href="https://claude.ai/code/artifact/71ba909a-0674-49d8-9813-44f27fb078fb">Vision, whole</a><a href="https://claude.ai/code/artifact/d6d8303f-aad5-4ff5-b0af-289827e9bd84" aria-current="page">Situation, easy</a><a href="https://claude.ai/code/artifact/2375214d-fa67-4033-ac47-4f661bc4f0df">Situation, whole</a><a href="https://claude.ai/code/artifact/9c5339d5-62b2-4665-9d89-ae5da2292400">Quota anatomy</a><a href="https://claude.ai/code/artifact/aec7d804-708b-499e-b0cc-c0e40e385b76">Original blueprint</a><b class="also">Also, by a parallel flow</b><a href="https://claude.ai/artifact/DdW7DDwgvmqUbGm2MA64sJ">Vision at a glance</a><a href="https://claude.ai/artifact/YaJXDmZahA5jvJqEN2NyBo">Situation</a><a href="https://claude.ai/artifact/2rJZEZCAi8UQA8Le9uBUaq">Quota Pulse</a></nav>
+<h1>The Situation at a Glance</h1>
+<p class="lede">Where the work stands and what only you can settle. The theory behind each item is in <a href="https://claude.ai/code/artifact/10c1001a-335a-46cc-8571-4690f951380a">the vision at a glance</a>; the full account is in <a href="https://claude.ai/code/artifact/2375214d-fa67-4033-ac47-4f661bc4f0df">the situation, whole</a>.</p>
+
+<div class="now">
+  <div><span class="lbl">Doing</span><p>Turning this week's spoken vision into candidate skills.</p></div>
+  <div><span class="lbl">How</span><p>Fable designs and asks; you rule; Mind Astra builds the proof of concept.</p></div>
+  <div><span class="lbl">Now</span><p>Waiting on your answers below. Nothing is built yet.</p></div>
+  <div><span class="lbl">Next</span><p>Distill what you confirm into shared vision, then generate the skills.</p></div>
+  <div class="q"><span class="lbl">Quotas</span><p>Not tracked by any flow yet. <a href="https://claude.ai/code/artifact/9c5339d5-62b2-4665-9d89-ae5da2292400">The quota anatomy</a> shows how they could be.</p></div>
+</div>
+
+<section>
+<h2>Ready to distill, if you say so</h2>
+<div class="ready">
+  <span class="go">triad</span><span class="go">data repos</span><span class="go">messenger</span><span class="go">flow</span><span class="go">transcript</span><span class="go">skills are vision</span><span class="go">power levels</span>
+  <span class="wait">signal handshake</span><span class="wait">hardware</span>
+</div>
+<p>Seven parts can enter shared vision once their question below is settled. Two wait for a design round. Two statements are candidates for intent: relay all your words, and a main flow uses subflows.</p>
+</section>
+
+<section>
+<h2>Not sure</h2>
+<ol class="ask">
+  <li>Is mind the memory itself, or the old file store that the memory replaces? <small>You called it "the legacy file system database" once and the memory before.</small></li>
+  <li>Where does field data end and mind data begin?</li>
+  <li>Is skill generation moving into Harness decided, or still a maybe?</li>
+  <li>Is the messenger a model that judges, a program that carries typed messages, or one of each?</li>
+  <li>Should "relay all my words with context" be intent?</li>
+  <li>Is the flow topic called "flow" or "flow nexus"?</li>
+  <li>Does "the report is the last response" retire the doubt that a report is hearsay in a file?</li>
+  <li>Are archive files the one kind of file that stays?</li>
+  <li>What is the second signal handshake?</li>
+  <li>Does the bare concept name mean pure vision or the operational skill, and which gets the prefix?</li>
+  <li>Is the test prefix "test" or "testing"?</li>
+  <li>Should "a skill is vision" be intent?</li>
+  <li>Does the intent file on models say what you wanted in intent about effort?</li>
+  <li>Are the four power levels Luna, Terra, Sol, Astra, in that order?</li>
+  <li>Is the hardware record a struct with typed sections, or a list of capabilities?</li>
+  <li>Should "a main flow uses subflows, it does not do the work" be intent?</li>
+</ol>
+</section>
+
+<section>
+<h2>Where the evidence is thin</h2>
+<ul class="plain">
+  <li>Every statement this week was heard once, by one flow, or relayed once.</li>
+  <li>Nine relays came through one field flow; a relay is verbatim by instruction, not by witness.</li>
+  <li>The field skill already exists; the briefing said it was new.</li>
+  <li>"Astra high" as the fourth level is our reading, not your words.</li>
+</ul>
+</section>
+</main>

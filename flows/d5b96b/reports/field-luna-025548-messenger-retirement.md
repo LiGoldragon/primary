@@ -1,0 +1,3 @@
+# Field Luna 025548 Messenger retirement evidence
+
+At retirement time, `messenger-clj list` showed `025548 field_luna_025548 default STALE`. The original registered binding was Codex native UUID `01a0ee49-43e2-7b02-8a24-b81025548ba8`, `default/w1:pV`, terminal `term_65ca2ce2d4a451d`. The successor pilot with independent UUID `01a0f316-22b2-7851-8fec-203f698471a4` completed its meaningful first turn, has a candidate remote peer, and is bound as Messenger Flow `f69847`. The old pane was already closed through `herdr pane close w1:pV` with result `{"type":"ok"}`; old native files and flow data remain retained. This evidence supports retiring the stale Messenger route only.

@@ -1,0 +1,9 @@
+pattern: nota-next|schema-next|schema-rust-next|nota_next|schema_next|schema_rust_next|NOTA_NEXT|SCHEMA_NEXT|SCHEMA_RUST_NEXT|nota-next-derive
+repos parsed: 87
+refs resolved: 85
+tarballs scanned: 83
+failures: 4
+match paths: 0
+tips: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-tips.txt
+failures_file: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-failures.txt
+matches_file: /home/li/primary/agent-outputs/RenamePropagator/worker6-remote-tarball-scan-matches.txt

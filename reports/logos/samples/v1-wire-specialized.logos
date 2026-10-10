@@ -1,0 +1,21 @@
+;; Logos v1 strawman — MAXIMALLY-SPECIALIZED form. Same four types, same oracle.
+;; The WireTupleStruct / WireNamedStruct DEFINITIONS intrinsically carry the constant
+;; wire attribute+derive combo (rustfmt::skip + gated nota-text derives + rkyv/std
+;; derives + pub). Instances spend ZERO slots on it. Everything is still represented
+;; in logos (in the type's definition), so logos->Rust remains transcription.
+;; Slot layout of WireTupleStruct: ( Name FieldType )
+;; Slot layout of WireNamedStruct: ( Name Fields ), Field = ( fieldname FieldType )
+
+WireTupleStruct.( CommitSequence Integer )
+
+WireTupleStruct.( StateDigest Integer )
+
+WireNamedStruct.(
+  DatabaseMarker
+  (
+    ( commit_sequence CommitSequence )
+    ( state_digest StateDigest )
+  )
+)
+
+WireTupleStruct.( Domains Vector.(Domain) )

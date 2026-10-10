@@ -1,0 +1,17 @@
+{
+  "goldragonProducer": {
+    "horizonRevision": "ee8d6f8d27eb6e200504807971ffdd26aaca7ed1",
+    "horizonLibVersion": "0.12.0",
+    "clusterUsbIpv4GatewayLiteralCount": 0
+  },
+  "lojixConsumer": {
+    "horizonRevision": "40d04d2504fee619e9b2b2564b8a769a3a9d6049",
+    "horizonLibVersion": "0.10.1"
+  },
+  "revisionMatch": false,
+  "versionMatch": false,
+  "supportedPreSocketResult": {
+    "exit": 2,
+    "error": "proposal source is not a Horizon definition"
+  }
+}

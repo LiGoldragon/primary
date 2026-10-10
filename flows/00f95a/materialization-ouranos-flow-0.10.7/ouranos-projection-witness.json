@@ -1,0 +1,29 @@
+{
+  "proposalSha256": "d280c719030bd066e23d1f003e804d73d699756dae18776114551cac201040e8",
+  "projectionSha256": "10333ac7bad0ab3d0d5e820826ca0f888846c88e8394adc81983481b38bdcaec",
+  "cluster": "goldragon",
+  "node": {
+    "name": "ouranos",
+    "system": "x86_64-linux",
+    "criomeDomainName": "ouranos.goldragon.criome",
+    "machine": {
+      "kind": "Metal",
+      "architecture": "x86_64",
+      "hardware": {
+        "cores": 12,
+        "model": "ThinkPadT14Gen5Intel",
+        "chipGeneration": 12,
+        "ramGib": 32
+      }
+    },
+    "capabilitiesPresent": [
+      "openCodeTesting",
+      "nixBuilder"
+    ],
+    "builder": {
+      "hostName": "prometheus.goldragon.criome",
+      "sshUser": "nix-ssh",
+      "maxJobs": 6
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "result": "verified",
+  "sessionId": "5796640a-d22a-46a1-bf8c-5cef254f3f7c",
+  "shortId": "5796640a",
+  "cwd": "/home/li/primary/flows/024bc7/sandbox/bgtest",
+  "kind": "background",
+  "injection": "completed",
+  "userTextNonce": "bcd02a-live-claude-1",
+  "assistantReply": "LIVE ACK bcd02a-live-claude-1",
+  "postCheck": {
+    "status": "idle",
+    "processLive": true
+  },
+  "secretsExposed": false
+}

@@ -1,0 +1,29 @@
+;; Logos v2 — SAME two declarations under the PROPOSED delimiter reshuffle (scheme b).
+;; [psyche proposal, leaning, NOT final] {} = struct, [] = vector, () = string.
+;; This is his sample with record payloads .(...) rewritten to .{...} (structs move to
+;; braces). Vectors keep []. NOTE: nota 0.7.0 still assigns the OLD delimiter meanings,
+;; so this parses STRUCTURALLY but not with the reassigned semantics (see report §7).
+
+Public.Newtype.{
+  CommitSequence
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.{
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode]}
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  Integer
+}
+
+Public.Struct.{
+  DatabaseMarker
+  [ Literal.[[rustfmt.skip] [second.literal.thing]]
+    ConfigurationAttribute.Feature.{
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode]}
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  [Public.CommitSequence
+   Public.StateDigest
+   Private.secretDigest.StateDigest]
+}

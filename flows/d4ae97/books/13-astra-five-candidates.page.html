@@ -1,0 +1,180 @@
+<title>Astra's five candidates</title>
+<h1 class="book-title">Astra's five candidates</h1>
+<p>Nothing here is landed. Each candidate is a private review artifact; a ruling says whether it goes forward.</p>
+<article class="proposal"><header><span class="pnum">1</span><h2>The topic registry</h2></header>
+<p class="target"><code>flow-evidence/0c85a3/topic-registry/README.md, new</code></p><p><strong>Terms.</strong> An aspect is Psyche, Mind or Field. A topic is a short name inside an aspect; <code>Core</code> is the topic of every flow without one. EDN is Clojure's plain text for data. Babashka is the small, fast-starting program that runs Clojure.</p><div class="diff"><div class="add"><p>The stored file:</p><pre><code class="language-clojure">{:topics [{:aspect :psyche :topic "Core"}
+          {:aspect :mind :topic "Core"}
+          {:aspect :field :topic "Core"}]}</code></pre><p>Register, list and resolve a topic. Registering the same pair twice changes nothing. Two processes registering at once are made to take turns. A stored file holding more than one form is refused and left untouched. Nine tests with 39 assertions pass. It is not connected to Flow or to a Mind nexus.</p></div></div><section class="rulings"><ol><li value="1"><p>The candidate accepts a topic only if it is words each starting with a capital letter, such as <code>Testing</code> or <code>FlowStart</code>. That check is a stand-in and does not test English.</p><ol class="choices" type="a"><li>keep it as a stand-in</li><li>accept any non-blank topic, as the Flow prototype does</li><li>refuse the registry</li></ol></li></ol></section></article>
+<article class="proposal"><header><span class="pnum">2</span><h2>The Codex server upgrade</h2></header>
+<p class="target"><code>flow-evidence/0c85a3/codex-generations/design.md, new</code></p><svg viewBox="0 0 340 250" role="img" aria-label="Three slots, last, current and next, each naming a generation" style="width:100%;height:auto;max-width:420px;display:block;margin-inline:auto;font-family:var(--f-label);font-size:13px"><defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker></defs><text x="170" y="22" text-anchor="middle" style="fill:var(--muted)">slots name generations; the controller moves them</text><rect x="10" y="34" width="96" height="40" rx="8" style="fill:var(--chip);stroke:var(--line);stroke-width:1.5"/><text x="58.0" y="58.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">last</text><rect x="122" y="34" width="96" height="40" rx="8" style="fill:var(--add-bg);stroke:var(--add-edge);stroke-width:1.5"/><text x="170.0" y="58.5" text-anchor="middle" style="fill:var(--add-fg);font-weight:600">current</text><rect x="234" y="34" width="96" height="40" rx="8" style="fill:var(--ctx-bg);stroke:var(--accent);stroke-width:1.5"/><text x="282.0" y="58.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">next</text><line x1="58" y1="76" x2="58" y2="106" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a2)"/><line x1="170" y1="76" x2="170" y2="106" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a2)"/><line x1="282" y1="76" x2="282" y2="106" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a2)"/><rect x="10" y="108" width="96" height="40" rx="8" style="fill:var(--chip);stroke:var(--line);stroke-width:1.5"/><text x="58.0" y="132.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">gen 1</text><rect x="122" y="108" width="96" height="40" rx="8" style="fill:var(--add-bg);stroke:var(--add-edge);stroke-width:1.5"/><text x="170.0" y="132.5" text-anchor="middle" style="fill:var(--add-fg);font-weight:600">gen 2</text><rect x="234" y="108" width="96" height="40" rx="8" style="fill:var(--ctx-bg);stroke:var(--accent);stroke-width:1.5"/><text x="282.0" y="132.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">gen 3</text><text x="170" y="176" text-anchor="middle" style="fill:var(--fg)">select: next becomes current, current becomes last</text><rect x="10" y="190" width="320" height="50" rx="8" style="fill:var(--hl-bg);stroke:var(--hl-punct);stroke-width:1.5"/><text x="170" y="212" text-anchor="middle" style="fill:var(--fg);font-weight:600">running sessions stay on their generation</text><text x="170" y="230" text-anchor="middle" style="fill:var(--muted)">only later launches follow the switch</text></svg><p><strong>Terms.</strong> A generation is one installed Codex program with its own home folder, socket (the file clients connect through) and service. The controller is one small new program that holds which generation each slot names. A reservation is a launch's claim on a generation until the new session is bound to it.</p><div class="diff"><div class="add"><ul><li>Each generation keeps one identity for its whole life. The identity comes from the package and its service recipe, never from a slot name or version.</li><li>Three slots name generations: <code>next</code>, <code>current</code> and <code>last</code>. Moving a slot never renames a service, moves a home or touches a session.</li><li>The controller does four things: stage a new generation, check it, select it as current, retire an old one. Selection is atomic.</li><li>A launch asks the controller to reserve the current generation, then binds the reservation to its new session. A launch that fails releases it.</li><li>Running sessions stay on the generation they started on. Only later launches see the switch.</li><li>No generation copies another's login file.</li></ul></div></div><p>Not settled, stated in the design: the old server may be stopped only when nothing is attached to it, and no existing interface proves that. Two servers may run side by side only when their logins are independent, and no tool yet shows they are. The cause of the token trouble is your report, not a finding. Nothing here is deployed.</p><section class="rulings"><ol><li value="2"><p>Slot names <code>last</code>, <code>current</code>, <code>next</code>.</p><ol class="choices" type="a"><li>adopt them</li><li>other names</li><li>hold the whole design</li></ol></li></ol></section><section class="rulings"><ol><li value="3"><p>How to prove a server unused.</p><ol class="choices" type="a"><li>every client goes through the controller and direct use is blocked</li><li>retirement also reads the operating system's list of connections to the socket</li><li>retire only by hand until one is built</li></ol></li></ol></section></article>
+<article class="proposal"><header><span class="pnum">3</span><h2>Clojure under Nix</h2></header>
+<p class="target"><code>clj-build/lib/uberjar.nix</code></p><p><strong>Terms.</strong> Nix builds programs from fixed recipes. An uberjar is one archive holding a program and all its libraries. AOT means the Clojure was compiled ahead of time into class files. clj-build is our Nix builder for Clojure.</p><p>Measured on a small example, five runs each, median start time:</p><table><thead><tr><th>Archive</th><th>Start</th></tr></thead><tbody><tr><td>every entry the same timestamp</td><td>5.400 s</td></tr><tr><td>class files two seconds newer</td><td>0.560 s</td></tr><tr><td>matching sources removed</td><td>2.023 s</td></tr></tbody></table><p>With equal timestamps the program compiles itself again at start; with newer classes it loads the compiled ones.</p><div class="diff"><div class="del"><pre><code class="language-bash">        cp -r classes/. staging/
+        chmod -R u+w staging</code></pre></div><div class="add"><pre><code class="language-bash">        chmod -R u+w staging
+        cp -r classes/. staging/</code></pre><p>After the archive is written, a step sorts its entries, stamps sources 00:00:02 and class files 00:00:04, and clears extra fields. The tested step is written in Python; no Clojure version exists yet.</p></div></div><p>The unmodified builder failed on the Prometheus builder with a permission error, which the reordering above fixes. Building twice returned the same results from the Nix store; that shows reuse, not an independent rebuild. Removing sources is not recommended.</p><section class="rulings"><ol><li value="4"><p>The reordering fixes a build failure by itself.</p><ol class="choices" type="a"><li>land it alone now</li><li>land it with the timestamp step</li><li>refuse</li></ol></li></ol></section><section class="rulings"><ol><li value="5"><p>The timestamp step.</p><ol class="choices" type="a"><li>land the Python as tested</li><li>rewrite it in Clojure first</li></ol></li></ol></section></article>
+<article class="proposal"><header><span class="pnum">4</span><h2>The Clojure Flow prototype</h2></header>
+<p class="target"><code>flow-evidence/0c85a3/clojure-flow/README.md, new</code></p><svg viewBox="0 0 340 252" role="img" aria-label="A Metaflow record: name, aspect, topic, layer and a chain of flow IDs" style="width:100%;height:auto;max-width:420px;display:block;margin-inline:auto;font-family:var(--f-label);font-size:13px"><defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker></defs><rect x="10" y="8" width="320" height="236" rx="10" style="fill:var(--sheet);stroke:var(--line);stroke-width:1.5"/><text x="26" y="32" style="fill:var(--accent);font-weight:600">Metaflow name: Mind Testing Primary</text><rect x="26" y="44" width="288" height="30" rx="6" style="fill:var(--chip)"/><text x="38" y="64" style="fill:var(--muted)">aspect</text><text x="130" y="64" style="font-weight:600;fill:var(--fg)">mind</text><rect x="26" y="80" width="288" height="30" rx="6" style="fill:var(--chip)"/><text x="38" y="100" style="fill:var(--muted)">topic</text><text x="130" y="100" style="font-weight:600;fill:var(--fg)">Testing</text><rect x="26" y="116" width="288" height="30" rx="6" style="fill:var(--chip)"/><text x="38" y="136" style="fill:var(--muted)">layer</text><text x="130" y="136" style="font-weight:600;fill:var(--fg)">primary</text><text x="26" y="170" style="fill:var(--muted)">flow-ids, oldest to newest</text><rect x="26" y="182" width="120" height="40" rx="8" style="fill:var(--chip);stroke:var(--line);stroke-width:1.5"/><text x="86.0" y="206.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">flow-1</text><line x1="148" y1="202" x2="194" y2="202" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a1)"/><rect x="196" y="182" width="118" height="40" rx="8" style="fill:var(--add-bg);stroke:var(--add-edge);stroke-width:1.5"/><text x="255.0" y="206.5" text-anchor="middle" style="fill:var(--add-fg);font-weight:600">flow-2</text><text x="255" y="238" text-anchor="middle" style="fill:var(--add-edge);font-weight:600">current</text></svg><p><strong>Terms.</strong> A Metaflow is a named line of flows; its name is the key. A flow ID names one flow. The last ID in the chain is the current flow.</p><div class="diff"><div class="add"><p>One stored record:</p><pre><code class="language-clojure">{:schema 1
+ :metaflows
+ {"Mind Testing Primary"
+  {:aspect :mind
+   :topic "Testing"
+   :layer :primary
+   :flow-ids ["flow-1" "flow-2"]}}}</code></pre><p>Register a name with its first flow ID, advance by appending a successor (refused if the caller's expected current ID is stale), resolve by exact name. No topic becomes <code>Core</code>. Names are exact, case-sensitive strings and are never derived from aspect, topic and layer. Eleven tests with 21 assertions pass. It has its own file, reads no live Flow or Messenger data, and launches nothing.</p></div></div><p>Importing existing flows needs a reviewed list of names for existing IDs; names cannot be guessed from titles or models. No importer exists.</p><section class="rulings"><ol><li value="6"><p>The chain keeps every flow ID forever.</p><ol class="choices" type="a"><li>keep all</li><li>bound it, you name the bound</li></ol></li></ol></section></article>
+<article class="proposal"><header><span class="pnum">5</span><h2>The JSON and Datom bridge</h2></header>
+<p class="target"><code>flow-evidence/0c85a3/format-bridge/schema/bridge.ethos, new</code></p><svg viewBox="0 0 340 242" role="img" aria-label="JSON and Datom each checked against one Ethos type" style="width:100%;height:auto;max-width:420px;display:block;margin-inline:auto;font-family:var(--f-label);font-size:13px"><defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker></defs><rect x="10" y="10" width="320" height="38" rx="8" style="fill:var(--chip);stroke:var(--line);stroke-width:1.5"/><text x="170.0" y="33.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">JSON   {"Lookup":"alpha"}</text><line x1="130" y1="50" x2="130" y2="92" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a3)"/><line x1="210" y1="92" x2="210" y2="52" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a3)"/><text x="124" y="76" text-anchor="end" style="fill:var(--muted)">checked in</text><text x="216" y="76" style="fill:var(--muted)">checked out</text><rect x="10" y="94" width="320" height="52" rx="8" style="fill:var(--ctx-bg);stroke:var(--accent);stroke-width:1.5"/><text x="170.0" y="124.5" text-anchor="middle" style="fill:var(--fg);font-weight:600">Ethos type: Lookup | Save | Found | Missing</text><line x1="130" y1="148" x2="130" y2="190" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a3)"/><line x1="210" y1="190" x2="210" y2="150" style="stroke:var(--accent);stroke-width:2" marker-end="url(#a3)"/><text x="124" y="174" text-anchor="end" style="fill:var(--muted)">checked in</text><text x="216" y="174" style="fill:var(--muted)">checked out</text><rect x="10" y="192" width="320" height="38" rx="8" style="fill:var(--chip);stroke:var(--line);stroke-width:1.5"/><text x="170.0" y="215.5" text-anchor="middle" style="fill:var(--fg);font-weight:500">Datom   Lookup.{ alpha }</text></svg><p><strong>Terms.</strong> Ethos is the language our types are written in. Datom is our text form for values. JSON is the common web text form. A variant is one alternative of a type, such as <code>Lookup</code> or <code>Save</code>.</p><div class="diff"><div class="add"><p>The two query variants and two answers:</p><pre><code class="language-ethos">[ Lookup.Topic Save.Topic ]
+[ Found.Entry Missing.Topic ]</code></pre><p>The proposed JSON for a variant is one object whose only key is the variant's name:</p><pre><code class="language-datom">{"Lookup":"alpha"}
+Lookup.{ alpha }</code></pre></div></div><p>The first line is JSON, the second the same value in Datom. Both are read through the type Ethos generated, so an unknown variant, a wrong shape or an extra field is refused in either direction. Five tests pass. It adds no general adapter, no Clojure adapter and no wire contract.</p><section class="rulings"><ol><li value="7"><p>The JSON shape above, one object keyed by the variant name.</p><ol class="choices" type="a"><li>adopt as the mapping</li><li>another shape</li><li>refuse</li></ol></li></ol></section></article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
+

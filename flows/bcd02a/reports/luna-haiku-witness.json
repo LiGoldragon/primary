@@ -1,0 +1,54 @@
+{
+  "flow_id": "bcd02a",
+  "poc": "approved intercom-wake-poc1-v1",
+  "child_identity": "codex-3782782-1eafd766",
+  "child_endpoint": "codex-bcd02a-intercom-luna-peer2-3782782 (/tmp/bcd02a-intercom-luna-peer2)",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "parent_session": "codex-3752558-f7566c95",
+  "peer_identity": "claude-3780689-f12b271 (canonical sender observed: claude-3780689-f12b2713)",
+  "request_or_message_id": "03b31439-2a5e-4a00-a81e-53f3c10b14a2",
+  "sent_payload": "nonce bcd02a-024bc7-sandbox-2 poc1 Luna medium sandbox hello",
+  "received_ack": "ACK poc1 from claude-sandbox-3780689; request bcd02a-024bc7-sandbox-2",
+  "answering_turn_if_accessible": null,
+  "timestamps": {
+    "whoami_observed": "2026-09-13T20:15:08Z",
+    "hello_observed": "2026-09-13T20:15:08Z",
+    "ack_observed": "2026-09-13T20:15:31.782Z",
+    "fable_notification_observed": "2026-09-13T20:15:35Z"
+  },
+  "outcome": "ack_received",
+  "exact_relevant_tool_result_evidence": {
+    "whoami": {
+      "session_id": "codex-3782782-1eafd766",
+      "name": "codex-bcd02a-intercom-luna-peer2-3782782",
+      "cwd": "/tmp/bcd02a-intercom-luna-peer2",
+      "tool_model_field": "codex"
+    },
+    "hello_send": {
+      "text": "Message sent to claude-3780689-f12b271.",
+      "structuredContent": {
+        "ok": true,
+        "message_id": "03b31439-2a5e-4a00-a81e-53f3c10b14a2",
+        "to": "claude-3780689-f12b271"
+      }
+    },
+    "ack_pending": {
+      "text": "- claude-sandbox-3780689: ACK poc1 from claude-sandbox-3780689; request bcd02a-024bc7-sandbox-2",
+      "structuredContent": {
+        "unread_messages": [
+          {
+            "from": {
+              "id": "claude-3780689-f12b2713",
+              "name": "claude-sandbox-3780689",
+              "origin": "local"
+            },
+            "text": "ACK poc1 from claude-sandbox-3780689; request bcd02a-024bc7-sandbox-2"
+          }
+        ],
+        "pending_asks": []
+      }
+    },
+    "discovery": "intercom_team reported coworkers none; root later identified Fable as claude-2843909-f7566c95."
+  }
+}

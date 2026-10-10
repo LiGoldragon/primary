@@ -1,0 +1,79 @@
+{
+  "status": "ready-with-presented-hm-probe-and-unresolved-origin-attribution",
+  "predecessor": {
+    "flow_id": "af762b",
+    "native_uuid": "af762bcb-3007-49c1-9c54-4396c300a3c9",
+    "endpoint": "messaging-build/w1:p4/term_65bb821fbb8f06",
+    "preserved": true,
+    "retired": false,
+    "handoff_ack": "PREDECESSOR_AF762B_HANDOFF_ACK PRESERVED"
+  },
+  "successor": {
+    "flow_id": "9a79dc",
+    "native_uuid": "9a79dccd-907b-4372-aec0-d5b929bfc7c5",
+    "name": "opus-review-of-af762b",
+    "model": "claude-opus-5",
+    "effort": "medium",
+    "role": "independent Flow/Message review companion; not a living-psyche authority, verified Psyche handoff, or implementation owner",
+    "native_start_receipt": "Base directory for this skill: /home/li/primary/.claude/skills/main-flow",
+    "source_ack": "BOOTSTRAP_READY 98aebe3697ff3b3f2a398472ba4924a206fbd27c571e39454350c2d0e0df238e",
+    "successor_handoff_ack": "SUCCESSOR_9A79DC_HANDOFF_ACK PREDECESSOR_AF762B_PRESERVED"
+  },
+  "skills": ["main-flow", "psyche", "psyche-interraction", "psyche-distillation", "refresh", "subflow", "behavior", "correction", "vocabulary", "spirit", "edit-coordination", "file-editing", "nexus", "orchestrate", "flow-evidence", "testing", "prompt-crafting", "claude-harness", "herdr", "messaging"],
+  "source_payload": {
+    "records": 20,
+    "bytes": 61356,
+    "sha256": "98aebe3697ff3b3f2a398472ba4924a206fbd27c571e39454350c2d0e0df238e",
+    "records_sha256": {
+      "flows/af762b/log.md": "b8fb6d2855fc6b82b0e9481b0e00f7caf036fcc0346f74100964ad584535acb3",
+      "flows/1ac573/handoff.md": "19888d53b0433d5790561d4268893bd322e3d427d50fc1800195fe4709ad3d1c",
+      "flows/1ac573/vision/operational-modelRoles.md": "b2f8a56b7cdcc341a219e6ed2d329e067f7592b6a6730c01fca14252d651ccf4",
+      "flows/1ac573/vision/operational-reapReplacedSessions.md": "5d0ff3effb36c8a5e2c005a089f1ccec5bda5815dd7cea00393da4244623dc71",
+      "flows/1ac573/vision/operational-agentToPsycheMessaging.md": "79ade03f32d12ffd1690834806d3b3b23c93a288edd9bc8cd6469c4b172af99d",
+      "flows/1ac573/vision/operational-ongoingAstraOpusInterraction.md": "11edcd6b8c1f47c8e5f9a9640d01827eb7252133d9f67c9cba1284d410af2c7f",
+      "flows/1ac573/vision/operational-nameSessionAfterAncestor.md": "3226fe6a9fb0d1bb9030ce68762594c763c8deff5848bdb159bb3961d76b7e46",
+      "flows/1ac573/vision/operational-mirroredMessagesAreAddressed.md": "311f86b2b7689dcb7e7c912d6225b0815ad06b486b37a47edd8d28e6f0064af6",
+      "flows/1ac573/vision/operational-mirrorToEveryoneAndRoster.md": "93b7e90b044d1962b2771c9ae77fe725765498acdc0ddf6fd4f545b0fa6402a4",
+      "flows/1ac573/vision/operational-psycheMindAstra.md": "240f68862ec413d2855f45462d430747046a57ed8b152fc8e70d3091772f7974",
+      "flows/908786/vision/default-effort.md": "8bd43c2e90141ac5a68df083d97e316e8a30f3530a923c6b7238ad2c0b953a40",
+      "flows/908786/vision/vision-led-audit-and-fable.md": "248eaf1a334af69c06dffd31b56d99c95a426e13f1d26647068950ee424539a7",
+      "flows/908786/reports/flow-herdr-routing.md": "767f2f2b128ea4285377777a0c5e70d9eab0bfcc2a777232aa60491f9b7350e8",
+      "flows/908786/reports/message-herdr-routing.md": "95efbc40692a0102452dcc4f4457cf5d5b33849ba4f55270dc2e77dff90d9bbf",
+      "vision-raw/spirit.md": "9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49",
+      "Vision/psyche.md": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8",
+      "Vision/distillation.md": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9",
+      "Intent/context.md": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7",
+      "flows/cf3553/vision/operational-mainFlowStartupCorrection.md": "4ac46a167b0184dd6ae7c40a75d901e3fe2a9bbde087a62c3f0c25d0755b98cd",
+      "flows/cf3553/summary.md": "4302b0b23333b8ea00e6ec0c9eb95076e9a3b749dca39ef89474d49ae5390b3e"
+    }
+  },
+  "delegation": {
+    "initial_claude_haiku_child": "completed but uncounted: it did not meet the required Luna/xhigh-or-explorer model policy",
+    "compliant_child": {
+      "native_codex_uuid": "01a0b60a-b065-7da0-9091-395c3f08ef66",
+      "observed_model": "gpt-5.6-luna",
+      "observed_effort": "xhigh",
+      "sandbox": "read-only",
+      "result": "98aebe3697ff3b3f2a398472ba4924a206fbd27c571e39454350c2d0e0df238e COUNT=20"
+    }
+  },
+  "endpoint": {
+    "herdr_session": "messaging-build",
+    "workspace": "wE",
+    "pane": "wE:p1",
+    "terminal": "term_65bc71c76d0f723",
+    "agent": "opus-review-of-af762b",
+    "native_pid": 4115006,
+    "endpoint_ack": "ENDPOINT_READY 9a79dccd-907b-4372-aec0-d5b929bfc7c5 FLOW_ID=9a79dc ENDPOINT=wE:p1/term_65bc71c76d0f723",
+    "hm_registration": "9a79dc opus-review-of-af762b messaging-build",
+    "hm_probe": {
+      "initial_probe": "submitted only; target did not observe presentation",
+      "presentation_probe": "HM_PRESENTATION_PROBE_9A79DC_7C12",
+      "target_reply": "HM_PRESENTATION_ACK_9A79DC_7C12",
+      "grade": "presented to the successor's context",
+      "limit": "the successor correctly states that it cannot distinguish an injected prompt from living typing, so this does not independently prove the transport route"
+    }
+  },
+  "open_work": ["ambiguous durable Parked rows are not enumerable", "legacy ambiguous keys remain unreachable by safe lookup pending global discovery", "five Fable vision tensions remain unanswered", "living outward endpoint remains unbuilt"],
+  "prohibited_actions_not_performed": ["no services, stores, routes, or data migrations", "no Spirit approval or edit", "no predecessor retirement or deregistration", "1ac573 preserved"]
+}

@@ -1,0 +1,435 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+remote: Enumerating objects: 11, done.        
+remote: Counting objects:   9% (1/11)        remote: Counting objects:  18% (2/11)        remote: Counting objects:  27% (3/11)        remote: Counting objects:  36% (4/11)        remote: Counting objects:  45% (5/11)        remote: Counting objects:  54% (6/11)        remote: Counting objects:  63% (7/11)        remote: Counting objects:  72% (8/11)        remote: Counting objects:  81% (9/11)        remote: Counting objects:  90% (10/11)        remote: Counting objects: 100% (11/11)        remote: Counting objects: 100% (11/11), done.        
+remote: Compressing objects:  33% (1/3)        remote: Compressing objects:  66% (2/3)        remote: Compressing objects: 100% (3/3)        remote: Compressing objects: 100% (3/3), done.        
+remote: Total 11 (delta 7), reused 11 (delta 7), pack-reused 0 (from 0)        
+From github.com:LiGoldragon/signal-lojix
+   3322cf0..662cedb  main       -> main
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184&submodules=1'...
+derivation evaluated to /nix/store/x14s7m0ykb9phb5k7h5als7nngf11kbj-meta-signal-lojix-3.0.1.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/m595ndmixvvhsyzzx318i8a4f67b020z-meta-signal-lojix-build-3.0.1.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/r2kfli6ssw54dv30nf8773zfqslcfb3r-meta-signal-lojix-test-3.0.1.drv
+checking derivation checks.x86_64-linux.test-generated-contract...
+derivation evaluated to /nix/store/kbyj8kcm45wghkq4l6mg5by4j0hl7mvb-meta-signal-lojix-test-3.0.1.drv
+checking derivation checks.x86_64-linux.test-datom-contract...
+derivation evaluated to /nix/store/3ih3jrbsb5xlc66r8ccwdhg7z115lb9y-meta-signal-lojix-test-3.0.1.drv
+checking derivation checks.x86_64-linux.test-doc...
+derivation evaluated to /nix/store/ywbgi3i15gpxq18vyfbh1k9x0d7mj7r6-meta-signal-lojix-test-3.0.1.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/bjri5ii17sv43ia64v3pf0kpdzxzjb4i-meta-signal-lojix-doc-3.0.1.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/f3vf0gpr217kvvrxjniqbxwm9zldij7w-meta-signal-lojix-fmt-3.0.1.drv
+checking derivation checks.x86_64-linux.no-free-functions...
+derivation evaluated to /nix/store/chwch0fl64a7r3snrln4h91znp0njpz7-meta-signal-lojix-no-free-functions.drv
+checking derivation checks.x86_64-linux.no-inherent-methods...
+derivation evaluated to /nix/store/98bami0da6hna3wcqs9wngvj9np4c32q-meta-signal-lojix-no-inherent-methods.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/zfmyk2hfc9ih8j74f7wizbwm1bm8sk93-meta-signal-lojix-clippy-3.0.1.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/3iphcays95bfly899wdbf37wl9c5w8zp-meta-signal-lojix.drv
+running 16 flake checks...
+building '/nix/store/d0cc5qi1fc8mv4h91jzxk9j88kd6lrfg-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/y6ybigr9vgx0q41vp0qnd3k1xav4fnsm-cargo-git-https-github.com-LiGoldragon-signal-lojix-662cedb7d92b76e01eb689bf3b7945c5db003bc2.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/f3vf0gpr217kvvrxjniqbxwm9zldij7w-meta-signal-lojix-fmt-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/d0cc5qi1fc8mv4h91jzxk9j88kd6lrfg-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/ii53bkryvrlm0bvxawyrskpniqgahgj8-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/x2a3h7lm3vczqbcdm9pl43z3bsshf5jz-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/y6ybigr9vgx0q41vp0qnd3k1xav4fnsm-cargo-git-https-github.com-LiGoldragon-signal-lojix-662cedb7d92b76e01eb689bf3b7945c5db003bc2.drv'...
+cargo-git-https-github.com-LiGoldragon-signal-lojix> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-signal-lojix> unpacking source archive /nix/store/x2a3h7lm3vczqbcdm9pl43z3bsshf5jz-source
+cargo-git-https-github.com-LiGoldragon-signal-lojix> source root is source
+cargo-git-https-github.com-LiGoldragon-signal-lojix> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-signal-lojix> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-signal-lojix> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-signal-lojix> warning: manifest has no license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-signal-lojix>   |
+cargo-git-https-github.com-LiGoldragon-signal-lojix>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/r6zpandf2ql7zzzjha1a45f0znrigzdh-cargo-git-https-github.com-LiGoldragon-signal-lojix-662cedb7d92b76e01eb689bf3b7945c5db003bc2' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/7zzbrsm34af50fg1r69viddxf5yq5v85-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/f3vf0gpr217kvvrxjniqbxwm9zldij7w-meta-signal-lojix-fmt-3.0.1.drv'...
+meta-signal-lojix-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+meta-signal-lojix-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-lojix-fmt> Running phase: unpackPhase
+meta-signal-lojix-fmt> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-fmt> source root is source
+meta-signal-lojix-fmt> Running phase: patchPhase
+meta-signal-lojix-fmt> Executing configureCargoCommonVars
+meta-signal-lojix-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-fmt> Running phase: configurePhase
+meta-signal-lojix-fmt> default configurePhase, nothing to do
+meta-signal-lojix-fmt> Running phase: buildPhase
+meta-signal-lojix-fmt> +++ command cargo --version
+meta-signal-lojix-fmt> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-fmt> +++ command cargo fmt -- --check
+building '/nix/store/7zzbrsm34af50fg1r69viddxf5yq5v85-linkLockedDeps.drv'...
+meta-signal-lojix-fmt> Running phase: ensureTargetDir
+meta-signal-lojix-fmt> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/077dfs1wwhghjhslf1980ch90qgq8vbr-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/zn0allxd602yp4h75gk8hvdh0rqkzd23-vendor-cargo-deps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-lojix-fmt> compressing and installing full archive of target to /nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1/target.tar.zst as requested
+meta-signal-lojix-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1/target.tar.zst)
+meta-signal-lojix-fmt> Running phase: fixupPhase
+meta-signal-lojix-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1
+meta-signal-lojix-fmt> checking for references to /build/ in /nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1...
+meta-signal-lojix-fmt> patching script interpreter paths in /nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1
+copying 1 paths...
+copying path '/nix/store/hwvpr2mr1f9pssv2fpr4xhf4a707lijq-meta-signal-lojix-fmt-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/zn0allxd602yp4h75gk8hvdh0rqkzd23-vendor-cargo-deps.drv'...
+copying 1 paths...
+copying path '/nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/chwch0fl64a7r3snrln4h91znp0njpz7-meta-signal-lojix-no-free-functions.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/98bami0da6hna3wcqs9wngvj9np4c32q-meta-signal-lojix-no-inherent-methods.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/j9423wp9l5sxpqa0magwri5i3ys8kr5l-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/chwch0fl64a7r3snrln4h91znp0njpz7-meta-signal-lojix-no-free-functions.drv'...
+copying 1 paths...
+copying path '/nix/store/zgr9myx1yia3agvjkns6brigfliyd998-meta-signal-lojix-no-free-functions' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/98bami0da6hna3wcqs9wngvj9np4c32q-meta-signal-lojix-no-inherent-methods.drv'...
+copying 1 paths...
+copying path '/nix/store/i7ig35ivb15z78f0b67c3b391dk9cf63-meta-signal-lojix-no-inherent-methods' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/bj9h36yplzw2w0yrhia8k847nswl9i6s-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/j9423wp9l5sxpqa0magwri5i3ys8kr5l-source.drv'...
+copying 1 paths...
+copying path '/nix/store/zswax7csvdmw03g0r05mhnfv1rpgna13-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ia750xmd4s3zl61x9z3d1a70nzw8gcam-meta-signal-lojix-deps-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ia750xmd4s3zl61x9z3d1a70nzw8gcam-meta-signal-lojix-deps-3.0.1.drv'...
+meta-signal-lojix-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+meta-signal-lojix-deps> Running phase: unpackPhase
+meta-signal-lojix-deps> unpacking source archive /nix/store/zswax7csvdmw03g0r05mhnfv1rpgna13-source
+meta-signal-lojix-deps> source root is source
+meta-signal-lojix-deps> Running phase: patchPhase
+meta-signal-lojix-deps> Executing configureCargoCommonVars
+meta-signal-lojix-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-deps> Running phase: configurePhase
+meta-signal-lojix-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-deps> default configurePhase, nothing to do
+meta-signal-lojix-deps> Running phase: buildPhase
+meta-signal-lojix-deps> +++ command cargo --version
+meta-signal-lojix-deps> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-deps> +++ command cargo check --release --locked --all-targets
+meta-signal-lojix-deps>    Compiling proc-macro2 v1.0.107
+meta-signal-lojix-deps>    Compiling unicode-ident v1.0.24
+meta-signal-lojix-deps>    Compiling quote v1.0.47
+meta-signal-lojix-deps>    Compiling simdutf8 v0.1.5
+meta-signal-lojix-deps>    Compiling prettyplease v0.3.0
+meta-signal-lojix-deps>    Compiling hashbrown v0.17.1
+meta-signal-lojix-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+meta-signal-lojix-deps>    Compiling serde_core v1.0.229
+meta-signal-lojix-deps>    Compiling thiserror v2.0.20
+meta-signal-lojix-deps>    Compiling serde v1.0.229
+meta-signal-lojix-deps>    Compiling syn v3.0.5
+meta-signal-lojix-deps>    Compiling syn v2.0.119
+meta-signal-lojix-deps>    Compiling munge_macro v0.4.7
+meta-signal-lojix-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-lojix-deps>    Compiling ptr_meta_derive v0.3.2
+meta-signal-lojix-deps>    Compiling bytecheck_derive v0.8.3
+meta-signal-lojix-deps>    Compiling rkyv_derive v0.8.18
+meta-signal-lojix-deps>    Compiling thiserror-impl v2.0.20
+meta-signal-lojix-deps>    Compiling munge v0.4.7
+meta-signal-lojix-deps>    Compiling ptr_meta v0.3.2
+meta-signal-lojix-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+meta-signal-lojix-deps>    Compiling rancor v0.1.3
+meta-signal-lojix-deps>    Compiling serde_derive v1.0.229
+meta-signal-lojix-deps>    Compiling bytecheck v0.8.3
+meta-signal-lojix-deps>    Compiling rend v0.5.4
+meta-signal-lojix-deps>     Checking rkyv v0.8.18
+meta-signal-lojix-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+meta-signal-lojix-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+meta-signal-lojix-deps>    Compiling horizon-lib v0.9.0 (https://github.com/LiGoldragon/horizon-rs?rev=8f4240ef23024c2d3b55f803d96d3c6e7aa5b433#8f4240ef)
+meta-signal-lojix-deps>    Compiling signal-lojix v2.0.0 (https://github.com/LiGoldragon/signal-lojix?rev=662cedb7d92b76e01eb689bf3b7945c5db003bc2#662cedb7)
+meta-signal-lojix-deps>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 7.03s
+meta-signal-lojix-deps> +++ command cargo build --release --locked
+meta-signal-lojix-deps>    Compiling ptr_meta v0.3.2
+meta-signal-lojix-deps>    Compiling simdutf8 v0.1.5
+meta-signal-lojix-deps>    Compiling munge v0.4.7
+meta-signal-lojix-deps>    Compiling hashbrown v0.17.1
+meta-signal-lojix-deps>    Compiling thiserror v2.0.20
+meta-signal-lojix-deps>    Compiling serde_core v1.0.229
+meta-signal-lojix-deps>    Compiling rancor v0.1.3
+meta-signal-lojix-deps>    Compiling bytecheck v0.8.3
+meta-signal-lojix-deps>    Compiling rend v0.5.4
+meta-signal-lojix-deps>    Compiling serde v1.0.229
+meta-signal-lojix-deps>    Compiling rkyv v0.8.18
+meta-signal-lojix-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+meta-signal-lojix-deps>    Compiling horizon-lib v0.9.0 (https://github.com/LiGoldragon/horizon-rs?rev=8f4240ef23024c2d3b55f803d96d3c6e7aa5b433#8f4240ef)
+meta-signal-lojix-deps>    Compiling signal-lojix v2.0.0 (https://github.com/LiGoldragon/signal-lojix?rev=662cedb7d92b76e01eb689bf3b7945c5db003bc2#662cedb7)
+meta-signal-lojix-deps>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 5.10s
+meta-signal-lojix-deps> Running phase: checkPhase
+meta-signal-lojix-deps> +++ command cargo test --release --locked --no-run
+meta-signal-lojix-deps>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 0.06s
+meta-signal-lojix-deps>   Executable unittests src/lib.rs (target/release/deps/meta_signal_lojix-d72c11f44faf5985)
+meta-signal-lojix-deps> Running phase: installPhase
+meta-signal-lojix-deps> compressing and installing full archive of target to /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst as requested
+meta-signal-lojix-deps> /*stdin*\            : 27.72%   (   182 MiB =>   50.5 MiB, /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst)
+meta-signal-lojix-deps> Running phase: fixupPhase
+meta-signal-lojix-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1
+meta-signal-lojix-deps> checking for references to /build/ in /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1...
+meta-signal-lojix-deps> patching script interpreter paths in /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1
+copying 1 paths...
+copying path '/nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/m595ndmixvvhsyzzx318i8a4f67b020z-meta-signal-lojix-build-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/zfmyk2hfc9ih8j74f7wizbwm1bm8sk93-meta-signal-lojix-clippy-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/m595ndmixvvhsyzzx318i8a4f67b020z-meta-signal-lojix-build-3.0.1.drv'...
+meta-signal-lojix-build> Running phase: unpackPhase
+meta-signal-lojix-build> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-build> source root is source
+meta-signal-lojix-build> Running phase: patchPhase
+meta-signal-lojix-build> Executing configureCargoCommonVars
+meta-signal-lojix-build> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-build> Running phase: configurePhase
+meta-signal-lojix-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-build> default configurePhase, nothing to do
+meta-signal-lojix-build> Running phase: buildPhase
+meta-signal-lojix-build> +++ command cargo --version
+meta-signal-lojix-build> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-build> +++ command cargo build --release --locked
+meta-signal-lojix-build>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+building '/nix/store/zfmyk2hfc9ih8j74f7wizbwm1bm8sk93-meta-signal-lojix-clippy-3.0.1.drv'...
+meta-signal-lojix-clippy> Running phase: unpackPhase
+meta-signal-lojix-clippy> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-clippy> source root is source
+meta-signal-lojix-clippy> Running phase: patchPhase
+meta-signal-lojix-clippy> Executing configureCargoCommonVars
+meta-signal-lojix-clippy> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-clippy> Running phase: configurePhase
+meta-signal-lojix-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-clippy> default configurePhase, nothing to do
+meta-signal-lojix-clippy> Running phase: buildPhase
+meta-signal-lojix-clippy> +++ command cargo --version
+meta-signal-lojix-clippy> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-clippy> +++ command cargo clippy --release --locked --all-targets -- -D warnings
+meta-signal-lojix-clippy>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-build>     Finished `release` profile [optimized] target(s) in 0.75s
+meta-signal-lojix-build> Running phase: installPhase
+meta-signal-lojix-build> compressing and installing full archive of target to /nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1/target.tar.zst as requested
+meta-signal-lojix-build> /*stdin*\            : 27.85%   (   188 MiB =>   52.5 MiB, /nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1/target.tar.zst)
+meta-signal-lojix-build> Running phase: fixupPhase
+meta-signal-lojix-build> shrinking RPATHs of ELF executables and libraries in /nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1
+meta-signal-lojix-build> checking for references to /build/ in /nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1...
+meta-signal-lojix-build> patching script interpreter paths in /nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1
+copying 1 paths...
+copying path '/nix/store/h7qsysm2j689ag27c8q1rrpbmzf7wc6c-meta-signal-lojix-build-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-lojix-clippy>     Finished `release` profile [optimized] target(s) in 0.54s
+meta-signal-lojix-clippy> Running phase: installPhase
+meta-signal-lojix-clippy> compressing and installing full archive of target to /nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1/target.tar.zst as requested
+meta-signal-lojix-clippy> /*stdin*\            : 27.88%   (   187 MiB =>   52.0 MiB, /nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1/target.tar.zst)
+meta-signal-lojix-clippy> Running phase: fixupPhase
+meta-signal-lojix-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1
+meta-signal-lojix-clippy> checking for references to /build/ in /nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1...
+meta-signal-lojix-clippy> patching script interpreter paths in /nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1
+copying 1 paths...
+copying path '/nix/store/ng564lnjdpp0jg671hz3adqr6v59a11p-meta-signal-lojix-clippy-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bjri5ii17sv43ia64v3pf0kpdzxzjb4i-meta-signal-lojix-doc-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3ih3jrbsb5xlc66r8ccwdhg7z115lb9y-meta-signal-lojix-test-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bjri5ii17sv43ia64v3pf0kpdzxzjb4i-meta-signal-lojix-doc-3.0.1.drv'...
+meta-signal-lojix-doc> Running phase: unpackPhase
+meta-signal-lojix-doc> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-doc> source root is source
+meta-signal-lojix-doc> Running phase: patchPhase
+meta-signal-lojix-doc> Executing configureCargoCommonVars
+meta-signal-lojix-doc> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-doc> Running phase: configurePhase
+meta-signal-lojix-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-doc> default configurePhase, nothing to do
+meta-signal-lojix-doc> Running phase: buildPhase
+meta-signal-lojix-doc> +++ command cargo --version
+meta-signal-lojix-doc> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-doc> +++ command cargo doc --release --locked --no-deps
+meta-signal-lojix-doc>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+building '/nix/store/3ih3jrbsb5xlc66r8ccwdhg7z115lb9y-meta-signal-lojix-test-3.0.1.drv'...
+meta-signal-lojix-doc>  Documenting meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-test> Running phase: unpackPhase
+meta-signal-lojix-test> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-test> source root is source
+meta-signal-lojix-test> Running phase: patchPhase
+meta-signal-lojix-test> Executing configureCargoCommonVars
+meta-signal-lojix-test> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-test> Running phase: configurePhase
+meta-signal-lojix-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-test> default configurePhase, nothing to do
+meta-signal-lojix-test> Running phase: buildPhase
+meta-signal-lojix-test> +++ command cargo --version
+meta-signal-lojix-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-test> Running phase: checkPhase
+meta-signal-lojix-test> +++ command cargo test --release --locked --features datom --test generated_contract
+meta-signal-lojix-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+meta-signal-lojix-test>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=99a9e8c9cbdb88650cc2511644b89428c22129e2#99a9e8c9)
+meta-signal-lojix-test>    Compiling horizon-lib v0.9.0 (https://github.com/LiGoldragon/horizon-rs?rev=8f4240ef23024c2d3b55f803d96d3c6e7aa5b433#8f4240ef)
+meta-signal-lojix-test>    Compiling signal-lojix v2.0.0 (https://github.com/LiGoldragon/signal-lojix?rev=662cedb7d92b76e01eb689bf3b7945c5db003bc2#662cedb7)
+meta-signal-lojix-test>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-test>    Compiling datom-codec v0.25.7 (https://github.com/LiGoldragon/datom-codec?rev=99a9e8c9cbdb88650cc2511644b89428c22129e2#99a9e8c9)
+meta-signal-lojix-doc>     Finished `release` profile [optimized] target(s) in 0.82s
+meta-signal-lojix-doc>    Generated /build/source/target/doc/meta_signal_lojix/index.html
+meta-signal-lojix-doc> Running phase: installPhase
+meta-signal-lojix-doc> Running phase: fixupPhase
+meta-signal-lojix-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/1b62llgdix00sxvkl3qbixhqycc4z5kd-meta-signal-lojix-doc-3.0.1
+meta-signal-lojix-doc> checking for references to /build/ in /nix/store/1b62llgdix00sxvkl3qbixhqycc4z5kd-meta-signal-lojix-doc-3.0.1...
+meta-signal-lojix-doc> patching script interpreter paths in /nix/store/1b62llgdix00sxvkl3qbixhqycc4z5kd-meta-signal-lojix-doc-3.0.1
+copying 1 paths...
+copying path '/nix/store/1b62llgdix00sxvkl3qbixhqycc4z5kd-meta-signal-lojix-doc-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+meta-signal-lojix-test>     Finished `release` profile [optimized] target(s) in 5.09s
+meta-signal-lojix-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-a4e7d7c73efa868e)
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 5 tests
+meta-signal-lojix-test> test datom_round_trip_preserves_named_privileged_query ... ok
+meta-signal-lojix-test> test meta_configure_and_reversal_cross_fresh_peer_bytes ... ok
+meta-signal-lojix-test> test peer_bytes_restore_typed_query_and_response ... ok
+meta-signal-lojix-test> test client_query_keeps_the_authored_pre_actualization_shape ... ok
+meta-signal-lojix-test> test peer_bytes_preserve_nonempty_secret_reference ... ok
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test> Running phase: installPhase
+meta-signal-lojix-test> compressing and installing full archive of target to /nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1/target.tar.zst as requested
+meta-signal-lojix-test> /*stdin*\            : 27.68%   (   218 MiB =>   60.3 MiB, /nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1/target.tar.zst)
+meta-signal-lojix-test> Running phase: fixupPhase
+meta-signal-lojix-test> shrinking RPATHs of ELF executables and libraries in /nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1
+meta-signal-lojix-test> checking for references to /build/ in /nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1...
+meta-signal-lojix-test> patching script interpreter paths in /nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1
+copying 1 paths...
+copying path '/nix/store/cn38w76c4s1zp7xgw09jkl57cls3r0zv-meta-signal-lojix-test-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/kbyj8kcm45wghkq4l6mg5by4j0hl7mvb-meta-signal-lojix-test-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/r2kfli6ssw54dv30nf8773zfqslcfb3r-meta-signal-lojix-test-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/kbyj8kcm45wghkq4l6mg5by4j0hl7mvb-meta-signal-lojix-test-3.0.1.drv'...
+meta-signal-lojix-test> Running phase: unpackPhase
+meta-signal-lojix-test> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-test> source root is source
+meta-signal-lojix-test> Running phase: patchPhase
+meta-signal-lojix-test> Executing configureCargoCommonVars
+meta-signal-lojix-test> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-test> Running phase: configurePhase
+meta-signal-lojix-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-test> default configurePhase, nothing to do
+meta-signal-lojix-test> Running phase: buildPhase
+meta-signal-lojix-test> +++ command cargo --version
+meta-signal-lojix-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-test> Running phase: checkPhase
+meta-signal-lojix-test> +++ command cargo test --release --locked --test generated_contract
+meta-signal-lojix-test>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-test>     Finished `release` profile [optimized] target(s) in 1.43s
+meta-signal-lojix-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-fdfae30ab6057d22)
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 3 tests
+meta-signal-lojix-test> test peer_bytes_restore_typed_query_and_response ... ok
+meta-signal-lojix-test> test meta_configure_and_reversal_cross_fresh_peer_bytes ... ok
+meta-signal-lojix-test> test peer_bytes_preserve_nonempty_secret_reference ... ok
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test> Running phase: installPhase
+meta-signal-lojix-test> compressing and installing full archive of target to /nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1/target.tar.zst as requested
+meta-signal-lojix-test> /*stdin*\            : 27.71%   (   190 MiB =>   52.6 MiB, /nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1/target.tar.zst)
+meta-signal-lojix-test> Running phase: fixupPhase
+meta-signal-lojix-test> shrinking RPATHs of ELF executables and libraries in /nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1
+meta-signal-lojix-test> checking for references to /build/ in /nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1...
+meta-signal-lojix-test> patching script interpreter paths in /nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1
+copying 1 paths...
+copying path '/nix/store/wrqvd03p2mi9mi7fgl2lljh1gv64zqfn-meta-signal-lojix-test-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/r2kfli6ssw54dv30nf8773zfqslcfb3r-meta-signal-lojix-test-3.0.1.drv'...
+meta-signal-lojix-test> Running phase: unpackPhase
+meta-signal-lojix-test> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-test> source root is source
+meta-signal-lojix-test> Running phase: patchPhase
+meta-signal-lojix-test> Executing configureCargoCommonVars
+meta-signal-lojix-test> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-test> Running phase: configurePhase
+meta-signal-lojix-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-test> default configurePhase, nothing to do
+meta-signal-lojix-test> Running phase: buildPhase
+meta-signal-lojix-test> +++ command cargo --version
+meta-signal-lojix-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-test> Running phase: checkPhase
+meta-signal-lojix-test> +++ command cargo test --release --locked
+meta-signal-lojix-test>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-test>     Finished `release` profile [optimized] target(s) in 1.35s
+meta-signal-lojix-test>      Running unittests src/lib.rs (target/release/deps/meta_signal_lojix-de8b17d8fa0bc187)
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 0 tests
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-fdfae30ab6057d22)
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 3 tests
+meta-signal-lojix-test> test meta_configure_and_reversal_cross_fresh_peer_bytes ... ok
+meta-signal-lojix-test> test peer_bytes_preserve_nonempty_secret_reference ... ok
+meta-signal-lojix-test> test peer_bytes_restore_typed_query_and_response ... ok
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test>    Doc-tests meta_signal_lojix
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 0 tests
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test> Running phase: installPhase
+meta-signal-lojix-test> compressing and installing full archive of target to /nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1/target.tar.zst as requested
+meta-signal-lojix-test> /*stdin*\            : 27.57%   (   191 MiB =>   52.6 MiB, /nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1/target.tar.zst)
+meta-signal-lojix-test> Running phase: fixupPhase
+meta-signal-lojix-test> shrinking RPATHs of ELF executables and libraries in /nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1
+meta-signal-lojix-test> checking for references to /build/ in /nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1...
+meta-signal-lojix-test> patching script interpreter paths in /nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1
+copying 1 paths...
+copying path '/nix/store/dv2p3yr3wh74hpvkklai3fihnmjmcgdn-meta-signal-lojix-test-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ywbgi3i15gpxq18vyfbh1k9x0d7mj7r6-meta-signal-lojix-test-3.0.1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ywbgi3i15gpxq18vyfbh1k9x0d7mj7r6-meta-signal-lojix-test-3.0.1.drv'...
+meta-signal-lojix-test> Running phase: unpackPhase
+meta-signal-lojix-test> unpacking source archive /nix/store/mx77ywb8xy802mp8hjri608qp685s5s8-source
+meta-signal-lojix-test> source root is source
+meta-signal-lojix-test> Running phase: patchPhase
+meta-signal-lojix-test> Executing configureCargoCommonVars
+meta-signal-lojix-test> decompressing cargo artifacts from /nix/store/85abnhc6dsd69dbgj8iv3di67b6lhfxd-meta-signal-lojix-deps-3.0.1/target.tar.zst to target
+meta-signal-lojix-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+meta-signal-lojix-test> Running phase: configurePhase
+meta-signal-lojix-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/0gpb33wg7n41nbfn3y31s73kc8z0iw41-vendor-cargo-deps/config.toml
+meta-signal-lojix-test> default configurePhase, nothing to do
+meta-signal-lojix-test> Running phase: buildPhase
+meta-signal-lojix-test> +++ command cargo --version
+meta-signal-lojix-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+meta-signal-lojix-test> Running phase: checkPhase
+meta-signal-lojix-test> +++ command cargo test --release --locked --doc
+meta-signal-lojix-test>    Compiling meta-signal-lojix v3.0.1 (/build/source)
+meta-signal-lojix-test>     Finished `release` profile [optimized] target(s) in 0.48s
+meta-signal-lojix-test>    Doc-tests meta_signal_lojix
+meta-signal-lojix-test> 
+meta-signal-lojix-test> running 0 tests
+meta-signal-lojix-test> 
+meta-signal-lojix-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+meta-signal-lojix-test> 
+meta-signal-lojix-test> Running phase: installPhase
+meta-signal-lojix-test> compressing and installing full archive of target to /nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1/target.tar.zst as requested
+meta-signal-lojix-test> /*stdin*\            : 27.85%   (   188 MiB =>   52.5 MiB, /nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1/target.tar.zst)
+meta-signal-lojix-test> Running phase: fixupPhase
+meta-signal-lojix-test> shrinking RPATHs of ELF executables and libraries in /nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1
+meta-signal-lojix-test> checking for references to /build/ in /nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1...
+meta-signal-lojix-test> patching script interpreter paths in /nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1
+copying 1 paths...
+copying path '/nix/store/s0hpx1qi7d31ymk12ls5xmrs7h9j1dh6-meta-signal-lojix-test-3.0.1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.
+EXIT=0

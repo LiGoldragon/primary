@@ -1,0 +1,205 @@
+<title>Unity</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Literata:opsz,wght@7..72,400;7..72,600&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#e8ece3; --ink:#101e17; --muted:#5a6b60; --rule:#c6d0bf;
+  --moss:#23614a; --lichen:#63871f; --mineral:#4d6a7a;
+  --b1:#eff2eb; --b2:#e3e9dd; --b3:#d7dfd0; --b4:#cbd5c3;
+  --deep:#16261e; --deep-ink:#dde8dc; --deep-muted:#9db3a3; --deep-rule:#2e4437;
+  --disp:"Syne","Helvetica Neue",Arial,sans-serif;
+  --body:"Literata",Georgia,"Times New Roman",serif;
+  --mono:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0b120f; --ink:#dee7d9; --muted:#8d9f92; --rule:#25332b;
+  --moss:#6bbe96; --lichen:#a7c860; --mineral:#86a5b4;
+  --b1:#0e1712; --b2:#121c16; --b3:#16211a; --b4:#1a271f;
+  --deep:#030b07; --deep-ink:#cadcca; --deep-muted:#7f9686; --deep-rule:#1b2c22;
+}}
+:root[data-theme="dark"]{
+  --paper:#0b120f; --ink:#dee7d9; --muted:#8d9f92; --rule:#25332b;
+  --moss:#6bbe96; --lichen:#a7c860; --mineral:#86a5b4;
+  --b1:#0e1712; --b2:#121c16; --b3:#16211a; --b4:#1a271f;
+  --deep:#030b07; --deep-ink:#cadcca; --deep-muted:#7f9686; --deep-rule:#1b2c22;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.62;margin:0;overflow-x:hidden}
+.col{max-width:41rem;margin:0 auto;padding:0 1.35rem}
+h1,h2,h3{font-family:var(--disp);text-wrap:balance;margin:0}
+h1{font-weight:800;font-size:clamp(2.6rem,9vw,4.4rem);line-height:.94;letter-spacing:-.03em}
+h2{font-weight:700;font-size:clamp(1.5rem,4vw,2rem);line-height:1.1;letter-spacing:-.015em}
+h3{font-weight:600;font-size:1.06rem;line-height:1.25}
+p{margin:0}
+a{color:var(--moss);text-underline-offset:.18em}
+a:focus-visible,:focus-visible{outline:2px solid var(--lichen);outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:1rem}
+section{padding:3.4rem 0}
+section+section{border-top:1px solid var(--rule)}
+blockquote{quotes:none}
+q{quotes:"\201C" "\201D"}
+blockquote{margin:0;font-family:var(--disp);font-weight:600;font-size:1.12rem;line-height:1.38;letter-spacing:-.01em;
+  border-left:2px solid var(--lichen);padding:.1rem 0 .1rem 1.05rem;color:var(--ink)}
+blockquote cite{display:block;margin-top:.5rem;font-family:var(--mono);font-size:.72rem;font-weight:400;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* hero */
+.hero{padding:4rem 0 3.2rem;border-top:none}
+.mark{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap}
+.mark .dot{width:.62rem;height:.62rem;background:var(--lichen);border-radius:50%;flex:none;transform:translateY(-.3rem)}
+.thesis{font-family:var(--disp);font-weight:600;font-size:clamp(1.25rem,3.4vw,1.6rem);line-height:1.28;letter-spacing:-.015em;max-width:24ch}
+.lede{color:var(--muted);max-width:60ch}
+
+/* stratigraphy */
+.strata{padding:0;border-top:1px solid var(--rule)}
+.strata-head{padding:3.4rem 0 2.2rem}
+.horizon{border-top:1px solid var(--rule)}
+.horizon:first-of-type{border-top:none}
+.h1b{background:var(--b1)} .h2b{background:var(--b2)} .h3b{background:var(--b3)} .h4b{background:var(--b4)}
+.hz{display:grid;grid-template-columns:7.5rem 1fr;gap:0 1.6rem;max-width:41rem;margin:0 auto;padding:1.8rem 1.35rem}
+.gutter{position:relative;font-family:var(--mono);font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);padding-top:.28rem}
+.gutter::before{content:"";position:absolute;right:-.8rem;top:0;bottom:-1.8rem;width:1px;background:var(--rule)}
+.gutter::after{content:"";position:absolute;right:-1.07rem;top:.42rem;width:.55rem;height:.55rem;border-radius:50%;background:var(--lichen)}
+.horizon:last-of-type .gutter::before{bottom:0}
+.gutter b{display:block;font-weight:500;color:var(--ink);font-size:.78rem;letter-spacing:.06em}
+.hz .body{display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.hz .role{font-family:var(--mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--lichen)}
+.bedrock{background:var(--deep);color:var(--deep-ink);border-top:3px solid var(--lichen)}
+.bedrock .gutter{color:var(--deep-muted)}
+.bedrock .gutter b{color:var(--deep-ink)}
+.bedrock .gutter::before{background:var(--deep-rule)}
+.bedrock .role{color:var(--lichen)}
+.bedrock .hz{padding-top:2.2rem;padding-bottom:2.4rem}
+.rule-note{max-width:41rem;margin:0 auto;padding:1.5rem 1.35rem 3.4rem;color:var(--muted);font-size:.95rem}
+
+/* plain definition rows */
+.rows{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:9.5rem 1fr;gap:.35rem 1.6rem;padding:1.05rem 0;border-bottom:1px solid var(--rule)}
+.row dt{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;color:var(--mineral);padding-top:.22rem}
+.row dd{margin:0;min-width:0}
+dl{margin:0}
+
+.close{text-align:left;padding:3.8rem 0 5rem}
+.license{font-family:var(--mono);font-size:.82rem;letter-spacing:.05em;color:var(--muted);max-width:44ch}
+.pub{font-family:var(--disp);font-weight:700;font-size:1.5rem;letter-spacing:-.015em}
+@media (max-width:640px){
+  .hz{grid-template-columns:1fr;gap:.7rem;padding:1.5rem 1.35rem}
+  .gutter{padding-top:0;display:flex;gap:.7rem;align-items:baseline}
+  .gutter::before,.gutter::after{display:none}
+  .row{grid-template-columns:1fr;gap:.25rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<main>
+
+<section class="hero col stack">
+  <div class="mark"><h1>Unity</h1><span class="dot"></span><span class="eyebrow">criome.net</span></div>
+  <p class="thesis">A thinking machine system that extends one person&rsquo;s psyche.</p>
+  <p class="lede">Unity is the app. Behind it is a system of layers that think, remember, talk with you, and keep themselves clean &mdash; running on your own machines, on a network built out of cryptography. You can pay anyone to install it. No one has any claim over it.</p>
+  <blockquote>The purpose of AI is to extend a psyche.<cite>The first line of the spirit</cite></blockquote>
+</section>
+
+<section class="col stack">
+  <h2>What Unity is</h2>
+  <p>Most people will meet it as an app. That app is the front face of a persona thinking machine system: a set of thinking machines arranged in layers of authority, holding your knowledge, doing your work, and answering to you.</p>
+  <blockquote>The Unity basic thinking machine programming system that you can pay someone, anyone, to install.<cite>The psyche, 14 September 2026</cite></blockquote>
+  <p>There is no vendor. Anyone you trust can install it and set it up for you, on hardware you own or hardware you rent. The client is multi-platform and is built on Slint.</p>
+</section>
+
+<section class="strata">
+  <div class="strata-head col stack">
+    <h2>Four layers of authority</h2>
+    <p>The layers are named after the Vedas, the old Sanskrit terms for the four layers of authority in humanity, and carry the same intent: at the top is the top authority, and so on down. Each one operates at a different part of the system. Read this as a core sample &mdash; the top authority at the surface, the earth below it.</p>
+  </div>
+
+  <div class="horizon h1b"><div class="hz">
+    <div class="gutter"><b>Primary</b>First layer</div>
+    <div class="body">
+      <p class="role">Where ideas go</p>
+      <h3>The top authority</h3>
+      <p>The last resort between idea and production. Ideas arrive here. It can monitor everything below it and give orders anywhere down.</p>
+    </div>
+  </div></div>
+
+  <div class="horizon h2b"><div class="hz">
+    <div class="gutter"><b>Secondary</b>Second layer</div>
+    <div class="body">
+      <p class="role">The trunk and the memory</p>
+      <h3>The stable middle</h3>
+      <p>A large knowledge memory system, consistently aware of a great deal, and able to interact with you directly. It is the stable one &mdash; the heart, the trunk of the thinking machine &mdash; trusted for a fairly reliable, current view of things. When it is not sure, it goes up.</p>
+    </div>
+  </div></div>
+
+  <div class="horizon h3b"><div class="hz">
+    <div class="gutter"><b>Tertiary</b>Third layer</div>
+    <div class="body">
+      <p class="role">Voice</p>
+      <h3>The fast, mercurial layer</h3>
+      <p>This is the one you talk to. Speech to text, back and forth, very fast. It uses the middle layer as its quick, good knowledge rather than working things out alone.</p>
+    </div>
+  </div></div>
+
+  <div class="horizon h4b"><div class="hz">
+    <div class="gutter"><b>Quaternary</b>Fourth layer</div>
+    <div class="body">
+      <p class="role">Maintenance</p>
+      <h3>The janitors</h3>
+      <p>The public space, the earthy layer. Garbage collection of data that is neither useful nor dangerous, maintenance of the system, monitoring and reporting &mdash; <q>here&rsquo;s something that looks like maybe a trade violation</q>. Cheap, long, continuing jobs that always check everything and clean up.</p>
+    </div>
+  </div></div>
+
+  <div class="horizon bedrock"><div class="hz">
+    <div class="gutter"><b>Layer zero</b>Self-hosted</div>
+    <div class="body">
+      <p class="role">Intent, non-malice, true source</p>
+      <h3>Beneath the four</h3>
+      <p>Layer zero is self-hosted and holds all the private information. It is mostly a double-check of intent, non-malice and true source &mdash; confirming that the person speaking to the account is who they say they are, with trusted cameras and a witness cut kept for the archive.</p>
+    </div>
+  </div></div>
+
+  <p class="rule-note">The layers below can ask questions up. To actually go higher, it has to be done by that layer itself &mdash; and the top can monitor everything below it.</p>
+</section>
+
+<section class="col stack">
+  <h2>The soul</h2>
+  <p>Your private layer. It runs on your own cluster, ruled by a kernel process on a dedicated machine, and it is where your speech-to-text models &mdash; eventually trained on your own speaking and your own data &mdash; live.</p>
+  <blockquote>The idea is that people have their own cluster, their own thinking machine system, personalized to them.<cite>The psyche, 13 September 2026</cite></blockquote>
+  <p>The soul is the private part of the persona. You can choose where its kernel runs: a machine in your house, or a private provider you pick, even in the cloud.</p>
+</section>
+
+<section class="col stack">
+  <h2>Criome</h2>
+  <blockquote>The criome is sort of like the concept of this web based on cryptography. It&rsquo;s like a cryptographic biome. That&rsquo;s why it&rsquo;s criome.<cite>The psyche, 14 September 2026</cite></blockquote>
+  <p>Criome is the network Unity lives on. <b>criome.net</b> is the canonical public-facing service &mdash; the cryptographic biome network. The operating system side of it is CriomeOS.</p>
+  <p>Unity packages a Linux sandbox so the rest of the nexuses it needs can be installed alongside it, each a sandboxed, containerized process with its own file system and network. Any traffic that is not local to the sandbox goes through our own transport signal.</p>
+</section>
+
+<section class="col">
+  <dl class="rows">
+    <div class="row">
+      <dt>Secrets</dt>
+      <dd>No secret is stored on a host. Secrets are loaded remotely, into the one process that needs them, using throwaway memory salt so there is nothing to recover. Shut the host down and it loses access. The request to open something arrives as a notification, through Unity, and you decide.</dd>
+    </div>
+    <div class="row">
+      <dt>The council</dt>
+      <dd>Nothing ships on one machine&rsquo;s opinion. Large problems go through a council of thinking machines at the top: <q>The three have to agree to push something into production, but only two have to agree to implement the proof of concept.</q></dd>
+    </div>
+    <div class="row">
+      <dt>The messenger</dt>
+      <dd>You address the system as a single entity. When you speak to any one of them, the messenger fires and tells the other half &mdash; carrying your words between them as you said them. It is a small model doing one simple job.</dd>
+    </div>
+    <div class="row">
+      <dt>Authentication</dt>
+      <dd>The layer between agents is secured on the machine itself. Messaging and the spawning of new harnesses are authenticated at multiple layers, sandboxed, and controlled by more highly permissioned nexuses.</dd>
+    </div>
+  </dl>
+</section>
+
+<section class="close col stack">
+  <p class="eyebrow">License of no authority</p>
+  <p class="thesis">No one has any claim over it.</p>
+  <p class="license">It&rsquo;s all license of no authority, so no one has any claim over it. There is no trade name violation. Pay anyone you like to install it.</p>
+  <p class="pub">Unity by Mycelium</p>
+</section>
+
+</main>

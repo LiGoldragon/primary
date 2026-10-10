@@ -1,0 +1,392 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+copying path '/nix/store/77dbgds155bbz3vd3qywq1sii07i5ljs-source' from 'http://nix.prometheus.goldragon.criome'...
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad&submodules=1'...
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184&submodules=1'...
+waiting for another Nix process to finish fetching input 'git+https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f&submodules=1'...
+derivation evaluated to /nix/store/h6mma6r858fgk20pyh2hjkwz7kjhxp8l-signal-orchestrate-2.0.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/ni19bzmkrzzl9z3cb5hyywx8rawyl6hm-signal-orchestrate-build-2.0.0.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/qdbfps0x8v8wd0b7qkm3lrqgqk8sd7rl-signal-orchestrate-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-generated-contract...
+derivation evaluated to /nix/store/sd5f7bq1db1h3bf12lp0kv3h6a0c5fhj-signal-orchestrate-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-datom-contract...
+derivation evaluated to /nix/store/3w8xy9q4v03vk8wh9mpxv7n7v8pl3g0x-signal-orchestrate-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-doc...
+derivation evaluated to /nix/store/8k59l23g6wvl83qh1s0scmjgy24hdwvf-signal-orchestrate-test-2.0.0.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/4xjpasnp9ybxfp2dmp6sbf9iqjajl1qm-signal-orchestrate-doc-2.0.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/xpcsw7irc75rnv01nyk299j135f5airh-signal-orchestrate-fmt-2.0.0.drv
+checking derivation checks.x86_64-linux.no-free-functions...
+derivation evaluated to /nix/store/fri2xap7f0lsdik8xs33j4vxza0waygm-signal-orchestrate-no-free-functions.drv
+checking derivation checks.x86_64-linux.no-inherent-methods...
+derivation evaluated to /nix/store/b1h5d7vswmgbggangxgb48ss7qynchxa-signal-orchestrate-no-inherent-methods.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/rpa8m88m4dbylmcxqba1hhy02l7wp08y-signal-orchestrate-clippy-2.0.0.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/xk1q9d03f745c1z1piaiqbvmadaqhxh8-signal-orchestrate.drv
+running 17 flake checks...
+building '/nix/store/45hzjawzxvp4bs41air8y6q1fs5ff5n8-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/xpcsw7irc75rnv01nyk299j135f5airh-signal-orchestrate-fmt-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/fri2xap7f0lsdik8xs33j4vxza0waygm-signal-orchestrate-no-free-functions.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/b1h5d7vswmgbggangxgb48ss7qynchxa-signal-orchestrate-no-inherent-methods.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/45hzjawzxvp4bs41air8y6q1fs5ff5n8-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/g4di1qihnk7cx9fq4slpn1fgr9vk0kl0-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/fri2xap7f0lsdik8xs33j4vxza0waygm-signal-orchestrate-no-free-functions.drv'...
+building '/nix/store/hhj82lns1qxjpygd5fk30xh9965hq6y0-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/k775zjz0ffyxqsnk23nfdqn4682sp3c2-signal-orchestrate-no-free-functions' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/b1h5d7vswmgbggangxgb48ss7qynchxa-signal-orchestrate-no-inherent-methods.drv'...
+copying 1 paths...
+copying path '/nix/store/q2yj2xg69jr5qdv4zs14kygmgb2njdvj-signal-orchestrate-no-inherent-methods' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/xpcsw7irc75rnv01nyk299j135f5airh-signal-orchestrate-fmt-2.0.0.drv'...
+signal-orchestrate-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+signal-orchestrate-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-orchestrate-fmt> Running phase: unpackPhase
+signal-orchestrate-fmt> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-fmt> source root is source
+signal-orchestrate-fmt> Running phase: patchPhase
+signal-orchestrate-fmt> Executing configureCargoCommonVars
+signal-orchestrate-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-fmt> Running phase: configurePhase
+signal-orchestrate-fmt> default configurePhase, nothing to do
+signal-orchestrate-fmt> Running phase: buildPhase
+signal-orchestrate-fmt> +++ command cargo --version
+signal-orchestrate-fmt> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-fmt> +++ command cargo fmt -- --check
+signal-orchestrate-fmt> Running phase: ensureTargetDir
+signal-orchestrate-fmt> Running phase: installPhase
+signal-orchestrate-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0/target.tar.zst
+signal-orchestrate-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0/target.tar.zst)
+signal-orchestrate-fmt> Running phase: fixupPhase
+signal-orchestrate-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0
+signal-orchestrate-fmt> checking for references to /build/ in /nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0...
+signal-orchestrate-fmt> patching script interpreter paths in /nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0
+copying 1 paths...
+copying path '/nix/store/q2jmjb2vnzk9dx34198zklqavy64s1dj-signal-orchestrate-fmt-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/3sz3la5wqxxcr8rfrbm488y4hf77wsai-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/hhj82lns1qxjpygd5fk30xh9965hq6y0-source.drv'...
+copying 1 paths...
+copying path '/nix/store/hq1qpkg2rj07ah5m8wcfn5lv87iw1m5x-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/5l2dmghnfqwg1swr26bv07y7cd336a8p-signal-orchestrate-deps-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/5l2dmghnfqwg1swr26bv07y7cd336a8p-signal-orchestrate-deps-2.0.0.drv'...
+signal-orchestrate-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-orchestrate-deps> Running phase: unpackPhase
+signal-orchestrate-deps> unpacking source archive /nix/store/hq1qpkg2rj07ah5m8wcfn5lv87iw1m5x-source
+signal-orchestrate-deps> source root is source
+signal-orchestrate-deps> Running phase: patchPhase
+signal-orchestrate-deps> Executing configureCargoCommonVars
+signal-orchestrate-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-deps> Running phase: configurePhase
+signal-orchestrate-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-deps> default configurePhase, nothing to do
+signal-orchestrate-deps> Running phase: buildPhase
+signal-orchestrate-deps> +++ command cargo --version
+signal-orchestrate-deps> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-deps> +++ command cargo check --release --locked --all-targets
+signal-orchestrate-deps>    Compiling proc-macro2 v1.0.107
+signal-orchestrate-deps>    Compiling quote v1.0.47
+signal-orchestrate-deps>    Compiling unicode-ident v1.0.24
+signal-orchestrate-deps>    Compiling simdutf8 v0.1.5
+signal-orchestrate-deps>    Compiling prettyplease v0.3.0
+signal-orchestrate-deps>    Compiling hashbrown v0.17.1
+signal-orchestrate-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-orchestrate-deps>    Compiling thiserror v2.0.20
+signal-orchestrate-deps>    Compiling syn v3.0.5
+signal-orchestrate-deps>    Compiling syn v2.0.119
+signal-orchestrate-deps>    Compiling munge_macro v0.4.7
+signal-orchestrate-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-orchestrate-deps>    Compiling ptr_meta_derive v0.3.2
+signal-orchestrate-deps>    Compiling bytecheck_derive v0.8.3
+signal-orchestrate-deps>    Compiling rkyv_derive v0.8.18
+signal-orchestrate-deps>    Compiling thiserror-impl v2.0.20
+signal-orchestrate-deps>    Compiling ptr_meta v0.3.2
+signal-orchestrate-deps>    Compiling rancor v0.1.3
+signal-orchestrate-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-orchestrate-deps>    Compiling munge v0.4.7
+signal-orchestrate-deps>    Compiling bytecheck v0.8.3
+signal-orchestrate-deps>    Compiling rend v0.5.4
+signal-orchestrate-deps>     Checking rkyv v0.8.18
+signal-orchestrate-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+signal-orchestrate-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+signal-orchestrate-deps>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-deps>     Finished `release` profile [optimized] target(s) in 6.06s
+signal-orchestrate-deps> +++ command cargo build --release --locked
+signal-orchestrate-deps>    Compiling ptr_meta v0.3.2
+signal-orchestrate-deps>    Compiling simdutf8 v0.1.5
+signal-orchestrate-deps>    Compiling munge v0.4.7
+signal-orchestrate-deps>    Compiling hashbrown v0.17.1
+signal-orchestrate-deps>    Compiling thiserror v2.0.20
+signal-orchestrate-deps>    Compiling rancor v0.1.3
+signal-orchestrate-deps>    Compiling bytecheck v0.8.3
+signal-orchestrate-deps>    Compiling rend v0.5.4
+signal-orchestrate-deps>    Compiling rkyv v0.8.18
+signal-orchestrate-deps>    Compiling signal v2.0.0 (https://github.com/LiGoldragon/signal?rev=626e407be520a7a12f39b1d06c56ec423f3b3d09#626e407b)
+signal-orchestrate-deps>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-deps>     Finished `release` profile [optimized] target(s) in 2.88s
+signal-orchestrate-deps> Running phase: checkPhase
+signal-orchestrate-deps> +++ command cargo test --release --locked --no-run
+signal-orchestrate-deps>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-deps>     Finished `release` profile [optimized] target(s) in 0.06s
+signal-orchestrate-deps>   Executable unittests src/lib.rs (target/release/deps/signal_orchestrate-554aac437010372f)
+signal-orchestrate-deps> Running phase: installPhase
+signal-orchestrate-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst
+signal-orchestrate-deps> /*stdin*\            : 27.74%   (   137 MiB =>   38.0 MiB, /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst)
+signal-orchestrate-deps> Running phase: fixupPhase
+signal-orchestrate-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0
+signal-orchestrate-deps> checking for references to /build/ in /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0...
+signal-orchestrate-deps> patching script interpreter paths in /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0
+copying 1 paths...
+copying path '/nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ni19bzmkrzzl9z3cb5hyywx8rawyl6hm-signal-orchestrate-build-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rpa8m88m4dbylmcxqba1hhy02l7wp08y-signal-orchestrate-clippy-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/4xjpasnp9ybxfp2dmp6sbf9iqjajl1qm-signal-orchestrate-doc-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ni19bzmkrzzl9z3cb5hyywx8rawyl6hm-signal-orchestrate-build-2.0.0.drv'...
+signal-orchestrate-build> Running phase: unpackPhase
+signal-orchestrate-build> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-build> source root is source
+signal-orchestrate-build> Running phase: patchPhase
+signal-orchestrate-build> Executing configureCargoCommonVars
+signal-orchestrate-build> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-build> Running phase: configurePhase
+signal-orchestrate-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-build> default configurePhase, nothing to do
+signal-orchestrate-build> Running phase: buildPhase
+signal-orchestrate-build> +++ command cargo --version
+signal-orchestrate-build> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-build> +++ command cargo build --release --locked
+signal-orchestrate-build>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-build>     Finished `release` profile [optimized] target(s) in 0.49s
+signal-orchestrate-build> Running phase: installPhase
+signal-orchestrate-build> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0/target.tar.zst
+signal-orchestrate-build> /*stdin*\            : 24.59%   (  4.68 MiB =>   1.15 MiB, /nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0/target.tar.zst)
+signal-orchestrate-build> Running phase: fixupPhase
+signal-orchestrate-build> shrinking RPATHs of ELF executables and libraries in /nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0
+signal-orchestrate-build> checking for references to /build/ in /nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0...
+building '/nix/store/rpa8m88m4dbylmcxqba1hhy02l7wp08y-signal-orchestrate-clippy-2.0.0.drv'...
+signal-orchestrate-clippy> Running phase: unpackPhase
+signal-orchestrate-clippy> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-clippy> source root is source
+signal-orchestrate-clippy> Running phase: patchPhase
+signal-orchestrate-clippy> Executing configureCargoCommonVars
+signal-orchestrate-clippy> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-clippy> Running phase: configurePhase
+signal-orchestrate-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-clippy> default configurePhase, nothing to do
+signal-orchestrate-clippy> Running phase: buildPhase
+signal-orchestrate-clippy> +++ command cargo --version
+signal-orchestrate-clippy> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-clippy> +++ command cargo clippy --release --locked --all-targets -- -D warnings
+signal-orchestrate-clippy>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-clippy>     Finished `release` profile [optimized] target(s) in 0.48s
+signal-orchestrate-clippy> Running phase: installPhase
+signal-orchestrate-clippy> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0/target.tar.zst
+signal-orchestrate-clippy> /*stdin*\            : 26.55%   (  4.09 MiB =>   1.09 MiB, /nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0/target.tar.zst)
+signal-orchestrate-clippy> Running phase: fixupPhase
+signal-orchestrate-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0
+signal-orchestrate-clippy> checking for references to /build/ in /nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0...
+signal-orchestrate-build> patching script interpreter paths in /nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0
+copying 1 paths...
+copying path '/nix/store/4qc478mf59dqsygvw9hgp0r5i6pkyqdn-signal-orchestrate-build-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-orchestrate-clippy> patching script interpreter paths in /nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0
+copying 1 paths...
+copying path '/nix/store/wlrcfdwl85shgy69yphg1ni8ha0g7skc-signal-orchestrate-clippy-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/4xjpasnp9ybxfp2dmp6sbf9iqjajl1qm-signal-orchestrate-doc-2.0.0.drv'...
+signal-orchestrate-doc> Running phase: unpackPhase
+signal-orchestrate-doc> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-doc> source root is source
+signal-orchestrate-doc> Running phase: patchPhase
+signal-orchestrate-doc> Executing configureCargoCommonVars
+signal-orchestrate-doc> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-doc> Running phase: configurePhase
+signal-orchestrate-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-doc> default configurePhase, nothing to do
+signal-orchestrate-doc> Running phase: buildPhase
+signal-orchestrate-doc> +++ command cargo --version
+signal-orchestrate-doc> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-doc> +++ command cargo doc --release --locked --no-deps
+signal-orchestrate-doc>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-doc>  Documenting signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-doc>     Finished `release` profile [optimized] target(s) in 0.57s
+signal-orchestrate-doc>    Generated /build/source/target/doc/signal_orchestrate/index.html
+signal-orchestrate-doc> Running phase: installPhase
+signal-orchestrate-doc> Running phase: fixupPhase
+signal-orchestrate-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/5cq4lm17ra9wx7vb7wcvcjhacgxrfcnm-signal-orchestrate-doc-2.0.0
+signal-orchestrate-doc> checking for references to /build/ in /nix/store/5cq4lm17ra9wx7vb7wcvcjhacgxrfcnm-signal-orchestrate-doc-2.0.0...
+signal-orchestrate-doc> patching script interpreter paths in /nix/store/5cq4lm17ra9wx7vb7wcvcjhacgxrfcnm-signal-orchestrate-doc-2.0.0
+copying 1 paths...
+copying path '/nix/store/5cq4lm17ra9wx7vb7wcvcjhacgxrfcnm-signal-orchestrate-doc-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3w8xy9q4v03vk8wh9mpxv7n7v8pl3g0x-signal-orchestrate-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/8k59l23g6wvl83qh1s0scmjgy24hdwvf-signal-orchestrate-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3w8xy9q4v03vk8wh9mpxv7n7v8pl3g0x-signal-orchestrate-test-2.0.0.drv'...
+signal-orchestrate-test> Running phase: unpackPhase
+signal-orchestrate-test> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-test> source root is source
+signal-orchestrate-test> Running phase: patchPhase
+signal-orchestrate-test> Executing configureCargoCommonVars
+signal-orchestrate-test> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-test> Running phase: configurePhase
+signal-orchestrate-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-test> default configurePhase, nothing to do
+signal-orchestrate-test> Running phase: buildPhase
+signal-orchestrate-test> +++ command cargo --version
+signal-orchestrate-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-test> Running phase: checkPhase
+signal-orchestrate-test> +++ command cargo test --release --locked --features datom --test generated_contract
+signal-orchestrate-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-orchestrate-test>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-orchestrate-test>     Finished `release` profile [optimized] target(s) in 1.27s
+signal-orchestrate-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-ae22c9603a89c139)
+signal-orchestrate-test> 
+signal-orchestrate-test> running 4 tests
+signal-orchestrate-test> test configuration_and_subscription_responses_use_portable_contract_values ... ok
+signal-orchestrate-test> test observe_public_datom_shape_is_bare_selection_and_carried_observation ... ok
+signal-orchestrate-test> test query_and_response_round_trip_as_portable_frames ... ok
+signal-orchestrate-test> test query_round_trips_as_datom_text ... ok
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test> Running phase: installPhase
+signal-orchestrate-test> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0/target.tar.zst
+signal-orchestrate-test> /*stdin*\            : 26.18%   (  7.13 MiB =>   1.87 MiB, /nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0/target.tar.zst)
+signal-orchestrate-test> Running phase: fixupPhase
+signal-orchestrate-test> shrinking RPATHs of ELF executables and libraries in /nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0
+signal-orchestrate-test> checking for references to /build/ in /nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0...
+signal-orchestrate-test> patching script interpreter paths in /nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0
+copying 1 paths...
+copying path '/nix/store/ricgmi2g6f5bygxkbhlsl8hj2ijr4i3n-signal-orchestrate-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/8k59l23g6wvl83qh1s0scmjgy24hdwvf-signal-orchestrate-test-2.0.0.drv'...
+signal-orchestrate-test> Running phase: unpackPhase
+signal-orchestrate-test> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-test> source root is source
+signal-orchestrate-test> Running phase: patchPhase
+signal-orchestrate-test> Executing configureCargoCommonVars
+signal-orchestrate-test> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-test> Running phase: configurePhase
+signal-orchestrate-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-test> default configurePhase, nothing to do
+signal-orchestrate-test> Running phase: buildPhase
+signal-orchestrate-test> +++ command cargo --version
+signal-orchestrate-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-test> Running phase: checkPhase
+signal-orchestrate-test> +++ command cargo test --release --locked --doc
+signal-orchestrate-test>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-test>     Finished `release` profile [optimized] target(s) in 0.41s
+signal-orchestrate-test>    Doc-tests signal_orchestrate
+signal-orchestrate-test> 
+signal-orchestrate-test> running 0 tests
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test> Running phase: installPhase
+signal-orchestrate-test> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0/target.tar.zst
+signal-orchestrate-test> /*stdin*\            : 24.57%   (  4.68 MiB =>   1.15 MiB, /nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0/target.tar.zst)
+signal-orchestrate-test> Running phase: fixupPhase
+signal-orchestrate-test> shrinking RPATHs of ELF executables and libraries in /nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0
+signal-orchestrate-test> checking for references to /build/ in /nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0...
+signal-orchestrate-test> patching script interpreter paths in /nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0
+copying 1 paths...
+copying path '/nix/store/34p88s6brdana2b4b58jmzbp024z0kqf-signal-orchestrate-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qdbfps0x8v8wd0b7qkm3lrqgqk8sd7rl-signal-orchestrate-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qdbfps0x8v8wd0b7qkm3lrqgqk8sd7rl-signal-orchestrate-test-2.0.0.drv'...
+signal-orchestrate-test> Running phase: unpackPhase
+signal-orchestrate-test> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-test> source root is source
+signal-orchestrate-test> Running phase: patchPhase
+signal-orchestrate-test> Executing configureCargoCommonVars
+signal-orchestrate-test> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-test> Running phase: configurePhase
+signal-orchestrate-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-test> default configurePhase, nothing to do
+signal-orchestrate-test> Running phase: buildPhase
+signal-orchestrate-test> +++ command cargo --version
+signal-orchestrate-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-test> Running phase: checkPhase
+signal-orchestrate-test> +++ command cargo test --release --locked
+signal-orchestrate-test>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-test>     Finished `release` profile [optimized] target(s) in 0.94s
+signal-orchestrate-test>      Running unittests src/lib.rs (target/release/deps/signal_orchestrate-f6d15c03b0b63f02)
+signal-orchestrate-test> 
+signal-orchestrate-test> running 0 tests
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-582000e9946d40d9)
+signal-orchestrate-test> 
+signal-orchestrate-test> running 2 tests
+signal-orchestrate-test> test configuration_and_subscription_responses_use_portable_contract_values ... ok
+signal-orchestrate-test> test query_and_response_round_trip_as_portable_frames ... ok
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test>    Doc-tests signal_orchestrate
+signal-orchestrate-test> 
+signal-orchestrate-test> running 0 tests
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test> Running phase: installPhase
+signal-orchestrate-test> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0/target.tar.zst
+signal-orchestrate-test> /*stdin*\            : 24.37%   (  6.78 MiB =>   1.65 MiB, /nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0/target.tar.zst)
+signal-orchestrate-test> Running phase: fixupPhase
+signal-orchestrate-test> shrinking RPATHs of ELF executables and libraries in /nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0
+signal-orchestrate-test> checking for references to /build/ in /nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0...
+signal-orchestrate-test> patching script interpreter paths in /nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0
+copying 1 paths...
+copying path '/nix/store/qq12qiz5cfi1nxlj0cp2g92cpga3lyiy-signal-orchestrate-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/sd5f7bq1db1h3bf12lp0kv3h6a0c5fhj-signal-orchestrate-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/sd5f7bq1db1h3bf12lp0kv3h6a0c5fhj-signal-orchestrate-test-2.0.0.drv'...
+signal-orchestrate-test> Running phase: unpackPhase
+signal-orchestrate-test> unpacking source archive /nix/store/1pq0c7ryf0a1wdhsrdci3iq1ywq1jmra-source
+signal-orchestrate-test> source root is source
+signal-orchestrate-test> Running phase: patchPhase
+signal-orchestrate-test> Executing configureCargoCommonVars
+signal-orchestrate-test> decompressing cargo artifacts from /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to target
+signal-orchestrate-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-orchestrate-test> Running phase: configurePhase
+signal-orchestrate-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/nrz16kjlpxzi168v3d5fxjvwlh539v0i-vendor-cargo-deps/config.toml
+signal-orchestrate-test> default configurePhase, nothing to do
+signal-orchestrate-test> Running phase: buildPhase
+signal-orchestrate-test> +++ command cargo --version
+signal-orchestrate-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-orchestrate-test> Running phase: checkPhase
+signal-orchestrate-test> +++ command cargo test --release --locked --test generated_contract
+signal-orchestrate-test>    Compiling signal-orchestrate v2.0.0 (/build/source)
+signal-orchestrate-test>     Finished `release` profile [optimized] target(s) in 1.25s
+signal-orchestrate-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-582000e9946d40d9)
+signal-orchestrate-test> 
+signal-orchestrate-test> running 2 tests
+signal-orchestrate-test> test configuration_and_subscription_responses_use_portable_contract_values ... ok
+signal-orchestrate-test> test query_and_response_round_trip_as_portable_frames ... ok
+signal-orchestrate-test> 
+signal-orchestrate-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-orchestrate-test> 
+signal-orchestrate-test> Running phase: installPhase
+signal-orchestrate-test> linking previous artifacts /nix/store/xvhmzrs4904ri57lh4sbiny6yb3pbl0a-signal-orchestrate-deps-2.0.0/target.tar.zst to /nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0/target.tar.zst
+signal-orchestrate-test> /*stdin*\            : 27.35%   (  5.76 MiB =>   1.58 MiB, /nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0/target.tar.zst)
+signal-orchestrate-test> Running phase: fixupPhase
+signal-orchestrate-test> shrinking RPATHs of ELF executables and libraries in /nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0
+signal-orchestrate-test> checking for references to /build/ in /nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0...
+signal-orchestrate-test> patching script interpreter paths in /nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0
+copying 1 paths...
+copying path '/nix/store/zipbsy2zgmzrfc36xwwb5cz8p88fp8aq-signal-orchestrate-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.
+EXIT=0

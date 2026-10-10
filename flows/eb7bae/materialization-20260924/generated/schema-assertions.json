@@ -1,0 +1,41 @@
+{
+  "prometheus": {
+    "nodeName": "prometheus",
+    "hasTopLevelRouterInterfaces": false,
+    "hasNestedNetworkRouterInterfaces": true,
+    "routerInterfaces": {
+      "wan": "eno1",
+      "wlan": "wlp195s0",
+      "wlanBand": "2g",
+      "wlanChannel": 6,
+      "wlanStandard": "Wifi4",
+      "wpa3SaePasswordReference": "routerWifiSaePasswords",
+      "backupWireless": {
+        "interface": "wlp199s0f0u4",
+        "networkName": "criome-backup",
+        "band": "2g",
+        "channel": 11,
+        "standard": "Wifi4",
+        "passwordReference": "routerBackupWifiPassword"
+      }
+    }
+  },
+  "ouranos": {
+    "nodeName": "ouranos",
+    "capabilityKinds": [
+      "edge",
+      "lowPower",
+      "nextGeneration",
+      "nordvpn",
+      "hardwareVideo",
+      "tailnetClient",
+      "tailnetController",
+      "nixBuilder",
+      "openCodeTesting",
+      "personaDevelopment"
+    ],
+    "usbIpv4GatewayCapabilityCount": 0,
+    "usbIpv4GatewayStringOccurrences": 0,
+    "hasUsbIpv4Gateway": false
+  }
+}

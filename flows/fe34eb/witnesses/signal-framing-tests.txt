@@ -1,0 +1,60 @@
+
+running 2 tests
+test an_asynchronous_body_past_capacity_is_refused ... ok
+test an_asynchronously_written_frame_reads_back_as_the_same_body ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/current_contract.rs (target/debug/deps/current_contract-143e6c3e6dfe8b1b)
+
+running 2 tests
+test shared_socket_taxonomy_archives_without_text_dependencies ... ok
+test shared_socket_taxonomy_round_trips_as_datom ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/dependency_boundary.rs (target/debug/deps/dependency_boundary-05ce274f902b3f67)
+
+running 4 tests
+test obsolete_generation_language_is_absent_from_active_build_inputs ... ok
+test build_tree_has_one_current_ethos_generator ... ok
+test datom_is_the_only_text_projection_opt_in ... ok
+test default_runtime_tree_excludes_bootstrap_and_retired_crates ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/framing.rs (target/debug/deps/framing-9e571f306288b557)
+
+running 7 tests
+test a_body_past_capacity_is_refused_rather_than_written ... ok
+test a_framed_body_carries_the_hand_computed_big_endian_prefix ... ok
+test a_declared_length_past_capacity_is_refused_before_the_body_is_allocated ... ok
+test a_signalized_value_frames_and_restores_across_the_wire ... ok
+test the_default_capacity_admits_exactly_eight_mebibytes ... ok
+test a_written_frame_reads_back_as_the_same_body ... ok
+test a_prefix_declares_the_length_its_bytes_spell ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/interface_contract.rs (target/debug/deps/interface_contract-1267fa9a6ffe5c02)
+
+running 2 tests
+test public_source_constants_match_authored_and_generated_contract ... ok
+test current_signal_is_the_sole_schema_authority ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/round_trip.rs (target/debug/deps/round_trip-1983553071d49f24)
+
+running 2 tests
+test authorized_object_interest_preserves_matching_semantics ... ok
+test shared_socket_archives_with_current_shape ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests signal
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

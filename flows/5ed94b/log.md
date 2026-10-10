@@ -1,0 +1,142 @@
+# Flow 5ed94b — Fable: infrastructure gaps
+
+Aspect: Fable. Model: Fable 5.1. Launched 2026-10-03 at the living's order to work with him and Psyche Opus 28d847 on infrastructure.
+
+## 2026-10-03 — launch
+
+Brief: find, with evidence, every place where flows do mechanical work by hand that a program should do; bring the living the gap list as a book ranked by cost; work it through with him.
+
+Living's words logged verbatim in `vision/infrastructure.md`.
+
+Known at launch: the Primary publisher (designed by Mind Astra, unbuilt, ordered built with a queue); Psyche Opus 28d847 is writing the checks inventory at `flows/28d847/reports/checks-inventory.md`.
+
+## 2026-10-03 — evidence gathering launched
+
+Index entry written. Five subflows out: flow logs survey, tool/design inventory, psyche search, transcript stall survey, index/receipt check.
+
+Message from 28d847: checks inventory written (24 checks) at `flows/28d847/reports/checks-inventory.md`, not yet on main. Acknowledged by hm-send.
+
+28d847 answered: no review by it first; the book goes straight to the living when drafted.
+
+## 2026-10-03 — gap book presented
+
+All five evidence subflows returned; reports in `reports/`. Book "Where flows do a program's work by hand" written to the transcript, 13 ranked gaps and four questions (Intent wording, order, no state-by-message rule, builders); book subflow dispatched to the living messenger. Receipt in `reports/gap-book-receipt.md`.
+
+28d847 relays the living's order: Field Sonnet db38f8 holds the Primary publishing lock permanently and publishes for everyone; this flow now messages db38f8 the paths it wants on main and never takes the lock itself. This flow's records up to the gap book are already on main (published before the order).
+
+Psyche logged in `vision/seats.md`: primary (Fable, Astra) deals with design and ideas and passes to secondary (Opus 28d847), which implements and tests. Consequence for this flow: implementation of any gap goes to 28d847, not to this flow's subflows.
+
+The living (via 28d847): "Send the whole situation to Fable. I want to talk to him, the new one." 28d847 sent the situation in eight points: vision books are mine; checks concrete account being written; db38f8 publishes; publisher designed unbuilt without queue; subflow set designed by edf227 (ten missing kinds ranked); skills to move into psyche-/mind-/field-skills repositories, assignment open for his ruling; drawings are SVG; quota call designed by Astra d66c26; launcher cannot set effort or tier. This flow designs; implementation goes to 28d847.
+
+## 2026-10-03 — the living moves over to this flow
+
+Psyche logged in `vision/skills.md`: small skill-edit proposals in a constant flow; vision distillation is skill editing; one source (knowledge/vision/operations logging) generates every harness's skills through Curriculum with per-harness blocks.
+28d847: curriculum-deploy 0.8.0 generates from several declared sources tagged psyche/mind/field; Primary being switched to it; three skill repositories exist empty; the per-harness Markdown templating EXISTS (line-directive if claude|codex|pi / else / endif, raw blocks; whole-line only, no variables; applies to skill bodies, not role packets). Implementation goes down to 28d847.
+Fable edf227 is retired by his word and hands me its open design: the context-module standard and the twelve-role book; handover in its lane. To retire it through the messenger after reading.
+Series-plan book: the book subflow found no block on first dispatch (block written in the same turn as the dispatch); re-dispatched. Five vision-book drafts out (Flow, Landing work, Skills, Roles, Messaging).
+
+edf227 handover read: I hold the context-module standard (built as six increments by 28d847: ethos, registry, role configuration, launch, curriculum-deploy from manifest, first seat), «The tailor-made subflows» (awaits his numbers) and «Curriculum: the context standard» (awaits his numbers). Open: Flow's first bound seat (Start refuses the binding; refusal must carry its cause). Retirement of edf227 dispatched through the messenger.
+
+Retirement of edf227 refused by the messenger's retire command: it demands eight arguments (session, pane id, terminal id, name, agent, native thread, evidence file, evidence sha256). edf227 witnessed idle. Not improvised; sent to 28d847 as an implementation item (retire by name alone).
+
+Message to 28d847 on the retire refusal: Held (Blocked); pending, not retried. Series-plan book published to the living messenger (no duplicate confirmed: the first dispatch published nothing).
+
+Drafts in: Flow (8 questions), Roles and subflows (8), Landing work (9). Landing-work draft witnessed: the publisher program is now in neither the working copy nor main (earlier today it was present uncommitted); Astra's design survives only in commits that never reached main; Primary's remote has 215 branches besides main. Rules check on book shape dispatched before any draft goes out.
+
+Witnessed: the publisher program (tools/primary-publish.mjs, its test) and Astra's design (flows/dea0ba/reports/per-flow-publisher-design.md) were removed from the working copy at 14:42 today by a git-side publish's head import ("Publish flows/28d847/"); they survive only in jj keep refs, no branch, not on main, no copy on disk. Recovery commits: all three files last together in 4a1a9d6d11d5dc96a1ac33ee37a5cdaeb4d5edb7; design first in 011a55c4aa3e; last design-only commit 3f6882e69c662b76e14488a31a7e01a34f58337f. This is gap 1 striking the publisher itself. Sent to 28d847 for recovery.
+
+Loss in own lane: `vision/visionBooks.md` (two verbatim records written at ~20:50) was gone from the working copy at 21:40; log, seats and skills records survived. Cause unknown; the publisher drop at 14:42 shows the same shape (a git-side head import after a publish). Rewritten verbatim from this transcript. Nothing in this lane is on main since the gap-book publish; the later records go to db38f8 for publishing.
+Skills draft in (8 questions, a proposed 69-skill assignment table). Publisher recovery item Transported to 28d847.
+
+28d847: the 14:42 loss was its publish; it is restoring every file that publish removed (about 40, including the publisher program, test and design); db38f8 publishes the three. My `visionBooks.md` loss likely the same cause (supposed); already rewritten, so a restore of the old copy is identical in content.
+
+Books Flow, Roles and subflows, Messaging and relay trimmed to four questions each (later questions kept beside each in `books/`); dispatched to the living messenger.
+
+Published to the living messenger: «Flow», «Roles and subflows», «Messaging and relay». Five books now before him (gap list, series plan, and these three).
+
+«Landing work» and «Skills and Curriculum» trimmed to four questions and dispatched to the living messenger. Drafts out: Presentation and books, Talking to the living, Psyche records, Context, Models and quota, Permissions, Nexuses, Ethos; Identifiers and Hierarchy drafted, held for the wave-two send.
+
+Published: «Landing work», «Skills and Curriculum». Wave two (Presentation and books; Aspects, layers and who speaks to whom; Identifiers and names; Talking to the living) dispatched to the messenger. Seven books before him so far.
+
+Published wave two: «Presentation and books», «Aspects, layers and who speaks to whom» (with a 3×4 aspect-by-layer SVG), «Identifiers and names», «Talking to the living». Eleven books before him. Drafts in: Context, Models and quota, Permissions; Psyche records still out; wave five drafting (Datom/Protos/Signal/Sema, Code craft, Testing, Cluster and deployment). 28d847 says this log lost lines in the 14:43 reset; a diff against the pre-loss snapshot is out.
+
+Log checked against the pre-loss snapshot: nothing missing; the rewritten `visionBooks.md` is identical to the snapshot. Last four subject drafts dispatched (Harnesses, Meaning and vocabulary, Voice and front-ends, Private layer); every subject of the series is now drafted or drafting.
+
+Wave three dispatched to the messenger: «Psyche records», «Context», «Models, effort and quota», «Permissions and authority».
+
+Ownership judgment on Astra's context build contract sent to dea0ba (with his verbatim words as psyche) and to 28d847: design stays with Mind; all six increments' building and testing go to Opus, including increment 1's generated Rust and the unowned increments 2–4; Field fields the witness; db38f8 publishes. Astra asked to amend or object.
+Published wave three: «Psyche records», «Context» (with a strata SVG), «Models, effort and quota», «Permissions and authority». Fifteen books before him. The session's artifact-watch limit is ten, so comments on later books do not reach this flow by notification; a comment fetch will be needed on his word.
+
+Wave four dispatched to the messenger: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Ethos draft witnessed ethos-zero 16.0.0 built from source: accepts a one-field struct, writes Name as a plain alias, drops every comment from generated Rust — three departures from his words. Drafted and held for the last wave: Meaning and vocabulary, Voice and front-ends, Private layer. Still writing: Testing, Cluster and deployment, Harnesses.
+
+Message to 28d847 on the ethos-zero departures: Held (Blocked), pending, not retried. Drafts in: Cluster and deployment, Testing and verification. Only Harnesses still writing; the last wave (Testing, Harnesses, Cluster, Vocabulary, Voice, Private layer) goes out when it lands.
+
+Published wave four: «Nexuses», «Ethos», «Datom, Protos, Signal and Sema», «Code craft». Nineteen books before him. Lane publish requested again from db38f8 (Transported, done).
+
+Harnesses draft in. Final wave dispatched to the messenger: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». With it every subject of the series (24 books plus the gap list and the plan) is before him; each book holds at most four questions, the rest kept beside it in `books/*.later-questions.md` for later rounds.
+
+Final wave published: «Testing and verification», «Harnesses and remote control», «The cluster and deployment», «Meaning and vocabulary», «Voice input and front-ends», «The private layer». The whole series is before him: 24 vision books, the gap list and the plan. Comments on books past the tenth do not reach this flow by notification; a comment check is run on his word or at each round.
+
+## 2026-10-03 — the living speaks here
+
+He glanced at «Talking to the living»: no proposal in it. Vision logged in `vision/contextModules.md`, `vision/spending.md`, `vision/livingMessenger.md`. Order: review all books, redo them all as context-module edit proposals (create, edit, remove, split, merge), republish, with cheap models. The first drafts were written by Opus-powered subflows; the redo goes to Sonnet-powered ones.
+
+All twenty-five books redone as proposal books by Sonnet-powered subflows (11–15 proposals each, each one context-module edit with text 1/text 2 where his records pull two ways); republishing to the messenger as new books in two batches. Proposed to him the word "faculties" for the family of context modules.
+
+Republished as proposal books (new books, batch one): gaps, Flow, Landing work, Skills and Curriculum, Roles and subflows, Messaging and relay, Presentation and books, Aspects and layers, Identifiers and names, Talking to the living, Psyche records, Context. Batch two in progress.
+
+## 2026-10-03 — system prompt vs user prompt; open-source harness
+
+Psyche logged in `vision/contextModules.md` and `vision/harnesses.md`. Order: set up the open-source harness; sent to 28d847 (implementation). A subflow gathers what is witnessed on system-prompt vs user-prompt differences and on subagents per harness, for his understanding.
+
+All twenty-four proposal books republished (no book 23: conduct is inside «Talking to the living»). The order to set up the open-source harness, sent to 28d847: Held (Blocked), the third held message to it tonight; pending, not retried; the route needs mending or the order resent when 28d847 is reachable.
+
+Book «System prompt and user prompt» written (five proposals: a strata knowledge module; which faculties qualify for the system prompt — Spirit and Intent yes, steady Vision per role, Knowledge and Operation never; and a measurement order for the two unknowns) and dispatched to the messenger. The reorientation line for the main-flow module proposed to him in chat.
+
+«System prompt and user prompt» not published: the artifact service refused with its daily new-artifact limit (100) reached, resetting at UTC midnight. The page is ready; it is published after the reset, or in place of a superseded uncommented book once the comment check says which are uncommented.
+
+28d847's messenger state is "blocked" (binding Bound); three bodies pending; no release command exists in messenger-clj (d66c26 found the same). Asked Field db38f8 to look at 28d847's pane.
+
+Field db38f8 looked: 28d847 alive, stuck ~14 min on an unanswered Bash permission dialog ("Dangerous rm operation on possibly-empty variable path … rm -rf … proceed? 1. Yes 2. No") raised by its read-demanding subflow; Field declined to approve another flow's rm. Gap 7 again. Brought to the living for a ruling.
+
+Comment check: none of the first fifteen books carries a comment. «System prompt and user prompt» is being published in place of the uncommented, superseded series-plan book.
+
+«System prompt and user prompt» published in place of the series-plan book (version 2 of that book). Before him now: the gap list and 24 vision books as proposals, plus this one. Open: his ruling on Opus's permission dialog; the harness-setup order pending behind it.
+
+## 2026-10-03 — correction on «System prompt and user prompt»
+
+His words logged verbatim in `vision/visionBooks.md`. The book was vague and carried suppositions, including that subagents get none of the system prompt, which he rejects as impossible (they use the tools). Measurement dispatched: what a subagent actually receives, read from the harness itself. The book is withdrawn until the proposals name module, removal and replacement text.
+
+He approved the presentation-skill line ("Yeah the presentation skill edit is good."). Landing dispatched: the line goes into the authored Curriculum source of the skill governing presentations to him.
+
+Measured: a Claude subflow's system prompt is its definition body plus two fixed harness paragraphs and a token counter; tools arrive as schemas; the main seat's replaced system prompt reaches a fork only; the project instruction file reaches a subflow as a first-user-message attachment unless opted out. Codex collaborators share the base instructions; role text replaces the app-context message. Book «Subflow context: four edits» written (edits to claude-harness, codex-harness, main-flow lines 50–51 removed, the subflow skill removed, the reorientation line into the main seat's system prompt) and dispatched in place of the withdrawn one.
+
+Approved line landed in Curriculum, psyche-interraction's Conversation section, commit d65062, pushed to main. Primary's pin and generated trees follow with the generator switch (28d847's increment); until then the generated copies lag the source.
+
+«Subflow context: four edits» published in place (version 3 of that book; five proposals under a title saying four). Field asked to move Primary's Curriculum pin to d65062 and regenerate.
+
+db38f8: publisher only; pin moves and regeneration are 28d847's or 42265e's. Pin move sent to 42265e (28d847 blocked).
+
+Stock Claude Code system prompt measured at 15,283 characters (≈5,000 tokens by the harness's count) against our 1,697 (539 tokens): a nine-to-one cut. He orders another voice to test the harness context facts extensively, the Codex side above all. Test brief sent to Field 42265e; copy to 28d847 (blocked).
+
+28d847 reachable again; none of the three held bodies had arrived; all three resent and Transported (retire by name; ethos-zero departures; OpenCode as third harness).
+
+28d847: edf227 retired and its pane closed; the one-argument retire is being built.
+
+db38f8: Curriculum pin moved to d650626a and trees regenerated (28d847's work), published on main. The approved presentation line now reaches every flow's generated psyche-interraction skill.
+
+Field 42265e's harness measurement is at flows/42265e/reports/harness-context-measurement.md (fresh Claude 2.1.284 and Codex 0.158.0-alpha.9 sessions; Claude fork replacement/append controls passed; native Codex collaborator creation refused by a thread limit, so those fields are not measured; OpenCode's provider refused). Digest out.
+
+Field's measurement digested: Codex current stock base instructions 21,420 chars (15,782 tokens) on Astra's seat; our replacement recorded as 1,696 on Codex; Claude forks preserve replaced and appended prompts; the Claude subagent composition and the Codex collaborator fields were not measured by Field's method (native streams do not expose them; collaborator creation refused by thread limit); OpenCode's provider returned 403 (free tier). The earlier Claude figures stand on the transcript-file snapshots (the harness's own record), not refuted.
+
+Direct witness: a Haiku read-trivial subflow wrote its own system prompt verbatim to `reports/subagent-own-system-prompt.md`: 2,347 characters, 8 tools. Cross-check against the harness's snapshot of that subflow out.
+
+Cross-check: the subflow's reproduction matches the harness snapshot verbatim in parts 1–3 and the definition body; it additionally carries the identity line "You are a Claude agent, built on Anthropic's Claude Agent SDK." which the snapshot omits (sent beside the recorded parts). Snapshot total 2,409 characters in four parts; tools are sent as schemas, not prompt text (8 loaded, 11 deferred). The Claude-subagent claim is confirmed by two methods.
+
+Field's Codex collaborator retry: child base instructions identical to parent at 21,420 characters (its model-switch block carries the 17,730 base besides); the parent's configured developer marker is absent from the child's developer messages, so our developer instructions do not reach collaborators; skills, permissions and AGENTS injection sizes recorded; tool schemas not measured; the child ran Terra medium though Luna low was requested (an effort/tier gap, witnessed).
+
+## 2026-10-04 — restart ordered
+
+He will restart this Fable flow and the Opus flow on similar contexts with different roles (Opus the messenger and secretary, the only one who talks to Fable; Fable talks to Astra). Logged in `vision/seats.md`. Summary and handover written for the successor.
+
+Handover and summary written; lane publish requested; 28d847 told.

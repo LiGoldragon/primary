@@ -1,0 +1,415 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+copying path '/nix/store/vni4h67jxazzfhlkjiyslg7ycy1j5gjy-source' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/22ya8sxazjn6lr22xsnx92fhgsi9vcm3-source' from 'http://nix.prometheus.goldragon.criome'...
+derivation evaluated to /nix/store/qmdl6xy39agzwrqmb15n2rpwr0a548hn-signal-persona-1.0.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/q043mj4hgxwjicvnqv5bbmgz7yl9n412-signal-persona-build-1.0.0.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/46l612ycldpjfi019hzpzirdy97xqfp0-signal-persona-test-1.0.0.drv
+checking derivation checks.x86_64-linux.test-generated-contract...
+derivation evaluated to /nix/store/yf2jry0fi6qnk9q1bjgd9brn6pd96jlf-signal-persona-test-1.0.0.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/07cxx901hwb5a6k15nqqic7rl5hyvp2l-signal-persona-test-1.0.0.drv
+checking derivation checks.x86_64-linux.test-doc...
+derivation evaluated to /nix/store/0caiwimq3gr41ygjcda9fsd0jac73fx8-signal-persona-test-1.0.0.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/z68hldclj1sbyggrhn3x8iwkgh7giw5g-signal-persona-doc-1.0.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/948wk72npm7pwjdll2cvdp50dgjvdjq2-signal-persona-fmt-1.0.0.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/p3dw641jrq3mmwanm6zkxy1m0dckhhsp-signal-persona-clippy-1.0.0.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/8d7ps8l6zvj23f7zm7z7rvq9m1fiyrjv-signal-persona.drv
+checking flake output 'formatter'...
+checking derivation formatter.x86_64-linux...
+derivation evaluated to /nix/store/p12lrjkryx0ngp9mz8pr7jg1c5a7w961-nixfmt-1.2.0.drv
+running 18 flake checks...
+building '/nix/store/dsj0rr7psq22cj85mlqn48186amj3b40-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qqvzp0n1mi2zwnnxjcdsci7cmlhsdyg5-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/j99f7ayfy4mbxyx85bra44vi0rw5qwin-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ynwfzab4c8g8966rmx84y50f9d5qdazw-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/948wk72npm7pwjdll2cvdp50dgjvdjq2-signal-persona-fmt-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/dsj0rr7psq22cj85mlqn48186amj3b40-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/x9nqim697023c22gk02pdlfmk8b3y167-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qqvzp0n1mi2zwnnxjcdsci7cmlhsdyg5-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f.drv'...
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> unpacking source archive /nix/store/xpnjbcz4fqz0y8j2wpf4iv1w8vv5699d-source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> source root is source
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   |
+cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/i1zwq7cmp1487lnz4adlp6zc87qp102v-cargo-git-https-github.com-LiGoldragon-datom-codec-f2cc06858d38a4028c928d33323a6d682e7c222f' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/j99f7ayfy4mbxyx85bra44vi0rw5qwin-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184.drv'...
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> unpacking source archive /nix/store/0asdppi9vbws52p1wg70sfayknkd1spl-source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> source root is source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/1hqzm0bsn0x1vzvr3n5vyv8p6p1rgrk7-cargo-git-https-github.com-LiGoldragon-ethos-zero-4695ee0c1f5d00dcf5cceba08f5fa00412b92184' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ynwfzab4c8g8966rmx84y50f9d5qdazw-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad.drv'...
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> unpacking source archive /nix/store/ccaqn6ddp3j95zmrz2kliqv7xbw78fqc-source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> source root is source
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad> Running phase: installPhase
+building '/nix/store/dd2g6nxfprldai25a4ikqr60iiba0g06-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/dbyc9nz2myjw5w5rh50pvx6bmip1s272-cargo-git-https-github.com-LiGoldragon-protos-b543678cfc8609529cea7174eb4af8a64daa54ad' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/7a7y46r98052466045sa7rjsc1c6391d-linkLockedDeps.drv'...
+building '/nix/store/948wk72npm7pwjdll2cvdp50dgjvdjq2-signal-persona-fmt-1.0.0.drv'...
+signal-persona-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+signal-persona-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-persona-fmt> Running phase: unpackPhase
+building '/nix/store/2sv3d2hbaq0k8jyjqb8v63y0cg6j4sfp-linkLockedDeps.drv'...
+signal-persona-fmt> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-fmt> source root is source
+signal-persona-fmt> Running phase: patchPhase
+signal-persona-fmt> Executing configureCargoCommonVars
+signal-persona-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-fmt> Running phase: configurePhase
+signal-persona-fmt> default configurePhase, nothing to do
+signal-persona-fmt> Running phase: buildPhase
+signal-persona-fmt> +++ command cargo --version
+signal-persona-fmt> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-fmt> +++ command cargo fmt -- --check
+building '/nix/store/xnbm178kjswfn7kvw4vydlis9csdj4zk-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/j2vh60a49kbq9apqfk4ry2xzdw4cml10-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/am4pbqpc77mnp6llmwz91i81ghb2inx0-vendor-cargo-deps.drv'...
+signal-persona-fmt> Running phase: ensureTargetDir
+signal-persona-fmt> Running phase: installPhase
+signal-persona-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0/target.tar.zst
+signal-persona-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0/target.tar.zst)
+signal-persona-fmt> Running phase: fixupPhase
+signal-persona-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0
+signal-persona-fmt> checking for references to /build/ in /nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0...
+building '/nix/store/dd2g6nxfprldai25a4ikqr60iiba0g06-source.drv'...
+signal-persona-fmt> patching script interpreter paths in /nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0
+copying 1 paths...
+copying path '/nix/store/shk5b456ffnnk5dyrkg48b6bs02sajbs-signal-persona-fmt-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/adqq8jb5yai8a9r2y4j6yxgi4zp29jks-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bmn29h9c8jisf9iz5iirlqnbacf23cr8-signal-persona-deps-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 4 paths...
+copying path '/nix/store/9plb8c8p189l3ms3fj9mqhxmgvpsrrws-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/9z4qk2pmvbwj9r1a9s4va56dli4jcfj8-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/r14zgsdfb4bn96dhhds75jp8biv5nk6a-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/bmn29h9c8jisf9iz5iirlqnbacf23cr8-signal-persona-deps-1.0.0.drv'...
+signal-persona-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-persona-deps> Running phase: unpackPhase
+signal-persona-deps> unpacking source archive /nix/store/adqq8jb5yai8a9r2y4j6yxgi4zp29jks-source
+signal-persona-deps> source root is source
+signal-persona-deps> Running phase: patchPhase
+signal-persona-deps> Executing configureCargoCommonVars
+signal-persona-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-deps> Running phase: configurePhase
+signal-persona-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-deps> default configurePhase, nothing to do
+signal-persona-deps> Running phase: buildPhase
+signal-persona-deps> +++ command cargo --version
+signal-persona-deps> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-deps> +++ command cargo check --release --locked --all-targets
+signal-persona-deps>    Compiling proc-macro2 v1.0.106
+signal-persona-deps>    Compiling unicode-ident v1.0.24
+signal-persona-deps>    Compiling quote v1.0.46
+signal-persona-deps>    Compiling simdutf8 v0.1.5
+signal-persona-deps>    Compiling prettyplease v0.3.0
+signal-persona-deps>    Compiling hashbrown v0.17.1
+signal-persona-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-persona-deps>    Compiling syn v2.0.118
+signal-persona-deps>    Compiling syn v3.0.5
+signal-persona-deps>    Compiling ptr_meta_derive v0.3.1
+signal-persona-deps>    Compiling bytecheck_derive v0.8.2
+signal-persona-deps>    Compiling munge_macro v0.4.7
+signal-persona-deps>    Compiling rkyv_derive v0.8.17
+signal-persona-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-persona-deps>    Compiling ptr_meta v0.3.1
+signal-persona-deps>    Compiling rancor v0.1.2
+signal-persona-deps>    Compiling munge v0.4.7
+signal-persona-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-persona-deps>    Compiling bytecheck v0.8.2
+signal-persona-deps>    Compiling rend v0.5.4
+signal-persona-deps>     Checking rkyv v0.8.17
+signal-persona-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+signal-persona-deps>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-deps>     Finished `release` profile [optimized] target(s) in 4.82s
+signal-persona-deps> +++ command cargo build --release --locked
+signal-persona-deps>    Compiling ptr_meta v0.3.1
+signal-persona-deps>    Compiling simdutf8 v0.1.5
+signal-persona-deps>    Compiling munge v0.4.7
+signal-persona-deps>    Compiling hashbrown v0.17.1
+signal-persona-deps>    Compiling rancor v0.1.2
+signal-persona-deps>    Compiling bytecheck v0.8.2
+signal-persona-deps>    Compiling rend v0.5.4
+signal-persona-deps>    Compiling rkyv v0.8.17
+signal-persona-deps>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-deps>     Finished `release` profile [optimized] target(s) in 2.75s
+signal-persona-deps> Running phase: checkPhase
+signal-persona-deps> +++ command cargo test --release --locked --no-run
+signal-persona-deps>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-deps>     Finished `release` profile [optimized] target(s) in 0.06s
+signal-persona-deps>   Executable unittests src/lib.rs (target/release/deps/signal_persona-5677ca8244f1ed5f)
+signal-persona-deps> Running phase: installPhase
+signal-persona-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst
+signal-persona-deps> /*stdin*\            : 28.83%   (   123 MiB =>   35.6 MiB, /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst)
+signal-persona-deps> Running phase: fixupPhase
+signal-persona-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0
+signal-persona-deps> checking for references to /build/ in /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0...
+signal-persona-deps> patching script interpreter paths in /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0
+copying 1 paths...
+copying path '/nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/q043mj4hgxwjicvnqv5bbmgz7yl9n412-signal-persona-build-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/p3dw641jrq3mmwanm6zkxy1m0dckhhsp-signal-persona-clippy-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/z68hldclj1sbyggrhn3x8iwkgh7giw5g-signal-persona-doc-1.0.0.drv'...
+building '/nix/store/q043mj4hgxwjicvnqv5bbmgz7yl9n412-signal-persona-build-1.0.0.drv'...
+signal-persona-build> Running phase: unpackPhase
+signal-persona-build> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-build> source root is source
+signal-persona-build> Running phase: patchPhase
+signal-persona-build> Executing configureCargoCommonVars
+signal-persona-build> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-doc> Running phase: unpackPhase
+signal-persona-doc> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-doc> source root is source
+signal-persona-doc> Running phase: patchPhase
+signal-persona-doc> Executing configureCargoCommonVars
+signal-persona-doc> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-build> Running phase: configurePhase
+signal-persona-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-build> default configurePhase, nothing to do
+signal-persona-build> Running phase: buildPhase
+signal-persona-build> +++ command cargo --version
+signal-persona-build> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-build> +++ command cargo build --release --locked
+signal-persona-build>    Compiling signal-persona v1.0.0 (/build/source)
+building '/nix/store/p3dw641jrq3mmwanm6zkxy1m0dckhhsp-signal-persona-clippy-1.0.0.drv'...
+signal-persona-clippy> Running phase: unpackPhase
+signal-persona-clippy> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-clippy> source root is source
+signal-persona-clippy> Running phase: patchPhase
+signal-persona-clippy> Executing configureCargoCommonVars
+signal-persona-clippy> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-doc> Running phase: configurePhase
+signal-persona-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-doc> default configurePhase, nothing to do
+signal-persona-doc> Running phase: buildPhase
+signal-persona-doc> +++ command cargo --version
+signal-persona-doc> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-doc> +++ command cargo doc --release --locked --no-deps
+signal-persona-doc>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-clippy> Running phase: configurePhase
+signal-persona-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-clippy> default configurePhase, nothing to do
+signal-persona-clippy> Running phase: buildPhase
+signal-persona-clippy> +++ command cargo --version
+signal-persona-clippy> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-clippy> +++ command cargo clippy --release --locked --all-targets --all-features -- -D warnings
+signal-persona-clippy>     Checking protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-persona-clippy>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-doc>  Documenting signal-persona v1.0.0 (/build/source)
+signal-persona-clippy>     Checking datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-persona-build>     Finished `release` profile [optimized] target(s) in 0.53s
+signal-persona-build> Running phase: installPhase
+signal-persona-build> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0/target.tar.zst
+signal-persona-build> /*stdin*\            : 24.88%   (  5.62 MiB =>   1.40 MiB, /nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0/target.tar.zst)
+signal-persona-build> Running phase: fixupPhase
+signal-persona-build> shrinking RPATHs of ELF executables and libraries in /nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0
+signal-persona-build> checking for references to /build/ in /nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0...
+signal-persona-build> patching script interpreter paths in /nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0
+copying 1 paths...
+copying path '/nix/store/2h462n43q6b68q6mma0psssgy1w2gm2q-signal-persona-build-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/yf2jry0fi6qnk9q1bjgd9brn6pd96jlf-signal-persona-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-persona-clippy>     Finished `release` profile [optimized] target(s) in 0.70s
+signal-persona-clippy> Running phase: installPhase
+signal-persona-clippy> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0/target.tar.zst
+signal-persona-clippy> /*stdin*\            : 30.35%   (  4.48 MiB =>   1.36 MiB, /nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0/target.tar.zst)
+signal-persona-clippy> Running phase: fixupPhase
+signal-persona-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0
+signal-persona-clippy> checking for references to /build/ in /nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0...
+signal-persona-clippy> patching script interpreter paths in /nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0
+copying 1 paths...
+copying path '/nix/store/pli8d257xhjp4564gb2mky0ac2vd9q48-signal-persona-clippy-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-persona-doc>     Finished `release` profile [optimized] target(s) in 1.13s
+signal-persona-doc>    Generated /build/source/target/doc/signal_persona/index.html
+signal-persona-doc> Running phase: installPhase
+signal-persona-doc> Running phase: fixupPhase
+signal-persona-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/vd7rs40zrkya16kh9gw1fgfcckpqjbcb-signal-persona-doc-1.0.0
+building '/nix/store/07cxx901hwb5a6k15nqqic7rl5hyvp2l-signal-persona-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-persona-doc> checking for references to /build/ in /nix/store/vd7rs40zrkya16kh9gw1fgfcckpqjbcb-signal-persona-doc-1.0.0...
+signal-persona-doc> patching script interpreter paths in /nix/store/vd7rs40zrkya16kh9gw1fgfcckpqjbcb-signal-persona-doc-1.0.0
+building '/nix/store/yf2jry0fi6qnk9q1bjgd9brn6pd96jlf-signal-persona-test-1.0.0.drv'...
+signal-persona-test> Running phase: unpackPhase
+signal-persona-test> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-test> source root is source
+signal-persona-test> Running phase: patchPhase
+signal-persona-test> Executing configureCargoCommonVars
+signal-persona-test> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-test> Running phase: configurePhase
+signal-persona-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-test> default configurePhase, nothing to do
+signal-persona-test> Running phase: buildPhase
+signal-persona-test> +++ command cargo --version
+signal-persona-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-test> Running phase: checkPhase
+signal-persona-test> +++ command cargo test --release --locked --test generated_contract
+signal-persona-test>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-test>     Finished `release` profile [optimized] target(s) in 0.58s
+building '/nix/store/46l612ycldpjfi019hzpzirdy97xqfp0-signal-persona-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/07cxx901hwb5a6k15nqqic7rl5hyvp2l-signal-persona-test-1.0.0.drv'...
+signal-persona-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-c00e9a3a96122202)
+signal-persona-test> 
+signal-persona-test> running 2 tests
+signal-persona-test> test lifecycle_query_and_response_restore_from_fresh_peer_bytes ... ok
+signal-persona-test> test malformed_peer_bytes_are_rejected ... ok
+signal-persona-test> 
+signal-persona-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> 
+signal-persona-test> Running phase: installPhase
+signal-persona-test> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0/target.tar.zst
+signal-persona-test> /*stdin*\            : 27.11%   (  6.66 MiB =>   1.81 MiB, /nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0/target.tar.zst)
+signal-persona-test> Running phase: fixupPhase
+signal-persona-test> shrinking RPATHs of ELF executables and libraries in /nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0
+signal-persona-test> checking for references to /build/ in /nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0...
+signal-persona-test> patching script interpreter paths in /nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0
+copying 1 paths...
+copying path '/nix/store/4j6nwb7r2s6ca73wyi8dv8l7321vzw12-signal-persona-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-persona-test> Running phase: unpackPhase
+signal-persona-test> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-test> source root is source
+signal-persona-test> Running phase: patchPhase
+signal-persona-test> Executing configureCargoCommonVars
+signal-persona-test> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-test> Running phase: configurePhase
+signal-persona-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-test> default configurePhase, nothing to do
+signal-persona-test> Running phase: buildPhase
+signal-persona-test> +++ command cargo --version
+signal-persona-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-test> Running phase: checkPhase
+signal-persona-test> +++ command cargo test --release --locked --features datom --test generated_contract
+signal-persona-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-persona-test>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+building '/nix/store/0caiwimq3gr41ygjcda9fsd0jac73fx8-signal-persona-test-1.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/46l612ycldpjfi019hzpzirdy97xqfp0-signal-persona-test-1.0.0.drv'...
+signal-persona-test> Running phase: unpackPhase
+signal-persona-test> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-test> source root is source
+signal-persona-test> Running phase: patchPhase
+signal-persona-test> Executing configureCargoCommonVars
+signal-persona-test> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-test> Running phase: configurePhase
+signal-persona-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-test> default configurePhase, nothing to do
+signal-persona-test> Running phase: buildPhase
+signal-persona-test> +++ command cargo --version
+signal-persona-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-test> Running phase: checkPhase
+signal-persona-test> +++ command cargo test --release --locked
+signal-persona-test>    Compiling signal-persona v1.0.0 (/build/source)
+building '/nix/store/0caiwimq3gr41ygjcda9fsd0jac73fx8-signal-persona-test-1.0.0.drv'...
+signal-persona-test> Running phase: unpackPhase
+signal-persona-test> unpacking source archive /nix/store/5br6aj84lsbrj24an6fx49z9m35slp11-source
+signal-persona-test> source root is source
+signal-persona-test> Running phase: patchPhase
+signal-persona-test> Executing configureCargoCommonVars
+signal-persona-test> decompressing cargo artifacts from /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to target
+signal-persona-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-persona-test> Running phase: configurePhase
+signal-persona-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/6qk932qrvqwhgn1f84vkvkv9wzn7hrgj-vendor-cargo-deps/config.toml
+signal-persona-test> default configurePhase, nothing to do
+signal-persona-test> Running phase: buildPhase
+signal-persona-test> +++ command cargo --version
+signal-persona-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-persona-test> Running phase: checkPhase
+signal-persona-test> +++ command cargo test --release --locked --doc
+signal-persona-test>    Compiling signal-persona v1.0.0 (/build/source)
+signal-persona-test>     Finished `release` profile [optimized] target(s) in 1.18s
+signal-persona-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-355a0c95b0766d04)
+signal-persona-test> 
+signal-persona-test> running 3 tests
+signal-persona-test> test malformed_peer_bytes_are_rejected ... ok
+signal-persona-test> test datom_round_trip_preserves_lifecycle_shapes ... ok
+signal-persona-test> test lifecycle_query_and_response_restore_from_fresh_peer_bytes ... ok
+signal-persona-test> 
+signal-persona-test> test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> 
+signal-persona-test>     Finished `release` profile [optimized] target(s) in 0.55s
+signal-persona-test>      Running unittests src/lib.rs (target/release/deps/signal_persona-3a7bc3baf8af3743)
+signal-persona-test> 
+signal-persona-test> running 0 tests
+signal-persona-test> 
+signal-persona-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> Running phase: installPhase
+signal-persona-test> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0/target.tar.zst
+signal-persona-test> 
+signal-persona-test>      Running tests/generated_contract.rs (target/release/deps/generated_contract-c00e9a3a96122202)
+signal-persona-test> 
+signal-persona-test> running 2 tests
+signal-persona-test> test lifecycle_query_and_response_restore_from_fresh_peer_bytes ... ok
+signal-persona-test> test malformed_peer_bytes_are_rejected ... ok
+signal-persona-test> 
+signal-persona-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> 
+signal-persona-test>    Doc-tests signal_persona
+signal-persona-test> /*stdin*\            : 26.17%   (  8.18 MiB =>   2.14 MiB, /nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0/target.tar.zst)
+signal-persona-test> Running phase: fixupPhase
+signal-persona-test> shrinking RPATHs of ELF executables and libraries in /nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0
+signal-persona-test> checking for references to /build/ in /nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0...
+signal-persona-test> patching script interpreter paths in /nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0
+signal-persona-test> 
+signal-persona-test> running 0 tests
+signal-persona-test> 
+signal-persona-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> 
+signal-persona-test> Running phase: installPhase
+signal-persona-test> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0/target.tar.zst
+copying 1 paths...
+signal-persona-test>     Finished `release` profile [optimized] target(s) in 0.43s
+copying path '/nix/store/bl3dp97xdcsi17pkfb7lfgzxq641k7vf-signal-persona-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-persona-test>    Doc-tests signal_persona
+signal-persona-test> /*stdin*\            : 28.74%   (  7.67 MiB =>   2.20 MiB, /nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0/target.tar.zst)
+signal-persona-test> Running phase: fixupPhase
+signal-persona-test> shrinking RPATHs of ELF executables and libraries in /nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0
+signal-persona-test> checking for references to /build/ in /nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0...
+signal-persona-test> patching script interpreter paths in /nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0
+signal-persona-test> 
+signal-persona-test> running 0 tests
+signal-persona-test> 
+signal-persona-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-persona-test> 
+signal-persona-test> Running phase: installPhase
+signal-persona-test> linking previous artifacts /nix/store/0vgil0mvxys20hr5768zlvks1ahyzfx2-signal-persona-deps-1.0.0/target.tar.zst to /nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0/target.tar.zst
+copying 1 paths...
+signal-persona-test> /*stdin*\            : 24.88%   (  5.62 MiB =>   1.40 MiB, /nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0/target.tar.zst)
+signal-persona-test> Running phase: fixupPhase
+signal-persona-test> shrinking RPATHs of ELF executables and libraries in /nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0
+signal-persona-test> checking for references to /build/ in /nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0...
+signal-persona-test> patching script interpreter paths in /nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0
+copying 1 paths...
+copying path '/nix/store/kzx7aric0zf1mn7qnhzsna2n93wsc11y-signal-persona-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/82isrmg5nyrqvy7w8cz3nd7xkcwv4141-signal-persona-test-1.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.

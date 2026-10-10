@@ -1,0 +1,341 @@
+43b1f66bf36cf1bdda407f539295858d9dafa81b
+li 2026-10-03 07:15:09.000 -06:00
+
+flow 11.0.0: add voice, correlated report and lifecycle contracts
+
+diff --git a/Cargo.lock b/Cargo.lock
+index d4c6ef321e..b53fc9cb31 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -290,7 +290,7 @@
+ 
+ [[package]]
+ name = "signal-flow"
+-version = "10.0.0"
++version = "11.0.0"
+ dependencies = [
+  "datom-codec",
+  "ethos-zero",
+diff --git a/Cargo.toml b/Cargo.toml
+index 4c6c6a80ec..fe659574ef 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -1,6 +1,6 @@
+ [package]
+ name = "signal-flow"
+-version = "10.0.0"
++version = "11.0.0"
+ edition = "2024"
+ rust-version = "1.89"
+ license = "MIT OR Apache-2.0"
+diff --git a/ethos/signal.ethos b/ethos/signal.ethos
+index c2853816c7..9d3c712288 100644
+--- a/ethos/signal.ethos
++++ b/ethos/signal.ethos
+@@ -69,11 +69,10 @@
+ ; The optional FlowId is the caller's claim, checked against the
+ ; binding: CallerMismatch carries the Caller the binding names.
+ ;
+-; Report carries one harness event of a flow Flow holds, sent by the
+-; harness's hook through the Flow CLI with the FlowId the flow was
+-; launched with. Flow stores the event in that flow's Memory and answers
+-; Reported. A FlowId Flow does not hold is refused, Refused.UnknownFlow,
+-; never adopted: a flow Flow did not launch is a flow Flow does not know.
++; Report carries the held FlowId, bound native SessionId and caller-chosen
++; ReportId with one harness event. Flow deduplicates the exact triple: an
++; identical retry is Reported, differing content is ReportConflict. A
++; mismatched SessionId is refused and cannot move or revive a binding.
+ ;
+ ; Launched is what Start answers, carried by the Started reply; it was
+ ; named Started until 9.0.0, when Event's Started took that name.
+@@ -90,12 +89,14 @@
+   Observe.ObserveSelection
+   ResolveCaller.Option<FlowId>
+   QueueTurnEnd.TurnEndRequest
+-  Report.{ FlowId Event } ]
++  Report.{ FlowId SessionId ReportId Event }
++  Voices ]
+ [ Started.Launched
+   LaunchPending.LaunchAttempt
+   StartAmbiguous.PromptDeliveryIntent
+   Restarted.Restarted
+-  RecipientResolved.FlowNode
++  RecipientResolved.{ FlowNode Option<VoiceBinding> }
++  VoicesListed.Vector<VoiceBinding>
+   Stopped.FlowId
+   Listed.FlowList
+   StartRejected.StartRejection
+@@ -112,7 +113,9 @@
+   TurnEndQueued.TurnEndRequest
+   TurnEndRejected.TurnEndRejection
+   Reported
+-  Refused.[ UnknownFlow.FlowId ] ]
++  Refused.[ UnknownFlow.FlowId
++            SessionMismatch.{ FlowId SessionId }
++            ReportConflict.ReportId ] ]
+ [ FlowId.String
+   SessionId.String
+   TurnId.String
+@@ -125,6 +128,7 @@
+   HerdrPaneId.String
+   HerdrTerminalId.String
+   LaunchRequestId.String
++  ReportId.String
+   SourcePath.String
+   SourceSha256.String
+   SkillName.String
+@@ -148,6 +152,9 @@
+   NativeSkillPath.String
+   NativeSkillSha256.String
+   FlowAspect.[ Psyche Mind Field ]
++  Rank.[ Primary Secondary Tertiary ]
++  Voice.{ FlowAspect Rank }
++  LaunchRole.[ Voice.Rank Job ]
+   PowerLevel.[ High Medium Low UltraLow ]
+   LaunchSource.{ SourcePath SourceSha256 }
+   RememberedFlow.{ FlowId RememberingDepth }
+@@ -174,9 +181,9 @@
+                              Existing.LaunchAttempt
+                              Conflict ]
+   OriginClue.{ FlowId SessionId TurnId }
+-  StartRequest.{ LaunchProfile OriginClue }
++  StartRequest.{ LaunchProfile OriginClue LaunchRole }
+   RestartRequest.{ FlowId OriginClue }
+-  RecipientResolutionRequest.FlowId
++  RecipientResolutionRequest.[ Voice.Voice Flow.FlowId ]
+   StopRequest.FlowId
+   ListRequest.{}
+   HarnessKind.[ Codex Claude ]
+@@ -193,7 +200,11 @@
+   Restarted.{ FlowId SessionId Generation }
+   StartRejection.[ CompositionRefused LaunchRequestConflict LaunchPersistenceRefused NativeLaunchRefused BindingRefused RegistrationRefused IntentPersistenceRefused OriginUnavailable ]
+   RestartRejection.[ ProvenanceMismatch UnknownFlow ResumeRefused ]
+-  RecipientResolutionRejection.[ UnknownFlow FlowUnavailable ]
++  RecipientResolutionRejection.[ UnknownFlow
++                                 FlowUnavailable
++                                 VoiceUnbound.Voice
++                                 VoiceUnavailable.Voice
++                                 FlowEnded.FlowId ]
+   StopRejection.[ UnknownFlow AlreadyStopped RouteUnavailable CloseRefused PersistenceRefused ]
+   ListRejection.[ PersistenceRefused ]
+   Replaced.{ FlowId Launched }
+@@ -215,6 +226,17 @@
+   TranscriptPath.String
+   TurnEndRequest.{ SessionId TurnId Option<TranscriptPath> }
+   TurnEndRejection.[ UnknownSession SessionMismatch InvalidTurnId InvalidTranscriptPath QueueRefused ]
+-  Event.[ Started
++  VoiceBinding.{ Voice Generation Option<FlowId> Option<LaunchRequestId> }
++  AssignVoice.{ Voice Generation FlowId }
++  VoiceAssignmentRejected.[ UnknownFlow AspectMismatch NotRoutable
++                            StaleGeneration SlotBusy AlreadyAssignedElsewhere ]
++  Event.[ SessionStarted
++          TurnStarted.TurnId
++          TurnCompleted.{ TurnId TurnOutcome }
++          ActivityObserved.Activity
+           ToolUsed.String
+-          Stopped ] ]
++          StopObserved
++          SessionEnded.EndReason ]
++  Activity.[ Unknown Idle Working ]
++  TurnOutcome.[ Completed Interrupted Failed ]
++  EndReason.[ Completed Cancelled Failed Superseded NativeExit ] ]
+diff --git a/src/generated/signal.rs b/src/generated/signal.rs
+index 537afa796e..068a46e2e4 100644
+--- a/src/generated/signal.rs
++++ b/src/generated/signal.rs
+@@ -24,6 +24,8 @@
+ #[rustfmt::skip]
+ pub type LaunchRequestId = String;
+ #[rustfmt::skip]
++pub type ReportId = String;
++#[rustfmt::skip]
+ pub type SourcePath = String;
+ #[rustfmt::skip]
+ pub type SourceSha256 = String;
+@@ -78,6 +80,28 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum Rank {
++    Primary,
++    Secondary,
++    Tertiary,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Voice {
++    pub flow_aspect: FlowAspect,
++    pub rank: Rank,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum LaunchRole {
++    Voice(Rank),
++    Job,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum PowerLevel {
+     High,
+     Medium,
+@@ -302,6 +326,7 @@
+ pub struct StartRequest {
+     pub launch_profile: LaunchProfile,
+     pub origin_clue: OriginClue,
++    pub launch_role: LaunchRole,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+@@ -311,7 +336,12 @@
+     pub origin_clue: OriginClue,
+ }
+ #[rustfmt::skip]
+-pub type RecipientResolutionRequest = FlowId;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum RecipientResolutionRequest {
++    Voice(Voice),
++    Flow(FlowId),
++}
+ #[rustfmt::skip]
+ pub type StopRequest = FlowId;
+ #[rustfmt::skip]
+@@ -429,6 +459,9 @@
+ pub enum RecipientResolutionRejection {
+     UnknownFlow,
+     FlowUnavailable,
++    VoiceUnbound(Voice),
++    VoiceUnavailable(Voice),
++    FlowEnded(FlowId),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+@@ -542,16 +575,83 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct VoiceBinding {
++    pub voice: Voice,
++    pub generation: Generation,
++    pub flow_id_option: std::option::Option<FlowId>,
++    pub launch_request_id_option: std::option::Option<LaunchRequestId>,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct AssignVoice {
++    pub voice: Voice,
++    pub generation: Generation,
++    pub flow_id: FlowId,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum VoiceAssignmentRejected {
++    UnknownFlow,
++    AspectMismatch,
++    NotRoutable,
++    StaleGeneration,
++    SlotBusy,
++    AlreadyAssignedElsewhere,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct TurnCompleted_Data {
++    pub turn_id: TurnId,
++    pub turn_outcome: TurnOutcome,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Event {
+-    Started,
++    SessionStarted,
++    TurnStarted(TurnId),
++    TurnCompleted(TurnCompleted_Data),
++    ActivityObserved(Activity),
+     ToolUsed(String),
+-    Stopped,
++    StopObserved,
++    SessionEnded(EndReason),
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum Activity {
++    Unknown,
++    Idle,
++    Working,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum TurnOutcome {
++    Completed,
++    Interrupted,
++    Failed,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub enum EndReason {
++    Completed,
++    Cancelled,
++    Failed,
++    Superseded,
++    NativeExit,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct Report_Data {
+     pub flow_id: FlowId,
++    pub session_id: SessionId,
++    pub report_id: ReportId,
+     pub event: Event,
+ }
+ #[rustfmt::skip]
+@@ -569,12 +669,29 @@
+     ResolveCaller(std::option::Option<FlowId>),
+     QueueTurnEnd(TurnEndRequest),
+     Report(Report_Data),
++    Voices,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct RecipientResolved_Data {
++    pub flow_node: FlowNode,
++    pub voice_binding_option: std::option::Option<VoiceBinding>,
++}
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Refused_Data_SessionMismatch_Data {
++    pub flow_id: FlowId,
++    pub session_id: SessionId,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Refused_Data {
+     UnknownFlow(FlowId),
++    SessionMismatch(Refused_Data_SessionMismatch_Data),
++    ReportConflict(ReportId),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+@@ -584,7 +701,8 @@
+     LaunchPending(LaunchAttempt),
+     StartAmbiguous(PromptDeliveryIntent),
+     Restarted(Restarted),
+-    RecipientResolved(FlowNode),
++    RecipientResolved(RecipientResolved_Data),
++    VoicesListed(std::vec::Vec<VoiceBinding>),
+     Stopped(FlowId),
+     Listed(FlowList),
+     StartRejected(StartRejection),

@@ -1,0 +1,703 @@
+# Logos — design document v0
+
+Durable design pickup surface for the Logos intermediate representation.
+Written 2026-07-11 by the design session (session `schema-codex`, lane
+`logos-design-doc`). A prior handover was corrupted by context compression, so
+this document favors completeness and precise attribution over polish.
+
+## How to read this document
+
+Every substantive item is tagged with its provenance. A fresh-context reader
+must respect these tags and must not promote a lower-authority tag to a higher
+one:
+
+- **[psyche ruling]** — the psyche's decision. Unless noted otherwise, taken
+  in today's session (2026-07-11). These are settled unless he retracts them.
+- **[evidence]** — a worker-verified fact with a cited source. True about the
+  world as recorded; not itself a design decision.
+- **[proposal]** — an agent suggestion awaiting the psyche's decision. Not
+  accepted. Do not implement as if settled.
+- **[open]** — undecided. No ruling exists; the question is live.
+- **[resolved YYYY-MM-DD]** — a former [open] or [proposal] item the psyche has
+  since settled; the entry points to the governing [psyche ruling].
+
+Attribution rule for this document: it deliberately cites **no Spirit intent
+tags**. A fresh audit found unresolvable intent tags in existing architecture
+prose, so this session is cited by date (2026-07-11) instead. Where the
+psyche's words were open, they are recorded open — statements are not
+overextended into rulings.
+
+## 1. What Logos is
+
+**[psyche ruling]** The name is **Logos**. It is the intermediate
+representation that sits between the schema language and the generated Rust.
+
+**[psyche ruling]** The prior working name **"codex" was retracted** — it
+collides with the Codex AI harness. Note: the evidence file in section 6 still
+carries the old name in its filename (`codex-rust-construct-survey.md`); the
+filename predates the Logos naming and has not been renamed. Treat any
+occurrence of "codex" in that survey as referring to what is now Logos.
+
+**[psyche ruling]** Logos models a **deliberately standardized subset of Rust**
+as strictly typed, positional, NOTA-style data.
+
+**[psyche ruling]** The pipeline is:
+
+```
+schema dialects  →  macro expansion  →  logos  →  Rust text  →  rustc
+```
+
+**[psyche ruling]** Rust is the **runtime backend**. The intended analogy: this
+is like Shen lowering to its K Lambda kernel hosted on a small primitive set.
+Logos is the small standardized core; Rust text is the lowering target;
+rustc is the host. (Caveat, see section 1.1: "small" describes the fixed Rust
+lowering semantics, not the logos structure-type vocabulary, which is
+deliberately WIDE.)
+
+## 1.1 Logos is 1-to-1 with Rust — the wordy vision (correction 2026-07-11)
+
+> **PARTIALLY SUPERSEDED by section 1.2 (2026-07-11 session 2).** The 1-to-1
+> "everything represented, transcription-only" core STANDS. But the anti-empty-slot
+> mechanism below — "proliferation of specialized structure types" — was REVERSED by
+> the psyche: he does not want many struct types; variance (visibility, etc.) is
+> expressed by **fields/variants on general structures**. Read 1.2 first. Every
+> "Nomos" mention in this document is also retired by 1.2.
+
+**[psyche ruling]** (2026-07-11) An earlier reading of Logos as a *thin* IR whose
+derives, `pub`, `struct`, `rustfmt::skip`, etc. materialize from macros at
+projection **"totally missed my vision, by a long shot."** This ruling
+**supersedes** any thin-logos framing elsewhere in this document and in
+`syntax-mockup-v0.md`. His words:
+
+> "I meant 1 to 1 equivalence. Basically, take the rust code, and write it with
+> adaptive schema structures. so you can have a SimpleStruct, a
+> GenericsBoundedStruct, a PublicSimpleStruct ... go crazy with the number of
+> different 'code structures' ... The brief view is schema; logos is *wordy as
+> fuck* — but as all the types needed to not need an empty slot (SimpleStruct
+> instead of a general Struct with a bunch of empty (because unused for this
+> simple struct) fields)."
+
+Load-bearing consequences:
+
+- **Everything in the Rust is represented in logos.** He asked pointedly: "where
+  is rustfmt::skip represented? Where is struct represented? and pub? and all the
+  derive blocks?" — all of it lives in logos. **Nothing materializes at
+  projection**; **logos→Rust is transcription**.
+- **The anti-empty-slot mechanism is proliferation of specialized structure
+  types**, not optional/general types. A `SimpleStruct`, `PublicSimpleStruct`,
+  `GenericsBoundedStruct`, … each carries exactly the slots it uses, all filled —
+  rather than one general `Struct` with unused empty slots.
+- **Brief→wordy is the expansion direction.** Schema is the brief view; Nomos
+  expands it into wordy, fully-specified logos; logos transcribes to Rust. The
+  expansion adds nothing at the logos→Rust step.
+
+**[psyche ruling]** (2026-07-11) **Structure bodies are pure positional.** Shown a
+sketch with dotted-head labels inside a body (`Derives.( … )`,
+`CfgAttrDerives.( … )`), he corrected: **"your PublicTupleStruct would have
+positional arguments probably, not named."** Dotted heads used as labels inside a
+body are named binding — forbidden. **Each slot's type comes from the structure's
+definition by expectation**; body values are bare (e.g. slot 2 is a paren list of
+gated derives, slot 3 a paren list of plain derives, with no head announcing
+either).
+
+**[psyche ruling]** (2026-07-11) **The "small kernel" prior-art instinct is
+INVERTED for the logos vocabulary.** The Shen/K-Lambda ~46-primitive instinct
+(section 7.2) governs the fixed Rust lowering semantics, not logos. The logos
+structure-type vocabulary is **wide, flat, and fully specified**: node types are
+cheap, empty slots are forbidden. Optimize for zero empty slots by adding types,
+not for a minimal type count.
+
+**Resolved open choices** (carried rulings / interpretation, 2026-07-11):
+
+- **Choice 3 (field names)** — settled by the prior-session composed rule,
+  psyche-confirmed then: field names = **snake_case of the type name**, a per-kind
+  pattern for generics, with an **explicit disambiguator only on repeats**. The
+  names are **computed by Nomos at expansion but stored explicitly in logos**,
+  because the Rust contains them (per the 1-to-1 ruling above). [psyche ruling]
+- **Choice 5 (Vector vs builtin)** — settled by his original vision words:
+  **array = a Rust primitive = a logos builtin; vector = a generic = has a
+  definition** (a named Nomos macro). [psyche ruling]
+- **Choice 4 (tuple vs named struct)** — **[proposal / agent interpretation
+  2026-07-11]**: since tuple and named structs are **distinct specialized logos
+  structures** (explicit, per the 1-to-1 ruling), arity is purely the *Nomos-side*
+  selection rule for which structure to emit; Choice 4 dissolves as a *logos*
+  question.
+
+## 1.2 Reset — Nomos dropped, no type proliferation, psyche-authored base (2026-07-11 session 2)
+
+The psyche rejected the v1 mockup root-and-branch and wrote logos himself; his sample
+is now the authoritative base (recorded verbatim below). Six rulings:
+
+**[psyche ruling] (1) Macro language — DROPPED, then REINSTATED (both recorded in
+order, no smoothing).** First he said: **"we drop nomos; there isnt enough room for
+another component; schema lowers into logos through logos macros."** Then, same
+session, he reversed it: **"actually, we should keep nomos, because it is its own
+language syntax. logos is a rust-equivalent, but our macros will not be rust macros."**
+Net state (the reversal wins): **Nomos exists as the transformation language, with its
+own syntax**; **Logos is the Rust-equivalent data language**; **macros are Nomos
+macros, NOT Rust macros** (and not "logos macros written in logos"). Do NOT assert
+anything about Nomos being or not being a separate component/daemon — he did not settle
+that; his "not enough room for another component" remark was about components, and the
+standing consumption ruling (Nomos definitions consumed in the logos daemon, section
+3.1) is unaffected. The section-3 Nomos naming and consumption rulings therefore STAND.
+What DID change from v1: a structure like the v1 `WireStructure`-with-baked-derives is
+a **Nomos macro** (schema-side compression that expands to the full logos form), **not a
+distinct logos type** (see ruling 2).
+
+**[psyche ruling] (2) NO type proliferation.** His words: **"we dont want to create a
+bunch of different struct types; logos is going to be mostly generated from schema. So
+we use a field or variants for everything, like visibility."** This **REVERSES** the
+"go crazy with the number of code structures" reading and v1's 19-type vocabulary.
+Structures are **general**; variance is expressed by **fields and variants** (e.g.
+visibility is a field/variant on a general structure, not a `PublicStruct` vs
+`PrivateStruct` type split).
+
+**[psyche ruling] (3) His hand-written sample is the base** (recorded verbatim as
+**[psyche-written]**, including his inline comments):
+
+```
+Public.Newtype.(
+  CommitSequence
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  Integer
+)
+
+Public.Struct.(
+  DatabaseMarker
+  [ Literal.[[rustfmt.skip] [second.literal.thing]]
+    ConfigurationAttribute.Feature.(
+      nota-text
+      [NotaDecode NotaDecodeTraced NotaEncode])
+    Derive.[rkyv.[Archive Serialize Deserialize]
+            Clone Debug PartialEq Eq]]
+  [Public.CommitSequence
+   Public.StateDigest
+   Private.secretDigest.StateDigest]
+)
+```
+
+Shapes therein: **name first**; **attributes as a typed vector** (`Literal` escape
+hatch / `ConfigurationAttribute` with `Feature` as one predicate-kind variant /
+`Derive` with dotted path-grouping `rkyv.[…]`); **fields as dotted chains**
+`Visibility.name?.Type` with an explicit name ONLY on a repeated field type (the
+established composed rule — `Public.StateDigest` derives `state_digest`;
+`Private.secretDigest.StateDigest` disambiguates the repeat).
+
+**[psyche ruling] (4) Visibility — two forms offered for his pick.** Outer variant
+(`Public.Newtype.(…)`) or a variant field (a `[Public Private]`-style visibility slot),
+**"if it's easier to deal with."** Both drawn on the same example in
+`syntax-mockup-v2.md` §; trade-off stated, not picked.
+
+**[psyche ruling] (5) Dotted-prefix pushed INTO nota** — supersedes mockup Open
+Choice 1. His words: **"even in nota, when we expect a data variant, I would rather use
+`Variant.(Data)` (or `.[]` for vectors)."** Nota's grammar/data model evolves to bind
+expectation-driven variant application across all our languages. (This is already the
+documented TARGET dotted carrying syntax in the `nota-schema-design` skill:
+`Head.Payload`, `Variant.Payload`.)
+
+**[psyche proposal — leaning, NOT final] (6) Delimiter reshuffle.** Record his
+reasoning, not as settled: drop `[]` as strings; `{}` moves to **structs** (aligning
+with the schema's landed struct-declaration syntax — see the constraint citation
+below); `[]` becomes **vectors**; strings become `()` with `(| |)` as the
+indentation-escaped form; maps possibly `()` or `[]` or — flagged — **no delimiter of
+their own**, a map being a vector of pair-structs by expectation. Cited reasons:
+struct-syntax alignment, and the `[this is a vector of strings]` ambiguity dissolving
+into space-separated bare atoms. He notes his own sample uses the "wrong" delimiters if
+this proceeds.
+
+**[psyche ruling] (7) No double colons — Rust paths are DOTTED in logos.** His words:
+**"I dont want the double colon; I dont want to start using exact rust syntax — logos
+has to feel like logos."** Rust paths are represented **dotted** (`rustfmt.skip`,
+`rkyv.[…]`); the **projection owns the `.`→`::` translation**. Literal foreign text
+(tool-attribute names and the like) is carried in this dotted logos form, never
+byte-exact Rust with `::`. This makes his sample's `rustfmt.skip` and `rkyv.[…]`
+canonical, not deviations; the earlier "store `rustfmt::skip` byte-exact" option is
+withdrawn.
+
+**[evidence] The schema tuple-disallow constraint** (he referenced it from memory):
+`schema-rust/ARCHITECTURE.md:186-197`. The schema has only `TypeDeclaration::Alias`,
+`Newtype`, and `Struct`. A **newtype is a single-element brace carrying just the
+wrapped type and no field name**, authored as the dotted `Topic.{ String }` (e.g.
+`DecisionReceipt.{ Integer }`); a multi-field declaration is a named-field `Struct`.
+There is **no multi-field tuple** form — the newtype-only constraint. Note the schema's
+landed authoring surface is **already dotted-brace `.{ }`**, which is exactly what
+reshuffle ruling 6 aligns logos to.
+
+## 1.3 Reshuffle firming, maps, and delimiter observations (2026-07-11)
+
+**[psyche statement] (8) Strings-in-parens, firming ruling 6.** His words: **"hence why
+I now want strings in () — (optionally of course; only if they contain some characters
+like space) — then it would obviously be a vector."** So under the reshuffle a string is
+a **bare atom when canonical**, and **parenthesized only when its content needs it**
+(spaces or otherwise-forbidden characters). This **dovetails with the standing workspace
+rule** that bare atoms are the default string form and a delimiter is required only when
+the string carries spaces or forbidden symbols (`nota-design` skill; nota
+`ARCHITECTURE.md`, "Bare atoms are the default string form"). Consequence: under this
+rule `Literal.[rustfmt.skip]` is **unambiguously a vector containing one bare-atom
+string** — the `[…]` is a vector, not a string, because a bare-atom string needs no
+delimiter. This resolves the v2 §4 open literal-delimiter question.
+
+**[psyche intuition — pending grounding] (9) Maps as vectors.** His words: **"how are
+maps *actually* represented in rust? Aren't they fundamentally also a vector?"** — he
+leans toward maps needing **no delimiter of their own**. Recorded as intuition pending
+the grounded analysis in `reports/logos/delimiter-semantics.md` (map representation
+across the workspace stack).
+
+**[psyche observation — for discussion] (10) Delimiters may be cognitive, not
+machine-load-bearing, outside schema.** His words in substance: outside schema, where
+the expected type of every next object is already known, the delimiter **glyph** may not
+be load-bearing for the machine at all — a parser could accept any matching pair; the
+glyph's value is **cognitive** (signaling to humans/agents that `Literal` takes a vector,
+that `Feature` takes a struct, etc.). Schema may be the **only** surface where delimiters
+semantically **select** which object is read. Recorded for discussion; tested against the
+real parser in `reports/logos/delimiter-semantics.md`.
+
+**[psyche observation — REFINED, supersedes the phrasing of statement 10 above]** His
+point is **not** about current enforcement. It is that delimiters are only semantically
+**generative in schema**: in schema, the glyph after the dot **changes what comes into
+existence** (a brace after a name = a struct *definition*). In **NOTA and Logos** the same
+glyph associations exist **only to help the reader** — validation/enforcement of a glyph
+is not the same as semantic impact. He is **explicitly NOT pursuing accept-any-delimiter**
+(so `delimiter-semantics.md` Part C.3 is closed as *not pursued*). On the transformation
+language he notes: **"I don't know about NOMOS"** — Nomos's own grammar/behavior is
+**marked unknown by him**, not settled here.
+
+**[psyche ruling] (11) Maps are `Map.( … )` — resolves statement 9.** His words:
+**"Map.() sounds reasonable then. The mental model would be: () holds a payload; maps
+are one kind of payload. And I still want to stick to the key.Value syntax for them."**
+Recorded precisely:
+
+- Maps are written **`Map.( … )`** — **no dedicated map delimiter**. Under the reshuffle
+  `()` is the **payload bracket**; a **map is one kind of payload** among others (a
+  **string** is another payload kind — the delimited string of statement 8).
+- Map entries keep the **`key.Value` dotted-pair** syntax: a lowercase-leading key name
+  dotted onto a capitalized value object. This **reaffirms the standing invariant that no
+  space-separated pair form exists anywhere** — a map entry is a dotted pair, exactly as a
+  struct field is the dotted chain `Visibility.name?.Type`.
+- Design-coherence point: **map entries and struct-field entries now share one mechanism —
+  the dotted pair.** This closes the map-delimiter open question from
+  `delimiter-semantics.md` Part C.
+
+This settles the reshuffle's delimiter roles: **`{}` structs, `[]` vectors, `()`
+payloads** (a payload is a delimited string when its content forces the bracket, or a map
+written `Map.( key.Value … )`, or any `Head.( … )` application payload).
+
+**[psyche ruling] (12) Dotted data variants at ALL layers.** His words: **"I also want to
+push data variants with the dotted syntax, at all layers; so a nota variant with data
+would be `Variant.Data` (or `Variant.( ... )` or `[]` or `{}` depending on the type of
+data it carries) instead of the current `(Variant Data)` we use now."** This **replaces
+the current headed-record variant encoding** `(Variant Data)` across **nota, schema, and
+logos**. The payload-shape spectrum, explicit:
+
+- a **bare-atom** payload attaches directly: `Variant.Data`;
+- otherwise the **bracket matches the payload's type**: `Variant.( … )` (payload / string
+  / map), `Variant.[ … ]` (vector), `Variant.{ … }` (struct).
+
+This is the same dotted-application binding as ruling 5, now stated as the **universal
+variant encoding**.
+
+**[psyche statement] (13) Map Rust-type is a Nomos lowering choice.** His words: **"in our
+new vision, we would lower schema through nomos, so we can switch out the representation
+there."** Which concrete Rust map type a schema `Map` lowers to — `BTreeMap`, `HashMap`,
+or a vector-of-pairs — is a **Nomos-level decision, not a language-fixed fact**. Recorded
+alongside the map rulings (11): the `Map.( key.Value … )` *surface* is fixed; the *Rust
+representation* it lowers to is chosen in Nomos and can be switched there. (Grounds the
+`delimiter-semantics.md` Part A finding that the codegen currently picks `BTreeMap`
+unconditionally — under this vision that choice moves into Nomos.)
+
+## 1.4 Nomos as a component — the macro model (2026-07-11 session 3)
+
+**Nomos position history (recorded honestly — this is the THIRD position):** session 1
+named it (a language); session 2 first **dropped** it, then reinstated it as a
+**language only**; session 3 (here) makes it a **component AND language**. The prior
+"not enough room for another component" concern is now overridden by the psyche himself.
+
+**[psyche ruling] (14) Nomos is a component.** His words: **"we would have another
+component called nomos. And conversion would happen through nomos into logos."** Pipeline:
+**text schema → TrueSchema** (addressed by hash in the schema daemon) **→ Nomos converts →
+Logos component.**
+
+**[psyche ruling] (15) Conversions happen OUTSIDE text.** His words: **"I want the
+conversions to happen outside of text."** The pipeline moves **typed/serialized objects
+end to end** — never text-to-text. (Consistent with the workspace's typed-store /
+typed-wire discipline; text is only the human projection.)
+
+**[psyche ruling] (16) Signal contracts for the components.**
+- **signal-logos** exposes logos's main types so **Nomos can construct and send serialized
+  logos** to the logos component.
+- **signal-nomos** exposes **"all of the macros, all of the main objects that schema needs
+  to properly know that something is a macro"** — so **schema can lower into macro
+  invocations** and **Nomos can lower those invocations into logos** (typed via
+  signal-logos).
+
+**[psyche ruling] (17) Ordering — spec logos first.** His words: **"First, we have to spec
+out logos so that it can represent all the different types of Rust."** No sugar variants;
+logos is **"the more exploded, thorough, complete, non-sugared language."** (Reaffirms the
+1-to-1/no-sugar core of §1.1 as the first work item.)
+
+**[psyche ruling] (18) Macro shape — input section and result section.** Every macro has
+an **input section** and a **result section**. The body accesses the input's
+subcomponents **by name**, **"which are defined in schemas"** — like struct field access
+(typed destructuring over schema field names).
+
+**[psyche ruling] (19) Views / staging — pure vs realized objects.** A passed object is
+either **"a pure object … as if it was passing the object directly"** or **"a realized
+object, meaning that now it turns into something in logos."** He cited the **Lisp `#`/quote
+prefixes** and asked us to supply proper terminology and Rust / developed-Lisp examples
+(delivered in `reports/logos/nomos-macro-model-v0.md` Part A). Mapping he endorsed: pure =
+quoted; realized = unquoted/spliced.
+
+**[psyche ruling] (20) Tree delegation.** Macros can **pass parts (branches) of an object
+down into inner macros.**
+
+**[psyche ruling] (21) Bootstrap.** Inter-component types get defined in the **current
+schema→Rust stack** first; **"eventually Logos might talk to another component or might do
+the Rust lowering itself, but eventually that new pipeline will be the Rust generating
+mechanism."**
+
+**[psyche ruling] (22) Component topology confirmed + pull/push conversion flows**
+(2026-07-13). His words: **"yes, schema goes to nomos, nomos goes to logos. we can have
+both pull (list loaded slots in schema, then request for conversion from logos-side) and
+push-based requests (We can have a `convertToLogos` in schema which pushes the work to
+nomos, in a chain)."** So:
+- **Nomos is a dedicated component** — this **supersedes** the §3.1 "Nomos definitions
+  consumed in the logos daemon" wording; conversion flows **schema → Nomos → Logos** as
+  three components.
+- **BOTH conversion flows are in the design**: a **pull** flow (driven from the
+  **logos side**, requesting conversion against schema's **listed loaded slots**), and a
+  **push** flow (a **`convertToLogos`** operation on schema that pushes the work through
+  Nomos in a chain).
+
+**[psyche ruling] (23) Content-addressed operations on ALL THREE components** (2026-07-13).
+Responding to the finding that signal-schema lacks a serve-`CoreSchema`+`NameTable`-by-hash
+operation, his words: **"exactly. all three should have those types of operations."** So
+**schema, Nomos, and Logos each expose slot-listing and hash-addressed fetch operations**
+on their signal surfaces (signal-schema / signal-nomos / signal-logos).
+
+**[implication — flagged, not ruled]** For Nomos to **list loaded slots** it must hold
+**loaded state** — a registry of loaded macro/dialect definitions. This bears on the
+architecture report's **P4 (stateless vs stateful Nomos)** and on the still-open
+**definitions-at-rest** question (§8): a slot-listing Nomos leans stateful.
+
+**[psyche ruling] (24) Wave one LAUNCHED** (2026-07-13). Wave one **includes the delimiter
+reshuffle**, executed on **"an epic new multi-repo stack branch."** The `nexus` / `nexus-cli`
+GitHub remotes: **"delete"** (deletion being executed). The reshuffle (§1.2 ruling 6) is
+therefore no longer merely leaning for wave-one purposes — it is in the launched scope.
+
+**[psyche ruling] (25) Nomos surface, from his critique of the v0 strawman** (2026-07-13).
+Five corrections (quoted):
+- (a) **No per-declaration `Macro.` head.** "since nomos is a macro language, it would [be]
+  utterly retarded to declare Macro everytime" — the **nomos file kind's expectation** makes
+  declarations macros **structurally**.
+- (b) **No `Input.` / `Result.` label heads.** "a stupid agent trying to create a named
+  attributes design again. You agents really dont like the nota philosophy." Sections are
+  **positional** under the file kind's grammar.
+- (c) **The input section DESCRIBES THE INPUT TYPE**, and every by-name access in the body
+  must **resolve against that declared type's schema.** The v0 strawman's `declaration.name`
+  / `declaration.inner` were **dangling** — only `declaration.SchemaNewtype` was declared and
+  SchemaNewtype's field schema was never shown.
+- (d) **A small escape set uses STRUCTURAL, visually distinct syntax.** "we should use a
+  structural syntax, since this will be hard to tell from the rest of the syntax; it just
+  looks the same as everything else, which is why macros conventions use `$` or `#` type
+  prefix."
+- (e) **Recursive macro invocation in templates is required.** "We also need to be able to
+  call more macros recursively."
+
+These are addressed in `reports/logos/nomos-macro-model-v1.md` (v0 superseded).
+
+**[psyche ruling] (26) Macro identifiers are CAPITALIZED** (2026-07-13). Challenging the v1
+draft's `wireNewtype`, his words: **"why lowercase? isnt WireNewtype a thing?"** His own
+prior rulings answer it: `Map` and `Vector` are macros and are capitalized objects; a macro
+is a **declaration with a minted identity invoked in object position**, so capitalization
+semantics make it **capitalized-leading** (`WireNewtype`, `WireAttributes`). Lowercase-leading
+remains only for genuine **names**: field names, map keys, feature names like `nota-text`,
+and local input bindings (e.g. `declaration` in `declaration.SchemaNewtype` stays lowercase —
+it is a binding name).
+
+**[psyche design statement] (27) Macro input is an inline struct shape over standard
+meta-types** (2026-07-13). His words: **"so if WireNewType only takes a name and inner type,
+then the input field would be `{ Name Type }`. Name and Type could be pretty standard things,
+perhaps nomos builtins, even a concept shared with schema somehow (it is a schema concept
+after all)."** So a macro's input section is an **inline struct shape** (`{ Name Type }`) over
+a small vocabulary of standard **meta-types**, not a binding to a named schema type. Body
+accessors derive automatically from the meta-types (`Name`→`name`, `Type`→`type`), with the
+explicit-disambiguator rule on repeats (a `Map` macro's `{ Name key.Type value.Type }`). The
+v0 strawman's `declaration.SchemaNewtype` binding dissolves.
+**[leaning — his hedges intact, not ruled]**: whether these meta-types are **nomos builtins**,
+or a concept **shared with schema** ("perhaps", "somehow") carried once in the seed vocabulary
+and exposed via signal-nomos, is undecided. Grounding: schema is already self-describing and
+unifies its `TypeReference`/`Name` vocabulary into the seed crate `nota-next`
+(`reports/schema-designer/25-schema-self-describing-design.md`), making "shared" the low-cost
+option. Worked through in `reports/logos/nomos-macro-model-v1.md` §2.
+
+## 2. Identity architecture (mirrors the schema)
+
+**[psyche ruling]** Logos mirrors the schema identity architecture. The core /
+true mirror below is psyche-stated vision:
+
+- **CoreLogos** — a stringless core. Identifiers are indices into a logos
+  **NameTable**.
+- **TrueLogos** — the projected named view over CoreLogos.
+- **rkyv** — the stored / in-memory form.
+- **deserialized text** — the agent-readable projection, with pretty-printing.
+
+**[psyche ruling]** (2026-07-11) The schema→logos conversion consumes
+**CoreSchema plus the schema NameTable** — not TrueSchema. Logos uses CoreSchema
+so that CoreLogos has a better correspondence: CoreLogos **re-uses the same
+identifier→name allocation** and **extends it** for CoreLogos with the logos
+NameTable. His words: "logos should use coreschema so that its corelogos has a
+better correspondance — so the conversion would be from coreschema +
+schemaNameTable — then logos can re-use the same ID to names allocation, and
+extend it for its corelogos + logosNameTable." Consequence: the identifier space
+is **continuous across schema and logos** (schema identifiers keep their meaning
+in logos; logos mints new ones by extension).
+
+**[open]** / floated as "could": Logos **possibly served by its own daemon**
+that the schema daemon calls for transforms and views. The psyche floated the
+daemon shape with "could" — record it as a possibility, not a decision.
+
+## 3. Macros — the entire lowering logic
+
+**[psyche ruling]** Macros define the **ENTIRE logic** of how schema changes
+into logos. There are two dispatch modes, both psyche-stated:
+
+**(a) Named macros.** Objects present in the macro table (example: `Map`). An
+application written `Map.()` expands via that macro's table entry.
+
+**(b) Structural macros.** Per-section positional defaults. In a type-namespace
+section, a declaration `X.{}` where `X` is **NOT** in the macro table is
+processed by that section's **"particular-struct definition" macro** — which
+applies the standard derive sets (the rkyv archive/serde trio, optional
+NOTA-text derives, etc.).
+
+**[psyche ruling]** This principle applies **everywhere**: every per-kind
+section has its own structural macro rules, and those rules are themselves
+defined in Nomos.
+
+**[psyche ruling — dropped then REINSTATED 2026-07-11 session 2, see section 1.2]**
+The transformation language is named **Nomos**. History, no smoothing: session 1 named
+it Nomos; session 2 first dropped it ("we drop nomos… schema lowers into logos through
+logos macros") then reinstated it ("actually, we should keep nomos, because it is its
+own language syntax… our macros will not be rust macros"). Net: **Nomos stands, as the
+own-syntax transformation language distinct from logos** (the Rust-equivalent data
+language). The candidate-name list (Gramma / Techne / Poiesis) is historical; he chose
+Nomos. The dispatch/structural-macro ideas in section 3 / 3.1 survive as **Nomos**
+(own-syntax macros), not Rust macros.
+
+**[psyche ruling]** (2026-07-11) Dispatch semantics, confirmed ("sounds
+correct"):
+
+- The macro table **keys on minted identity**, with names projected through the
+  NameTable — lookup never dispatches on a string, preserving the
+  no-string-dispatch invariant (section 6).
+- An application `X.()` where `X` has **no macro-table entry is an error**. It
+  is not silently treated as a structural default; the structural-default path
+  is specifically the `X.{}` form of mode (b) above, for `X` not in the table.
+
+### 3.1 Dialects as Nomos macro packages
+
+**[psyche ruling]** (2026-07-11) The dialect-as-macro-package design is
+**confirmed as the target**: a dialect (signal schema, sema schema, …) simply IS
+a Nomos macro package — a macro table plus structural section rules. His words:
+"in theory, although we'll be changing the compiler for a while until we get to
+that stable point; eventually schema will be able to self-host." Record all
+three parts:
+
+- The **principle stands**: dialect = Nomos macro package.
+- The **compiler changes during a staged path** — this is not immediate; the
+  current compiler is rebuilt over time until it reaches a stable point.
+- The **stated end state is self-hosting**: schema will eventually define its
+  own Nomos macros.
+
+**[proposal]** (agent interpretation, 2026-07-11) At the self-hosting end state,
+the **Logos→Rust projection is the hosted kernel**: schema defines its own Nomos
+macros above a fixed lowering to Rust. This is the same shape as the Shen
+parallel in section 1 — a language self-hosting its macro layer atop a small,
+fixed kernel (there K Lambda; here the Logos→Rust projection). Marked as agent
+interpretation, not the psyche's words.
+
+**[psyche ruling]** (2026-07-11) Where Nomos definitions are **consumed**: the
+psyche reframed the earlier "where do they live" question from authorship to
+consumption — "or rather, where are they consumed, right? since logos is
+converting the schema to logos, it would be in the logos daemon." So Nomos
+definitions are consumed **in the logos daemon, at the schema→logos conversion
+site**. His words settle consumption only; the **authored surface** (what
+document kind holds Nomos definitions at rest) remains [open] — see section 8.
+
+## 4. Acceptance oracle
+
+**[psyche ruling]** The Rust **currently generated by schema-rust** from the
+existing definitions becomes the **target**. The logos produced by the macros
+must lower to that same Rust.
+
+**[psyche ruling]** Therefore the **existing emission goldens are the
+verification basis** for the macro-system migration: the migration is correct
+when the macro-produced logos lowers to the Rust the current emitter already
+produces.
+
+## 5. Deferrals and retractions (this session, psyche-stated)
+
+**[psyche ruling]** **Pipe delimiters retracted.** Rationale he gave: strict
+typing means each kind carries its own syntax, so dotted prefixes suffice and
+pipe delimiters are unnecessary.
+
+**[psyche ruling]** **Logos-level lineage machinery deferred.** This is the
+minted-identities + rename-stable core-hash machinery for logos nodes. His
+words: "possibly, not important right now." Deferred, not rejected.
+
+## 6. Standing invariants
+
+These are carried from the **prior session's handover**, where they were
+psyche-stated. They are invariants Logos must hold, all **[psyche ruling]**
+(prior session):
+
+- **Strictly typed positional data.** The expected type is known at every NOTA
+  boundary; the parser never classifies.
+- **Positionality; no named binding.**
+- **No aliases anywhere.**
+- **Capitalization is semantic.** A capitalized-leading atom is an object; a
+  lowercase-leading atom is a name.
+- **Per-kind blocks.** A new class of meta-objects earns a new block.
+- **One namespace per loaded whole.** A duplicate name is an error.
+- **Generics are defined by kind.** Lowering dispatches on kind, never on a
+  string name.
+
+## 7. Evidence
+
+### 7.1 The standardized-Rust-subset survey
+
+**[evidence]** Source: `/home/li/primary/reports/codex-rust-construct-survey.md`
+(filename predates the Logos naming). The survey directly read `schema-rust`
+source and its committed emission goldens, plus an `rg`-counted survey of
+hand-written code in `sema-engine`, `spirit`, and `signal-spirit`. The survey
+self-tags each claim OBSERVED (direct file evidence) or INTERPRETATION; the
+tags below reflect that: OBSERVED items are [evidence], INTERPRETATION items
+are [proposal].
+
+**[evidence]** The emitter produces **two dominant output shapes**, both driven
+by the same `GenerationDriver` / `ModuleEmission` API:
+
+1. **Wire-contract modules** — pure data shapes: tuple newtypes, named-field
+   structs, tuple-variant enums, `From` impls, per-variant constructor factory
+   methods. No doc comments, no logic bodies beyond trivial
+   constructors/accessors.
+2. **Daemon-runtime modules** — richer: traits with associated types, generic
+   bounds, lifetimes, `async fn` bodies, kameo `Actor`/`Message` impls with
+   real handler bodies, and a match-bearing `Display`/`Error` impl. This means
+   the emitted-vs-hand-written boundary is **not** "data vs logic" — the
+   emitter already emits a nontrivial slice of actor/runtime scaffolding.
+
+**[evidence]** **Exactly two derive sets dominate**, counted by
+`grep -oh 'derive([^)]*)'` over all 9 goldens:
+`derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug,
+PartialEq, Eq)` (236 occurrences) always paired immediately above with a
+feature-gated `#[cfg_attr(feature = "nota-text", derive(nota::NotaDecode,
+nota::NotaDecodeTraced, nota::NotaEncode))]` (199 occurrences). The derive set
+is **constant** for ordinary schema types, not varying per field type. Two
+smaller variants exist (`derive(Clone, Debug, PartialEq, Eq)` 9×, no rkyv;
+`derive(PartialEq, Eq, PartialOrd, Ord)` 3×).
+
+**[proposal]** (survey INTERPRETATION) Model derive sets as **single
+standardized nodes**, not open attribute lists.
+
+**[evidence]** **Counted zero-hits across four repos** (`schema-rust`,
+`sema-engine`, `signal-spirit`, `spirit`), by targeted `grep -c`: `unsafe`
+(0; `spirit` also `#![forbid(unsafe_code)]`), `macro_rules!` (0 — the only
+macro mechanism anywhere is proc-macro `derive` and `cfg_attr`), and `union`
+(0). Also absent: `async_trait`-style macro usage (0; the workspace uses
+native `async fn` in traits instead).
+
+**[proposal]** (survey INTERPRETATION) These zero-hit constructs are
+**exclusion candidates** for the Logos node set. The `async_trait` *macro
+pattern* specifically can be excluded, but async trait methods as a raw
+language feature should stay in-scope.
+
+**[evidence]** The emitter is already **token-based**: `proc_macro2::TokenStream`
++ `quote`, with one `prettyplease` pass at `emit_item_tokens`; no emitter code
+builds Rust source with `format!`/`self.line` (except the literal
+`// @generated` header). This is relevant to the logos→Rust projection: it can
+inherit the existing parenthesization / hygiene handling from the token-based
+path rather than reinventing it.
+
+**[evidence]** (survey caveat) The survey names its own unknowns: `dyn Trait`,
+raw pointers, `impl Trait` return position, const generics, and GATs were not
+exhaustively checked (a shallow grep found 0–3 `dyn` hits per repo, not read
+for load-bearingness). Treat those as **not-confirmed** rather than excluded.
+
+### 7.2 Prior-art brief (delivered in-session)
+
+**[evidence]** Delivered in this session as a prior-art brief; summarized here
+inline as its evidentiary content:
+
+- Shen / K Lambda ports need **~46 primitives**, kept small by
+  interdefinability — every non-primitive form is a lowering, not a node.
+- Full Rust-as-data (the `syn` crate model) costs **~150–250 node types**, with
+  the expression grammar the dominant size driver.
+- One-to-one text-projection pitfalls to design in early: **defensive
+  parenthesization**; a **source-map** from generated Rust back to the
+  schema/logos origin so rustc diagnostics point at the right place; and
+  **name hygiene**.
+- rustc's HIR/THIR desugaring **inverted**: Logos defines the small core and
+  **forbids sugar at the dialect boundary**, re-sugaring only on Rust output.
+
+## 8. Open questions
+
+**[resolved 2026-07-11]** Macro-language name — **Nomos** (section 3). Was:
+psyche to pick from Nomos / Gramma / Techne / Poiesis.
+
+**[resolved 2026-07-11]** Where Nomos definitions are **consumed** — the logos
+daemon, at the schema→logos conversion site (section 3.1). Also confirmed: a
+dialect IS a Nomos macro package (macro table plus structural section rules).
+
+**[open]** Where Nomos definitions are **authored / held at rest** — what
+document kind carries a Nomos macro package. The psyche's 2026-07-11 statement
+answered consumption, not authorship, so this remains undecided (per the
+per-kind-blocks invariant it would earn its own block or document kind).
+
+**[open]** Whether Nomos itself obeys the full NOTA invariants. Presumed
+**yes**, but unconfirmed. (The no-string-dispatch invariant specifically is now
+confirmed via minted-identity keying — section 3 — but the full set is not.)
+
+**[resolved 2026-07-11]** Semantics of `X.()` where `X` is **not** in the macro
+table — **confirmed an error** (section 3), and the macro table keys on minted
+identity, not on a string name. Was: presumed error, unconfirmed. The
+name-in-table vs structural-default split is the `X.()`-error / `X.{}`-structural
+distinction now recorded in section 3.
+
+**[open] / [proposal]** Logos v1 node-inventory scope. Proposal: seed the node
+inventory from the emitter's two output shapes (section 7.1) and carve out the
+counted exclusions. Awaiting psyche confirmation.
+
+### 8.1 Carried from the prior session (schema-identity)
+
+**[open]** Bootstrap question 1: the unit of "one schema" in the daemon's
+database, and identity semantics on split / merge. **Untouched** this session.
+
+**[open]** Bootstrap question 2 was **LOST to handover corruption**. What
+survives is only its opening — "how do text edits become daemon edits…". It
+**must be restated by the psyche from memory**; no worker should reconstruct
+it.
+
+**[open]** The `sema.schema` document-kind design and sema-engine's
+stored-record identity basis both remain **pending that session** (blocked on
+the two bootstrap questions above).
+
+### 8.2 Operational direction (2026-07-11, pending merge-state verification)
+
+**[psyche direction, pending verification]** The psyche directed the following
+component-porting work onto the syntax-redesign base. A merge-state scout is
+currently verifying the actual branch state, so this is recorded as **direction
+pending that verification, not verified fact**:
+
+- Components are to be **ported onto the syntax-redesign base**; `drop-next` is
+  stated merged into `main`.
+- A **spirit port is to be attempted** despite the families retirement. The
+  families successor is still pending the sema document-kind design (section
+  8.1).
+- Any remaining **unmerged redesign slice should be merged into `main`** so the
+  **dotted-prefix syntax becomes the universal base**.

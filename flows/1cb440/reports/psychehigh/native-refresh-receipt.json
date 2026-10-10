@@ -1,0 +1,300 @@
+{
+  "session_id": "f38926bb-95bb-469d-83f1-3f5f0ff523d7",
+  "model": "claude-fable-5-1[1m]",
+  "effort": "medium",
+  "role": "PsycheHigh",
+  "skills": [
+    {
+      "name": "psyche",
+      "path": "/home/li/primary/.claude/skills/psyche/SKILL.md",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    },
+    {
+      "name": "psyche-interraction",
+      "path": "/home/li/primary/.claude/skills/psyche-interraction/SKILL.md",
+      "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257"
+    },
+    {
+      "name": "psyche-distillation",
+      "path": "/home/li/primary/.claude/skills/psyche-distillation/SKILL.md",
+      "sha256": "692245d82af0a2e1b484c3ca8952dc7e9d7a8d6d5f43bbb5575064b196f669ef"
+    },
+    {
+      "name": "main-flow",
+      "path": "/home/li/primary/.claude/skills/main-flow/SKILL.md",
+      "sha256": "ad3710a256de007aba4a333af999ae40310e78f48dfe1aa197be7a899a907a4e"
+    },
+    {
+      "name": "refresh",
+      "path": "/home/li/primary/.claude/skills/refresh/SKILL.md",
+      "sha256": "8577debd91c996d068543ccd9234295537698b97afffb0c32e846740638dee0a"
+    },
+    {
+      "name": "subflow",
+      "path": "/home/li/primary/.claude/skills/subflow/SKILL.md",
+      "sha256": "296b4e6b6bff6afa0fb6c7aaff0ebb3b89ab59dbaf999a759a4081f3ed770e2d"
+    },
+    {
+      "name": "behavior",
+      "path": "/home/li/primary/.claude/skills/behavior/SKILL.md",
+      "sha256": "d51e1581903086f0ddb69eafb25c871df60e40312d99bd98d83bb58e72bc0584"
+    },
+    {
+      "name": "correction",
+      "path": "/home/li/primary/.claude/skills/correction/SKILL.md",
+      "sha256": "47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1"
+    },
+    {
+      "name": "vocabulary",
+      "path": "/home/li/primary/.claude/skills/vocabulary/SKILL.md",
+      "sha256": "875cfddf755362362ed218b5f04b6f759c39dde6356942a7a2049a16b1946562"
+    },
+    {
+      "name": "spirit",
+      "path": "/home/li/primary/.claude/skills/spirit/SKILL.md",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "name": "edit-coordination",
+      "path": "/home/li/primary/.claude/skills/edit-coordination/SKILL.md",
+      "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32"
+    },
+    {
+      "name": "file-editing",
+      "path": "/home/li/primary/.claude/skills/file-editing/SKILL.md",
+      "sha256": "59a64c9d16d8379cf5e5667f6136381afbc8947cbc9488613b8ca7af8c384639"
+    },
+    {
+      "name": "nexus",
+      "path": "/home/li/primary/.claude/skills/nexus/SKILL.md",
+      "sha256": "e3ed87f132a310ef7a4699828a8280405a9ac68e11fd13207b69beb7220f9f43"
+    },
+    {
+      "name": "orchestrate",
+      "path": "/home/li/primary/.claude/skills/orchestrate/SKILL.md",
+      "sha256": "e600602d1a2ba7a365a3aa29403683751f71772d3b35dfba4ce240c970412fe8"
+    },
+    {
+      "name": "flow-evidence",
+      "path": "/home/li/primary/.claude/skills/flow-evidence/SKILL.md",
+      "sha256": "34043c9afc633c61c90282dd10663f3410c422e1d6f19f3ddb3efe7e735336a0"
+    },
+    {
+      "name": "testing",
+      "path": "/home/li/primary/.claude/skills/testing/SKILL.md",
+      "sha256": "3730dbb781b345dc67ca102f3dbd9404c1a264c132eb09f46a3832a53b1a0fd0"
+    },
+    {
+      "name": "prompt-crafting",
+      "path": "/home/li/primary/.claude/skills/prompt-crafting/SKILL.md",
+      "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430"
+    },
+    {
+      "name": "claude-harness",
+      "path": "/home/li/primary/.claude/skills/claude-harness/SKILL.md",
+      "sha256": "9c73e366f9179919a316a2a0c5241689fd11db8969b1b970ed916112237018ce"
+    },
+    {
+      "name": "herdr",
+      "path": "/home/li/primary/.claude/skills/herdr/SKILL.md",
+      "sha256": "9a7e526ccd54bc8c608b5b25e4c3b120034f3847c65c0f3f12719a3dcc9eef0b"
+    },
+    {
+      "name": "messaging",
+      "path": "/home/li/primary/.claude/skills/messaging/SKILL.md",
+      "sha256": "961b02f30bf723c78bb119ca6a1f616c1fd70ebcc3972e782837deffeff26449"
+    },
+    {
+      "name": "datom",
+      "path": "/home/li/primary/.claude/skills/datom/SKILL.md",
+      "sha256": "883df47f006060b55ceb9a87b00d7080957d3ceb48083784b0ddbe899b4fc108"
+    }
+  ],
+  "sources": [
+    {
+      "path": "Vision/modelRoles.md",
+      "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+    },
+    {
+      "path": "Vision/flowNexus.md",
+      "sha256": "bf1bd2c4f3eb134a0afaed81a8b11dc79f1323e6d6bca5dcf0ce6612d105217f"
+    },
+    {
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "path": "flows/1f96fc/vision/fieldMaintenanceAndRefresh.md",
+      "sha256": "0ad2dbe64bf3998eff8099171da1ec6d1f94a67a8f5090f7d0b4a1b5fd465ce0"
+    },
+    {
+      "path": "flows/b81560/vision/operational-psychePropagationAndNamingAndInfrastructure.md",
+      "sha256": "64b73ec8b3c67636265bcae6ae866d4532b989f1704916f99173dfe83e59a9a5"
+    },
+    {
+      "path": "flows/b81560/vision/operational-remoteControlResearchReport.md",
+      "sha256": "c65a7e7c4e6e851d3df7100607f8c8678bbd281d7af582aee896a7b124764b44"
+    },
+    {
+      "path": "flows/b81560/vision/operational-refreshOutboxAndMessageChannels.md",
+      "sha256": "0209171b3a7b537b2a94e4c1fdc3cd91a6f2165e0cf9759af205093be3f9ebae"
+    },
+    {
+      "path": "flows/b81560/vision/operational-reapingOnRefreshAndFlowEndHook.md",
+      "sha256": "d0f8e880f0b7078d1e34e1cbefe08246f2f22fa13484e5cfbde56e7c0db698ef"
+    },
+    {
+      "path": "flows/b81560/vision/operational-flowDatomCLIAndSignalLibrary.md",
+      "sha256": "7cd05e1af5a72ab79e17a1a0b3815a5d22944cd9ba293fd0249553fa305dcf54"
+    },
+    {
+      "path": "flows/c8d79f/vision/operational-recognizePsycheTyped.md",
+      "sha256": "770d78a28e23a7f809a477a807cd7dd3338820a096d16a3027e6313223ab8504"
+    }
+  ],
+  "ready_requires": "idle native session, observed model match, and Skill(main-flow) transcript receipt",
+  "native_main_flow": {
+    "skill": "main-flow",
+    "transcript": "/home/li/.claude/projects/-home-li-primary/f38926bb-95bb-469d-83f1-3f5f0ff523d7.jsonl",
+    "observed": true
+  },
+  "generation": {
+    "session_id": "f38926bb-95bb-469d-83f1-3f5f0ff523d7",
+    "skills": [
+      {
+        "skill": "psyche",
+        "entry_start": 17,
+        "entry_end": 27,
+        "generation": "c8a5f6f1189b6a33350d80e42a50dca2d4c179786bb686c7fa540e779357aa3c"
+      },
+      {
+        "skill": "psyche-interraction",
+        "entry_start": 30,
+        "entry_end": 34,
+        "generation": "199adc56dfb6b52ca6d3ac99c9a12c0baff3821e39737b9af800db4af9d7be33"
+      },
+      {
+        "skill": "psyche-distillation",
+        "entry_start": 34,
+        "entry_end": 40,
+        "generation": "0f8da57c8096327a6a2de6d1ce9e65e399c454b400b069ec18b3ced0aa25c591"
+      },
+      {
+        "skill": "main-flow",
+        "entry_start": 41,
+        "entry_end": 46,
+        "generation": "76b4584e3ae59ad127d63bee8bafd4bb0963877c1f1180366e2c03f7ce878206"
+      },
+      {
+        "skill": "refresh",
+        "entry_start": 55,
+        "entry_end": 59,
+        "generation": "f9baba1154a5bc189db2cb6ee817150bcff6fc19e998a877aa901d44e964de10"
+      },
+      {
+        "skill": "subflow",
+        "entry_start": 61,
+        "entry_end": 65,
+        "generation": "13a2cff48b9deada481c5068036aa2e2f93df4b122f24e5331abd5efc3864461"
+      },
+      {
+        "skill": "behavior",
+        "entry_start": 67,
+        "entry_end": 71,
+        "generation": "1f28b46b6372d89e2dec3a8e9e6070e1b859bce156c6c990d0381d978696f00c"
+      },
+      {
+        "skill": "correction",
+        "entry_start": 73,
+        "entry_end": 77,
+        "generation": "898cf399dfb9614ca52a45932f2dee191dbfa9f72e0325d5f6911ac54e329b6b"
+      },
+      {
+        "skill": "vocabulary",
+        "entry_start": 79,
+        "entry_end": 83,
+        "generation": "ed591e02b63bc9ece4b7f41aa9c0c2e2ec30e3b8913974e84a1abb6b71cbc00d"
+      },
+      {
+        "skill": "spirit",
+        "entry_start": 85,
+        "entry_end": 89,
+        "generation": "30f98278c0369932032aee27b608e2f90077f61634d4a3b6c141a8e21e9a1cfe"
+      },
+      {
+        "skill": "edit-coordination",
+        "entry_start": 97,
+        "entry_end": 101,
+        "generation": "a7ca130cd9ca0e40d90111e47e8fe13861fe6d68729009f161c1d39897260b8d"
+      },
+      {
+        "skill": "file-editing",
+        "entry_start": 103,
+        "entry_end": 107,
+        "generation": "8852e2d7284b72dedcf94b87214eb10bf1bf48b6a1899838bf482417af3c7b33"
+      },
+      {
+        "skill": "nexus",
+        "entry_start": 109,
+        "entry_end": 113,
+        "generation": "24d9fd29d7470473476c3cba065a1138df0a60ae5900d2ffaa01f73f3ef1d080"
+      },
+      {
+        "skill": "orchestrate",
+        "entry_start": 115,
+        "entry_end": 119,
+        "generation": "bb389843a761516d4ddab9e4146487e78a950ce6140e0eab1722c4dc6cf1511d"
+      },
+      {
+        "skill": "flow-evidence",
+        "entry_start": 121,
+        "entry_end": 125,
+        "generation": "b7e6bb2748da838b4e58fc8d9c734b32b56915ec05feb87872c9015c1263633c"
+      },
+      {
+        "skill": "testing",
+        "entry_start": 127,
+        "entry_end": 137,
+        "generation": "4837bd977de7cadeea2c23191fc009a1bbabccd4b69b078f278d56202d69f083"
+      },
+      {
+        "skill": "prompt-crafting",
+        "entry_start": 139,
+        "entry_end": 143,
+        "generation": "42425d7383a32eb478a9c8d0faa90d066af9c85a4ec6467f880a31cc4bfa34c0"
+      },
+      {
+        "skill": "claude-harness",
+        "entry_start": 145,
+        "entry_end": 149,
+        "generation": "dd23db7941e3fca4d846f72857c3ded754ab1c6fb3c873234d0ddff4019ce99a"
+      },
+      {
+        "skill": "herdr",
+        "entry_start": 151,
+        "entry_end": 155,
+        "generation": "c021845b4f4103f37e4a7a10f9115df07e1f19755f3dee8710586e21fa755123"
+      },
+      {
+        "skill": "messaging",
+        "entry_start": 157,
+        "entry_end": 161,
+        "generation": "b319c3afa1dd8d873acfaa5ab8006bfb51534e28e1027977e40ff9c05e075325"
+      },
+      {
+        "skill": "datom",
+        "entry_start": 163,
+        "entry_end": 173,
+        "generation": "19dce669d831fc1bf9a3d80d001e891f43bb00c54dbb32c0b138d4d4f32260fc"
+      }
+    ],
+    "source_payload_hash": "dc3994b6286a87eb5f6b8f544a9c9431965b482ccf691a3e2875b148047664ad",
+    "acknowledged": "BOOTSTRAP_READY dc3994b6286a87eb5f6b8f544a9c9431965b482ccf691a3e2875b148047664ad"
+  },
+  "observed_identity": {
+    "model": "claude-fable-5-1",
+    "effort": "medium"
+  },
+  "predecessor_retired": false,
+  "registration_performed": false
+}

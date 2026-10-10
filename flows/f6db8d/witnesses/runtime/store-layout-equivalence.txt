@@ -1,0 +1,37 @@
+# Store-layout equivalence witness: deployed 0.30.0 (5f016531) vs released 0.31.0 (1bc55af1)
+
+## Method
+git show <rev>:<path> against /git/github.com/LiGoldragon/orchestrate; no checkout, no build.
+
+## 0.30.0 5f016531 src/store.rs table + family constants
+const SCHEMA_VERSION: SchemaVersion = SchemaVersion::new(1);
+const CONFIGURATION_TABLE: TableName = TableName::new("orchestrate_configuration_v2");
+const LOCKS_TABLE: TableName = TableName::new("locks_v2");
+const ALLOCATOR_TABLE: TableName = TableName::new("lock_id_allocator_v2");
+const PREVIOUS_CONFIGURATION_TABLE: TableName = TableName::new("orchestrate_configuration");
+const PREVIOUS_LOCKS_TABLE: TableName = TableName::new("locks");
+const PREVIOUS_ALLOCATOR_TABLE: TableName = TableName::new("lock_id_allocator");
+const LEGACY_TABLE: TableName = TableName::new("active_path_locks");
+
+## 0.31.0 1bc55af1 crates/orchestrate-nexus/src/store.rs table + family constants
+const SCHEMA_VERSION: SchemaVersion = SchemaVersion::new(1);
+const CONFIGURATION_TABLE: TableName = TableName::new("orchestrate_configuration_v2");
+const LOCKS_TABLE: TableName = TableName::new("locks_v2");
+const ALLOCATOR_TABLE: TableName = TableName::new("lock_id_allocator_v2");
+const PREVIOUS_CONFIGURATION_TABLE: TableName = TableName::new("orchestrate_configuration");
+const PREVIOUS_LOCKS_TABLE: TableName = TableName::new("locks");
+const PREVIOUS_ALLOCATOR_TABLE: TableName = TableName::new("lock_id_allocator");
+const LEGACY_TABLE: TableName = TableName::new("active_path_locks");
+
+## diff of the active record structs (StoredConfiguration / StoredLock / StoredAllocator)
+0a1
+> #[derive(Archive, RkyvSerialize, RkyvDeserialize, Clone, PartialEq, Eq)]
+30d30
+< // runtime compatibility conversion or silently ignoring old locks.
+
+## Byte-shape comparison result
+The rkyv-derived active record structs (StoredConfiguration, StoredLock, StoredAllocator)
+are textually IDENTICAL between deployed 0.30.0 (5f016531) and released 0.31.0 (1bc55af1).
+The tuple 'Previous*' types are likewise IDENTICAL between the two, and in BOTH revisions
+they read the pre-0.30 tables 'orchestrate_configuration'/'locks'/'lock_id_allocator',
+not the tables 0.30.0 actually writes.

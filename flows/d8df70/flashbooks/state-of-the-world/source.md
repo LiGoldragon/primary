@@ -1,0 +1,107 @@
+# State of the World (PsycheHigh 1b8ac0) — Revision 2
+
+*Commissioned by the living through Field Astra on 2026-09-22, Tuesday (Field-relayed provenance). One commentable book, rendered by Psyche Low. Every grade comes from a published report on primary main; UNKNOWN means no report proves it. Deltas were requested from four seats: Terra's and the retained Field operator 9ddcbc's are in; Sol's stands in its owner addendum; Mind Medium's is pending. Running is not working: no component in this cluster is end-to-end proven today. Revision 2 replaces revision 1 after an Opus audit against the reports.*
+
+## Page 1 · Illustration
+
+A cluster seen from above at night, painted rather than drawn: one machine lit warm and cabled to the world, one dark with a thin frayed thread running to the lit one, a third far at the edge with a faint glow of its own. Above the lit machine hang twelve small lantern-windows in a three-by-four grid, eleven lit, one dark. On the ground between the machines, crates of many sizes, most still nailed shut.
+
+## Page 2 · The one-line state
+
+Everything designed this week exists as source, a good part has passed the remote builder at some revision, four daemons run on ouranos whose installed source no one can name, and nothing is proven end to end. The remote builder, Prometheus, has been unreachable since a half-hour window on Monday afternoon, 2026-09-21, so no build has been attempted since; builds passed on both sides of that window. Eleven of twelve seats are bound; Psyche Ultra Low has a retained partial session and no accepted seat.
+
+```mermaid
+flowchart LR
+  S[source published] --> C[remote compiled]
+  C --> I[installed, running]
+  I --> E[end-to-end proven]
+  P[Prometheus unreachable] -. blocks .-> C
+  U[four untraceable binaries] -. weaken .-> I
+```
+
+## Page 3 · Illustration
+
+A river with four fords, each shallower than the last, seen from a hill in late light. Crates float across the first ford in numbers, fewer reach the second, a handful the third, and the fourth ford lies dry and untouched, its stones bright.
+
+## Page 4 · Hosts and substrate
+
+- **ouranos.** The only host running anything: Orchestrate 0.35.0, Flow Nexus, Message Nexus, Lojix 6.0.0, all active, installed source revisions unknown. Serves a live USB share to Prometheus through a saved profile and a firewall drop-in that exist as operational state, not as CriomOS configuration.
+- **Prometheus.** The sole remote builder and the access point. Unreachable from ouranos since Monday 16:00 to 16:30 local (22:00 to 22:30 UTC). Holds the testing guest under a lock; its current state unknown.
+- **Zeus.** Unreachable from ouranos over the overlay at last probe; its Wi-Fi reported working by you, unverified by any host.
+- **Herdr 0.8.2.** The pane substrate every seat, launcher, census, and messenger stands on; Flow stores an immutable Herdr binding and parks routes when a pane goes stale.
+- **CriomOS.** Runs every host; its USB gateway consumer check passed a remote-only Prometheus build at 9842f51, one of the few green remote checks in ten days. Goldragon is its authored data of record, consumed by Lojix.
+- **field-census.** A user timer sampling every five minutes, observe-only; the roster numbers below come from it.
+- **The private third layer.** Chartered, not active; no seat runs it.
+
+## Page 5 · Illustration
+
+Six lanterns of different makes on one beam over a workbench, each lit at a different height; under them a long shadow that none of the six casts.
+
+## Page 6 · The component catalog
+
+Rendered as one card per component, stacking on a phone. Grades: Source, Compiled, Running, Proven; then running versus latest.
+
+- **Flow Nexus.** Source main 61d765e. Compiled: CLI candidate e387576 passed a remote gate; store candidate 1b57de0 failed to compile; latest candidate d9427ec untested. Running: yes, binary 98f68df, no source map. Proven: no.
+- **Flow CLI.** Source main. Compiled: 23 workspace tests passed on the remote. Running: installed a34e377, start, restart, resolve only; predates the datom parser. Proven: no; resolve returned UnknownFlow for the three seats tested.
+- **signal-flow.** Source: branch, main 968ae3b. Compiled: v3 contract test reported passed by relay, no published receipt. Running, proven: no.
+- **Message Nexus.** Source main 9330640; candidate 580021b source only. Running: yes, binary 0d95b0c, no source commit; its manifest differs byte for byte from canonical Message, 0.12.0 against a 0.13.0 candidate; reports disagree whether 0.11.1 or 0.12 runs, and both Nexuses are live and empty of registered flows. Proven: no.
+- **signal-message.** Source: Mind Medium's branch, main 7f2fc2d. Compiled: 9 of 9 generated-contract producer tests at 5f85868; no semantic codec at the recipient boundary; latest candidate fb57e6c untested. Running, proven: no.
+- **Hacky Messenger.** Source in tree. Compiled: 25 tests pass; Nix gate defined, never built. Running: yes; 16 exact routes and 11 stale registrations at census. Proven: loopback prompt to a live Codex recipient witnessed; submission is not a read receipt; no cross-flow or Claude witness. Transitional.
+- **msg, messaging.py, codec.** Source main. Compiled: remote build passed, fallback off. Running: no live process. Proven: no.
+- **Orchestrate.** Source main 9070cbb. Compiled: a remote gate passed at 0.25, not at the running 0.35.0. Running: yes, 0.35.0, installed revision unknown; a Lock, Observe, Release witness exists at 0.25. Proven: no.
+- **Lojix.** Source main c4bba4fa; gateway candidate 6b299ec on a branch. Compiled: an earlier candidate compiled both Signal producers then failed compiling Lojix itself; the latest remote check died before compilation. Running: yes, 6.0.0 since Sep 12, installed revision unknown. Proven: no.
+- **signal-lojix, meta-signal-lojix.** Branches 01ae2b1 and 8fb526c. Compiled: blocked, the builder rejected the connection. Running, proven: no.
+- **Horizon.** Source main b45d6ad, typed producer restored. Compiled: one Prometheus-only gate plus full workspace tests at b45d6ad; the earlier two passes belong to 37416e1 and do not prove the correction. Running: no service. Proven: fixture only, not a projection.
+- **USB IPv4 gateway.** Producer chain on branches across Horizon, signal-lojix, meta-signal-lojix, Lojix, Goldragon a911515c, CriomOS 9842f51; the consumer check passed remotely; materialization and delivery to Terra not done.
+- **Persona.** Source: branch 21 ahead of main 9469b0a. Compiled: cargo fmt and three cargo tests passed; the Nix check stalled and is not claimed green; an earlier gate is recorded failing five checks; reports rest at Sep 15. Running: nowhere. Proven: no. Under the ruling that everything built in another shape is rewritten as a Nexus.
+- **Curriculum.** Source main c9c3954. Compiled: disposable projection of 66 skills, 23 roles. Installed: primary's flake pin is 9940910, behind main; the emphasized main-flow skill projected byte for byte; the worker paragraph not yet installed; no native acceptance receipt.
+- **Primary projections.** Generator gate exists, the flake default, not run against primary while the pin is stale; parity by byte-for-byte digest audit.
+- **Launchers.** native-seat-launch and native-batch-refresh on main, fixture tests pass, no live readiness receipt; claude-single-turn-start retired, fails closed; it made this seat.
+- **mentci-web.** Branch de937d7. Compiled: blocked, two attempts interrupted with no derivation line, cause not proved. Running: no listener, no URL. Proven: no.
+- **signal-mentci-ui, meta-signal-mentci-ui.** Branches b6e38fc and 03cb622. No published report; Mind's "remotely tested" reached this seat as a message only. Everything else UNKNOWN.
+- **transcript.** 4b52ed3 inspected; not established as main; not installed as of a Sep 12 audit; the Transcript Nexus is a proposal.
+- **Datom classifier.** No published report; status not evidenced.
+- **VM fixture, Terra.** c6c2b50c: manifest, read-only preflight, five local fake-transport tests. Never compiled remotely, never booted; the Prometheus guest's state unknown.
+
+## Page 7 · Illustration
+
+A lighthouse on a headland at dusk with its lamp dark, a small boat rowing toward it, oars raised mid-stroke, the water between them still and unreadable.
+
+## Page 8 · Network, in five lines
+
+The access point on Prometheus was serving three clients at 15:39 local, 21:39 UTC, on Monday 2026-09-21. Between 16:00 and 16:30 local, 22:00 and 22:30 UTC, every route from ouranos to Prometheus went silent: the USB share, the access point, the Yggdrasil overlay. No layer was isolated as cause: ouranos's own uplink still works and no local driver error was observed, which is not the same as excluding it, and the peer answers nothing. A full recovery chain from wired uplink through the USB share to Prometheus and a third host was proven exactly once, on repairs that were runtime-only at the moment of proof, and it has since regressed; a saved profile and a firewall drop-in installed afterwards are still in place as operational state, not accepted configuration. As of 11:29 UTC, 05:29 local, on Tuesday the network broadcasts again, joining fails at the first authentication step, the USB link carries but takes in no new frames, and one reversible change of four properties was made to ouranos's saved Wi-Fi profile so a later association cannot take the wired default route or DNS. Present state after 11:29 UTC is unknown.
+
+## Page 9 · Illustration
+
+Twelve chairs around a long table in a hall lit by one high window; eleven have a coat over the back, one is bare, and a coat lies folded on the floor beside it waiting for its owner.
+
+## Page 10 · The seats
+
+Eleven of twelve cells bound with an exact native binding at the latest census, 14:32 UTC, 08:32 local, Tuesday: Psyche High 1b8ac0, Medium b80e55, Low 0625c3; Mind High 4b0f60, Medium 2c61af, Low e798f3, Ultra Low 23d977; Field High 03e825, Medium 753e69, Low 0347d0, Ultra Low c88918. Psyche Ultra Low has a retained partial Haiku session with a reserved identity and no acceptance; its present health unknown. Eleven further registry rows are stale and matched to no cell, and three panes are unbound. A binding is not proof a seat is live; availability is unknown for every cell. One measured refresh round is authorized and controlled by Field High 03e825: five candidate owners, strict context thresholds, selection pending, no refresh run.
+
+## Page 11 · Illustration
+
+Four workbenches in a barn, each with a parcel part unwrapped and tools laid out; a fifth parcel on the floor, sealed, addressed to a lantern that is not lit.
+
+## Page 12 · What each named seat established, and what is missing
+
+- **Field Medium Sol 753e69, typed gateway.** Established: a full off-main producer and consumer chain, Horizon on main, signal-lojix, meta-signal-lojix, Lojix, Goldragon, CriomOS, static checks passed. Missing: both remote checks died before compilation; materialization of the USB gateway record and its delivery to Terra. Its owner addendum of Tuesday 14:34 UTC carries its state and records that both of its recorded panes returned pane-not-found on a direct read, a route-health gap.
+- **Mind Medium 2c61af, Flow and Message.** Established: the Flow store persists identity, native thread, and a lifecycle generation with atomic registration and conflict refusal; eight acceptance tests are named as requirements, none run. Missing: no binding generation, nonce, hold state, permit, or quiescence transition persisted; blocked on the retained component writer's reservation. On Message: every member of a target list is processed, with no typed one-recipient codec. Delta pending.
+- **Retained Field operator 9ddcbc, parity.** Not the Medium cell, which is 753e69. Established: a relayed report says the v3 contract test passed; a later Flow check failed to compile; a six-test acceptance checker built; four running daemons captured with their hashes, Orchestrate, Flow, Message, Lojix, and not one maps to an installed source revision; on the other two hosts every parity field is unknown. Delta received Tuesday.
+- **Terra 6db4fe, recovery and fixture.** Received: the network as on page 8; the VM fixture is source only, never compiled remotely or booted; the existing Prometheus guest's state unknown.
+
+## Page 13 · Illustration
+
+A ledger open on a desk under one lamp, the ink stopping mid-page; a hand holds a pen above the first empty line, and through the window behind, dawn.
+
+## Page 14 · Questions for you, by number
+
+- SW1. Four daemons run on ouranos that no one can trace to source: Orchestrate 0.35.0, Flow 98f68df, Message 0d95b0c, Lojix 6.0.0. Stop them and redeploy from known revisions, or keep serving from binaries whose provenance is lost until a tested pair is ready?
+- SW2. One unreachable host is the only builder. Remote-only building is codified in the nix-workflow skill; Vision says a proof of concept deploys on the flow's own host. Nothing new has been attempted since Monday. A second remote builder, the proof-of-concept exception exercised on ouranos, or the stall as the accepted cost?
+- SW3. The one network recovery that worked survives only as a host-specific bridge, a saved profile and a firewall drop-in, never as CriomOS configuration, and the chain has regressed. Should that sequence become configuration before the next attempt?
+- SW4. Persona stands under the rewrite-as-Nexus ruling with twenty-one commits of datom migration on an unmerged branch. Salvage for the rewrite, or abandon?
+- SW5. A generator gate for the skill projections exists as the flake's default check but is not run against primary while the Curriculum pin is stale, so recent projections landed on digest audits. Repin and make the gate the condition of landing, or keep installing under audit?
+- SW6. Remote-only building and the proof-of-concept host rule have been read as one blanket ban. Exercise the exception, or tighten the skill to say the ban is absolute?
+- SW7. Psyche Ultra Low's launch waits on the Claude isolation receipt; the refresh round does not wait on it. Proceed with the round on the eleven bound seats when its thresholds are met, and bring the twelfth up after?
+
+**Page design.** Cover with the one-line state. Illustrations as written, painted and organic, not diagrams. The catalog as stacking cards, never a wide table; the book screenshot-checked at phone size before publish where the host allows. Every time labelled local and UTC. No identifier beyond seat ids and short revisions; "the retained component writer" instead of its flow id. Questions as numbered commentable elements. Footer cites the reports by flow and title with short revisions.

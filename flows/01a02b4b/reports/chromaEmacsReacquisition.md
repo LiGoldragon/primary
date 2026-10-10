@@ -1,0 +1,200 @@
+# Chroma–Emacs reacquisition
+
+## Outcome
+
+The accepted Chroma–Emacs design remains semantically approved but
+operationally unstarted. The next implementation authority is a new public
+`chroma-emacs` repository; it does not exist locally or on GitHub. The
+existing `CriomOS-emacs` repository is an unfinished whole-distribution
+scaffold and is not the selected repository.
+
+No product/source repositories, deployments, or live runtime state were
+changed by this flow.
+
+## Remembered psyche
+
+The depth-one remembered flow `01a0238b` contains these direct psyche words:
+
+> The emacs plugin would get its own repo, and become an input to criomos-home.
+
+> 1. yes
+>
+> 2. the dbus is good
+>
+> 3. yes
+
+> good enough, approved
+
+The associated context in `flows/01a0238b/vision/emacsPlugin.md` identifies
+the three answers as: a new public repository, the narrow Chroma-owned
+session D-Bus transport, and Ignis theme generation remaining in
+`criomos-home`. The approval covers the feature/mode, semantic protocol,
+ownership boundaries, non-goals, tests, and rollout order recorded in the
+prior report.
+
+## Accepted contract
+
+- `chroma-emacs` is a standalone public repository and an input to
+  `criomos-home`.
+- It exposes Emacs feature `chroma-theme` and global
+  `chroma-theme-mode`.
+- Chroma remains the sole Light/Dark authority and publishes desired state
+  through a narrow session D-Bus interface.
+- Desired state has a persisted monotonic revision, current snapshot,
+  change signals, consumer registration, typed acknowledgement/failure, and
+  queryable per-consumer `Pending`, `Applied`, `Unavailable`, or `Failed`
+  status.
+- The plugin subscribes before registration, reconciles the registration
+  snapshot, reconnects after service-owner change, ignores stale revisions,
+  treats duplicate revisions idempotently, applies and verifies configured
+  theme symbols, preserves unrelated overlay themes, and acknowledges only
+  after the postcondition holds.
+- Full Lisp diagnostics stay in Emacs. Chroma receives a bounded typed
+  failure summary.
+- `criomos-home` owns Ignis generation, declarative configuration,
+  plugin pinning/native compilation, mode enablement, and the real
+  end-to-end daemon witness.
+- The plugin does not schedule themes, generate palettes, embed setup paths,
+  own Ignis assets, or disable unrelated themes. The old Darkman and
+  one-shot `emacsclient` projection are removed rather than retained as a
+  compatibility path.
+
+## Current source witnesses
+
+### Chroma
+
+`/git/github.com/LiGoldragon/chroma/src/theme.rs` still defines
+`ThemeAdapters.emacsclient`, starts an `EmacsThemeConcern`, and applies a
+one-shot `emacsclient --eval`. The expression uses the literal
+`$HOME/.config/emacs-ignis-themes`, runs
+`(mapc #'disable-theme custom-enabled-themes)`, and loads the selected Ignis
+theme. Child output is redirected to null, the exit status is not checked,
+and there is no acknowledgement, revision, retry, or postcondition.
+
+`/git/github.com/LiGoldragon/chroma/src/daemon.rs` currently serves the
+framed Unix socket only. Its D-Bus use is for clients such as login1 and
+GeoClue; there is no public session-bus theme service.
+
+`/git/github.com/LiGoldragon/chroma/src/state.rs` persists current theme,
+warmth, brightness, and location values. It has no projection revision or
+consumer-status store.
+
+`tests/theme.rs` exercises ThemeMode, Pi control, and Ghostty behavior; it
+does not exercise the Emacs adapter or a D-Bus projection protocol.
+`tests/config.rs` parses an `Emacsclient` adapter path in its fixture, but
+the fixture's concerns omit Emacs and no behavior is tested.
+
+### CriomOS-home
+
+`/git/github.com/LiGoldragon/CriomOS-home/modules/home/profiles/min/chroma.nix`
+still generates `(Concerns Terminal Desktop Ghostty Emacs Pi)` and an
+`(Emacsclient ...)` adapter. The Chroma input is pinned at
+`eea85f4aae5a` in the Home flake.
+
+`modules/home/profiles/med/emacs.nix` still includes the startup-only
+Darkman state read from `darkman/current-mode`; it has no resident
+`chroma-theme-mode` package or configuration.
+
+`modules/home/base.nix` still generates and installs
+`ignis-dark-theme.el` and `ignis-light-theme.el` under
+`.config/emacs-ignis-themes`. This is the accepted Home-owned boundary and
+must remain there.
+
+The current Home check `checks/chroma-dotos-config/default.nix` asserts the
+old Emacs concern and adapter, so it must be replaced by behavioral protocol
+and end-to-end checks rather than preserved as an old-shape compatibility
+assertion.
+
+### Existing CriomOS-emacs scaffold
+
+`/git/github.com/LiGoldragon/CriomOS-emacs/README.md` identifies the
+repository as a scaffold for a whole Emacs distribution. Its
+`modules/home/default.nix` is empty and its flake does not expose the
+approved Chroma projection plugin.
+
+## Repository and worktree state
+
+- `/git/github.com/LiGoldragon/chroma` exists. Its default workspace has an
+  added `.beads/issues.jsonl` generated by Beads export; no product source
+  paths are dirty. Main is at `eea85f4aae5a`.
+- `/git/github.com/LiGoldragon/CriomOS-home` exists and its default
+  workspace is clean. Main is `1a6e22da155b`.
+- `/git/github.com/LiGoldragon/CriomOS-emacs` exists and its default
+  workspace is clean. Main is `50e9ee3bde80`.
+- `/git/github.com/LiGoldragon/CriomOS` exists and its default workspace is
+  clean. Main is `d04f6dafce19`.
+- `/git/github.com/LiGoldragon/chroma-emacs` is absent.
+- `gh repo view LiGoldragon/chroma-emacs` could not resolve a repository;
+  no public remote was found.
+
+The primary worktree was already dirty with parent/sibling flow artifacts;
+this flow added only its own flow log, index row, and report.
+
+## Bead reconciliation
+
+Bead `primary-77d` is an in-progress priority-1 decision. Its description,
+design, and notes agree that the semantic design was approved in
+`01a0238b`, while acceptance item 5 remains: create the public plugin
+repository under implementation authority, establish its Beads store, and
+transfer/link implementation work.
+
+The bead also names exact D-Bus service/interface and registration/status
+schema, persisted revision semantics, and typed failure surface as design
+anatomy to be resolved. This sits in tension with its later statement that
+design acceptance items 1–4 are settled. The semantic contract is therefore
+settled, but the exact wire-level schema must not be invented as though it
+were already psyche-approved.
+
+## Smallest implementation slices
+
+1. Create and authorize public `chroma-emacs`; add the package, feature,
+   mode, and fake-D-Bus peer. Prove Light/Dark application, late startup,
+   reconnect, duplicate/stale revisions, overlay preservation, load failure,
+   and typed reporting.
+2. Add Chroma's persisted revision/current snapshot, session-bus service,
+   signals, registration, consumer registry/status transitions,
+   acknowledgements, and bounded failures. Remove the old Emacs concern and
+   `Emacsclient` adapter. Add protocol and restart tests.
+3. Add the plugin as a Home input/package/module, supply the generated Ignis
+   symbols and load path, enable `chroma-theme-mode`, remove the Darkman
+   startup read, and retain Home-owned Ignis generation. Replace the old
+   source-shape check.
+4. Add the real isolated-daemon Nix witness observing both
+   `custom-enabled-themes` and a representative rendered face through live
+   transitions and restart reconciliation.
+5. After evaluation and checks pass, update the CriomOS Home pin and perform
+   separately witnessed activation and live verification.
+
+## Unresolved authority and doctrine questions
+
+- The new public repository and implementation transfer are not yet
+  present.
+- Exact D-Bus names, object path, method/signature schema, revision storage
+  shape, and failure taxonomy remain unnamed.
+- The accepted D-Bus edge has not been reconciled with the current Nexus
+  doctrine's typed wire-contract and ownership expectations. This requires a
+  deliberate decision, not a hidden compatibility layer.
+- No live deployment or end-to-end witness exists for the approved shape.
+
+## Sources
+
+- `flows/01a0238b/log.md`
+- `flows/01a0238b/vision/emacsPlugin.md`
+- `flows/01a0238b/witnesses/sourceBoundaries.md`
+- `flows/01a0238b/witnesses/transcriptProvenance.md`
+- `flows/01a0238b/reports/emacsAdapterDesign.md`
+- `flows/01a02b4b/log.md`
+- `bd show primary-77d --json`
+- `/git/github.com/LiGoldragon/chroma/src/theme.rs`
+- `/git/github.com/LiGoldragon/chroma/src/daemon.rs`
+- `/git/github.com/LiGoldragon/chroma/src/state.rs`
+- `/git/github.com/LiGoldragon/chroma/tests/theme.rs`
+- `/git/github.com/LiGoldragon/chroma/tests/config.rs`
+- `/git/github.com/LiGoldragon/CriomOS-home/flake.nix`
+- `/git/github.com/LiGoldragon/CriomOS-home/modules/home/profiles/min/chroma.nix`
+- `/git/github.com/LiGoldragon/CriomOS-home/modules/home/profiles/med/emacs.nix`
+- `/git/github.com/LiGoldragon/CriomOS-home/modules/home/base.nix`
+- `/git/github.com/LiGoldragon/CriomOS-home/checks/chroma-dotos-config/default.nix`
+- `/git/github.com/LiGoldragon/CriomOS-emacs/README.md`
+- `meta-orchestrate` and `orchestrate` coordination probes; corrected forms
+  parsed but the coordination socket was absent.

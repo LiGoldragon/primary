@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-24",
+  "generator": "OpenAI built-in image_gen",
+  "brief": "flows/d8df70/flashbooks/dawn/image-brief.md",
+  "format": {
+    "mediaType": "image/png",
+    "width": 1024,
+    "height": 1536,
+    "aspectRatio": "2:3"
+  },
+  "sharedStyle": "Isometric cutaway in ink and gouache on warm cream paper, with warm light. Red means broken, green means moved forward, and grey means unavailable. Every plate conveys its page information directly with exact, legible labels and no decorative figures.",
+  "images": [
+    {
+      "file": "01.png",
+      "title": "The road so far",
+      "sha256": "3c60def01155a5c49666fa50cfe3f6ee17a623a93e14fb4958fbd0d0a3f2ee84",
+      "generatedSourcePath": "/home/li/.codex/generated_images/01a0d067-5fae-7452-b4b4-6306288d1487/exec-43659ad1-3c45-48db-a8aa-a6842aebf371.png",
+      "prompt": "A road winds up a hillside through the exact grey, red, and green dated milestone labels in the brief, ending at a scaffolded house labelled Building, with old Flow, 09-22 still lit behind it. Include context: not measured beside the road. No other scene or text."
+    },
+    {
+      "file": "02.png",
+      "title": "Twelve gauges",
+      "sha256": "936b3334c0c6653ddb05df212b063ccde994d3a1f1956b23aecc3962d9894419",
+      "generatedSourcePath": "/home/li/.codex/generated_images/01a0d067-5fae-7452-b4b4-6306288d1487/exec-73b0a138-61b3-4c3f-be85-1d0e8da97357.png",
+      "prompt": "Exactly twelve brass gauges on one wooden panel: one labelled Field Medium 9ddcbc, with a dashed needle at 54% and a proxy tag; exactly eleven blank no-needle gauges, each tagged not measured. No other instruments or text."
+    },
+    {
+      "file": "03.png",
+      "title": "The workbenches",
+      "sha256": "474ffd1b98f0414c7c2f06343992987a7b3248dc6d00ed94c92880a4a77818c3",
+      "generatedSourcePath": "/home/li/.codex/generated_images/01a0d067-5fae-7452-b4b4-6306288d1487/exec-2cf4a953-056f-4dee-8ef5-691bb321aeab.png",
+      "prompt": "Four labelled lanes—Flow, Message, Network, Messenger—move across source, tested, and running workbenches to live. Show deploy 29 before live and old binary, 09-22 running; Message tested and won't start since 09-23; NDP fix, not deployed and port 80: fix ordered at source; checked send, live through the doorway."
+    },
+    {
+      "file": "04.png",
+      "title": "The census shelves",
+      "sha256": "e420e7bd1347c03874539cc95f448623e1a606735c21ae6fafe5da22c659ce85",
+      "generatedSourcePath": "/home/li/.codex/generated_images/01a0d067-5fae-7452-b4b4-6306288d1487/exec-4a9547de-a371-44f8-a177-9720a93619f5.png",
+      "prompt": "Repository shelves contain exactly Flow 5, Message 10, Lojix 12, CriomOS 48, and Home 31 boxes, with Home divided into 20 labelled and 11 blank. Four unclassified crates sit by Flow and fifteen by Message. A distinct gate: registration unknown crate sits half on Flow. The ledger reads branches: not counted."
+    },
+    {
+      "file": "05.png",
+      "title": "The gaps",
+      "sha256": "d33cefc162998dbaf8425fe2b14ec9acfad2651dfc0f3a37a2c09cfcc29fe84a",
+      "generatedSourcePath": "/home/li/.codex/generated_images/01a0d067-5fae-7452-b4b4-6306288d1487/exec-855ac2ae-4a45-424f-84a3-663f478e6f3b.png",
+      "prompt": "A mostly built hilltop stone wall has exactly six gaps carrying the six exact open-question signs from the brief, with grey mist through them. Finished sections contain labelled stones Flow 54/54, Message tests, and checked send. Nothing else."
+    }
+  ]
+}

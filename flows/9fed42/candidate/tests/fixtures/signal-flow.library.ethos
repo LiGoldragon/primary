@@ -1,0 +1,15 @@
+; Test stand-in for the signal-flow crate's Event,
+; as the design states it (section 1, Memory):
+; Started, ToolUsed.String, ContextMeasured.{
+; Tokens.Integer Window.Integer }, Stopped.
+Library
+[]
+[  Event.[
+      Started
+      ToolUsed.String
+      ContextMeasured.{
+         Tokens.Integer
+         Window.Integer }
+      Stopped ] ]
+[]
+[]

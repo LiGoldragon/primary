@@ -1,0 +1,509 @@
+<title>Protos Nexus Signal Review</title>
+<style>
+:root {
+  --bg: #f2f1ec;
+  --bg-raised: #ffffff;
+  --ink: #1c211f;
+  --ink-soft: #565f5a;
+  --border: #d9d6cd;
+  --accent: #2f6e62;
+  --accent-soft: #e4ede9;
+  --accent-ink: #1f4d44;
+  --changed-bg: #f4e9d4;
+  --changed-ink: #7a5416;
+  --changed-border: #e0c791;
+  --mono-bg: #eae8e0;
+  --shadow: 0 1px 2px rgba(28, 33, 31, 0.06), 0 6px 16px rgba(28, 33, 31, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181a;
+    --bg-raised: #1b2022;
+    --ink: #e7eae7;
+    --ink-soft: #99a49d;
+    --border: #2c3432;
+    --accent: #6cbaa8;
+    --accent-soft: #1e2f2b;
+    --accent-ink: #a6e2d1;
+    --changed-bg: #35301f;
+    --changed-ink: #e3c688;
+    --changed-border: #4a4126;
+    --mono-bg: #20262a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14181a;
+  --bg-raised: #1b2022;
+  --ink: #e7eae7;
+  --ink-soft: #99a49d;
+  --border: #2c3432;
+  --accent: #6cbaa8;
+  --accent-soft: #1e2f2b;
+  --accent-ink: #a6e2d1;
+  --changed-bg: #35301f;
+  --changed-ink: #e3c688;
+  --changed-border: #4a4126;
+  --mono-bg: #20262a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 5rem;
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  text-wrap: balance;
+  font-weight: 600;
+}
+
+.masthead {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.75rem;
+}
+
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+h1 {
+  font-size: 2.15rem;
+  margin: 0.4rem 0 0.6rem;
+  line-height: 1.15;
+}
+
+.masthead p {
+  color: var(--ink-soft);
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+h2 {
+  font-size: 1.35rem;
+  margin: 3rem 0 1rem;
+  padding-top: 0.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+h2 .num {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 1.8rem 0 0.7rem;
+}
+
+p { margin: 0 0 1rem; }
+
+.lede {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  box-shadow: var(--shadow);
+  margin: 1.25rem 0 1.5rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 640px;
+  font-size: 0.92rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+thead th {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--mono-bg);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+td code, li code, p code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.88em;
+  background: var(--mono-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag-changed {
+  display: inline-block;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.74rem;
+  background: var(--changed-bg);
+  color: var(--changed-ink);
+  border: 1px solid var(--changed-border);
+  border-radius: 5px;
+  padding: 0.08em 0.45em;
+  white-space: nowrap;
+}
+
+.tag-same {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+ul, ol { padding-left: 1.35rem; margin: 0 0 1.25rem; }
+li { margin-bottom: 0.55rem; }
+
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1.25rem 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+.callout p:last-child { margin-bottom: 0; }
+
+figure {
+  margin: 1.5rem 0 1.75rem;
+  padding: 1.1rem 1rem 0.9rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.diagram-scroll {
+  overflow-x: auto;
+}
+
+figure svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+}
+
+.open-questions ol > li::marker {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--accent);
+}
+
+.footer-note {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+strong { color: var(--ink); }
+
+.svg-label { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="eyebrow">Stack review · witnessed 2026-09-12</div>
+    <h1>Protos, Nexus and Signal: where things stand</h1>
+    <p class="lede">Every fact below was re-checked today against the repositories themselves. Changes since the first witness on 2026-09-10 are marked <span class="tag-changed">changed</span>.</p>
+  </div>
+
+  <section>
+    <h2><span class="num">1</span> The stack today</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>Crate</th><th>Version</th><th>Since 09-10</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Structure</td><td><code>protos</code></td><td>0.29.1</td><td><span class="tag-same">unchanged; no dependencies at all</span></td></tr>
+          <tr><td>Data dialect</td><td><code>datom-codec</code></td><td>0.25.7</td><td><span class="tag-changed">changed</span> — was 0.25.6; separator-string work, 2026-09-11</td></tr>
+          <tr><td>Schema and generator</td><td><code>ethos-zero</code></td><td>6.1.6</td><td><span class="tag-same">unchanged; a command-line tool, no daemon (Zero: version 0, no daemon yet)</span></td></tr>
+          <tr><td>Shared nexus code</td><td><code>nexus</code></td><td>0.1.1</td><td><span class="tag-same">unchanged; 131 lines, only the first-configuration rule</span></td></tr>
+          <tr><td>Host contract</td><td><code>horizon</code></td><td>0.9.0</td><td><span class="tag-changed">changed</span> — was 0.8.0; fixed-location and Decimal wire work, 2026-09-11</td></tr>
+          <tr><td>Deploy nexus</td><td><code>lojix</code></td><td>1.0.1</td><td><span class="tag-changed">changed</span> — was 1.0.0 with 18 uncommitted files; now committed and clean</td></tr>
+          <tr><td>Lojix contracts</td><td><code>signal-lojix</code> 1.2.0, <code>meta-signal-lojix</code> 2.3.0</td><td>&mdash;</td><td><span class="tag-changed">changed</span> — were 1.1.0 and 2.2.0; migrated to Horizon fixed location</td></tr>
+          <tr><td>Orchestrate</td><td><code>orchestrate-nexus</code> 0.31.0</td><td>&mdash;</td><td><span class="tag-same">committed on an old protos revision; an uncommitted upgrade to current protos and to the nexus crate sits in its working tree</span></td></tr>
+          <tr><td>Other contracts</td><td><code>signal-spirit</code> 1.2.0, <code>meta-signal-spirit</code> 1.0.1, <code>signal-message</code> 1.0.0, <code>signal-persona</code> 1.0.0, <code>signal-introspect</code> 1.1.0, <code>signal-standard</code> 1.0.0</td><td>&mdash;</td><td><span class="tag-same">unchanged</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Only two components exist as nexuses: the Lojix nexus and the Orchestrate nexus. Everything else is still a daemon of the old shape. Spirit and Mirror are marked deprecated. Spirit has no <code>protos</code> or <code>datom</code> dependency at all; only its two contracts were ported. The Codex realization flow 857335 has written nothing since 2026-09-10; a separate flow is investigating why its skeptical audits did not complete.</p>
+
+    <figure>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 900 460" role="img" aria-label="Stack diagram: protos feeds datom-codec, which feeds ethos-zero, which generates six signal contract crates; those feed the Lojix nexus and the Orchestrate nexus; the shared nexus crate feeds Lojix directly and Orchestrate only in an uncommitted change; horizon feeds Lojix; contracts carry unused datom kinds behind a feature the nexuses never enable.">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="arrow-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor" opacity="0.6"></path>
+            </marker>
+          </defs>
+
+          <!-- protos -->
+          <rect x="370" y="16" width="160" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="450" y="44" text-anchor="middle" class="svg-label" font-size="13">protos 0.29.1</text>
+
+          <line x1="450" y1="62" x2="450" y2="92" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- datom-codec -->
+          <rect x="345" y="94" width="210" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="450" y="122" text-anchor="middle" class="svg-label" font-size="13">datom-codec 0.25.7</text>
+
+          <line x1="450" y1="140" x2="450" y2="170" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- ethos-zero -->
+          <rect x="345" y="172" width="210" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="450" y="200" text-anchor="middle" class="svg-label" font-size="13">ethos-zero 6.1.6</text>
+          <text x="450" y="230" text-anchor="middle" font-size="11" fill="currentColor" opacity="0.7">command-line generator, no daemon</text>
+
+          <line x1="450" y1="218" x2="450" y2="255" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+          <text x="466" y="245" font-size="11" opacity="0.75">generates</text>
+
+          <!-- six contracts -->
+          <rect x="230" y="257" width="440" height="56" rx="8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"></rect>
+          <text x="450" y="280" text-anchor="middle" class="svg-label" font-size="12.5">six signal contract crates</text>
+          <text x="450" y="298" text-anchor="middle" font-size="10.5" opacity="0.7">datom kinds carried behind a feature never enabled</text>
+
+          <line x1="380" y1="313" x2="270" y2="345" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+          <line x1="520" y1="313" x2="630" y2="345" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <!-- lojix-nexus -->
+          <rect x="120" y="347" width="200" height="50" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"></rect>
+          <text x="220" y="377" text-anchor="middle" class="svg-label" font-size="13" fill="var(--accent-ink)">lojix-nexus</text>
+
+          <!-- orchestrate-nexus -->
+          <rect x="580" y="347" width="210" height="50" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"></rect>
+          <text x="685" y="377" text-anchor="middle" class="svg-label" font-size="13" fill="var(--accent-ink)">orchestrate-nexus</text>
+
+          <!-- nexus crate -->
+          <rect x="10" y="257" width="170" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="95" y="285" text-anchor="middle" class="svg-label" font-size="12.5">nexus 0.1.1</text>
+
+          <line x1="130" y1="303" x2="185" y2="352" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+          <line x1="150" y1="303" x2="600" y2="352" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow-dashed)" opacity="0.8"></line>
+          <text x="420" y="330" text-anchor="middle" font-size="10.5" opacity="0.75">uncommitted</text>
+
+          <!-- horizon -->
+          <rect x="10" y="347" width="170" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="95" y="368" text-anchor="middle" class="svg-label" font-size="12.5">horizon 0.9.0</text>
+          <text x="95" y="384" text-anchor="middle" font-size="10.5" opacity="0.7">host contract</text>
+
+          <line x1="180" y1="370" x2="215" y2="370" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"></line>
+
+          <text x="450" y="440" text-anchor="middle" font-size="11" opacity="0.7">only lojix-nexus and orchestrate-nexus exist as nexuses; every other component is still a daemon of the old shape</text>
+        </svg>
+      </div>
+      <figcaption>The realized stack: protos underlies datom-codec, which underlies ethos-zero, the generator. Ethos-zero generates the six signal contract crates, which feed the two realized nexuses. The shared nexus crate feeds Lojix directly and Orchestrate only through an uncommitted change; horizon feeds Lojix. The contracts carry datom kinds behind a feature the nexuses never turn on.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> What was ruled and landed on 2026-09-10</h2>
+    <p>Landed in the distilled Vision, commit <code>6c4e16f</code>:</p>
+    <ul>
+      <li>Nexus is the word for the style of component that speaks signal and uses a similar database. Every component built from now on is a Nexus. The nexus repository is the library that defines the core of a Nexus component.</li>
+      <li>The "daemon lives in Ethos Zero" sentence and the nexus-core heading are gone. Ethos has three roots: Library, Signal, Sema. Signal gives a Nexus its main types and Sema its database types.</li>
+      <li>Ethos Zero was first named Ethos Monolith; the two are the same thing. Zero as in version 0: no daemon yet, no Nexus. The ethos repository is for the ethos nexus that follows. There is no ethos-monolith repository; GitHub redirects the name to ethos-zero.</li>
+      <li>Signal is portable rkyv (a binary serialization format) plus whatever protocol is standardized on top of it; the protocol is still to be decided. The sentence naming CapnProto (an earlier candidate serialization format) is gone.</li>
+      <li>The router's enum is held in the signal repository, which every component depends on.</li>
+      <li>The undelimited string form is named bare: a bare string, undelimited because it needs no delimiters.</li>
+      <li>Raw records that spoke of a nexus core or a Nexus execution engine were archived as superseded, none deleted.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> The signal area</h2>
+
+    <figure>
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 940 620" role="img" aria-label="Signal-area diagram: on the left, ethos-zero generates six contract crates sharing one 72-line file, feeding the two realized nexuses over a hand-rolled length-prefix framing with no handshake or contract identity; on the right, a legacy stack running signal-derive, signal, signal-forge and signal-frame with 60 legacy-wired dependents, reaching Lojix only through one streaming import in triad-runtime; below, signal-standard names Lojix and Orchestrate in its roster but has no live dependents and is mostly dead code; the realized nexuses use none of the four signal repositories.">
+          <defs>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="arrow2-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor" opacity="0.6"></path>
+            </marker>
+          </defs>
+
+          <text x="230" y="28" text-anchor="middle" font-size="12.5" font-weight="600" opacity="0.8">REALIZED STACK</text>
+          <text x="700" y="28" text-anchor="middle" font-size="12.5" font-weight="600" opacity="0.8">LEGACY STACK</text>
+
+          <!-- realized: ethos-zero -->
+          <rect x="120" y="44" width="220" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="230" y="71" text-anchor="middle" class="svg-label" font-size="12.5">ethos-zero</text>
+
+          <line x1="230" y1="88" x2="230" y2="112" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow2)"></line>
+
+          <!-- realized: six contracts -->
+          <rect x="40" y="114" width="380" height="66" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.7"></rect>
+          <text x="230" y="136" text-anchor="middle" class="svg-label" font-size="12" fill="var(--accent-ink)">signal-lojix · meta-signal-lojix · signal-spirit</text>
+          <text x="230" y="151" text-anchor="middle" class="svg-label" font-size="12" fill="var(--accent-ink)">meta-signal-spirit · signal-orchestrate · meta-signal-orchestrate</text>
+          <text x="230" y="169" text-anchor="middle" font-size="10.5" opacity="0.75">each: same 72-line file — Signalizable, ByteViewable, Restorable over bare rkyv</text>
+
+          <line x1="230" y1="180" x2="230" y2="205" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow2)"></line>
+
+          <!-- realized: nexuses -->
+          <rect x="60" y="207" width="150" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="135" y="237" text-anchor="middle" class="svg-label" font-size="12.5">lojix-nexus</text>
+
+          <rect x="250" y="207" width="170" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="335" y="237" text-anchor="middle" class="svg-label" font-size="12.5">orchestrate-nexus</text>
+
+          <rect x="40" y="270" width="380" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="4 3"></rect>
+          <text x="230" y="291" text-anchor="middle" font-size="11" opacity="0.8">hand-rolled 4-byte length prefix, 8 MiB cap</text>
+          <text x="230" y="306" text-anchor="middle" font-size="11" opacity="0.8">no handshake, no contract identity on the wire</text>
+
+          <!-- legacy: signal-derive -->
+          <rect x="560" y="44" width="150" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="635" y="70" text-anchor="middle" class="svg-label" font-size="12">signal-derive</text>
+
+          <line x1="635" y1="86" x2="635" y2="108" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow2)"></line>
+
+          <!-- legacy: signal 0.1.0 -->
+          <rect x="560" y="110" width="150" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="635" y="132" text-anchor="middle" class="svg-label" font-size="12">signal 0.1.0</text>
+          <text x="635" y="146" text-anchor="middle" font-size="9.5" opacity="0.7">dotos-based</text>
+
+          <line x1="635" y1="152" x2="635" y2="174" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow2)"></line>
+
+          <!-- legacy: signal-forge -->
+          <rect x="560" y="176" width="150" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="635" y="198" text-anchor="middle" class="svg-label" font-size="12">signal-forge</text>
+          <text x="635" y="211" text-anchor="middle" font-size="9.5" opacity="0.7">skeleton, 1 dependent</text>
+
+          <!-- legacy: signal-frame -->
+          <rect x="740" y="110" width="170" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"></rect>
+          <text x="825" y="132" text-anchor="middle" class="svg-label" font-size="12.5">signal-frame 0.4.0</text>
+          <text x="825" y="147" text-anchor="middle" font-size="10" opacity="0.75">short header, contract</text>
+          <text x="825" y="160" text-anchor="middle" font-size="10" opacity="0.75">binding, handshake, streams</text>
+          <text x="825" y="174" text-anchor="middle" font-size="10" opacity="0.75">60 dependents, all legacy-wired</text>
+
+          <!-- bridge: signal-frame to lojix-nexus via triad-runtime -->
+          <path d="M 740 175 C 600 260, 420 240, 210 235" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow2-dashed)" opacity="0.85"></path>
+          <text x="560" y="255" text-anchor="middle" font-size="10.5" opacity="0.8">reaches Lojix only at 0.3.1, one streaming</text>
+          <text x="560" y="268" text-anchor="middle" font-size="10.5" opacity="0.8">import in triad-runtime</text>
+
+          <!-- legacy: signal-standard, bottom, spanning -->
+          <rect x="480" y="330" width="420" height="66" rx="8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"></rect>
+          <text x="690" y="353" text-anchor="middle" class="svg-label" font-size="12.5">signal-standard 1.0.0</text>
+          <text x="690" y="369" text-anchor="middle" font-size="10.5" opacity="0.75">ethos-generated roster and socket types; names Lojix, Orchestrate</text>
+          <text x="690" y="384" text-anchor="middle" font-size="10.5" opacity="0.75">14 dependents, all legacy-wired or deprecated; ~550 of 700 lines dead</text>
+
+          <line x1="480" y1="350" x2="425" y2="270" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.5"></line>
+          <text x="440" y="410" text-anchor="middle" font-size="11" opacity="0.7">nothing realized depends on signal-standard</text>
+
+          <rect x="150" y="440" width="640" height="60" rx="8" fill="var(--mono-bg)" stroke="var(--border)" stroke-width="1.2"></rect>
+          <text x="470" y="465" text-anchor="middle" font-size="12" font-weight="600" opacity="0.85">the realized nexuses use none of the four signal repositories</text>
+          <text x="470" y="483" text-anchor="middle" font-size="10.5" opacity="0.7">signal, signal-derive, signal-forge, signal-frame — except the one triad-runtime import above</text>
+        </svg>
+      </div>
+      <figcaption>Two stacks side by side. Left, the realized one: ethos-zero generates six contract crates sharing one 72-line file, feeding the two nexuses over a hand-rolled length prefix with no handshake or contract identity. Right, the legacy one: signal-derive, signal, signal-forge, and signal-frame, the last with 60 dependents but reaching Lojix only through one streaming import. Below, signal-standard names Lojix and Orchestrate in its roster but has no live dependents. The realized nexuses depend on none of the four legacy signal repositories.</figcaption>
+    </figure>
+
+    <h3>Findings</h3>
+    <ul>
+      <li>The realized nexuses use none of the four signal repositories.</li>
+      <li>The wire today says nothing about itself: no envelope, no contract identity, no revision, no handshake. The Rust type is the only discriminator, and only at compile time.</li>
+      <li>signal-frame has the design the wire lacks, but sits on the legacy dotos stack and its macro emits dotos codecs.</li>
+      <li>signal-standard is on the realized stack's side and names Lojix and Orchestrate in its roster, but nothing live uses it and most of its tree is dead.</li>
+      <li>The legacy signal repository holds one thing worth carrying forward: four sections of its architecture document — origin route as implicit return address; authorization at the wire through two sockets rather than a permission variant; reply by position without correlation ids; one record, one form. Its code is superseded; its history is not needed beyond that document.</li>
+      <li>The duplication to resolve is the six identical copies of the Signal type in the contracts, and the three copies of the length prefix in the nexuses. That is the code written most recently.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Proposal for the signal repository</h2>
+    <ol>
+      <li>Rename signal-standard to signal, discarding its orphaned files and keeping its ethos files and generated taxonomy. Archive the legacy signal repository, carrying only the four architecture sections into the new one as a design document.</li>
+      <li>Move the 72 lines the six contracts share into signal, so every generated contract depends on signal and carries none of it itself; ethos-zero emits contracts against signal's kinds.</li>
+      <li>Move the length-prefix framing into signal, so Lojix and Orchestrate depend on it once instead of three times.</li>
+      <li>The protocol — everything signal-frame designed and the wire now lacks — stays to be decided, and is designed in signal when taken up. signal-frame is left as it is, a reference.</li>
+      <li>signal-derive is archived with the legacy signal; its only dependent was that repository.</li>
+    </ol>
+
+    <div class="callout">
+      <p><strong>Open question for the living:</strong> does signal-standard's taxonomy belong in signal at all? Nothing realized needs a component roster yet; the router that would is not built. If not, signal is born with only the shared Signal type and the framing.</p>
+    </div>
+  </section>
+
+  <section class="open-questions">
+    <h2><span class="num">5</span> Waiting on the living's word</h2>
+    <ol>
+      <li>The reconciled wording for the first heading of the Nexus vision: "A Nexus is the whole long-running component: the process, its sockets, and the signal contracts it is compiled with. Nexus is its name; daemon is not. A Nexus is like a daemon, said only so that a thinking machine which thinks in daemons understands what a Nexus is." With it, the "amongst other things" sentence under A kind of thing is removed.</li>
+      <li>The line "The ethos repository is for the ethos nexus" appears under both Zero and Generation in the Ethos vision. Proposal: keep it under Zero only.</li>
+      <li>The mandatory-traits Intent still says "trait" where the Ethos vision set trait aside for kind. Reword, or does trait stand because that Intent speaks of the Rust world specifically?</li>
+      <li>Three distillation candidates with no Vision coverage yet: Horizon (three raw entries on the CriomOS node-definition settings); "everything is going to move to the new datom ... the horizon, logics, everything," where "logics" may mean Lojix; and design practice ("Machines think in code ... The code they don't know is Ethos and datom"), possibly an Intent.</li>
+      <li>The main-flow practice for reports, never yet landed in a skill: a subflow renders the report page and returns its path; the main flow publishes it, which arms comment wake-ups, and hands the living the link.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> Code-side findings, for the realization flow</h2>
+    <ul>
+      <li>The protos README and the protos skill describe the retired layer model (Protoform, Delineation, Situated), six delimiter pairs including curly quotes, and guillemets as a map. Vision and code agree with each other; the README and the skill are a generation behind both.</li>
+      <li>Four protos test files, 795 lines, are not compiled; only one test target is declared.</li>
+      <li>The lojix skill names the meta command-line tool <code>meta-lojix</code>; the binary is actually <code>lojix-meta</code>, which follows the vision.</li>
+      <li>Two protos revisions are live at once: orchestrate and its contracts pin an old one, with the upgrade sitting uncommitted.</li>
+      <li>Orchestrate and meta-signal-spirit have uncommitted working trees that pin contracts by absolute filesystem path.</li>
+      <li>The name signal-introspect-carrier appears in release witnesses; no such crate exists.</li>
+      <li>The release-witness file for validation still says datom and ethos-zero had not passed their gates; later reports record them green. The witness itself was never updated.</li>
+    </ul>
+  </section>
+
+  <p class="footer-note">Witnessed 2026-09-12 by flow fe34eb. First witness 2026-09-10; re-checked against the repositories directly rather than against prior reports.</p>
+
+</div>

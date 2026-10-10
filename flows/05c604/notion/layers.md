@@ -1,0 +1,9 @@
+# Layers
+
+## The order of the layers below primary reconsidered: the communication layer carries the psyche's words and may belong to core; the maintenance layer is the bottom with everything pre-approved; "maybe I misdesigned the layers"
+
+Context: the closing part of the same message, framed as exploration ("I was just sort of going on with the flow here", "let's see what Panini says"), so held as notion. Logged directly by the main flow before acting.
+
+> Curious, the vision starts. That's where the vision forging layer is. It creates the vision, and then below that, they are enforcing the vision at different points from the middle, which is where it gets deployed and maintained. The two layers below that are, maybe, well, maybe it's not exactly in that order, but the authority is in that order, I think: the bottom, the low, the middle, the fourth, the third layer, really the ternary, because core is kind of on its own, right? There are four, so the one below that is the communication layer, the fast layer, but maybe that's actually the primary layer, and that's in a different sense. We can also reconsider. There's going to be something different because the communication layer is going to carry the psyche's words, so in a way that gives it a lot of authority. Security-wise, it's going to be important. Maybe, or maybe actually, that fast part is part of the core, and maybe I misdesigned the layers. I was just sort of going on with the flow here. There is probably some genius in there somewhere, but let's see what Panini says and what astrology says, and what would be the potential other layers. There's the layer of maintenance and upkeep and garbage collection and all that, which I saw as the bottom layer because it has the least authority. It has to have all of its action pre-approved and everything.
+
+-- psyche, typed.

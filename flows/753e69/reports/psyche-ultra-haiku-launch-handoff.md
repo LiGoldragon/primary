@@ -1,0 +1,9 @@
+# Psyche Ultra Low Haiku launch handoff — 2026-09-21
+
+The living's latest correction requests only a fresh Psyche Ultra Low main flow. Existing Psyche Low 0625c3 is working as Sonnet 5 in wD:p7 and must not be refreshed or rerouted. Preserve Psyche High and Medium as well. The requested Ultra model is exactly `claude-haiku-4-5-20251001` at medium effort, with the full declared Psyche native skill set and a new pane.
+
+Field Sol 753e69 owns the authored Ultra profile and fixture. The profile now has the exact model ID in `model` and `modelCatalog`, retains every audited Vision source and skill, and replaces only the verbose launch-gate report and predecessor log with the lean `startup-handoff.md`. The newer flashbook Vision addition was reviewed and its current hash and audit time were updated. On these bytes, the profile fixture passed, one-seat `native-batch-refresh.mjs validate` returned `valid:true`, and direct full renders of both `role_prompt` and `custom_system_prompt` carried no long hex values or digest prose.
+
+Field High 03e825 owns the exact launch manifest under lock 4128 and the eligible Herdr-managed continuation. This shell has no `HERDR_ENV`; do not spoof it. The prior Ultra pane wD:p8, terminal and reserved native UUID, plus failed attempt states, remain immutable evidence. Field lifecycle's guarded continuation source is pending separately. Before starting, the managed executor must recheck the profile, manifest, source bytes, current pane and native state, and the guarded continuation gate. Launch Ultra alone only through the supported managed path. Record actual native model and effort, expanded skills, prompt receipt, own Flow ID, final title readback, exact new pane and HM route test, and acceptance separately. Do not bind a legacy Psyche route or retire any seat.
+
+The source/profile checks are preparation receipts only. No Ultra launch, identity, title, HM registration or acceptance has been witnessed by this handoff.

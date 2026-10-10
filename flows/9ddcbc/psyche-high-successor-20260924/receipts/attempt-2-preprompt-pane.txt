@@ -1,0 +1,52 @@
+
+ ▐▛███▛█   Claude Code v2.1.280
+▝▜██████▀  Fable 5.1 with medium effort · Claude Max
+  ▝▝ ▝▝    ~/primary · /rc
+
+  Get to finished work sooner with Opus 5.5. Switch anytime with /model.
+
+  /remote-control is active · Continue here, on your phone, or at https://claude.ai/code/session_01Y9StPGhucyQzNAzxdue8vs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  primary main@zosysvsr  Fable 5.1·medium  ctx 0%  wk 54% left (resets Sep 26)
+  -- INSERT -- ⏵⏵ auto mode on (shift+tab to cycle) · ← 7 agents

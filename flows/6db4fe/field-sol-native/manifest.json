@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wQ",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "field-sol-of-7091ea",
+      "profileFile": "/home/li/primary/flows/6db4fe/field-sol-native/profile.json",
+      "predecessor": "7091ea",
+      "agent": "field-sol-of-7091ea",
+      "label": "Field Sol of 7091ea",
+      "model": "gpt-5.6-sol",
+      "effort": "medium"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "name": "psyche-fable-of-1b8ac0",
+  "model": "claude-fable-5-1[1m]",
+  "effort": "medium",
+  "role": "Psyche High",
+  "fresh": false,
+  "predecessor": "1b8ac0",
+  "ancestor": "1b8ac0",
+  "remember": {
+    "flow": "1b8ac0",
+    "depth": 1
+  },
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "High",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche High <FLOW_ID>"
+  },
+  "sourceAudit": {
+    "reviewedAt": "2026-09-22T14:51:02Z",
+    "newestApplicableVision": [
+      "flows/1b8ac0/vision/messaging.md",
+      "flows/1b8ac0/vision/flashbooks.md",
+      "flows/1b8ac0/vision/skills.md",
+      "flows/1b8ac0/vision/flowNexus.md"
+    ]
+  },
+  "skills": [
+    "spirit",
+    "main-flow",
+    "testing-flow-titles",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "psyche-interraction",
+    "psyche-distillation",
+    "file-editing",
+    "nexus",
+    "claude-harness",
+    "flow-communication",
+    "flow-aspect",
+    "datom",
+    "protos",
+    "subflow-scripts",
+    "operational-layer-communication",
+    "operational-final-response",
+    "transcript-search",
+    "context-strata"
+  ],
+  "sources": [
+    {
+      "path": "flows/753e69/psyche-high-native/refresh-payload-1b8ac0.md",
+      "sha256": "f5b7fa1021d8e5768ac384b1bca223c85e00980ec58b8b38a0eddaac602260f9"
+    },
+    {
+      "path": "flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md",
+      "sha256": "f267a223aeb11a5ddc0fb318873edd9dc8b60577dc528123ac24fc5ed6aba3a7"
+    },
+    {
+      "path": "flows/03e825/refresh-round-20260922/psyche-high/current-work-delta.md",
+      "sha256": "dd0a3214fdcb5d50dc661d7efaaf25272d7c0b8e3ecf1995f99f4b208495c9ec"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/messaging.md",
+      "sha256": "c8907401db9f57d19c26c0e0f76186080bd77aa5997f5fb4344381ee4aff0476"
+    },
+    {
+      "path": "flows/1b8ac0/vision/messaging.md",
+      "sha256": "42c4ec9f5635411c894ba8bc8d88ab56b49ca736164a68da1d7b72e037c4ec65"
+    },
+    {
+      "path": "flows/1b8ac0/vision/flashbooks.md",
+      "sha256": "80cbc1c42c5698a0e25ffa8654f056bee46f058e27a62eadfd27bab5ed40e4cd"
+    },
+    {
+      "path": "flows/1b8ac0/vision/skills.md",
+      "sha256": "81fa0b24e05c99af0793572bf951599a34a09baf3dd16eacf6a938594fe9d682"
+    },
+    {
+      "path": "flows/1b8ac0/vision/flowNexus.md",
+      "sha256": "083617e8d8925d8d22f580bc3c4533109033e6787328e9c81713f9de2b425036"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-fable-5-1[1m]",
+      "family": "fable",
+      "source": "flows/395aed/refresh-production/psyche-fable-of-f38926.json; flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md"
+    }
+  ]
+}

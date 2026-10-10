@@ -1,0 +1,12 @@
+{
+  "nativeThreadId": "69700f73-b5b1-494a-b994-3a974181ff47",
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/69700f73-b5b1-494a-b994-3a974181ff47.jsonl",
+  "transcriptSnapshotSha256": "8ac1c69be45892917df7959c7b3336c8a85ab65ee6cccc7a5c423bc17153a932",
+  "nativeSkillCommands": [
+    "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
+  ],
+  "observedIdentity": {
+    "model": "claude-opus-4-6",
+    "effort": null
+  }
+}

@@ -1,0 +1,42 @@
+;; Logos v1 strawman — MAXIMALLY-SLOTTED form. 1-to-1 with Rust: every token homed.
+;; Derive groups are explicit per-instance slots. Dotted-prefix primary form.
+;; Bodies are pure positional; each slot's meaning is fixed by the structure type.
+;; Acceptance oracle: repos/signal-spirit/src/schema/signal.rs
+;; Slot layout of PublicSimpleTupleStruct: ( rustfmt-attr gated-derives plain-derives Name FieldType )
+;; Slot layout of PublicSimpleNamedStruct: ( rustfmt-attr gated-derives plain-derives Name Fields )
+;;   where each Field is a bare positional ( fieldname FieldType ).
+
+PublicSimpleTupleStruct.(
+  RustfmtSkip
+  ( nota-text NotaDecode NotaDecodeTraced NotaEncode )
+  ( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  CommitSequence
+  Integer
+)
+
+PublicSimpleTupleStruct.(
+  RustfmtSkip
+  ( nota-text NotaDecode NotaDecodeTraced NotaEncode )
+  ( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  StateDigest
+  Integer
+)
+
+PublicSimpleNamedStruct.(
+  RustfmtSkip
+  ( nota-text NotaDecode NotaDecodeTraced NotaEncode )
+  ( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  DatabaseMarker
+  (
+    ( commit_sequence CommitSequence )
+    ( state_digest StateDigest )
+  )
+)
+
+PublicSimpleTupleStruct.(
+  RustfmtSkip
+  ( nota-text NotaDecode NotaDecodeTraced NotaEncode )
+  ( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  Domains
+  Vector.(Domain)
+)

@@ -1,0 +1,50 @@
+<svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Four workbenches in a barn, each with a parcel part unwrapped and tools laid out; a fifth parcel on the floor, sealed, addressed to a lantern that is not lit.">
+<defs>
+ <linearGradient id="b1wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1e15"/><stop offset=".6" stop-color="#4a3424"/><stop offset="1" stop-color="#3a281b"/></linearGradient>
+ <linearGradient id="b1floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4430"/><stop offset="1" stop-color="#2a1e14"/></linearGradient>
+ <linearGradient id="b1paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8b684"/><stop offset="1" stop-color="#a47c4c"/></linearGradient>
+ <radialGradient id="b1light" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffdca0" stop-opacity=".5"/><stop offset="1" stop-color="#ffdca0" stop-opacity="0"/></radialGradient>
+ <filter id="b1rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+ <filter id="b1grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .10"/></feComponentTransfer></filter>
+ <g id="b1bench">
+  <path d="M-80,0 L80,0 L90,14 L-90,14 Z" fill="#8a6440" stroke="#2a1a10" stroke-width="1.2"/>
+  <path d="M-84,14 h10 v70 h-10 z M74,14 h10 v70 h-10 z" fill="#4a3220"/>
+  <path d="M-46,0 L-46,-34 L-4,-40 L28,-34 L28,0 Z" fill="#b08858" stroke="#2a1a10" stroke-width="1.2"/>
+  <path d="M-46,-34 L-4,-40 L28,-34 L-14,-28 Z" fill="#c9a06a" stroke="#2a1a10" stroke-width="1"/>
+  <path d="M28,-34 C44,-44 52,-30 44,-18 C40,-10 36,-6 30,-4" fill="url(#b1paper)" stroke="#5a3e22" stroke-width="1"/>
+  <path d="M-46,-20 C-62,-24 -66,-8 -56,-2" fill="url(#b1paper)" stroke="#5a3e22" stroke-width="1"/>
+  <g stroke="#2a1a10" stroke-linecap="round"><path d="M40,-4 L70,-8" stroke-width="3"/><rect x="64" y="-14" width="12" height="8" rx="1" fill="#6a6a70" stroke-width="1"/><path d="M-76,-3 L-58,-5" stroke-width="2.4"/><path d="M-58,-5 l6,-1" stroke="#b0b0b8" stroke-width="2"/></g>
+ </g>
+</defs>
+<rect width="600" height="900" fill="url(#b1wall)"/>
+<g stroke="#1a120c" stroke-width="10" stroke-linecap="round" fill="none" opacity=".9"><path d="M-20,150 L300,40 L620,150"/><path d="M60,122 L60,300"/><path d="M540,122 L540,300"/><path d="M300,40 L300,110"/><path d="M140,96 L300,110 L460,96"/></g>
+<g stroke="#20160f" stroke-width="2" opacity=".5"><path d="M100,150 V420"/><path d="M180,120 V420"/><path d="M260,100 V420"/><path d="M340,100 V420"/><path d="M420,120 V420"/><path d="M500,150 V420"/></g>
+<path d="M268,170 L332,170 L332,420 L268,420 Z" fill="#f2d9a8" opacity=".35"/>
+<ellipse cx="300" cy="460" rx="300" ry="160" fill="url(#b1light)"/>
+<path d="M-20,420 L620,420 L620,920 L-20,920 Z" fill="url(#b1floor)"/>
+<g stroke="#20160f" stroke-width="1" opacity=".45"><path d="M300,420 L-80,920"/><path d="M300,420 L120,920"/><path d="M300,420 L300,920"/><path d="M300,420 L480,920"/><path d="M300,420 L680,920"/></g>
+<g filter="url(#b1rough)">
+ <use href="#b1bench" transform="translate(170,460) scale(.7)"/>
+ <use href="#b1bench" transform="translate(430,460) scale(.7) scale(-1,1)"/>
+ <use href="#b1bench" transform="translate(130,590) scale(.95)"/>
+ <use href="#b1bench" transform="translate(470,590) scale(.95) scale(-1,1)"/>
+</g>
+<g>
+ <path d="M478,150 V210" stroke="#6a5a48" stroke-width="1.4"/>
+ <path d="M464,212 h28 l-3,8 h-22 z" fill="#2c2218"/>
+ <rect x="466" y="220" width="24" height="34" rx="5" fill="#1c1a1e" stroke="#3a3440" stroke-width="1.4"/>
+ <path d="M470,226 L486,248" stroke="#4a4458" stroke-width="1" opacity=".7"/>
+ <path d="M462,254 h32 l-4,8 h-24 z" fill="#2c2218"/>
+</g>
+<g transform="translate(300,690) rotate(-4)">
+ <ellipse cx="0" cy="34" rx="62" ry="10" fill="#140e08" opacity=".5"/>
+ <path d="M-50,-26 L50,-26 L54,30 L-54,30 Z" fill="url(#b1paper)" stroke="#3a2614" stroke-width="1.4"/>
+ <path d="M-50,-26 L-30,-40 L70,-40 L50,-26 Z" fill="#c9a574" stroke="#3a2614" stroke-width="1.2"/>
+ <path d="M50,-26 L70,-40 L72,16 L54,30 Z" fill="#8e6a40" stroke="#3a2614" stroke-width="1.2"/>
+ <g stroke="#e8dcc0" stroke-width="2.2" fill="none"><path d="M0,-26 V30"/><path d="M-52,2 H52"/><path d="M-10,-33 L60,-33"/></g>
+ <path d="M2,-28 C-10,-44 12,-48 4,-30 C14,-44 26,-34 4,-28" stroke="#e8dcc0" stroke-width="1.8" fill="none"/>
+ <g transform="translate(24,8) rotate(6)"><rect x="0" y="0" width="30" height="18" rx="2" fill="#efe2c4" stroke="#6a4a28" stroke-width="1"/><circle cx="5" cy="9" r="2" fill="none" stroke="#6a4a28"/><path d="M11,6 h15 M11,11 h11" stroke="#6a4a28" stroke-width="1.2"/></g>
+</g>
+<path d="M330,700 C380,600 440,420 478,262" stroke="#e8dcc0" stroke-width="1.4" stroke-dasharray="2 7" fill="none" opacity=".55" stroke-linecap="round"/>
+<rect width="600" height="900" filter="url(#b1grain)"/>
+</svg>

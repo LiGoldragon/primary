@@ -1,0 +1,63 @@
+{
+  "case_count": 113,
+  "categories": {
+    "ambiguous_positive_control": 2,
+    "contrast_set": 8,
+    "direct_or_subtle_conflict": 14,
+    "exact_duplicate": 14,
+    "false_or_unsupported": 6,
+    "malformed_or_noise": 2,
+    "paraphrase_duplicate": 14,
+    "private_secret_trap": 8,
+    "prompt_injection_neighbor": 2,
+    "source_needed": 6,
+    "task_or_instruction": 8,
+    "temporal_or_unstable": 10,
+    "unsupported_no_neighbor": 3,
+    "vague_no_stable_subject": 8,
+    "wrong_subject_domain": 8
+  },
+  "endpoint": "https://api.deepseek.com/v1",
+  "eval_id": "mind-accepted-knowledge-final-cleanup-20260706-live-default",
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "prepopulated_setup_case_count": 16,
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "reply_parser": "nota::NotaSource::<signal_mind::MindReply>",
+  "runner": "mind-live-knowledge-judge-eval",
+  "runner_language": "rust",
+  "runner_ledger_absence_witness": {
+    "available": true,
+    "limitation": "This harness observes the runner's accepted-record ledger after rejected submits. It is not a direct storage scan by subject and statement."
+  },
+  "safe_diagnostics": {
+    "judge_diagnostic_hashes": "mind-daemon writes packet_sha256, prompt_sha256, and training_sha256 when MIND_JUDGE_DIAGNOSTIC_PATH is set",
+    "judge_diagnostic_text": "with redacted text enabled, mind-daemon writes redacted packet structure, redacted prompt text, and judge training text",
+    "judge_request_response_log": true,
+    "provider_http_dumps": false,
+    "redacted_packet_text": true
+  },
+  "secret_safety": [
+    "Provider authentication is configured only as a typed secret-source reference.",
+    "The runner never writes resolved secret bytes to arguments, logs, results, or commits.",
+    "Synthetic secret traps use fake placeholder text only.",
+    "Daemon stdout and stderr are captured, but provider keys are resolved inside agent-daemon."
+  ],
+  "secret_source_reference": "Gopass:platform.deepseek.com/api-key",
+  "setup_failures_separated": true,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "training_source": {
+    "include_default": true,
+    "include_diagnostic": false,
+    "kind": "single",
+    "source_count": 1,
+    "sources": [
+      {
+        "kind": "compiled_default",
+        "path": "/git/github.com/LiGoldragon/mind/src/knowledge-judge-prompts/accepted-knowledge.md",
+        "sha256": "c3ba1bf1adf39cd99c8247029792f34b812b9631371d885227c9c1b7c0f938c7"
+      }
+    ]
+  }
+}

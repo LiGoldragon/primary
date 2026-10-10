@@ -1,0 +1,157 @@
+(1783037161 1783037349 [(0 [(signal-frame AlreadyAligned NotAttempted)]) (1 [(message (Bumped ([(signal-frame CargoLock (Revision b78c80775c7fb7f80dee7ea3a8a30cc14dfac442) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision b78c80775c7fb7f80dee7ea3a8a30cc14dfac442) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642))] (synchronizer 2ebd32f07ad46a465ee1e1a3cb7e9ea64ad316aa))) (Verified (prometheus WireChecks))) (signal-harness (Bumped ([(signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642))] (synchronizer 746b5347150ad0b12775310defa7c07d04044dd9))) (Verified (prometheus DefaultPackage))) (signal-router (Bumped ([(signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642))] (synchronizer df94b8bf4ccc3fb943c9ac13fe2dc78836779fb6))) (Verified (prometheus DefaultPackage)))]) (2 [(introspect (Bumped ([(signal-router CargoManifest (Reference main) (Reference synchronizer)) (signal-frame CargoLock (Revision c75053210b1b1e0d22833f0cfc461363213cf860) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision c75053210b1b1e0d22833f0cfc461363213cf860) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-router CargoLock (Revision c4dbbbc4860ad9cdd3f843eac839b7984a934bba) (Revision df94b8bf4ccc3fb943c9ac13fe2dc78836779fb6))] (synchronizer 087d0cf9ca284996bad5202155d8deda1b2df87e))) (VerifyFailed prometheus)) (router (Bumped ([(signal-harness CargoManifest (Reference main) (Reference synchronizer)) (signal-router CargoManifest (Reference main) (Reference synchronizer)) (signal-frame CargoLock (Revision b78c80775c7fb7f80dee7ea3a8a30cc14dfac442) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision b78c80775c7fb7f80dee7ea3a8a30cc14dfac442) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-harness CargoLock (Revision 0727beb7e537472697463443d4323469e04137d4) (Revision 746b5347150ad0b12775310defa7c07d04044dd9)) (signal-router CargoLock (Revision 289c7de47d58432f41c8295b7852da2a94f84475) (Revision df94b8bf4ccc3fb943c9ac13fe2dc78836779fb6))] (synchronizer 2f2e2224ca8f77d2e918128f8608d1afba06f6b0))) (Verified (prometheus WireChecks)))]) (3 [(persona (Bumped ([(message CargoManifest (Reference main) (Reference synchronizer)) (signal-harness CargoManifest (Reference main) (Reference synchronizer)) (signal-router CargoManifest (Reference main) (Reference synchronizer)) (message CargoLock (Revision 33ced7994d05944a0989b06e56d48d6532d44a66) (Revision 2ebd32f07ad46a465ee1e1a3cb7e9ea64ad316aa)) (signal-frame CargoLock (Revision 166bda84dc63bf8461fff11a41c43d6a1c92a941) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision 166bda84dc63bf8461fff11a41c43d6a1c92a941) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-harness CargoLock (Revision 623baf60312c0e5a711012a533eab87520ed9235) (Revision 746b5347150ad0b12775310defa7c07d04044dd9)) (signal-router CargoLock (Revision f81d46469e948b1d29d77e226f53bfe679eeb023) (Revision df94b8bf4ccc3fb943c9ac13fe2dc78836779fb6)) (introspect FlakeLock (Revision fe028946c799b130aba5e506072fcdd1413a6b12) (Revision 087d0cf9ca284996bad5202155d8deda1b2df87e)) (message FlakeLock (Revision d7dfb00576f602dbbfdfec1dfdab3af6cd972970) (Revision 2ebd32f07ad46a465ee1e1a3cb7e9ea64ad316aa)) (router FlakeLock (Revision 14f855747d0a4c30881960046802dd2be0cd8907) (Revision 2f2e2224ca8f77d2e918128f8608d1afba06f6b0))] (synchronizer ac07cdcb10fb079b57f1736c159b35c46d2c96ca))) (VerifyFailed prometheus))])] [(introspect LockEdit [|transitive lock resolution for ComponentName("introspect"):     Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-router.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-rust-next.git`
+error: no matching package named `nota-next` found
+location searched: Git repository https://github.com/LiGoldragon/nota-next.git?branch=main
+required by package `introspect v0.2.0 (/tmp/synchronizer-lock-introspect-201231)`
+|]) (introspect Verify [|nix build --no-link 'github:LiGoldragon/introspect/087d0cf9ca284996bad5202155d8deda1b2df87e#checks.x86_64-linux.test-daemon-answers-typed-meta-policy-relation' 'github:LiGoldragon/introspect/087d0cf9ca284996bad5202155d8deda1b2df87e#checks.x86_64-linux.test-daemon-applies-configured-socket-mode' 'github:LiGoldragon/introspect/087d0cf9ca284996bad5202155d8deda1b2df87e#checks.x86_64-linux.test-daemon-socket' 'github:LiGoldragon/introspect/087d0cf9ca284996bad5202155d8deda1b2df87e#checks.x86_64-linux.test-introspect-cli-reaches-working-socket' 'github:LiGoldragon/introspect/087d0cf9ca284996bad5202155d8deda1b2df87e#checks.x86_64-linux.test-meta-introspect-cli-reaches-policy-socket': 3bi-vendor-cargo-deps.drv
+  /nix/store/vlff5bj42spbybi9xl0j3ry9aliq2agn-source.drv
+  /nix/store/m2h6syrp2v5z0kckh95yr21pjchdqcl7-introspect-deps-0.2.0.drv
+  /nix/store/2qyd480nyinxc36xc57hsjdw1ks125ds-introspect-test-0.2.0.drv
+  /nix/store/ba1cyrd0pp6d1d29sq7wydpnpknjadnh-introspect-test-0.2.0.drv
+  /nix/store/i0hv7qysl5n40a7mlkr7n2566lfk6nhr-introspect-test-0.2.0.drv
+  /nix/store/i0m5ym0v2wdhwicb56c3jhk1kqay4p8l-introspect-test-0.2.0.drv
+  /nix/store/v8vqxkdks4ds1y3i1kbs95z9647kp2cb-introspect-test-0.2.0.drv
+building '/nix/store/vlff5bj42spbybi9xl0j3ry9aliq2agn-source.drv'...
+building '/nix/store/nzx5vgywrxs271wggazd2dbl157c4fg8-cargo-git-https-github.com-LiGoldragon-signal-router.git-df94b8bf4ccc3fb943c9ac13fe2dc78836779fb6.drv'...
+building '/nix/store/wzyg5rdkqdrci7v4a7yw78b0irm14yiz-linkLockedDeps.drv'...
+building '/nix/store/80rx9dvq0i3jyxk4c2i69x8m81pd03bi-vendor-cargo-deps.drv'...
+building '/nix/store/m2h6syrp2v5z0kckh95yr21pjchdqcl7-introspect-deps-0.2.0.drv'...
+error: Cannot build '/nix/store/m2h6syrp2v5z0kckh95yr21pjchdqcl7-introspect-deps-0.2.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/cvhkhd82mpkl99sqv3vkyckbnlxqprpj-introspect-deps-0.2.0
+       Last 25 log lines:
+       > Running phase: patchPhase
+       > Executing configureCargoCommonVars
+       > Running phase: updateAutotoolsGnuConfigScriptsPhase
+       > Running phase: configurePhase
+       > will append /build/source/.cargo-home/config.toml with contents of /nix/store/3mx6a39rahfc2imv2yn3pr1s55wv3s7b-vendor-cargo-deps/config.toml
+       > default configurePhase, nothing to do
+       > Running phase: buildPhase
+       > +++ command cargo --version
+       > cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+       > +++ command cargo check --release --locked --all-targets
+       > error: failed to get `schema-rust` as a dependency of package `signal-router v0.2.0 (https://github.com/LiGoldragon/signal-router.git?branch=synchronizer#df94b8bf)`
+       >     ... which satisfies git dependency `signal-router` (locked to 0.2.0) of package `introspect v0.2.0 (/build/source)`
+       >
+       > Caused by:
+       >   failed to load source for dependency `schema-rust`
+       >
+       > Caused by:
+       >   unable to update https://github.com/LiGoldragon/schema-rust-next.git?branch=main
+       >
+       > Caused by:
+       >   the source https://github.com/LiGoldragon/schema-rust-next.git?branch=main requires a lock file to be present first before it can be
+       >   used against vendored source code
+       >
+       >   remove the source replacement configuration, generate a lock file, and then
+       >   restore the source replacement configuration to continue the build
+       For full logs, run:
+         nix log /nix/store/m2h6syrp2v5z0kckh95yr21pjchdqcl7-introspect-deps-0.2.0.drv
+error: Cannot build '/nix/store/2qyd480nyinxc36xc57hsjdw1ks125ds-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/gzswirvb20qgziyj37bf4yxb637dk0i0-introspect-test-0.2.0
+error: Cannot build '/nix/store/ba1cyrd0pp6d1d29sq7wydpnpknjadnh-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/bp9wn5rhdrjkfw76fhmf9zc3yfjkfhkc-introspect-test-0.2.0
+error: Cannot build '/nix/store/i0hv7qysl5n40a7mlkr7n2566lfk6nhr-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/ic78kxcfjyqpjf1pzzw8sxb422q9njp1-introspect-test-0.2.0
+error: Cannot build '/nix/store/i0m5ym0v2wdhwicb56c3jhk1kqay4p8l-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/3fcr6gwaflyfv8iazqgz80dkd3x1c04s-introspect-test-0.2.0
+error: Cannot build '/nix/store/v8vqxkdks4ds1y3i1kbs95z9647kp2cb-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/2fx3jnl6yw7jh0m44xz7243cq9kfjb94-introspect-test-0.2.0
+error: Build failed due to failed dependency
+|]) (persona LockEdit [|transitive lock resolution for ComponentName("persona"):     Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/message.git`
+    Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-next.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-rust-next.git`
+error: no matching package named `nota-next` found
+location searched: Git repository https://github.com/LiGoldragon/nota-next.git?branch=main
+required by package `persona v0.2.0 (/tmp/synchronizer-lock-persona-201231)`
+|]) (persona Verify [|nix build --no-link 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-component-ready-rejects-wrong-socket-mode' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-component-ready-requires-socket-metadata-from-spawn-envelope' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-launches-message-router-topology-through-engine-supervisor' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-launches-nix-built-prototype-topology' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-launches-prototype-supervised-components-through-engine-supervisor' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-launches-three-harness-chain-topology-through-engine-supervisor' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-persists-cli-mutation-to-manager-store' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-daemon-three-harness-chain-smoke-script-builds' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-engine-layout-assigns-socket-modes-by-component-boundary' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-handoff-router-binds-socket-boundaries' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-message-daemon-stamps-origin-via-tap' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-message-router-topology-spawn-envelope-has-one-peer-socket' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-router-daemon-accepts-stamped-submission' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-router-daemon-rejects-unstamped-submission' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-router-daemon-serves-inbox-after-submit' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-spawn-envelope-carries-component-paths-and-peer-sockets' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.persona-three-harness-chain-writes-instance-specific-daemon-configurations' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-chain-reply-bytes' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-chain-reply-nota' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-chain-request-bytes' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-chain-request-nota' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-chain-summary' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-inbox-listing-reply-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-inbox-query-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-malformed-bytes-decode-rejects' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-message-channel-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-message-unimplemented-reply-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-origin-external-network-peer-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-origin-external-non-owner-uid-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-origin-external-owner-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-origin-internal-mind-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-origin-internal-router-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-stamped-submission-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-submission-accepted-reply-round-trip' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-truncated-frame-decode-rejects' 'github:LiGoldragon/persona/ac07cdcb10fb079b57f1736c159b35c46d2c96ca#checks.x86_64-linux.wire-wrong-frame-kind-decode-rejects': e/wcqrns1zx5jsymicnbrdwy3bfyr3c5j1-vendor-cargo-deps/config.toml
+       > default configurePhase, nothing to do
+       > Running phase: buildPhase
+       > +++ command cargo --version
+       > cargo 1.96.1 (356927216 2026-06-26)
+       > +++ command cargo check --release --locked --all-targets
+       > error: failed to get `schema-rust` as a dependency of package `message v0.5.0 (https://github.com/LiGoldragon/message.git?branch=synchronizer#2ebd32f0)`
+       >     ... which satisfies git dependency `message` (locked to 0.5.0) of package `persona v0.2.0 (/build/source)`
+       >
+       > Caused by:
+       >   failed to load source for dependency `schema-rust`
+       >
+       > Caused by:
+       >   unable to update https://github.com/LiGoldragon/schema-rust-next.git?branch=main
+       >
+       > Caused by:
+       >   the source https://github.com/LiGoldragon/schema-rust-next.git?branch=main requires a lock file to be present first before it can be
+       >   used against vendored source code
+       >
+       >   remove the source replacement configuration, generate a lock file, and then
+       >   restore the source replacement configuration to continue the build
+       For full logs, run:
+         nix log /nix/store/h0s2j6xmdfvhlsay8vv881vp7qrm5065-persona-deps-0.2.0.drv
+error: Cannot build '/nix/store/v2pb4hivfk216nxjlvf2w4g3hb0y7kjn-persona-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/akl4am85h7ka4rwfagc3pdf7gs4nmyx4-persona-0.2.0
+error: Cannot build '/nix/store/2lk870ldba4804my3mcn73xxv52xxki5-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/22i6qdl0fwyfvmif20sgq4ab79fmywqn-persona-test-0.2.0
+error: Cannot build '/nix/store/4ic3adb2cj33f20qjyflkrgb3bkd5npr-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/y27fjhlqk9qcba3wzlxiad9fbhpg61nn-persona-test-0.2.0
+error: Cannot build '/nix/store/625qisqvmskdpc5kmmsfrqvn6hz5dmz4-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/hnccx07v8zx440lbl8zh2lsx6r6pnfyz-persona-test-0.2.0
+error: Cannot build '/nix/store/78mf88ffyhpi9gqsbm92hfi9l95nzqkq-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/fjjpa459q219z3j6nq57fp50j0sa4sk7-persona-test-0.2.0
+error: Cannot build '/nix/store/88mz0l95gfpipnpylxdq7l1lq7szzi5r-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/jbbrd86pmf0ckl8519hsgmx2rd7pn2k5-persona-test-0.2.0
+error: Cannot build '/nix/store/fkikfx9cryvm4s2mg3677l6phbf17vy9-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/r58g0ijd88jj76hafrfymi42bymxiy97-persona-test-0.2.0
+error: Cannot build '/nix/store/fxpchvlk43vqn9nh1l35pgwnid1xccx5-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/ghh3jkyj5pz98xhz0y52vj65dzh0lyhq-persona-test-0.2.0
+error: Cannot build '/nix/store/g5xyj3rsv3vzzx4rysbbrmrvpisjk2si-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/j24vcl3rpna65912wma1hxlc2gicg1in-persona-test-0.2.0
+error: Cannot build '/nix/store/knn6fzrdxmfd256ndb0m08lvlkjh40v7-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/ji02cjpp3jbr7kfys03z6grmddxb8k3z-persona-test-0.2.0
+error: Cannot build '/nix/store/pzdgcdrnamfkpxab3jxx35kza6ifncwh-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/fz60gdv55fhzx75l5y75a4q8vsgdsicl-persona-test-0.2.0
+error: Cannot build '/nix/store/yw2q7x6cwhsm63bff0xd9mnpil9cbsfm-persona-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/n1sq9jjqh4n9s8h489w2lrm91vkfqp1j-persona-test-0.2.0
+error: Build failed due to failed dependency
+error: Build failed due to failed dependency
+|])])

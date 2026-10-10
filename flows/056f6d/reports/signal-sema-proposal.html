@@ -1,0 +1,452 @@
+<!--
+DESIGN PLAN (same plan, tokens and typefaces as nexus-anatomy.html)
+Palette: Slate Ink #16202B text and diagram strokes; Vellum #EEF1F4 ground, a
+cool-biased grey; Socket #2E6F9E accent, here carrying the proposed statements;
+Bronze #A06A21 provenance: the sources lines under each statement; Plum #9B4A63
+reserved for the eight questions and the "this flow's proposal" markers.
+Type: IBM Plex Sans (headings, body) with a system sans fallback; IBM Plex Mono
+(ethos blocks, datom, identifiers) with ui-monospace fallbacks.
+Layout: one measured column, statements on a socket rail, questions as numbered
+plum cards the living can answer by number, two inline-SVG figures.
+-->
+<title>Signal and Sema, Distilled</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{
+--ground:#EEF1F4; --panel:#FFFFFF; --sunken:#E3E8ED;
+--ink:#16202B; --muted:#5B6B7A; --rule:#CAD4DD;
+--socket:#2E6F9E; --bronze:#A06A21; --plum:#9B4A63;
+--wash:#DCE6EE;
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]){
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+}
+:root[data-theme="dark"]{
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+*{box-sizing:border-box}
+body{
+background:var(--ground); color:var(--ink);
+font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+font-size:15px; line-height:1.6; margin:0;
+}
+.page{max-width:78rem;margin:0 auto;padding:44px 24px 80px;display:flex;flex-direction:column;gap:46px}
+header.top{display:flex;flex-direction:column;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+h1{font-size:2.35rem;line-height:1.1;margin:0;font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+.stand{max-width:62ch;color:var(--muted);margin:0}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);margin:0}
+.revs{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;color:var(--muted)}
+.revs span{border:1px solid var(--rule);border-radius:2px;padding:2px 7px;background:var(--panel)}
+section{display:flex;flex-direction:column;gap:18px}
+h2{font-size:1.35rem;margin:0;font-weight:600;letter-spacing:-.01em;display:flex;gap:12px;align-items:baseline;text-wrap:balance}
+h2 .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.85rem;color:var(--socket);font-weight:500}
+h3{font-size:1rem;margin:0;font-weight:600}
+p{margin:0;max-width:70ch}
+figure{margin:0;display:flex;flex-direction:column;gap:9px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:16px}
+.scroll{overflow-x:auto}
+figure svg{display:block;max-width:100%;height:auto;min-width:640px}
+figcaption{font-size:.83rem;color:var(--muted);max-width:76ch}
+.src{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;color:var(--bronze);word-break:break-word}
+pre{margin:0;background:var(--sunken);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;overflow-x:auto;
+font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;line-height:1.55;color:var(--ink)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.86em;background:var(--wash);padding:.5px 4px;border-radius:2px}
+table{border-collapse:collapse;width:100%;font-size:.84rem;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;
+border-bottom:1px solid var(--ink);padding:6px 12px 6px 0;vertical-align:bottom}
+td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td code{background:none;padding:0;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.note{border-left:3px solid var(--rule);padding:2px 0 2px 14px;color:var(--muted);font-size:.87rem;max-width:72ch}
+.tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+border:1px solid currentColor;border-radius:2px;padding:1px 6px;white-space:nowrap}
+.t-obs{color:var(--socket)} .t-inf{color:var(--bronze)} .t-unk{color:var(--plum)}
+.defect{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--plum);border-radius:3px;
+padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.defect h3{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.minor{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.minor h3{font-size:.92rem}
+footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--muted);font-size:.8rem;display:flex;flex-direction:column;gap:6px}
+/* diagram tokens */
+.bx{fill:var(--panel);stroke:var(--rule);stroke-width:1}
+.bx-s{fill:var(--panel);stroke:var(--socket);stroke-width:1.5}
+.bx-w{fill:var(--wash);stroke:var(--rule);stroke-width:1}
+.bx-p{fill:var(--panel);stroke:var(--plum);stroke-width:1.5}
+.bx-o{fill:none;stroke:var(--rule);stroke-width:1;stroke-dasharray:4 3}
+.t{fill:var(--ink);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px}
+.tb{fill:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;font-weight:600}
+.ts{fill:var(--muted);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tr{fill:var(--bronze);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:8.8px}
+.ta{fill:var(--socket);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tp{fill:var(--plum);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.ln{stroke:var(--ink);stroke-width:1.2;fill:none}
+.ln-m{stroke:var(--muted);stroke-width:1;fill:none}
+.ln-s{stroke:var(--socket);stroke-width:1.6;fill:none}
+.ln-p{stroke:var(--plum);stroke-width:1.4;fill:none}
+.ln-d{stroke:var(--muted);stroke-width:1;fill:none;stroke-dasharray:4 4}
+.life{stroke:var(--rule);stroke-width:1;stroke-dasharray:3 4}
+.ah{fill:var(--ink)} .ah-s{fill:var(--socket)} .ah-p{fill:var(--plum)} .ah-m{fill:var(--muted)}
+:focus-visible{outline:2px solid var(--socket);outline-offset:2px}
+</style>
+<style>
+.q{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--plum);border-radius:3px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:start}
+.q .qn{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:1.5rem;font-weight:500;color:var(--plum);line-height:1.1}
+.q .qh{font-weight:600;font-size:1rem;color:var(--ink);text-wrap:balance}
+.q .qb{color:var(--ink);font-size:.92rem;max-width:74ch}
+.q .qa{grid-column:2;color:var(--plum);font-weight:600;font-size:.92rem}
+.stmt{border-left:3px solid var(--socket);padding-left:16px;display:flex;flex-direction:column;gap:10px}
+.stmt h3{font-size:1.08rem;color:var(--ink)}
+.prop{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--plum);border:1px solid var(--plum);border-radius:2px;padding:1px 6px;white-space:nowrap}
+.qlist{display:flex;flex-direction:column;gap:14px}
+ul{margin:0;padding-left:20px;max-width:72ch}
+li{margin:4px 0}
+</style>
+<div class="page">
+<header class="top">
+<p class="eyebrow">A proposal &middot; composed by Fable 056f6d, 2026-09-18 &middot; awaiting the living's word</p>
+<h1>Signal and Sema, Distilled</h1>
+<p class="stand">Composed from the candidate gathering at <code>reports/signal-sema-candidates.md</code> (revision 6e59653a, about 75 records). This is a proposal. Nothing here stands in Vision until the living approves each statement. Every statement names the topic it lands in. Every example is written from the vision, not from running code, as the living asked; where the example goes past what any record says, it is marked as this flow's proposal for the living's word.</p>
+<p class="note"><strong>Authority note.</strong> Most of what follows rests on raw living records not yet distilled. Their authority is unchanged by that. <code>Vision/signal.md</code> today carries six headings from seven references; <code>Vision/sema.md</code> carries one heading of four sentences. The gathering found about thirty qualifying Signal records and at least ten Sema records.</p>
+</header>
+
+<section>
+<h2><span class="n">ONE</span> The questions the living must answer first</h2>
+<p>Five contradictions in the raw block any statement that assumes their answer. Each gives both dates. <span class="prop">answer by number</span></p>
+<div class="qlist">
+
+<div class="q">
+<div class="qn">Q1</div>
+<div class="qh">Is there a Nexus layer described in ethos, or only Signal and Sema?</div>
+<div class="qb">On 2026-09-10 the living said the nexus-core runtime concept was overthinking: signal gives the main types, sema the database types. On 2026-09-13 and 2026-09-14 the living said the signal layer, the nexus layer and the sema layer are described in ethos, named Nexus, core and metaNexus as the explicit terms, and asked whether the compiler can enforce that the signal actor never talks to the sema actor except through the Nexus. The later words reassert what the earlier correction removed, and they name a Nexus ethos type file that <code>Vision/ethos.md</code> says does not exist. Reading: the 09-14 words were exploratory, in artifact comments, ending in a question. Until ruled, the statements below assume two ethos roots, Signal and Sema, and say nothing about a Nexus root.</div>
+<div class="qa">Which is it?</div>
+</div>
+
+<div class="q">
+<div class="qn">Q2</div>
+<div class="qh">Observe: flat or nested?</div>
+<div class="qb">On 2026-08-26 at 14:22 the living said Observe is the root variant containing another enum. At 17:54 the same day: "Actually, Observe.Locks is best. If another kind of lock comes, then we can add it as such; Observe.ExpiredLocks." The statement below takes the later, flat form.</div>
+<div class="qa">Confirm?</div>
+</div>
+
+<div class="q">
+<div class="qn">Q3</div>
+<div class="qh">Where does sema.ethos live?</div>
+<div class="qb">On 2026-08-25: when designed, the nexus and sema ethos live in the Nexus's main repository. On 2026-09-16 the living asked whether a special repository is needed for trait isolation, or whether build-time crate paths suffice, and an agent-authored orders file has since answered it as a fourth repository named <code>sema-&lt;nexus&gt;</code> with no approval. The statement below keeps the 08-25 ruling.</div>
+<div class="qa">Does the 09-16 question change it?</div>
+</div>
+
+<div class="q">
+<div class="qn">Q4</div>
+<div class="qh">Universal signal: is CapnProto still on the table?</div>
+<div class="qb">On 2026-08-13 the living named a CapnProto transcodable form as universal signal for non-Rust front-ends. On 2026-09-10, asked directly, the living said portable rkyv plus a protocol to be decided, marked TBD. <code>Vision/signal.md</code> carries only the 09-10 shape, and the non-Rust front-end problem has no answer anywhere in the corpus.</div>
+<div class="qa">Does the 09-10 answer retire CapnProto, or defer it?</div>
+</div>
+
+<div class="q">
+<div class="qn">Q5</div>
+<div class="qh">The router words of 2026-09-13: Vision or Notion?</div>
+<div class="qb">The same utterance, "the router becomes the manifest; the enum is the router signal", is logged at Vision level by one flow and at Notion level by another. The statement below on routing draws only on the 2026-08-11 record, which is unambiguous.</div>
+<div class="qa">Which level do the 09-13 words hold?</div>
+</div>
+</div>
+<p class="note">Three smaller questions sit beside their statements: <strong>Q6</strong> on the second standard handshake, <strong>Q7</strong> on the record-type name, <strong>Q8</strong> on Lock as the worked example.</p>
+</section>
+
+<section>
+<h2><span class="n">TWO</span> Proposed statements for <code>Vision/signal.md</code></h2>
+<p>Each heading is a proposed statement. Existing headings in <code>Vision/signal.md</code> that stand unchanged are not repeated: Name, What signal is, Meta signal, Protocol.</p>
+
+<div class="stmt">
+<h3>Every component speaks signal; datom only at the edge</h3>
+<p>All components speak signal, never datom. Datom is used only at the edge, so that text-based systems, thinking machines and existing editors, can read and write what a Nexus says. The Nexus never textualizes. The same signal library compiled for the CLI derives the datom kinds; compiled for the Nexus it carries no textualization at all.</p>
+<p class="src">Sources: 2026-08-26 ac1e9ec8 datomSyntax; 2026-09-09 564f55 signal; 2026-09-15 05c604 nexus. The Rust of the compile split already stands in Vision/ethos.md; this statement gives the rule its home in the signal topic.</p>
+</div>
+
+<div class="stmt">
+<h3>A query is an imperative verb, and may be refused</h3>
+<p>A query is a verb in the imperative: Send, Start, Observe. It is a request by virtue of its slot, so the word request is never part of its name. Because it can be refused, every query has a typed refusal beside its reply: the reply is the verb's past tense, the refusal names itself and carries the reason as a variant. Errors are vocabulary, never strings.</p>
+<p class="src">Sources: 2026-08-26 01a03d6e ethosInterfaces; 2026-09-13 024bc7 signal; 2026-08-27 b675f3d9 kinds (register.{[PathLock] Registered Refused}).</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1040 300" role="img" aria-label="One verb on the left, Send, yields two named replies on the right: Sent, the past tense, and SendRejected, which names itself and carries the reason as a variant.">
+<defs><marker id="p1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker>
+<marker id="p1p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-p" points="0,0 10,5 0,10"/></marker></defs>
+<text class="ts" x="20" y="24">the query slot</text>
+<text class="ts" x="600" y="24">the response slot &mdash; reply beside refusal</text>
+<rect class="bx-s" x="20" y="36" width="300" height="94" rx="3"/>
+<text class="tb" x="36" y="60">Send.Message</text>
+<text class="ts" x="36" y="80">a verb in the imperative</text>
+<text class="ts" x="36" y="98">a request by virtue of its slot &mdash;</text>
+<text class="ts" x="36" y="114">the word "request" is never in the name</text>
+<rect class="bx-w" x="20" y="150" width="300" height="80" rx="3"/>
+<text class="t" x="36" y="172">Message.{ Sender Recipient Body }</text>
+<text class="ts" x="36" y="192">the payload the verb carries</text>
+<text class="ts" x="36" y="210">Sender and Recipient are FlowId,</text>
+<text class="ts" x="36" y="224">a typed identifier, never a string</text>
+
+<rect class="bx-s" x="600" y="36" width="420" height="94" rx="3"/>
+<text class="tb" x="616" y="60">Sent.Receipt</text>
+<text class="ts" x="616" y="80">the verb's past tense</text>
+<text class="t" x="616" y="102">Receipt.{ ShortId Origin }</text>
+<text class="ts" x="616" y="120">minimal by default &mdash; the truncated identifier</text>
+
+<rect class="bx-p" x="600" y="150" width="420" height="120" rx="3"/>
+<text class="tb" x="616" y="174">SendRejected.SendRejection</text>
+<text class="ts" x="616" y="194">the refusal names itself</text>
+<text class="t" x="616" y="216">SendRejection.[ UnknownRecipient.Recipient</text>
+<text class="t" x="616" y="232">                RecipientUnavailable.Recipient ]</text>
+<text class="tp" x="616" y="256">the reason is a variant &mdash; errors are vocabulary, never strings</text>
+
+<line class="ln-s" x1="324" y1="80" x2="594" y2="80" marker-end="url(#p1)"/>
+<text class="ta" x="459" y="72" text-anchor="middle">accepted</text>
+<line class="ln-p" x1="324" y1="104" x2="594" y2="196" marker-end="url(#p1p)"/>
+<text class="tp" x="459" y="150" text-anchor="middle">refused</text>
+<text class="ts" x="20" y="262">Every query carries both: one verb, one past tense, one self-naming refusal.</text>
+<text class="ts" x="20" y="282">Drawn from the Send / Sent / SendRejected example of this statement.</text>
+</svg>
+</div>
+<figcaption>The shape every query takes, drawn from the worked example below.</figcaption>
+</figure>
+<pre>; Signal — the ordinary socket of a message Nexus. Sections in order: imports, queries, responses, types.
+; Every query is a verb; its reply is the past tense; its refusal names itself.
+Signal
+[ signal:[ FlowId Origin ] ]                                      ; imports: shared types from the signal library
+[ Send.Message  Describe.MessageId  Observe.Selection ]           ; queries
+[ Sent.Receipt  SendRejected.SendRejection                        ; responses, reply beside refusal
+  Described.MessageRecord  DescribeRejected.DescribeRejection
+  Observed.Observation ]
+[ MessageId.Hash256                                               ; types
+  ShortId.Hash32                                                  ;   the truncated form of a MessageId
+  Sender.FlowId
+  Recipient.FlowId
+  Body.String
+  Message.{ Sender Recipient Body }
+  Receipt.{ ShortId Origin }                                      ;   minimal by default
+  MessageRecord.{ MessageId Sender Recipient Body Origin }        ;   the full form, by explicit call
+  SendRejection.[ UnknownRecipient.Recipient  RecipientUnavailable.Recipient ]
+  DescribeRejection.[ UnknownMessage.MessageId ]
+  Selection.[ Inbox.FlowId ]
+  Observation.[ Inbox.Vector&lt;Receipt&gt; ] ]</pre>
+<pre>; datom, in a position expecting Query, then the Response each receives
+Send.{ 056f6d 0ab019 «Manifest landed at revision 6e59653a» }
+Sent.{ 9f3ac1e0 Cli.{ 3727637 message } }
+
+Send.{ 056f6d efa157 «Are you there?» }
+SendRejected.UnknownRecipient.efa157
+
+Describe.9f3ac1e0b7c2d4a6f19e8d3c5b7a2f4e6d8c0b1a3f5e7d9c1b3a5f7e9d1c3b5a7
+Described.{ 9f3ac1e0b7c2… 056f6d 0ab019 «Manifest landed at revision 6e59653a» Cli.{ 3727637 message } }</pre>
+<p>Hash256 and Hash32 are the typed identifier forms of the statement on identifiers below.</p>
+</div>
+
+<div class="stmt">
+<h3>A response is minimal by default; the full form by explicit call</h3>
+<p>Replies are small. Long hashes and identifiers appear truncated in the default reply, and fields not needed to act stay in the store, queryable. A separate query, with the explicit longer name, returns the full record. This is a design standard for every Signal.</p>
+<p class="src">Source: 2026-09-15 692df8 signal. In the example above, Sent carries a ShortId and Describe returns the MessageRecord.</p>
+</div>
+
+<div class="stmt">
+<h3>Identifiers are typed, and the type lives in signal</h3>
+<p>An identifier is a real type, never a string: a hash of a stated bit width, in a base legal as a bare datom run. The identifier types, and the definition of a legal symbol, live in the signal library, because sema stores signal, so it is all signal.</p>
+<p class="src">Sources: 2026-09-15 692df8 identifiers; 2026-09-15 fd0f97 identifiers.</p>
+<pre>; Library — the identifier types of the signal library, imported by every Signal
+Library
+[]
+[ Hash256.Bits&lt;256&gt;            ; a full identifier; printed as a bare run in a datom-legal base
+  Hash32.Bits&lt;32&gt;              ; a truncated identifier, the default in a minimal reply
+  FlowId.Hash32
+  ProcessId.Integer ]
+[]
+[]</pre>
+<p><span class="prop">this flow's proposal</span> The <code>Bits&lt;n&gt;</code> intrinsic is this flow's proposal for how a bit-typed identifier is declared; no record names it.</p>
+</div>
+
+<div class="stmt">
+<h3>Observe opens a subscription; the connection is the subscription</h3>
+<p>Observe is a query whose reply repeats: one Observed frame carrying the state on open, then one for every later change, on the same connection, until the peer closes it. There is no token and no Unwatch; a peer that stops reading has unsubscribed. Each observable is its own flat variant: Observe.Inbox, Observe.Locks, Observe.ExpiredLocks. A correct system goes quiet when nothing changes.</p>
+<p class="src">Sources: 2026-08-26 01a03eda observe; 2026-08-27 acbb6006 nexus; Vision/nexus.md Observation by subscription. Pending Q2.</p>
+<pre>; datom: the query once, the response as many times as the inbox changes
+Observe.Inbox.056f6d
+Observed.Inbox.[]
+Observed.Inbox.[ { 9f3ac1e0 Cli.{ 3727637 message } } ]
+Observed.Inbox.[ { 9f3ac1e0 Cli.{ 3727637 message } } { 2c7b44d1 Nexus.flow } ]</pre>
+</div>
+
+<div class="stmt">
+<h3>A Nexus knows who speaks to it: the origin handshake</h3>
+<p>There are two standard signal handshakes. One checks the origin process of the call, so the Nexus knows where a message came from: which process ran the CLI that made the signal. It is a standard, optional part of the signal library, so whoever speaks to a socket knows to say whether it carries the process identity. The chain is kept: the process that launched the CLI call that created the signal that created this request.</p>
+<p class="src">Sources: 2026-09-16 efa157 callerIdentity (handoff-only); 2026-09-17 9993b5 callerIdentity; 2026-09-18 b05237 operational-signalOriginHandshake.</p>
+<pre>; Library — the origin part of the signal library. This shape is this flow's proposal;
+; the living asked to be shown how it could be done and to be asked.
+Library
+[]
+[ Executable.String
+  Origin.[ Cli.{ ProcessId Executable }      ; the CLI's own process, read through the socket
+           Nexus.ComponentName               ; another Nexus on an edge
+           Unstated ]                        ; the peer did not say
+  Handshake.{ Origin } ]
+[]
+[]</pre>
+<div class="q">
+<div class="qn">Q6</div>
+<div class="qh">The record names two standard handshakes and describes one.</div>
+<div class="qa">What is the second?</div>
+</div>
+</div>
+
+<div class="stmt">
+<h3>Signals cross the network through a router; the router enum lives in the signal repository</h3>
+<p>Across the network a router tells signal types apart by an enum, held in the signal repository every component depends on, that wraps the objects. That repository also holds what every signal needs in common, the handshake payload among it.</p>
+<p class="src">Source: 2026-08-11 012fbf07 threeStacks. Already in Vision/nexus.md Routing; proposed here so the signal topic carries its own wire statement. Pending Q4 and Q5.</p>
+</div>
+</section>
+
+<section>
+<h2><span class="n">THREE</span> Proposed statements for <code>Vision/sema.md</code></h2>
+<p>The existing heading, What sema is, stands. These are added.</p>
+
+<div class="stmt">
+<h3>Sema stores signal</h3>
+<p>What a Nexus stores is signal: typed, binary, the same types its contracts carry. A record type is declared in the Sema root the way a query is declared in the Signal root, and it bears its kinds by implication, never written.</p>
+<p class="src">Sources: 2026-09-15 692df8 identifiers; 2026-09-04 6329f1 ethos; 2026-09-09 564f55 sema.</p>
+<pre>; Sema — the store of the message Nexus. Sections: imports, record types; the rest to be decided.
+; Associations are implied: every record type bears the storage kinds.
+Sema
+[ signal_message:[ MessageId Sender Recipient Body Origin ]        ; imports from the Nexus's own Signal
+  signal:[ Instant ] ]
+[ StoredMessage.{ MessageId Sender Recipient Body Origin }        ; record types
+  Delivery.{ MessageId Grade Instant }
+  Grade.[ Submitted Transported Presented Read Completed ]
+  Configuration.{ OrdinarySocketPath MetaSocketPath }
+  Metadata.{ MetaConfigureDone } ]</pre>
+<div class="q">
+<div class="qn">Q7</div>
+<div class="qh">The living left the name open: "a storage type or a record type (whatever you want to call it)". <code>Vision/sema.md</code> chose record type without a ruling.</div>
+<div class="qa">Record type, storage type, or another word?</div>
+</div>
+</div>
+
+<div class="stmt">
+<h3>Sema is append-only and version-controls itself</h3>
+<p>A Sema is an append-only store that carries its own history, the way a version control system does. Repositories that hold data become nexuses that hold such databases, with an update and upgrade system built in.</p>
+<p class="src">Source: 2026-09-16 efa157 sema (handoff-only).</p>
+</div>
+
+<div class="stmt">
+<h3>A schema change is a typed operation: the migration comes with the edit</h3>
+<p>Editing the ethos that declares a Sema is operational editing. Every change to the specification is a typed operation, a structured, fully typed diff between the old spec and the new: which objects changed and how, data moved when it changes size, an upgrade operation. The migration comes out with the edit, and the edit sends a recompilation to test the component now.</p>
+<p class="src">Sources: 2026-08-08 55d18f4f everythingIsInTheDaemon; 2026-08-14 vision-raw rustComponentArchitecture; 2026-09-16 efa157 specificationVersionControl; 2026-09-13 bcd02a notion Ethos Delta, drawn on as a notion only.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1040 250" role="img" aria-label="Editing the Sema ethos yields a typed diff, which yields both a migration for the stored data and a recompilation that tests the component now.">
+<defs><marker id="p2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx-s" x="20" y="40" width="290" height="130" rx="3"/>
+<text class="tb" x="36" y="64">edit the ethos</text>
+<text class="ts" x="36" y="84">the file that declares the Sema</text>
+<text class="ts" x="36" y="100">is edited &mdash; operational editing</text>
+<text class="t" x="36" y="124">Delivery.{ MessageId Grade Instant }</text>
+<text class="ts" x="36" y="142">becomes</text>
+<text class="t" x="36" y="160">Delivery.{ … Attempts }</text>
+
+<rect class="bx-s" x="375" y="40" width="290" height="130" rx="3"/>
+<text class="tb" x="391" y="64">typed diff</text>
+<text class="ts" x="391" y="84">a structured, fully typed diff between</text>
+<text class="ts" x="391" y="100">the old spec and the new: which objects</text>
+<text class="ts" x="391" y="116">changed and how</text>
+<text class="t" x="391" y="140">Upgrade.{ 3 4 [ … ] }</text>
+<text class="tp" x="391" y="160">shape is this flow's proposal</text>
+
+<rect class="bx-s" x="730" y="40" width="290" height="130" rx="3"/>
+<text class="tb" x="746" y="64">migration and recompile</text>
+<text class="ts" x="746" y="84">data moved when it changes size;</text>
+<text class="ts" x="746" y="100">an upgrade operation</text>
+<text class="ts" x="746" y="124">the migration comes out with the edit,</text>
+<text class="ts" x="746" y="140">and the edit sends a recompilation</text>
+<text class="ts" x="746" y="156">to test the component now</text>
+
+<line class="ln-s" x1="314" y1="105" x2="369" y2="105" marker-end="url(#p2)"/>
+<text class="ta" x="341" y="97" text-anchor="middle">yields</text>
+<line class="ln-s" x1="669" y1="105" x2="724" y2="105" marker-end="url(#p2)"/>
+<text class="ta" x="696" y="97" text-anchor="middle">carries</text>
+<text class="ts" x="20" y="206">One edit, one typed operation, both outcomes: the stored data is moved and the component is tested now &mdash; nothing is left to a separate migration step.</text>
+<text class="ts" x="20" y="226">Drawn from the statement "A schema change is a typed operation: the migration comes with the edit".</text>
+</svg>
+</div>
+<figcaption>The three stages the statement names, and what each hands to the next.</figcaption>
+</figure>
+<pre>; datom, in a position expecting SemaDelta — the typed diff one edit yields. Shape is this flow's proposal.
+Upgrade.{ 3 4                                                   ; from schema generation 3 to 4
+  [ AddedField.{ Delivery Attempts Integer 0 }                  ; record, field, type, default for existing rows
+    WidenedField.{ StoredMessage Body String Meaning }          ; data moved: every Body re-encoded
+    AddedRecord.Receipt ] }</pre>
+</div>
+
+<div class="stmt">
+<h3>Configuration lives in the store</h3>
+<p>A Nexus's configuration is a record in its own Sema. A new store is seeded from the executable's constant defaults; an existing store holds the configuration that resumes. The standard metadata tree lives there too: whether the meta Configure was ever done, the socket paths, and everything standard about the Nexus.</p>
+<p class="src">Sources: 2026-08-26 01a03d6e nexus; 2026-08-27 acbb6006 nexus. Already in Vision/nexus.md Configuration and First configuration; proposed here as the sema-side statement so the store topic says what it holds. If the living prefers one home, it stays in nexus.</p>
+<pre>; datom, the meta socket: configuring, and reversing first configuration
+Configure.{ /run/user/1001/message/message.sock /run/user/1001/message/message-meta.sock }
+Configured.{ { /run/user/1001/message/message.sock /run/user/1001/message/message-meta.sock } true }
+ReverseMetaConfiguration
+OrdinaryConfigurationReopened.{ { … } false }</pre>
+</div>
+
+<div class="stmt">
+<h3>The meta Signal is a Signal</h3>
+<p>The meta socket's contract is an ordinary Signal file: Configure as a query, its receipt as the reply, the reversal of first configuration as a second query. It imports the configuration type from the Nexus's ordinary Signal rather than redeclaring it.</p>
+<p class="src">Sources: 2026-08-09 98fbfa47 metaSignalNotOptional; 2026-08-26 01a03d6e nexus; 2026-08-27 acbb6006 nexus. <span class="prop">this flow's proposal</span> The shape is this flow's articulation; no record draws a meta Signal file.</p>
+<pre>; Signal — the meta socket of the message Nexus
+Signal
+[ signal_message:[ Configuration ConfigurationReceipt ] ]
+[ Configure.Configuration  ReverseMetaConfiguration ]
+[ Configured.ConfigurationReceipt  OrdinaryConfigurationReopened.ConfigurationReceipt
+  ConfigurationRejected.ConfigurationRejection ]
+[ ConfigurationRejection.[ InvalidConfiguration ] ]</pre>
+</div>
+</section>
+
+<section>
+<h2><span class="n">FOUR</span> A design-practice statement, new topic</h2>
+<p>One clause the gathering listed as an impurity is a rule about how design is done, and it governs this very report.</p>
+<div class="stmt">
+<h3>Design works with visuals, examples, and traits with main types</h3>
+<p>Design is fleshed out with visuals, examples, and the traits with their main types; that is the design pattern. Every ethos block presented carries its root variant on its first line, mixes no species, and is situated in a comment saying what position it fills. Datom is preferred where a predictable example is wanted.</p>
+<p class="src">Sources: 2026-08-13 a5587095 protosIsTheSharedStyle; 2026-09-09 564f55 ethos; 2026-09-09 62022e8f designPractice. Proposed topic: Vision/designPractice.md.</p>
+</div>
+<div class="q">
+<div class="qn">Q8</div>
+<div class="qh">On 2026-08-29 the living called Lock an extremely poor example when designing ethos.</div>
+<div class="qb"><code>Vision/signal.md</code>, <code>Vision/sema.md</code> and <code>Vision/ethos.md</code> all use Lock. This proposal uses a message Nexus instead.</div>
+<div class="qa">Should the standing Lock examples be replaced?</div>
+</div>
+</section>
+
+<section>
+<h2><span class="n">FIVE</span> What this proposal does not state</h2>
+<ul>
+<li>No statement on the frame: no record describes a length prefix or a frame in the wire sense. The short header of 2026-08-09 was deferred by the living.</li>
+<li>No statement on the store's location or file extension: the one record says "the default location" and never names it.</li>
+<li>No statement on the architecture guard between signal, Nexus and sema actors, pending <strong>Q1</strong>.</li>
+<li>No statement on the router beyond the 2026-08-11 words, pending <strong>Q5</strong>.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">SIX</span> Impurities this proposal discards on landing</h2>
+<p>Twenty-one working instructions sit inside the gathered records; the gathering lists each, quoted. They are instructions of their day (recover, dig, deploy, show me, restore the binary) and rule nothing; on landing they are destroyed with the archive move, not carried. One is not discarded: "visuals, examples, and traits with main types must become our design pattern" is proposed as the design-practice statement above.</p>
+</section>
+
+<footer>
+<p><strong>Sources.</strong> <code>reports/signal-sema-candidates.md</code> at revision 6e59653a, and through it the ~75 records it quotes, in particular: flows/55d18f4f, 6863ef19, ba906ae2, ac1e9ec8, 564f55, fe34eb, 05c604, 01a03d6e, 01a03eda, acbb6006, 024bc7, bcd02a, 692df8, fd0f97, 9993b5, b05237, 98fbfa47, e06e4c07, 01a02fd5, 6329f1, f426777b, 6cc91b, e1953c, 62022e8f, e8c4cc61, a5587095, 012fbf07, vision-raw/rustComponentArchitecture, and the handoff-only records of efa157 under flows/b49251/handoff. Existing distilled text: <code>Vision/signal.md</code>, <code>Vision/sema.md</code>, <code>Vision/nexus.md</code>, <code>Vision/ethos.md</code>, <code>Vision/datom.md</code>.</p>
+<p>This page reproduces <code>/home/li/primary/flows/056f6d/reports/signal-sema-distillation-proposal.md</code> and adds nothing to it. Eight questions await the living's answer, by number.</p>
+</footer>
+</div>

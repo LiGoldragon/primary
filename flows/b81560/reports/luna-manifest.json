@@ -1,0 +1,433 @@
+{
+  "sources": [
+    {
+      "path": "flows/b05237/vision-dependency-report.md",
+      "sha256": "3e112b405689b0b604617b5ca30325fee3e7c006fdcccc141486ede3ad8a094c"
+    },
+    {
+      "path": "flows/b05237/vision/operational-centralMessenger.md",
+      "sha256": "ca1b548be393ca25937cc4d613dfbf7094cb30b6b330942cb66429b68828c29d"
+    },
+    {
+      "path": "flows/b05237/vision/operational-clusterDataAndHardwareAnatomy.md",
+      "sha256": "5b4a95101724f88d7fea2762a5f6dae67bafc6eff10e6dfd948a2cf2074e987e"
+    },
+    {
+      "path": "flows/b05237/vision/operational-codexRemoteVersionRouter.md",
+      "sha256": "ec000ff62ebf5f309dba2efb9995a981f405f7790f130ca18410ff112424ac91"
+    },
+    {
+      "path": "flows/b05237/vision/operational-criomosModularHardware.md",
+      "sha256": "27a434c31c5d6027e09416d37373c8a84d471c472db473632f6d7d0fa4f1ae10"
+    },
+    {
+      "path": "flows/b05237/vision/operational-delegationChain.md",
+      "sha256": "a337bbf30011b35d7315e1b6d0791b505846d5c71a7925b9145880443e8fa6f9"
+    },
+    {
+      "path": "flows/b05237/vision/operational-effortIntoIntent.md",
+      "sha256": "bb57d34798c7de49499ae380263a94208ab07d3866fd5112cdcaebfdea6be828"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldEnergyLevels.md",
+      "sha256": "f25829218d84acd76027b38d8882791a3968f386140dbe2256c4dfd8264f258e"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldFlowNotReaper.md",
+      "sha256": "01d20f3e8a30615b3140af23243caa080a82dbf5e908ea13c33a2d8d5834ebef"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldKeepsThingsWorking.md",
+      "sha256": "44efd961dab410778553d9fff07879dc566113221ea6bc1bbabbe89620b73adb"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldLunaWatcherAndArchiving.md",
+      "sha256": "7844b7855c439353daea4772f669ba6230476aa709e66030e68a0015c184941d"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldTestingAndUltraLow.md",
+      "sha256": "1e371f5b7a6570141acc16864a507ed57807ccb4530042f16f8a80aa72a9d7c7"
+    },
+    {
+      "path": "flows/b05237/vision/operational-fieldTwoSeatsAndRefreshNaming.md",
+      "sha256": "9fff834a26d08854d746440529ddb9be0d3030c214a1b25cf11dac534b27d7e4"
+    },
+    {
+      "path": "flows/b05237/vision/operational-herderUserExperience.md",
+      "sha256": "5a75c6ce99eb165ec9548f62f6e017f816fb1fcbad464eb619a13d5ff2700fc3"
+    },
+    {
+      "path": "flows/b05237/vision/operational-herderWindowManagement.md",
+      "sha256": "3b7c47b1bf8721aaef47fc2229f6ba331814e5bdbcae3afc794f81305c7c4137"
+    },
+    {
+      "path": "flows/b05237/vision/operational-logOnMainNowMigrateLater.md",
+      "sha256": "5225f395797b7df7d3c4b5e8c6e7a2ac4b2ff0da78d0eac452beca9c3d9dfe7e"
+    },
+    {
+      "path": "flows/b05237/vision/operational-mainFlowUsesSubflows.md",
+      "sha256": "69cdf515d495658659af5dc3070a43d488db3a1ef5ba431031b1f95099bdaa87"
+    },
+    {
+      "path": "flows/b05237/vision/operational-mermaidThenSvg.md",
+      "sha256": "9b0c9fe636ba493f25565bf97bc19e027db9c4bd701671c886b0ce874544c898"
+    },
+    {
+      "path": "flows/b05237/vision/operational-messagingAccuracyAndFieldAwareness.md",
+      "sha256": "f0bede786714e628b6bcabf6b0e6fb93ef1622aaa627a5ab145570e62635c99f"
+    },
+    {
+      "path": "flows/b05237/vision/operational-messagingDatomSyntax.md",
+      "sha256": "1adb08938ba068be445c7ee3e0c0c060786b4d5c21be567e9c6fe97a7e9d9cb9"
+    },
+    {
+      "path": "flows/b05237/vision/operational-messengerGlanceApproval.md",
+      "sha256": "aa8a5283b509ec20b665c35ce708400a653b875772d95a04b8cea8099c2d42e2"
+    },
+    {
+      "path": "flows/b05237/vision/operational-messengerPaneSyncFailure.md",
+      "sha256": "49e783245f3f6a314a6a7cbe42c06aa6fb2e086242952d7630c30c6624fde6c7"
+    },
+    {
+      "path": "flows/b05237/vision/operational-messengerSynchronizesRoster.md",
+      "sha256": "03a158d75c3cc133f6aaa4b0c4fd472eb390ae673a3e219d3c0894b419614450"
+    },
+    {
+      "path": "flows/b05237/vision/operational-mind.md",
+      "sha256": "76ed56b3dd2b669cd32c6eee9c98521d96711c2abb9790fd39a2e00c5f41bbf6"
+    },
+    {
+      "path": "flows/b05237/vision/operational-ownApp.md",
+      "sha256": "26c6352a37508e50a3d5b2fa68350ef8332672b7e1cab3a33993bd647caf90a0"
+    },
+    {
+      "path": "flows/b05237/vision/operational-paneDeathAndMessagingIndex.md",
+      "sha256": "613ac41c000cdc9242589df2c9404b3742d03967c42c8fcbadc5674facc3fc80"
+    },
+    {
+      "path": "flows/b05237/vision/operational-powerLevelDistillation.md",
+      "sha256": "2afc4779e09edfb9d9dbf09d09a946af95aa33eb34cf4adf814813ec53f0dc0e"
+    },
+    {
+      "path": "flows/b05237/vision/operational-primaryNextPsycheLogging.md",
+      "sha256": "ec3b24b8047b8086ea1193ee7f072dd50030ae698e22a93c747d1d2266bdc88a"
+    },
+    {
+      "path": "flows/b05237/vision/operational-psycheMindAndTheThirdComponent.md",
+      "sha256": "99d4683ed13a8d9f99516a1e918de35ee14fc205054aa57ad9fe30e97a576d0f"
+    },
+    {
+      "path": "flows/b05237/vision/operational-reaperSubflow.md",
+      "sha256": "7eb24a62192764b3f8c8a95d78ad6d4d6d85b73b50d2d19f789bfb05b560505b"
+    },
+    {
+      "path": "flows/b05237/vision/operational-reportFormat.md",
+      "sha256": "f94e28b18313ec0b6038334c3f01b3ec00dcbb0294c6c9d4751c233e492d115c"
+    },
+    {
+      "path": "flows/b05237/vision/operational-reportIsTranscript.md",
+      "sha256": "56afa7a170e84e1860da633e00c40936aeebc9fc75f0e8801d04aadb72314bd8"
+    },
+    {
+      "path": "flows/b05237/vision/operational-reportWatcherAndIllustrator.md",
+      "sha256": "b6dcac9d9e7cf87ad655336b1bef1be0393fcd5e0db644aa610a455ee9399d08"
+    },
+    {
+      "path": "flows/b05237/vision/operational-signalOriginHandshake.md",
+      "sha256": "35eb75dcff5ca9eb9e6c1424183b7170b30592ea66836f4b8817297df2eb09e7"
+    },
+    {
+      "path": "flows/b05237/vision/operational-situationReportAndMediumLayerOperation.md",
+      "sha256": "cc5030bac0bceaebcbf7764f51fc6e97afce6eacc73f419fdca4d9ecf116fc0c"
+    },
+    {
+      "path": "flows/b05237/vision/operational-skillIsVisionPrefixed.md",
+      "sha256": "16723ff173feb151595c46c99e6f22788c1f0771acfaf1208922e39550b7bba6"
+    },
+    {
+      "path": "flows/b05237/vision/operational-skillTypesTriad.md",
+      "sha256": "e0e905803f584831f4c77c19ab097e90d067cea36d23afc9b678e4a7aa6007d1"
+    },
+    {
+      "path": "flows/b05237/vision/operational-standardMessagingSkill.md",
+      "sha256": "351e95602efef1c64c7396c2319ce89ec98fb2af5571ad312af10eb0d02324d9"
+    },
+    {
+      "path": "flows/b05237/vision/operational-structuredEditingDatomEvolution.md",
+      "sha256": "d6334a1045c7cea3cdf6d7a89d8cb70402e9ba69416b81d47fbeb54102ef2799"
+    },
+    {
+      "path": "flows/b05237/vision/operational-testSkillForIllustration.md",
+      "sha256": "883586baf49dd02197cd1b76712f51a3f7427365921c13a82aa1d6c607c89683"
+    },
+    {
+      "path": "flows/b05237/vision/operational-theField.md",
+      "sha256": "41fdbeb5bef045c298d9e30610a9fb6ff8479de6f8bd3d573fb6f5cc344ac5c6"
+    },
+    {
+      "path": "flows/b05237/vision/operational-threeDataReposAndPrimaryNext.md",
+      "sha256": "27d8e4659dd866a2c548bca68a2c3bcc370c5fc7c027f28f0359a8b18183da24"
+    },
+    {
+      "path": "flows/b05237/vision/operational-transcriptAsLog.md",
+      "sha256": "22ecd3cb75fd03cf6ccbb60f9137d182cdce8f0e0e71b054fddc01053a17d8be"
+    },
+    {
+      "path": "flows/b05237/vision/operational-transcriptBlockExtraction.md",
+      "sha256": "b08b6f8a952f3e19dfc711958820b764bcb38fb07e12718212d62018b8b55bc0"
+    },
+    {
+      "path": "flows/b05237/vision/operational-typedMessagesDistinguishPsyche.md",
+      "sha256": "c993d373fa26ae2ea9013db94c631a02cec3bf543603fd7f45733613d1b25906"
+    },
+    {
+      "path": "flows/b05237/vision/operational-voicePsycheDesktopAccess.md",
+      "sha256": "91bebc482a438f4691de7d880bce5e2c7efde694e83504db833e6db6fc59c5e6"
+    },
+    {
+      "path": "flows/b05237/vision/operational-wisprFlowCodexPaste.md",
+      "sha256": "38e50b46e2afcfddc7f669e4d0ff5bd1234334b8e1d6ca7fb9870ad0be0ecd71"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-agentToPsycheMessaging.md",
+      "sha256": "79ade03f32d12ffd1690834806d3b3b23c93a288edd9bc8cd6469c4b172af99d"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-commitMessageIdentifiesEpic.md",
+      "sha256": "4698b6398b3461f9bac24d1bbf0d12bf8c7636c27adfbe8d31fefb5432f633d9"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-defaultModelPsycheMediumClaude.md",
+      "sha256": "d2ba50a099a2afe76b49c2a264818ef8915056d05fccb78ac9c85c2634af4de5"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-effortIsAlwaysMedium.md",
+      "sha256": "4c2f9a78fc53c7847552c2fb2aa7a1840a2ecd7f49317e719bebb0ec9688f6b1"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-fableFlowAndOpusComparison.md",
+      "sha256": "bf5f05e911f1774231e1aa8fd816138e78ce043768e3aeeeb6b60723b1fa4a7e"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-mirrorToEveryoneAndRoster.md",
+      "sha256": "93b7e90b044d1962b2771c9ae77fe725765498acdc0ddf6fd4f545b0fa6402a4"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-mirroredMessagesAreAddressed.md",
+      "sha256": "311f86b2b7689dcb7e7c912d6225b0815ad06b486b37a47edd8d28e6f0064af6"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-modelDeclaredInOnePlace.md",
+      "sha256": "61d25ea9dcc67cd7b83f763b1bbbd716e747481b3ad1103e0f4cd440685f5b43"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-modelRoles.md",
+      "sha256": "b2f8a56b7cdcc341a219e6ed2d329e067f7592b6a6730c01fca14252d651ccf4"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-nameSessionAfterAncestor.md",
+      "sha256": "3226fe6a9fb0d1bb9030ce68762594c763c8deff5848bdb159bb3961d76b7e46"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-olderOpusIs46.md",
+      "sha256": "5a5542b3fe215f6b041edc5db457407d0733faae10b2acf7bf47d0f5be6b1f3e"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-ongoingAstraOpusInterraction.md",
+      "sha256": "11edcd6b8c1f47c8e5f9a9640d01827eb7252133d9f67c9cba1284d410af2c7f"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-openStackOnCodex.md",
+      "sha256": "c3b73ca7f3658e5154af97d297364a03ac3e15f9bb0287e506f2006977a25457"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-populateIntentWithTheAutomatic.md",
+      "sha256": "137f70bd7dc45fdae6cd99721662a1792bab6f8c9edccddd4ad94ec28858c888"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-privateLayerCoreLayer.md",
+      "sha256": "53d7d23343cb9f9e86390592863fa84543a703dff64a9ede72262e7ff3cb8711"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-psycheMindAstra.md",
+      "sha256": "240f68862ec413d2855f45462d430747046a57ed8b152fc8e70d3091772f7974"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-reapReplacedSessions.md",
+      "sha256": "5d0ff3effb36c8a5e2c005a089f1ccec5bda5815dd7cea00393da4244623dc71"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-reportFlow.md",
+      "sha256": "6e83fe8f7f8276ce5be0836afb82c0f9d56d5502fecd6434e27c91a1f67f8c06"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-testTypeSkills.md",
+      "sha256": "11b6e2533f2d9b9ce95fc46d2294a96fe645928857e62438a16e9ea02cba7081"
+    },
+    {
+      "path": "flows/1ac573/vision/operational-visionLedAudit.md",
+      "sha256": "f22a062204efc302f7e7b8f27f1c8575edaea06390d8f934d790d5b5674b54cf"
+    },
+    {
+      "path": "flows/1ac573/handoff.md",
+      "sha256": "19888d53b0433d5790561d4268893bd322e3d427d50fc1800195fe4709ad3d1c"
+    },
+    {
+      "path": "flows/1ac573/successor-brief.md",
+      "sha256": "f926da9035cdc056fb2f47def3a2f7aefd3babf90039f8fb7958f43875054736"
+    },
+    {
+      "path": "vision-raw/spirit.md",
+      "sha256": "9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49"
+    },
+    {
+      "path": "flows/b05237/messaging-skill-design.md",
+      "sha256": "8611c1e8ab79aed125b0058d35b74957caf98fda16cd9838d892ff10a3ec4db7"
+    },
+    {
+      "path": "flows/b05237/psyche-situation-report.md",
+      "sha256": "bd871f37a9985a79c2f594968f8c6f2452f0b62a5bac18fc423b8ac9c2ac3ddd"
+    },
+    {
+      "path": "Intent/anatomy.md",
+      "sha256": "7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3"
+    },
+    {
+      "path": "Intent/context.md",
+      "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+    },
+    {
+      "path": "Intent/conversion.md",
+      "sha256": "7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b"
+    },
+    {
+      "path": "Intent/data.md",
+      "sha256": "28f5b5666e3fa596ad1b395f91c2753603a77727ca00e9fd9af119ea807f9ed7"
+    },
+    {
+      "path": "Intent/mandatoryTraits.md",
+      "sha256": "7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18"
+    },
+    {
+      "path": "Intent/protosParsing.md",
+      "sha256": "a43b4d1f4ed960e6eacb1a06b55fb500cbff0eae1634739b62b9d75e70c09bb0"
+    },
+    {
+      "path": "Vision/archive-ethosMonolith.md",
+      "sha256": "9970b110f78e7ace24c17112cc023cf38350babb2f8d3c874e63ee37b47b17c7"
+    },
+    {
+      "path": "Vision/datom.md",
+      "sha256": "7a097b0ed047c205aa12a31b8f8fcf9e8bf8dca88d98bbf917eccaffcc9f3003"
+    },
+    {
+      "path": "Vision/distillation.md",
+      "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+    },
+    {
+      "path": "Vision/ethos.md",
+      "sha256": "4d47f4451825209acf53de9354b105eeacbf1f9d49e44dd25919bf4df4ea4f91"
+    },
+    {
+      "path": "Vision/flowNexus.md",
+      "sha256": "68e1312263c6a29d2ffe70d447bd74415b556defe219f3362c1b6d4736ec74bf"
+    },
+    {
+      "path": "Vision/highLevelView.md",
+      "sha256": "c76eda3c7ff903db90ce95a618c4708d8a714994f64a259c0c4d95afcf31b4a8"
+    },
+    {
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "path": "Vision/orchestrate.md",
+      "sha256": "9cced928c8bdc0e9ab58ca50053d00c5a0e6081f599d240ac927b97ba29f93d9"
+    },
+    {
+      "path": "Vision/protos.md",
+      "sha256": "8cc31f5aa370a49278541f930a5bb498060400ccfabcf8355995722d306f6f68"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/remembering.md",
+      "sha256": "71e721d3de29a6810e73f851e439341ec39771d8f161579a6d177c710f43baa3"
+    },
+    {
+      "path": "Vision/sema.md",
+      "sha256": "c673c38efc010080907d016d59ba6d461995621041e713a92b78ab3504ac5258"
+    },
+    {
+      "path": "Vision/signal.md",
+      "sha256": "26bca161c8cad99f50ed7d7d77fa4f95dbce30ca55d8b90a29d1a436ec619e90"
+    },
+    {
+      "path": "Vision/x11.md",
+      "sha256": "06d9b3099998bef5bacaa483e4f8e5327d23dcb2f6716f1ecbc2d5bd805d3563"
+    },
+    {
+      "path": "flows/f55ec8/vision/visualPublication.md",
+      "sha256": "0f4c0a7149be2f7e12d71741954a973983e1af85e206272ae8a0e8bd9dc21618"
+    },
+    {
+      "path": "flows/b49251/vision/visualPublication.md",
+      "sha256": "11f26e5ab70e5aa6b916af4ba7d2828b405d681e755e4fdd8bf59f133393a402"
+    },
+    {
+      "path": "flows/995a164e/vision/designPractice.md",
+      "sha256": "a0f5bc3b75fe136fcab80026af04f1f20965ec76b88b195dd47da0bc67f8585b"
+    },
+    {
+      "path": "flows/6cc91b/vision/messenger.md",
+      "sha256": "4bdc35b30b28e157ab7f3dd2b3e167a3f5068774d99c064988d883871b0352c0"
+    },
+    {
+      "path": "flows/6cc91b/vision/notifications.md",
+      "sha256": "3fe596dacbeac4d4253be9cf3b51ad632495496d5d50e94d87e6e570cd8cd9f8"
+    },
+    {
+      "path": "flows/108ab0/vision/operational-skillLagsVisionObservability.md",
+      "sha256": "8dd715e03b84d9be38d0deba8818521f4c7c66ca43ba42a8e8e6d71a4de771d8"
+    },
+    {
+      "path": "flows/9993b5/vision/curriculumNexus.md",
+      "sha256": "c8f03e24fcad64853a0426d74bc13a2f359302bef2cf5e393034deefc0803552"
+    },
+    {
+      "path": "flows/9993b5/vision/powerLevels.md",
+      "sha256": "2586558e60d2bf71f852a66cdbdc1747cdacb58a42f6cb8ca0ac317f56983343"
+    },
+    {
+      "path": "flows/9993b5/vision/transcriptArchive.md",
+      "sha256": "52605f3eedb63346a84d325403ce5ef54f8c2b717a445bc54347c997d24e2fd6"
+    },
+    {
+      "path": "flows/b49251/vision/systemPrompt.md",
+      "sha256": "f7c460ef911ecbc07d21260154a33f061d0243022cab87a99453c670f954e226"
+    },
+    {
+      "path": "flows/5851f4/vision/subagents.md",
+      "sha256": "ea608e501a865f367ec1ed11625f0db639b9456502e53a3dd7c601b3dd80f6cd"
+    },
+    {
+      "path": "flows/024bc7/vision/effort.md",
+      "sha256": "f5b7a6c8b08f2110c49baaf454859c1c081649e341d45972b77a15c629463d42"
+    },
+    {
+      "path": "flows/6852f4/vision/communication.md",
+      "sha256": "90c539384a7c0a4c32ac8b7a37806b249959dd842a8e873f414cac5daa14ec11"
+    },
+    {
+      "path": "flows/c7128c/vision/transcriptAndMachineFlow.md",
+      "sha256": "77ecb660a2d1422473dfaac822770761ae76cfe597409afe6f47499cbd76f6f3"
+    },
+    {
+      "path": "flows/78c93c/vision/witnesses-and-reports.md",
+      "sha256": "6a5420186c980ae422202e76217cf41d62f1388b45715e521c1783857d061203"
+    }
+  ],
+  "aggregate_sha256": "4aa007135714f524f8ac7f60b094bc2cb6a09d34c1bae3b4a3db6211fd4d8faf"
+}

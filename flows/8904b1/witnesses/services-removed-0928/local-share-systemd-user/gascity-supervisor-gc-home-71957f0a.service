@@ -1,0 +1,15 @@
+[Unit]
+Description=Gas City machine supervisor
+
+[Service]
+Type=simple
+ExecStart=/nix/store/ily36gwx8fyrnkzbx61vdv3zl5gqprq7-gascity-1.0.0-codex-2026-05-06/bin/gc supervisor run
+Restart=always
+RestartSec=5s
+StandardOutput=append:/tmp/test-city.912f6H/gc-home/supervisor.log
+StandardError=append:/tmp/test-city.912f6H/gc-home/supervisor.log
+Environment=GC_HOME="/tmp/test-city.912f6H/gc-home"
+Environment=PATH="/home/li/.local/bin:/home/li/bin:/tmp/test-city.912f6H/bin:/nix/store/93vsa5cn5kki03ll5fk8vrs8xnal4vjh-dolt-1.86.2/bin:/nix/store/abci5lbmmvzg3vriansd7mgiiq4ch0w7-beads-1.0.3/bin:/nix/store/59psh322cyi562xszcj0xvqhrligax16-tmux-3.6a/bin:/nix/store/c0277k5giric1mn9dklllavbzvxl6hzb-git-2.53.0/bin:/nix/store/v5c3inhfq6xshmwg1c254vfbcy4jp3k9-jq-1.8.1-bin/bin:/nix/store/kx33za9mnfmaf8cgpnndk7nwaq7qid4q-lsof-4.99.6/bin:/nix/store/5v7plscsjkc8b2xsfz4p0y4c2i97x85l-procps-4.0.6/bin:/nix/store/g9h37kjrpvyzhsq4a79v2qkrpl4y1s7k-util-linux-2.42-bin/bin:/nix/store/4bwbk4an4bx7cb8xwffghvjjyfyl7m2i-bash-interactive-5.3p9/bin:/nix/store/jjxngswsb214vb58qx485jhmilf0kxxy-coreutils-9.10/bin:/nix/store/af4a8i43kc2ss4rnmf0swkk2mprsw6xq-gnused-4.9/bin:/nix/store/lakv43kv98sl6h0ba6wnyg513mcq61vl-gawk-5.4.0/bin:/nix/store/vhsirn9m1ifmnw5g1qczzhvqkx6lw1if-findutils-4.10.0/bin:/nix/store/7xiiq153kv13wcqb6j5zffz2g778nssv-shellcheck-0.11.0-bin/bin:/home/li/.codex/tmp/arg0/codex-arg00k4Tbl:/nix/store/dk9qhjgg469lv6mriys7v4c59igarmvx-bubblewrap-0.11.1/bin:/run/wrappers/bin:/home/li/.nix-profile/bin:/nix/profile/bin:/home/li/.local/state/nix/profile/bin:/etc/profiles/per-user/li/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/nix/store/ah86d6ckmmx3bflam3ar6pqdskkllxr6-ghostty-1.3.1/bin:/home/li/go/bin:/snap/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
+
+[Install]
+WantedBy=default.target

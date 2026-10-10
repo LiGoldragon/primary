@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-23T16:05:57.867Z",
+  "manifest": {
+    "version": 1,
+    "session": "default",
+    "workspace": "wC",
+    "cwd": "/home/li/primary",
+    "seats": [
+      {
+        "harness": "claude",
+        "profile": "psyche-opus-of-b81560",
+        "profileFile": "/home/li/primary/flows/753e69/psyche-opus-native/profile.json",
+        "fresh": false,
+        "predecessor": "b81560",
+        "agent": "psyche-opus-of-b81560-r1",
+        "label": "Psyche Medium Opus successor",
+        "model": "claude-opus-4-6[1m]",
+        "effort": "medium",
+        "profileSha256": "525a7bce8bc52ca091f650ec8c4b15c5676e93d7dc200ddd67dfda29540312b6",
+        "claudeProfile": {
+          "name": "psyche-opus-of-b81560",
+          "model": "claude-opus-4-6[1m]",
+          "effort": "medium",
+          "role": "Psyche Medium",
+          "fresh": false,
+          "predecessor": "b81560",
+          "ancestor": "b81560",
+          "remember": {
+            "flow": "b81560",
+            "depth": 1
+          },
+          "titlePlan": {
+            "aspect": "Psyche",
+            "power": "Medium",
+            "afterOwnVerifiedFlowId": true,
+            "template": "Psyche Medium <FLOW_ID>"
+          },
+          "sourceAudit": {
+            "reviewedAt": "2026-09-23T16:05:00Z",
+            "newestApplicableVision": [
+              "Vision/psyche.md",
+              "Vision/modelRoles.md"
+            ]
+          },
+          "skills": [
+            "spirit",
+            "main-flow",
+            "testing-flow-titles",
+            "refresh",
+            "psyche",
+            "psyche-acquisition",
+            "behavior",
+            "correction",
+            "vocabulary",
+            "testing",
+            "subflow",
+            "edit-coordination",
+            "orchestrate",
+            "flow-evidence",
+            "prompt-crafting",
+            "herdr",
+            "messaging",
+            "psyche-interraction",
+            "psyche-distillation",
+            "file-editing",
+            "nexus",
+            "claude-harness",
+            "flow-communication",
+            "flow-aspect",
+            "datom",
+            "protos",
+            "subflow-scripts",
+            "operational-layer-communication",
+            "operational-final-response",
+            "transcript-search",
+            "context-strata"
+          ],
+          "sources": [
+            {
+              "path": "flows/753e69/psyche-opus-native/first-turn.md",
+              "sha256": "c7b2609a75e8cef71db6ddad1ee57cc2a6739e9b0f4bb4c1c48105476e431eca"
+            },
+            {
+              "path": "flows/b81560/reports/refresh-handoff.md",
+              "sha256": "b6b7309628c207aef0a13afaa417f374bc65c9763060057244fbd87cd67c6a39"
+            },
+            {
+              "path": "Vision/psyche.md",
+              "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+            },
+            {
+              "path": "Vision/modelRoles.md",
+              "sha256": "6cda28392df7830130e2c0610f5c0614133a02d948dc6023f59962413e10f4ed"
+            },
+            {
+              "path": "flows/b81560/vision/operational-triadWorkDivision.md",
+              "sha256": "d09e9579f21016b98033a6b7d41f043eb44089ea37cbe89c454daeaf247cbfa5"
+            },
+            {
+              "path": "flows/b81560/vision/operational-psychePropagationAndNamingAndInfrastructure.md",
+              "sha256": "64b73ec8b3c67636265bcae6ae866d4532b989f1704916f99173dfe83e59a9a5"
+            }
+          ],
+          "modelCatalog": [
+            {
+              "id": "claude-opus-4-6[1m]",
+              "family": "opus",
+              "source": "SKILL_VARIABLES.md; flows/b81560/reports/refresh-handoff.md"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "seats": [
+    {
+      "agent": "psyche-opus-of-b81560-r1",
+      "profile": "psyche-opus-of-b81560",
+      "predecessor": "b81560",
+      "phase": "failed",
+      "updatedAt": "2026-09-23T16:06:02.254Z",
+      "paneId": "wC:p2",
+      "terminalId": "term_65c28a8a221eca",
+      "nativeThreadId": "69700f73-b5b1-494a-b994-3a974181ff47",
+      "environmentMarker": "CLAUDE_ENV_READY_69700f73-b5b1-494a-b994-3a974181ff47_613b6110baaa7af23ae52f27",
+      "receipt": "/home/li/primary/flows/753e69/psyche-opus-native/receipts/psyche-opus-of-b81560-r1.json",
+      "error": "python3 exited 1: Traceback (most recent call last):\n  File \"/home/li/primary/tools/claude-native-seat-refresh.py\", line 868, in <module>\n    main()\n    ~~~~^^\n  File \"/home/li/primary/tools/claude-native-seat-refresh.py\", line 852, in main\n    result = refresh(manifest, cwd, args.timeout, herdr_target=target,\n             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     bootstrap_running_empty=args.bootstrap_running_empty,\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n                     continue_partial=args.continue_partial,\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None) if args.refresh else plan(manifest, cwd)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/li/primary/tools/claude-native-seat-refresh.py\", line 669, in refresh\n    raise RuntimeError(f\"native Claude transcript unavailable: {path}\")\nRuntimeError: native Claude transcript unavailable: /home/li/.claude/projects/-home-li-primary/69700f73-b5b1-494a-b994-3a974181ff47.jsonl"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+
+## msg-3 receipts (2026-09-25)
+
+- a676b3: `Transported.{ a676b3 done }`
+- 504461: `Transported.{ 504461 done }`
+- b7da5d: `Transported.{ b7da5d working }`
+- 00f95a: `Transported.{ 00f95a working }`
+- f5a74e: `Transported.{ f5a74e done }`
+- e167d8: `Transported.{ e167d8 working }`
+
+## msg-4 receipts (2026-09-25)
+
+- 38de5b: `Transported.{ 38de5b done }`
+- 9c7514: `Transported.{ 9c7514 done }`
+- 00f95a: `Transported.{ 00f95a working }`
+- 26c50c: `Transported.{ 26c50c done }`
+- f5a74e: `Transported.{ f5a74e done }`
+- a676b3: `Transported.{ a676b3 done }`
+- 5f38bc: `Transported.{ 5f38bc done }`
+- b7da5d: `Transported.{ b7da5d working }`
+- e71dab: `Transported.{ e71dab working }`
+- 98eb43: `Transported.{ 98eb43 done }`
+- 504461: `Transported.{ 504461 working }`
+
+## msg-5 receipts (2026-09-25)
+
+- 00f95a: `Transported.{ 00f95a working }`
+- 504461: `Transported.{ 504461 done }`
+
+## 2026-09-25 send to b7da5d (Tailscale repair slice delegation)
+Command: `FLOW_ID=da88cf hm-send b7da5d "..."`
+Receipt: `Transported.{ b7da5d done }`
+
+## hm-send to e167d8 — 2026-09-25
+
+Receipt: `Transported.{ e167d8 working }`
+
+## msg-8 receipts (2026-09-25)
+
+- e71dab: `Transported.{ e71dab done }`
+- f5a74e: `Transported.{ f5a74e done }`
+
+## msg-9 sends (2026-09-25)
+
+- hm-send 5f38bc: Transported.{ 5f38bc done }
+- hm-send b7da5d: Transported.{ b7da5d done }
+- hm-send 00f95a: Transported.{ 00f95a working }
+
+## msg-10 sends (2026-09-25)
+
+- hm-send e71dab (fixture_harness orphan-decision guidance + field-luna-heartbeat mask retention): `Transported.{ e71dab done }`
+
+Transported.{ e167d8 working }
+
+## msg-12 sends (2026-09-25)
+
+- hm-send 504461 (block resolved via ouranos host-deploy path; new bounded read-only job: diagnose Lojix deployment 29 Activate failure): `Transported.{ 504461 done }`
+- hm-send b7da5d (ownership update: Home delivered via ouranos host deploy; b7da5d owns activation window and post-witness cleanup steps; await "go ouranos"): `Transported.{ b7da5d done }`
+
+## msg-13 sends (2026-09-25)
+
+- hm-send b7da5d (coherent pin answer: CriomOS main revision to be released with "go ouranos" — lojix 7.0.0 a67f5773, Home main 5f14f9da+, criomos-lib with Gemma, Prometheus USB-by-bus fix; Blueprint aggregate check failure pre-existing and not tonight's gate, gate is Lojix Evaluate+Realize of ouranos host toplevel on Prometheus; Blueprint defect owned by da88cf's next Opus integration subflow; manual Flow drop-in/profile stay until b7da5d's activation window): `Transported.{ b7da5d working }`
+
+## msg-14 sends (2026-09-25)
+
+- hm-send e71dab (reaping authority ruling: both authorities hold — living's grant relayed by 88475f authorizes retiring stale messenger rows, Field Astra's positive-evidence requirement is the method not a countermand; permitted objects messenger-clj STALE route rows only; permitted operation hm-retire one row at a time with positive evidence recorded first; excludes d8df70, e51411, and successor chain 0ab019 → 98ac2e → 9e7ea5; e71dab executes, 504461 reviews per-row evidence, both write receipts, report counts to da88cf): `Transported.{ e71dab working }`
+- hm-send 504461 (same body): `Transported.{ 504461 working }`
+
+## msg-15 sends (2026-09-25)
+
+- hm-send 504461 (executor reconciliation: single executor is 88475f's already-in-flight subflow under the living's direct order and its exact 24-row list with exclusions; e71dab makes no retirement mutation; e71dab and 504461 review per-row evidence only; 88475f writes per-row evidence/outcome to its flow's receipts and sends retired/skipped IDs to da88cf, e71dab, 504461; unchanged: exact-24 allowlist, all exclusions, no lock release, no data deletion, no Flow registry change, unknowns retained): `Transported.{ 504461 working }`
+- hm-send e71dab (same body): `Transported.{ e71dab done }`
+- hm-send 88475f (same body): `Transported.{ 88475f working }`
+
+## msg-16 sends (2026-09-25)
+
+- hm-send 88475f (review outcome: both reviewers accept scope 24/24 but grade executor-witnessed not verified — 13 agentless panes, no retained per-row hm-retire output/timestamp/post-state; asked to append raw per-row outputs or label unavailable; separately: eight Orchestrate locks of retired flows (4964, 4928, 4285, 3825, 4373, 4416, 4639, 4739) released by da88cf under stale-lock skill after re-verification, receipt at flows/da88cf/receipts/stale-locks-released.md; 753e69's four being judged the same way): `Transported.{ 88475f working }`
+- hm-send 504461 (review received and recorded; retirement stands executor-witnessed not independently verified, morning book will say so with 13 agentless-pane discrepancy; 88475f asked to append per-row outputs or label unavailable; correction: eight Orchestrate locks no longer untouched — released by da88cf under stale-lock skill after re-verification, receipt flows/da88cf/receipts/stale-locks-released.md; deployment-29 diagnosis received, goes in book as unknown with two candidate windows; nothing further asked on retirement): `Transported.{ 504461 done }`
+- hm-send e71dab (same body as 504461): `Transported.{ e71dab done }`
+
+## 2026-09-25 da88cf -> b7da5d
+Receipt: Transported.{ b7da5d done }
+
+## msg-18 sends (2026-09-25)
+
+- hm-send b7da5d (Flow 0.13.0 deferral ruling: folded into second Home activation tonight, sequenced on e167d8's coherent consumer list and green Nix check; no pin or deploy of 0.13.0 before that): `Transported.{ b7da5d done }`
+- hm-send e167d8 (same body): `Transported.{ e167d8 working }`
+
+## msg-19 sends (2026-09-25)
+
+- hm-send b7da5d (ouranos pre-stage: coherent pin CriomOS main 3e2cc8be83f03859dc4fafe6ddba17280c488e22 pinning lojix a67f5773, CriomOS-home 4a9d85d72b0c4057cf82293175a882cbde199b87, criomos-lib 6db67c3b, USB-by-bus fix included; expected ouranos toplevel /nix/store/mglzzvfa0fjda9xvr52nshcgq32dvq3j-nixos-system-ouranos-26.11.20260813.0e251e2.drv; do now: Lojix Deploy.Host ouranos with RequireImmutable at that CriomOS rev, Evaluate then Realize on Prometheus, confirm derivation match or stop and report both; explicitly withheld ActivateNow/TestActivation pending five Home checks — herdr-agent-executable, herdr-codex-integration, herdr-toast-delivery, codex-next, agent-intercom — still building on Prometheus; "go ouranos activate" follows when they pass; report Evaluate/Realize terminal states to da88cf): `Transported.{ b7da5d done }`
+
+## msg-20 sends (2026-09-25)
+
+- hm-send b7da5d (tailnet repair slice feasibility check: read flows/da88cf/reports/tailnet-repair-slice.md read-only, judge each root-side minting command's feasibility on ouranos — headscale CLI reachable as root, sops/gopass path and named recipients, secret names — and report what needs changing; no minting/secrets/mutation yet, horizon-rs 0.13.0 producer and repin train must land first; low priority beside ouranos pre-stage; reply in ≤10 lines when free): `Transported.{ b7da5d done }`
+
+## Wave 2 interim + b7da5d status ask (2026-09-25)
+
+To e167d8, verbatim receipt: Transported.{ e167d8 working }
+To b7da5d, verbatim receipt: Transported.{ b7da5d done }
+
+## msg-22 sends (2026-09-25)
+
+- hm-send b7da5d (GO OURANOS ACTIVATE: gate passed, sequence confirm-Realize-derivation → TestActivation with witness → ActivateNow with witness → same-window cleanup of flow-nexus drop-in/profile element, field-luna-heartbeat masks, LOJIX_OWNER_SOCKET env, messenger links/GC root after hm-* confirmed on PATH; keep qwen-shard roots and Herdr transient server untouched; report each step and witnesses to da88cf and e167d8; on TestActivation failure send journal excerpt, no blind retry): `Transported.{ b7da5d done }`
+
+## msg-23 sends (2026-09-25)
+
+- hm-send b7da5d (GO MINT the tailnet secrets: mint CA key, Headscale server cert/key, five per-host reusable preauth keys per flows/da88cf/reports/tailnet-repair-slice.md (primary main 3bdeffb1) — plain ssh|sops pipe, ECDSA P-256, CA name-constrained to .goldragon.criome, encrypt to verified recipients only, verify mirror/vm-testing derivability first, verify headscale user id before minting; commit encrypted files to goldragon/secrets main with jj and push; record CA public cert (base64 DER) in goldragon bookmark tailnet-repair-da88cf under Orchestrate lock, commit and push; re-encrypt secrets/opencodeServerPassword.sops from Prometheus-only to ouranos (and Prometheus if needed), commit and push; runs beside ouranos activation, does not wait on it; nothing deployed by this order — deploy follows the Lojix repin train landing new Nexus on ouranos; report each step's outcome to da88cf): `Transported.{ b7da5d done }`
+
+## 2026-09-25 hm-send to b7da5d — NEW GO OURANOS
+Receipt: Transported.{ b7da5d done }
+
+## msg-25 send (2026-09-25) — Lojix repin train timing note
+- hm-send b7da5d (Lojix repin train done: lojix 8.0.0 f090da079f71b75a5d8c5dc45bffab6298b7d2a3 on lojix main with horizon 0.13.0, signal-lojix 6.0.0, meta-signal-lojix 7.0.0, all checks green on Prometheus, store gate zero deploy-job/undecodable rows, Nexus 8 starts cleanly; subflow pinning lojix on CriomOS main now (flake.lock only, ~10 min); if ouranos deploy NOT yet submitted, wait for revision and submit from it for one activation; if already submitted from 3e2cc8be, let it run to activation, lojix 8 pin goes with step-2 deploy; report which; report RowQuarantined/NexusConfigurationRebuilt lines if seen after switch): `Transported.{ b7da5d done }`
+
+## 2026-09-25 — da88cf -> b7da5d (opencodeServerPassword.sops rotation bridge)
+
+Sent via `FLOW_ID=da88cf hm-send b7da5d BODY`.
+
+Receipt (verbatim): `Transported.{ b7da5d done }`
+
+## msg-27 send (2026-09-25) — coherent main pin + ouranos deploy sequence
+
+- hm-send b7da5d (CriomOS main e6a83edc7e71254cae5a9d233c01fefc3f7f9b57, remote-verified: 3e2cc8be plus flake.lock/flake.nix pin of lojix 8.0.0 f090da07, nothing else changed; submit ouranos deploy from it with SecretsDirectory./git/github.com/LiGoldragon/goldragon/secrets once opencodeServerPassword rotation is committed, other minted secrets can follow, not required by this revision, cluster data still old with no tailnet/country records; Evaluate, Realize, TestActivation → ActivateNow → cleanup as ordered; expect lojix.service restart as Nexus 8.0.0, witness `lojix 'Query.ByNode.{ goldragon ouranos None }'` afterwards and send startup log lines mentioning RowQuarantined or NexusConfigurationRebuilt if any, gate predicts none; report terminal states and witnesses to da88cf and e167d8): `Transported.{ b7da5d done }`
+
+## 2026-09-26 status asks (msg-28)
+
+To b7da5d: Transported.{ b7da5d done }
+
+To e167d8: Transported.{ e167d8 working }
+
+## msg-29 send (2026-09-26) — LOJIX_OWNER_SOCKET stale env diagnosis
+
+Observations (ouranos, read-only, before send):
+- `systemctl --user show-environment | grep -i LOJIX`: `LOJIX_ORDINARY_SOCKET=/run/lojix/ordinary.sock`, `LOJIX_OWNER_SOCKET=/run/lojix/owner.sock`
+- `/etc/set-environment`: `LOJIX_ORDINARY_SOCKET="/run/lojix/ordinary.sock"`, `LOJIX_OWNER_SOCKET="/run/lojix/meta.sock"`
+- `/run/lojix/` listing: `meta.sock` (srw-------, li:users), `ordinary.sock` (srw-rw----, li:users), `startup.rkyv` — no `owner.sock` present
+- own shell `env | grep -i LOJIX`: matches the user-manager value, `LOJIX_OWNER_SOCKET=/run/lojix/owner.sock`
+
+So the user systemd manager (running since 09-10) and this shell both still carry the stale `owner.sock` value; only `/etc/set-environment` and the live socket file agree on `meta.sock`.
+
+- hm-send b7da5d (diagnosis of `CliRejected [io error: No such file or directory]`: stale LOJIX_OWNER_SOCKET=owner.sock inherited from long-running user manager vs declared/live meta.sock; fix the failing command with LOJIX_OWNER_SOCKET=/run/lojix/meta.sock set explicitly, then `systemctl --user set-environment LOJIX_OWNER_SOCKET=/run/lojix/meta.sock`; resubmit ouranos Evaluate from e6a83edc with SecretsDirectory and continue; minting authorized for verified subset now, mirror/vm-testing stay unminted for the morning book): `Transported.{ b7da5d done }`
+
+## Message to b7da5d — 2026-09-26
+Command: `FLOW_ID=da88cf hm-send b7da5d BODY` (lojix-meta CliRejected diagnosis + regeneration instructions)
+Receipt (verbatim): Transported.{ b7da5d done }
+
+## msg-31 send (2026-09-26) — successor staging request to e167d8
+Command: `FLOW_ID=da88cf hm-send e167d8 BODY` (refresh preparation: stage Psyche Fable successor now, launch deferred until "go successor" or 30-minute silence; handoff at /home/li/primary/flows/da88cf/reports/handoff.md; skill list = launch brief + stale-lock, secrets, testing-transitive-network-topology, visual-report-from-md; status: ouranos deploy unblocked twice, step-2 branches ready pending tailnet CA, message 0.14.0 landing, awaiting flow 0.14.0 verdict)
+Receipt (verbatim): Transported.{ e167d8 working }
+
+## Sent to e167d8 (2026-09-26)
+Command: FLOW_ID=da88cf hm-send e167d8 BODY
+Receipt: Transported.{ e167d8 working }
+
+## msg-33 receipts (2026-09-26)
+
+- b860be (successor announcement + handoff delta): `Transported.{ b860be working }`
+- b7da5d (crossover notice): `Transported.{ b7da5d done }`
+- 504461 (crossover notice): `Transported.{ 504461 done }`
+- e71dab (crossover notice): `Transported.{ e71dab done }`
+- 00f95a (crossover notice): `Transported.{ 00f95a working }`
+- a676b3 (crossover notice): `Transported.{ a676b3 done }`
+- f5a74e (crossover notice): `Transported.{ f5a74e done }`
+- 38de5b (crossover notice): `Transported.{ 38de5b done }`
+
+## msg-34: hm-send b860be (2026-09-26)
+Receipt: Transported.{ b860be working }
+
+---
+msg-36 send to b860be at 2026-09-26T01:36:09-06:00
+Receipt: Transported.{ b860be working }
+
+msg-37 send to b860be at 2026-09-26 (crossover forward of lojix 8.1.0 target-store realization)
+Receipt: Transported.{ b860be working }
+
+<<<<<<< HEAD
+msg-38 send to 38de5b at 2026-09-26 (crossover Tailscale/Headscale repair state in one message: cause, design, landed/bookmarked revisions, secrets status, deploy path)
+Receipt: Transported.{ 38de5b working }
+=======
+## msg-38/msg-39: hm-send to 38de5b (2026-09-26) — Tailscale/Headscale repair state
+
+msg-38 used `hm-send 38de5b --stdin BODY_FILE` — the deployed messenger-clj 0.2.5 lacks `--stdin`; 38de5b received the literal text "--stdin" as a failed send, not the intended body.
+
+msg-39 resent the same body as the single quoted positional argument: `FLOW_ID=da88cf hm-send 38de5b "$(cat body.txt)"`.
+Receipt (verbatim): `Transported.{ 38de5b working }`
+>>>>>>> 5cc0e3645 (da88cf: commit receipt lines found in the tree)

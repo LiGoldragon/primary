@@ -1,0 +1,5 @@
+# Vision, operation, compensation
+
+> The vision describes what we want and the operational is what we're working with, right? Let's call it compensation. Vision, operation is Mind, and compensation is Field. These are the main layers and there are probably some layers above and below. I don't know if it's always a total hierarchy but there are different domains inside fields. One of them is, I guess, testing, to test something live, to see if something works, and then it becomes compensation. Testing is a notion and you can put it in and see what happens. Compensation is when it's put in there and it's welded in place for now to compensate, to make the system run. For now it's like a hot script, a hotfix, which is what we need to fix right away in proper implementation, and we try to design it or design other features in the psyche.
+
+-- psyche, typed, 2026-09-24, directly to Psyche High 752e0f. Speech-to-text correction inside the quote: "operation is mine" read as "operation is Mind", matching "compensation is Field" and the three aspects; original transcription "mine".

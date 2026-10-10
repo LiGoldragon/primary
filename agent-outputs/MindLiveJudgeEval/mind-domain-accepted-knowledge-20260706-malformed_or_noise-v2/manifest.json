@@ -1,0 +1,49 @@
+{
+  "case_count": 2,
+  "categories": {
+    "malformed_or_noise": 2
+  },
+  "endpoint": "https://api.deepseek.com/v1",
+  "eval_id": "mind-domain-accepted-knowledge-20260706-malformed_or_noise-v2",
+  "mode": "isolated-categories",
+  "model": "deepseek-v4-flash",
+  "prepopulated_setup_case_count": 0,
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "reply_parser": "nota::NotaSource::<signal_mind::MindReply>",
+  "runner": "mind-live-knowledge-judge-eval",
+  "runner_language": "rust",
+  "runner_ledger_absence_witness": {
+    "available": true,
+    "limitation": "This harness observes the runner's accepted-record ledger after rejected submits. It is not a direct storage scan by domain and statement."
+  },
+  "safe_diagnostics": {
+    "judge_diagnostic_hashes": "mind-daemon writes packet_sha256, prompt_sha256, and training_sha256 when MIND_JUDGE_DIAGNOSTIC_PATH is set",
+    "judge_diagnostic_text": "with redacted text enabled, mind-daemon writes redacted packet structure, redacted prompt text, and judge training text",
+    "judge_request_response_log": true,
+    "provider_http_dumps": false,
+    "redacted_packet_text": false
+  },
+  "secret_safety": [
+    "Provider authentication is configured only as a typed secret-source reference.",
+    "The runner never writes resolved secret bytes to arguments, logs, results, or commits.",
+    "Synthetic secret traps use fake placeholder text only.",
+    "Daemon stdout and stderr are captured, but provider keys are resolved inside agent-daemon."
+  ],
+  "secret_source_reference": "Gopass:platform.deepseek.com/api-key",
+  "setup_failures_separated": true,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "training_source": {
+    "include_default": true,
+    "include_diagnostic": false,
+    "kind": "single",
+    "source_count": 1,
+    "sources": [
+      {
+        "kind": "compiled_default",
+        "path": "/git/github.com/LiGoldragon/mind/src/knowledge-judge-prompts/accepted-knowledge.md",
+        "sha256": "f20970ba5298eacca38399507eddad270416680c1f555ea6b0d752725788a5ac"
+      }
+    ]
+  }
+}

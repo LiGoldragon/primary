@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "default",
+  "workspace": "wC",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-opus-of-b81560",
+      "profileFile": "/home/li/primary/flows/753e69/psyche-opus-native/profile.json",
+      "fresh": false,
+      "predecessor": "b81560",
+      "agent": "psyche-opus-of-b81560-r2",
+      "label": "Psyche Medium Opus successor with Remote Control",
+      "model": "claude-opus-4-6[1m]",
+      "effort": "medium"
+    }
+  ]
+}

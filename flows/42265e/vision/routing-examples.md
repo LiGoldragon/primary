@@ -1,0 +1,3 @@
+The living, typed 2026-10-03 at 17:49, in a comment preserved at flows/5578cc/vision/behavior.md; relayed by Mind Astra dea0ba:
+
+> No, I never meant that, even if it sounded like it. What I'm saying is, I don't know yet. I'm trying to design a better system, and it feels like Psyche [Fable]'s time should be reserved for important things. It's that mentality, translated into a certain situation, that makes you infer that these very specific rules should become the law. That's not what I mean. I'm expressing myself through examples. You have to try to understand the philosophy behind my acts to see the posture behind the movement.

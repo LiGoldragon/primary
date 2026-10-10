@@ -1,0 +1,31 @@
+Archived on landing: distilled into Vision/datom.md (Meaning), flow ad19b1, 2026-09-03. The content is carried there; the words are kept here.
+# Meaning
+
+## 2026-09-03 — there is no more MeaningOrString; strings are strings, and meaning is meaning
+
+On the distillate's sentence that a position holding either a plain
+string or a Meaning is a type of its own, MeaningOrString or Meaning
+itself accepting a plain string and deriving a simple structured
+meaning from it:
+
+> there is no more meaninigOrString. strings are strings, and meaning is meaning
+
+-- psyche, typed.
+
+## 2026-09-03 — no to "Meaning is seen in both datom and ethos and can live in datom"
+
+On the distillate's sentence "Meaning is seen in both datom and ethos
+and can live in datom":
+
+> no.
+
+-- psyche, typed.
+
+## 2026-09-03 — Meaning is datom
+
+Asked whether anything stands in place of the rejected sentence on
+where Meaning lives and which languages see it:
+
+> Meaning is datom
+
+-- psyche, typed.

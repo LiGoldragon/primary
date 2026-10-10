@@ -1,0 +1,32 @@
+{
+  "name": "mind-terra",
+  "model": "gpt-5.6-terra",
+  "effort": "medium",
+  "role": "Mind Low",
+  "predecessor": null,
+  "ancestor": null,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "codex-harness"
+  ],
+  "sourceManifest": [
+    "flows/9e7ea5/reports/refresh-handoff.md",
+    "flows/98ac2e/reports/refresh-handoff.md"
+  ],
+  "fresh": true
+}

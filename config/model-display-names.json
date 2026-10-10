@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "models": {
+    "gpt-6-astra": "Astra",
+    "gpt-6-sol": "Sol",
+    "gpt-6-luna": "Luna",
+    "gpt-5.6-sol": "Sol",
+    "gpt-5.6-terra": "Terra",
+    "gpt-5.6-luna": "Luna",
+    "claude-fable-5-1": "Fable",
+    "claude-opus-5-5": "Opus",
+    "claude-opus-5": "Opus 5",
+    "claude-opus-4-7": "OldOpus 4.7",
+    "claude-opus-4-7[1m]": "OldOpus 4.7 1m",
+    "claude-opus-4-6": "OldOpus 4.6",
+    "claude-opus-4-6[1m]": "OldOpus 4.6 1m",
+    "claude-sonnet-5": "Sonnet 5",
+    "claude-sonnet-5-5": "Sonnet",
+    "claude-haiku-5-5": "Haiku 5.5",
+    "claude-haiku-4-5-20251001": "Haiku 4.5",
+    "claude-fable-5-1[1m]": "Fable",
+    "gpt-6.1-sol": "Sol",
+    "criomos-local/qwen3.6-35b-a3b": "Qwen"
+  }
+}

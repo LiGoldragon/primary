@@ -1,0 +1,64 @@
+{
+  "native": "01a0f889-db72-7ad0-ab9c-d9029b75f516",
+  "pane": "w1:p18",
+  "terminal": "term_65ccada18c7162a",
+  "client_pid": 3390442,
+  "candidate_server_pid": 1965146,
+  "first_prompt_match_indices": [
+    8
+  ],
+  "prompt_bytes": 16597,
+  "prompt_sha256": "cc2facb596904ffd91780bda965cae2984fa1f937d9883925f516d43655f7180",
+  "actual_argv_without_prompt": [
+    "/nix/store/lh877phhgv4j3yrnhf168jwcnrj4pbp5-codex-next-candidate-0.161.0-alpha.2/bin/codex",
+    "-m",
+    "gpt-6.1-sol",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "-s",
+    "danger-full-access",
+    "-a",
+    "never",
+    "--remote",
+    "unix:///home/li/.codex-next-8mkkxq293hk2/app-server-control/app-server-control.sock",
+    "-C",
+    "/home/li/primary"
+  ],
+  "native_context": {
+    "turn_id": "01a0f889-dbd4-7de2-89e5-9d0d8399075d",
+    "root_turn_id": "01a0f889-dbd4-7de2-89e5-9d0d8399075d",
+    "disabled_plugin_ids": [],
+    "cwd": "/home/li/primary",
+    "workspace_roots": [
+      "/home/li/primary"
+    ],
+    "current_date": "2026-10-01",
+    "timezone": "America/Mexico_City",
+    "approval_policy": "never",
+    "approvals_reviewer": "user",
+    "sandbox_policy": {
+      "type": "danger-full-access"
+    },
+    "permission_profile": {
+      "type": "disabled"
+    },
+    "model": "gpt-6.1-sol",
+    "comp_hash": "3000",
+    "collaboration_mode": {
+      "mode": "default",
+      "settings": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "medium",
+        "developer_instructions": "# Collaboration Mode: Default\n\nYou are now in Default mode. Any previous instructions for other modes (e.g. Plan mode) are no longer active.\n\nYour active mode changes only when new developer instructions with a different `<collaboration_mode>...</collaboration_mode>` change it; user requests or tool descriptions do not change mode by themselves. Known mode names are Default and Plan.\n\n## request_user_input availability\n\nUse the `request_user_input` tool only when it is listed in the available tools for this turn.\n\nIn Default mode, strongly prefer making reasonable assumptions and executing the user's request rather than stopping to ask questions.\n\nUse the `request_user_input` tool only for optional questions where the answer would materially improve the quality of the work.\n\nIf `request_user_input` returns no answers, continue with best judgment instead of asking again or treating the turn as blocked.\n\nNever use the `request_user_input` tool for permission requests or permission-related escalations.\n\nIf explicit user input is required for another reason before progress can safely continue, do not use the `request_user_input` tool. Ask the user directly with one concise plain-text question instead. Never write a multiple choice question as a textual assistant message.\n"
+      }
+    },
+    "multi_agent_version": "v2",
+    "realtime_active": false,
+    "effort": "medium",
+    "summary": "none"
+  },
+  "socket_peer_witness": [
+    "u_str ESTAB 0      0      /tmp/codex-daemon-1001/340cfbf7003be8ea46c25de32285ac27b64b7e1c4ed22f5c80f006fad0fbb8de 60666571            * 60657594 users:((\"codex\",pid=1965146,fd=75))",
+    "u_str ESTAB 0      0                                                                                            * 60657594            * 60666571 users:((\"codex\",pid=3390442,fd=41))"
+  ]
+}

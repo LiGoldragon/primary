@@ -1,0 +1,144 @@
+{
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/f61ea06b-b5ba-45be-8313-0afe7d84fd03.jsonl",
+  "transcriptSnapshotSha256": "d17d6e127377a9611965b8e5b88f8fc943d64074bf1de097799e0c0e2f7ea3c5",
+  "commands": [
+    "/spirit",
+    "/psyche",
+    "/psyche-interraction",
+    "/behavior",
+    "/correction",
+    "/vocabulary",
+    "/subflow",
+    "/messaging",
+    "/datom",
+    "/testing-flow-titles",
+    "/visual-report-from-md",
+    "/main-flow"
+  ],
+  "assistantModels": [
+    {
+      "afterCommand": "/spirit",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T20:34:01.440Z"
+    },
+    {
+      "afterCommand": "/spirit",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T20:34:02.300Z"
+    },
+    {
+      "afterCommand": "/psyche",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:28.937Z"
+    },
+    {
+      "afterCommand": "/psyche",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:30.872Z"
+    },
+    {
+      "afterCommand": "/psyche-interraction",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:37.055Z"
+    },
+    {
+      "afterCommand": "/psyche-interraction",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:39.522Z"
+    },
+    {
+      "afterCommand": "/behavior",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:43.232Z"
+    },
+    {
+      "afterCommand": "/behavior",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:45.329Z"
+    },
+    {
+      "afterCommand": "/correction",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:50.380Z"
+    },
+    {
+      "afterCommand": "/correction",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:52.138Z"
+    },
+    {
+      "afterCommand": "/vocabulary",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:56.785Z"
+    },
+    {
+      "afterCommand": "/vocabulary",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:05:58.675Z"
+    },
+    {
+      "afterCommand": "/subflow",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:03.177Z"
+    },
+    {
+      "afterCommand": "/subflow",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:05.011Z"
+    },
+    {
+      "afterCommand": "/messaging",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:10.798Z"
+    },
+    {
+      "afterCommand": "/messaging",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:12.973Z"
+    },
+    {
+      "afterCommand": "/datom",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:19.176Z"
+    },
+    {
+      "afterCommand": "/datom",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:22.035Z"
+    },
+    {
+      "afterCommand": "/testing-flow-titles",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:27.640Z"
+    },
+    {
+      "afterCommand": "/testing-flow-titles",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:29.105Z"
+    },
+    {
+      "afterCommand": "/visual-report-from-md",
+      "model": "claude-sonnet-5",
+      "timestamp": "2026-09-21T21:06:34.463Z"
+    },
+    {
+      "afterCommand": "/visual-report-from-md",
+      "model": "claude-sonnet-5",
+      "timestamp": "2026-09-21T21:06:34.861Z"
+    },
+    {
+      "afterCommand": "/main-flow",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:45.296Z"
+    },
+    {
+      "afterCommand": "/main-flow",
+      "model": "claude-haiku-4-5-20251001",
+      "timestamp": "2026-09-21T21:06:48.340Z"
+    }
+  ],
+  "latestObservedIdentity": {
+    "model": "claude-haiku-4-5-20251001",
+    "effort": "medium"
+  }
+}

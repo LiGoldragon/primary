@@ -1,0 +1,54 @@
+{
+  "releases": {
+    "curriculum": {
+      "repository": "/git/github.com/LiGoldragon/Curriculum",
+      "revision": "96ed68b4589d3dc612c9e767f30e5c197b44564f",
+      "scope": "roles.datom delimiter migration"
+    },
+    "curriculum-deploy": {
+      "repository": "/git/github.com/LiGoldragon/curriculum-deploy",
+      "revision": "535396fec942ae5f1e8d77be0f1281db56b55b0a",
+      "version": "0.6.1"
+    },
+    "datom-codec": {
+      "repository": "/git/github.com/LiGoldragon/datom-codec",
+      "revision": "f2cc06858d38a4028c928d33323a6d682e7c222f",
+      "version": "0.25.6"
+    },
+    "ethos-zero": {
+      "repository": "/git/github.com/LiGoldragon/ethos-zero",
+      "revision": "4695ee0c1f5d00dcf5cceba08f5fa00412b92184",
+      "version": "6.1.6"
+    },
+    "horizon": {
+      "repository": "/git/github.com/LiGoldragon/horizon-rs",
+      "revision": "e48712203b7aad4bfb03088a4bda0a87ae064692",
+      "version": "0.8.0"
+    },
+    "lojix": {
+      "repository": "/git/github.com/LiGoldragon/lojix",
+      "revision": "b8f7a8cc834c90e08918410ea32f28d1b4c6949c",
+      "version": "1.0.1"
+    },
+    "meta-signal-lojix": {
+      "repository": "/git/github.com/LiGoldragon/meta-signal-lojix",
+      "revision": "901e5da6c8a58993479b7ba2ed1d0d62908d53b1",
+      "version": "2.2.0"
+    },
+    "nexus": {
+      "repository": "/git/github.com/LiGoldragon/nexus",
+      "revision": "a84bfa960c0d5c02d30048c4bbbc67dfef79a67c",
+      "version": "0.1.1"
+    },
+    "protos": {
+      "repository": "/git/github.com/LiGoldragon/protos",
+      "revision": "b543678cfc8609529cea7174eb4af8a64daa54ad",
+      "version": "0.29.1"
+    },
+    "signal-lojix": {
+      "repository": "/git/github.com/LiGoldragon/signal-lojix",
+      "revision": "3a57717e5a09591aecbaafd88bd138647a1d872d",
+      "version": "1.1.0"
+    }
+  }
+}

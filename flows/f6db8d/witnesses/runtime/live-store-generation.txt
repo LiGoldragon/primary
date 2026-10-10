@@ -1,0 +1,62 @@
+# The live store's durable generation — deduction from the running service's own guards
+
+## Premise 1 (witnessed): the deployed revision is 5f016531 (0.30.0)
+    orchestrate.url = "github:LiGoldragon/orchestrate/5f016531e765d9b679a86cc47a2d75eaca43d624";
+
+## Premise 2 (witnessed): 0.30.0's OpensStore::open refuses to open a store holding pre-0.30 rows
+        if previous_configuration_count != 0 || previous_lock_count != 0 {
+            return Err(StoreError::PreviousSignalMigrationRequired {
+                configuration_count: previous_configuration_count,
+                lock_count: previous_lock_count,
+            });
+        }
+        let configurations = engine.register_table(TableDescriptor::new(
+            CONFIGURATION_TABLE,
+            FamilyName::new("orchestrate-configuration"),
+            SchemaHash::for_label("orchestrate-configuration-v2"),
+        ))?;
+        let legacy: TableReference<LegacyStoredLock> =
+            engine.register_table(TableDescriptor::new(
+                LEGACY_TABLE,
+                FamilyName::new("orchestrate-path-lock"),
+                SchemaHash::for_label("orchestrate-path-lock-v1"),
+            ))?;
+        let legacy_count = engine
+            .match_records(QueryPlan::all(legacy))?
+            .records()
+            .len();
+        if legacy_count != 0 {
+            return Err(StoreError::LegacyActiveLocks {
+                count: legacy_count,
+            });
+        }
+
+## Premise 3 (witnessed): the deployed service opened that store and reported ready
+ActiveState=active
+MainPID=2094
+ExecMainStartTimestamp=Thu 2026-09-10 13:30:08 CST
+-- Boot 00b1e42fdf5a46139b4125fb6c47f408 --
+Sep 10 13:30:08 ouranos systemd[2067]: Started Orchestrate Nexus path-reservation service.
+Sep 10 13:30:08 ouranos orchestrate-nexus[2094]: orchestrate-nexus ready
+
+## Conclusion (this flow's inference)
+The live store therefore has ZERO rows in orchestrate_configuration / locks /
+lock_id_allocator (the pre-0.30 v1 families) and ZERO live rows in active_path_locks.
+0.31.0's open() carries the same three guards, so it would open the live store directly.
+orchestrate-store-migrate, which requires exactly one v1 configuration row and one v1
+allocator row, must fail against the live store with MigrationSourceInvariant{0,0}:
+            .to_vec();
+        let old_lock_rows = engine
+            .match_records(QueryPlan::all(old_locks))?
+            .records()
+            .to_vec();
+        let old_allocator_rows = engine
+            .match_records(QueryPlan::all(old_allocator))?
+            .records()
+            .to_vec();
+        if old_configuration.len() != 1 || old_allocator_rows.len() != 1 {
+            return Err(StoreError::MigrationSourceInvariant {
+                configuration_count: old_configuration.len(),
+                allocator_count: old_allocator_rows.len(),
+            });
+        }

@@ -1,0 +1,53 @@
+== copy drv 20:48:30
+copying 4 paths...
+copying path '/nix/store/cmynhz2spqa58ggq5cnbxhqm8d0mcq54-horizon.json.drv' to 'ssh-ng://root@prometheus.goldragon.criome'...
+copying path '/nix/store/fr01gb3dzxvcvd1bwxfffvlnff023vys-etc.drv' to 'ssh-ng://root@prometheus.goldragon.criome'...
+copying path '/nix/store/wka8fj1ick5n8lbiyp4ai6xgq768qbbn-activate.drv' to 'ssh-ng://root@prometheus.goldragon.criome'...
+copying path '/nix/store/s6yprfbkdq6irs38jz7xs70pi96gk5mg-nixos-system-prometheus-26.11.20260813.0e251e2.drv' to 'ssh-ng://root@prometheus.goldragon.criome'...
+copy exit 0
+== build on prometheus 20:48:34
+these 3 derivations will be built:
+  /nix/store/fr01gb3dzxvcvd1bwxfffvlnff023vys-etc.drv
+  /nix/store/wka8fj1ick5n8lbiyp4ai6xgq768qbbn-activate.drv
+  /nix/store/s6yprfbkdq6irs38jz7xs70pi96gk5mg-nixos-system-prometheus-26.11.20260813.0e251e2.drv
+building '/nix/store/fr01gb3dzxvcvd1bwxfffvlnff023vys-etc.drv'...
+building '/nix/store/wka8fj1ick5n8lbiyp4ai6xgq768qbbn-activate.drv'...
+building '/nix/store/s6yprfbkdq6irs38jz7xs70pi96gk5mg-nixos-system-prometheus-26.11.20260813.0e251e2.drv'...
+/nix/store/lv52i144c1mrg3h45m047lzzwi5fsgfr-nixos-system-prometheus-26.11.20260813.0e251e2
+build exit 0 20:48:35
+== test activation 20:49:10
+Running as unit: crashfix-test-activation.service
+          Finished with result: success
+Main processes terminated with: code=exited, status=0/SUCCESS
+               Service runtime: 2.337s
+             CPU time consumed: 383ms
+                   Memory peak: 72.9M (swap: 0B)
+                      IO Bytes: read 55.7M, written 2.3M
+activation ssh exit 0 20:49:13
+== checks 20:49:33
+-- via root@prometheus.goldragon.criome
+kernel.panic = 10
+kernel.panic_on_oops = 1
+RuntimeWatchdogUSec=30s
+1
+eno1             UP             10.44.0.148/24 metric 1024 fe80::8647:9ff:fe75:8868/64 
+active active active 
+/nix/store/lv52i144c1mrg3h45m047lzzwi5fsgfr-nixos-system-prometheus-26.11.20260813.0e251e2
+-- via -o HostKeyAlias=prometheus.goldragon.criome root@10.44.0.148
+command-line line 0: keyword hostkeyalias extra arguments at end of line
+-- via cable 20:49:46
+prometheus
+/nix/store/lv52i144c1mrg3h45m047lzzwi5fsgfr-nixos-system-prometheus-26.11.20260813.0e251e2
+== make permanent 20:49:46
+Running as unit: crashfix-boot-activation.service
+          Finished with result: success
+Main processes terminated with: code=exited, status=0/SUCCESS
+               Service runtime: 345ms
+             CPU time consumed: 205ms
+                   Memory peak: 49.7M (swap: 0B)
+                      IO Bytes: read 13.6M, written 1.3M
+system-54-link
+        title: NixOS (Generation 54 NixOS Zokor 26.11.20260813.0e251e2 (Linux 7.1.8), built on 2026-09-24) (not reported/new)
+        title: NixOS (Generation 53 NixOS Yarara 26.05.20260422.0726a0e (Linux 7.0.1), built on 2026-07-03) (not reported/new)
+        title: NixOS (Generation 52 NixOS Zokor 26.11.20260813.0e251e2 (Linux 7.1.8), built on 2026-09-16) (not reported/new)
+permanent exit 0 20:49:47

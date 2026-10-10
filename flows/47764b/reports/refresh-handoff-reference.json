@@ -1,0 +1,21 @@
+{
+  "schema_version": "prompt-relay-transcript-reference/v1",
+  "source": {
+    "harness": "codex",
+    "transcript_path": "/home/li/.codex/sessions/2026/09/23/rollout-2026-09-23T21-22-21-01a0cfb8-108c-76a0-901e-f4847764b62a.jsonl",
+    "native_thread_id": "01a0cfb8-108c-76a0-901e-f4847764b62a"
+  },
+  "record": {
+    "kind": "assistant-message",
+    "role": "assistant",
+    "turn_id": "01a0d0b6-114e-7e51-8dae-3d4c4ed8ae2c",
+    "item_id": "msg_0219118e62615ea4016ab4685c127087d1ae2754bce2f35f5b",
+    "title": "**Final transcript handoff — Mind High 47764b**",
+    "line_hint": 2232,
+    "sha256_utf8": "c38108f23ca6b2240d9d560ed14ff5c670c29f86b24c8f983056655723b160fe"
+  },
+  "selection": {
+    "kind": "whole-message",
+    "sha256_utf8": "c38108f23ca6b2240d9d560ed14ff5c670c29f86b24c8f983056655723b160fe"
+  }
+}

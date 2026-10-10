@@ -1,0 +1,287 @@
+# Redesign Audit Rulings — 2026-08-06
+
+Rulings from the psyche session that reacquired the Protos engine vision
+and commissioned the 2026-08-06 PM redesign-discipline audit of codex's
+work.
+
+## Ruling: a replacing design kills the replaced system
+
+Agent text answered: the audit closed with two questions on
+content-identity. (1) The crate co-exports the new whole-capsule
+`ContentAddressedHash` and the old domain-separated per-item
+`ContentHash<Domain>`, with ARCHITECTURE.md explicitly deferring removal
+— is the old hash a superseded form that dies, or a parallel concern
+that lives on its own merits? (2) `DomainSeparation::FrozenMagic` exists
+solely to reproduce sema-engine's historical on-disk domain strings so
+already-stored digests stay readable — does "anything old must die"
+extend to mechanisms whose only job is keeping existing stored state
+readable?
+
+Psyche ruling [psyche-verbatim]: "any new design that replacess the
+functionality of an existing system kills the old system."
+
+Scope and consequences:
+
+- This generalizes the anything-old-must-die ruling
+  (`deepCenterVision-2026-08-05.md`, appended 2026-08-06): the trigger
+  is functional replacement. The moment a new design replaces the
+  functionality of an existing system, the old system dies — no
+  coexistence, no deferred removal, no compatibility mechanism kept for
+  stored state.
+- Applied to content-identity: `ContentHash<Domain>` dies;
+  `ContentAddressedHash` is the sole hash. `FrozenMagic` dies with it —
+  readability of already-stored sema-engine digests is not grounds for
+  survival, consistent with the spirit precedent of no data-migration
+  machinery and manual re-entry. The byte-compatibility evidence
+  harness dies (evidence harnesses were already barred by
+  anything-old-must-die). The ARCHITECTURE.md deferral prose dies.
+- The raw-discovery older recognizer (tracked as primary-hqu.23) falls
+  under the same rule: the live source-bounded path replaced its
+  functionality; the old path dies producer-first.
+
+## Ruling: the bootstrap commit is atomic
+
+Agent text answered: codex reset-audit question 1 — should one commit
+journal the authorized identity/metadata transition and install
+canonical Ethos plus generated Rust atomically, closing the current
+split-authority and partial-install defect (schema-rust
+`write_or_check`, bootstrap.rs:276-283, installs source then Rust
+sequentially with a partial-failure window)?
+
+Psyche ruling: approved on managerial recommendation [psyche-verbatim:
+"go with your recommendation ... I did not understand what your
+question #1 is about, but trust your recommendation"]. One commit
+journals the authorized identity/metadata transition and installs the
+canonical Ethos source and the generated Rust together, atomically —
+all or nothing. This applies the standing atomicity law at the
+bootstrap boundary; `CommitBootstrap` is the committer the
+`PreparedBootstrapTransaction` model already anticipated. Callers
+cannot manufacture authority proofs, receipts, seats, or fixture
+vocabularies.
+
+## Ruling: role memberships stay positional; no universal marker traits
+
+Agent text answered: codex reset-audit question 2, presented against
+the standing 2026-08-02 ruling that homed universal
+Input/Output/Refusal/StreamOpen/StreamEvent traits in the `protos`
+crate, while the shipped bootstrap model derives memberships
+positionally.
+
+Psyche ruling (on managerial recommendation, same approval): Input,
+Output, and Refusal remain encoded positional role relations that
+generate component-specific traits. Universal empty Rust marker traits
+are not created; any that exist die. The 2026-08-02 "universal traits
+home — protos crate" ruling is superseded (notice placed in
+`ethosProductionFirstTargets-2026-08-02.md`).
+
+Management extension, low seniority until countersigned: the same
+ground covers StreamOpen and StreamEvent — the stream lifecycle stays
+encoded family seats generating component-specific surfaces; no
+universal stream marker traits either.
+
+## Ruling: WholeLogosPreservedSemaFamily dies
+
+Agent text answered: codex reset-audit question 3. Verification found a
+stored-state adoption record (core-logos src/whole.rs:884, exported
+lib.rs:81) whose constructor is test-only — production never attaches
+one — while its read path sits in the production codec (rust-logos
+src/codec.rs:1024,1029) rendering nothing living.
+
+Psyche ruling (on managerial recommendation, same approval): it dies
+with the rest. Consistent with the replacement-kills ruling and the
+FrozenMagic precedent: stored-state readability is not grounds for
+survival, and a record nothing living constructs has no claim. A future
+store-adoption need returns as designed work at its stage, not as a
+survivor. The Legacy-naming option is moot on this evidence.
+
+## Ruling: the colon joins a name to its transformer head
+
+Agent text answered: the manager's analysis agreeing that
+`Name.Transformer.(...)` overloads the dot — a reader cannot classify
+`A.B.C` as name chain or transformer application until `.(` arrives —
+while a colon announces the transformer at the name boundary, restores
+the guaranteed-plain dot-world, and reuses the colon's ruled
+context-scoped qualification role.
+
+Psyche ruling [psyche-verbatim]: "I think Name:TransformerName.( ... )
+is the better syntax for named transformers. The other syntax will
+create difficult parsing and reasoning." Confirmed after the analysis,
+with the additions: "and : remains legal in a position expecting a
+string", and — against the manager's description of the dot as
+separating chained names (`Technology.Software.Programming`) — "no,
+that is scrapped", and — against "it opens plain data" — "you mean, it
+opens a delimiter. everything is data".
+
+Seated:
+
+- Transformer applications are `Name:Transformer.(payload)`. The colon
+  separates the declared name from the transformer head; `.(` still
+  opens the payload. This supersedes the head-joining dot of the
+  2026-08-04 `.( )` ruling (notice placed there).
+- The colon stays context-scoped: qualification separator in import
+  space, name-to-transformer binding at declaration positions, and a
+  legal interior character wherever a string is expected.
+- Multi-segment dotted name chains are scrapped; the form leaves the
+  grammar (notice placed in `dotosSyntaxCorrections-2026-08-02.md`).
+- Language correction for the record: everything is data; the dot opens
+  a delimiter. The dot/colon distinction is payload-opener versus
+  transformer-head, not data versus non-data.
+
+## Ruling: a stream is several source objects; the bundled expansion dies
+
+Agent text answered: the manager's account of the shipped bootstrap
+stream lifecycle family — one authored `Name.Stream.(Query Event)`
+expanded at sealing into three declarations, with the authority minting
+two hidden identity seats for the initiation and termination — defended
+as the non-repetition law at work.
+
+Psyche ruling [psyche-verbatim]: "When I explained that a stream is
+several parts, I was disqualifying the object that tries to put all of
+the components of the stream in one source object. So your whole
+problem should probably go away. Like you say, does it go in input,
+does it go in output, it's because you're trying to put two objects
+into one, that doesn't work either. That's not non-repetition. That's
+trying to fit a square block in a triangle hole." On the shipped
+mechanism: "which means it must now be deleted".
+
+Seated:
+
+- No source object bundles a stream's components. The opening query,
+  the stream, and any termination are separately authored objects, each
+  in its natural position; roles remain positional.
+- The shipped bootstrap family expansion — authority-supplied
+  initiation/termination seats and the derived three-declaration
+  family — is disqualified and must be deleted (bead filed on the
+  cleanup car).
+- Open, awaiting psyche: whether a stream is a regular output (its
+  streamness carried by its type rather than by a special role), and
+  whether Input/Output position items implement universal Input/Output
+  traits — the psyche has reopened the marker-traits question ruled
+  earlier this same day.
+
+## Ruling: sections confer the universal traits (reversal)
+
+Agent text answered: the manager asked directly — should position make
+each item implement the universal Input/Output/Refusal traits, as
+originally ruled 2026-08-02, which would reverse the same-day
+marker-traits ruling taken on managerial recommendation?
+
+Psyche ruling [psyche-verbatim]: "What other point is there to have
+different sections?"
+
+Seated:
+
+- Sections exist precisely so that placement confers implementation of
+  the universal Input, Output, and Refusal traits. Position makes each
+  item implement its section's trait. The same-day ruling "role
+  memberships stay positional; no universal marker traits" is reversed;
+  the 2026-08-02 universal-traits home (`protos` crate) is restored
+  (both notices updated).
+- The manager's StreamOpen/StreamEvent extension falls with the
+  reversal; the stream-side traits await the open stream-role question
+  below.
+- Disavowal, recorded verbatim against the 2026-08-02 seated clause
+  "membership is positional and never written": "If I said 'author
+  never writes' I dont remember, and I now disavow that. I dont even
+  know why I would say that. Maybe I meant it could have a default
+  implementation, but I havent thought about it deeply enough to be
+  sure." Placement in a section IS the writing of membership; whether
+  the universal traits carry default implementations is open and not
+  deeply considered.
+
+## Open question: is a stream the same kind of output?
+
+The manager's argument that a stream is a regular output because
+`Stream` is engine machinery like `Vector` was rejected
+[psyche-verbatim]: "thats disingenuous". The honest difference the
+analogy hid: a Vector output's multiplicity is inside the value — all
+elements arrive at once and the exchange completes; a Stream's
+multiplicity is inside time — events keep arriving, the engine holds
+per-connection state, either side can end it, and the MVP demands a
+persisted restart of exactly that state. The question stays open:
+either the Output section's trait is broad enough to cover ongoing
+emission (streamness carried by type and engine machinery), or a
+stream's events-face is a fourth kind of role deserving its own
+section and universal trait — which would reopen the 2026-08-04 "no
+stream section" leaning. Unruled.
+
+## Ruling: stream is a fourth kind
+
+Agent text answered: the fork above — Output broad enough to cover
+ongoing emission, or stream as a fourth kind of role with its own
+section and universal trait.
+
+Psyche ruling [psyche-verbatim, dictation; "forest" read as "fourth"]:
+"I think we make stream a forest kind and we could even... Yeah.
+Eventually, I mean, not now, we could potentially write a transformer
+that also creates the required input objects to initiate and end the
+stream, although it's not necessary for now. And it would also mean
+that we have transformers that can name things, obviously synthetically
+create names, so that if the stream is called observer, then it would
+create an object called observer stream initiation, and then another
+object called observer stream termination, or something like that. But
+yeah, for now we could just create, write it all by hand and wire it up
+in the implementation. I'm more interested in getting the syntax right,
+getting the concepts right, and getting to minimum viable product."
+
+Seated:
+
+- Stream is a fourth role kind. The Interface body gains a Stream
+  section, and per the sections-confer ruling, placement in it confers
+  the stream's universal trait. This supersedes the 2026-08-04 "no
+  stream section" leaning (notice placed there). The exact position of
+  the Stream section in the body order and the exact shape of the
+  stream universal trait are delegated bootstrap choices, reviewable.
+- Bootstrap scope: the initiation and termination are hand-authored
+  input objects, wired up by hand in the implementation. No expansion
+  machinery now — consistent with the same-day disqualification of the
+  bundled family.
+- Vision-grade, deferred: transformers that synthetically create names
+  — a transformer could later generate the initiation and termination
+  input objects from the stream's name (Observer → ObserverStreamInitiation,
+  ObserverStreamTermination "or something like that"). Explicitly not
+  now, not necessary for the current stage.
+- Orientation restated: syntax right, concepts right, minimum viable
+  product.
+
+## Ruling: the body is the rkyv payload of the strict typed value
+
+Agent text answered: codex's identity-migration question — the
+validated Ethos transaction has no canonical per-object encoded body
+(identity bytes formerly came from callers, now forbidden by the
+authority-boundary ruling). Option 1: derive each TrueName from a new
+canonical encoded Ethos declaration body immediately after validation.
+Option 2: hash the lowered WholeLogos archive. The manager explained
+the fork and recommended option 1.
+
+Psyche ruling [psyche-verbatim, dictation]: "So we agreed that there
+would be a different type for every kind of ethos object, even all the
+way down to ethos mirroring the types that are needed to contain the
+particular nomos types, for now anyway. So that's, you know, the
+serialized RKYV payload of that filled data type is the body. The
+encoded form is the code. So the encoded form of ethos is ethos. The
+textual form is there so that our editors, our current editors, and
+our current LLM harnesses and models can actually make sense of it."
+
+Seated:
+
+- Option 1 stands, and the "define a canonical projection" work
+  dissolves: no bespoke canonical serializer is designed. Every kind
+  of Ethos object already has its own strict type (one type per
+  transformer, mirrors included, bootstrap scaffolding for now); the
+  canonical per-object body IS the rkyv payload of that filled,
+  validated typed value. Identity is fixed at validation, before
+  lowering, inside the authority boundary.
+- The true-name definition governs the hashed value: the object's own
+  name/identity is omitted from the hashed body, and references are
+  present as the referents' EncodedNames — which the encoded form
+  already satisfies, references being by encoded name.
+- Doctrine restated: the encoded form is the code — the encoded form
+  of Ethos is Ethos. The textual form exists so current editors,
+  harnesses, and models can make sense of it.
+- Standing caveat, accepted: the rkyv layout of each strict type is now
+  identity-critical — a layout change changes true names (a rebirth
+  under the rebirth ruling). Absorbed by the association table for
+  living objects; a reason the archive boundary stays NotYetArchived
+  until the substrate settles. Scoped to the three closed bootstrap
+  shapes, extended stage by stage.

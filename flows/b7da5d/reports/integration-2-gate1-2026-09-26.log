@@ -1,0 +1,103 @@
+Gate 1 CriomOS integration-2 checks
+remote-head=416afd41ad3cf38c8c374aa4192c181b50905211
+source=/home/li/wt/github.com/LiGoldragon/CriomOS/integration-2-b860be
+system=/home/li/.cache/lojix/system/x86_64-linux
+2026-09-26T02:18:15-06:00
+
+=== START agent-intercom-command-ownership 2026-09-26T02:18:15-06:00 ===
+warning: not writing modified lock file of flake 'path:/home/li/wt/github.com/LiGoldragon/CriomOS/integration-2-b860be':
+• Updated input 'system':
+    'path:./stubs/no-system'
+  → 'path:/home/li/.cache/lojix/system/x86_64-linux?lastModified=1781904081&narHash=sha256-g41gddg2mh9bfbjhMx8OcM85QybWnVBpVv8C3dfn1w0%3D' (2026-06-19)
+copying path '/nix/store/18wi9pj6f78cgvsfk7wdwzs7kbqblx94-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/18wi9pj6f78cgvsfk7wdwzs7kbqblx94-1ngnl7hv97n6arzvm95906zf1glsli7vbfssfdaq6wzvr6gs884y.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+copying path '/nix/store/rbnm7i0dd8697g9lmfxg05xx8w729093-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/rbnm7i0dd8697g9lmfxg05xx8w729093-0g8zd19g8d0wz48sq6fw0sw6bbq9xyiwk5h8znjjgwcvcylxwr2m.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+copying path '/nix/store/allhlh82nw1ppxml0zc39ps7b1b4bzfy-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/allhlh82nw1ppxml0zc39ps7b1b4bzfy-1qbmfp8k583ydqgvcc9kfbqx2q3xkn3dh37883xw0fbmvmw3drn6.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+trace: warning: `programs.ssh.matchBlocks` defined in `/nix/store/7zpjyg0wg2b061daqiz8pm0gwgjyxfw4-source/modules/home/profiles/min/default.nix' is deprecated. Use `programs.ssh.settings`.
+
+trace: warning: `programs.ssh` default values will be removed in the future.
+Consider setting `programs.ssh.enableDefaultConfig` to false,
+and manually set the default values you want to keep at
+`programs.ssh.settings."*"`.
+
+copying path '/nix/store/7a5awlbgq9mr0da5z62cd9siz7yd0vp2-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/7a5awlbgq9mr0da5z62cd9siz7yd0vp2-1i4nd92j7lb64m3jnmrax5zqaqmwmks6rwqrn2r9jzkic63cc4pn.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+evaluation warning: nixfmt-rfc-style is now the same as pkgs.nixfmt which should be used instead.
+copying path '/nix/store/s154mmk8ahvc71gq8xfkbzlk240yvniv-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/s154mmk8ahvc71gq8xfkbzlk240yvniv-1j89yslxj0q29xzrjcp19r4a130k4cdihx4yw6f2bm72fgia0j42.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+evaluation warning: system.stateVersion is not set, defaulting to 26.11. Read why this matters on https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion.
+evaluation warning: system.stateVersion is not set, defaulting to 26.11. Read why this matters on https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion.
+evaluation warning: system.stateVersion is not set, defaulting to 26.11. Read why this matters on https://nixos.org/manual/nixos/stable/options.html#opt-system.stateVersion.
+evaluation warning: nixfmt-rfc-style is now the same as pkgs.nixfmt which should be used instead.
+error:
+       … in the condition of the assert statement
+         at /nix/store/lz1w1nwf02gr31pc2sgkynnsr1856aw9-source/gates/agent-intercom-command-ownership.nix:14:1:
+           13| in
+           14| assert builtins.elem agentIntercom target.config.environment.systemPackages;
+             | ^
+           15| pkgs.runCommand "complete-host-agent-intercom-command-ownership"
+
+       … while calling the 'elem' builtin
+         at /nix/store/lz1w1nwf02gr31pc2sgkynnsr1856aw9-source/gates/agent-intercom-command-ownership.nix:14:8:
+           13| in
+           14| assert builtins.elem agentIntercom target.config.environment.systemPackages;
+             |        ^
+           15| pkgs.runCommand "complete-host-agent-intercom-command-ownership"
+
+       … while evaluating the module argument `horizon' in "/nix/store/lz1w1nwf02gr31pc2sgkynnsr1856aw9-source/modules/nixos/disks/preinstalled.nix":
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: CriomOS: no horizon input was provided.
+
+       The `horizon` flake input is a stub by default. Provide a real
+       one by overriding the input — typically via the `lojix`
+       orchestrator tool, which projects a cluster proposal (in-process
+       via horizon-lib, not as a CriomOS dependency) and writes a
+       content-addressed horizon flake for the deploy evaluation.
+
+       Use the deploy materialization tool rather than hand-writing
+       local path override commands.
+=== FAIL agent-intercom-command-ownership rc=1 2026-09-26T02:21:33-06:00 ===
+
+=== GATE STOP CLASSIFICATION ===
+The first check did not reach derivation realization: the supplied system-only override left `horizon` as the flake's `stubs/no-horizon` input. `agent-intercom-command-ownership` requires a complete-host `target.config`; the failure is therefore an incomplete materialized-input invocation, not a witnessed check assertion/test failure. No retry was made.

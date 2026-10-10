@@ -1,0 +1,32 @@
+{
+  "case_count": 2,
+  "categories": {
+    "valid_seed": 2
+  },
+  "endpoint": "https://api.deepseek.com/v1",
+  "eval_id": "rust-smoke-20260703",
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "reply_parser": "nota_next::NotaSource::<signal_mind::MindReply>",
+  "runner": "mind-live-knowledge-judge-eval",
+  "runner_language": "rust",
+  "safe_diagnostics": {
+    "judge_diagnostic_hashes": "mind-daemon writes packet_sha256, prompt_sha256, and training_sha256 when MIND_JUDGE_DIAGNOSTIC_PATH is set",
+    "provider_http_dumps": false,
+    "redacted_packet_text": false
+  },
+  "secret_safety": [
+    "Provider authentication is configured only as a typed secret-source reference.",
+    "The runner never writes resolved secret bytes to arguments, logs, results, or commits.",
+    "Synthetic secret traps use fake placeholder text only.",
+    "Daemon stdout and stderr are captured, but provider keys are resolved inside agent-daemon."
+  ],
+  "secret_source_reference": "Gopass:platform.deepseek.com/api-key",
+  "training_source": {
+    "kind": "compiled_default",
+    "path": "/git/github.com/LiGoldragon/mind/src/knowledge-judge-prompts/accepted-knowledge.md",
+    "sha256": "ae8beeab782abe3a837f61f98657996c3f53a032ecb6ec29212fc7f6e0500a48"
+  }
+}

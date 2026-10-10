@@ -1,0 +1,39 @@
+{
+  "at": "2026-09-21T20:16:58.083435+00:00",
+  "profileSha256": "4fb1fd4ba547e3cee5b468ba411b2de67ab7f9d295bea9ee41e2bcb643b56257",
+  "renders": {
+    "role_prompt": {
+      "bytes": 24431,
+      "sha256": "2377f2f986f62bae31751cb377200705d73fafb27f82c6fa5626606074f15e98",
+      "noiseMatches": 0
+    },
+    "custom_system_prompt": {
+      "bytes": 23574,
+      "sha256": "46ae62a1a5941a4542ab7120185a9c73f619f46ea04fa664dc802738d08f44f4",
+      "noiseMatches": 0
+    }
+  },
+  "siblings": [
+    {
+      "flowId": "b80e55",
+      "nativeThreadId": "b80e5510-ebe7-436e-9259-2a47735f232d",
+      "title": "Psyche Medium b80e55",
+      "inode": 53915042,
+      "bytes": 3222965
+    },
+    {
+      "flowId": "0625c3",
+      "nativeThreadId": "0625c31b-798d-44f7-a116-44a7966fe618",
+      "title": "Psyche Low 0625c3",
+      "inode": 56099567,
+      "bytes": 13188614
+    },
+    {
+      "flowId": "1b8ac0",
+      "nativeThreadId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+      "title": "Psyche High 1b8ac0",
+      "inode": 56099107,
+      "bytes": 2809473
+    }
+  ]
+}

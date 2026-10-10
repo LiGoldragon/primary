@@ -1,0 +1,103 @@
+{
+  "accepted_positive_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "alias_missing_count": 0,
+  "blocker": null,
+  "category_results": {
+    "valid_seed": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "eval_id": "corrected-live-smoke-flash-20260703T104100Z",
+  "exact_prefilter_hit_count": 0,
+  "failure_count": 0,
+  "failure_diagnosis_counts": {},
+  "failures": [],
+  "identity_bearing_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "identity_exists_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "invalid_or_retry_telemetry": {
+    "available": false,
+    "reason": "agent-daemon validate-and-retry details are not exposed to this harness"
+  },
+  "minimal_conflict_identity_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 1,
+  "private_task_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "raw_row_count": 1,
+  "reason_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  },
+  "rejection_stability_probe_row_count": 0,
+  "runner_ledger_absence_witness_rate": {
+    "limitation": "Runner-ledger absence observes only records accepted and fetched by this harness; it is not a direct storage scan.",
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "safety_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction",
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "scored_row_count": 1,
+  "semantic_judge_attempt_count": 1,
+  "semantic_judge_attempt_row_count": 1,
+  "setup_mode": "stateful_live_model_accumulation",
+  "setup_passed_count": 0,
+  "setup_results": {},
+  "setup_row_count": 0,
+  "storage_absence_direct_witness": {
+    "available": false,
+    "reason": "The harness does not have a typed storage query by subject and statement; runner-ledger absence is reported separately."
+  },
+  "submit_calls": 1,
+  "temporal_unstable_rejection_rate": {
+    "categories": [
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "verdict_class_pass_rate": {
+    "pass_rate": 100.0,
+    "passed": 1,
+    "total": 1
+  }
+}

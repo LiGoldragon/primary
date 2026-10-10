@@ -1,0 +1,683 @@
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/m57n42m7ih80h12kylsd68mqxda8czaj-signal-2.0.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.build...
+derivation evaluated to /nix/store/g30zxlpdqszj1szi3f4a3vir3qnqzxc4-signal-build-2.0.0.drv
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/l8wj1ipii1hyymbbvwqj1zi702kcn0q4-signal-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-datom-round-trip...
+derivation evaluated to /nix/store/vxvrpj7kd29fqvji5wxlfif9mg06pv94-signal-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/d2ri9f7sns57q9j2zh4p2dywdl1kaz27-signal-test-2.0.0.drv
+checking derivation checks.x86_64-linux.test-doc...
+derivation evaluated to /nix/store/as3pba0gy72m0aac1d6v8pgzmm37lxkx-signal-test-2.0.0.drv
+checking derivation checks.x86_64-linux.doc...
+derivation evaluated to /nix/store/iwi08kzxqbhiy4igcz9iyqmkprk8xcwy-signal-doc-2.0.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/xzx8bl9qi8v57kk3x7zjgxx8kznqm0is-signal-fmt-2.0.0.drv
+checking derivation checks.x86_64-linux.clippy...
+derivation evaluated to /nix/store/y8nkr5r8gya0ry6w39ryd335md0v9wz4-signal-clippy-2.0.0.drv
+checking derivation checks.x86_64-linux.test-transport...
+derivation evaluated to /nix/store/k7gi8wjy0lswmx63rlfigd0gk2j48ak5-signal-test-2.0.0.drv
+checking derivation checks.x86_64-linux.clippy-transport...
+derivation evaluated to /nix/store/x21iz8n67saqgmjyyyh9y23n80h5slqg-signal-clippy-2.0.0.drv
+checking derivation checks.x86_64-linux.clippy-datom...
+derivation evaluated to /nix/store/f0y7a8b4fgsxyna9c3n369321i2ssmj9-signal-clippy-2.0.0.drv
+checking derivation checks.x86_64-linux.rkyv-feature-discipline...
+derivation evaluated to /nix/store/zkbad0llg0v86kzrn4v2cdr9psljf6v5-signal-rkyv-feature-discipline.drv
+checking derivation checks.x86_64-linux.strict-signal-is-sole-authority...
+derivation evaluated to /nix/store/3h7qypccj92myalfpvi8s01m9y3qj9nk-signal-strict-signal.drv
+checking derivation checks.x86_64-linux.carries-no-engine...
+derivation evaluated to /nix/store/kbgx6y7mgg7v6rqdnwi5sicl65fz92w3-signal-no-engine.drv
+checking derivation checks.x86_64-linux.default-features-carry-no-runtime...
+derivation evaluated to /nix/store/8sgx8bry684dfnzi2m3xx4ikib36iprn-signal-build-2.0.0.drv
+checking flake output 'devShells'...
+checking derivation devShells.x86_64-linux.default...
+derivation evaluated to /nix/store/gh8ccsqx71sp2gpmq7pm37ymmkc8b4a2-signal.drv
+running 19 flake checks...
+building '/nix/store/fvjjqr5qw4zqi0g2swkc6v7y0f9pqdk2-vendor-registry.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/vzpqzwhf9xnhy7mb4mjj5slvcr0492i2-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/xzx8bl9qi8v57kk3x7zjgxx8kznqm0is-signal-fmt-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/kbgx6y7mgg7v6rqdnwi5sicl65fz92w3-signal-no-engine.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3h7qypccj92myalfpvi8s01m9y3qj9nk-signal-strict-signal.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/vzpqzwhf9xnhy7mb4mjj5slvcr0492i2-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/fvjjqr5qw4zqi0g2swkc6v7y0f9pqdk2-vendor-registry.drv'...
+copying 1 paths...
+copying path '/nix/store/i7gqzjmzbmi9c4ll656bbjmzbhvrd7y0-vendor-registry' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/bcvd2m0a8097amkpjyzn25mq2rxlih95-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pyr17wkcdan1x46fv33klm8s7y3rhgwi-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/slkgc1rijhiyp58fy1hsc9dryrsa3jm3-src' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/xzx8bl9qi8v57kk3x7zjgxx8kznqm0is-signal-fmt-2.0.0.drv'...
+signal-fmt> cargoVendorDir not set, will not automatically configure vendored sources
+signal-fmt> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-fmt> Running phase: unpackPhase
+signal-fmt> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-fmt> source root is source
+signal-fmt> Running phase: patchPhase
+signal-fmt> Executing configureCargoCommonVars
+signal-fmt> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-fmt> Running phase: configurePhase
+building '/nix/store/ma62ar2ygv64a14553s1pyrd2l18yywi-vendor-cargo-deps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-fmt> default configurePhase, nothing to do
+signal-fmt> Running phase: buildPhase
+signal-fmt> +++ command cargo --version
+signal-fmt> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-fmt> +++ command cargo fmt -- --check
+building '/nix/store/kbgx6y7mgg7v6rqdnwi5sicl65fz92w3-signal-no-engine.drv'...
+copying 1 paths...
+copying path '/nix/store/dhzlz61fhxsccafw0fnj7gjjv2sg9akg-signal-no-engine' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 2 paths...
+copying path '/nix/store/6mr3kpdd1h0fgd91mxbis78wkaw9x15s-build.rs' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/nvwrl8j9h71kdga4l0akkga3cmicbfyx-signal.ethos' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-fmt> Running phase: ensureTargetDir
+signal-fmt> Running phase: installPhase
+signal-fmt> no previous artifacts found, compressing and installing full archive of target to /nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0/target.tar.zst
+signal-fmt> /*stdin*\            :  0.72%   (  10.0 KiB =>     74 B, /nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0/target.tar.zst)
+signal-fmt> Running phase: fixupPhase
+signal-fmt> shrinking RPATHs of ELF executables and libraries in /nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0
+signal-fmt> checking for references to /build/ in /nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0...
+signal-fmt> patching script interpreter paths in /nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0
+copying 1 paths...
+copying path '/nix/store/dy23jl3gcp33rz7xg5zign36yalssk0g-signal-fmt-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/3h7qypccj92myalfpvi8s01m9y3qj9nk-signal-strict-signal.drv'...
+copying 1 paths...
+copying path '/nix/store/qjnxdyyx9zy2n9aryfpg4vfmlgkr28qp-signal-strict-signal' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/lfby3zmgwir91m384knc632sm92vqi6y-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/ma62ar2ygv64a14553s1pyrd2l18yywi-vendor-cargo-deps.drv'...
+copying 1 paths...
+copying path '/nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pyr17wkcdan1x46fv33klm8s7y3rhgwi-source.drv'...
+copying 1 paths...
+copying path '/nix/store/40abbvh6rv582yqwcz8q3wbqykkmiag1-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pzkr02pmyqakjkkjwqxw02rambx4va2q-signal-deps-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pzkr02pmyqakjkkjwqxw02rambx4va2q-signal-deps-2.0.0.drv'...
+signal-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-deps> Running phase: unpackPhase
+signal-deps> unpacking source archive /nix/store/40abbvh6rv582yqwcz8q3wbqykkmiag1-source
+signal-deps> source root is source
+signal-deps> Running phase: patchPhase
+signal-deps> Executing configureCargoCommonVars
+signal-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-deps> Running phase: configurePhase
+signal-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-deps> default configurePhase, nothing to do
+signal-deps> Running phase: buildPhase
+signal-deps> +++ command cargo --version
+signal-deps> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-deps> +++ command cargo check --release --locked --all-targets
+signal-deps>    Compiling proc-macro2 v1.0.106
+signal-deps>    Compiling quote v1.0.46
+signal-deps>    Compiling unicode-ident v1.0.24
+signal-deps>    Compiling simdutf8 v0.1.5
+signal-deps>    Compiling prettyplease v0.3.0
+signal-deps>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-deps>    Compiling hashbrown v0.17.1
+signal-deps>    Compiling thiserror v2.0.20
+signal-deps>     Checking pin-project-lite v0.2.17
+signal-deps>     Checking bytes v1.12.0
+signal-deps>    Compiling syn v2.0.118
+signal-deps>    Compiling syn v3.0.5
+signal-deps>    Compiling ptr_meta_derive v0.3.1
+signal-deps>    Compiling bytecheck_derive v0.8.2
+signal-deps>    Compiling munge_macro v0.4.7
+signal-deps>    Compiling rkyv_derive v0.8.16
+signal-deps>    Compiling datom-codec-derive v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-deps>    Compiling thiserror-impl v2.0.20
+signal-deps>    Compiling ptr_meta v0.3.1
+signal-deps>    Compiling rancor v0.1.1
+signal-deps>    Compiling munge v0.4.7
+signal-deps>    Compiling bytecheck v0.8.2
+signal-deps>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-deps>    Compiling tokio-macros v2.7.2
+signal-deps>    Compiling rend v0.5.3
+signal-deps>     Checking tokio v1.53.1
+signal-deps>    Compiling rkyv v0.8.16
+signal-deps>    Compiling ethos-zero v6.1.6 (https://github.com/LiGoldragon/ethos-zero?rev=4695ee0c1f5d00dcf5cceba08f5fa00412b92184#4695ee0c)
+signal-deps>    Compiling signal v2.0.0 (/build/source)
+signal-deps>     Finished `release` profile [optimized] target(s) in 6.01s
+signal-deps> +++ command cargo build --release --locked
+signal-deps>    Compiling ptr_meta v0.3.1
+signal-deps>    Compiling simdutf8 v0.1.5
+signal-deps>    Compiling munge v0.4.7
+signal-deps>    Compiling hashbrown v0.17.1
+signal-deps>    Compiling thiserror v2.0.20
+signal-deps>    Compiling rancor v0.1.1
+signal-deps>    Compiling bytecheck v0.8.2
+signal-deps>    Compiling rend v0.5.3
+signal-deps>    Compiling rkyv v0.8.16
+signal-deps>    Compiling signal v2.0.0 (/build/source)
+signal-deps>     Finished `release` profile [optimized] target(s) in 2.69s
+signal-deps> Running phase: checkPhase
+signal-deps> +++ command cargo test --release --locked --no-run
+signal-deps>    Compiling bytes v1.12.0
+signal-deps>    Compiling pin-project-lite v0.2.17
+signal-deps>    Compiling tokio v1.53.1
+signal-deps>    Compiling signal v2.0.0 (/build/source)
+signal-deps>     Finished `release` profile [optimized] target(s) in 1.41s
+signal-deps>   Executable unittests src/lib.rs (target/release/deps/signal-0b17f0914b527c95)
+signal-deps>   Executable tests/current_contract.rs (target/release/deps/current_contract-74276557f692929d)
+signal-deps> Running phase: installPhase
+signal-deps> no previous artifacts found, compressing and installing full archive of target to /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst
+signal-deps> /*stdin*\            : 28.82%   (   148 MiB =>   42.6 MiB, /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst)
+signal-deps> Running phase: fixupPhase
+signal-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0
+signal-deps> checking for references to /build/ in /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0...
+signal-deps> patching script interpreter paths in /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0
+copying 1 paths...
+copying path '/nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/8sgx8bry684dfnzi2m3xx4ikib36iprn-signal-build-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/g30zxlpdqszj1szi3f4a3vir3qnqzxc4-signal-build-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/f0y7a8b4fgsxyna9c3n369321i2ssmj9-signal-clippy-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/x21iz8n67saqgmjyyyh9y23n80h5slqg-signal-clippy-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/y8nkr5r8gya0ry6w39ryd335md0v9wz4-signal-clippy-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/iwi08kzxqbhiy4igcz9iyqmkprk8xcwy-signal-doc-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/as3pba0gy72m0aac1d6v8pgzmm37lxkx-signal-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/d2ri9f7sns57q9j2zh4p2dywdl1kaz27-signal-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/k7gi8wjy0lswmx63rlfigd0gk2j48ak5-signal-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/l8wj1ipii1hyymbbvwqj1zi702kcn0q4-signal-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/vxvrpj7kd29fqvji5wxlfif9mg06pv94-signal-test-2.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/d2ri9f7sns57q9j2zh4p2dywdl1kaz27-signal-test-2.0.0.drv'...
+building '/nix/store/k7gi8wjy0lswmx63rlfigd0gk2j48ak5-signal-test-2.0.0.drv'...
+building '/nix/store/8sgx8bry684dfnzi2m3xx4ikib36iprn-signal-build-2.0.0.drv'...
+signal-build> Running phase: unpackPhase
+signal-build> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-build> source root is source
+signal-build> Running phase: patchPhase
+signal-build> Executing configureCargoCommonVars
+signal-build> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-build> Running phase: configurePhase
+signal-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-build> default configurePhase, nothing to do
+signal-build> Running phase: buildPhase
+signal-build> +++ command cargo --version
+signal-build> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-build> +++ command cargo build --release --no-default-features
+signal-build>    Compiling signal v2.0.0 (/build/source)
+signal-build>     Finished `release` profile [optimized] target(s) in 0.42s
+signal-build> Running phase: installPhase
+signal-build> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0/target.tar.zst
+signal-build> /*stdin*\            : 27.10%   (  4.37 MiB =>   1.18 MiB, /nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0/target.tar.zst)
+signal-build> Running phase: fixupPhase
+signal-build> shrinking RPATHs of ELF executables and libraries in /nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0
+signal-build> checking for references to /build/ in /nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0...
+building '/nix/store/g30zxlpdqszj1szi3f4a3vir3qnqzxc4-signal-build-2.0.0.drv'...
+signal-build> Running phase: unpackPhase
+signal-build> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-build> source root is source
+signal-build> Running phase: patchPhase
+signal-build> Executing configureCargoCommonVars
+signal-build> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-build> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-build> Running phase: configurePhase
+signal-build> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-build> default configurePhase, nothing to do
+signal-build> Running phase: buildPhase
+signal-build> +++ command cargo --version
+signal-build> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-build> +++ command cargo build --release --locked
+signal-build>    Compiling signal v2.0.0 (/build/source)
+signal-build>     Finished `release` profile [optimized] target(s) in 0.29s
+signal-build> Running phase: installPhase
+signal-build> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0/target.tar.zst
+signal-build> /*stdin*\            : 27.11%   (  4.37 MiB =>   1.18 MiB, /nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0/target.tar.zst)
+signal-build> Running phase: fixupPhase
+signal-build> shrinking RPATHs of ELF executables and libraries in /nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0
+signal-build> checking for references to /build/ in /nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0...
+building '/nix/store/f0y7a8b4fgsxyna9c3n369321i2ssmj9-signal-clippy-2.0.0.drv'...
+signal-clippy> Running phase: unpackPhase
+signal-clippy> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-clippy> source root is source
+signal-clippy> Running phase: patchPhase
+signal-clippy> Executing configureCargoCommonVars
+signal-clippy> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-clippy> Running phase: configurePhase
+signal-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-clippy> default configurePhase, nothing to do
+signal-clippy> Running phase: buildPhase
+signal-clippy> +++ command cargo --version
+signal-clippy> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-clippy> +++ command cargo clippy --release --locked --features datom --all-targets -- -D warnings
+signal-clippy>     Checking protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-clippy>    Compiling signal v2.0.0 (/build/source)
+signal-clippy>     Checking datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-clippy>     Finished `release` profile [optimized] target(s) in 0.44s
+signal-clippy> Running phase: installPhase
+signal-clippy> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0/target.tar.zst
+signal-clippy> /*stdin*\            : 29.69%   (  4.13 MiB =>   1.23 MiB, /nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0/target.tar.zst)
+signal-clippy> Running phase: fixupPhase
+building '/nix/store/x21iz8n67saqgmjyyyh9y23n80h5slqg-signal-clippy-2.0.0.drv'...
+signal-clippy> Running phase: unpackPhase
+signal-clippy> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-clippy> source root is source
+signal-clippy> Running phase: patchPhase
+signal-clippy> Executing configureCargoCommonVars
+signal-clippy> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-clippy> Running phase: configurePhase
+signal-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-clippy> default configurePhase, nothing to do
+signal-clippy> Running phase: buildPhase
+signal-clippy> +++ command cargo --version
+signal-clippy> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-clippy> +++ command cargo clippy --release --locked --features transport --all-targets -- -D warnings
+signal-clippy>    Compiling signal v2.0.0 (/build/source)
+signal-clippy>     Finished `release` profile [optimized] target(s) in 0.32s
+signal-clippy> Running phase: installPhase
+signal-clippy> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0/target.tar.zst
+signal-clippy> /*stdin*\            : 28.91%   (  3.96 MiB =>   1.15 MiB, /nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0/target.tar.zst)
+signal-clippy> Running phase: fixupPhase
+signal-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0
+signal-clippy> checking for references to /build/ in /nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0...
+building '/nix/store/y8nkr5r8gya0ry6w39ryd335md0v9wz4-signal-clippy-2.0.0.drv'...
+signal-clippy> Running phase: unpackPhase
+signal-clippy> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-clippy> source root is source
+signal-clippy> Running phase: patchPhase
+signal-clippy> Executing configureCargoCommonVars
+signal-clippy> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-clippy> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-clippy> Running phase: configurePhase
+signal-clippy> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-clippy> default configurePhase, nothing to do
+signal-clippy> Running phase: buildPhase
+signal-clippy> +++ command cargo --version
+signal-clippy> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-clippy> +++ command cargo clippy --release --locked --all-targets -- -D warnings
+signal-clippy>    Compiling signal v2.0.0 (/build/source)
+signal-clippy>     Finished `release` profile [optimized] target(s) in 0.28s
+signal-clippy> Running phase: installPhase
+signal-clippy> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0/target.tar.zst
+signal-clippy> /*stdin*\            : 28.92%   (  3.92 MiB =>   1.13 MiB, /nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0/target.tar.zst)
+signal-clippy> Running phase: fixupPhase
+signal-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0
+signal-clippy> checking for references to /build/ in /nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0...
+building '/nix/store/iwi08kzxqbhiy4igcz9iyqmkprk8xcwy-signal-doc-2.0.0.drv'...
+signal-doc> Running phase: unpackPhase
+signal-doc> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-doc> source root is source
+signal-doc> Running phase: patchPhase
+signal-doc> Executing configureCargoCommonVars
+signal-doc> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-doc> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-doc> Running phase: configurePhase
+signal-doc> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-doc> default configurePhase, nothing to do
+signal-doc> Running phase: buildPhase
+signal-doc> +++ command cargo --version
+signal-doc> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-doc> +++ command cargo doc --release --locked --no-deps
+signal-doc>    Compiling signal v2.0.0 (/build/source)
+signal-doc>  Documenting signal v2.0.0 (/build/source)
+signal-doc>     Finished `release` profile [optimized] target(s) in 0.45s
+signal-doc>    Generated /build/source/target/doc/signal/index.html
+signal-doc> Running phase: installPhase
+signal-doc> Running phase: fixupPhase
+signal-doc> shrinking RPATHs of ELF executables and libraries in /nix/store/si27v8mil9wzagkigdlhgg098alg6m4x-signal-doc-2.0.0
+signal-doc> checking for references to /build/ in /nix/store/si27v8mil9wzagkigdlhgg098alg6m4x-signal-doc-2.0.0...
+signal-test> Running phase: unpackPhase
+signal-test> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-test> source root is source
+signal-test> Running phase: patchPhase
+signal-test> Executing configureCargoCommonVars
+signal-test> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-test> Running phase: configurePhase
+signal-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-test> default configurePhase, nothing to do
+signal-test> Running phase: buildPhase
+signal-test> +++ command cargo --version
+signal-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-test> Running phase: checkPhase
+signal-test> +++ command cargo test --release --locked --features datom --all-targets
+signal-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-test>    Compiling signal v2.0.0 (/build/source)
+signal-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+signal-test> Running phase: unpackPhase
+signal-test> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-test> source root is source
+signal-test> Running phase: patchPhase
+signal-test> Executing configureCargoCommonVars
+signal-test> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-test> Running phase: configurePhase
+signal-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-test> default configurePhase, nothing to do
+signal-test> Running phase: buildPhase
+signal-test> +++ command cargo --version
+signal-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-test> Running phase: checkPhase
+signal-test> +++ command cargo test --release --locked --features transport --all-targets
+building '/nix/store/l8wj1ipii1hyymbbvwqj1zi702kcn0q4-signal-test-2.0.0.drv'...
+signal-build> patching script interpreter paths in /nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0
+copying 1 paths...
+copying path '/nix/store/fq52da8q0mfyhx3mdv3fqip9248h3nf3-signal-build-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-build> patching script interpreter paths in /nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0
+copying 1 paths...
+copying path '/nix/store/84rhqn4jdz1nrfklp677gss0kh0qmh9c-signal-build-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-clippy> shrinking RPATHs of ELF executables and libraries in /nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0
+signal-clippy> checking for references to /build/ in /nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0...
+signal-clippy> patching script interpreter paths in /nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0
+copying 1 paths...
+copying path '/nix/store/a596ha3gp14blnlsnd0klmws8dcsm4jl-signal-clippy-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-clippy> patching script interpreter paths in /nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0
+copying 1 paths...
+copying path '/nix/store/4xmqbb3rnx0aivn9cpjm46f465pg6ljh-signal-clippy-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-clippy> patching script interpreter paths in /nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0
+copying 1 paths...
+copying path '/nix/store/zhpk350n225fig48h152nqz11g89gz80-signal-clippy-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-doc> patching script interpreter paths in /nix/store/si27v8mil9wzagkigdlhgg098alg6m4x-signal-doc-2.0.0
+copying 1 paths...
+copying path '/nix/store/si27v8mil9wzagkigdlhgg098alg6m4x-signal-doc-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-test>    Compiling signal v2.0.0 (/build/source)
+building '/nix/store/as3pba0gy72m0aac1d6v8pgzmm37lxkx-signal-test-2.0.0.drv'...
+signal-test> Running phase: unpackPhase
+signal-test> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-test> source root is source
+signal-test> Running phase: patchPhase
+signal-test> Executing configureCargoCommonVars
+signal-test> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-test> Running phase: unpackPhase
+signal-test> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-test> source root is source
+signal-test> Running phase: patchPhase
+signal-test> Executing configureCargoCommonVars
+signal-test> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-test> Running phase: configurePhase
+signal-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-test> default configurePhase, nothing to do
+signal-test> Running phase: buildPhase
+signal-test>     Finished `release` profile [optimized] target(s) in 0.83s
+signal-test>      Running unittests src/lib.rs (target/release/deps/signal-65d15140c2c1647b)
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> +++ command cargo --version
+signal-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-test> Running phase: checkPhase
+signal-test> +++ command cargo test --release --locked
+signal-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-test> Running phase: configurePhase
+signal-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-test> default configurePhase, nothing to do
+signal-test> Running phase: buildPhase
+signal-test> +++ command cargo --version
+signal-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-test> Running phase: checkPhase
+signal-test> +++ command cargo test --release --locked --doc
+signal-test>    Compiling signal v2.0.0 (/build/source)
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/async_framing.rs (target/release/deps/async_framing-8137f28425d79dee)
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/current_contract.rs (target/release/deps/current_contract-990ed3fbe6cec64f)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test shared_socket_taxonomy_archives_without_text_dependencies ... ok
+signal-test> test shared_socket_taxonomy_round_trips_as_datom ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/dependency_boundary.rs (target/release/deps/dependency_boundary-6ee160db1d005c5e)
+signal-test> 
+signal-test> running 4 tests
+signal-test> test obsolete_generation_language_is_absent_from_active_build_inputs ... ok
+signal-test> test build_tree_has_one_current_ethos_generator ... ok
+signal-test> test datom_is_the_only_text_projection_opt_in ... ok
+signal-test> test default_runtime_tree_excludes_bootstrap_and_retired_crates ... ok
+signal-test> 
+signal-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+signal-test> 
+signal-test>      Running tests/framing.rs (target/release/deps/framing-09a0581b66d0a7e5)
+signal-test> 
+signal-test> running 7 tests
+signal-test> test a_declared_length_past_capacity_is_refused_before_the_body_is_allocated ... ok
+signal-test> test a_prefix_declares_the_length_its_bytes_spell ... ok
+building '/nix/store/vxvrpj7kd29fqvji5wxlfif9mg06pv94-signal-test-2.0.0.drv'...
+signal-test> Running phase: unpackPhase
+signal-test> unpacking source archive /nix/store/hy69b9kyg26pq64j53rz5a87h6baxcjh-source
+signal-test> source root is source
+signal-test> Running phase: patchPhase
+signal-test> Executing configureCargoCommonVars
+signal-test> test a_written_frame_reads_back_as_the_same_body ... ok
+signal-test> test the_default_capacity_admits_exactly_eight_mebibytes ... ok
+signal-test> test a_body_past_capacity_is_refused_rather_than_written ... ok
+signal-test> test a_framed_body_carries_the_hand_computed_big_endian_prefix ... ok
+signal-test> test a_signalized_value_frames_and_restores_across_the_wire ... ok
+signal-test> 
+signal-test> test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/interface_contract.rs (target/release/deps/interface_contract-2f58ac5dacedadbd)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test public_source_constants_match_authored_and_generated_contract ... ok
+signal-test> test current_signal_is_the_sole_schema_authority ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/round_trip.rs (target/release/deps/round_trip-38f92c1ff3dd8d84)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test authorized_object_interest_preserves_matching_semantics ... ok
+signal-test> test shared_socket_archives_with_current_shape ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test> Running phase: installPhase
+signal-test> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0/target.tar.zst
+signal-test> decompressing cargo artifacts from /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to target
+signal-test> /*stdin*\            : 21.06%   (  12.8 MiB =>   2.70 MiB, /nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0/target.tar.zst)
+signal-test> Running phase: fixupPhase
+signal-test> shrinking RPATHs of ELF executables and libraries in /nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0
+signal-test> checking for references to /build/ in /nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0...
+signal-test> patching script interpreter paths in /nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0
+signal-test>    Compiling signal v2.0.0 (/build/source)
+copying 1 paths...
+copying path '/nix/store/661l85ici0p1b7ww4p74bsc05g27y4a5-signal-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-test>     Finished `release` profile [optimized] target(s) in 0.57s
+signal-test>      Running unittests src/lib.rs (target/release/deps/signal-97ee0788b6f42a4b)
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/async_framing.rs (target/release/deps/async_framing-d353c01e02779a46)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test an_asynchronous_body_past_capacity_is_refused ... ok
+signal-test> test an_asynchronously_written_frame_reads_back_as_the_same_body ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/current_contract.rs (target/release/deps/current_contract-12c1940e8e1b9bba)
+signal-test> 
+signal-test> running 1 test
+signal-test> test shared_socket_taxonomy_archives_without_text_dependencies ... ok
+signal-test> 
+signal-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/dependency_boundary.rs (target/release/deps/dependency_boundary-2e4dcbaae26a99bc)
+signal-test> 
+signal-test> running 4 tests
+signal-test> test obsolete_generation_language_is_absent_from_active_build_inputs ... ok
+signal-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-test> Running phase: configurePhase
+signal-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/ha67xbrimdi852xyzway5lw9b0ncs6i4-vendor-cargo-deps/config.toml
+signal-test> default configurePhase, nothing to do
+signal-test> Running phase: buildPhase
+signal-test> +++ command cargo --version
+signal-test> cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+signal-test> Running phase: checkPhase
+signal-test> +++ command cargo test --release --locked --features datom --test round_trip
+signal-test>    Compiling protos v0.29.1 (https://github.com/LiGoldragon/protos?rev=b543678cfc8609529cea7174eb4af8a64daa54ad#b543678c)
+signal-test>    Compiling signal v2.0.0 (/build/source)
+signal-test> test datom_is_the_only_text_projection_opt_in ... ok
+signal-test> test build_tree_has_one_current_ethos_generator ... ok
+signal-test> test default_runtime_tree_excludes_bootstrap_and_retired_crates ... ok
+signal-test> 
+signal-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+signal-test> 
+signal-test>      Running tests/framing.rs (target/release/deps/framing-9e349503ef182657)
+signal-test> 
+signal-test> running 7 tests
+signal-test> test a_declared_length_past_capacity_is_refused_before_the_body_is_allocated ... ok
+signal-test> test a_body_past_capacity_is_refused_rather_than_written ... ok
+signal-test> test a_signalized_value_frames_and_restores_across_the_wire ... ok
+signal-test> test a_framed_body_carries_the_hand_computed_big_endian_prefix ... ok
+signal-test> test a_prefix_declares_the_length_its_bytes_spell ... ok
+signal-test> test the_default_capacity_admits_exactly_eight_mebibytes ... ok
+signal-test> test a_written_frame_reads_back_as_the_same_body ... ok
+signal-test> 
+signal-test> test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/interface_contract.rs (target/release/deps/interface_contract-6c539b047063948e)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test public_source_constants_match_authored_and_generated_contract ... ok
+signal-test> test current_signal_is_the_sole_schema_authority ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/round_trip.rs (target/release/deps/round_trip-96e1af36f4dfe480)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test shared_socket_archives_with_current_shape ... ok
+signal-test> test authorized_object_interest_preserves_matching_semantics ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test> Running phase: installPhase
+signal-test> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0/target.tar.zst
+signal-test>     Finished `release` profile [optimized] target(s) in 0.26s
+signal-test>    Doc-tests signal
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test> /*stdin*\            : 20.69%   (  11.8 MiB =>   2.43 MiB, /nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0/target.tar.zst)
+signal-test> Running phase: fixupPhase
+signal-test> shrinking RPATHs of ELF executables and libraries in /nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0
+signal-test> checking for references to /build/ in /nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0...
+signal-test> patching script interpreter paths in /nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0
+signal-test> Running phase: installPhase
+signal-test> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0/target.tar.zst
+signal-test> /*stdin*\            : 27.11%   (  4.37 MiB =>   1.18 MiB, /nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0/target.tar.zst)
+signal-test> Running phase: fixupPhase
+signal-test> shrinking RPATHs of ELF executables and libraries in /nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0
+signal-test> checking for references to /build/ in /nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0...
+signal-test>    Compiling datom-codec v0.25.6 (https://github.com/LiGoldragon/datom-codec?rev=f2cc06858d38a4028c928d33323a6d682e7c222f#f2cc0685)
+copying 1 paths...
+signal-test> patching script interpreter paths in /nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0
+signal-test>     Finished `release` profile [optimized] target(s) in 0.48s
+signal-test>      Running unittests src/lib.rs (target/release/deps/signal-5c188110f3af6e99)
+signal-test> 
+signal-test> running 0 tests
+copying 1 paths...
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/async_framing.rs (target/release/deps/async_framing-bf89d7667f052b13)
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/current_contract.rs (target/release/deps/current_contract-cac98be8f60ec6cc)
+signal-test> 
+signal-test> running 1 test
+signal-test> test shared_socket_taxonomy_archives_without_text_dependencies ... ok
+signal-test> 
+signal-test> test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/dependency_boundary.rs (target/release/deps/dependency_boundary-22e4c2c619d784f1)
+signal-test> 
+copying path '/nix/store/sdkx6fnp5cymv1zqllpj0wjqhmgl46nz-signal-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-test> running 4 tests
+signal-test> test obsolete_generation_language_is_absent_from_active_build_inputs ... ok
+signal-test> test default_runtime_tree_excludes_bootstrap_and_retired_crates ... ok
+signal-test> test build_tree_has_one_current_ethos_generator ... ok
+signal-test> test datom_is_the_only_text_projection_opt_in ... ok
+signal-test> 
+signal-test> test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+signal-test> 
+signal-test>      Running tests/framing.rs (target/release/deps/framing-a8a0ad260560e388)
+signal-test> 
+signal-test> running 7 tests
+signal-test> test a_body_past_capacity_is_refused_rather_than_written ... ok
+signal-test> test a_declared_length_past_capacity_is_refused_before_the_body_is_allocated ... ok
+signal-test> test a_framed_body_carries_the_hand_computed_big_endian_prefix ... ok
+signal-test> test a_written_frame_reads_back_as_the_same_body ... ok
+signal-test> test a_prefix_declares_the_length_its_bytes_spell ... ok
+signal-test> test the_default_capacity_admits_exactly_eight_mebibytes ... ok
+signal-test> test a_signalized_value_frames_and_restores_across_the_wire ... ok
+signal-test> 
+signal-test> test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/interface_contract.rs (target/release/deps/interface_contract-bca10eff56883756)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test public_source_constants_match_authored_and_generated_contract ... ok
+signal-test> test current_signal_is_the_sole_schema_authority ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>      Running tests/round_trip.rs (target/release/deps/round_trip-d9e0b93193eacde1)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test authorized_object_interest_preserves_matching_semantics ... ok
+signal-test> test shared_socket_archives_with_current_shape ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test>    Doc-tests signal
+signal-test> 
+signal-test> running 0 tests
+signal-test> 
+signal-test> test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test> Running phase: installPhase
+signal-test> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0/target.tar.zst
+signal-test> /*stdin*\            : 21.65%   (  11.5 MiB =>   2.50 MiB, /nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0/target.tar.zst)
+signal-test> Running phase: fixupPhase
+signal-test> shrinking RPATHs of ELF executables and libraries in /nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0
+signal-test> checking for references to /build/ in /nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0...
+signal-test> patching script interpreter paths in /nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0
+copying path '/nix/store/816a1y3l1b3n6wm9yf80ar26m0360qzz-signal-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/37mwi0xgq7h22fx5dwqvxw3wspv66h97-signal-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+signal-test>     Finished `release` profile [optimized] target(s) in 0.65s
+signal-test>      Running tests/round_trip.rs (target/release/deps/round_trip-38f92c1ff3dd8d84)
+signal-test> 
+signal-test> running 2 tests
+signal-test> test authorized_object_interest_preserves_matching_semantics ... ok
+signal-test> test shared_socket_archives_with_current_shape ... ok
+signal-test> 
+signal-test> test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+signal-test> 
+signal-test> Running phase: installPhase
+signal-test> linking previous artifacts /nix/store/kxn7j0p05d5icy6svd24v458flwsbq22-signal-deps-2.0.0/target.tar.zst to /nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0/target.tar.zst
+signal-test> /*stdin*\            : 28.09%   (  6.54 MiB =>   1.84 MiB, /nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0/target.tar.zst)
+signal-test> Running phase: fixupPhase
+signal-test> shrinking RPATHs of ELF executables and libraries in /nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0
+signal-test> checking for references to /build/ in /nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0...
+signal-test> patching script interpreter paths in /nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0
+copying 1 paths...
+copying path '/nix/store/ry4qs4i4kilv3qwmysz3955frpppasla-signal-test-2.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-linux
+Use '--all-systems' to check all.
+EXIT=0

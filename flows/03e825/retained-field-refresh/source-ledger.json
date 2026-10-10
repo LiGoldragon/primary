@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "sourceRepository": "LiGoldragon/Primary",
+  "sourceRevision": "153c745ba52d84f47b0db2951bc76cfa69eac357",
+  "sourceRoot": "flows/6db4fe/reports/state-of-field-20260921",
+  "copiedSource": {
+    "from": "flows/6db4fe/reports/state-of-field-20260921/refresh-handoff.md",
+    "to": "flows/03e825/retained-field-refresh/sources/refresh-handoff.md"
+  },
+  "packageEntries": [
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/activity/METHODS.md",
+      "gitBlob": "24b67045c07ddbc99f988c20c594995f219c62d4",
+      "sha256": "07090f599fd746b1dd3e8524ea4ed79cafcc0f9fd1f289e37291a3e0727111cf",
+      "bytes": 1090
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/activity/activity.csv",
+      "gitBlob": "129da78323eb89d0f94dc9c8f39cecb79c31681a",
+      "sha256": "56e12a5b2afe2c8f2c3fa44780a1e1304171c3f8db4cc2021de8fed179c79e9a",
+      "bytes": 24125
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/activity/activity.json",
+      "gitBlob": "9266fe926cff6f30922555ee8565463efbadf73f",
+      "sha256": "1a72cf9d0e67fb5ffa0cd1f3e768a1be742baef4f89f040f766f5107ab53279c",
+      "bytes": 86310
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/activity/coverage.json",
+      "gitBlob": "9dcff29ecbc710fb63c86a203b71711c1139882d",
+      "sha256": "9c579a98583589cd8cd66f4c7fabf27164588ab353603163fc51eca8f3566424",
+      "bytes": 1061
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/activity/scan_metadata.py",
+      "gitBlob": "30fcdb3880f819caee22b5275236a70cd73f6670",
+      "sha256": "b07ecf42160d1440b1a7695bb24d20e3f304d29f00c15ed4412a2ee75aa801c7",
+      "bytes": 5877
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/sessions/field-census-6db4fe.json",
+      "gitBlob": "7e96d228b8085c8cf64f673f702c7c835c2ad77c",
+      "sha256": "e10d1aa79926b9cca0302350c04680634692dc4d1643c5a8ad13436ad1a09b11",
+      "bytes": 30170
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/sessions/sessions-6db4fe.csv",
+      "gitBlob": "e30dfacedae55d314b042037d3f472c341d677c5",
+      "sha256": "eba6c81a30104a7372058055d63ce49f5b7be522785995fc09a41ddc63f26e9d",
+      "bytes": 4982
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/documented-deviations.json",
+      "gitBlob": "84688c720052d2fd48e295695e1a59bcc22ffc0b",
+      "sha256": "57f18621dbb6b0610d5c11ded76bc5f31b97c772d0283b7229d8e99310ca686e",
+      "bytes": 2014
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/global-inventory.json",
+      "gitBlob": "118351691e7b738c8d38155f9d6e08cc5b86c572",
+      "sha256": "3f0811ca574842cef2a9ef3ca195d3ed16c69aff2d07f66f3fbfbd247cc83427",
+      "bytes": 34217
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/inventory.json",
+      "gitBlob": "e55d1562bfd2d88955ac526f576f8e72425db263",
+      "sha256": "7f3683a5b3ebd7f8823d9d7f56da30dc0b9a2f1fc3062aa97b0abeb380111e72",
+      "bytes": 5993
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/inventory.py",
+      "gitBlob": "21c0c50049d9e609e290bc09265d72cfc5c76248",
+      "sha256": "629a571c8eb95fb85b2b0f7088fc70416a26c883bf070cf76f0139d190b86b27",
+      "bytes": 5208
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/profile-prompts.csv",
+      "gitBlob": "f046ce6ef3407ff724e90424ff0ca9d49f1bea77",
+      "sha256": "65342bcfb3d73ab937c59e65908c8c4423e0f1c6eb70b4603239fa79aeefd607",
+      "bytes": 1407
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/data/skills/skill-sizes.csv",
+      "gitBlob": "8327c6e1db697a112543573ee2dbf7f7859ad3e8",
+      "sha256": "70e2849e4c6c76107ca3bad59de3d0b283a9bcbd56465a48282043b99d54ed0e",
+      "bytes": 19567
+    },
+    {
+      "path": "flows/6db4fe/reports/state-of-field-20260921/refresh-handoff.md",
+      "gitBlob": "708f467129111b54af53a164535ef2dee26cb7d7",
+      "sha256": "d7abcea216ca6f767dbb92f7fab31fca6ac455f979eab291984f55384fd01e1a",
+      "bytes": 3315
+    }
+  ],
+  "embedding": "Only the exact handoff copy enters the native source manifest; data and activity files remain machine evidence."
+}

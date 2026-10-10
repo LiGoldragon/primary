@@ -1,0 +1,366 @@
+copying path '/nix/store/0gzsbyn4jijg9iw0zfnp1p2rai24g9cz-source' from 'https://cache.nixos.org'...
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+remote: Enumerating objects: 87, done.        
+remote: Counting objects:   1% (1/87)        remote: Counting objects:   2% (2/87)        remote: Counting objects:   3% (3/87)        remote: Counting objects:   4% (4/87)        remote: Counting objects:   5% (5/87)        remote: Counting objects:   6% (6/87)        remote: Counting objects:   8% (7/87)        remote: Counting objects:   9% (8/87)        remote: Counting objects:  10% (9/87)        remote: Counting objects:  11% (10/87)        remote: Counting objects:  12% (11/87)        remote: Counting objects:  13% (12/87)        remote: Counting objects:  14% (13/87)        remote: Counting objects:  16% (14/87)        remote: Counting objects:  17% (15/87)        remote: Counting objects:  18% (16/87)        remote: Counting objects:  19% (17/87)        remote: Counting objects:  20% (18/87)        remote: Counting objects:  21% (19/87)        remote: Counting objects:  22% (20/87)        remote: Counting objects:  24% (21/87)        remote: Counting objects:  25% (22/87)        remote: Counting objects:  26% (23/87)        remote: Counting objects:  27% (24/87)        remote: Counting objects:  28% (25/87)        remote: Counting objects:  29% (26/87)        remote: Counting objects:  31% (27/87)        remote: Counting objects:  32% (28/87)        remote: Counting objects:  33% (29/87)        remote: Counting objects:  34% (30/87)        remote: Counting objects:  35% (31/87)        remote: Counting objects:  36% (32/87)        remote: Counting objects:  37% (33/87)        remote: Counting objects:  39% (34/87)        remote: Counting objects:  40% (35/87)        remote: Counting objects:  41% (36/87)        remote: Counting objects:  42% (37/87)        remote: Counting objects:  43% (38/87)        remote: Counting objects:  44% (39/87)        remote: Counting objects:  45% (40/87)        remote: Counting objects:  47% (41/87)        remote: Counting objects:  48% (42/87)        remote: Counting objects:  49% (43/87)        remote: Counting objects:  50% (44/87)        remote: Counting objects:  51% (45/87)        remote: Counting objects:  52% (46/87)        remote: Counting objects:  54% (47/87)        remote: Counting objects:  55% (48/87)        remote: Counting objects:  56% (49/87)        remote: Counting objects:  57% (50/87)        remote: Counting objects:  58% (51/87)        remote: Counting objects:  59% (52/87)        remote: Counting objects:  60% (53/87)        remote: Counting objects:  62% (54/87)        remote: Counting objects:  63% (55/87)        remote: Counting objects:  64% (56/87)        remote: Counting objects:  65% (57/87)        remote: Counting objects:  66% (58/87)        remote: Counting objects:  67% (59/87)        remote: Counting objects:  68% (60/87)        remote: Counting objects:  70% (61/87)        remote: Counting objects:  71% (62/87)        remote: Counting objects:  72% (63/87)        remote: Counting objects:  73% (64/87)        remote: Counting objects:  74% (65/87)        remote: Counting objects:  75% (66/87)        remote: Counting objects:  77% (67/87)        remote: Counting objects:  78% (68/87)        remote: Counting objects:  79% (69/87)        remote: Counting objects:  80% (70/87)        remote: Counting objects:  81% (71/87)        remote: Counting objects:  82% (72/87)        remote: Counting objects:  83% (73/87)        remote: Counting objects:  85% (74/87)        remote: Counting objects:  86% (75/87)        remote: Counting objects:  87% (76/87)        remote: Counting objects:  88% (77/87)        remote: Counting objects:  89% (78/87)        remote: Counting objects:  90% (79/87)        remote: Counting objects:  91% (80/87)        remote: Counting objects:  93% (81/87)        remote: Counting objects:  94% (82/87)        remote: Counting objects:  95% (83/87)        remote: Counting objects:  96% (84/87)        remote: Counting objects:  97% (85/87)        remote: Counting objects:  98% (86/87)        remote: Counting objects: 100% (87/87)        remote: Counting objects: 100% (87/87), done.        
+remote: Compressing objects:   5% (1/20)        remote: Compressing objects:  10% (2/20)        remote: Compressing objects:  15% (3/20)        remote: Compressing objects:  20% (4/20)        remote: Compressing objects:  25% (5/20)        remote: Compressing objects:  30% (6/20)        remote: Compressing objects:  35% (7/20)        remote: Compressing objects:  40% (8/20)        remote: Compressing objects:  45% (9/20)        remote: Compressing objects:  50% (10/20)        remote: Compressing objects:  55% (11/20)        remote: Compressing objects:  60% (12/20)        remote: Compressing objects:  65% (13/20)        remote: Compressing objects:  70% (14/20)        remote: Compressing objects:  75% (15/20)        remote: Compressing objects:  80% (16/20)        remote: Compressing objects:  85% (17/20)        remote: Compressing objects:  90% (18/20)        remote: Compressing objects:  95% (19/20)        remote: Compressing objects: 100% (20/20)        remote: Compressing objects: 100% (20/20), done.        
+remote: Total 52 (delta 33), reused 48 (delta 29), pack-reused 0 (from 0)        
+From github.com:LiGoldragon/horizon-rs
+   40d04d2..ee8d6f8  main       -> main
+ * [new branch]      proposal/cf7879-core-checkup-capability -> proposal/cf7879-core-checkup-capability
+these 19 derivations will be built:
+  /nix/store/4hqk7b923q2hyd78s6ipvz6swmkqc04k-cargo-git-https-github.com-LiGoldragon-ethos-zero-4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3.drv
+  /nix/store/1262vr4c1n9jadzmj1b8b1bx4nlwp0a8-linkLockedDeps.drv
+  /nix/store/1crjssiz1qvrvzg2z3q8wxg8xdyi55wl-linkLockedDeps.drv
+  /nix/store/dnayaz2lx0b9l2xj5x131dgfcxgkcrjn-cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef.drv
+  /nix/store/6858mdvr4gzjwh7qkkrxkyq4hf2bzabk-linkLockedDeps.drv
+  /nix/store/pxn07s6vvic5bbhsx2h6487dm787hr70-cargo-git-https-github.com-LiGoldragon-signal-8f9a0deb701cebbea518679548df4a795affc918.drv
+  /nix/store/96zgzysal2nrxi8ssa6yxyqkd63x2612-linkLockedDeps.drv
+  /nix/store/a2c6p61v30siqivbwrbg3zckvsi433dd-linkLockedDeps.drv
+  /nix/store/mi3s8y6w5isc5mncijn41ijbh3x7zrs2-vendor-registry.drv
+  /nix/store/z53ypi07zsfhj55bbjdgv9ssgi88vsmk-cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1.drv
+  /nix/store/pcfqilkyg2qw7wm6x5qdyin75axkqg25-linkLockedDeps.drv
+  /nix/store/50gxny459jv1yiiq7zrr05865h7pbp5b-cargo-git-https-github.com-LiGoldragon-datom-codec-627db67f2655efd9f786864009955005fd8ab2ad.drv
+  /nix/store/qqd2lvdzkcyp7f0rs3fp1nzyfngdj1wp-linkLockedDeps.drv
+  /nix/store/sm5pwf6rldnlkp4901zpfl7rbqhyqxhk-linkLockedDeps.drv
+  /nix/store/7xx5q80w56fag1pyqilxjgnbnj1ghkzl-vendor-cargo-deps.drv
+  /nix/store/rw8k4h9yinfsz4ps2la6alpcwfd6kcrc-Cargo.toml.drv
+  /nix/store/l95r6b0frgb50dnnln48dr9zgrl5fk8x-source.drv
+  /nix/store/65a5rqzy1cn84007wdbd84qdl19yiqbj-signal-lojix-deps-5.0.0.drv
+  /nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv
+these 9 paths will be fetched (0.0 KiB download, 1.6 GiB unpacked):
+  /nix/store/dv55qwamlq68hdiprg1v104ymwh1c27r-cargo-1.97.1
+  /nix/store/ahphdb3jic5irlnnhsqmbzn9s4a5wd33-cargo-git-https-github.com-LiGoldragon-datom-codec-09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927
+  /nix/store/p4kdrnpk8z5ma85ah4bj3sr7cg4b9izx-cargo-git-https-github.com-LiGoldragon-protos-171b21f65337983ab624b7b906397a4f1f92c5a3
+  /nix/store/xqsnr1chy5b4wzcfm6rq8qa9yib9nzaz-cargo-git-https-github.com-LiGoldragon-protos-1febca7836bf8d5f5973a302fdd50aa9c84c159b
+  /nix/store/0hvvmqsli4gmgk1rpi33w19bvb04jrf9-crane-utils-0.0.1
+  /nix/store/fs6ingdw7raizv9byqk5cl4nvh8f40w4-llvm-21.1.8-lib
+  /nix/store/cqlx62f919g8xf2f39bmykslpjdh9z0j-rustc-1.97.1
+  /nix/store/yaa1sq5g4jar7rvlspy7kk2wd98nj6qh-rustc-wrapper-1.97.1
+  /nix/store/47k26k98v32x56rxiqawdk5qk0r0b6w1-rustfmt-1.97.1
+building '/nix/store/mi3s8y6w5isc5mncijn41ijbh3x7zrs2-vendor-registry.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/98ak3ms7jz19bbb4smqnlgdim4ma0xw5-vendor-registry' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/ahphdb3jic5irlnnhsqmbzn9s4a5wd33-cargo-git-https-github.com-LiGoldragon-datom-codec-09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/p4kdrnpk8z5ma85ah4bj3sr7cg4b9izx-cargo-git-https-github.com-LiGoldragon-protos-171b21f65337983ab624b7b906397a4f1f92c5a3' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/xqsnr1chy5b4wzcfm6rq8qa9yib9nzaz-cargo-git-https-github.com-LiGoldragon-protos-1febca7836bf8d5f5973a302fdd50aa9c84c159b' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/fs6ingdw7raizv9byqk5cl4nvh8f40w4-llvm-21.1.8-lib' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/0hvvmqsli4gmgk1rpi33w19bvb04jrf9-crane-utils-0.0.1' from 'http://nix.prometheus.goldragon.criome'...
+building '/nix/store/1crjssiz1qvrvzg2z3q8wxg8xdyi55wl-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rw8k4h9yinfsz4ps2la6alpcwfd6kcrc-Cargo.toml.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/50gxny459jv1yiiq7zrr05865h7pbp5b-cargo-git-https-github.com-LiGoldragon-datom-codec-627db67f2655efd9f786864009955005fd8ab2ad.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/4hqk7b923q2hyd78s6ipvz6swmkqc04k-cargo-git-https-github.com-LiGoldragon-ethos-zero-4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/dnayaz2lx0b9l2xj5x131dgfcxgkcrjn-cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/z53ypi07zsfhj55bbjdgv9ssgi88vsmk-cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pxn07s6vvic5bbhsx2h6487dm787hr70-cargo-git-https-github.com-LiGoldragon-signal-8f9a0deb701cebbea518679548df4a795affc918.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/a2c6p61v30siqivbwrbg3zckvsi433dd-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/rzchfnl40f3mazggs00nkjdnqxxqhsbc-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/niz1amq9zkmzhckzcdvda1c3g3wc4s56-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/rw8k4h9yinfsz4ps2la6alpcwfd6kcrc-Cargo.toml.drv'...
+copying 1 paths...
+copying path '/nix/store/sgdaff4cqssdrrracqfld0ky2c37kdjj-Cargo.toml' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/50gxny459jv1yiiq7zrr05865h7pbp5b-cargo-git-https-github.com-LiGoldragon-datom-codec-627db67f2655efd9f786864009955005fd8ab2ad.drv'...
+cargo-git-https-github.com-LiGoldragon-datom-codec> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec> unpacking source archive /nix/store/wsj3hc0cb9rpgl4vi710ryv9mfkasmmb-source
+cargo-git-https-github.com-LiGoldragon-datom-codec> source root is source
+cargo-git-https-github.com-LiGoldragon-datom-codec> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-datom-codec> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-datom-codec>   |
+cargo-git-https-github.com-LiGoldragon-datom-codec>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/pf4m7i409jw86hrxadbxm3snr4rhj9h6-cargo-git-https-github.com-LiGoldragon-datom-codec-627db67f2655efd9f786864009955005fd8ab2ad' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/4hqk7b923q2hyd78s6ipvz6swmkqc04k-cargo-git-https-github.com-LiGoldragon-ethos-zero-4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3.drv'...
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> unpacking source archive /nix/store/lqrvxrpzy7asi2r4qwrb8d00m6nrccgg-source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> source root is source
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/3211lkisylzyqm0yhr6vs5a8kylzr45s-cargo-git-https-github.com-LiGoldragon-ethos-zero-4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/dnayaz2lx0b9l2xj5x131dgfcxgkcrjn-cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef.drv'...
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> unpacking source archive /nix/store/jib6awwap9cln4c6wji1jxv0mjk351d9-source
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> source root is source
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef> Running phase: installPhase
+copying 1 paths...
+copying path '/nix/store/zd88h2mv8llq8q5is871ddvnhckmzaww-cargo-git-https-github.com-LiGoldragon-ethos-zero-de3d9928b156f2e1a92d060b7817af201abfdbef' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qqd2lvdzkcyp7f0rs3fp1nzyfngdj1wp-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/6858mdvr4gzjwh7qkkrxkyq4hf2bzabk-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/z53ypi07zsfhj55bbjdgv9ssgi88vsmk-cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1.drv'...
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> Running phase: unpackPhase
+copying 1 paths...
+copying path '/nix/store/n70gdaqq2lmw6mladzy0b0r6gfdxiph5-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qqd2lvdzkcyp7f0rs3fp1nzyfngdj1wp-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/ccg29mi9bf7w65lwd7b5pmd9m4lnryzg-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/sm5pwf6rldnlkp4901zpfl7rbqhyqxhk-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/l95r6b0frgb50dnnln48dr9zgrl5fk8x-source.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> unpacking source archive /nix/store/rzchfnl40f3mazggs00nkjdnqxxqhsbc-source
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> source root is source
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> Running phase: installPhase
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1>   |
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1> warning: manifest has no description, license, license-file, documentation, homepage or repository
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1>   |
+cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1>   = note: see https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info
+copying 1 paths...
+copying path '/nix/store/kly54d2ym41q00lx49bja0jav7a7c5sb-cargo-git-https-github.com-LiGoldragon-horizon-rs-ee8d6f8d27eb6e200504807971ffdd26aaca7ed1' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pxn07s6vvic5bbhsx2h6487dm787hr70-cargo-git-https-github.com-LiGoldragon-signal-8f9a0deb701cebbea518679548df4a795affc918.drv'...
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: unpackPhase
+cargo-git-https-github.com-LiGoldragon-signal> unpacking source archive /nix/store/v571fy8xf5y2xkrrp19x7vnhqil3f4ry-source
+cargo-git-https-github.com-LiGoldragon-signal> source root is source
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: patchPhase
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: updateAutotoolsGnuConfigScriptsPhase
+cargo-git-https-github.com-LiGoldragon-signal> Running phase: installPhase
+copying 1 paths...
+building '/nix/store/6858mdvr4gzjwh7qkkrxkyq4hf2bzabk-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/ciwqdy3q83vyxn9dbcvsc6daa3nkpjaw-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/prfjlqipsqadpyvl8vr8pcqs04cl78kd-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1262vr4c1n9jadzmj1b8b1bx4nlwp0a8-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/wfadwdlhv7y9j0ff5wz3qx9mblvgcq83-cargo-git-https-github.com-LiGoldragon-signal-8f9a0deb701cebbea518679548df4a795affc918' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/z3767am00a78l2js0znyyl6rxl0nf2s5-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/l95r6b0frgb50dnnln48dr9zgrl5fk8x-source.drv'...
+copying 1 paths...
+copying path '/nix/store/yb1n5qs90j9ldh97vm1g1jhh1990m7gi-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/96zgzysal2nrxi8ssa6yxyqkd63x2612-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pcfqilkyg2qw7wm6x5qdyin75axkqg25-linkLockedDeps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1262vr4c1n9jadzmj1b8b1bx4nlwp0a8-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/5i6fhfnl7h6zxyyv26kknpscz6vx83yx-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/96zgzysal2nrxi8ssa6yxyqkd63x2612-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/jh05v9lbl2cygsw6pwyf86lxi4l8nbs4-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/pcfqilkyg2qw7wm6x5qdyin75axkqg25-linkLockedDeps.drv'...
+copying 1 paths...
+copying path '/nix/store/ilrdszgrkhn1qz9xblimgjc8mdkqkgaz-linkLockedDeps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/7xx5q80w56fag1pyqilxjgnbnj1ghkzl-vendor-cargo-deps.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/7xx5q80w56fag1pyqilxjgnbnj1ghkzl-vendor-cargo-deps.drv'...
+copying path '/nix/store/cqlx62f919g8xf2f39bmykslpjdh9z0j-rustc-1.97.1' from 'http://nix.prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/yaa1sq5g4jar7rvlspy7kk2wd98nj6qh-rustc-wrapper-1.97.1' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/dv55qwamlq68hdiprg1v104ymwh1c27r-cargo-1.97.1' from 'http://nix.prometheus.goldragon.criome'...
+copying path '/nix/store/47k26k98v32x56rxiqawdk5qk0r0b6w1-rustfmt-1.97.1' from 'http://nix.prometheus.goldragon.criome'...
+building '/nix/store/65a5rqzy1cn84007wdbd84qdl19yiqbj-signal-lojix-deps-5.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/65a5rqzy1cn84007wdbd84qdl19yiqbj-signal-lojix-deps-5.0.0.drv'...
+signal-lojix-deps> cargoArtifacts not set, will not reuse any cargo artifacts
+signal-lojix-deps> Running phase: unpackPhase
+signal-lojix-deps> unpacking source archive /nix/store/yb1n5qs90j9ldh97vm1g1jhh1990m7gi-source
+signal-lojix-deps> source root is source
+signal-lojix-deps> Running phase: patchPhase
+signal-lojix-deps> Executing configureCargoCommonVars
+signal-lojix-deps> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-lojix-deps> Running phase: configurePhase
+signal-lojix-deps> will append /build/source/.cargo-home/config.toml with contents of /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/config.toml
+signal-lojix-deps> default configurePhase, nothing to do
+signal-lojix-deps> Running phase: buildPhase
+signal-lojix-deps> +++ command cargo --version
+signal-lojix-deps> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-lojix-deps> +++ command cargo check --release --locked --all-targets
+signal-lojix-deps>    Compiling proc-macro2 v1.0.107
+signal-lojix-deps>    Compiling unicode-ident v1.0.24
+signal-lojix-deps>    Compiling quote v1.0.47
+signal-lojix-deps>    Compiling simdutf8 v0.1.5
+signal-lojix-deps>    Compiling hashbrown v0.17.1
+signal-lojix-deps>    Compiling prettyplease v0.3.0
+signal-lojix-deps>    Compiling protos v0.30.1 (https://github.com/LiGoldragon/protos?rev=171b21f65337983ab624b7b906397a4f1f92c5a3#171b21f6)
+signal-lojix-deps>    Compiling protos v0.31.0 (https://github.com/LiGoldragon/protos?rev=1febca7836bf8d5f5973a302fdd50aa9c84c159b#1febca78)
+signal-lojix-deps>    Compiling serde_core v1.0.229
+signal-lojix-deps>    Compiling thiserror v2.0.20
+signal-lojix-deps>    Compiling serde v1.0.229
+signal-lojix-deps>    Compiling syn v3.0.5
+signal-lojix-deps>    Compiling syn v2.0.119
+signal-lojix-deps>    Compiling munge_macro v0.4.7
+signal-lojix-deps>    Compiling datom-codec-derive v0.26.0 (https://github.com/LiGoldragon/datom-codec?rev=627db67f2655efd9f786864009955005fd8ab2ad#627db67f)
+signal-lojix-deps>    Compiling datom-codec-derive v0.31.0 (https://github.com/LiGoldragon/datom-codec?rev=09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927#09e2a9d5)
+signal-lojix-deps>    Compiling ptr_meta_derive v0.3.2
+signal-lojix-deps>    Compiling bytecheck_derive v0.8.3
+signal-lojix-deps>    Compiling rkyv_derive v0.8.18
+signal-lojix-deps>    Compiling thiserror-impl v2.0.20
+signal-lojix-deps>    Compiling datom-codec v0.26.3 (https://github.com/LiGoldragon/datom-codec?rev=627db67f2655efd9f786864009955005fd8ab2ad#627db67f)
+signal-lojix-deps>    Compiling ptr_meta v0.3.2
+signal-lojix-deps>    Compiling rancor v0.1.3
+signal-lojix-deps>    Compiling munge v0.4.7
+signal-lojix-deps>    Compiling bytecheck v0.8.3
+signal-lojix-deps>    Compiling serde_derive v1.0.229
+signal-lojix-deps>    Compiling rend v0.5.4
+signal-lojix-deps>    Compiling rkyv v0.8.18
+signal-lojix-deps>     Checking datom-codec v0.31.0 (https://github.com/LiGoldragon/datom-codec?rev=09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927#09e2a9d5)
+signal-lojix-deps>    Compiling ethos-zero v8.0.1 (https://github.com/LiGoldragon/ethos-zero?rev=de3d9928b156f2e1a92d060b7817af201abfdbef#de3d9928)
+signal-lojix-deps>    Compiling ethos-zero v10.0.0 (https://github.com/LiGoldragon/ethos-zero?rev=4bf73cae8d4f5a2072c76a11cd2f00aa3fe9f8e3#4bf73cae)
+signal-lojix-deps>    Compiling signal v3.0.2 (https://github.com/LiGoldragon/signal?rev=8f9a0deb701cebbea518679548df4a795affc918#8f9a0deb)
+signal-lojix-deps>    Compiling signal-lojix v5.0.0 (/build/source)
+signal-lojix-deps>    Compiling horizon-lib v0.12.0 (https://github.com/LiGoldragon/horizon-rs?rev=ee8d6f8d27eb6e200504807971ffdd26aaca7ed1#ee8d6f8d)
+signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 6.81s
+signal-lojix-deps> +++ command cargo build --release --locked
+signal-lojix-deps>    Compiling ptr_meta v0.3.2
+signal-lojix-deps>    Compiling simdutf8 v0.1.5
+signal-lojix-deps>    Compiling munge v0.4.7
+signal-lojix-deps>    Compiling hashbrown v0.17.1
+signal-lojix-deps>    Compiling thiserror v2.0.20
+signal-lojix-deps>    Compiling serde_core v1.0.229
+signal-lojix-deps>    Compiling rancor v0.1.3
+signal-lojix-deps>    Compiling protos v0.31.0 (https://github.com/LiGoldragon/protos?rev=1febca7836bf8d5f5973a302fdd50aa9c84c159b#1febca78)
+signal-lojix-deps>    Compiling bytecheck v0.8.3
+signal-lojix-deps>    Compiling rend v0.5.4
+signal-lojix-deps>    Compiling serde v1.0.229
+signal-lojix-deps>    Compiling rkyv v0.8.18
+signal-lojix-deps>    Compiling datom-codec v0.31.0 (https://github.com/LiGoldragon/datom-codec?rev=09e2a9d52bf7f2f11e51d15cb6c3177f72c6c927#09e2a9d5)
+signal-lojix-deps>    Compiling signal v3.0.2 (https://github.com/LiGoldragon/signal?rev=8f9a0deb701cebbea518679548df4a795affc918#8f9a0deb)
+signal-lojix-deps>    Compiling horizon-lib v0.12.0 (https://github.com/LiGoldragon/horizon-rs?rev=ee8d6f8d27eb6e200504807971ffdd26aaca7ed1#ee8d6f8d)
+signal-lojix-deps>    Compiling signal-lojix v5.0.0 (/build/source)
+signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 4.73s
+signal-lojix-deps> Running phase: checkPhase
+signal-lojix-deps> +++ command cargo test --release --locked --no-run
+signal-lojix-deps>    Compiling signal-lojix v5.0.0 (/build/source)
+signal-lojix-deps>     Finished `release` profile [optimized] target(s) in 0.07s
+signal-lojix-deps>   Executable unittests src/lib.rs (target/release/deps/signal_lojix-93c5067dc85914af)
+signal-lojix-deps> Running phase: installPhase
+signal-lojix-deps> compressing and installing full archive of target to /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0/target.tar.zst as requested
+signal-lojix-deps> /*stdin*\            : 27.12%   (   184 MiB =>   49.9 MiB, /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0/target.tar.zst)
+signal-lojix-deps> Running phase: fixupPhase
+signal-lojix-deps> shrinking RPATHs of ELF executables and libraries in /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0
+signal-lojix-deps> checking for references to /build/ in /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0...
+signal-lojix-deps> patching script interpreter paths in /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0
+copying 1 paths...
+copying path '/nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/wb5ni2il89j99spyw0ya0cnp9xk84bd5-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv'...
+signal-lojix-test> Running phase: unpackPhase
+signal-lojix-test> unpacking source archive /nix/store/wb5ni2il89j99spyw0ya0cnp9xk84bd5-source
+signal-lojix-test> source root is source
+signal-lojix-test> Running phase: patchPhase
+signal-lojix-test> Executing configureCargoCommonVars
+signal-lojix-test> decompressing cargo artifacts from /nix/store/vhi10b33krlijczj2f6p25n0fbx9sykj-signal-lojix-deps-5.0.0/target.tar.zst to target
+signal-lojix-test> Running phase: updateAutotoolsGnuConfigScriptsPhase
+signal-lojix-test> Running phase: configurePhase
+signal-lojix-test> will append /build/source/.cargo-home/config.toml with contents of /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/config.toml
+signal-lojix-test> default configurePhase, nothing to do
+signal-lojix-test> Running phase: buildPhase
+signal-lojix-test> +++ command cargo --version
+signal-lojix-test> cargo 1.98.0-nightly (598ab48ec 2026-06-17)
+signal-lojix-test> Running phase: checkPhase
+signal-lojix-test> +++ command cargo test --release --locked --features datom --test generated_contract
+signal-lojix-test>    Compiling signal-lojix v5.0.0 (/build/source)
+signal-lojix-test>    Compiling horizon-lib v0.12.0 (https://github.com/LiGoldragon/horizon-rs?rev=ee8d6f8d27eb6e200504807971ffdd26aaca7ed1#ee8d6f8d)
+signal-lojix-test>    Compiling protos v0.30.1 (https://github.com/LiGoldragon/protos?rev=171b21f65337983ab624b7b906397a4f1f92c5a3#171b21f6)
+signal-lojix-test>    Compiling datom-codec v0.26.3 (https://github.com/LiGoldragon/datom-codec?rev=627db67f2655efd9f786864009955005fd8ab2ad#627db67f)
+signal-lojix-test> error[E0599]: the method `datomize` exists for reference `&Option<HorizonDefinition>`, but its trait bounds were not satisfied
+signal-lojix-test>    --> src/generated/signal.rs:30:12
+signal-lojix-test>     |
+signal-lojix-test>  30 |     derive(datom_codec::Datomizable, datom_codec::Compositional)
+signal-lojix-test>     |            ^^^^^^^^^^^^^^^^^^^^^^^^ method cannot be called on `&Option<HorizonDefinition>` due to unsatisfied trait bounds
+signal-lojix-test>     |
+signal-lojix-test>    ::: /nix/store/djmjzsisj5k9kln31f8i0ak260hi2kqc-rust-nightly-complete-with-components-2026-06-19/lib/rustlib/src/rust/library/core/src/option.rs:597:1
+signal-lojix-test>     |
+signal-lojix-test> 597 | pub enum Option<T> {
+signal-lojix-test>     | ------------------ doesn't satisfy `Option<HorizonDefinition>: Datomizable`
+signal-lojix-test>     |
+signal-lojix-test>    ::: /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/e2d39ae28d36f9d7877fcbd8ae4c568649052144bf22fa87a42be09f2f886ac4/horizon-lib-0.12.0/src/generated/horizon.rs:527:1
+signal-lojix-test>     |
+signal-lojix-test> 527 | pub struct HorizonDefinition {
+signal-lojix-test>     | ---------------------------- doesn't satisfy `<_ as Datomizable>::Output = Datom` or `HorizonDefinition: Datomizable`
+signal-lojix-test>     |
+signal-lojix-test>     = note: the following trait bounds were not satisfied:
+signal-lojix-test>             `<HorizonDefinition as Datomizable>::Output = datom_codec::Datom`
+signal-lojix-test>             which is required by `Option<HorizonDefinition>: Datomizable`
+signal-lojix-test>             `HorizonDefinition: Datomizable`
+signal-lojix-test>             which is required by `Option<HorizonDefinition>: Datomizable`
+signal-lojix-test>     = help: items from traits can only be used if the trait is in scope
+signal-lojix-test>     = note: this error originates in the derive macro `datom_codec::Datomizable` (in Nightly builds, run with -Z macro-backtrace for more info)
+signal-lojix-test> help: trait `Datomizable` which provides `datomize` is implemented but not in scope; perhaps you want to import it
+signal-lojix-test>     |
+signal-lojix-test>   2 + use datom_codec::core::Datomizable;
+signal-lojix-test>     |
+signal-lojix-test> 
+signal-lojix-test> error[E0277]: the trait bound `HorizonDefinition: Compositional` is not satisfied
+signal-lojix-test>    --> src/generated/signal.rs:30:38
+signal-lojix-test>     |
+signal-lojix-test>  30 |     derive(datom_codec::Datomizable, datom_codec::Compositional)
+signal-lojix-test>     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Compositional` is not implemented for `HorizonDefinition`
+signal-lojix-test>     |
+signal-lojix-test> note: there are multiple different versions of crate `datom_codec` in the dependency graph
+signal-lojix-test>    --> /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/8b8ace8a174210b1f79b1acc1443cbe4816f8c900bf9af88020c5dbc0bc5975c/datom-codec-0.26.3/src/core.rs:129:1
+signal-lojix-test>     |
+signal-lojix-test> 129 | pub trait Compositional: Sized {
+signal-lojix-test>     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this is the expected trait
+signal-lojix-test>     |
+signal-lojix-test>    ::: /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/34dc05621ad7c223205fe0c570897cd34acebb3f95aad60d083e3aaeba0b36fc/datom-codec-0.31.0/src/core.rs:139:1
+signal-lojix-test>     |
+signal-lojix-test> 139 | pub trait Compositional: Composing {
+signal-lojix-test>     | ---------------------------------- this is the found trait
+signal-lojix-test>     = help: you can use `cargo tree` to explore your dependency tree
+signal-lojix-test>     = help: the following other types implement trait `Compositional`:
+signal-lojix-test>               ActivationBackend
+signal-lojix-test>               ActivationEffect
+signal-lojix-test>               Box<T>
+signal-lojix-test>               CacheRetentionTransition
+signal-lojix-test>               CacheRetentionTransitionEvent
+signal-lojix-test>               CacheRetentionWatch
+signal-lojix-test>               ConfigurationReceipt
+signal-lojix-test>               ConfigurationRejection
+signal-lojix-test>             and 75 others
+signal-lojix-test>     = note: required for `Option<HorizonDefinition>` to implement `Compositional`
+signal-lojix-test> note: required by a bound in `datom_codec::Positioning::position`
+signal-lojix-test>    --> /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/8b8ace8a174210b1f79b1acc1443cbe4816f8c900bf9af88020c5dbc0bc5975c/datom-codec-0.26.3/src/core.rs:152:20
+signal-lojix-test>     |
+signal-lojix-test> 152 |     fn position<T: Compositional>(&mut self, budget: &mut Budget) -> Result<T, Error>;
+signal-lojix-test>     |                    ^^^^^^^^^^^^^ required by this bound in `Positioning::position`
+signal-lojix-test>     = note: this error originates in the derive macro `datom_codec::Compositional` (in Nightly builds, run with -Z macro-backtrace for more info)
+signal-lojix-test> 
+signal-lojix-test> Some errors have detailed explanations: E0277, E0599.
+signal-lojix-test> For more information about an error, try `rustc --explain E0277`.
+signal-lojix-test> error: could not compile `signal-lojix` (lib) due to 2 previous errors
+signal-lojix-test> warning: build failed, waiting for other jobs to finish...
+error: build of '/nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/p7mmqnr0k4b9nihw201jvs63ahif905z-signal-lojix-test-5.0.0
+       Last 25 log lines:
+       > 139 | pub trait Compositional: Composing {
+       >     | ---------------------------------- this is the found trait
+       >     = help: you can use `cargo tree` to explore your dependency tree
+       >     = help: the following other types implement trait `Compositional`:
+       >               ActivationBackend
+       >               ActivationEffect
+       >               Box<T>
+       >               CacheRetentionTransition
+       >               CacheRetentionTransitionEvent
+       >               CacheRetentionWatch
+       >               ConfigurationReceipt
+       >               ConfigurationRejection
+       >             and 75 others
+       >     = note: required for `Option<HorizonDefinition>` to implement `Compositional`
+       > note: required by a bound in `datom_codec::Positioning::position`
+       >    --> /nix/store/3vqyy8vkyjkaqr8s33858jn9pqlphf01-vendor-cargo-deps/8b8ace8a174210b1f79b1acc1443cbe4816f8c900bf9af88020c5dbc0bc5975c/datom-codec-0.26.3/src/core.rs:152:20
+       >     |
+       > 152 |     fn position<T: Compositional>(&mut self, budget: &mut Budget) -> Result<T, Error>;
+       >     |                    ^^^^^^^^^^^^^ required by this bound in `Positioning::position`
+       >     = note: this error originates in the derive macro `datom_codec::Compositional` (in Nightly builds, run with -Z macro-backtrace for more info)
+       >
+       > Some errors have detailed explanations: E0277, E0599.
+       > For more information about an error, try `rustc --explain E0277`.
+       > error: could not compile `signal-lojix` (lib) due to 2 previous errors
+       > warning: build failed, waiting for other jobs to finish...
+       For full logs, run:
+         nix log /nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv
+error: Cannot build '/nix/store/1hfcghvba23qg726av1pybk44jpws2m3-signal-lojix-test-5.0.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/p7mmqnr0k4b9nihw201jvs63ahif905z-signal-lojix-test-5.0.0
+RUN_EXIT=1

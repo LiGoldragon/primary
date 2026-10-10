@@ -1,0 +1,45 @@
+{
+  "sources": [
+    {
+      "path": "flows/c7128c/log.md",
+      "sha256": "8fd7778642125524eecc1671afa74cfd8579942c68099ff383c0f8c5f6ac289d"
+    },
+    {
+      "path": "flows/c7128c/vision/jobEffortLevels.md",
+      "sha256": "48c273d3887eac31cfa7c7400ec574a7a6a1232bf1a42e1dcc46287734ccbd96"
+    },
+    {
+      "path": "flows/c7128c/vision/transcriptAndMachineFlow.md",
+      "sha256": "77ecb660a2d1422473dfaac822770761ae76cfe597409afe6f47499cbd76f6f3"
+    },
+    {
+      "path": "flows/c7128c/vision/visualization.md",
+      "sha256": "cca563841b5d45244459be2f60d0b69835634af1a6024b5931e453c9ae033154"
+    },
+    {
+      "path": "vision-raw/spirit.md",
+      "sha256": "9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49"
+    },
+    {
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "path": "Vision/distillation.md",
+      "sha256": "d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9"
+    },
+    {
+      "path": "Intent/context.md",
+      "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+    },
+    {
+      "path": "flows/cf3553/vision/operational-mainFlowStartupCorrection.md",
+      "sha256": "4ac46a167b0184dd6ae7c40a75d901e3fe2a9bbde087a62c3f0c25d0755b98cd"
+    },
+    {
+      "path": "flows/cf3553/summary.md",
+      "sha256": "e8ff5b040d225d96284c41e392a9437376a425cca972d47a76d989ddd335cc6c"
+    }
+  ],
+  "aggregate_sha256": "71baf97852ff0cdb15b3a04ea546ed24c4788608e58f70e9593567f0944bf773"
+}

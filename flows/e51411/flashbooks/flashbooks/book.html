@@ -1,0 +1,192 @@
+<title>Making Flashbooks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap">
+<style>
+:root{
+  --ground:#F5EEDC; --paper:#FBF7EC; --ink:#2A2119; --muted:#6B5C4B; --line:#D6C8AC;
+  --accent:#2F6B4F; --accent-soft:#DDE9DE; --bad:#A8372B; --bad-soft:#F6DED6;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1B1712; --paper:#262019; --ink:#EEE4D1; --muted:#B4A58E; --line:#4B4032;
+    --accent:#8CC7A4; --accent-soft:#213529; --bad:#E88A76; --bad-soft:#3B231D;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1B1712; --paper:#262019; --ink:#EEE4D1; --muted:#B4A58E; --line:#4B4032;
+  --accent:#8CC7A4; --accent-soft:#213529; --bad:#E88A76; --bad-soft:#3B231D;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.book > *{min-width:0}
+
+.book{height:100%; display:grid; grid-template-rows:auto minmax(0,1fr) auto; max-width:1040px; margin-inline:auto;
+  padding-inline:16px}
+.bar{display:grid; grid-template-columns:1fr auto; align-items:baseline; gap:12px; padding-block:12px 8px;
+  border-bottom:1px solid var(--line)}
+.bar h1{margin:0; font-family:var(--display); font-weight:600; font-size:1.05rem; letter-spacing:.01em;
+  font-variation-settings:"opsz" 24}
+.count{font-family:var(--mono); font-size:.78rem; color:var(--muted); font-variant-numeric:tabular-nums}
+
+.stage{container-type:inline-size; overflow-y:auto; overflow-x:hidden; padding-block:14px 24px; touch-action:pan-y}
+.page{display:grid; gap:14px; align-content:start}
+.eyebrow{margin:0; font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--accent)}
+.page h2{margin:0; font-family:var(--display); font-weight:600; font-size:clamp(1.55rem, 5.5cqi, 2.3rem);
+  line-height:1.12; text-wrap:balance; font-variation-settings:"opsz" 96}
+.ptext > *:not(.eyebrow):not(h2){max-width:68ch}
+
+/* flowcharts */
+.chart{margin:0; display:grid; gap:12px}
+.fcwrap{display:grid; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:10px 6px}
+.fc{width:100%; height:auto; max-width:100%; display:block; color:var(--ink); font-family:var(--body)}
+.fc.land{display:none}
+@container (min-width: 720px){
+  .fc.land{display:block}
+  .fc.port{display:none}
+  .fcwrap{padding:18px 16px}
+}
+.fc .n{fill:var(--paper); stroke:var(--ink); stroke-width:1.6}
+.fc .band{fill:var(--ground); stroke:var(--muted); stroke-width:1.2}
+.fc .out{fill:var(--ground); stroke:var(--line); stroke-width:1.4}
+.fc .side{fill:var(--paper); stroke:var(--muted); stroke-width:1.4; stroke-dasharray:5 4}
+.fc .acc{fill:var(--accent-soft); stroke:var(--accent); stroke-width:2.2}
+.fc .t{fill:var(--ink)}
+.fc .mut{fill:var(--muted)}
+.fc .eb{fill:var(--accent); font-family:var(--mono); letter-spacing:.08em}
+.fc .lab{fill:var(--accent)}
+.fc .e{stroke:var(--ink); stroke-width:1.6; fill:none}
+.fc .ah{fill:var(--ink)}
+.fc .bad{fill:var(--bad-soft); stroke:var(--bad); stroke-width:2}
+.fc .badt{fill:var(--bad); paint-order:stroke; stroke:var(--bad-soft); stroke-width:7px; stroke-linejoin:round}
+.fc .badx{stroke:var(--bad); stroke-width:2.2; stroke-linecap:round; opacity:.55}
+figcaption{font-size:.98rem; color:var(--muted); max-width:68ch}
+figcaption strong{color:var(--ink); font-weight:600}
+
+/* quotes */
+blockquote{margin:0; padding:2px 0 2px 16px; border-left:3px solid var(--accent); font-size:1.02rem}
+blockquote p{margin:0 0 .5em}
+blockquote p:last-child{margin-bottom:0}
+.prov{margin:-4px 0 6px; font-family:var(--mono); font-size:.76rem; color:var(--muted)}
+
+/* points */
+.points{margin:0; padding:0; list-style:none; display:grid; gap:12px}
+.points li{padding:12px 14px; background:var(--paper); border:1px solid var(--line); border-radius:10px}
+.points li.tension{background:var(--bad-soft); border-color:var(--bad)}
+.points li.tension strong{color:var(--bad)}
+
+/* proposals */
+.props{margin:0; padding:0; list-style:none; display:grid; gap:12px}
+.props li{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:12px 14px;
+  background:var(--paper); border:1px solid var(--line); border-radius:10px}
+.props input{width:22px; height:22px; margin:3px 0 0; accent-color:var(--accent)}
+.props .num{font-family:var(--mono); font-weight:600; color:var(--accent); margin-right:.25em}
+.props li:has(input:checked){border-color:var(--accent)}
+.note{margin:0; font-size:.88rem; color:var(--muted)}
+
+/* nav */
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px;
+  padding-block:10px calc(12px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--line)}
+.nav button.step{font:600 .95rem var(--body); color:var(--ink); background:var(--paper); border:1px solid var(--line);
+  border-radius:999px; padding:9px 14px; cursor:pointer; min-width:0}
+.nav button.step:disabled{opacity:.4; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px; min-width:0}
+.dot{width:24px; height:32px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dot::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--line)}
+.dot[aria-current="true"]::before{background:var(--accent); width:11px; height:11px}
+button:focus-visible, input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+
+<div class="book">
+  <header class="bar"><h1>Making Flashbooks</h1><span class="count" id="count">1 / 6</span></header>
+  <main class="stage" id="stage">
+<section class="page pchart" id="p1" data-i="0" aria-label="Page 1 of 6"><p class="eyebrow">Page 1 · Flowchart</p><h2>The three levels of book</h2><figure class="chart"><div class="fcwrap"><svg class="fc land" viewBox="0 0 960 470" role="img" aria-label="Three doors under one choice, choose by how nice a book is wanted. Door 1, Report: flowcharts as SVG plus short text, leads to fast, cheap, what you&#x27;re reading now. Door 2, Illustrated: flowcharts plus AI-generated images from Mind, leads to pulls you in. Door 3, Alive: flowcharts redrawn as illustrations, nicely, leads to the best book."><defs><marker id="p1l-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 0)"><rect class="band" x="90" y="16" width="780" height="52" rx="10"/><text class="t" font-size="20" text-anchor="middle" font-weight="600"><tspan x="480.0" y="48.4">Choose by how nice a book is wanted</tspan></text><polyline class="e" points="170,68 170,110" fill="none" marker-end="url(#p1l-a)"/><path class="n acc" d="M40,308 L40,152 Q40,112 80,112 L260,112 Q300,112 300,152 L300,308 Z"/><text class="eb" font-size="14" text-anchor="middle" font-weight="600"><tspan x="170.0" y="173.7">DOOR 1</tspan></text><text class="t" font-size="24" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="170.0" y="209.7">Report</tspan></text><text class="t" font-size="18" text-anchor="middle"><tspan x="170.0" y="240.9">flowcharts as SVG</tspan><tspan x="170.0" y="264.0">+ short text</tspan></text><polyline class="e" points="170,308 170,350" fill="none" marker-end="url(#p1l-a)"/><rect class="out acc" x="55" y="352" width="230" height="100" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="170.0" y="384.7">fast, cheap;</tspan><tspan x="170.0" y="407.8">what you&#x27;re</tspan><tspan x="170.0" y="430.8">reading now</tspan></text><polyline class="e" points="480,68 480,110" fill="none" marker-end="url(#p1l-a)"/><path class="n" d="M350,308 L350,152 Q350,112 390,112 L570,112 Q610,112 610,152 L610,308 Z"/><text class="eb" font-size="14" text-anchor="middle" font-weight="600"><tspan x="480.0" y="162.2">DOOR 2</tspan></text><text class="t" font-size="24" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="480.0" y="198.1">Illustrated</tspan></text><text class="t" font-size="18" text-anchor="middle"><tspan x="480.0" y="229.4">flowcharts +</tspan><tspan x="480.0" y="252.4">AI-generated images</tspan><tspan x="480.0" y="275.5">from Mind</tspan></text><polyline class="e" points="480,308 480,350" fill="none" marker-end="url(#p1l-a)"/><rect class="out" x="365" y="352" width="230" height="64" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="480.0" y="389.8">pulls you in</tspan></text><polyline class="e" points="790,68 790,110" fill="none" marker-end="url(#p1l-a)"/><path class="n" d="M660,308 L660,152 Q660,112 700,112 L880,112 Q920,112 920,152 L920,308 Z"/><text class="eb" font-size="14" text-anchor="middle" font-weight="600"><tspan x="790.0" y="162.2">DOOR 3</tspan></text><text class="t" font-size="24" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="790.0" y="198.1">Alive</tspan></text><text class="t" font-size="18" text-anchor="middle"><tspan x="790.0" y="229.4">flowcharts redrawn</tspan><tspan x="790.0" y="252.4">as illustrations,</tspan><tspan x="790.0" y="275.5">nicely</tspan></text><polyline class="e" points="790,308 790,350" fill="none" marker-end="url(#p1l-a)"/><rect class="out" x="675" y="352" width="230" height="64" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="790.0" y="389.8">the best book</tspan></text></g></svg><svg class="fc port" viewBox="0 0 340 516" role="img" aria-label="Three doors under one choice, choose by how nice a book is wanted. Door 1, Report: flowcharts as SVG plus short text, leads to fast, cheap, what you&#x27;re reading now. Door 2, Illustrated: flowcharts plus AI-generated images from Mind, leads to pulls you in. Door 3, Alive: flowcharts redrawn as illustrations, nicely, leads to the best book."><defs><marker id="p1p-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 0)"><rect class="band" x="8" y="8" width="324" height="46" rx="10"/><text class="t" font-size="14" text-anchor="middle" font-weight="600"><tspan x="170.0" y="24.1">Choose by how nice a book</tspan></text><text class="t" font-size="14" text-anchor="middle" font-weight="600"><tspan x="170.0" y="46.9">is wanted</tspan></text><polyline class="e" points="18,54 18,138.0 30,138.0" fill="none" marker-end="url(#p1p-a)"/><path class="n acc" d="M32,206 L32,110 Q32,70 72,70 L142,70 Q182,70 182,110 L182,206 Z"/><text class="eb" font-size="11.5" text-anchor="middle" font-weight="600"><tspan x="107.0" y="113.2">DOOR 1</tspan></text><text class="t" font-size="17" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="107.0" y="139.1">Report</tspan></text><text class="t" font-size="13.5" text-anchor="middle"><tspan x="107.0" y="162.3">flowcharts as SVG</tspan><tspan x="107.0" y="179.5">+ short text</tspan></text><polyline class="e" points="182,138.0 206,138.0" fill="none" marker-end="url(#p1p-a)"/><rect class="out acc" x="208" y="102.05" width="124" height="71.9" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="270.0" y="125.0">fast, cheap;</tspan><tspan x="270.0" y="142.3">what you&#x27;re</tspan><tspan x="270.0" y="159.6">reading now</tspan></text><polyline class="e" points="18,200 18,288.0 30,288.0" fill="none" marker-end="url(#p1p-a)"/><path class="n" d="M32,356 L32,260 Q32,220 72,220 L142,220 Q182,220 182,260 L182,356 Z"/><text class="eb" font-size="11.5" text-anchor="middle" font-weight="600"><tspan x="107.0" y="254.5">DOOR 2</tspan></text><text class="t" font-size="17" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="107.0" y="280.5">Illustrated</tspan></text><text class="t" font-size="13.5" text-anchor="middle"><tspan x="107.0" y="303.6">flowcharts +</tspan><tspan x="107.0" y="320.9">AI-generated</tspan><tspan x="107.0" y="338.2">images from Mind</tspan></text><polyline class="e" points="182,288.0 206,288.0" fill="none" marker-end="url(#p1p-a)"/><rect class="out" x="208" y="269.35" width="124" height="37.3" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="270.0" y="292.3">pulls you in</tspan></text><polyline class="e" points="18,350 18,438.0 30,438.0" fill="none" marker-end="url(#p1p-a)"/><path class="n" d="M32,506 L32,410 Q32,370 72,370 L142,370 Q182,370 182,410 L182,506 Z"/><text class="eb" font-size="11.5" text-anchor="middle" font-weight="600"><tspan x="107.0" y="395.9">DOOR 3</tspan></text><text class="t" font-size="17" text-anchor="middle" font-weight="600" font-style="italic"><tspan x="107.0" y="421.9">Alive</tspan></text><text class="t" font-size="13.5" text-anchor="middle"><tspan x="107.0" y="445.0">flowcharts</tspan><tspan x="107.0" y="462.3">redrawn as</tspan><tspan x="107.0" y="479.5">illustrations,</tspan><tspan x="107.0" y="496.8">nicely</tspan></text><polyline class="e" points="182,438.0 206,438.0" fill="none" marker-end="url(#p1p-a)"/><rect class="out" x="208" y="419.35" width="124" height="37.3" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="270.0" y="442.3">the best book</tspan></text><line class="e" x1="18" y1="54" x2="18" y2="438"/></g></svg></div><figcaption><strong>What this flowchart shows:</strong> your three levels, as three doors side by side, each leading to what it produces.</figcaption></figure></section>
+<section class="page ptext" id="p2" data-i="1" hidden aria-label="Page 2 of 6"><p class="eyebrow">Page 2</p><h2>What you said</h2>
+<blockquote><p>I don't want these ugly SVGs. I haven't seen any really good-looking ones and it has a very limited use. ... If there is a model that can do nice SVG, that would be great.</p>
+<p>Otherwise I would say, if there's a flowchart, make the flowchart but then get some AI model.</p></blockquote>
+<p class="prov">-- living, 2026-09-24, to e51411.</p>
+<blockquote><p>On the illustrations I don't need illustrations that don't convey anything. ... Our illustrations are supposed to convey information.</p></blockquote>
+<p class="prov">-- living, 2026-09-24, to d8df70.</p>
+<blockquote><p>Every main flow, all 12 of the main flows, will have their ongoing flashbook, which is sort of their particular context that rolls over.</p></blockquote>
+<p class="prov">-- living, 2026-09-23, to d8df70.</p>
+</section>
+<section class="page pchart" id="p3" data-i="2" hidden aria-label="Page 3 of 6"><p class="eyebrow">Page 3 · Flowchart</p><h2>How an illustrated book gets made</h2><figure class="chart"><div class="fcwrap"><svg class="fc land" viewBox="0 0 1000 470" role="img" aria-label="Psyche writes the source, Fable audits it in b80e55&#x27;s pipeline, then flowcharts are drawn as SVG by a subflow. A separate branch: images wanted? If yes, a message to Mind, never running Codex yourself and never Field; labelled images come back and are placed in the book. Both routes lead to rendered at phone size and checked, then published privately, then you comment. Off to the side, crossed out: decorative SVG pictures."><defs><marker id="p3l-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 -52)"><rect class="n" x="20" y="70" width="170" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="105.0" y="106.2">Psyche writes</tspan><tspan x="105.0" y="129.3">the source</tspan></text><rect class="n" x="215" y="70" width="170" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="300.0" y="105.5">Fable audits it</tspan></text><text class="mut" font-size="15" text-anchor="middle" font-style="italic"><tspan x="300.0" y="130.9">b80e55&#x27;s pipeline</tspan></text><rect class="n" x="410" y="70" width="170" height="84" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="495.0" y="95.7">Flowcharts drawn</tspan><tspan x="495.0" y="117.4">as SVG by a</tspan><tspan x="495.0" y="139.2">subflow</tspan></text><polyline class="e" points="190,112.0 215,112.0" fill="none" marker-end="url(#p3l-a)"/><polyline class="e" points="385,112.0 410,112.0" fill="none" marker-end="url(#p3l-a)"/><text class="eb" font-size="14" text-anchor="start" font-weight="600"><tspan x="20" y="218.0">A SEPARATE BRANCH</tspan></text><polygon class="n" points="105.0,236.0 195.0,296.0 105.0,356.0 15.0,296.0"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="105.0" y="290.2">Images</tspan><tspan x="105.0" y="313.3">wanted?</tspan></text><rect class="n" x="215" y="236" width="170" height="120" rx="10"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="300.0" y="269.1">A message</tspan><tspan x="300.0" y="292.2">to Mind</tspan></text><text class="mut" font-size="14.5" text-anchor="middle" font-style="italic"><tspan x="300.0" y="316.9">never running Codex</tspan><tspan x="300.0" y="335.5">yourself; never Field</tspan></text><rect class="n" x="410" y="254" width="170" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="495.0" y="290.2">Labelled images</tspan><tspan x="495.0" y="313.3">back</tspan></text><rect class="n" x="605" y="254" width="170" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle"><tspan x="690.0" y="290.2">Placed in</tspan><tspan x="690.0" y="313.3">the book</tspan></text><polyline class="e" points="195,296.0 215,296.0" fill="none" marker-end="url(#p3l-a)"/><text class="lab" font-size="15" text-anchor="middle" font-weight="600"><tspan x="208.5" y="284.0">yes</tspan></text><polyline class="e" points="385,296.0 410,296.0" fill="none" marker-end="url(#p3l-a)"/><polyline class="e" points="580,296.0 605,296.0" fill="none" marker-end="url(#p3l-a)"/><rect class="n" x="815" y="150" width="165" height="84" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="897.5" y="175.7">Rendered at</tspan><tspan x="897.5" y="197.4">phone size</tspan><tspan x="897.5" y="219.2">and checked</tspan></text><polyline class="e" points="580,112.0 795,112.0 795,176 815,176" fill="none" marker-end="url(#p3l-a)"/><polyline class="e" points="775,296.0 795,296.0 795,208 815,208" fill="none" marker-end="url(#p3l-a)"/><text class="lab" font-size="15" text-anchor="start" font-weight="600"><tspan x="803" y="104.0">both</tspan></text><rect class="n" x="815" y="300" width="165" height="60" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="897.5" y="324.6">Published</tspan><tspan x="897.5" y="346.3">privately</tspan></text><polyline class="e" points="897.5,234 897.5,300" fill="none" marker-end="url(#p3l-a)"/><rect class="n acc" x="815" y="420" width="165" height="60" rx="10"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="897.5" y="455.8">You comment</tspan></text><polyline class="e" points="897.5,360 897.5,420" fill="none" marker-end="url(#p3l-a)"/><rect class="bad" x="20" y="420" width="300" height="70" rx="10" stroke-dasharray="7 5"/><line class="badx" x1="28" y1="428" x2="312" y2="482"/><line class="badx" x1="28" y1="482" x2="312" y2="428"/><text class="badt" font-size="18" text-anchor="middle" font-weight="600"><tspan x="170.0" y="461.0">Decorative SVG pictures</tspan></text><text class="eb" font-size="14" text-anchor="start" font-weight="600"><tspan x="20" y="408.0">OFF TO THE SIDE</tspan></text></g></svg><svg class="fc port" viewBox="0 0 340 640" role="img" aria-label="Psyche writes the source, Fable audits it in b80e55&#x27;s pipeline, then flowcharts are drawn as SVG by a subflow. A separate branch: images wanted? If yes, a message to Mind, never running Codex yourself and never Field; labelled images come back and are placed in the book. Both routes lead to rendered at phone size and checked, then published privately, then you comment. Off to the side, crossed out: decorative SVG pictures."><defs><marker id="p3p-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 0)"><text class="eb" font-size="11.5" text-anchor="start" font-weight="600"><tspan x="178" y="16.0">A SEPARATE BRANCH</tspan></text><rect class="n" x="8" y="28" width="154" height="52" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="85.0" y="49.7">Psyche writes</tspan><tspan x="85.0" y="67.0">the source</tspan></text><rect class="n" x="8" y="112" width="154" height="60" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="85.0" y="136.1">Fable audits it</tspan></text><text class="mut" font-size="12.5" text-anchor="middle" font-style="italic"><tspan x="85.0" y="156.8">b80e55&#x27;s pipeline</tspan></text><rect class="n" x="8" y="204" width="154" height="70" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="85.0" y="226.0">Flowcharts drawn</tspan><tspan x="85.0" y="243.3">as SVG by a</tspan><tspan x="85.0" y="260.6">subflow</tspan></text><polyline class="e" points="85.0,80 85.0,112" fill="none" marker-end="url(#p3p-a)"/><polyline class="e" points="85.0,172 85.0,204" fill="none" marker-end="url(#p3p-a)"/><polygon class="n" points="255.0,28.0 332.0,68 255.0,108.0 178.0,68"/><text class="t" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="255.0" y="63.7">Images</tspan><tspan x="255.0" y="81.0">wanted?</tspan></text><rect class="n" x="178" y="136" width="154" height="92" rx="10"/><text class="t" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="255.0" y="160.1">A message to Mind</tspan></text><text class="mut" font-size="12.5" text-anchor="middle" font-style="italic"><tspan x="255.0" y="180.8">never running</tspan><tspan x="255.0" y="196.8">Codex yourself;</tspan><tspan x="255.0" y="212.8">never Field</tspan></text><polyline class="e" points="255.0,108 255.0,136" fill="none" marker-end="url(#p3p-a)"/><text class="lab" font-size="12.5" text-anchor="start" font-weight="600"><tspan x="263.0" y="126.0">yes</tspan></text><rect class="n" x="178" y="256" width="154" height="50" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="255.0" y="276.7">Labelled images</tspan><tspan x="255.0" y="294.0">back</tspan></text><polyline class="e" points="255.0,228 255.0,256" fill="none" marker-end="url(#p3p-a)"/><rect class="n" x="178" y="334" width="154" height="50" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="255.0" y="363.3">Placed in the book</tspan></text><polyline class="e" points="255.0,306 255.0,334" fill="none" marker-end="url(#p3p-a)"/><rect class="n" x="8" y="426" width="324" height="46" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="170.0" y="453.3">Rendered at phone size and checked</tspan></text><polyline class="e" points="85.0,274 85.0,426" fill="none" marker-end="url(#p3p-a)"/><polyline class="e" points="255.0,384 255.0,426" fill="none" marker-end="url(#p3p-a)"/><text class="lab" font-size="12.5" text-anchor="start" font-weight="600"><tspan x="93.0" y="400.0">both</tspan></text><rect class="n" x="8" y="506" width="154" height="44" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="85.0" y="532.3">Published privately</tspan></text><polyline class="e" points="85.0,472 85.0,506" fill="none" marker-end="url(#p3p-a)"/><rect class="n acc" x="8" y="584" width="154" height="44" rx="10"/><text class="t" font-size="14" text-anchor="middle" font-weight="600"><tspan x="85.0" y="610.5">You comment</tspan></text><polyline class="e" points="85.0,550 85.0,584" fill="none" marker-end="url(#p3p-a)"/><rect class="bad" x="178" y="520" width="154" height="96" rx="10" stroke-dasharray="6 4"/><line class="badx" x1="186" y1="528" x2="324" y2="608"/><line class="badx" x1="186" y1="608" x2="324" y2="528"/><text class="badt" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="255.0" y="562.0">Decorative</tspan><tspan x="255.0" y="579.3">SVG pictures</tspan></text><text class="eb" font-size="11.5" text-anchor="middle" font-weight="600"><tspan x="255.0" y="510.0">OFF TO THE SIDE</tspan></text></g></svg></div><figcaption><strong>What this flowchart shows:</strong> who does what, and the one route images take.</figcaption></figure></section>
+<section class="page ptext" id="p4" data-i="3" hidden aria-label="Page 4 of 6"><p class="eyebrow">Page 4</p><h2>What stands and what&#x27;s waiting</h2>
+<ul class="points">
+<li><strong>Published earlier by d8df70:</strong> &quot;What Waits for the Living&quot; (16 pages) and &quot;The Dawn of the Meta Harness&quot; (10 pages), both with Mind's images.</li>
+<li><strong>The rolling flashbook</strong> for this Psyche Medium line hasn't been started.</li>
+<li><strong>The skill</strong> for illustrations still says &quot;inline SVG or an image&quot;. The replacement line is waiting for your approval.</li>
+<li class="tension"><strong>A tension:</strong> b80e55's handoff says illustrations are &quot;pure inline SVG&quot;. Your words above supersede that.</li>
+</ul>
+</section>
+<section class="page pchart" id="p5" data-i="4" hidden aria-label="Page 5 of 6"><p class="eyebrow">Page 5 · Flowchart</p><h2>The rolling flashbook</h2><figure class="chart"><div class="fcwrap"><svg class="fc land" viewBox="0 0 960 470" role="img" aria-label="A loop: the main flow&#x27;s rolling flashbook, version n, goes to you to review and comment, and comes back improved as version n+1, round and round. Side books branch off the loop and link back into it: a side book on a topic, a side book that is a report. When the flow refreshes, the rolling book passes to the successor."><defs><marker id="p5l-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 0)"><rect class="n" x="30" y="170" width="230" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="145.0" y="206.2">Main flow&#x27;s rolling</tspan><tspan x="145.0" y="229.3">flashbook, version n</tspan></text><rect class="n acc" x="365" y="170" width="230" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="480.0" y="206.2">You review</tspan><tspan x="480.0" y="229.3">and comment</tspan></text><rect class="n" x="700" y="170" width="230" height="84" rx="10"/><text class="t" font-size="18" text-anchor="middle" font-weight="600"><tspan x="815.0" y="206.2">Improved,</tspan><tspan x="815.0" y="229.3">version n+1</tspan></text><polyline class="e" points="260,212.0 365,212.0" fill="none" marker-end="url(#p5l-a)"/><polyline class="e" points="595,212.0 700,212.0" fill="none" marker-end="url(#p5l-a)"/><polyline class="e" points="770,254 770,320 145.0,320 145.0,254" fill="none" marker-end="url(#p5l-a)"/><text class="lab" font-size="16" text-anchor="middle" font-weight="600"><tspan x="457.5" y="344.0">the loop repeats</tspan></text><rect class="side" x="197" y="24" width="200" height="70" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="297.0" y="53.6">Side book:</tspan><tspan x="297.0" y="75.3">a topic</tspan></text><polyline class="e" points="297,94 297,208.0" fill="none" stroke-dasharray="6 5" marker-start="url(#p5l-a)" marker-end="url(#p5l-a)"/><rect class="side" x="532" y="24" width="200" height="70" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="632.0" y="53.6">Side book:</tspan><tspan x="632.0" y="75.3">a report</tspan></text><polyline class="e" points="632,94 632,208.0" fill="none" stroke-dasharray="6 5" marker-start="url(#p5l-a)" marker-end="url(#p5l-a)"/><text class="lab" font-size="15" text-anchor="middle" font-style="italic"><tspan x="480" y="130.0">branch off · linked back</tspan></text><polyline class="e" points="870,254 870,386" fill="none" marker-end="url(#p5l-a)"/><rect class="n" x="680" y="388" width="250" height="64" rx="10"/><text class="t" font-size="17" text-anchor="middle"><tspan x="805.0" y="414.6">The successor</tspan><tspan x="805.0" y="436.3">main flow</tspan></text><text class="lab" font-size="15" text-anchor="end" font-style="italic"><tspan x="858" y="300.0">on refresh,</tspan><tspan x="858" y="319.2">passes to</tspan></text></g></svg><svg class="fc port" viewBox="0 0 340 466" role="img" aria-label="A loop: the main flow&#x27;s rolling flashbook, version n, goes to you to review and comment, and comes back improved as version n+1, round and round. Side books branch off the loop and link back into it: a side book on a topic, a side book that is a report. When the flow refreshes, the rolling book passes to the successor."><defs><marker id="p5p-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 Z"/></marker></defs><g transform="translate(0 0)"><rect class="n" x="40" y="30" width="170" height="58" rx="10"/><text class="t" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="125.0" y="54.7">Main flow&#x27;s rolling</tspan><tspan x="125.0" y="72.0">flashbook, version n</tspan></text><rect class="n acc" x="40" y="136" width="170" height="58" rx="10"/><text class="t" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="125.0" y="160.7">You review</tspan><tspan x="125.0" y="178.0">and comment</tspan></text><rect class="n" x="40" y="242" width="170" height="58" rx="10"/><text class="t" font-size="13.5" text-anchor="middle" font-weight="600"><tspan x="125.0" y="266.7">Improved,</tspan><tspan x="125.0" y="284.0">version n+1</tspan></text><polyline class="e" points="125.0,88 125.0,136" fill="none" marker-end="url(#p5p-a)"/><polyline class="e" points="125.0,194 125.0,242" fill="none" marker-end="url(#p5p-a)"/><polyline class="e" points="40,271 18,271 18,59 40,59" fill="none" marker-end="url(#p5p-a)"/><text class="lab" font-size="12.5" font-weight="600" text-anchor="middle" transform="translate(12 165.0) rotate(-90)">the loop repeats</text><rect class="side" x="244" y="64" width="90" height="50" rx="10"/><text class="t" font-size="13" text-anchor="middle"><tspan x="289.0" y="84.8">Side book:</tspan><tspan x="289.0" y="101.5">a topic</tspan></text><rect class="side" x="244" y="190" width="90" height="50" rx="10"/><text class="t" font-size="13" text-anchor="middle"><tspan x="289.0" y="210.8">Side book:</tspan><tspan x="289.0" y="227.5">a report</tspan></text><polyline class="e" points="214,150 244,96" fill="none" stroke-dasharray="6 5" marker-start="url(#p5p-a)" marker-end="url(#p5p-a)"/><polyline class="e" points="214,180 244,208" fill="none" stroke-dasharray="6 5" marker-start="url(#p5p-a)" marker-end="url(#p5p-a)"/><text class="lab" font-size="12" text-anchor="middle" font-style="italic"><tspan x="289.0" y="138.0">branch off,</tspan><tspan x="289.0" y="153.4">linked back</tspan></text><polyline class="e" points="125.0,300 125.0,400" fill="none" marker-end="url(#p5p-a)"/><text class="lab" font-size="12.5" text-anchor="start" font-style="italic"><tspan x="135.0" y="350.0">on refresh,</tspan><tspan x="135.0" y="366.0">passes to</tspan></text><rect class="n" x="40" y="402" width="170" height="52" rx="10"/><text class="t" font-size="13.5" text-anchor="middle"><tspan x="125.0" y="423.7">The successor</tspan><tspan x="125.0" y="441.0">main flow</tspan></text></g></svg></div><figcaption><strong>What this flowchart shows:</strong> how one main flow's ongoing book rolls over, per your 09-23 words.</figcaption></figure></section>
+<section class="page ptext" id="p6" data-i="5" hidden aria-label="Page 6 of 6"><p class="eyebrow">Page 6</p><h2>Proposals</h2>
+<ol class="props">
+<li><input type="checkbox" id="prop-1"><label for="prop-1"><span class="num">1.</span> Skill line: &quot;An illustration is an AI-generated image made by Mind; flowcharts may be SVG. A book is made at one of three levels: a report with flowcharts, a book with AI-generated illustrations, or a book whose flowcharts are redrawn as illustrations.&quot;</label></li>
+<li><input type="checkbox" id="prop-2"><label for="prop-2"><span class="num">2.</span> Try a model that draws intricate SVG, for level 3.</label></li>
+<li><input type="checkbox" id="prop-3"><label for="prop-3"><span class="num">3.</span> Start this line's rolling flashbook from the overview book.</label></li>
+</ol>
+<p class="note">Your ticks are kept in this browser only. To answer, comment on the page.</p>
+</section>
+  </main>
+  <nav class="nav" aria-label="Pages">
+    <button class="step" type="button" id="prev">Prev</button>
+    <div class="dots"><button class="dot" type="button" data-go="0" aria-label="Go to page 1"></button><button class="dot" type="button" data-go="1" aria-label="Go to page 2"></button><button class="dot" type="button" data-go="2" aria-label="Go to page 3"></button><button class="dot" type="button" data-go="3" aria-label="Go to page 4"></button><button class="dot" type="button" data-go="4" aria-label="Go to page 5"></button><button class="dot" type="button" data-go="5" aria-label="Go to page 6"></button></div>
+    <button class="step" type="button" id="next">Next</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+  var stage = document.getElementById('stage');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var count = document.getElementById('count');
+  var cur = 0;
+  function show(i){
+    if (i < 0 || i >= pages.length) return;
+    cur = i;
+    pages.forEach(function(p, k){ p.hidden = k !== i; });
+    dots.forEach(function(d, k){ d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    prev.disabled = i === 0; next.disabled = i === pages.length - 1;
+    count.textContent = (i + 1) + ' / ' + pages.length;
+    stage.scrollTop = 0;
+    try { history.replaceState(null, '', '#p' + (i + 1)); } catch (e) {}
+  }
+  prev.addEventListener('click', function(){ show(cur - 1); });
+  next.addEventListener('click', function(){ show(cur + 1); });
+  dots.forEach(function(d){ d.addEventListener('click', function(){ show(+d.dataset.go); }); });
+  document.addEventListener('keydown', function(e){
+    if (e.target && e.target.tagName === 'INPUT' && e.key === ' ') return;
+    if (e.key === 'ArrowRight') show(cur + 1);
+    if (e.key === 'ArrowLeft') show(cur - 1);
+  });
+  var sx = null, sy = null;
+  stage.addEventListener('touchstart', function(e){ var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+  stage.addEventListener('touchend', function(e){
+    if (sx === null) return;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(cur + (dx < 0 ? 1 : -1));
+    sx = null;
+  }, {passive:true});
+  // proposal ticks: per-viewer convenience only
+  document.querySelectorAll('.props input').forEach(function(box){
+    try { box.checked = localStorage.getItem('mf-' + box.id) === '1'; } catch (e) {}
+    box.addEventListener('change', function(){
+      try { localStorage.setItem('mf-' + box.id, box.checked ? '1' : '0'); } catch (e) {}
+    });
+  });
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  show(m ? Math.min(pages.length, Math.max(1, +m[1])) - 1 : 0);
+})();
+</script>

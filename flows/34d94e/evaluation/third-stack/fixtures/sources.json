@@ -1,0 +1,20 @@
+{
+  "unit-record":"Synthetic unit record: observed user unit message-daemon.service.",
+  "repository-record":"Synthetic repository record: source revision is separately witnessed.",
+  "daemon-source":"Synthetic source: synchronous listener polls 10ms; async listener does not share that loop.",
+  "activation-search":"Synthetic bounded search: two activation files inspected; remaining tree unknown.",
+  "raw-record":"Synthetic raw flow record, labelled raw and unapproved.",
+  "working-instruction":"Synthetic direct working instruction with explicit bounded task authority.",
+  "old-record":"Synthetic historical status record.",
+  "new-witness":"Synthetic newer direct witness superseding the old status.",
+  "initial-claim":"Synthetic initial recommendation.",
+  "counterevidence":"Synthetic primary counterevidence changing one premise.",
+  "proposal":"Synthetic proposal requesting careful disagreement.",
+  "stack-description":"Synthetic model/provider/harness/tool/transcript layer description.",
+  "retrieval-log":"Synthetic retrieval log with opened and unopened sources distinguished.",
+  "scope-instruction":"Synthetic instruction authorizing fixture evaluation only.",
+  "identity-record":"Synthetic checkpoint identity record.",
+  "alias-record":"Synthetic provider alias record with a later date.",
+  "tool-error":"Synthetic tool timeout/error record.",
+  "uncertain-source":"Synthetic source whose status remains uncertain."
+}

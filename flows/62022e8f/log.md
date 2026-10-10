@@ -1,0 +1,81 @@
+# Flow 62022e8f — design: Protos datom ethos anatomy and syntax
+
+Aspect: design.
+Skills loaded: design, spirit, psyche, flows, subflows, psyche-interraction, behavior.
+
+## About
+
+Remember e8c4cc61 in detail and all vision on Protos, datom, ethos, Nexus, sema, Signal; focus with the psyche on the Protos datom ethos implementation (anatomy) and syntax design.
+
+## Remembered
+- Remembered: e8c4cc61 — depth 1 in-flow (log.md, all vision/*.md, last model response and last psyche message from the transcript); depth 2 via subflow (full transcript, Datomizable page, skill drafts, open-question list). Most relevant: the settled kind chain (Text.[ Prospective<Protos> ]; Protos.[ Prospective<Datom> Prospective<Ethos> Textualizable ]; Datom/Ethos Embodied); Embodied = alias of Sized, Situation for "context", Structure replaces Portion, Structural returns the protos structure recursively; `;` comment; space inside brackets; outer `{}` omitted in ethos files; sweet file = sugar for a value of a type (name wanted); Signal file = head [imports] [requests] [responses]; Library file = head [] [types] [kinds] [associations]; inline type declaration and variant-named-as-type (inventory pass); Datomizable raised to vision; three skills (protos/datom/ethos) drafted, held for approval; last flow answer (associated kinds: Nexus yes, Prospective no; spacing: brackets only, `[]` when empty) unanswered by the psyche.
+- Distilled Vision read in-flow: highLevelView, protos, datom, ethos, ethosMonolith, nexus, flowNexus; raw: signalIsOurMessagingLayer, Intent/protosParsing.
+- Observation: the harness places this session's task outputs under session 67cd2f5c-…; the scratchpad path names 62022e8f-…. Short id taken from the scratchpad path (same anomaly e8c4cc61 recorded).
+
+## Witnessed (subflow C, code read + probes, 2026-08-30)
+- Local checkouts: protos 0.14.0 (1 behind remote), datomic 0.7.1 (`datom` dir is the same clone; 3 behind), ethos-zero 0.1.0 local (14 behind; remote head "Derive value semantics for data-only unit enums"), orchestrate 0.25.0 local (1 behind, dirty), signal-orchestrate 0.17.1 (2 behind, dirty). No remote commit after 2026-08-29 11:30 UTC on any of 14 repos — codexCorrection still unlanded.
+- Protos parser today (protos/src/lib.rs): comment is `;;` (lib.rs:1169-1184), not `;`; separators `.` `!` `:`; structural `{}` `[]` `<>` `«»`; opaque curly quotes and `( )`; integers/decimals via ScalarAnatomy; `Portion` enum {Headed, Enclosed, Bare}; traits Delineatable, Embodiable (assoc type Embodied), Embodied: Sized {from_portion}, Textualizable, ShapeDefined; `Prospective<T>` is a type alias of Text<T> (lib.rs:106). Absent: Structure, Structural trait, Situation, Meaning, Datomizable, a Protos/Ethos/Datom type.
+- datomic: trait `Datomic` (embody/portion/textualize), not Datomizable. ethos-zero: library only (no binary, no nexus); reads `Schema.{v}` / `Interface.{v} Channel.{…}` headed files, outer `{}` not required, headerless rejected; `Channel` still required; emits Rust via syn/quote incl. trait decls and `carries::<T>()` association checks.
+- pgrep found no orchestrate-nexus, yet `orchestrate 'Observe.Locks'` answered with lock 19 (01a0433a) — how the CLI answered without a daemon is unknown (possible: different process name; a socket served otherwise).
+
+## Remembered (subflow A, e8c4cc61 transcript at full depth)
+- Proposal status ledger (psyche-ruled yes): prospect capability; Prospective<Sized> then Embodied=alias of Sized; `:` no-self receiver; sweet file = sugar for a value of a type (EthosFile name rejected); file = one sweet Ethos or full datom; Structure (name), Structural (name); Situation; a second `{` syntax for complex kinds (psyche-originated, line 807). Never answered: the Ethos type map (Library/Signal/TypeDeclaration/VariantDeclaration/KindDeclaration…); the KindDeclaration spec and the four-section order [superkinds] [associated kinds] [associated values] [capabilities]; Structure's inner anatomy (Enclosure, Arity, Head, Shape, Context); emitter output; "no associated kind on Prospective, yes on Nexus"; braces spacing; `[]` when empty; Fault vs Error (psyche asked "why are we using Fault instead of Error?" — Fault is a 04db2fd2 agent coinage; flow recommended Error; unruled).
+- Skill drafts: protos/datom/ethos last shown together at transcript line 772; psyche's only responses: no Embodiable (Embodied = alias of Sized), protos skill too deep into dialects; datom and ethos drafts uncommented. Redrafted protos at line 793 uncommented.
+- Open-question lists: flows/b675f3d9/reports/capabilityAnatomy.md §6 (11 questions on capability anatomy) + Datomizable page §10 (6 points).
+- Flow coinages a reader may mistake for the psyche's: Shape, Datomic (as a kind), Fault, Textualizable, Context (as a type — psyche said the word is wrong), KindDeclaration/AssociatedKind/AssociatedValue/KindReference/TypeExpression/PortionDeclaration, the capability names shape/situation inside Datomizable.
+- Recovered and logged into e8c4cc61 (annotated): complex-kind `{` syntax (vision/kinds.md); code blocks with comments (vision/designPractice.md).
+
+## Remembered (subflow B, raw vision across flows)
+- Remembered: 04db2fd2, 2ef42163, db97561c, b675f3d9, ac1e9ec8, 01a03eda, 01a04339, a5587095, 06196cc7, ba906ae2, 6863ef19, 2b34fafa, aa4c7747, f426777b, fd301d9a, e06e4c07, 55d18f4f, 5abf3be8, 01a03d6e, acbb6006, 4d5fc7da — depth 1 (via subflow, raw vision on Protos/datom/ethos/Nexus/sema/Signal). Most relevant to the drafts: "Re datom kind: Datomic" (04db2fd2) predates Datom-as-type; "all our components speak signal, not datom; datom is only used at the edge" (ac1e9ec8); "no tuple in the code we design" (aa4c7747, cff271af); "Observed.Locks.[] good enough for now" (01a04339); "datom doesnt support omittable fields yet" (4d5fc7da); integer canonical form approved (01a03eda); "Processable<[Clonable Sendable] Serializable>" (b675f3d9); stream as a fourth section (5abf3be8, streamSection) absent from the 2026-08-29 Signal anatomy; imports `/` blessed 2026-08-07, `:` on the 2026-08-29 page.
+- The "six unruled datom atoms" are never enumerated anywhere; the phrase comes from db97561c's audit of the Codex port (01a04a30 authored Boolean, integer, finite decimal, String, Vector, guillemet Map, Option, positional anatomy). Inference only.
+- Distillation candidates with no Vision/ counterpart (2+ flows): Signal (6 flows, strongest), nexusTraits (4), ethosInterfaces (4), kind syntax (3 + e8c4cc61), ethosSourceFiles+importResolution (2), Portion/Structure (2), Sema (4, thin).
+
+## Dispatched
+- Subflow A (read-critical): e8c4cc61 transcript at full depth — every syntax/anatomy proposal and status, skill drafts, open questions, unlogged psyche words.
+- Subflow B (read-demanding): all raw vision across flows/*/vision, notion, psyche-raw on Protos/datom/ethos/Nexus/sema/Signal not in Vision/; distillation candidates.
+- Subflow C (read-demanding): witness of protos/datomic/ethos-zero/signal/sema/orchestrate repos — versions, parser acceptance, which kind names exist, ethos-zero file form, commits after 2026-08-29 11:30 UTC, running nexuses.
+
+## Instructions
+- Psyche (typed, 2026-08-30): re-infer the protos, datom, ethos skill proposals adjusted for the newer psyche. Three drafts presented in-flow for approval (not written anywhere); five assumptions put to the psyche: Error over Fault; braces spaced like brackets; Datomizable capability names form/situation (flow-named); Embodied alias mechanism left out of the map; Structure inner anatomy shown minimally.
+- After subflow B: two draft amendments — `Generated.{ Files.Vector<RustFile> }` (no tuple struct); datom description drops "in a payload" (datom is edge-only).
+
+- Psyche (STT, 2026-08-30): spacing ruled (braces too, canonical, never in curly quotes — vision/datomSyntax.md); two symbol types by capitalization, terms wanted (vision/symbols.md; candidates in notion/terminology.md); the protos skill must show datom, not ethos — verify datom is not situational (vision/designPractice.md); flesh out multi-form concepts (vision/multiFormConcepts.md); brainstorm all the terminology. Dispatched: datomic situational-reading witness; search for prior multi-form psyche words. Answering terminology and multi-form anatomy from context now.
+
+## Remembered (subflow, prior multi-form words)
+- Remembered: b675f3d9, 04db2fd2, 4d5fc7da — depth 2 on multi-form (via subflow; transcripts read). Most relevant: b675f3d9 2026-08-27 first "a struct {} always has the same fields, in the same order" then, the same day, "It's perfectly acceptable to have different structures … that result in slightly different types" and the handwritten page "Ethos advanced Structural Parsing" — "I have actually reconsidered … the structural parsing can actually discern between structs of different size to differentiate between different types … It seems pretty obvious now", plus different head separators for type differentiation; the page's Capability enum has variants told apart by structure alone (Head.Concept, Head!Concept, Name.[…], Head.{[…] […]}) and defines "A Concept being a type or a Kind"; 04db2fd2 "the struct is for complex kinds"; 4d5fc7da "datom doesnt support omittable fields yet".
+
+## Witnessed (subflow, datomic code)
+- Datom's delimiters are read the same everywhere; only the scalar meaning of a Bare (string/integer/bool/unit variant) and of a Headed (decimal, or a string carrying . ! :) is decided by the expected type. Record: witnesses/datomSituational.md.
+
+- Psyche (STT, 2026-08-30, second message): concept = abstract object, types are concepts; conceptual form vs corporal (final) form; a datom's first pass yields the concept of an enum, not the Rust type; kind declaration arity is the conceptual layer; two passes if not three; Prospective → Potential, capability name wanted; "Struct" never written — described using structure; vocabulary for the spoken word; wants syntax examples, visuals, layers, anatomy (structural / metallic Rust runtime / final), terminology per layer. Logged: vision/concept.md, passes.md, vocabulary.md, kinds.md. Building a view page with diagrams.
+
+- Published the Protos Layers page (Text → Structure → Concept → Corpus; one datom and one kind declaration carried down; terminology per layer; five rulings asked): https://claude.ai/code/artifact/e9528734-a06b-418c-a011-efef83af4061 (source: scratchpad protosLayers.html).
+
+- Psyche (artifact comments, 2026-08-30 15:27–16:33): ruled — the concept layer is the Datom and Ethos types ("yes"); Potential/actualize universal, a rewording of TryInto; Embodied is the bound, Corporal kept for the layer; Ethos also has a Corporal layer yielding the Rust; map type `SomeMap.« KeyType ValueType »`; asked what Entry is; the headed/contained pattern deserves its own section and a protos-shared kind; a notion on two-way structure↔concept matching (embodiments, one enumerator, context over situation, data in capabilities) to brainstorm; the page is "almost word for word ready to go as vision" and the approach should be expressed. Logged: vision/kinds.md, layers.md, ethosTypes.md, headedAndContained.md, designPractice.md; notion/layerMatching.md. The auto-reply on the activated thread gave a generic account of the approach; the true account (what was read and written, in order) goes on the page and in the terminal.
+
+- Page republished with the rulings folded in (Potential/actualize/Embodied; Ethos corpus layer; map KV syntax, Entry removed), a Headed-and-contained section with the proposed Nominal kind, the matching notion brainstormed (roster, form, context, generic match; Datomizable spec), an honest account of the approach, and six rulings asked.
+
+- Psyche (terminal + 7 new artifact comments, 17:08–17:52 and after): pages are to be raw, vision-ready, no Q&A; write markdown, let a subagent convert to HTML; recap everything in a new document; distilled vision must carry actual code (ethos → Rust, the invariant Rust) and skills are its concentration; apply psyche words directly to distilled vision when the subject is there. Comments: headed/contained terms ruled, contained = the Rust embodiment, headed = sugar; layer capabilities structure/conceive/incorporate sit on Text/Structure/Concept as aliases of Potential; embody = general downward word; all chosen names agreed; Datomizable to be renamed (ProtoShaped/ProtoFormed/ProtoExpressible/ProtoTextualizable, "protoform"); every ethos block needs a root variant naming its species, layers never mixed in one block; the match = context variant + structure over the roster, with a compile-time no-conflict check; multi-form going up, emptiable members; the ethos roster's contents; the whole machinery up and down, reasoned for reason-ability. Logged in vision/headedAndContained.md, kinds.md, designPractice.md; notion/layerMatching.md. Next: the recap document in markdown (reports/protosLayers.md), converted by a subflow.
+
+- Wrote the recap as markdown, raw and vision-ready, with the matching machinery in Rust: flows/62022e8f/reports/protosLayers.md. Converted by a subflow (35/35 fenced blocks verified, read in full) and published as a new artifact: https://claude.ai/code/artifact/ae911ebc-c104-4e75-a540-afa2bbf017bd
+
+- Psyche (screenshot): mermaid node text clipped on the recap page ("3 · Corpus (corporal) = the ty…"). Hypotheses: labels measured before the web font loaded, then drawn wider; a long single-line label. Fix applied to md and html: labels shortened with <br/>, page font kept off `pre.mermaid`; republished same URL. Psyche: the converting subflow can also pick the colors — noted for the design-skill line (mermaid in markdown; subflow renders themed, colored SVG).
+
+## Settled
+- Names agreed by the psyche ("I agree with all of the chosen names"): Structure/Structural/structure; Concept/Conceptual/conceive; Corpus/Corporal/incorporate; Potential/actualize; Embodiment for a layer's objects; Name/Reference for the two symbols.
+- Headed and contained are the two textual forms of an embodiment; the contained form is the embodiment's Rust shape; headed is sugar (psyche).
+- Capabilities: structure on Text, conceive on Structure, incorporate on Concept — aliases of Potential<…>.actualize; embody is the general downward word (psyche).
+- The concept layer is the Datom and Ethos types of the settled chain (psyche, "yes").
+- Potential / actualize is the universal layer-to-layer kind and capability; Embodied is its bound; Corporal names the final layer (psyche).
+- Spacing: a space inside brackets and braces at both ends, canonical, not load-bearing; never inside curly quotes (psyche, 2026-08-30).
+
+## Open
+- Unruled names: Datomizable's replacement (Protoformed · ProtoShaped · ProtoExpressible · ProtoTextualizable); the headed/contained kind (Nominal · Named · Fronted); the upward direction word; what a context holds (Admission · Expectation · Context); the ethos corpus's name and members; Error vs Fault.
+- Unruled forms: the group delimiter `{ }` for multi-form; emptiable-only members in groups.
+- Skill lines proposed, awaiting approval: pages raw; markdown authored, subflow converts; distilled vision carries code; apply psyche words directly to Vision/ when the subject is there.
+- The three skill drafts (protos/datom/ethos) are superseded by the psyche's ruling that skills are concentrations of distilled vision; the drafts' content flows into the distillation.
+- Distillation proposal owed: Vision/layers.md (and kinds) from reports/protosLayers.md.
+
+## Settled
+
+(none yet)

@@ -1,0 +1,49 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t5">
+  <title id="t5">A road climbs toward three branches under a wide evening sky; a wooden signpost at the fork carries three boards: visible, comment, both.</title>
+  <defs>
+    <linearGradient id="f-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.15"/>
+      <stop offset=".6" style="stop-color:var(--glow);stop-opacity:.55"/>
+      <stop offset="1" style="stop-color:var(--ground);stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="f-hill1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--hill)"/>
+      <stop offset="1" style="stop-color:var(--hill-deep)"/>
+    </linearGradient>
+    <linearGradient id="f-road" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge);stop-opacity:.6"/>
+    </linearGradient>
+    <linearGradient id="f-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--wood)"/>
+      <stop offset="1" style="stop-color:var(--wood-deep)"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="300" style="fill:url(#f-sky)"/>
+  <circle cx="270" cy="120" r="34" style="fill:var(--glow);opacity:.75"/>
+  <path d="M0 230 C 60 190, 130 210, 190 196 C 250 182, 300 200, 360 186 L 360 560 L 0 560 Z" style="fill:var(--hill);opacity:.55"/>
+  <path d="M0 290 C 80 250, 150 280, 220 262 C 280 248, 320 268, 360 256 L 360 560 L 0 560 Z" style="fill:url(#f-hill1)"/>
+  <!-- three branches -->
+  <path d="M168 330 C 140 300, 90 280, 40 268 L 52 262 C 100 270, 150 290, 176 318 Z" style="fill:url(#f-road)"/>
+  <path d="M176 326 C 178 300, 182 270, 186 238 L 194 238 C 192 270, 190 300, 190 326 Z" style="fill:url(#f-road)"/>
+  <path d="M188 322 C 220 296, 270 280, 330 270 L 334 278 C 280 290, 232 306, 198 332 Z" style="fill:url(#f-road)"/>
+  <!-- the road toward the fork -->
+  <path d="M110 560 C 140 470, 170 400, 172 326 L 196 326 C 200 400, 230 470, 270 560 Z" style="fill:url(#f-road)"/>
+  <path d="M190 548 C 186 480, 184 420, 184 340" style="fill:none;stroke:var(--rule);stroke-width:2;stroke-dasharray:10 12"/>
+  <!-- grass tufts -->
+  <g style="fill:none;stroke:var(--hill-deep);stroke-width:2;stroke-linecap:round">
+    <path d="M60 470 q 4 -14 2 -24 M66 470 q 2 -12 8 -20 M54 470 q -2 -10 -8 -16"/>
+    <path d="M300 430 q 4 -14 2 -24 M306 430 q 2 -12 8 -20 M294 430 q -2 -10 -8 -16"/>
+  </g>
+  <!-- signpost -->
+  <rect x="226" y="330" width="9" height="120" rx="2" style="fill:url(#f-wood)"/>
+  <g style="font:600 14px var(--display)">
+    <path d="M150 334 L 222 334 L 222 358 L 150 358 L 140 346 Z" style="fill:url(#f-wood)"/>
+    <text x="186" y="351" text-anchor="middle" style="fill:var(--sign-ink)">visible</text>
+    <path d="M226 364 L 312 364 L 324 376 L 312 388 L 226 388 Z" style="fill:url(#f-wood)"/>
+    <text x="272" y="381" text-anchor="middle" style="fill:var(--sign-ink)">comment</text>
+    <path d="M226 396 L 296 396 L 308 408 L 296 420 L 226 420 Z" style="fill:url(#f-wood)"/>
+    <text x="264" y="413" text-anchor="middle" style="fill:var(--sign-ink)">both</text>
+  </g>
+  <text x="24" y="40" style="fill:var(--ink);font:italic 600 16px var(--display)">the fork</text>
+</svg>

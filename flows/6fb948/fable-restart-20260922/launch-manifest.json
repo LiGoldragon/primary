@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wD",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "claude",
+      "profile": "psyche-fable-of-1b8ac0",
+      "profileFile": "/home/li/primary/flows/03e825/refresh-round-20260922/psyche-high/profile.json",
+      "fresh": false,
+      "predecessor": "1b8ac0",
+      "agent": "psyche-fable-r-1b8ac0",
+      "label": "Psyche High replacement",
+      "model": "claude-fable-5-1[1m]",
+      "effort": "medium"
+    }
+  ]
+}

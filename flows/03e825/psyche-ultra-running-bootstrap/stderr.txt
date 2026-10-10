@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File [35m"/home/li/primary/tools/claude-native-seat-refresh.py"[0m, line [35m617[0m, in [35m<module>[0m
+    [31mmain[0m[1;31m()[0m
+    [31m~~~~[0m[1;31m^^[0m
+  File [35m"/home/li/primary/tools/claude-native-seat-refresh.py"[0m, line [35m607[0m, in [35mmain[0m
+    result = [31mrefresh[0m[1;31m(manifest, cwd, args.timeout, herdr_target=target,[0m
+             [31m~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+                     [1;31mbootstrap_running_empty=args.bootstrap_running_empty,[0m
+                     [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+                     [1;31mbootstrap_receipt=pathlib.Path(args.receipt) if args.receipt else None,[0m
+                     [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+                     [1;31mbootstrap_failed_state=json.loads(pathlib.Path(args.failed_state).read_text()) if args.failed_state else None)[0m if args.refresh else plan(manifest, cwd)
+                     [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File [35m"/home/li/primary/tools/claude-native-seat-refresh.py"[0m, line [35m487[0m, in [35mrefresh[0m
+    raise RuntimeError(f"native identity mismatch: expected {manifest['model']}/{manifest['effort']}, observed {identity['model']}/{identity['effort']}")
+[1;35mRuntimeError[0m: [35mnative identity mismatch: expected claude-haiku-4-5-20251001/medium, observed claude-haiku-4-5-20251001/None[0m

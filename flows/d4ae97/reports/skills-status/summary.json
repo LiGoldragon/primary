@@ -1,0 +1,115 @@
+{
+ "status": [
+  {
+   "q": "Deployed?",
+   "v": "yes",
+   "label": "YES",
+   "note": "curriculum-nexus <b>active</b> since 2026-10-07 1; <b>106/106</b> skills match source in all 4 trees."
+  },
+  {
+   "q": "Version-controlled?",
+   "v": "partial",
+   "label": "PARTIAL",
+   "note": "Skill repos and Curriculum: clean, main = origin. Primary: <b>142</b> uncommitted entries, <b>53</b> in generated trees; repair pause in force."
+  },
+  {
+   "q": "Main moved forward?",
+   "v": "yes",
+   "label": "YES",
+   "note": "origin/main <b>917539638</b> at 17:22 today; local <b>0</b> ahead / <b>0</b> behind; 5 commits since 17:04."
+  },
+  {
+   "q": "Skills in three repos?",
+   "v": "yes",
+   "label": "YES",
+   "note": "psyche <b>31</b> \u00b7 mind <b>44</b> \u00b7 field <b>31</b>; Curriculum <b>0</b> (review/ keeps 43+9 set-aside drafts)."
+  },
+  {
+   "q": "Vision migrated?",
+   "v": "partial",
+   "label": "PARTIAL",
+   "note": "Vision/ still present (<b>6</b> files), Intent/ gone; <b>20</b> vision- and <b>10</b> intent- skills; <b>203</b> of <b>1758</b> raw files distilled."
+  }
+ ],
+ "match": {
+  "claude": 106,
+  "agents": 106,
+  "codex": 106,
+  "pi": 106
+ },
+ "vision_summary": {
+  "Vision_exists": true,
+  "Vision_files": 6,
+  "Intent_exists": false,
+  "Vision_listing": [
+   "./ethos.md",
+   "./messaging.md",
+   "./nexus.md",
+   "./sources/ethos.md",
+   "./sources/messaging.md",
+   "./sources/nexus.md"
+  ],
+  "vision_skills": 20,
+  "intent_skills": 10,
+  "raw_files": 1758,
+  "raw_entries": 3012,
+  "archive_files": 160,
+  "distilled_files": 203,
+  "distilled_entries": 527,
+  "distilled_records": 178,
+  "sources_lines": 217,
+  "unresolved": 0,
+  "places": [
+   [
+    "flows/*/vision",
+    1592,
+    193,
+    151
+   ],
+   [
+    "flows/*/notion",
+    76,
+    2,
+    0
+   ],
+   [
+    "vision-raw",
+    90,
+    8,
+    9
+   ]
+  ],
+  "dated_entries": 1062,
+  "entry_months": "2026-08: 6, 2026-09: 568, 2026-10: 488"
+ },
+ "months": [
+  {
+   "label": "2026-08",
+   "files": 327,
+   "entries": 747,
+   "distilled_files": 102,
+   "distilled_entries": 279
+  },
+  {
+   "label": "2026-09",
+   "files": 1039,
+   "entries": 1545,
+   "distilled_files": 94,
+   "distilled_entries": 218
+  },
+  {
+   "label": "2026-10",
+   "files": 380,
+   "entries": 712,
+   "distilled_files": 7,
+   "distilled_entries": 30
+  },
+  {
+   "label": "undated",
+   "files": 12,
+   "entries": 8,
+   "distilled_files": 0,
+   "distilled_entries": 0
+  }
+ ]
+}

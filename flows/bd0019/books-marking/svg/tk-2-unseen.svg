@@ -1,0 +1,52 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="k2">
+  <title id="k2">A sheet of handwriting. Above and below it, two lines of invisible ink; only where a lamp-lit lens passes does the opening mark show.</title>
+  <defs>
+    <linearGradient id="k2-sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="k2-lamp" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.6"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="k2-lens" cx="40%" cy="38%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.8"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.15"/>
+    </radialGradient>
+    <linearGradient id="k2-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".5" style="stop-color:var(--brass)"/>
+      <stop offset="1" style="stop-color:var(--glow)"/>
+    </linearGradient>
+    <clipPath id="k2-clip"><circle cx="172" cy="118" r="86"/></clipPath>
+  </defs>
+  <circle cx="200" cy="140" r="150" style="fill:url(#k2-lamp)"/>
+  <g transform="rotate(-1.5 180 290)">
+    <rect x="36" y="60" width="288" height="440" rx="5" style="fill:url(#k2-sheet);stroke:var(--rule);stroke-width:1.2"/>
+    <!-- ghost lines: the marks, unrendered -->
+    <rect x="54" y="104" width="252" height="24" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 6;opacity:.45"/>
+    <rect x="54" y="440" width="252" height="24" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 6;opacity:.45"/>
+    <!-- the prose between -->
+    <g style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.8">
+      <path d="M62 168 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 20 -2 s 10 -2 16 0 s 10 2 18 0"/>
+      <path d="M62 198 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0 s 10 4 18 0"/>
+      <path d="M62 228 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2 s 12 -4 22 0 s 10 4 18 0"/>
+      <path d="M62 258 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2"/>
+      <path d="M62 300 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0 s 10 4 18 0"/>
+      <path d="M62 330 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2 s 12 -4 22 0"/>
+      <path d="M62 360 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 18 0"/>
+      <path d="M62 390 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 12 -4 18 0"/>
+    </g>
+  </g>
+  <!-- the lens reveals the start mark -->
+  <g clip-path="url(#k2-clip)">
+    <circle cx="172" cy="118" r="86" style="fill:url(#k2-lens)"/>
+    <g transform="rotate(-1.5 180 290)">
+      <text x="180" y="121" text-anchor="middle" style="fill:var(--red);font:600 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">to-the-living:start</text>
+    </g>
+  </g>
+  <circle cx="172" cy="118" r="86" style="fill:none;stroke:url(#k2-brass);stroke-width:9"/>
+  <path d="M234 180 C 250 198, 266 216, 286 238" style="fill:none;stroke:url(#k2-brass);stroke-width:14;stroke-linecap:round"/>
+  <path d="M112 76 C 124 60, 142 52, 160 52" style="fill:none;stroke:var(--paper);stroke-width:3;stroke-linecap:round;opacity:.85"/>
+  <text x="180" y="536" text-anchor="middle" style="fill:var(--ink);font:italic 600 16px var(--display)">the wrapping does not render</text>
+</svg>

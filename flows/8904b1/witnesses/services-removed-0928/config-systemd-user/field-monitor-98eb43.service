@@ -1,0 +1,6 @@
+[Unit]
+Description=Bounded Field Monitor 98eb43 census
+
+[Service]
+Type=oneshot
+ExecStart=/home/li/.nix-profile/bin/node /home/li/primary/flows/98eb43/monitor/census.mjs

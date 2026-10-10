@@ -1,0 +1,65 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p1t">
+  <title id="p1t">A long paper scroll, the transcript, unrolls down the page. One stretch of it glows between two red pins. At the scroll's foot a brass hook catches the end of the turn and rings a small bell; a reading lens hovers over the glowing stretch, and below it a bound book waits.</title>
+  <defs>
+    <linearGradient id="p1-scroll" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".5" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="p1-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.75"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="p1-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p1-cloth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--red)"/>
+      <stop offset="1" style="stop-color:var(--wood-deep)"/>
+    </linearGradient>
+  </defs>
+  <text x="180" y="40" text-anchor="middle" style="fill:var(--ink);font:italic 600 19px var(--display)">the anatomy</text>
+  <!-- the roller at the top -->
+  <rect x="62" y="62" width="176" height="20" rx="10" style="fill:var(--wood)"/>
+  <circle cx="62" cy="72" r="11" style="fill:var(--wood-deep)"/>
+  <circle cx="238" cy="72" r="11" style="fill:var(--wood-deep)"/>
+  <!-- the scroll, curling as it falls -->
+  <path d="M72 80 L 228 80 C 232 200, 222 300, 236 400 C 240 430, 226 452, 198 456 L 98 462 C 80 462, 70 450, 72 430 C 78 330, 66 210, 72 80 Z" style="fill:url(#p1-scroll);stroke:var(--ink);stroke-opacity:.25"/>
+  <!-- machine lines: small, terse -->
+  <g style="fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;opacity:.6">
+    <path d="M90 104 h 60"/><path d="M90 116 h 90"/><path d="M90 128 h 44"/><path d="M90 140 h 72"/>
+    <path d="M92 366 h 56"/><path d="M92 378 h 96"/><path d="M93 390 h 40"/><path d="M94 402 h 80"/>
+  </g>
+  <!-- the marked stretch, glowing -->
+  <ellipse cx="150" cy="252" rx="130" ry="110" style="fill:url(#p1-halo)"/>
+  <path d="M80 164 C 120 160, 190 160, 222 164" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <path d="M80 344 C 120 348, 190 348, 224 344" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <circle cx="80" cy="164" r="6" style="fill:var(--red)"/>
+  <circle cx="224" cy="344" r="6" style="fill:var(--red)"/>
+  <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+    <path d="M94 196 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+    <path d="M94 224 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 12 -4 18 0"/>
+    <path d="M94 252 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+    <path d="M94 280 c 10 -7 14 7 24 0 s 14 -9 24 0 s 10 5 16 0"/>
+    <path d="M94 308 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+  </g>
+  <!-- the reading lens, hovering over the stretch -->
+  <g transform="rotate(-18 286 236)">
+    <circle cx="286" cy="236" r="34" style="fill:var(--glow);fill-opacity:.18;stroke:url(#p1-brass);stroke-width:7"/>
+    <path d="M286 272 C 288 300, 290 320, 292 344" style="fill:none;stroke:var(--wood);stroke-width:10;stroke-linecap:round"/>
+  </g>
+  <!-- the hook at the scroll's foot, ringing the bell -->
+  <path d="M214 458 C 214 492, 250 500, 262 478 C 268 466, 258 456, 250 462" style="fill:none;stroke:url(#p1-brass);stroke-width:6;stroke-linecap:round"/>
+  <path d="M262 478 C 280 470, 292 470, 300 482" style="fill:none;stroke:var(--red);stroke-width:2.5;stroke-dasharray:3 5;stroke-linecap:round"/>
+  <path d="M298 484 C 298 466, 330 466, 330 484 L 336 506 L 292 506 Z" style="fill:url(#p1-brass);stroke:var(--wood-deep);stroke-width:1.5"/>
+  <circle cx="314" cy="510" r="5" style="fill:var(--wood-deep)"/>
+  <g style="fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round">
+    <path d="M342 478 c 6 4 6 12 0 16"/><path d="M286 478 c -6 4 -6 12 0 16"/>
+  </g>
+  <!-- the book, waiting -->
+  <ellipse cx="110" cy="530" rx="70" ry="9" style="fill:var(--shade)"/>
+  <path d="M50 492 L 160 484 L 168 522 L 56 530 Z" style="fill:url(#p1-cloth)"/>
+  <path d="M56 530 L 168 522 L 168 526 L 58 534 Z" style="fill:var(--paper-edge)"/>
+  <path d="M80 500 c 8 -5 12 5 20 0 s 12 -6 20 0 s 10 4 18 -1" style="fill:none;stroke:var(--glow);stroke-width:2;stroke-linecap:round"/>
+</svg>

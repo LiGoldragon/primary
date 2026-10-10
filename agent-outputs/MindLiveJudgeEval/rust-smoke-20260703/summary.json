@@ -1,0 +1,21 @@
+{
+  "blocker": null,
+  "category_results": {
+    "valid_seed": {
+      "mode": "stateful",
+      "pass_rate": 100.0,
+      "passed": 2,
+      "total": 2
+    }
+  },
+  "eval_id": "rust-smoke-20260703",
+  "failure_count": 0,
+  "failures": [],
+  "judge_attempts": 2,
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 2,
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "submit_calls": 2
+}

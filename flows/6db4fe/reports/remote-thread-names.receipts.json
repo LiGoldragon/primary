@@ -1,0 +1,127 @@
+{
+  "observedAt": "2026-09-21T15:24:25.648314+00:00",
+  "method": "app-server thread/name/set",
+  "receipts": [
+    {
+      "flowId": "4b0f60",
+      "nativeThreadId": "01a0c0d3-2fc6-7660-ba29-cd64b0f60e7d",
+      "model": "gpt-6-astra",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Mind Astra",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.557282+00:00"
+    },
+    {
+      "flowId": "9e7ea5",
+      "nativeThreadId": "01a0bcea-a838-7421-ab1d-43c9e7ea522d",
+      "model": "gpt-6-astra",
+      "beforeName": "mind-astra-of-98ac2e",
+      "afterName": "Mind Astra (crossover 1)",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.568653+00:00"
+    },
+    {
+      "flowId": "98ac2e",
+      "nativeThreadId": "01a0bcaa-6dcb-7c93-a9e2-49f98ac2e0e5",
+      "model": "gpt-6-astra",
+      "beforeName": "mind-astra-of-0ab019",
+      "afterName": "Mind Astra (crossover 2)",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.593504+00:00"
+    },
+    {
+      "flowId": "e798f3",
+      "nativeThreadId": "01a0c0be-910a-7ea2-a956-1b4e798f39f3",
+      "model": "gpt-5.6-terra",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Mind Terra",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.601948+00:00"
+    },
+    {
+      "flowId": "23d977",
+      "nativeThreadId": "01a0c0c0-3c39-77b3-a25f-51623d97706d",
+      "model": "gpt-5.6-luna",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Mind Luna",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.608155+00:00"
+    },
+    {
+      "flowId": "6db4fe",
+      "nativeThreadId": "01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8",
+      "model": "gpt-6-astra",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Field Astra",
+      "action": "set",
+      "readbackStatus": "active",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.615277+00:00"
+    },
+    {
+      "flowId": "7091ea",
+      "nativeThreadId": "01a0c45a-7bf3-7742-844b-0007091ea0cd",
+      "model": "gpt-5.6-sol",
+      "beforeName": "7091ea",
+      "afterName": "Field Sol",
+      "action": "set",
+      "readbackStatus": "active",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.622511+00:00"
+    },
+    {
+      "flowId": "395aed",
+      "nativeThreadId": "01a0bf9a-1517-7193-9c17-d1a395aed1c5",
+      "model": "gpt-5.6-sol",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Field Sol (crossover 1)",
+      "action": "set",
+      "readbackStatus": "active",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.630939+00:00"
+    },
+    {
+      "flowId": "0347d0",
+      "nativeThreadId": "01a0c0f9-c28a-7cd3-a3eb-ac60347d0559",
+      "model": "gpt-5.6-terra",
+      "beforeName": "Refresh native main flow",
+      "afterName": "Field Terra",
+      "action": "set",
+      "readbackStatus": "active",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.637516+00:00"
+    },
+    {
+      "flowId": "c88918",
+      "nativeThreadId": "01a0c00e-605e-7f23-91db-814c8891898f",
+      "model": "gpt-5.6-luna",
+      "beforeName": "field ultra low",
+      "afterName": "Field Luna",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.643674+00:00"
+    },
+    {
+      "flowId": "9ddcbc",
+      "nativeThreadId": "01a0c051-d38e-7d92-a79e-c609ddcbc64b",
+      "model": "gpt-5.6-sol",
+      "beforeName": "field medium",
+      "afterName": "Field Sol (crossover 2)",
+      "action": "set",
+      "readbackStatus": "idle",
+      "notificationSeen": true,
+      "verifiedAt": "2026-09-21T15:24:25.648280+00:00"
+    }
+  ]
+}

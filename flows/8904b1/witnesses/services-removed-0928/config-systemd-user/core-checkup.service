@@ -1,0 +1,13 @@
+[Unit]
+Description=Bounded monitoring-only core checkup from pinned primary source
+
+[Service]
+Type=oneshot
+StateDirectory=core-checkup
+RuntimeMaxSec=120s
+TimeoutStartSec=120s
+MemoryMax=256M
+NoNewPrivileges=true
+Environment=PATH=/home/li/.nix-profile/bin:/run/current-system/sw/bin
+ExecStartPre=/nix/store/kl3gf8ld3xp638ss3k178r38qn9ywahn-coreutils-full-9.11/bin/test -r /nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json
+ExecStart=/home/li/.nix-profile/bin/node /nix/store/63iv1hcrcb1gpc7srfwkipcv8s8wbcnr-source/tools/core-checkup.mjs /nix/store/8xgi8bjmavs2q4cfnp9jyrcly477i5ak-core-checkup-roster.json /home/li/.config/core-checkup/policy.json %S/core-checkup/events.ndjson %S/core-checkup/state.json

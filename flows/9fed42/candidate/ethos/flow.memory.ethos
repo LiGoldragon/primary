@@ -1,0 +1,33 @@
+; Flow's Memory. Design: section 1, Memory.
+Memory                          ; Flow's
+[  flow_ethos:[ FlowId Topic Layer
+                Request Subaspect
+                Source Address
+                Process ]
+   signal_flow:[ Event ] ]
+[  Flow.{                       ; one per run
+      FlowId
+      Session.String            ; the harness's id
+      Process                   ; the calling
+                                ; process's pid and
+                                ; start time learned
+                                ; at spawn or bind
+      Events.Vector<Event> }    ; signal-flow's
+   Module.{                     ; the registry: one
+      Subaspect                 ; per subaspect and
+      Topic                     ; topic
+      Source }
+   Model.{                      ; one per layer
+      Layer
+      Native.String }           ; the model's name
+                                ; as the harness
+                                ; knows it
+   Metaflow.flow_ethos:Metaflow ; ethos-zero's form
+                                ; for a record
+                                ; naming a Library
+                                ; type
+   Lock.flow_ethos:Lock         ; likewise
+   Threshold.{                  ; one per layer
+      Layer
+      Handover.Integer
+      Refresh.Integer } ]

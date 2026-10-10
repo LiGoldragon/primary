@@ -1,0 +1,28 @@
+{
+  "at": "2026-09-25T15:13:01.012016+00:00",
+  "retirementReceipt": {
+    "hmRetire": "Retired 752e0f: delivery is blocked before Herdr routing",
+    "oldRoute": {
+      "session": "messaging-build",
+      "agent": "psyche-fable-of-836818",
+      "pane": "wD:pE",
+      "tab": "wD:tD",
+      "terminal": "term_65c3cc0d883a764",
+      "thread": "752e0f7e-49ec-4110-b27b-6107e0eb6520"
+    },
+    "supportedLifecycle": "herdr tab close wD:tD",
+    "postClose": {
+      "agentGet": "agent_not_found",
+      "paneGet": "pane_not_found",
+      "hmList": "752e0f remains a stale historical row"
+    }
+  },
+  "archiveInPlace": {
+    "successorFlow": "38de5b",
+    "originalTranscript": "/home/li/.claude/projects/-home-li-primary/752e0f7e-49ec-4110-b27b-6107e0eb6520.jsonl",
+    "sha256Before": "0da9dfc8472e809b171dee9292acde49e12062d7bc49fbd2ec8130adcd791821",
+    "sha256After": "fbe00cb5c9a8ed36589dcda9b2f6114c246b3bd9ce47a0b5b93426a266563f8f",
+    "preserved": false
+  },
+  "predecessorStatus": "put away; no route and no live terminal; raw transcript remains at original path"
+}

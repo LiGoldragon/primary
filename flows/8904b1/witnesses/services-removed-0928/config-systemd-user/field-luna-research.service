@@ -1,0 +1,9 @@
+[Unit]
+Description=Bounded read-only Field Luna source research
+
+[Service]
+Type=oneshot
+WorkingDirectory=/git/github.com/LiGoldragon/field
+Environment=FIELD_PRIMARY_ROOT=/home/li/primary
+ExecStart=/git/github.com/LiGoldragon/field/bin/field-luna-research-run --once
+TimeoutStartSec=610

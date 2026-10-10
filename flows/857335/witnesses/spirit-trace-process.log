@@ -1,0 +1,108 @@
+warning: patch `schema v0.2.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+warning: patch `schema-cc v0.1.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling spirit v0.27.0 (/tmp/flow857335-spirit-1050)
+warning: unused imports: `ErrorMessage`, `HeadDigestHex`, `HeadObjectHex`, `RecordCount`, `SelectedHeadDigest`, and `SelectedHeadObject`
+  --> src/engine.rs:14:13
+   |
+14 |             HeadDigestHex, HeadObjectHex, ImportReceipt, ImportRequest, SelectedHeadDigest,
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^                                ^^^^^^^^^^^^^^^^^^
+15 |             SelectedHeadObject, VersionedLogHead, VersionedLogHeadObject,
+   |             ^^^^^^^^^^^^^^^^^^
+...
+20 |             self as signal_schema, DatabaseMarker, ErrorMessage, IntentEvent, RecordCount,
+   |                                                    ^^^^^^^^^^^^               ^^^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Description`, `Domains`, `ErrorMessage`, `Importance`, `QuoteText`, `Reasoning`, `RecordCount`, `RecordSet`, `Replacements`, `Testimony`, and `VersionText`
+  --> src/nexus.rs:24:86
+   |
+24 |             ClarificationResolution, ClarificationResolutionReceipt, DatabaseMarker, Description,
+   |                                                                                      ^^^^^^^^^^^
+25 |             Domains, Entry, ErrorMessage, ErrorReport, GuardianRejection, Importance,
+   |             ^^^^^^^         ^^^^^^^^^^^^                                  ^^^^^^^^^^
+...
+29 |             QuoteText, Reasoning, RecordChange, RecordChangeReceipt, RecordCount, RecordIdentifier,
+   |             ^^^^^^^^^  ^^^^^^^^^                                     ^^^^^^^^^^^
+30 |             RecordRequest, RecordSet, Records, Replacements, Retirement, RetirementReceipt,
+   |                            ^^^^^^^^^           ^^^^^^^^^^^^
+31 |             SemaReceipt, SignalRejection, StashHandle, StashedObservation, Statement,
+32 |             SubscriptionToken, Supersession, SupersessionReceipt, Testimony, ValidationError,
+   |                                                                   ^^^^^^^^^
+33 |             VerbatimQuote, VersionReport, VersionText,
+   |                                           ^^^^^^^^^^^
+
+warning: unused imports: `ClarificationRecordIdentifier`, `ErrorMessage`, `Explanation`, `RecordCount`, `RecordIdentifier`, `RecordIdentifiers`, `RecordSet`, and `Selection`
+  --> src/store/mod.rs:42:31
+   |
+42 |         ClarificationReceipt, ClarificationRecordIdentifier, ClarificationRequest,
+   |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+43 |         ClarificationResolution, ClarificationResolutionReceipt, CountedRecords, DatabaseMarker,
+44 |         Description, DomainMatch, Entry, ErrorMessage, ErrorReport, Explanation, FoundRecord,
+   |                                          ^^^^^^^^^^^^               ^^^^^^^^^^^
+...
+47 |         ObservedRecord, ObservedRecords, Query, RecordChange, RecordChangeReceipt, RecordCount,
+   |                                                                                    ^^^^^^^^^^^
+48 |         RecordIdentifier, RecordIdentifiers, RecordSet, Retirement, RetirementReceipt, SearchText,
+   |         ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+49 |         Selection, SemaReceipt, Supersession, SupersessionReceipt, TextMatch,
+   |         ^^^^^^^^^
+
+warning: `spirit` (lib) generated 3 warnings (run `cargo fix --lib -p spirit` to apply 3 suggestions)
+warning: unused import: `Response`
+ --> src/bin/meta-spirit.rs:4:33
+  |
+4 | use meta_signal_spirit::{Query, Response};
+  |                                 ^^^^^^^^
+  |
+  = note: `-W unused-imports` implied by `-W unused`
+  = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: `spirit` (bin "meta-spirit") generated 1 warning (run `cargo fix --bin "meta-spirit" -p spirit` to apply 1 suggestion)
+warning: unused import: `str::FromStr`
+ --> tests/process_boundary.rs:8:5
+  |
+8 |     str::FromStr,
+  |     ^^^^^^^^^^^^
+  |
+  = note: `-W unused-imports` implied by `-W unused`
+  = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Antecedent`, `ClarificationRecordIdentifier`, `Description`, `QuoteText`, `Reasoning`, `TargetClarifications`, and `Testimony`
+  --> tests/process_boundary.rs:33:5
+   |
+33 |     Antecedent, ClarificationRecordIdentifier, ClarificationResolution, Description, IntentEvent,
+   |     ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                           ^^^^^^^^^^^
+34 |     Justification, Kind, Magnitude, Query, QuoteText, Reasoning, RecordIdentifier, Response,
+   |                                            ^^^^^^^^^  ^^^^^^^^^
+35 |     TargetClarification, TargetClarifications, Testimony, VerbatimQuote,
+   |                          ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+
+warning: function `record_identifier_argument` is never used
+   --> tests/process_boundary.rs:771:4
+    |
+771 | fn record_identifier_argument(identifier: &RecordIdentifier) -> String {
+    |    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: requested on the command line with `-W dead-code`
+
+warning: function `nota_path` is never used
+   --> tests/process_boundary.rs:785:4
+    |
+785 | fn nota_path(path: &Path) -> String {
+    |    ^^^^^^^^^
+
+warning: `spirit` (test "process_boundary") generated 4 warnings (run `cargo fix --test "process_boundary" -p spirit` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.01s
+     Running tests/process_boundary.rs (target/debug/deps/process_boundary-33f274b5c8870dd7)
+
+running 1 test
+test cli_receives_testing_trace_events_from_daemon_trace_socket ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.44s
+

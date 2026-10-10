@@ -1,0 +1,21 @@
+# Evaluate-only Horizon input regeneration: stopped
+
+Field's subflow remotely verified goldragon revision `ddf27e0c28bfdd98bf36dcb580ab51abc2c6c40b` and built its `horizon-definition` output with remote-only Nix settings. The resulting source was the canonical regular file `/nix/store/6i5v50mhq6ljhi9s6vr1fbfmrvgz6w53-horizon-definition/horizon-definition.datom`.
+
+The **live Lojix 7 client** rejected the first Ouranos Evaluate-only packet before creating a deployment: `CliRejected [Datom request did not decode: proposal source is not a Horizon definition]`. This is a compatibility/encoding gate, not a remote-builder failure. No Prometheus Evaluate, Realize, TestActivation, ActivateNow, main move, or cleanup was submitted by this worker. The source was not silently substituted or retried.
+
+After this observation, e167d8 relayed b860be's ownership transfer: new Mind Astra owns step-2 gates and main moves. Field deploys only after b860be reports step-2 main green. Prometheus boot-once is additionally held until the living names its time. The above blocker is passed as evidence to that owner; it does not authorize a Field source fix or a new deployment.
+
+## Independent comparison and current ruling needed
+
+Two read-only Field witnesses compared the accepted deployment-33 proposal with the new one. The accepted file is the old Horizon 0.12-compatible schema; the new goldragon `ddf27e0c28bfdd98bf36dcb580ab51abc2c6c40b` output is a canonical regular file with Horizon 0.13 tailnet payloads. The running `lojix-meta` and Nexus are 7.0.0 and link `horizon-lib` 0.12.0. The client decodes before contacting its socket, so the 0.13 rejection is a real schema boundary, not a symlink, root, or request-form defect. Do not resubmit identical 0.13 data to Lojix 7. An old-schema bootstrap activation of Lojix 8 or an explicitly compatible proposal representation is required from the integration owner.
+
+The living's exact later word, relayed by e167d8 and logged separately in this Flow, is: “There must never be AI models on any other node than Prometheus, which is why Prometheus can only be built on Prometheus.” Earlier Lojix 7 Realize semantics built into Ouranos's store even when derivation steps offloaded to Prometheus; that is not a permissible model-closure route. e167d8 owns removal of already-copied model roots on Ouranos. Any Prometheus deployment design must prove its model outputs remain on Prometheus and not be imported into Ouranos's store.
+
+## 2026-09-26 bootstrap ruling
+
+Psyche Fable b860be accepted the schema diagnosis and chose a bootstrap rather than retry. Mind Astra is producing immutable `bootstrap-b860be`: CriomOS from the pre-step-2 base, Home `7dd9e666`, and Lojix 8.1.0, built on Prometheus. Field waits for that bookmark. The bootstrap Ouranos deployment uses the **old 0.12 proposal** accepted by deployment 33 with `SecretsDirectory`, through live Nexus 7: Evaluate → Realize → TestActivation → ActivateNow. Keep heartbeat masks; witness Lojix 8.1 startup and quarantine count, then remove only the authorized temporary Flow/Message items in the cleanup window. Only after that may the Horizon 0.13 goldragon data be used for the second Ouranos deployment; the subsequent Prometheus deployment must build and root its models on Prometheus itself, then Zeus follows the step-2 main moves. No model closure is copied to Ouranos. This is b860be's coordination ruling, not yet a deployment witness.
+
+## 2026-09-26 Piper ruling and bootstrap hold
+
+The living, answering the embedded-model question, said verbatim (also preserved in this Flow's raw Piper record): “I don't even know what Piper is. I've never used it so I had no problem losing it. Why do we need that, Piper? Is it a dependency of something else? I don't really care.” Fable b860be consequently directs **no build of the old Home**: remove Piper from the Ouranos medium profile first, repin the bootstrap, then build and deploy under the existing gates. This supersedes the earlier conditional same-store-path comparison as a release path for the old bootstrap. Field owns no Piper source edit and does not deploy until it receives an immutable model-free revision and green evidence.

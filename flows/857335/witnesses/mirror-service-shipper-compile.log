@@ -1,0 +1,439 @@
+    Checking mirror v1.0.0 (/git/github.com/LiGoldragon/mirror)
+error[E0432]: unresolved imports `meta_signal_mirror::ConfigurationArchiveError`, `meta_signal_mirror::z2VXab`
+  --> src/config.rs:12:26
+   |
+12 | use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^ no `z2VXab` in the root
+   |                          |
+   |                          no `ConfigurationArchiveError` in the root
+   |
+help: a similar name exists in the module
+   |
+12 - use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+12 + use meta_signal_mirror::{ConfigurationArchivePath, z2VXab};
+   |
+
+error[E0432]: unresolved imports `meta_signal_mirror::z2VUH6`, `meta_signal_mirror::z2VWt5`
+  --> src/service.rs:21:26
+   |
+21 | use meta_signal_mirror::{z2VUH6 as MetaOutput, z2VWt5 as MetaInput};
+   |                          ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^ no `z2VWt5` in the root
+   |                          |
+   |                          no `z2VUH6` in the root
+
+error[E0432]: unresolved import `signal_standard::z2VSyM`
+  --> src/shipper.rs:10:5
+   |
+10 | use signal_standard::z2VSyM;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^ no `z2VSyM` in the root
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+  --> src/shipper.rs:50:30
+   |
+50 |         match signal_mirror::ContractMarker::decode_frame(&reply.into_bytes())?.into_body() {
+   |                              ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `FrameBody` in `signal_mirror`
+  --> src/shipper.rs:51:28
+   |
+51 |             signal_mirror::FrameBody::Reply { reply, .. } => match reply {
+   |                            ^^^^^^^^^ could not find `FrameBody` in `signal_mirror`
+
+error[E0425]: cannot find type `SocketModeRangeError` in crate `meta_signal_mirror`
+   --> src/config.rs:104:44
+    |
+104 |     SocketMode(#[from] meta_signal_mirror::SocketModeRangeError),
+    |                                            ^^^^^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VSyM` in crate `signal_standard`
+  --> src/readback.rs:63:58
+   |
+63 |     pub fn addresses_to(&self, digest: &signal_standard::z2VSyM) -> bool {
+   |                                                          ^^^^^^ not found in `signal_standard`
+
+error[E0425]: cannot find type `WorkingInput` in this scope
+   --> src/service.rs:148:12
+    |
+148 |     input: WorkingInput,
+    |            ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `WorkingInput` in this scope
+   --> src/service.rs:153:23
+    |
+153 |     pub fn new(input: WorkingInput, context: ConnectionContext) -> Self {
+    |                       ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `WorkingOutput` in this scope
+   --> src/service.rs:159:25
+    |
+159 |     type Reply = Result<WorkingOutput>;
+    |                         ^^^^^^^^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+158 | impl<WorkingOutput> Message<WorkingSignal> for Service {
+    |     +++++++++++++++
+
+error[E0425]: cannot find type `WorkingInput` in this scope
+   --> src/service.rs:251:16
+    |
+251 |         input: WorkingInput,
+    |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `WorkingOutput` in this scope
+   --> src/service.rs:253:17
+    |
+253 |     ) -> Result<WorkingOutput> {
+    |                 ^^^^^^^^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+237 | impl<WorkingOutput> ServiceLink {
+    |     +++++++++++++++
+
+error[E0425]: cannot find type `z2VPuU` in this scope
+   --> src/shipper.rs:134:81
+    |
+134 |     pub fn envelope_for_entry(&self, entry: &VersionedCommitLogEntry) -> Result<z2VPuU> {
+    |                                                                                 ^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+ 81 | impl<z2VPuU> ComponentShipper {
+    |     ++++++++
+
+error[E0422]: cannot find struct, variant or union type `z2VPuU` in this scope
+   --> src/shipper.rs:141:12
+    |
+141 |         Ok(z2VPuU {
+    |            ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `z2VcqM` in this scope
+   --> src/shipper.rs:151:50
+    |
+151 |     pub fn expected_head(&self) -> Result<Option<z2VcqM>> {
+    |                                                  ^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+ 81 | impl<z2VcqM> ComponentShipper {
+    |     ++++++++
+
+error[E0422]: cannot find struct, variant or union type `z2VcqM` in this scope
+   --> src/shipper.rs:152:50
+    |
+152 |         Ok(self.engine.mirror_head()?.map(|head| z2VcqM {
+    |                                                  ^^^^^^ not found in this scope
+
+error[E0422]: cannot find struct, variant or union type `z2VTq5` in this scope
+   --> src/shipper.rs:180:38
+    |
+180 |             .exchange(z2VVny::z2VVjQ(z2VTq5 {
+    |                                      ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `z2VLxP` in this scope
+   --> src/shipper.rs:212:61
+    |
+212 |     pub async fn publish_latest_checkpoint(&self) -> Result<z2VLxP> {
+    |                                                             ^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+ 81 | impl<z2VLxP> ComponentShipper {
+    |     ++++++++
+
+error[E0422]: cannot find struct, variant or union type `z2VTXE` in this scope
+   --> src/shipper.rs:217:24
+    |
+217 |         let artifact = z2VTXE {
+    |                        ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `z2VcqM` in this scope
+   --> src/shipper.rs:241:37
+    |
+241 |     fn mirror_head_from_mark(mark: &z2VcqM) -> Result<MirrorHead> {
+    |                                     ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `z2VLxP` in this scope
+   --> src/shipper.rs:297:25
+    |
+297 |     type Reply = Result<z2VLxP>;
+    |                         ^^^^^^ not found in this scope
+    |
+help: you might be missing a type parameter
+    |
+296 | impl<z2VLxP> Message<PublishLatestCheckpoint> for ComponentShipper {
+    |     ++++++++
+
+warning: unused imports: `Restorable as MetaRestorable`, `Signal as MetaSignal`, and `Signalizable as MetaSignalizable`
+  --> src/daemon.rs:15:39
+   |
+15 |     ByteViewable as MetaByteViewable, Restorable as MetaRestorable, Signal as MetaSignal,
+   |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+16 |     Signalizable as MetaSignalizable,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `-W unused-imports` implied by `-W unused`
+   = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+warning: unused imports: `Restorable as WorkingRestorable`, `Signal as WorkingSignal`, and `Signalizable as WorkingSignalizable`
+  --> src/daemon.rs:19:42
+   |
+19 |     ByteViewable as WorkingByteViewable, Restorable as WorkingRestorable, Signal as WorkingSignal,
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^
+20 |     Signalizable as WorkingSignalizable,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `RetentionReceipt`
+ --> src/engine.rs:9:21
+  |
+9 |     RetentionOrder, RetentionReceipt, StoreRegistration,
+  |                     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `Signal`
+  --> src/service.rs:22:47
+   |
+22 | use signal_mirror::{ByteViewable, Restorable, Signal, Signalizable};
+   |                                               ^^^^^^
+
+warning: unused imports: `Restorable` and `Signal`
+ --> src/shipper.rs:9:52
+  |
+9 | use signal_mirror::{ByteViewable, Query, Response, Restorable, Signal, Signalizable, StoreName};
+  |                                                    ^^^^^^^^^^  ^^^^^^
+
+warning: unused imports: `ArtifactBytes`, `CheckpointSequence`, `CommitSequence`, and `PayloadBytes`
+  --> src/store.rs:13:20
+   |
+13 |     AppendReceipt, ArtifactBytes, CheckpointArtifact, CheckpointReceipt, CheckpointSequence,
+   |                    ^^^^^^^^^^^^^                                         ^^^^^^^^^^^^^^^^^^
+14 |     CommitSequence, EntryEnvelope, EntrySuffix, HeadListing, HeadMark, HeadQuery, ObjectNotice,
+   |     ^^^^^^^^^^^^^^
+15 |     PayloadBytes, RestoreBundle, RestoreQuery, RestoreRejection, RestoreRejectionReason, StoreHead,
+   |     ^^^^^^^^^^^^
+
+warning: unused import: `signal_standard::ObjectDigest`
+  --> src/store.rs:18:5
+   |
+18 | use signal_standard::ObjectDigest;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `bytes` found for struct `AlignedVec` in the current scope
+  --> src/daemon.rs:68:39
+   |
+68 |                 &FrameBody::new(bytes.bytes().to_vec()),
+   |                                       ^^^^^ method not found in `AlignedVec`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `Read` which provides `bytes` is implemented but not in scope; perhaps you want to import it
+   |
+ 3 + use std::io::Read;
+   |
+
+error[E0599]: no method named `bytes` found for struct `AlignedVec` in the current scope
+  --> src/daemon.rs:95:39
+   |
+95 |                 &FrameBody::new(bytes.bytes().to_vec()),
+   |                                       ^^^^^ method not found in `AlignedVec`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `Read` which provides `bytes` is implemented but not in scope; perhaps you want to import it
+   |
+ 3 + use std::io::Read;
+   |
+
+error[E0433]: cannot find module or crate `z2VVny` in this scope
+   --> src/shipper.rs:180:23
+    |
+180 |             .exchange(z2VVny::z2VVjQ(z2VTq5 {
+    |                       ^^^^^^ use of unresolved module or unlinked crate `z2VVny`
+    |
+    = help: if you wanted to use a crate named `z2VVny`, use `cargo add z2VVny` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VUKn` in this scope
+   --> src/shipper.rs:219:22
+    |
+219 |             field_1: z2VUKn::new(checkpoint.metadata().sequence().value()),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VUKn`
+    |
+    = help: if you wanted to use a crate named `z2VUKn`, use `cargo add z2VUKn` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VSAK` in this scope
+   --> src/shipper.rs:220:22
+    |
+220 |             field_2: z2VSAK::new(checkpoint.metadata().covered().last().value()),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VSAK`
+    |
+    = help: if you wanted to use a crate named `z2VSAK`, use `cargo add z2VSAK` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VUxk` in this scope
+   --> src/shipper.rs:224:22
+    |
+224 |             field_4: z2VUxk::from_octets(&checkpoint.to_portable()?.into_bytes()),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VUxk`
+    |
+    = help: if you wanted to use a crate named `z2VUxk`, use `cargo add z2VUxk` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VVny` in this scope
+   --> src/shipper.rs:226:36
+    |
+226 |         match self.client.exchange(z2VVny::z2VNu6(artifact)).await? {
+    |                                    ^^^^^^ use of unresolved module or unlinked crate `z2VVny`
+    |
+    = help: if you wanted to use a crate named `z2VVny`, use `cargo add z2VVny` to add it to your `Cargo.toml`
+
+error[E0061]: this function takes 0 arguments but 1 argument was supplied
+   --> src/shipper.rs:114:25
+    |
+114 |             store_name: StoreName::new(store_name.as_str().to_owned()),
+    |                         ^^^^^^^^^^^^^^ ------------------------------ unexpected argument of type `String`
+    |
+note: associated function defined here
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/alloc/src/string.rs:437:18
+    |
+437 |     pub const fn new() -> String {
+    |                  ^^^
+help: remove the extra argument
+    |
+114 -             store_name: StoreName::new(store_name.as_str().to_owned()),
+114 +             store_name: StoreName::new(),
+    |
+
+error[E0433]: cannot find module or crate `z2VSAK` in this scope
+   --> src/shipper.rs:142:22
+    |
+142 |             field_0: z2VSAK::new(entry.commit_sequence().value()),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VSAK`
+    |
+    = help: if you wanted to use a crate named `z2VSAK`, use `cargo add z2VSAK` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VUwg` in this scope
+   --> src/shipper.rs:147:22
+    |
+147 |             field_3: z2VUwg::from_octets(&payload),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VUwg`
+    |
+    = help: if you wanted to use a crate named `z2VUwg`, use `cargo add z2VUwg` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VSAK` in this scope
+   --> src/shipper.rs:153:22
+    |
+153 |             field_0: z2VSAK::new(head.commit_sequence().value()),
+    |                      ^^^^^^ use of unresolved module or unlinked crate `z2VSAK`
+    |
+    = help: if you wanted to use a crate named `z2VSAK`, use `cargo add z2VSAK` to add it to your `Cargo.toml`
+
+error[E0277]: `?` couldn't convert the error to `error::Error`
+   --> src/store.rs:106:61
+    |
+106 |                 .collect::<std::result::Result<Vec<_>, _>>()?,
+    |                  -------------------------------------------^ the trait `From<TryFromIntError>` is not implemented for `error::Error`
+    |                  |
+    |                  this can't be annotated with `?` because it has type `Result<_, TryFromIntError>`
+    |
+note: `error::Error` needs to implement `From<TryFromIntError>`
+   --> src/error.rs:9:1
+    |
+  9 | pub enum Error {
+    | ^^^^^^^^^^^^^^
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+    = help: `error::Error` implements trait `From<T>`:
+              From<AsyncListenerError>
+              From<ConfigurationError>
+              From<EngineRequestError>
+              From<FrameError>
+              From<sema_engine::Error>
+              From<std::io::Error>
+
+error[E0277]: `?` couldn't convert the error to `error::Error`
+   --> src/store.rs:148:61
+    |
+148 |                 .collect::<std::result::Result<Vec<_>, _>>()?,
+    |                  -------------------------------------------^ the trait `From<TryFromIntError>` is not implemented for `error::Error`
+    |                  |
+    |                  this can't be annotated with `?` because it has type `Result<_, TryFromIntError>`
+    |
+note: `error::Error` needs to implement `From<TryFromIntError>`
+   --> src/error.rs:9:1
+    |
+  9 | pub enum Error {
+    | ^^^^^^^^^^^^^^
+    = note: the question mark operation (`?`) implicitly performs a conversion on the error value using the `From` trait
+    = help: `error::Error` implements trait `From<T>`:
+              From<AsyncListenerError>
+              From<ConfigurationError>
+              From<EngineRequestError>
+              From<FrameError>
+              From<sema_engine::Error>
+              From<std::io::Error>
+
+error[E0433]: cannot find type `Reply` in this scope
+  --> src/shipper.rs:52:17
+   |
+52 |                 Reply::Accepted { per_operation, .. } => match per_operation.into_head() {
+   |                 ^^^^^ use of undeclared type `Reply`
+
+error[E0433]: cannot find type `SubReply` in this scope
+  --> src/shipper.rs:53:21
+   |
+53 |                     SubReply::Ok(output) => Ok(output),
+   |                     ^^^^^^^^ use of undeclared type `SubReply`
+
+error[E0433]: cannot find type `Reply` in this scope
+  --> src/shipper.rs:58:17
+   |
+58 |                 Reply::Rejected { reason } => Err(Error::ReplyRejected {
+   |                 ^^^^^ use of undeclared type `Reply`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:227:13
+    |
+227 |             z2VTqL::z2VaSa(receipt) => Ok(receipt),
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:228:13
+    |
+228 |             z2VTqL::z2VWHb(rejection) => Err(Error::MirrorPublishRejected {
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:194:13
+    |
+194 |             z2VTqL::z2VPpj(report) => {
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:231:13
+    |
+231 |             z2VTqL::z2VPpj(report) => Err(Error::MirrorFaulted {
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:187:13
+    |
+187 |             z2VTqL::z2VXSq(receipt) => receipt,
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+error[E0433]: cannot find module or crate `z2VTqL` in this scope
+   --> src/shipper.rs:188:13
+    |
+188 |             z2VTqL::z2VX2Y(rejection) => {
+    |             ^^^^^^ use of unresolved module or unlinked crate `z2VTqL`
+    |
+    = help: if you wanted to use a crate named `z2VTqL`, use `cargo add z2VTqL` to add it to your `Cargo.toml`
+
+Some errors have detailed explanations: E0061, E0277, E0422, E0425, E0432, E0433, E0599.
+For more information about an error, try `rustc --explain E0061`.
+warning: `mirror` (lib) generated 7 warnings
+error: could not compile `mirror` (lib) due to 43 previous errors; 7 warnings emitted

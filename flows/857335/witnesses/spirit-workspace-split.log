@@ -1,0 +1,163 @@
+$ cargo tree -p spirit-nexus -e normal
+spirit-nexus v0.27.0 (/tmp/flow857335-spirit-1050/crates/spirit-nexus)
+└── spirit v0.27.0 (/tmp/flow857335-spirit-1050)
+    ├── blake3 v1.8.5
+    │   ├── arrayref v0.3.9
+    │   ├── arrayvec v0.7.8
+    │   ├── cfg-if v1.0.4
+    │   ├── constant_time_eq v0.4.2
+    │   └── cpufeatures v0.3.0
+    ├── getrandom v0.3.4
+    │   ├── cfg-if v1.0.4
+    │   └── libc v0.2.186
+    ├── meta-signal-spirit v1.0.1 (/git/github.com/LiGoldragon/meta-signal-spirit)
+    │   ├── rkyv v0.8.18
+    │   │   ├── bytecheck v0.8.2
+    │   │   │   ├── bytecheck_derive v0.8.2 (proc-macro)
+    │   │   │   │   ├── proc-macro2 v1.0.106
+    │   │   │   │   │   └── unicode-ident v1.0.24
+    │   │   │   │   ├── quote v1.0.46
+    │   │   │   │   │   └── proc-macro2 v1.0.106 (*)
+    │   │   │   │   └── syn v2.0.118
+    │   │   │   │       ├── proc-macro2 v1.0.106 (*)
+    │   │   │   │       ├── quote v1.0.46 (*)
+    │   │   │   │       └── unicode-ident v1.0.24
+    │   │   │   ├── ptr_meta v0.3.1
+    │   │   │   │   └── ptr_meta_derive v0.3.1 (proc-macro)
+    │   │   │   │       ├── proc-macro2 v1.0.106 (*)
+    │   │   │   │       ├── quote v1.0.46 (*)
+    │   │   │   │       └── syn v2.0.118 (*)
+    │   │   │   ├── rancor v0.1.2
+    │   │   │   │   └── ptr_meta v0.3.1 (*)
+    │   │   │   └── simdutf8 v0.1.5
+    │   │   ├── hashbrown v0.17.1
+    │   │   ├── munge v0.4.7
+    │   │   │   └── munge_macro v0.4.7 (proc-macro)
+    │   │   │       ├── proc-macro2 v1.0.106 (*)
+    │   │   │       ├── quote v1.0.46 (*)
+    │   │   │       └── syn v2.0.118 (*)
+    │   │   ├── ptr_meta v0.3.1 (*)
+    │   │   ├── rancor v0.1.2 (*)
+    │   │   ├── rend v0.5.4
+    │   │   │   └── bytecheck v0.8.2 (*)
+    │   │   └── rkyv_derive v0.8.18 (proc-macro)
+    │   │       ├── proc-macro2 v1.0.106 (*)
+    │   │       ├── quote v1.0.46 (*)
+    │   │       └── syn v3.0.5
+    │   │           ├── proc-macro2 v1.0.106 (*)
+    │   │           ├── quote v1.0.46 (*)
+    │   │           └── unicode-ident v1.0.24
+    │   └── signal-spirit v1.2.0 (/git/github.com/LiGoldragon/signal-spirit)
+    │       ├── rkyv v0.8.18 (*)
+    │       └── signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95)
+    │           └── rkyv v0.8.18 (*)
+    ├── nexus v0.1.1 (https://github.com/LiGoldragon/nexus.git?rev=a84bfa960c0d5c02d30048c4bbbc67dfef79a67c#a84bfa96)
+    │   ├── rkyv v0.8.18 (*)
+    │   └── thiserror v2.0.18
+    │       └── thiserror-impl v2.0.18 (proc-macro)
+    │           ├── proc-macro2 v1.0.106 (*)
+    │           ├── quote v1.0.46 (*)
+    │           └── syn v2.0.118 (*)
+    ├── nota-text-query v0.1.0 (https://github.com/LiGoldragon/nota-text-query.git?rev=6140a3e9afe3f81c18a39cb0a11dec4eab68b561#6140a3e9)
+    │   ├── rkyv v0.8.18 (*)
+    │   └── thiserror v2.0.18 (*)
+    ├── rkyv v0.8.18 (*)
+    ├── sema-engine v0.7.0 (https://github.com/LiGoldragon/sema-engine.git?branch=main#b3b5fb71)
+    │   ├── blake3 v1.8.5 (*)
+    │   ├── rkyv v0.8.18 (*)
+    │   ├── sema v0.1.1 (https://github.com/LiGoldragon/sema.git?branch=main#51d7927c)
+    │   │   ├── redb v4.1.0
+    │   │   ├── rkyv v0.8.18 (*)
+    │   │   └── thiserror v2.0.18 (*)
+    │   ├── signal-frame v0.3.0 (https://github.com/LiGoldragon/signal-frame.git?branch=main#fd7909d1)
+    │   │   ├── paste v1.0.15 (proc-macro)
+    │   │   ├── rkyv v0.8.18 (*)
+    │   │   ├── signal-frame-macros v0.1.1 (proc-macro) (https://github.com/LiGoldragon/signal-frame.git?branch=main#fd7909d1)
+    │   │   │   ├── proc-macro2 v1.0.106 (*)
+    │   │   │   ├── quote v1.0.46 (*)
+    │   │   │   └── syn v2.0.118 (*)
+    │   │   └── thiserror v2.0.18 (*)
+    │   ├── signal-sema v0.2.0 (https://github.com/LiGoldragon/signal-sema.git?branch=main#8d4a0223)
+    │   │   ├── rkyv v0.8.18 (*)
+    │   │   └── thiserror v2.0.18 (*)
+    │   └── thiserror v2.0.18 (*)
+    ├── signal-domain v1.0.1 (https://github.com/LiGoldragon/signal-domain.git?rev=da553c9557bd650e71c8c897947b35bf8abf22b8#da553c95) (*)
+    ├── signal-spirit v1.2.0 (/git/github.com/LiGoldragon/signal-spirit) (*)
+    ├── thiserror v2.0.18 (*)
+    ├── tokio v1.52.3
+    │   ├── bytes v1.12.0
+    │   ├── libc v0.2.186
+    │   ├── mio v1.2.1
+    │   │   └── libc v0.2.186
+    │   ├── pin-project-lite v0.2.17
+    │   ├── socket2 v0.6.4
+    │   │   └── libc v0.2.186
+    │   └── tokio-macros v2.7.0 (proc-macro)
+    │       ├── proc-macro2 v1.0.106 (*)
+    │       ├── quote v1.0.46 (*)
+    │       └── syn v2.0.118 (*)
+    └── triad-runtime v0.6.1 (https://github.com/LiGoldragon/triad-runtime.git?branch=main#895d2e6b)
+        ├── kameo v0.20.0 (https://github.com/LiGoldragon/kameo.git?branch=main#f491b45d)
+        │   ├── downcast-rs v2.0.2
+        │   ├── dyn-clone v1.0.20
+        │   ├── futures v0.3.32
+        │   │   ├── futures-channel v0.3.32
+        │   │   │   ├── futures-core v0.3.32
+        │   │   │   └── futures-sink v0.3.32
+        │   │   ├── futures-core v0.3.32
+        │   │   ├── futures-executor v0.3.32
+        │   │   │   ├── futures-core v0.3.32
+        │   │   │   ├── futures-task v0.3.32
+        │   │   │   └── futures-util v0.3.32
+        │   │   │       ├── futures-channel v0.3.32 (*)
+        │   │   │       ├── futures-core v0.3.32
+        │   │   │       ├── futures-io v0.3.32
+        │   │   │       ├── futures-macro v0.3.32 (proc-macro)
+        │   │   │       │   ├── proc-macro2 v1.0.106 (*)
+        │   │   │       │   ├── quote v1.0.46 (*)
+        │   │   │       │   └── syn v2.0.118 (*)
+        │   │   │       ├── futures-sink v0.3.32
+        │   │   │       ├── futures-task v0.3.32
+        │   │   │       ├── memchr v2.8.2
+        │   │   │       ├── pin-project-lite v0.2.17
+        │   │   │       └── slab v0.4.12
+        │   │   ├── futures-io v0.3.32
+        │   │   ├── futures-sink v0.3.32
+        │   │   ├── futures-task v0.3.32
+        │   │   └── futures-util v0.3.32 (*)
+        │   ├── kameo_macros v0.20.0 (proc-macro) (https://github.com/LiGoldragon/kameo.git?branch=main#f491b45d)
+        │   │   ├── heck v0.5.0
+        │   │   ├── proc-macro2 v1.0.106 (*)
+        │   │   ├── quote v1.0.46 (*)
+        │   │   └── syn v2.0.118 (*)
+        │   ├── serde v1.0.228
+        │   │   ├── serde_core v1.0.228
+        │   │   └── serde_derive v1.0.228 (proc-macro)
+        │   │       ├── proc-macro2 v1.0.106 (*)
+        │   │       ├── quote v1.0.46 (*)
+        │   │       └── syn v2.0.118 (*)
+        │   ├── tokio v1.52.3 (*)
+        │   └── tracing v0.1.44
+        │       ├── pin-project-lite v0.2.17
+        │       ├── tracing-attributes v0.1.31 (proc-macro)
+        │       │   ├── proc-macro2 v1.0.106 (*)
+        │       │   ├── quote v1.0.46 (*)
+        │       │   └── syn v2.0.118 (*)
+        │       └── tracing-core v0.1.36
+        │           └── once_cell v1.21.4
+        ├── rkyv v0.8.18 (*)
+        ├── rustix v1.1.4
+        │   ├── bitflags v2.13.0
+        │   └── linux-raw-sys v0.12.1
+        ├── signal-frame v0.3.0 (https://github.com/LiGoldragon/signal-frame.git?branch=main#fd7909d1) (*)
+        ├── thiserror v2.0.18 (*)
+        └── tokio v1.52.3 (*)
+$ cargo tree -p spirit-nexus -e normal | rg -i datom\\|protos
+No Datom or Protos text dependency in spirit-nexus normal graph.
+$ cargo check -p spirit-nexus
+    Checking spirit-nexus v0.27.0 (/tmp/flow857335-spirit-1050/crates/spirit-nexus)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+$ cargo check -p spirit-client --features testing-trace
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s
+$ cargo check -p spirit-meta-client
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.14s

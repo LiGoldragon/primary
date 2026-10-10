@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01a0f32a-75e8-7e50-bbc8-02a098f27148",
+    "priorName": "Preserve launcher handoff formatting",
+    "name": "Mind.{ Luna 098f27 }",
+    "result": {},
+    "readback": "Mind.{ Luna 098f27 }",
+    "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-34-01-01a0f32a-75e8-7e50-bbc8-02a098f27148.jsonl"
+  },
+  {
+    "id": "01a0f316-22b2-7851-8fec-203f698471a4",
+    "priorName": "Fix launcher handoff formatting",
+    "name": "Field.{ Sol f69847 }",
+    "result": {},
+    "readback": "Field.{ Sol f69847 }",
+    "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-11-49-01a0f316-22b2-7851-8fec-203f698471a4.jsonl"
+  },
+  {
+    "id": "01a0f341-8088-7bc1-8b46-ea7d32329c99",
+    "priorName": "Create successor identity",
+    "name": "Mind.{ Astra d32329 }",
+    "result": {},
+    "readback": "Mind.{ Astra d32329 }",
+    "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-59-11-01a0f341-8088-7bc1-8b46-ea7d32329c99.jsonl"
+  }
+]

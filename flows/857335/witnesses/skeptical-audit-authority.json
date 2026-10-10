@@ -1,0 +1,42 @@
+[
+  {
+    "path": "/home/li/primary/Vision/protos.md",
+    "sha256": "8cc31f5aa370a49278541f930a5bb498060400ccfabcf8355995722d306f6f68"
+  },
+  {
+    "path": "/home/li/primary/Vision/datom.md",
+    "sha256": "0249f4182a2a00cdfeffad3030bfe64aefcd960c3db07e3cfd9d8b5e5dec8ea5"
+  },
+  {
+    "path": "/home/li/primary/Vision/ethos.md",
+    "sha256": "53a7dd1ea81acfbb6ce9870937b978f2dbbd85377d57f9cbf2dac84d5e029e8c"
+  },
+  {
+    "path": "/home/li/primary/Vision/signal.md",
+    "sha256": "2e58db61c73e6a4b957464193261b2d82510ef916664ddffa7afeb8b66a85d6f"
+  },
+  {
+    "path": "/home/li/primary/Vision/sema.md",
+    "sha256": "c673c38efc010080907d016d59ba6d461995621041e713a92b78ab3504ac5258"
+  },
+  {
+    "path": "/home/li/primary/Vision/nexus.md",
+    "sha256": "d552de32ff1958287b73df9f9ba970c25639ddb9a6649588479e7fcf2b072cdb"
+  },
+  {
+    "path": "/home/li/primary/Intent/anatomy.md",
+    "sha256": "7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3"
+  },
+  {
+    "path": "/home/li/primary/Intent/conversion.md",
+    "sha256": "7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b"
+  },
+  {
+    "path": "/home/li/primary/Intent/context.md",
+    "sha256": "f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7"
+  },
+  {
+    "path": "/home/li/primary/Intent/mandatoryTraits.md",
+    "sha256": "7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18"
+  }
+]

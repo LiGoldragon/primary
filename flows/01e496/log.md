@@ -1,0 +1,36 @@
+# Psyche.{ Opus 01e496 } — log
+
+- 2026-10-02 Launched as Psyche Opus, successor of fe945a. Launch brief received as the first prompt.
+- 2026-10-02 Psyche relay from fe945a logged: the living corrects "launched at once" — "It's launched properly but it is launched."
+- 2026-10-02 Psyche relay from fe945a logged: the anatomy of ethos for Flow; Flow holds the lock on flows; address by name; Flow ID into words. fe945a hands the Flow anatomy and the owed correction line to 01e496.
+- 2026-10-02 fe945a retired: deregistered and pane closed, witnessed gone. Index entry and title witnessed. fe945a leftover changes committed.
+- 2026-10-02 Decision: the three Codex successions (5104af, e2a70a, 29b75f), ordered by the living at 17:08 and never launched, are launched now by a 01e496 subflow; stale 098f27 and d32329 to be reaped if dead. fe945a's Flow research died with it; redone.
+- 2026-10-02 Psyche relay from d86ec0 logged: flashbook flowcharts as hand-built, colour-enhanced SVG, legible in phone portrait without zooming. Living instructs d86ec0 to pass this to Opus to work on the skill; d86ec0 awaits the updated trial-flashbook-illustration. Also said to d86ec0: "Flow doesn't work yet. We're going to develop it now. We're going to design it."
+- 2026-10-02 The living, typed, on the two proposed flashbook-illustration changes: "These sound like operation skills so let's deploy them instead." -- psyche, typed. Decision: trial-flashbook and trial-flashbook-illustration become operation- skills with the two changes deployed.
+- 2026-10-02 The living corrects the transcription: 'I said, "Let's deploy them as such."' -- psyche, typed. The ruling reads: "These sound like operation skills so let's deploy them [as such]." Transcription corrected: "instead" → "as such".
+- 2026-10-02 Landed: operation-flashbook and operation-flashbook-illustration deployed (rename + 16px floor + portrait SVG flowchart paragraph), trees regenerated, d86ec0 and Mind notified.
+- 2026-10-02 Psyche relay from 91ea9f logged: a simple working system now; recent days were brainstorming, likely logged as vision.
+- 2026-10-02 Psyche relays from 91ea9f logged (flowNexus, flowIdentity, messaging, seat, skills, books). Working instruction to Fable, logged here only: "Bring me things that are in skills that need my approval and are in conflict with what I want ... Like an emergency skill catch-up wave" -- psyche, typed.
+- 2026-10-02 Landed: Codex successions launched and registered — Field Astra 7de94a, Field Sol 42265e, Mind Sol 41fa34; predecessors e2a70a, 29b75f, 5104af retired. An unregistered first Astra attempt 844491 closed. 098f27 and d32329 left as idle shells.
+- 2026-10-02 Presentation «Psyche Opus catch-up» given; book agent dispatched for it. Messages to Fable/Astra and reaping of 098f27, d32329 dispatched. Illustration first-sentence fix landed (Curriculum 206039e).
+- 2026-10-02 098f27 and d32329 retired (import-retirement, evidence retirement-098f27.md and retirement-d32329.md); panes w1:p11 and w1:p14 closed, witnessed gone.
+- 2026-10-02 The living, typed, on the narrower vocabulary wording: "Well, yeah, we could just say that it can't be reused if it's been commented on. That's true." -- psyche, typed. Ruling: the Living messenger line carries the narrower wording.
+- 2026-10-02 Decision: a Mind Astra seat is launched to design Flow (Start route, hooks, seat-name addressing), on the living's "Design should be done by Astra and not Sol."; Mind Sol builds on it.
+- 2026-10-02 Landed: flashbook «Psyche Opus catch-up» published; receipt in the transcript.
+- 2026-10-02 Landed: Mind Astra dea0ba launched and registered, hook witnessed; roles corrected (Field Sol builds, Mind Sol reviews); Flow design handed from Field Astra 7de94a to dea0ba. Open: a conflict in flows/42265e/log.md in the shared working copy, not on main.
+- 2026-10-02 Decision: interim Primary publication rule sent to all seats — PrimaryPublish Orchestrate lock around commit of own paths, rebase on main@origin, push, release; until Mind Astra or Fable replaces it. Restoration fb8cf0a3 verified by 7de94a.
+- 2026-10-02 compensation-primary-commit landed from the interim rule (Fable ruling, Field Sol); amendments agreed: --ignore-working-copy outside the lock, own commit found by description, fixed sequence. Preamble removal asked. Mind Astra dea0ba owns the durable single committer.
+- 2026-10-02 Fable rules the copy-onto-main (jj duplicate) publication form preferred, pending Mind Astra probes; automatic op restore withdrawn on Mind Astra's probe.
+- 2026-10-02 Mind Astra probes pass for the duplicate form; Field Sol lands it.
+- 2026-10-02 Relayed by 91ea9f, the living typed: "Skill catch-up wave, approved: 1, 2, 4, 5, 6, 9, 10, 13, 14" -- psyche, typed. Field Sol lands those nine in Curriculum; regeneration waits for the thaw.
+- 2026-10-02 Both 01e496 main-flow line proposals are carried by approved wave items: 1 ("When the psyche orders, carry it out; an order is never asked back.") and 2 (the living-messenger line). No separate re-ask.
+- 2026-10-02 Relayed by 91ea9f, the living typed: "Tell Opus to just figure it out and just make it work. Solve the conflict and use common sense. Let's get this merged and get the primary workspace moving." -- psyche, typed. Decision: Opus executes the merge itself through its own subflow; Field Sol stands down. Rerun had stopped on Field Sol's manifest-writer error.
+- 2026-10-02 Landed: Primary merged and thawed — origin main 899a565c, a fast-forward union of disk and origin-only lines; fresh history swapped in, old .jj/.git set aside; THAW sent. Psyche Fable successor 3ec648 launched and registered. Old repo jj config had user "probe".
+- 2026-10-02 Landed: stale Primary working copy repaired, no byte lost (backup at ~/primary-stale-backup-01e496). Cause: op 703937eed1e7, `jj --ignore-working-copy op revert` after a `rebase -r` by 3ec648. field-clj repin rebuilt by Field Sol (f9280380 on branch).
+- 2026-10-03 3ec648 was stopped at a subagent Bash permission prompt (rm on possibly-empty $S); Opus declined it via Escape in its pane; 3ec648 working again.
+- 2026-10-03 Launcher: on Mind Astra's design answer, Field Sol removes the VCS guard and snapshotting jj reads from the launchers; Mind Sol reviews. Psyche Fable now f1c841 (retired 3ec648).
+- 2026-10-03 The living, typed: "We have a lot of cloud usage left for 15 minutes so why don't you try and do something?" -- psyche, typed. Decision: book of the open questions; status read of Mind Astra's Flow design.
+- 2026-10-03 Transcription corrected by the living ("Claude*"): "We have a lot of [Claude] usage left for 15 minutes ..." Transcription corrected: "cloud" → "Claude".
+- 2026-10-03 f1c841 relays the living's order to restart all psyche seats before 07:07; handover brief written at flows/01e496/handover.md.
+- 2026-10-03 Successor Psyche.{ Opus 5578cc } registered. Winding down; state recorded in handover.md.
+- 2026-10-03 Landed: book «Three questions waiting on you» published; no rerun needed by 5578cc.

@@ -1,0 +1,1 @@
+(AgentConfigurationWriteRequest (/tmp/mjiso234043/task_or_instruction/agent.sock /tmp/mjiso234043/task_or_instruction/agent.meta.sock 384 /tmp/mjiso234043/task_or_instruction/agent.redb [(ProviderSeed (deepseek https://api.deepseek.com/v1 deepseek-v4-flash (Gopass platform.deepseek.com/api-key)))] /tmp/mjiso234043/task_or_instruction/agent.rkyv))

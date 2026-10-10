@@ -1,0 +1,10 @@
+[package]
+name = "probe-signal-meaning"
+version = "0.1.0"
+edition = "2024"
+[features]
+default = []
+datom = ["dep:datom-codec"]
+[dependencies]
+rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+datom-codec = { git = "https://github.com/LiGoldragon/datom-codec", rev = "f2cc06858d38a4028c928d33323a6d682e7c222f", optional = true }

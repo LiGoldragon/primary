@@ -1,0 +1,31 @@
+{
+  "schema": "claude-native-environment-isolation-source-v1",
+  "grade": "source-and-fixtures-only",
+  "sourcePaths": [
+    "tools/native-batch-refresh.mjs",
+    "tools/claude-bootstrap-controller.py",
+    "tools/claude-single-turn-start.py"
+  ],
+  "focusedLocal": {
+    "nativeBatch": "passed",
+    "directBootstrap": "passed",
+    "historicalGuard": "passed"
+  },
+  "focusedRemoteNix": {
+    "status": "passed",
+    "builder": "prometheus.goldragon.criome",
+    "derivation": "/nix/store/zlp3s1k7i3cldgrhw7s7miqdkz34y3mf-claude-launch-env-fixtures.drv",
+    "output": "/nix/store/9wszmcrx6i1fqx7vzqjs7vy843wwcqp1-claude-launch-env-fixtures",
+    "settings": ["max-jobs=0", "fallback=false"]
+  },
+  "repositoryWideRemoteNix": {
+    "status": "passed",
+    "builder": "prometheus.goldragon.criome",
+    "derivation": "/nix/store/05qxc3793fif12dypc5q2fmzjhslaigy-primary-native-seat-fixtures.drv",
+    "output": "/nix/store/j9w5qf6ns9f31h8swvgbczbf8fzwyqm0-primary-native-seat-fixtures",
+    "settings": ["max-jobs=0", "fallback=false"],
+    "priorFailures": ["existing native-seat-launch fixture lacked herdr in closure", "new batch test used zsh absent from closure"]
+  },
+  "liveSameSessionResume": "not-run",
+  "siblingTitleIsolation": "not-run"
+}

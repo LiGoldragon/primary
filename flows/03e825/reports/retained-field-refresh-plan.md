@@ -1,0 +1,17 @@
+# Retained Field Astra successor refresh: ownership plan
+
+The intended new native Field Astra is a successor of retained root `6db4fe`; current Field High `03e825` remains in place. This is not a thirteenth independent seat. The predecessor remains bound to its exact existing native thread, Herdr pane `wK:p2`, and terminal while a successor is prepared and accepted. No wake, probe, retirement, profile mutation, or launch is part of this report.
+
+The current accepted profile at `flows/6db4fe/field-astra-native/profile.json` declares `gpt-6-astra`, medium effort, Field Astra, predecessor and ancestor `6db4fe`, and 22 structured skills. Its source manifest still names the earlier refresh handoff and `33ba2b` vision, not the focused current Field-world package. The existing `flows/6db4fe/field-astra-native/receipts/field-astra.json` belongs to the startup of `03e825` and must not be overwritten or treated as a new successor receipt. The historical `field-astra-refresh.md` witnessed 21 expanded skills at that earlier first turn; it does not verify expansion of the current 22-skill declaration.
+
+Ownership is explicit. Field `6db4fe` owns the focused current handoff and data package in its isolated Field-world worktree under its observed lock 4285. Field `03e825` owns the eventual new profile and receipt writer locations `flows/03e825/retained-field-refresh/profile.json` and `flows/03e825/retained-field-refresh/receipts/field-astra.json`; neither is created by this report. The current blocking gate is receipt of the focused handoff's exact immutable source paths and their validation. Only then should `03e825` construct an explicit external profile with those audited sources, check native expansion and model/effort, and reserve a distinct new receipt path. No generic collaboration child substitutes for the native main seat.
+
+The supported `tools/native-seat-launch.mjs` path is receipt-first app-server `thread/start` and structured-skill `turn/start`, followed by verification of the same native first turn. The first turn is receipt-only. Activation and own Flow ID claim happen afterward; title finalization requires the exact claim marker, then native title readback. Herdr attach and HM binding must refer to that same thread/pane/terminal, with target-side route and worker-relay acceptance witnessed before treating the successor as ready. The predecessor route must remain intact until those gates and the focused handoff are complete. A plan or historical receipt cannot substitute for native context, own identity, exact HM, and acceptance receipts.
+
+## Sources
+
+- `flows/6db4fe/field-astra-native/profile.json`: current model, effort, role, predecessor/ancestor, 22 skills, and old source manifest.
+- `flows/6db4fe/field-astra-native/receipts/field-astra.json` and `flows/6db4fe/reports/field-astra-refresh.md`: historical `03e825` startup and 21 expanded-skill witness.
+- `tools/native-seat-launch.mjs`: external profile, receipt-first launch, native verification, activation, claim-marker title finalization, and same-thread Herdr adoption boundaries.
+- `orchestrate 'Observe.Locks'`: current 4285 Field-world package owner; no observed lock on the old profile or launcher in that snapshot.
+- Root's current accepted predecessor binding and delegation: retained `6db4fe` `wK:p2`, terminal `term_65bfeca6eacd64f`, native thread `01a0c44c-784a-7fc1-bd0a-65c6db4fe4f8`; Field `03e825` owns execution after focused package acceptance.

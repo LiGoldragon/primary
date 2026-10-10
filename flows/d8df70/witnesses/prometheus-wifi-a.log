@@ -1,0 +1,28 @@
+== before 20:51:00
+2026/09/24 14:51:00 Can't open config file from default location /etc/yggdrasil.conf
+2026/09/24 14:51:00 Falling back to platform default unix:///var/run/yggdrasil/yggdrasil.sock
+2026/09/24 14:51:00 Connecting to UNIX socket /var/run/yggdrasil/yggdrasil.sock
+2026/09/24 14:51:00 Fatal error: dial unix /var/run/yggdrasil/yggdrasil.sock: connect: permission denied
+== apply A: ouranos off Prometheus AP
+Connection 'goldragon.criome' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/1279)
+== after 20:51:46
+Not connected.
+2026/09/24 14:51:46 Can't open config file from default location /etc/yggdrasil.conf
+2026/09/24 14:51:46 Falling back to platform default unix:///var/run/yggdrasil/yggdrasil.sock
+2026/09/24 14:51:46 Connecting to UNIX socket /var/run/yggdrasil/yggdrasil.sock
+2026/09/24 14:51:46 Fatal error: dial unix /var/run/yggdrasil/yggdrasil.sock: connect: permission denied
+-- ndp on cable
+2 packets transmitted, 0 received, 100% packet loss, time 1062ms
+
+fe80::aa78:ec90:ce5c:af18 FAILED 
+fe80::923c:76aa:6a1a:a016 FAILED 
+fe80::4d6c:1e47:207b:855d FAILED 
+fe80::8647:9ff:fe75:8868 lladdr 84:47:09:75:88:68 router DELAY 
+fe80::cf28:8bd2:1677:64a FAILED 
+-- port 80 over cable
+200 0.009057s
+-- cache by name
+000 8.005854s
+timeout
+-- ssh by name
+ssh: connect to host prometheus.goldragon.criome port 22: Connection timed out

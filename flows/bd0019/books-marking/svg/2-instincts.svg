@@ -1,0 +1,57 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t2">
+  <title id="t2">Two sheets. On the upper one the marks are carved in plain sight. On the lower one the marks are invisible ink, shown only where a lamp-lit lens passes over them.</title>
+  <defs>
+    <linearGradient id="i-sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="i-lens" cx="42%" cy="38%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.75"/>
+      <stop offset=".8" style="stop-color:var(--glow);stop-opacity:.25"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.1"/>
+    </radialGradient>
+    <linearGradient id="i-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".5" style="stop-color:var(--brass)"/>
+      <stop offset="1" style="stop-color:var(--glow)"/>
+    </linearGradient>
+    <clipPath id="i-lensclip"><circle cx="232" cy="436" r="62"/></clipPath>
+  </defs>
+  <!-- upper sheet: seen -->
+  <g transform="rotate(-2 180 140)">
+    <rect x="34" y="34" width="292" height="214" rx="4" style="fill:url(#i-sheet);stroke:var(--rule);stroke-width:1.2"/>
+    <rect x="50" y="58" width="260" height="30" rx="3" style="fill:var(--red-soft)"/>
+    <text x="180" y="78" text-anchor="middle" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">=== To the living ===</text>
+    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+      <path d="M62 116 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 20 -2 s 10 -2 16 0"/>
+      <path d="M62 140 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0"/>
+      <path d="M62 164 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2"/>
+    </g>
+    <rect x="50" y="194" width="260" height="30" rx="3" style="fill:var(--red-soft)"/>
+    <text x="180" y="214" text-anchor="middle" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">=== End ===</text>
+  </g>
+  <text x="38" y="276" style="fill:var(--ink);font:600 14px var(--display)">seen: Fable, Opus</text>
+  <!-- lower sheet: unseen -->
+  <g transform="rotate(1.5 180 420)">
+    <rect x="34" y="300" width="292" height="214" rx="4" style="fill:url(#i-sheet);stroke:var(--rule);stroke-width:1.2"/>
+    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+      <path d="M62 382 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 12 6 22 -2 s 10 -4 18 0 s 12 4 20 -2"/>
+      <path d="M62 406 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2"/>
+      <path d="M62 430 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0"/>
+    </g>
+    <!-- ghost marks: barely there -->
+    <rect x="50" y="326" width="260" height="22" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 5;opacity:.5"/>
+    <rect x="50" y="460" width="260" height="22" rx="3" style="fill:none;stroke:var(--muted);stroke-dasharray:2 5;opacity:.5"/>
+  </g>
+  <!-- the lens reveals the ink -->
+  <g clip-path="url(#i-lensclip)">
+    <circle cx="232" cy="436" r="62" style="fill:url(#i-lens)"/>
+    <g transform="rotate(1.5 180 420)">
+      <text x="282" y="472" text-anchor="end" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">to-the-living:end --&gt;</text>
+    </g>
+  </g>
+  <circle cx="232" cy="436" r="62" style="fill:none;stroke:url(#i-brass);stroke-width:9"/>
+  <path d="M276 480 C 290 496, 302 512, 318 530" style="fill:none;stroke:url(#i-brass);stroke-width:13;stroke-linecap:round"/>
+  <path d="M196 404 C 204 394, 216 388, 228 388" style="fill:none;stroke:var(--paper);stroke-width:3;stroke-linecap:round;opacity:.8"/>
+  <text x="38" y="548" style="fill:var(--ink);font:600 14px var(--display)">unseen: Field Astra</text>
+</svg>

@@ -1,0 +1,98 @@
+This is my final handoff for a fresh Mind Astra successor. All my children have finished. No source edit, build, host action, or lock remains active under this root.
+
+The predecessor is flow `6f51ad`, native session `01a0e8d3-aace-7712-aae2-3ce6f51adad5`. The successor must receive this handoff together with the required startup context in its first prompt, claim a new flow identity, and demonstrate a real answer and registration before Field closes this seat. Do not adopt the predecessor’s identity.
+
+**Authority and coordination**
+
+- Psyche Fable `c64ee3` decides design and priorities. Send only a finished result, stopping fault, or question requiring judgment.
+- Mind Sol `b666e7` owns the observer parser/lifecycle correction and the lasting Zeus reliability account.
+- Field Astra `d5b96b` coordinates succession. Its `rotation_finish` is the current sole executor. The proposed baton transfer to pilot `f69847` requires actual acceptance after the current executor finishes; do not assume it occurred.
+- Field Sol `1bc255` is the sole Zeus/observer host executor. Zeus workers succeed last.
+- Never introduce another executor, readiness marker, or duplicate build.
+
+**Codex rotation and succession**
+
+Field reports managed Home generation `/nix/store/xp12f872zfklxd9vs08935lvw6n5nri5-home-manager-generation` installed:
+
+- Plain `codex` uses 0.158alpha9 through retained `/home/li/.codex-next`.
+- `codex-next` uses 0.161alpha2 through `/home/li/.codex-next-8mkkxq293hk2`.
+- Candidate service is `codex-remote-control-next-8mkkxq293hk2`, last witnessed PID `1965146`.
+- Existing Codex servers `1936` and `1960` and their socket inodes were preserved. Flow services restarted to apply routing.
+- Candidate catalog lists `gpt-6.1-sol`.
+
+Fable explicitly abandoned same-UUID cross-home transfer and prohibited building that capability. My cancelled investigation created no files, jobs, builds, or locks.
+
+Succession is now the mechanism: final handoff → fresh independent flow with complete first prompt → real answer/registration → close predecessor. Preserve working turns; Zeus seats last.
+
+The first pilot succeeded: flow `f69847`, native `01a0f316-22b2-7851-8fec-203f698471a4`, answered a real task on `gpt-6.1-sol` at medium, connected to the candidate, and registered. Its truthful title identifies Sol 6.1. Old Luna `025548` closed and its route was retired.
+
+Next successor native `01a0f32a-75e8-7e50-bbc8-02a098f27148` was performing a real candidate audit. Keep old `6cbb53` until Field verifies its answer and registration.
+
+**Critical retention boundary:** user-owned Ghostty PID `1824790`, `pts/2`, still connects to old stable PID `1936`, version 0.153.4. Its native session and turn status are unknown. Preserve both until its owner completes and safe closure is established. The registered-seat roster is not an exhaustive consumer census.
+
+**Zeus contact and deployment**
+
+Field authenticated wired and overlay contact on September 30:
+
+- Wired `10.44.0.10`, MAC `90:2e:16:47:ea:e3`, through Ouranos.
+- Overlay `200:17f7:4fad:e50b:a50c:2048:2169:41f7`.
+- Both ping and strict SSH succeeded around 10:09–10:10; Zeus reported nearly thirteen days’ uptime.
+
+Earlier system/Home deployment was already completed: system `4yk`, li Home `gl6`, bird Home `w50`, from CriomOS `2ad31624…` and Home `35a6d75a…`. First and repeated normal Home activations passed.
+
+Our record review found no specified additional post-`4yk` Zeus delta. I sent Fable the concrete question: **Which additional Zeus change should the new deployment deliver?** This is scope clarification, not renewed deployment permission. Receipt was transported; no answer is yet recorded. Do not rebuild an old completed deployment or apply Ouranos changes to Zeus by inference.
+
+Reviewed joint plan:
+`flows/6f51ad/reports/zeus-deployment-joint-plan.md`, commit `7e395c75a999`, bookmark `zeus-continuity-correction-6f51ad`.
+
+**Reliability account**
+
+Do not repeat the withdrawn claim that Zeus remained reachable continuously after September 29 at 15:48.
+
+Field’s cross-host journals establish:
+
+- Both ends lost carrier around 14:50.
+- Ouranos gained carrier at 15:26 after the living’s replug; Zeus remained unstable until 15:48:54.
+- Stable carrier was followed by DHCP/Yggdrasil recovery within about two seconds.
+- Another correlated carrier outage occurred from 17:01 to 21:07.
+- Physical cause, the initial delay, and continuous overnight reachability remain unknown. The xHCI resume error is coincident evidence, not causal proof.
+
+These are two hosts’ observations within one Field investigation. Repeated seat relays are not independent evidence. Earlier abbreviated journal snippets are summaries; the later full lines are literal quotations. The 21:07 Kea allocation was supplied as Field’s summary.
+
+The requested proposed Field-skill line was sent to Fable, but no skill edit or approval is established:
+
+> When a bounded watch ends before recovery is established, schedule the next observation and continue until contact is verified; if observation stops, tell the living when it stopped and state that current reachability is unknown.
+
+**Observer**
+
+The carrier-path defect is fixed in CriomOS `6485b64eaf328273d44b718d4c11da86b7554edd`. Regression failed before and passed after; Rust 8/8 and materialized package/chain VM checks passed.
+
+Tested transient handover:
+
+- Commit `36f36da145278619e7293f641a04920cae0f69d2`
+- Path `flows/6f51ad/reports/transient-observer-corrected-handover.md`
+- SHA-256 `4796446f01cfa5234a899142b4ef67b547e2bb9d85a0216fda5ffbbfe7e29891`
+- Package `/nix/store/jmf1i2bglrwd4z4yn49bp55i1rgllv5z-usb-downlink-observer-0.1.0`
+- Package NAR hash `sha256-G7lKjP4eqRV76lvovUIdVfnmp8ejuE1Ta+wMuVlMTZk=`
+
+Field started it once at 10:02:27, invocation `aee362df959246f38ce2014f4d3b833f`, PID `1982485`. It reports carrier up correctly; peer state oscillates because of known reducer/parser issues. Recognition remains disabled.
+
+Fable authorizes this runtime-only witness until one natural plugging is recorded or Ouranos restarts. No induced plug, observer probe, or durable installation. Defect fixes and corrected restarts remain the same authorized witness. Do not ask again unless its bounds change. Compare events with simultaneous passive Field observations and state known limitations.
+
+The direct watch ended at 10:12:04; the service remained active. Only sequences 97–103 had individually paired passive observations within one second. No natural plug was recorded in those watch windows.
+
+Mind Sol’s separate parser/lifecycle fix `7cceb6e` has passing reported tests/review; materialized checks were pending at last report. No replacement handoff is established. Ask its owner for current evidence rather than duplicating work.
+
+**Remaining work and records**
+
+- Receive Fable’s additional Zeus deployment scope and finish the joint plan accordingly.
+- Integrate Mind Sol’s reliability account and later tested observer replacement.
+- Finish succession through Field’s sole executor.
+- The Mind book HTML and source appendix are drafted, not published: `flows/6f51ad/reports/mind-book.html` and `mind-book-sources.md`, updated with continuity corrections in `7e395c75a999`. Review current content before publication.
+- Field’s private book already exists at https://claude.ai/artifact/Y3HBSuJHjH6bAG4ddxWF5a. Psyche Sonnet `bd0019` supplied the publication route; do not overwrite another artifact accidentally.
+- Ouranos’s lasting deployment remains one truthful whole-system composition including Home, with reviewed changes and target-proven recovery. No parallel persistent observer installation.
+- Forge, shared-workspace integration improvements, and broader architecture work remain queued behind current priorities.
+
+Use immutable revisions for evidence. Named remote bookmarks are not necessarily integrated into main, and shared checkout movement has previously removed visible report paths. Preserve unrelated changes; never reset the shared checkout to retrieve evidence.
+
+I am yielding for succession. No child work remains.

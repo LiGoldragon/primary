@@ -1,0 +1,51 @@
+# Flow 01a03eda
+
+The living asked this flow to continue Orchestrate realization from `01a03d6e`, use `ac1e9ec8` to understand Datom syntax, and show a correct proposal for the intended Orchestrate changes.
+
+Remembered: `01a03d6e` — depth 2. The living had ruled the imperative interface direction, `Lock` rather than `PathLock`, reusable typed `Observe`, Flow attribution, flow-tree release duty, executable-owned Nexus defaults, and an ordinary skill without meta material. Exact wire projection, Lock identity, observation disclosure, Flow-ID allocation, and lifecycle forfeiture remained unapproved.
+
+Remembered: `ac1e9ec8` — depth 2. Datom is interpreted against an expected type; enum roots begin at their variant, typed maps omit a `Map` head, and the later selected map delimiter is guillemets. Positional map entries and the universal claim that every Head is a variant were not separately ruled. Current Protos/Datom do not yet realize the newer syntax.
+
+Remembered: `ac1e9ec8` — depth 3 for String syntax. The final direct ruling makes curly quotes the default plain-String delimiter and reserves parentheses for a structured String still to be designed, currently designated Meaning. It supersedes the older parenthesis-as-default plain-String design. Bare String remains expected-type dependent, and ordinary String blocks remain opaque to load-bearing interior delimiters. Exact Meaning grammar, curly-quote escape/multiline rules, and the textual shape of a String-carrying enum variant remain unruled.
+
+Current reality was witnessed: Signal revision 1.4, the Orchestrate store and Dotos CLI, Curriculum guidance, and Home's live check all still embody `PathLock`; current Datom synthesizes root wrappers and lacks guillemet maps.
+
+The proposed clean break is recorded in `reports/orchestrateChangesProposal.md`. It now uses generator-valid authored Ethos rather than a pseudo type tree: `Interface 0.2.0`, ordinary channel binding `1/5`, named products and nested sums for `Observe -> Locks -> Current`. It separates ruled direction from proposed contract decisions and from Datom questions that must be proved before exact command text is published.
+
+The living then authorized a worker to modify Datom to the latest vision. The realization landed and was pushed: Protos `1e0890175319` v0.7.0 adds headless guillemet structural blocks; Datom `bc16426703fa` v0.3.0 adds guillemet maps without `Map.` and type-directed roots. The behavioral fixture failed first with a shape fault, then local suites and both remote-builder Nix gates passed. The unruled positional-pair map grammar was not invented. Both write reservations were released and repositories reported clean.
+
+The living approved the shown Ethos proposal for implementation and deployment, then corrected the sequence: mine the Datom design session for the newer String delimiter direction, modify Datom again, advance independent work in parallel, and re-adapt Orchestrate to the landed Datom surface. The reconstructed psyche records are in `vision/datomSyntax.md` and `vision/orchestrateRealization.md`.
+
+The corrected String surface landed and was pushed as Datom `064829e2aef30854e8fb91c4a55f0bdde8a98a0b`, v0.4.0. Curly quotes are canonical for delimited plain String; parenthesized plain String is rejected; expected-type bare String and String-block opacity remain. A four-failure remote red witness preceded the implementation, and the final remote Nix gate passed. Embedded closing-curly-quote representation remains unruled and untouched.
+
+Parallel Orchestrate realization exposed a new design dependency: the approved Ethos uses `LockId.Integer`, but Datom Integer syntax was explicitly unruled and no Integer codec exists. The living has been shown a proposal for canonical bare decimal Integer syntax. Signal-frame's obsolete Dotos payload-head restriction is being removed independently.
+
+Independent producers landed while awaiting the Integer ruling: signal-frame `000d86684d91ab6b38dd0bce7a5d8bae6db7b147` v0.4.0 removes the Dotos-only duplicate reply-payload restriction; ethos-monolith `7c6299aacef54cd9d3b03177af33d61ba4fcecf5` v0.5.1 aligns Protos and `22cde50c7a6494538902d51317accaafe55c47da` v0.5.2 generates Datom structural implementations and Operation roots. Signal-orchestrate contains the approved 0.2/1.5 contract and fixtures in a preserved dirty checkout, but is deliberately uncommitted because its only build failures are the missing `i64` Datom traits. Its reservation was released while awaiting the ruling.
+
+Orchestrate's preserved dirty checkout contains the red contract fixture, trait/store realization, atomic durable ID allocation, complete typed replies, sorted snapshot, legacy-row refusal, and a read-only zero-argument legacy-store preflight. It cannot compile or land until Signal 1/5 lands. Its reservation was released while awaiting the producer.
+
+Deployment preflight identified the smallest live target as the `li` Home environment on `ouranos` through Lojix. The consumer/pin chain and legacy-store zero-row requirement are recorded in `reports/orchestrateRealizationStatus.md`.
+
+The living approved canonical bare decimal Datom Integer syntax: `0`, `42`, `-42`, ASCII digits, no leading `+`, and no leading zero except `0`. The living also replaced `Observe -> Locks -> Current` with `Observe.Locks`; future observation kinds are sibling selections such as `Observe.ExpiredLocks`. Exact rulings are recorded in `vision/datomInteger.md` and `vision/observe.md`.
+
+The ruled substrate landed and was pushed: Protos `3b190f9fc2c2a074ceeb6ababfea89e3dd504996` v0.8.0 adds dotted-bare structural form, and Datom `4e13442be314ebfdf7bbd32d095c88a084bde42e` v0.5.0 adds strict canonical `i64` plus generic `DatomHeadedUnit`. Pre-change fixtures failed on `Observe.Locks` and the absent headed-unit realization; both full remote Nix gates passed afterward. Repositories were clean and reservations released.
+
+The generator and ordinary wire producer then landed: ethos-monolith `5fd6aa4c5cf24aff65e5b99406aa773b9cdc2640` v0.5.3 emits headed-unit operations, and signal-orchestrate `6fc8c5b7f1880b73461a4ffa863a3f8952245c0a` v0.17.0 publishes Interface 0.2.0 / channel 1/5. Fixtures prove exact `Observe.Locks`, canonical Integer rejection, and rejection of old Register/PathLock/nested-Current text. Local and terminal remote Nix gates passed; reservations were released. Nexus received the exact revision.
+
+Orchestrate Nexus 0.25 landed and was pushed at `e0f3bc5e8b963089e560383b2a4eb7d30cda1f82`. It pins the new ordinary producer while retaining the unchanged Meta frame dependency separately; the ordinary CLI is Datom-only. Local and full remote gates passed, covering live `Lock`, `Observe.Locks`, `Release`, legacy rejection, atomic conflict behavior, restart/ID non-reuse, snapshot order, legacy-store refusal, and the read-only zero-row upgrade preflight. The repository was clean and its reservation released. Curriculum and Home/CriomOS migrations began in parallel.
+
+Curriculum `75782270669e5659e87afd31bdd351affc8ed0b5` landed the four authored skill changes and passed isolated Generate/Check. Primary `e3dd83e137e2b16d377e53a060f10bdb1822392e` pins it and regenerated managed agent outputs with green Generate/Check, evaluation, and remote build proof.
+
+CriomOS-home `f92c0834ef67698f7ccf261b93afb0d1e8417afd` pins Orchestrate 0.25 and contains the repaired preflight plus exact Lock/Observe/Release service-path fixture. Its Lojix-materialized evaluation and remote Prometheus service-path gate passed. The exact Orchestrate candidate was remotely built and materialized. The live user environment remains deployment 68 at Home `b7d1bc816e47a13e1ee2de4794a063458006c9ff`, Orchestrate 0.24; no deployment mutation occurred.
+
+The actual legacy-store preflight could not acquire the database while the active 0.24 Nexus holds it. The living has been shown a proposed safe cutover: after all gates, briefly stop only the old user Nexus, run the preflight, restart and abort on nonzero rows, or immediately activate 0.25 on zero. Explicit approval is open.
+
+CriomOS's minimal three-file pin update is preserved uncommitted in an isolated workspace. Its gate revealed an independently stale ownership assertion: the service deliberately supplies packages through `systemd.services.lojix-daemon.path`, so Nix synthesizes `PATH`, while the old check asserts an empty environment. This was previously masked by the already-stale revision assertion. Expanding the check repair is awaiting the living's authority; reservations were released.
+
+# Flow 01a03eda
+
+The proposal is not yet settled. Three subflows are recovering the prior design, witnessing Datom syntax, and inspecting current Orchestrate reality.
+
+Remembering in progress: `01a03d6e`, `ac1e9ec8`.
+
+The proposed clean break is recorded in `reports/orchestrateChangesProposal.md`. It separates ruled direction from proposed contract decisions and from Datom questions that must be proved before exact command text is published. No implementation change was authorized or made.

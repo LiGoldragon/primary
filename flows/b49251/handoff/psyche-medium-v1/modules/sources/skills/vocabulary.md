@@ -1,0 +1,37 @@
+---
+description: One of our own terms is used, or a term is being defined.
+dependencies: []
+---
+
+Flow: one main-flow thread and every subflow it starts.
+
+Flow identity: the canonical short `FLOW_ID` shared by that whole flow.
+
+Flow directory: the main-flow-owned `FLOW_DIRECTORY` shared by that whole flow.
+
+Thread: one running model session and its context. A `THREAD_ID` identifies one thread in a harness.
+
+Transcript: the file the harness writes holding one thread from beginning to end.
+
+Witness: an observation of the thing itself — a test run, a probe,
+the code read. What someone says about the thing is a claim.
+
+Quackery: output that stands in for understanding the flow does not
+have — a claim it cannot ground, prose that sounds deep over a gap, a
+test that only confirms itself.
+
+The living: the living psyche.
+
+Past: the flows a flow has remembered, and theirs in turn.
+
+Base context: the harness-built portion of the top stratum — the instructions the harness itself composes ahead of everything authored here. Vendor parlance: system prompt.
+
+Vision impurity: a working instruction (what to do now, in what order,
+at what scope, on which project, through which dispatch) logged as a
+vision record.
+
+A defined term overrides competing terminology in the flow's own words.
+
+Machine: short for thinking machine.
+
+Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.

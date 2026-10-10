@@ -1,0 +1,55 @@
+copying path '/nix/store/yj1wxm9hh8610iyzqnz75kvs6xl8j3my-source' from 'http://nix.prometheus.goldragon.criome'...
+warning: file 'nar/yj1wxm9hh8610iyzqnz75kvs6xl8j3my-1bzg89hgcr2gvza35vqi4n1jbb2gz1yg4b8p7gry4ihsj2mnnbap.nar' does not exist in binary cache 'http://nix.prometheus.goldragon.criome'
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+flow-nexus answering on both sockets (pid 2515689)
+flow-nexus serves /tmp/fh-l6hZFqq3/run/flow-next/flow/flow.sock; the pane's runtime directory is /tmp/fh-l6hZFqq3/run
+register: FlowRegistered.{ c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 Claude Unavailable Available.{ flow-hook-sandbox sandbox-claude fh:p1 fh-terminal-1 } { c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 unavailable } Active }
+green: register answers FlowRegistered.{ c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 Claude Unavailable Available.{ flow-hook-sandbox sandbox-claude fh:p1 fh-terminal-1 } { c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 unavailable } Active }
+events-before-run: EventsRead.{ c2f7cf [] }
+green: events-before-run answers EventsRead.{ c2f7cf [] }
+unknown-report: Refused.UnknownFlow.0a0a0a
+green: unknown-report answers Refused.UnknownFlow.0a0a0a
+flow-claude-hook: running claude-code-2.1.228 (haiku) as flow c2f7cf, session 02762669-115e-45bf-984c-74774d9e6e18, on /tmp/fh-l6hZFqq3
+run: exit 0, session 02762669-115e-45bf-984c-74774d9e6e18
+--- hook inputs (event, tool)
+{"hook_event_name":"SessionStart","tool_name":null}
+{"hook_event_name":"PostToolUse","tool_name":"Bash"}
+{"hook_event_name":"Stop","tool_name":null}
+--- hook calls (event, datom, flow exit, flow output)
+SessionStart	Report.{ «c2f7cf» Started }	0	Reported
+PostToolUse	Report.{ «c2f7cf» ToolUsed.«Bash» }	0	Reported
+Stop	Report.{ «c2f7cf» Stopped }	0	Reported
+green: the run exited 0
+green: the run's session is the flow's session
+green: the hook fired on SessionStart
+green: the hook fired on PostToolUse
+green: the hook fired on Stop
+green: SessionStart: Report Started answered Reported
+green: PostToolUse: Report ToolUsed.Bash answered Reported
+green: Stop: Report Stopped answered Reported
+ReadEvents.c2f7cf after the run: EventsRead.{ c2f7cf [ Started ToolUsed.Bash Stopped ] }
+green: the Nexus holds Started first, ToolUsed.Bash, Stopped last for c2f7cf
+unknown-still-unknown: ReadEventsRejected.UnknownFlow
+green: unknown-still-unknown answers ReadEventsRejected.UnknownFlow
+--- step 7: a flow Flow launches
+start: StartRejected.BindingRefused
+green: the Start stops where the stand-in stops (Title): StartRejected.BindingRefused
+launched: session aa4ca62b-1baf-5207-96d8-0020546b18a8, flow aa4ca6
+green: Flow passed a --session-id
+green: the flow-id claim of aa4ca6 names that session
+--- the line Flow typed at the pane's prompt
+unset CLAUDE_CODE_CHILD_SESSION CLAUDE_JOB_DIR CLAUDE_CODE_SESSION_ID CLAUDE_CODE_SESSION_KIND FLOW_ID && export FLOW_SOCKET='/tmp/fh-l6hZFqq3/run/flow-next/flow/flow.sock' && export FLOW_ID=aa4ca6 && printf 'FLOW_CLAUDE_ENV_READY_%s\n' 5583b2972306a98f78682842ddf67c0a6ae006cbcfad1c41dae71477066c6e96
+harness: exit 0, FLOW_ID aa4ca6, session aa4ca62b-1baf-5207-96d8-0020546b18a8
+green: the harness Flow launched exited 0
+green: the harness's FLOW_ID is the FlowId Flow reserved (aa4ca6), not the inherited 0c0c0c
+harness: FLOW_SOCKET /tmp/fh-l6hZFqq3/run/flow-next/flow/flow.sock, XDG_RUNTIME_DIR /tmp/fh-l6hZFqq3/run
+green: the harness's runtime directory is the pane's (/tmp/fh-l6hZFqq3/run), not the Nexus's
+green: the default stable socket /tmp/fh-l6hZFqq3/run/flow/flow.sock does not exist
+green: the harness's FLOW_SOCKET is the socket of the Nexus that launched it (/tmp/fh-l6hZFqq3/run/flow-next/flow/flow.sock)
+green: the harness ran as the session Flow chose
+ReadEvents.aa4ca6 after the launched run: EventsRead.{ aa4ca6 [ Started ToolUsed.Bash Stopped ] }
+green: the Nexus holds Started first, ToolUsed.Bash, Stopped last for the launched aa4ca6
+List after the launch: Listed.[ { aa4ca6 aa4ca62b-1baf-5207-96d8-0020546b18a8 Claude Unavailable Available.{ flow-hook-sandbox claude-d1766ff3e489d53a9d17d27f fhw1:p1 fhw-terminal-1 } { 000000 sandbox-session sandbox-turn } Active } { c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 Claude Unavailable Available.{ flow-hook-sandbox sandbox-claude fh:p1 fh-terminal-1 } { c2f7cf 02762669-115e-45bf-984c-74774d9e6e18 unavailable } Active } ]
+flow-nexus stopped on TERM
+flow-claude-hook: green

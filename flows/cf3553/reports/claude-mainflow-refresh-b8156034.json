@@ -1,0 +1,11 @@
+{
+  "status": "ready",
+  "session_id": "b8156034-b845-43c4-890a-49a73d806ee1",
+  "flow_id": "b81560",
+  "model": "claude-opus-4-6[1m]",
+  "effort": "medium",
+  "bootstrap": {"skills": 20, "tool_use": 0, "source_records": 107, "source_bytes": 214545, "payload_bytes": 229569, "payload_hash": "a891af3e9de7964b7fb4a696ca8a37ce9b5002de9d314a4ad5132b101688988b"},
+  "endpoint": {"session": "messaging-build", "workspace": "wD", "pane": "wD:p1", "terminal": "term_65bc6f440281c22", "agent": "opus-of-b05237"},
+  "messaging_ack": "BENIGN_HM_ACK b81560 UUID=b8156034-b845-43c4-890a-49a73d806ee1 ENDPOINT=wD:p1/term_65bc6f440281c22",
+  "handoff": {"old_ack": "OLD_B05237_HANDOFF_ACK", "successor_ack": "SUCCESSOR_B81560_HANDOFF_ACK", "predecessor_1ac573_preserved": true}
+}

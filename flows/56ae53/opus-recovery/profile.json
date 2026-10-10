@@ -1,0 +1,96 @@
+{
+  "name": "psyche-opus-recovery-e167d8",
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "role": "Psyche Medium",
+  "fresh": false,
+  "predecessor": "e167d8",
+  "ancestor": "e167d8",
+  "remember": {
+    "flow": "e167d8",
+    "depth": 1
+  },
+  "titlePlan": {
+    "aspect": "Psyche",
+    "power": "Medium",
+    "model": "Opus",
+    "afterOwnVerifiedFlowId": true,
+    "template": "Psyche Opus <FLOW_ID>"
+  },
+  "sourceAudit": {
+    "reviewedAt": "2026-09-26T16:55:00Z",
+    "newestApplicableVision": [
+      "flows/e167d8/vision/psycheMessages.md",
+      "flows/e167d8/vision/independentReview.md",
+      "flows/56ae53/vision/model-flow-emergency.md"
+    ]
+  },
+  "skills": [
+    "spirit",
+    "main-flow",
+    "testing-flow-titles",
+    "refresh",
+    "psyche",
+    "psyche-interraction",
+    "psyche-acquisition",
+    "psyche-distillation",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "flow-evidence",
+    "prompt-crafting",
+    "claude-harness",
+    "herdr",
+    "messaging",
+    "file-editing",
+    "operational-final-response"
+  ],
+  "sources": [
+    {
+      "path": "flows/56ae53/opus-recovery/predecessor-handoff.md",
+      "sha256": "63e50fa689dc6c96d943343586e94ddd366082b14ba2d1c07cc87f0733a83f10"
+    },
+    {
+      "path": "flows/e167d8/reports/opus-successor-of-e167d8-launch.md",
+      "sha256": "e0483082d71c22b147be2fdf5ab9ab0ab33b383e5230f0ca03117b35755cb11e"
+    },
+    {
+      "path": "flows/e167d8/summary.md",
+      "sha256": "980c87fdc2340943d8d6acda5b0c4339c36f2d1f908adb9462242f63632082ba"
+    },
+    {
+      "path": "flows/e167d8/vision/psycheMessages.md",
+      "sha256": "1156a6dfaaf4270f7a89ede7d5a5aab32bd59fb830dac16bcd2cf51e6521ba07"
+    },
+    {
+      "path": "flows/e167d8/vision/independentReview.md",
+      "sha256": "7e9bb9763bab8836b369c5909359ba9cb902f601f35d964b9c706a441281f842"
+    },
+    {
+      "path": "flows/93ba9f/log.md",
+      "sha256": "89c16d146e3df5928419ab5efff5319934c469188bd8016bd6fcc50229115577"
+    },
+    {
+      "path": "flows/b7ba00/receipts/readiness-announce.md",
+      "sha256": "a3253d14c56f7aa4997f60098b59aed41f2444577ba5aa6041242fbefcfc25b9"
+    },
+    {
+      "path": "flows/56ae53/opus-recovery/log-snapshot-pre-156b517b.md",
+      "sha256": "8c85b86cd9c0e5083cc0ba169dff4b6e68c7d073e378983492d4e12f653af046"
+    },
+    {
+      "path": "flows/56ae53/vision/model-flow-emergency.md",
+      "sha256": "e7041b49c9fde37c3b4a8d1729bb2ea403acbd528b7fb2aef39033b1421c2cce"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-opus-5-5",
+      "family": "opus",
+      "source": "config/model-display-names.json"
+    }
+  ]
+}

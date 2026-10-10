@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "promptPath": "flows/6fb948/fable-restart-20260922/p9-first-substantive-prompt.md",
+  "promptSha256": "dd8d829b77ac2ff918867e326c491cf58b04bf577ea7433fd86067633695a8ff",
+  "sources": [
+    {
+      "path": "flows/753e69/psyche-high-native/refresh-payload-1b8ac0.md",
+      "sha256": "f5b7fa1021d8e5768ac384b1bca223c85e00980ec58b8b38a0eddaac602260f9",
+      "scope": "full file"
+    },
+    {
+      "path": "flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md",
+      "sha256": "f267a223aeb11a5ddc0fb318873edd9dc8b60577dc528123ac24fc5ed6aba3a7",
+      "scope": "full file"
+    },
+    {
+      "path": "flows/1b8ac0/log.md",
+      "sha256": "a1d311731831f5065df0b76df0ea871b8343e22a6edb5a1a8219d0e07b7c0ac9",
+      "scope": "Addendum 2 heading through EOF"
+    }
+  ]
+}

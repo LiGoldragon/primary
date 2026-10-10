@@ -1,0 +1,23 @@
+{
+  "kind": "ExactNativeAssistantTextCapture",
+  "flowId": "1b8ac0",
+  "nativeSessionId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/1b8ac00b-6c92-47d2-9d50-47d9428c0956.jsonl",
+  "jsonlLine": 2316,
+  "recordType": "assistant",
+  "recordSessionId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+  "messageRole": "assistant",
+  "messageModel": "claude-fable-5-1",
+  "recordTimestamp": "2026-09-22T14:33:02.033Z",
+  "recordSha256": "4f2061f9d0c091effd60302de6dd39b0437a0c3079440aa4638006cd40c6468f",
+  "recordByteLength": 7336,
+  "decodedBlockType": "text",
+  "decodedTextSha256": "f267a223aeb11a5ddc0fb318873edd9dc8b60577dc528123ac24fc5ed6aba3a7",
+  "decodedTextByteLength": 5944,
+  "decodedTextEndsWithNewline": false,
+  "exactTitleLine": "# Refresh Payload Addendum 1 — PsycheHigh 1b8ac0",
+  "capturedPath": "/home/li/primary/flows/03e825/refresh-round-20260922/psyche-high/addendum-1.md",
+  "highLogPointerRevision": "949c07bf",
+  "highLogPointerPath": "flows/1b8ac0/log.md",
+  "method": "UTF-8 bytes of parsed assistant message.content[0].text; no wrapper, normalization, or added newline"
+}

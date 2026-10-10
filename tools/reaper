@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Reap settled Herder agent panes and their Hacky Messenger registrations.
+# The default is deliberately read-only; pass --execute to mutate Herder.
+
+usage() {
+    cat <<'EOF'
+Usage: reaper [--dry-run]
+
+List every pane in every running Herder session, show its agent status and
+Hacky Messenger registrations, and report them. It never closes panes or
+deletes registrations: operational reaping requires an explicit revalidated
+route and `hm.py deregister` with every expected identity field.
+EOF
+}
+
+mode=dry-run
+case "${1-}" in
+    "") ;;
+    --dry-run) mode=dry-run ;;
+    --execute) echo 'reaper: broad --execute is unsafe; use explicit hm.py deregister after live route revalidation' >&2; exit 2 ;;
+    --help|-h) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+esac
+if (($# > 1)); then
+    usage >&2
+    exit 2
+fi
+
+registry=${HM_REGISTRY:-${HOME:?}/.local/state/hacky-messenger}
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/reaper.XXXXXX")
+trap 'rm -rf "$tmpdir"' EXIT
+
+herdr_json() {
+    herdr "$@" | jq -c '.result // .' 
+}
+
+printf 'MODE\t%s\n' "$mode"
+printf 'SESSION\tPANE\tAGENT\tSTATUS\tREGISTRATION\tACTION\n'
+
+mapfile -t sessions < <(herdr session list | awk 'NR > 1 && $2 == "running" { print $1 }')
+for session in "${sessions[@]}"; do
+    panes_json=$(herdr_json --session "$session" pane list) || {
+        echo "reaper: cannot list panes in session $session; nothing was changed" >&2
+        exit 1
+    }
+    agents_json=$(herdr_json --session "$session" agent list) || {
+        echo "reaper: cannot list agents in session $session; nothing was changed" >&2
+        exit 1
+    }
+
+    jq -c --arg session "$session" --argjson agents "$(jq -c '.agents // []' <<<"$agents_json")" \
+        '.panes[]? as $pane | ([$agents[]? | select((.pane_id // .id) == ($pane.pane_id // $pane.id))][0] // {}) as $agent |
+         {session:$session, pane_id:($pane.pane_id // $pane.id), agent:($agent.name // "-"), status:($agent.agent_status // "no-agent")}' \
+        <<<"$panes_json" >"$tmpdir/panes"
+
+    while IFS= read -r pane; do
+        [[ -n "$pane" ]] || continue
+        session_name=$(jq -r '.session' <<<"$pane")
+        pane_id=$(jq -r '.pane_id' <<<"$pane")
+        agent_name=$(jq -r '.agent' <<<"$pane")
+        status=$(jq -r '.status' <<<"$pane")
+        registrations=()
+        if [[ -d "$registry" ]]; then
+            shopt -s nullglob
+            for record_path in "$registry"/*.json; do
+                if jq -e --arg s "$session_name" --arg p "$pane_id" \
+                    '(.session == $s and .pane_id == $p)' "$record_path" >/dev/null 2>&1; then
+                    registrations+=("$(basename "$record_path" .json)")
+                fi
+            done
+            shopt -u nullglob
+        fi
+        registration=-
+        ((${#registrations[@]})) && registration=$(IFS=,; echo "${registrations[*]}")
+
+        action=requires-explicit-route-audit
+        if [[ "$status" == working || "$status" == blocked || "$status" == unknown || "$status" == no-agent ]]; then action=keep-active-or-uncertain; fi
+        printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$session_name" "$pane_id" "$agent_name" "$status" "$registration" "$action"
+    done <"$tmpdir/panes"
+done

@@ -1,0 +1,30 @@
+1ea402d0eb2e09aa407935f0cfbf3cfac102588c
+li 2026-10-03 09:58:10.000 -06:00
+
+flow-test: remove private Claude credential on teardown
+
+diff --git a/packages/flow-claude-hook.nix b/packages/flow-claude-hook.nix
+index f431bfa9e1..9db78a7477 100644
+--- a/packages/flow-claude-hook.nix
++++ b/packages/flow-claude-hook.nix
+@@ -109,8 +109,9 @@
+     flowNexusPid=
+     interactiveHerdrPid=
+     interactiveSession=
++    privateCredentials=
+     keepFailureRoot=1
+-    trap 'if [ -n "$flowNexusPid" ]; then kill "$flowNexusPid" 2>/dev/null || true; wait "$flowNexusPid" 2>/dev/null || true; fi; if [ -n "$interactiveHerdrPid" ]; then kill "$interactiveHerdrPid" 2>/dev/null || true; fi; if [ -n "$interactiveSession" ]; then ${herdrCli} --session "$interactiveSession" server stop 2>/dev/null || true; fi; if [ "$keepFailureRoot" = 0 ]; then rm -rf "$root"; else chmod 700 "$root"; echo "flow-claude-hook: retained private failure root $root" >&2; fi' EXIT
++    trap 'if [ -n "$flowNexusPid" ]; then kill "$flowNexusPid" 2>/dev/null || true; wait "$flowNexusPid" 2>/dev/null || true; fi; if [ -n "$interactiveHerdrPid" ]; then kill "$interactiveHerdrPid" 2>/dev/null || true; fi; if [ -n "$interactiveSession" ]; then ${herdrCli} --session "$interactiveSession" server stop 2>/dev/null || true; fi; case "$privateCredentials" in "$root/home/.claude/.credentials.json") rm -f -- "$privateCredentials" ;; *) echo "flow-claude-hook: refused unexpected credential teardown path" >&2 ;; esac; if [ "$keepFailureRoot" = 0 ]; then rm -rf "$root"; else chmod 700 "$root"; echo "flow-claude-hook: retained private failure root $root" >&2; fi' EXIT
+ 
+     # The caller's own pane must not name the sandbox's processes.
+     unset FLOW_SOCKET FLOW_META_SOCKET FLOW_ID HERDR_ENV HERDR_SESSION HERDR_PANE_ID HERDR_TAB_ID \
+@@ -121,7 +122,8 @@
+     mkdir -p "$HOME/.claude" "$HOME/primary/flows" "$XDG_STATE_HOME" "$XDG_CONFIG_HOME" \
+       "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$TMPDIR" "$FLOW_HOOK_WITNESS" "$root/work"
+     chmod 700 "$HOME" "$HOME/.claude"
+-    install -m 600 "$livingCredentials" "$HOME/${claude.credentials}"
++    privateCredentials="$HOME/${claude.credentials}"
++    install -m 600 "$livingCredentials" "$privateCredentials"
+     mkdir -p "$HOME/.claude/skills/trial-contact-discipline"
+ 
+     # The interactive witness owns a separate Herdr server and configuration.

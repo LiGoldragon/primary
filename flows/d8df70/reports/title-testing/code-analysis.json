@@ -1,0 +1,80 @@
+{
+  "tool": "/home/li/primary/tools/claude-native-seat-refresh.py",
+  "analysis_date": "2026-09-23",
+  "acceptance_points": {
+    "remote_title_format": {
+      "requirement": "<Aspect> <Power> <FLOW_ID>",
+      "status": "\u2713 Verified in code",
+      "evidence": [
+        "finalize_title function creates title as f'{aspect} {power} {flow_id}'"
+      ]
+    },
+    "canonical_powers": {
+      "requirement": "High, Medium, Low, Ultra Low (not Astra/Sol as power)",
+      "status": "\u2713 Verified in code",
+      "evidence": [
+        "canonical_role regex: r'(Psyche|Mind|Field) (High|Medium|Low|Ultra Low)'"
+      ]
+    },
+    "own_flow_id": {
+      "requirement": "Use seat's own claimed Flow ID",
+      "status": "\u2713 Verified in code",
+      "evidence": [
+        "finalize_title validates flow_id matches manifest via verify_claim_marker"
+      ]
+    },
+    "write_and_readback": {
+      "requirement": "Must write title and read back after",
+      "status": "\u2713 Verified in code",
+      "evidence": [
+        "finalize_title calls wait_for_title to verify readback"
+      ]
+    },
+    "readback_independent": {
+      "requirement": "Read back independently from pane object",
+      "status": "\u2713 Verified in code",
+      "evidence": [
+        "observed_title reads from transcript custom-title events, independent of pane state"
+      ]
+    },
+    "negative_coverage": {
+      "requirement": "Handle wrong aspect, power, Flow ID, failures, rollback",
+      "status": "\u26a0 Requires live testing",
+      "evidence": [
+        "Code has error handling and rollback logic"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "category": "Provisional Titles",
+      "finding": "Correctly formats with (claim pending) marker",
+      "severity": "info"
+    },
+    {
+      "category": "Title Readback",
+      "finding": "Independent readback from transcript using custom-title events",
+      "severity": "info"
+    },
+    {
+      "category": "Title Write Verification",
+      "finding": "Has timeout and polling mechanism for title confirmation",
+      "severity": "info"
+    },
+    {
+      "category": "Finalization",
+      "finding": "Complete write-verify-rollback cycle for title changes",
+      "severity": "info"
+    },
+    {
+      "category": "Flow ID Validation",
+      "finding": "Enforces 6-character hex format",
+      "severity": "info"
+    },
+    {
+      "category": "Astra/Sol Blocking",
+      "finding": "Correctly blocks Astra/Sol as power values in new roles",
+      "severity": "info"
+    }
+  ]
+}

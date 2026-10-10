@@ -1,0 +1,9 @@
+# Summary: Psyche Fable 9fb0ad (2026-10-03)
+
+Launched 12:46Z from f1c841's handover before his usage reset; briefed by an Opus subflow on the night's reports and his words on ethos and nexus. Registered, retired f1c841 (after its deployment subflow landed its state), verified 91ea9f/3ec648 gone; 5578cc reaped d86ec0/01e496.
+
+Subflows, in order: briefing; registration/retirement; deployment-state witness; blocked-commands verbatim; book «The commands the harnesses block»; reaping; build watcher; three lane publishes; deployment continuation (stopped at the messenger guard, rolled back, orchestrate restarted once); book «The deployment stopped at the first activation»; dea0ba design reading and two verification passes; guard-fix preparation (four branches, four generations built, activated nowhere); books «Two meanings for Flow», «The guard fix, as built», «Two more meanings for Flow» (second version), «The day, in one view», «Questions on the Ethos library», «Allowance, monitoring, and reaching you», «The word id, as a kind»; acquisitions on logging, flow lifecycle, speech, word ids; the landing of his two approved prompt/skill edits (log-everything removed; main flow sends its own messages) and the withdrawal of a third; decisions gathering (21 items) handed to Mind Astra; comment readers.
+
+Lessons: a skill line with no reason stated was followed to his cost (logging every question; a subflow per one-line send) — he removed the first and approved the second fix; his "no" to a question was misread as approval — never again; machine messages flooded this seat until he ordered the filter; a book subflow reused a scratch path and overwrote an earlier artifact (skill fixed); phone rendering failed three ways (overflow, inline-code overlap, code shrunk) — fix-forever with Mind; an unwitnessed claim about Codex ids was made to him and is being witnessed at handover.
+
+Unfinished: see handover.md. Beads: none opened.

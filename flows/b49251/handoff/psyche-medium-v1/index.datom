@@ -1,0 +1,235 @@
+; The psyche-medium base index. Read by compose.py; written by assemble.py.
+; Schema: the f55ec8 model and flow anatomy, with Role extended by Psyche.Effort.
+{
+ {
+  [
+   { «claude-fable-5-1[1m]» «Fable, the high-effort psyche seat» Claude Wise Million { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { «claude-opus-4-7[1m]» «the old Opus, the medium-effort psyche seat» Claude Wise Million { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { «claude-sonnet-5» «Sonnet 5, the low-effort psyche seat» Claude Doer Standard { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { «astra» «Astra, the high-effort psyche seat on Codex» Codex Martian Standard { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { «sol» «Sol, the no-consideration seat on Codex» Codex Doer Standard { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+  ]
+  [
+   { Psyche.High «claude-fable-5-1[1m]» «Fable on high power on the cloud side» { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { Psyche.Medium «claude-opus-4-7[1m]» «Medium is old Opus» { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { Psyche.Low «claude-sonnet-5» «Low level is going to be Sonnet; Sonnet 5 for now» { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { Psyche.High «astra» «The same stack on Codex is Astra for the high power» { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+   { Psyche.Low «sol» «no consideration with Sol» { «flows/b49251/vision/psycheFlows.md» «The psyche stack on Claude» } }
+  ] }
+ [ ; the modules
+   { «header/authority» «modules/header/authority.md» 1d7436a192fc461184b210ba346aa1759e523bc6e26e4514eae513481eab0b2f Bare }
+   { «header/identity» «modules/header/identity.md» 853dec8740f1e59288b27e5bf0a5b85e7671284f8ef7740e3c617467cf83c5bd Bare }
+   { «header/harness-rules» «modules/header/harness-rules.md» 46cec9ab79fb1b4e8112b1f733c671096fe2bcc63845b4f3f9d99c5c9f69ba7a Bare }
+   { «header/frozen-heading» «modules/header/frozen-heading.md» 2bb9e7e9f38e0cf2e93f2febdfe767ef857572aa5d7681d7805f478d2e01d12d Bare }
+   { «sources/skills/behavior.md» «modules/sources/skills/behavior.md» 63a833a8a4b57675379ef44276e7ecad5228f5193c0a5d1513852e06f97bfdcb Skill.{ «behavior» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/behavior.md» } }
+   { «sources/skills/claude-harness.md» «modules/sources/skills/claude-harness.md» b9acbbf8764f1beb20a566a4b0fde1eff4b2898d80526b21acca7890aaebd183 Skill.{ «claude-harness» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/claude-harness.md» } }
+   { «sources/skills/correction.md» «modules/sources/skills/correction.md» 47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1 Skill.{ «correction» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/correction.md» } }
+   { «sources/skills/edit-coordination.md» «modules/sources/skills/edit-coordination.md» 54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32 Skill.{ «edit-coordination» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/edit-coordination.md» } }
+   { «sources/skills/main-flow.md» «modules/sources/skills/main-flow.md» 2ad5056c70e773ba590b2eed54e668777b5a57a81097d46dd64487d66e5651b2 Skill.{ «main-flow» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/main-flow.md» } }
+   { «sources/skills/nexus.md» «modules/sources/skills/nexus.md» ab3abc39afa3ce2bb3c3b427aed1380518835cc68d0c40f905f931567cc92f27 Skill.{ «nexus» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/nexus.md» } }
+   { «sources/skills/prompt-crafting.md» «modules/sources/skills/prompt-crafting.md» f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430 Skill.{ «prompt-crafting» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/prompt-crafting.md» } }
+   { «sources/skills/psyche-interraction.md» «modules/sources/skills/psyche-interraction.md» efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257 Skill.{ «psyche-interraction» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/psyche-interraction.md» } }
+   { «sources/skills/psyche.md» «modules/sources/skills/psyche.md» 2db94dd78438ac3c919061ffcfa15342d5dd370bb35b41727319642bbcb4d93e Skill.{ «psyche» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/psyche.md» } }
+   { «sources/skills/spirit.md» «modules/sources/skills/spirit.md» 4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596 Skill.{ «spirit» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/spirit.md» } }
+   { «sources/skills/subflow.md» «modules/sources/skills/subflow.md» 4348197be0e88cd3aacd4fa073ded2d2bf7738d193921da2128e2ef235f47441 Skill.{ «subflow» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/subflow.md» } }
+   { «sources/skills/testing.md» «modules/sources/skills/testing.md» dd02b69a43a3448111910c046f597f068ee88d459b904c04f1b7eb22b65dc6a2 Skill.{ «testing» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/testing.md» } }
+   { «sources/skills/vocabulary.md» «modules/sources/skills/vocabulary.md» 19e2341cc7abbc2ee53fc1b2baacbfab8bc09f4a852c6016c165ce60a515803c Skill.{ «vocabulary» «/home/li/wt/github.com/LiGoldragon/Curriculum/efa157-branches/skills/vocabulary.md» } }
+   { «sources/spirit/spirit.md» «modules/sources/spirit/spirit.md» 9dba681dc4d636fc8122fc608fc714bc8a6673d1f08fc5cde64706ec27135a49 Source.«sources/spirit/spirit.md» }
+   { «sources/intent/anatomy.md» «modules/sources/intent/anatomy.md» 7e85b973e5e94c022295f41ecdb438ce8b6854a89224e38f2681b6d4b5129ec3 Source.«sources/intent/anatomy.md» }
+   { «sources/intent/context.md» «modules/sources/intent/context.md» f3c12491f9bb235b2ddbfb91d32d4cfb6677db1911f7ddaa455dbb5021e00df7 Source.«sources/intent/context.md» }
+   { «sources/intent/conversion.md» «modules/sources/intent/conversion.md» 7ef61f1632bee7472dc2c940a1f29f79f970d50b5e26365b4fab4ec840946d4b Source.«sources/intent/conversion.md» }
+   { «sources/intent/data.md» «modules/sources/intent/data.md» 28f5b5666e3fa596ad1b395f91c2753603a77727ca00e9fd9af119ea807f9ed7 Source.«sources/intent/data.md» }
+   { «sources/intent/mandatoryTraits.md» «modules/sources/intent/mandatoryTraits.md» 7de34d9471ae067570802b12d7d158fb3771c2e1e303aed3fef4cd1cebed9f18 Source.«sources/intent/mandatoryTraits.md» }
+   { «sources/intent/protosParsing.md» «modules/sources/intent/protosParsing.md» a43b4d1f4ed960e6eacb1a06b55fb500cbff0eae1634739b62b9d75e70c09bb0 Source.«sources/intent/protosParsing.md» }
+   { «sources/Vision/archive-ethosMonolith.md» «modules/sources/Vision/archive-ethosMonolith.md» 9970b110f78e7ace24c17112cc023cf38350babb2f8d3c874e63ee37b47b17c7 Source.«sources/Vision/archive-ethosMonolith.md» }
+   { «sources/Vision/datom.md» «modules/sources/Vision/datom.md» 7a097b0ed047c205aa12a31b8f8fcf9e8bf8dca88d98bbf917eccaffcc9f3003 Source.«sources/Vision/datom.md» }
+   { «sources/Vision/distillation.md» «modules/sources/Vision/distillation.md» d917dd9d7b538e0466abcc426ad6d1e3d7334407234436fec25dd33924cd47a9 Source.«sources/Vision/distillation.md» }
+   { «sources/Vision/ethos.md» «modules/sources/Vision/ethos.md» 4d47f4451825209acf53de9354b105eeacbf1f9d49e44dd25919bf4df4ea4f91 Source.«sources/Vision/ethos.md» }
+   { «sources/Vision/flowNexus.md» «modules/sources/Vision/flowNexus.md» 68e1312263c6a29d2ffe70d447bd74415b556defe219f3362c1b6d4736ec74bf Source.«sources/Vision/flowNexus.md» }
+   { «sources/Vision/highLevelView.md» «modules/sources/Vision/highLevelView.md» c76eda3c7ff903db90ce95a618c4708d8a714994f64a259c0c4d95afcf31b4a8 Source.«sources/Vision/highLevelView.md» }
+   { «sources/Vision/nexus.md» «modules/sources/Vision/nexus.md» 8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676 Source.«sources/Vision/nexus.md» }
+   { «sources/Vision/orchestrate.md» «modules/sources/Vision/orchestrate.md» 9cced928c8bdc0e9ab58ca50053d00c5a0e6081f599d240ac927b97ba29f93d9 Source.«sources/Vision/orchestrate.md» }
+   { «sources/Vision/protos.md» «modules/sources/Vision/protos.md» 8cc31f5aa370a49278541f930a5bb498060400ccfabcf8355995722d306f6f68 Source.«sources/Vision/protos.md» }
+   { «sources/Vision/remembering.md» «modules/sources/Vision/remembering.md» 71e721d3de29a6810e73f851e439341ec39771d8f161579a6d177c710f43baa3 Source.«sources/Vision/remembering.md» }
+   { «sources/Vision/sema.md» «modules/sources/Vision/sema.md» c673c38efc010080907d016d59ba6d461995621041e713a92b78ab3504ac5258 Source.«sources/Vision/sema.md» }
+   { «sources/Vision/signal.md» «modules/sources/Vision/signal.md» 26bca161c8cad99f50ed7d7d77fa4f95dbce30ca55d8b90a29d1a436ec619e90 Source.«sources/Vision/signal.md» }
+   { «sources/Vision/x11.md» «modules/sources/Vision/x11.md» 06d9b3099998bef5bacaa483e4f8e5327d23dcb2f6716f1ecbc2d5bd805d3563 Source.«sources/Vision/x11.md» }
+   { «sources/b49251/branches.md» «modules/sources/b49251/branches.md» 444ab6fec078e597a1314556f4d9b0a6e141de191c2551fb9e67b2a78d5166de Source.«sources/b49251/branches.md» }
+   { «sources/b49251/briefs/distillation-powerModes.md» «modules/sources/b49251/briefs/distillation-powerModes.md» 2a3863a66a39c7cdfbad9f8e228260899404c4ebba83ab7dee5ca186b1b2b6c1 Source.«sources/b49251/briefs/distillation-powerModes.md» }
+   { «sources/b49251/log.md» «modules/sources/b49251/log.md» f55f7795428ce4333a34a24480718af4ef0a80d4b71f2d44cc897d8381210593 Source.«sources/b49251/log.md» }
+   { «sources/b49251/reports/ideaBook-powerModes.md» «modules/sources/b49251/reports/ideaBook-powerModes.md» fb900f1eece2c0bdbae9782f90161f48e1c4082d7bc5832c15a3b5b4f30b4665 Source.«sources/b49251/reports/ideaBook-powerModes.md» }
+   { «sources/b49251/reports/ideaBookIndex.md» «modules/sources/b49251/reports/ideaBookIndex.md» 013c8e2c10df72a0813e4c1190327703eec9692573628e24678f756513ae72cf Source.«sources/b49251/reports/ideaBookIndex.md» }
+   { «sources/b49251/reports/readiness.md» «modules/sources/b49251/reports/readiness.md» 8a1e8c8ce7e18e09e881f1de048721cf8b63c1311cb8e96908d7ec4bbc6c75f8 Source.«sources/b49251/reports/readiness.md» }
+   { «sources/b49251/vision/flowLaunching.md» «modules/sources/b49251/vision/flowLaunching.md» 897ef337afe694dd7ce30cc1ce16dd2b4a1046afaeaaf8d88f6dca11abeee0c6 Source.«sources/b49251/vision/flowLaunching.md» }
+   { «sources/b49251/vision/heartbeat.md» «modules/sources/b49251/vision/heartbeat.md» a22b36fa01e98394ba1c0c7cdfe57ef7ac20552b0ab9b34096d23eed2479f075 Source.«sources/b49251/vision/heartbeat.md» }
+   { «sources/b49251/vision/layers.md» «modules/sources/b49251/vision/layers.md» de2789b87ef5ce6b77dcfad765f2ed833d8c78ec6ca4a4c9b28fda0c080a1da3 Source.«sources/b49251/vision/layers.md» }
+   { «sources/b49251/vision/nexusAnatomy.md» «modules/sources/b49251/vision/nexusAnatomy.md» 8cc0677146f5b4b96bbd811bfb3ec0fdeb17a4cb88d9102edb5b4171f163ea03 Source.«sources/b49251/vision/nexusAnatomy.md» }
+   { «sources/b49251/vision/psycheFlows.md» «modules/sources/b49251/vision/psycheFlows.md» 590b2709e7b873c219f0b684afb2db3dd5e4151184b60f069ce2382ea18c287e Source.«sources/b49251/vision/psycheFlows.md» }
+   { «sources/b49251/vision/quota.md» «modules/sources/b49251/vision/quota.md» 418a13c72beaf8bb2682aaf90e32b653203dcf970f6d69f5871287c7c187b61c Source.«sources/b49251/vision/quota.md» }
+   { «sources/b49251/vision/subflowDispatch.md» «modules/sources/b49251/vision/subflowDispatch.md» 894eb73377feff1343680d895b7396d8162747b713c84bd701d30f386065e502 Source.«sources/b49251/vision/subflowDispatch.md» }
+   { «sources/b49251/vision/systemPrompt.md» «modules/sources/b49251/vision/systemPrompt.md» f7c460ef911ecbc07d21260154a33f061d0243022cab87a99453c670f954e226 Source.«sources/b49251/vision/systemPrompt.md» }
+   { «sources/b49251/vision/visualPublication.md» «modules/sources/b49251/vision/visualPublication.md» 11f26e5ab70e5aa6b916af4ba7d2828b405d681e755e4fdd8bf59f133393a402 Source.«sources/b49251/vision/visualPublication.md» }
+   { «sources/f55ec8/reports/distillationProposal.md» «modules/sources/f55ec8/reports/distillationProposal.md» d800a9dfdb08bf757e8451d312b0107960d487051d3b0888b9972b9420d4bd01 Source.«sources/f55ec8/reports/distillationProposal.md» }
+   { «sources/f55ec8/reports/handoffToSuccessor.md» «modules/sources/f55ec8/reports/handoffToSuccessor.md» 3e28f0f3e1e7a274235471486b65bac33303c02d6889825de56d56e06a937cbb Source.«sources/f55ec8/reports/handoffToSuccessor.md» }
+   { «sources/f55ec8/reports/ideaBook-layers.md» «modules/sources/f55ec8/reports/ideaBook-layers.md» b289d55ae0ce28a335775f70a00e9db43ac5c804221529865bc27fb493544e19 Source.«sources/f55ec8/reports/ideaBook-layers.md» }
+   { «sources/f55ec8/reports/ideaBook-messaging.md» «modules/sources/f55ec8/reports/ideaBook-messaging.md» af613a0c8659834a35394011fa903cee1198159e2a6ba6be0974a7111759c5f0 Source.«sources/f55ec8/reports/ideaBook-messaging.md» }
+   { «sources/f55ec8/reports/ideaBook-messaging.opus5.md» «modules/sources/f55ec8/reports/ideaBook-messaging.opus5.md» 723eb31b7a21741e28452fba14d8e991c7550493a1ff0bc91c1b6eecf747e223 Source.«sources/f55ec8/reports/ideaBook-messaging.opus5.md» }
+   { «sources/f55ec8/reports/ideaBook-visualPublication.md» «modules/sources/f55ec8/reports/ideaBook-visualPublication.md» 0159e412b49cb632618cdce4b3db15bcca7c8dd341512a77a329b6f7eb7ed710 Source.«sources/f55ec8/reports/ideaBook-visualPublication.md» }
+   { «sources/f55ec8/reports/ideaBook-visualPublication.opus5.md» «modules/sources/f55ec8/reports/ideaBook-visualPublication.opus5.md» 2f8468ebd9b037afdfb782dacf66245489aad7fd2bdf4e4a44b9600572a3c419 Source.«sources/f55ec8/reports/ideaBook-visualPublication.opus5.md» }
+   { «sources/f55ec8/reports/messagingBrief.md» «modules/sources/f55ec8/reports/messagingBrief.md» 0584bd7ef928b00265ef87d41a4bd9323cf0b11c7a0c04c01c31f857e1cbaa56 Source.«sources/f55ec8/reports/messagingBrief.md» }
+   { «sources/f55ec8/vision/cloud.md» «modules/sources/f55ec8/vision/cloud.md» 71df66f466b83f89fd1072ddc2266ae6ec02eccc54f75359fc0032123171a8f4 Source.«sources/f55ec8/vision/cloud.md» }
+   { «sources/f55ec8/vision/flowIdentity.md» «modules/sources/f55ec8/vision/flowIdentity.md» c9faa16fd9e37ff50d21db69a6081cdb5cca5d522a4d9b110664603800bfd9e6 Source.«sources/f55ec8/vision/flowIdentity.md» }
+   { «sources/f55ec8/vision/flowRefresh.md» «modules/sources/f55ec8/vision/flowRefresh.md» ff00bebac96df321a5f76985b17b3188319a3a17d980dda1d1eac95aa1b04de8 Source.«sources/f55ec8/vision/flowRefresh.md» }
+   { «sources/f55ec8/vision/heartbeat.md» «modules/sources/f55ec8/vision/heartbeat.md» a65c7d6b1af8e7c074bffd551b458f030e00f5317e9d7661ae3ad41a2144690a Source.«sources/f55ec8/vision/heartbeat.md» }
+   { «sources/f55ec8/vision/layers.md» «modules/sources/f55ec8/vision/layers.md» bc4c0d9ed990cd76813170569685ac05c33faec999a2ec93e4a77f1bb3ed4cbc Source.«sources/f55ec8/vision/layers.md» }
+   { «sources/f55ec8/vision/modelRoles.md» «modules/sources/f55ec8/vision/modelRoles.md» cee6bfd742948e45f25e5c1d4e803df10c1b2caa6c5805f4606f89758d9cac8e Source.«sources/f55ec8/vision/modelRoles.md» }
+   { «sources/f55ec8/vision/networking.md» «modules/sources/f55ec8/vision/networking.md» 875494670ca7d221e6baa9ab365d2290438dba25f8fecfd0a4b220513ee0bf62 Source.«sources/f55ec8/vision/networking.md» }
+   { «sources/f55ec8/vision/psycheTool.md» «modules/sources/f55ec8/vision/psycheTool.md» 374083954decbaf7fb3e9cfaaae909b273ea8ee2deac9fe2fb15fd5cc1d548fa Source.«sources/f55ec8/vision/psycheTool.md» }
+   { «sources/f55ec8/vision/quota.md» «modules/sources/f55ec8/vision/quota.md» 45d8161fd36deedab4413fd62e07e924ff11b481505594e2d24ad5118c567c5d Source.«sources/f55ec8/vision/quota.md» }
+   { «sources/f55ec8/vision/visualPublication.md» «modules/sources/f55ec8/vision/visualPublication.md» cebf7cf52965a8fa2adcff53fd29af5d21a4e76c23e2931498f48aba81d6827f Source.«sources/f55ec8/vision/visualPublication.md» }
+   { «sources/efa157/ordersToCodex-2026-09-16.md» «modules/sources/efa157/ordersToCodex-2026-09-16.md» 97be71de8565523baf6c39db631702a9fa252306be28b2e12e0c40db1a1b836e Source.«sources/efa157/ordersToCodex-2026-09-16.md» }
+   { «sources/efa157/vision/authority.md» «modules/sources/efa157/vision/authority.md» e2555343149b5acaddfb187ace6a0c48ad2e9ec0edaaf4c32a5639e76acd5007 Source.«sources/efa157/vision/authority.md» }
+   { «sources/efa157/vision/branches.md» «modules/sources/efa157/vision/branches.md» 00aba2b8190081d536e776d815adc229e2f4f76f650f52a19108550212deecfd Source.«sources/efa157/vision/branches.md» }
+   { «sources/efa157/vision/callerIdentity.md» «modules/sources/efa157/vision/callerIdentity.md» 8dddddb97051248728f6d12b207b94236d08fca78369138f777c6a50d7bf7744 Source.«sources/efa157/vision/callerIdentity.md» }
+   { «sources/efa157/vision/cloud.md» «modules/sources/efa157/vision/cloud.md» d37d070f4c409639c429df2d3705e897e0bde57cce59c232d832a393dc5fccfd Source.«sources/efa157/vision/cloud.md» }
+   { «sources/efa157/vision/cloudHosts.md» «modules/sources/efa157/vision/cloudHosts.md» 2cac8870644be7b98839320abbb3a24d416940b8727f80c88d901cecdbe51e3f Source.«sources/efa157/vision/cloudHosts.md» }
+   { «sources/efa157/vision/codexAccess.md» «modules/sources/efa157/vision/codexAccess.md» 4d5dd312422bb0bcf03e812ef6acf47f5a06063d0838035e4d433fd5dfa4eaff Source.«sources/efa157/vision/codexAccess.md» }
+   { «sources/efa157/vision/deployment.md» «modules/sources/efa157/vision/deployment.md» 92c116a0d1af1d06f6f82c910dc672e0d914f17b5acb4b120672d605ff88b542 Source.«sources/efa157/vision/deployment.md» }
+   { «sources/efa157/vision/distillation.md» «modules/sources/efa157/vision/distillation.md» 488d4f97e18894b337b2c241d7e3d3740bfec53d2202202c4939ce64e2bc93b4 Source.«sources/efa157/vision/distillation.md» }
+   { «sources/efa157/vision/domains.md» «modules/sources/efa157/vision/domains.md» 2bc3ff53c66d8a153ead8ee4cdc1f23d72bfe754355e4290987b913ebc1a0f7f Source.«sources/efa157/vision/domains.md» }
+   { «sources/efa157/vision/harnessRepositories.md» «modules/sources/efa157/vision/harnessRepositories.md» 736d78a203f129d9efcd86f70f6249e199664faae6ad0f76d2422d6004cbb422 Source.«sources/efa157/vision/harnessRepositories.md» }
+   { «sources/efa157/vision/heartbeat.md» «modules/sources/efa157/vision/heartbeat.md» c4bb5d9448ea959bb5609abbbf0d412be6fbec0378ba7fae4d9413cfa06adc46 Source.«sources/efa157/vision/heartbeat.md» }
+   { «sources/efa157/vision/incrementalRuntime.md» «modules/sources/efa157/vision/incrementalRuntime.md» 5d104423d33e95bf33c76ad66edb60da2259b314603a47e3a7331dbb4d49eab7 Source.«sources/efa157/vision/incrementalRuntime.md» }
+   { «sources/efa157/vision/law.md» «modules/sources/efa157/vision/law.md» e6e7e2e3b1bdb12f714eb1010ae320a38ad1422adb4b496de52e16ddf4871701 Source.«sources/efa157/vision/law.md» }
+   { «sources/efa157/vision/layers.md» «modules/sources/efa157/vision/layers.md» 34437b8ff81eae327deccf14920c44ea56174536a06b518ab7374d2804ecf0ae Source.«sources/efa157/vision/layers.md» }
+   { «sources/efa157/vision/lojix.md» «modules/sources/efa157/vision/lojix.md» 1d5aa5ae6588ce6dc4bd22189a9c9b138cdf9dac09c13a7099ac60cfb1147862 Source.«sources/efa157/vision/lojix.md» }
+   { «sources/efa157/vision/mcp.md» «modules/sources/efa157/vision/mcp.md» 4ee2bdb445fc93987fb6c7a608c527fda5b149cfbb416f63344ac37ce520737e Source.«sources/efa157/vision/mcp.md» }
+   { «sources/efa157/vision/messages.md» «modules/sources/efa157/vision/messages.md» 06c584e025e93118b66db510352822ec0b80ae65150b2b14bdb13ad2669692f9 Source.«sources/efa157/vision/messages.md» }
+   { «sources/efa157/vision/modelRoles.md» «modules/sources/efa157/vision/modelRoles.md» 21810663aef82e27ef13549b9c2b3946a0472792cf149a4b69b49e24b6904aac Source.«sources/efa157/vision/modelRoles.md» }
+   { «sources/efa157/vision/operation.md» «modules/sources/efa157/vision/operation.md» d0c9d78679076d968a38469871199c8d71e32712cb31643dfd164d5767cc129b Source.«sources/efa157/vision/operation.md» }
+   { «sources/efa157/vision/parallelContext.md» «modules/sources/efa157/vision/parallelContext.md» 20ee4d161cc2863af696887348b06d5f7bd0163507ea8c313f3a1044a7729857 Source.«sources/efa157/vision/parallelContext.md» }
+   { «sources/efa157/vision/quota.md» «modules/sources/efa157/vision/quota.md» fecee1eab27f85c9bbf86f042f2a0f2b0fc5ea9425b4cdd4f7ef747fde2519ee Source.«sources/efa157/vision/quota.md» }
+   { «sources/efa157/vision/scripts.md» «modules/sources/efa157/vision/scripts.md» be2bfac178a9a97fb6e30e2ae60bf6f0d34f7e3e9ff1393c53a5242239a8f260 Source.«sources/efa157/vision/scripts.md» }
+   { «sources/efa157/vision/sema.md» «modules/sources/efa157/vision/sema.md» 78d5e74e814ad2fb0c716d074705af495b0cf539a2cc5c6bfcc6a773810c25c2 Source.«sources/efa157/vision/sema.md» }
+   { «sources/efa157/vision/skillApproval.md» «modules/sources/efa157/vision/skillApproval.md» 6e88c600fcd03f01680dd951d2a57098c8f9490a1f4a33ff9181166443b9f75b Source.«sources/efa157/vision/skillApproval.md» }
+   { «sources/efa157/vision/specificationVersionControl.md» «modules/sources/efa157/vision/specificationVersionControl.md» 46704821a20a90bb06244b7d67b9d84bf3c2b51e4a00e157e7c1ca4bb533e355 Source.«sources/efa157/vision/specificationVersionControl.md» }
+   { «sources/efa157/vision/subflowDispatch.md» «modules/sources/efa157/vision/subflowDispatch.md» 7e6395e3aa08bb5462cc3e54788b2af626571777e3e8a541c9c2321b16bd479d Source.«sources/efa157/vision/subflowDispatch.md» }
+   { «sources/efa157/vision/syntaxHighlighting.md» «modules/sources/efa157/vision/syntaxHighlighting.md» a6841fb36850a992f4aaf1c2505d2aeb1e05081191b6d6d810fa3056e3718074 Source.«sources/efa157/vision/syntaxHighlighting.md» }
+   { «sources/efa157/vision/systemPrompt.md» «modules/sources/efa157/vision/systemPrompt.md» bf0e1add453f8f4766bc4119c33895370b34be5f42ffdd9fde9e42c6e7c62fc6 Source.«sources/efa157/vision/systemPrompt.md» }
+   { «sources/efa157/vision/testing.md» «modules/sources/efa157/vision/testing.md» 964639a2199142b2ffa5173c112ba6edcfd62f4adf0cab61fab543e5169230e0 Source.«sources/efa157/vision/testing.md» }
+   { «sources/efa157/vision/tokenEfficiency.md» «modules/sources/efa157/vision/tokenEfficiency.md» ca4595d934c844d696a404f01bf57935b9ca967242aacb62fbfd7e5c7c24c2da Source.«sources/efa157/vision/tokenEfficiency.md» }
+   { «sources/efa157/vision/transcriptReporting.md» «modules/sources/efa157/vision/transcriptReporting.md» 5ebd0de05306ba180874daeecbe0554c1f59f7a1eb86e5346c5b0a1163ead14a Source.«sources/efa157/vision/transcriptReporting.md» }
+   { «sources/efa157/vision/versionControl.md» «modules/sources/efa157/vision/versionControl.md» d23c17a0983146137860863cc625db089b80d9c75a3e29f476856063fdb87995 Source.«sources/efa157/vision/versionControl.md» }
+ ]
+ [ ; the compositions, per role and harness
+  { Psyche.Medium Claude [
+   «header/authority»
+   «header/identity»
+   «header/harness-rules»
+   «sources/skills/behavior.md»
+   «sources/skills/claude-harness.md»
+   «sources/skills/correction.md»
+   «sources/skills/edit-coordination.md»
+   «sources/skills/main-flow.md»
+   «sources/skills/nexus.md»
+   «sources/skills/prompt-crafting.md»
+   «sources/skills/psyche-interraction.md»
+   «sources/skills/psyche.md»
+   «sources/skills/spirit.md»
+   «sources/skills/subflow.md»
+   «sources/skills/testing.md»
+   «sources/skills/vocabulary.md»
+   «sources/spirit/spirit.md»
+   «sources/intent/anatomy.md»
+   «sources/intent/context.md»
+   «sources/intent/conversion.md»
+   «sources/intent/data.md»
+   «sources/intent/mandatoryTraits.md»
+   «sources/intent/protosParsing.md»
+   «sources/Vision/archive-ethosMonolith.md»
+   «sources/Vision/datom.md»
+   «sources/Vision/distillation.md»
+   «sources/Vision/ethos.md»
+   «sources/Vision/flowNexus.md»
+   «sources/Vision/highLevelView.md»
+   «sources/Vision/nexus.md»
+   «sources/Vision/orchestrate.md»
+   «sources/Vision/protos.md»
+   «sources/Vision/remembering.md»
+   «sources/Vision/sema.md»
+   «sources/Vision/signal.md»
+   «sources/Vision/x11.md»
+   «header/frozen-heading»
+   «sources/b49251/branches.md»
+   «sources/b49251/briefs/distillation-powerModes.md»
+   «sources/b49251/log.md»
+   «sources/b49251/reports/ideaBook-powerModes.md»
+   «sources/b49251/reports/ideaBookIndex.md»
+   «sources/b49251/reports/readiness.md»
+   «sources/b49251/vision/flowLaunching.md»
+   «sources/b49251/vision/heartbeat.md»
+   «sources/b49251/vision/layers.md»
+   «sources/b49251/vision/nexusAnatomy.md»
+   «sources/b49251/vision/psycheFlows.md»
+   «sources/b49251/vision/quota.md»
+   «sources/b49251/vision/subflowDispatch.md»
+   «sources/b49251/vision/systemPrompt.md»
+   «sources/b49251/vision/visualPublication.md»
+   «sources/f55ec8/reports/distillationProposal.md»
+   «sources/f55ec8/reports/handoffToSuccessor.md»
+   «sources/f55ec8/reports/ideaBook-layers.md»
+   «sources/f55ec8/reports/ideaBook-messaging.md»
+   «sources/f55ec8/reports/ideaBook-messaging.opus5.md»
+   «sources/f55ec8/reports/ideaBook-visualPublication.md»
+   «sources/f55ec8/reports/ideaBook-visualPublication.opus5.md»
+   «sources/f55ec8/reports/messagingBrief.md»
+   «sources/f55ec8/vision/cloud.md»
+   «sources/f55ec8/vision/flowIdentity.md»
+   «sources/f55ec8/vision/flowRefresh.md»
+   «sources/f55ec8/vision/heartbeat.md»
+   «sources/f55ec8/vision/layers.md»
+   «sources/f55ec8/vision/modelRoles.md»
+   «sources/f55ec8/vision/networking.md»
+   «sources/f55ec8/vision/psycheTool.md»
+   «sources/f55ec8/vision/quota.md»
+   «sources/f55ec8/vision/visualPublication.md»
+   «sources/efa157/ordersToCodex-2026-09-16.md»
+   «sources/efa157/vision/authority.md»
+   «sources/efa157/vision/branches.md»
+   «sources/efa157/vision/callerIdentity.md»
+   «sources/efa157/vision/cloud.md»
+   «sources/efa157/vision/cloudHosts.md»
+   «sources/efa157/vision/codexAccess.md»
+   «sources/efa157/vision/deployment.md»
+   «sources/efa157/vision/distillation.md»
+   «sources/efa157/vision/domains.md»
+   «sources/efa157/vision/harnessRepositories.md»
+   «sources/efa157/vision/heartbeat.md»
+   «sources/efa157/vision/incrementalRuntime.md»
+   «sources/efa157/vision/law.md»
+   «sources/efa157/vision/layers.md»
+   «sources/efa157/vision/lojix.md»
+   «sources/efa157/vision/mcp.md»
+   «sources/efa157/vision/messages.md»
+   «sources/efa157/vision/modelRoles.md»
+   «sources/efa157/vision/operation.md»
+   «sources/efa157/vision/parallelContext.md»
+   «sources/efa157/vision/quota.md»
+   «sources/efa157/vision/scripts.md»
+   «sources/efa157/vision/sema.md»
+   «sources/efa157/vision/skillApproval.md»
+   «sources/efa157/vision/specificationVersionControl.md»
+   «sources/efa157/vision/subflowDispatch.md»
+   «sources/efa157/vision/syntaxHighlighting.md»
+   «sources/efa157/vision/systemPrompt.md»
+   «sources/efa157/vision/testing.md»
+   «sources/efa157/vision/tokenEfficiency.md»
+   «sources/efa157/vision/transcriptReporting.md»
+   «sources/efa157/vision/versionControl.md»
+  ] }
+ ]
+ [ ; the install rows
+  { Claude «--system-prompt-file» Replace Top «replaces the whole system prompt» }
+  { Claude «--append-system-prompt-file» Append Top «adds to the end of the stock one» }
+  { Codex «-c model_instructions_file=» Replace Top «replaces the base instructions» }
+ ] }

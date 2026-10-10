@@ -1,0 +1,616 @@
+(1783203687 1783207883 [(0 [(meta-signal-harness AlreadyAligned NotAttempted) (meta-signal-system AlreadyAligned NotAttempted) (nota AlreadyAligned NotAttempted)]) (1 [(chroma AlreadyAligned NotAttempted) (chronos AlreadyAligned NotAttempted) (claude-answers AlreadyAligned NotAttempted) (clavifaber AlreadyAligned NotAttempted) (horizon-rs AlreadyAligned NotAttempted) (nota-config AlreadyAligned NotAttempted) (schema AlreadyAligned NotAttempted) (signal-frame AlreadyAligned NotAttempted) (signal-sema AlreadyAligned NotAttempted) (synchronizer AlreadyAligned NotAttempted) (version-projection AlreadyAligned NotAttempted)]) (2 [(meta-signal-version-handover AlreadyAligned NotAttempted) (signal AlreadyAligned NotAttempted) (signal-repository-ledger AlreadyAligned NotAttempted) (signal-version-handover AlreadyAligned NotAttempted) (triad-runtime AlreadyAligned NotAttempted)]) (3 [(meta-signal-repository-ledger AlreadyAligned NotAttempted) (nexus AlreadyAligned NotAttempted) (schema-rust (Bumped ([(signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))) (Verified (localhost DefaultPackage)))]) (4 [(meta-signal-agent (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next c47339b206195e58d43382df8aac904e271dfc16))) (Verified (localhost DefaultPackage))) (meta-signal-mentci (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next a0edf48e57e751e1122afb940c39ea3be0d1ed6b))) (VerifyFailed localhost)) (meta-signal-mentci-client (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 5f3ccf113d825f62f3849a90c457f30979d45f82))) (VerifyFailed localhost)) (meta-signal-mind (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 467135c22eeb5b5ef267f81f6779d0105c69feb1))) (Verified (localhost DefaultPackage))) (meta-signal-mirror (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 9cef2086e590342684040036546c7b6b6a54e6ea))) (VerifyFailed localhost)) (meta-signal-router (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next ba55f5aeae493dc49ac5bf948365cc4759e1112d))) (Verified (localhost DefaultPackage))) (meta-signal-upgrade (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next ed22abf210c4fbdda814b22a276c8f0af795ebec))) (Verified (localhost DefaultPackage))) (repository-ledger (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next c5362157d15714da1208cc173147a91d6e8d5099))) (Verified (localhost DefaultPackage))) (signal-agent (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next b4873fba6cc9717765dfe4dc5bab5203ea031e56))) (Verified (localhost DefaultPackage))) (signal-cloud (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 1b4e7821c96654cbe2d0807d6af1a53ae9cb0cf9))) (Verified (localhost DefaultPackage))) (signal-criome (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 4c1aa76ac647899db3c60b380f0642cdd10019b9))) (Verified (localhost DefaultPackage))) (signal-domain-criome (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 982a5634380ab297af46386d3e89e4ccbbf76825))) (Verified (localhost DefaultPackage))) (signal-listener (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 975abf826651580cf29be0ad4f26a32d5a32eb70))) (Verified (localhost DefaultPackage))) (signal-lojix (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 51941ca310298cb3330c752326e2727e819ee31e))) (VerifyFailed localhost)) (signal-message (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next d16630469312c28071df5aa6feb5a862c9bbfe9d))) (Verified (localhost DefaultPackage))) (signal-mirror (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 9a79af11ba00bd8083e2e7170af55bd7b078028b))) (VerifyFailed localhost)) (signal-persona (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 1a4b232a99563f27245c38952457bedca4dfa66a))) (Verified (localhost DefaultPackage))) (signal-router (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 798d36aaa47f9fe5ef6138b69d7ccf761949a390))) (Verified (localhost DefaultPackage))) (signal-spirit (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next c123651d04caac7bfde972ef5d48fb860b275431))) (Verified (localhost DefaultPackage))) (signal-standard (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next a4751ad0f2b3a931f8d1d07591f4d3fc2602c809))) (Verified (localhost DefaultPackage))) (signal-terminal (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 41ef8763f5bba50394fd5c5b71fa3de60afe264e))) (Verified (localhost DefaultPackage))) (signal-upgrade (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next 26cc7bb03f528c2e1b1f9c79f8f1a99349d5b7a4))) (Verified (localhost DefaultPackage))) (skills (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (schema-rust FlakeLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88))] (drop-next a85315d10db9ad1efa2ea273eb045689c2698560))) (Verified (localhost DefaultPackage)))]) (5 [(agent (Bumped ([(meta-signal-agent CargoLock (Revision c8b393f90f60ba10f7b0ea08488593d5ca495dd5) (Revision c47339b206195e58d43382df8aac904e271dfc16)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-agent CargoLock (Revision d593ff841571cec90087f7f1b6f16ad2c7966c8c) (Revision b4873fba6cc9717765dfe4dc5bab5203ea031e56))] (drop-next 344188d207822b250b464f667a57d1ce5ef4a95a))) (Verified (localhost DefaultPackage))) (meta-signal-cloud (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-cloud CargoLock (Revision c5e3dc8330831b845378ec9fbb69f98abf79c891) (Revision 1b4e7821c96654cbe2d0807d6af1a53ae9cb0cf9)) (signal-domain-criome CargoLock (Revision 4a1ad36d1ce2dc65cf37e0bbb0693957dbda8f9e) (Revision 982a5634380ab297af46386d3e89e4ccbbf76825))] (drop-next 5f3e4f222f4e935cbbad5b5839561d6fc5184c75))) (Verified (localhost DefaultPackage))) (meta-signal-criome (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision a7701f6405f6dc7959160e821dd1c754597fd365) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9))] (drop-next 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6))) (Verified (localhost DefaultPackage))) (meta-signal-domain-criome (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-domain-criome CargoLock (Revision 4a1ad36d1ce2dc65cf37e0bbb0693957dbda8f9e) (Revision 982a5634380ab297af46386d3e89e4ccbbf76825))] (drop-next dd3dc311c20770581851af5efb2e15cdd4c63392))) (Verified (localhost DefaultPackage))) (meta-signal-listener (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-listener CargoLock (Revision 01a7872e7eb6818a4dc2cad6ca624282919b1b3a) (Revision 975abf826651580cf29be0ad4f26a32d5a32eb70))] (drop-next f7d0cbab939f0f28daad638211730d632982684b))) (Verified (localhost DefaultPackage))) (meta-signal-lojix (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-lojix CargoLock (Revision 202d6187f5cc1377edef7d4e0228899887c6a43c) (Revision 51941ca310298cb3330c752326e2727e819ee31e))] (drop-next f89dab1226df8ab93d9beac2b8632e73aa7c8adc))) (VerifyFailed localhost)) (meta-signal-message (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d))] (drop-next 3bfd591d6e906320f09a5ba6b0a5aea5a5cd1b68))) (Verified (localhost DefaultPackage))) (meta-signal-persona (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next 413d3dee46f270dbdd9028c8f71f52de5385bd08))) (Verified (localhost DefaultPackage))) (meta-signal-spirit (BumpFailed LockEdit) NotAttempted) (meta-signal-terminal (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e))] (drop-next fbee381d6ee7cf164a7a013ca87602278286f06b))) (Verified (localhost DefaultPackage))) (mirror (Bumped ([(meta-signal-mirror CargoLock (Revision f2d223502fdd0c3b66500b651fe9d67836acc070) (Revision 9cef2086e590342684040036546c7b6b6a54e6ea)) (schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-mirror CargoLock (Revision 878fa462b54d70155cfc61664c13d1e3b0f84bdc) (Revision 9a79af11ba00bd8083e2e7170af55bd7b078028b)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next 1d152a6d98e88e99737f3d15a56091dacec54bd2))) (Verified (localhost DefaultPackage))) (signal-harness (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 01c01c91282c5976fa77e3743b9324bc6294e1af) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next 55764d42ae9cdb4451e33da7395e59840b36b2fd))) (Verified (localhost DefaultPackage))) (signal-introspect (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next 8e21781c45156811bbcdfbd3700e5f5b6978449d))) (Verified (localhost DefaultPackage))) (signal-mentci (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9))] (drop-next c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691))) (VerifyFailed localhost)) (signal-mind (Bumped ([(schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 01c01c91282c5976fa77e3743b9324bc6294e1af) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next 176805378d778aee9e26854b66a7c17b0eb3a8b5))) (Verified (localhost DefaultPackage))) (signal-orchestrate (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9))] (drop-next 53d876921a879d76345934fa44827fb94a26e7d9))) (Verified (localhost DefaultPackage))) (signal-system (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next fed5e72aaf6d3cc6fa6eaa6acff2b7ee5fcf02eb))) (Verified (localhost DefaultPackage))) (terminal-cell (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e))] (drop-next d879672da92c5776811bac9ff211e0c1e514168b))) (Verified (localhost WireChecks))) (upgrade (Bumped ([(meta-signal-upgrade CargoLock (Revision 35e24f86d4d86cd58937edd8ad79786fc8c08dbf) (Revision ed22abf210c4fbdda814b22a276c8f0af795ebec)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-upgrade CargoLock (Revision 9314618cbcda0a993daed08218cec16c5f113e0e) (Revision 26cc7bb03f528c2e1b1f9c79f8f1a99349d5b7a4))] (drop-next 4f745d3ae338a4405c84042acd3b01dc3ce920bc))) (VerifyFailed localhost))]) (6 [(cloud (Bumped ([(meta-signal-cloud CargoLock (Revision 4b95bc7e32efdbde0d046deef245d5c7512e1b35) (Revision 5f3e4f222f4e935cbbad5b5839561d6fc5184c75)) (schema-rust CargoLock (Revision 7f746c020bfbb64d76de968214255f343b2e94a4) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-cloud CargoLock (Revision 988c769df5b1a6f95c37c6418b51d9c787a9404e) (Revision 1b4e7821c96654cbe2d0807d6af1a53ae9cb0cf9)) (signal-domain-criome CargoLock (Revision 00f43ba8a8edf885e8134b083497cc203af45a7b) (Revision 982a5634380ab297af46386d3e89e4ccbbf76825))] (drop-next 7e551fb0dbc44c4ac899ff72bde3cda12d0b306a))) (Verified (localhost DefaultPackage))) (criome (Bumped ([(meta-signal-criome CargoLock (Revision 365fb6815e8b2d5b06aafcc22b9b79eebd62db64) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision a7701f6405f6dc7959160e821dd1c754597fd365) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next cf92deca79f01979ad15c314084fd690c1b30543))) (Verified (localhost WireChecks))) (domain-criome (Bumped ([(meta-signal-domain-criome CargoLock (Revision 47ec646f2ea3151f80ba30936fe7993cf4bdca4e) (Revision dd3dc311c20770581851af5efb2e15cdd4c63392)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-domain-criome CargoLock (Revision 4a1ad36d1ce2dc65cf37e0bbb0693957dbda8f9e) (Revision 982a5634380ab297af46386d3e89e4ccbbf76825)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next 0a9a66ebca6f965bb5b94367386989cbe8a23a70))) (Verified (localhost DefaultPackage))) (listener (Bumped ([(meta-signal-listener CargoLock (Revision 61abce8c964ce94746e578d1e6c19c6f634a304d) (Revision f7d0cbab939f0f28daad638211730d632982684b)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-listener CargoLock (Revision 01a7872e7eb6818a4dc2cad6ca624282919b1b3a) (Revision 975abf826651580cf29be0ad4f26a32d5a32eb70))] (drop-next beabe6bbb238fe3c20d6541917e861e293bca9f5))) (Verified (localhost DefaultPackage))) (lojix (Bumped ([(meta-signal-lojix CargoLock (Revision 8375d9ff601aff3d70c453124046bb92ddd3eda6) (Revision f89dab1226df8ab93d9beac2b8632e73aa7c8adc)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-lojix CargoLock (Revision 202d6187f5cc1377edef7d4e0228899887c6a43c) (Revision 51941ca310298cb3330c752326e2727e819ee31e)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next 47b37cebe766e8ab182c6fd4bc6122a9ec6e5549))) (VerifyFailed localhost)) (mentci-lib (Bumped ([(meta-signal-criome CargoLock (Revision 4087b9996e9a647c7ff4b4b3dcf9af51ec284274) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-mentci CargoLock (Revision 1c1ea8f9c680e1ececefadb8960a1606a008425f) (Revision a0edf48e57e751e1122afb940c39ea3be0d1ed6b)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-mentci CargoLock (Revision 6ea1dca986a4e5918b5e135110f0ac235d7590c5) (Revision c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691))] (drop-next 8f49ebc40b9ff56d17f43063453a6f6a789339b0))) (Verified (localhost DefaultPackage))) (message (Bumped ([(meta-signal-message CargoLock (Revision 8b07cb1db079ae00179ecd6ebf370d3d6f4110da) (Revision 3bfd591d6e906320f09a5ba6b0a5aea5a5cd1b68)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d))] (drop-next e355c3740db24ae5dd426836d879b430260cbc0f))) (Verified (localhost WireChecks))) (meta-signal-introspect (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-introspect CargoLock (Revision f4554aee986f470001aa44684c062d1049cfa7cd) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a))] (drop-next 7ce650ef475321e410122cfbe4885beef4259df3))) (VerifyFailed localhost)) (meta-signal-orchestrate (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-orchestrate CargoLock (Revision c11de16e461e8587871701f9ba77d15ef69dde9e) (Revision 53d876921a879d76345934fa44827fb94a26e7d9))] (drop-next fb27bec405c8d008f58b3684d22404e301ce9304))) (Verified (localhost DefaultPackage))) (signal-mentci-client (Bumped ([(meta-signal-mentci CargoLock (Revision 1c1ea8f9c680e1ececefadb8960a1606a008425f) (Revision a0edf48e57e751e1122afb940c39ea3be0d1ed6b)) (meta-signal-mentci-client CargoLock (Revision 4ec9856a5a724de4875bdf83ab730c136c1f1f1c) (Revision 5f3ccf113d825f62f3849a90c457f30979d45f82)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-mentci CargoLock (Revision 6ea1dca986a4e5918b5e135110f0ac235d7590c5) (Revision c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691))] (drop-next cbfd2e0a66848fb8c22dc42f8ee419b154130ef0))) (VerifyFailed localhost)) (system (Bumped ([(schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-system CargoLock (Revision ceafdbff3f50d339571dd248e0527a2555681116) (Revision fed5e72aaf6d3cc6fa6eaa6acff2b7ee5fcf02eb))] (drop-next ffd0b74a17587bb6c90f40d170b57b355c43648f))) (VerifyFailed localhost)) (terminal (Bumped ([(meta-signal-terminal CargoLock (Revision 24625d8b88fd4f31d4d5762151df884ae74f5956) (Revision fbee381d6ee7cf164a7a013ca87602278286f06b)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e)) (terminal-cell CargoLock (Revision 4676a60673a580ecc8d28e938f3c46bfbf1f5927) (Revision d879672da92c5776811bac9ff211e0c1e514168b))] (drop-next 5095736e0bfc27106353e40de99122118ad2424c))) (Verified (localhost WireChecks)))]) (7 [(harness (Bumped ([(message CargoLock (Revision 27ee6118944cea85693e35d24f15cc2600d0cd17) (Revision e355c3740db24ae5dd426836d879b430260cbc0f)) (meta-signal-message CargoLock (Revision 8b07cb1db079ae00179ecd6ebf370d3d6f4110da) (Revision 3bfd591d6e906320f09a5ba6b0a5aea5a5cd1b68)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-harness CargoLock (Revision a2d15efcb8348d9493e0dc35935358011b2b716a) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router CargoLock (Revision 93b8338b1611b6ebfceca4345eff8ed7790c7d96) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e))] (drop-next 17eb8ea29231893657983d2cc85cc2a7f6769d90))) (VerifyFailed localhost)) (introspect (Bumped ([(meta-signal-introspect CargoLock (Revision 73b62c3ecf9d0f094e52693d2606bf63a12b1eec) (Revision 7ce650ef475321e410122cfbe4885beef4259df3)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-introspect CargoLock (Revision f4554aee986f470001aa44684c062d1049cfa7cd) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router CargoLock (Revision 93b8338b1611b6ebfceca4345eff8ed7790c7d96) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next 5d22ac06bca24435c2fecf079218168b0aff7043))) (Verified (localhost WireChecks))) (mentci (Bumped ([(criome CargoLock (Revision 42ce3086a37e28654626988d7e25d055aa00b7a0) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (mentci-lib CargoLock (Revision 73bb4981716b2573876dbedb16355819e0c30a8f) (Revision 8f49ebc40b9ff56d17f43063453a6f6a789339b0)) (meta-signal-criome CargoLock (Revision 4087b9996e9a647c7ff4b4b3dcf9af51ec284274) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-mentci CargoLock (Revision 1c1ea8f9c680e1ececefadb8960a1606a008425f) (Revision a0edf48e57e751e1122afb940c39ea3be0d1ed6b)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-harness CargoLock (Revision a2d15efcb8348d9493e0dc35935358011b2b716a) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-introspect CargoLock (Revision f4554aee986f470001aa44684c062d1049cfa7cd) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-mentci CargoLock (Revision 6ea1dca986a4e5918b5e135110f0ac235d7590c5) (Revision c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e)) (terminal-cell CargoLock (Revision 4676a60673a580ecc8d28e938f3c46bfbf1f5927) (Revision d879672da92c5776811bac9ff211e0c1e514168b))] (drop-next cf4ccd199e6decb2d89b2139dd4c756cb3b7e462))) (VerifyFailed localhost)) (mind (BumpFailed ManifestEdit) NotAttempted) (orchestrate (Bumped ([(criome CargoLock (Revision 42ce3086a37e28654626988d7e25d055aa00b7a0) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (meta-signal-criome CargoLock (Revision 4087b9996e9a647c7ff4b4b3dcf9af51ec284274) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-orchestrate CargoLock (Revision bc91e01b2bc38c53a5e778cfb094e7f07505c3f8) (Revision fb27bec405c8d008f58b3684d22404e301ce9304)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-orchestrate CargoLock (Revision c11de16e461e8587871701f9ba77d15ef69dde9e) (Revision 53d876921a879d76345934fa44827fb94a26e7d9))] (drop-next 048e0290e6fd865a6eb6ee78a96dcde69f76dbee))) (Verified (localhost WireChecks))) (router (Bumped ([(criome CargoLock (Revision 88d20d116e562717c62498a62f4b157f8274b26a) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (meta-signal-criome CargoLock (Revision 365fb6815e8b2d5b06aafcc22b9b79eebd62db64) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-mirror CargoLock (Revision f2d223502fdd0c3b66500b651fe9d67836acc070) (Revision 9cef2086e590342684040036546c7b6b6a54e6ea)) (meta-signal-router CargoLock (Revision 30a2d52951e75c8ee7b0a2cf1ec27e58f89ba2c7) (Revision ba55f5aeae493dc49ac5bf948365cc4759e1112d)) (mirror CargoLock (Revision 3cec236576832ac92a0f533060e68b96581d5f14) (Revision 1d152a6d98e88e99737f3d15a56091dacec54bd2)) (schema-rust CargoLock (Revision 8a81a408eb250bf6c7d6ccd2c2b9ae9e18dfc290) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision a7701f6405f6dc7959160e821dd1c754597fd365) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-harness CargoLock (Revision e3535871b782d13014fa627343efd5b995b9ba9c) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-message CargoLock (Revision 84aede352d333afd651072872b7614b398b5625c) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-mind CargoLock (Revision 95aa66799f2af183eb0654114bac7e4b3a37b2b3) (Revision 176805378d778aee9e26854b66a7c17b0eb3a8b5)) (signal-mirror CargoLock (Revision 878fa462b54d70155cfc61664c13d1e3b0f84bdc) (Revision 9a79af11ba00bd8083e2e7170af55bd7b078028b)) (signal-persona CargoLock (Revision 01c01c91282c5976fa77e3743b9324bc6294e1af) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router CargoLock (Revision 33a96708d14b14ccc3a165974b841e65887cef88) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-standard CargoLock (Revision 0a31a128a9873f46437dd3b703e3f0100fe6d39b) (Revision a4751ad0f2b3a931f8d1d07591f4d3fc2602c809))] (drop-next 5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955))) (VerifyFailed localhost))]) (8 [(mentci-egui (Bumped ([(criome CargoLock (Revision 42ce3086a37e28654626988d7e25d055aa00b7a0) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (mentci CargoLock (Revision a435c11931bbe37374d12339da3b50c6772b0b87) (Revision cf4ccd199e6decb2d89b2139dd4c756cb3b7e462)) (mentci-lib CargoLock (Revision 73bb4981716b2573876dbedb16355819e0c30a8f) (Revision 8f49ebc40b9ff56d17f43063453a6f6a789339b0)) (meta-signal-criome CargoLock (Revision 4087b9996e9a647c7ff4b4b3dcf9af51ec284274) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-mentci CargoLock (Revision 1c1ea8f9c680e1ececefadb8960a1606a008425f) (Revision a0edf48e57e751e1122afb940c39ea3be0d1ed6b)) (meta-signal-mentci-client CargoLock (Revision 4ec9856a5a724de4875bdf83ab730c136c1f1f1c) (Revision 5f3ccf113d825f62f3849a90c457f30979d45f82)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-criome CargoLock (Revision d021b352ec93ec9059b42e3499adc063d6d3fc41) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-harness CargoLock (Revision a2d15efcb8348d9493e0dc35935358011b2b716a) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-introspect CargoLock (Revision f4554aee986f470001aa44684c062d1049cfa7cd) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-mentci CargoLock (Revision 6ea1dca986a4e5918b5e135110f0ac235d7590c5) (Revision c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691)) (signal-mentci-client CargoLock (Revision 049bc04dc258862571ff9df59addadb384dd22e4) (Revision cbfd2e0a66848fb8c22dc42f8ee419b154130ef0)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf))] (drop-next e4c1bd185247cca4837902725cab47f87461b303))) (Verified (localhost DefaultPackage))) (spirit (Bumped ([(criome CargoManifest (Reference main) (Reference drop-next)) (meta-signal-spirit CargoManifest (Reference main) (Reference drop-next)) (signal-agent CargoManifest (Reference main) (Reference drop-next)) (signal-criome CargoManifest (Reference main) (Reference drop-next)) (signal-frame CargoManifest (Reference main) (Reference drop-next)) (signal-introspect CargoManifest (Reference main) (Reference drop-next)) (signal-persona CargoManifest (Reference main) (Reference drop-next)) (signal-router CargoManifest (Reference main) (Reference drop-next)) (signal-spirit CargoManifest (Reference main) (Reference drop-next)) (triad-runtime CargoManifest (Reference main) (Reference drop-next)) (agent CargoManifest (Reference main) (Reference drop-next)) (signal-sema CargoManifest (Reference main) (Reference drop-next)) (agent CargoLock (Revision 098d2bee7f3c6968e6c4f7b1e181547c57adfa2f) (Revision 344188d207822b250b464f667a57d1ce5ef4a95a)) (criome CargoLock (Revision 4bf6f9b96a6a8f83952109060aa09eca6d08ed64) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (meta-signal-agent CargoLock (Revision d7378752368bb2fd108e49b497b3e5ab7298dd3a) (Revision c47339b206195e58d43382df8aac904e271dfc16)) (meta-signal-criome CargoLock (Revision a670d4580632b05924cea8e83f66a84d3b80ac72) (Revision 2de0ad4f56327bd7cc7dc558cd1551a0ee6ae7e6)) (meta-signal-spirit CargoLock (Revision 92f2578d4ed76153ef41820a2bee98f655b0d883) (Revision b05464fd1c5c76ee4c3a06caf43eb5226fe8cbf9)) (signal-agent CargoLock (Revision e271fb340ac41acba40b629042131ac7515fd4c7) (Revision b4873fba6cc9717765dfe4dc5bab5203ea031e56)) (signal-criome CargoLock (Revision 808034740d1ff1cb8c9342dcab4548aaf204f9d5) (Revision 4c1aa76ac647899db3c60b380f0642cdd10019b9)) (signal-frame CargoLock (Revision 0027ea3cef353b1c168ca6862e40c6077a853642) (Revision 44d22a07e75e6d2ff13581a5bb84d47c6ef35e97)) (signal-frame CargoLock (Revision 0027ea3cef353b1c168ca6862e40c6077a853642) (Revision 44d22a07e75e6d2ff13581a5bb84d47c6ef35e97)) (signal-introspect CargoLock (Revision cbff25f55953e293730b6503310b27f2b7c3edbe) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-message CargoLock (Revision 71da67a56dba6bacd8a23f2c6c3af4cc517b35be) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-persona CargoLock (Revision 7de74911dd17cbce6e5bc367612d85469d530f48) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router CargoLock (Revision 590406c38584c52a95913bacccb67a55c7b17038) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-sema CargoLock (Revision c817ec2b5283975700881c2dec950a7e781b3bb6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-spirit CargoLock (Revision ef116222b1f16b42f506783aa1bf95b447bcf682) (Revision c123651d04caac7bfde972ef5d48fb860b275431)) (triad-runtime CargoLock (Revision 3d3207461bcbd39dd2505d0bb957b6fec30c98d9) (Revision f9a6a7c8ab50dbd5b5a8ef7bfd7ea8c9acb713e1)) (version-projection CargoLock (Revision 666c468e319af5e9b67c4cdb99451dde5e4623e1) (Revision f401ce1535afaaa1724ff181a177d1535606d336)) (agent FlakeLock (Revision 098d2bee7f3c6968e6c4f7b1e181547c57adfa2f) (Revision 344188d207822b250b464f667a57d1ce5ef4a95a)) (meta-signal-agent FlakeLock (Revision d7378752368bb2fd108e49b497b3e5ab7298dd3a) (Revision c47339b206195e58d43382df8aac904e271dfc16)) (meta-signal-mirror FlakeLock (Revision 44dfac6c4de9ed2e45517ee72c1fd39513e9182b) (Revision 9cef2086e590342684040036546c7b6b6a54e6ea)) (meta-signal-router FlakeLock (Revision 5c0f6ee830cf032cb041cb22c6574de8cc35de34) (Revision ba55f5aeae493dc49ac5bf948365cc4759e1112d)) (meta-signal-spirit FlakeLock (Revision 92f2578d4ed76153ef41820a2bee98f655b0d883) (Revision b05464fd1c5c76ee4c3a06caf43eb5226fe8cbf9)) (mirror FlakeLock (Revision c3cb9c59c84c7f26cf856f2d84301e9c81fafa03) (Revision 1d152a6d98e88e99737f3d15a56091dacec54bd2)) (router FlakeLock (Revision 70b79603c8cf879ec2064b73eb5f242f61fdc8b6) (Revision 5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955)) (signal-agent FlakeLock (Revision e271fb340ac41acba40b629042131ac7515fd4c7) (Revision b4873fba6cc9717765dfe4dc5bab5203ea031e56)) (signal-harness FlakeLock (Revision 0727beb7e537472697463443d4323469e04137d4) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-introspect FlakeLock (Revision cbff25f55953e293730b6503310b27f2b7c3edbe) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-message FlakeLock (Revision 71da67a56dba6bacd8a23f2c6c3af4cc517b35be) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-mind FlakeLock (Revision f5d6a93d7a64ea833d407329a66916975a79c437) (Revision 176805378d778aee9e26854b66a7c17b0eb3a8b5)) (signal-mirror FlakeLock (Revision 34ed3fdd429b10722902b01264c17dcda0bcc482) (Revision 9a79af11ba00bd8083e2e7170af55bd7b078028b)) (signal-persona FlakeLock (Revision 7de74911dd17cbce6e5bc367612d85469d530f48) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router FlakeLock (Revision 277bd153a7141f92e7bd83f7525568d9e137e595) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-sema FlakeLock (Revision e11901358bab47e710e3d15414141183a13c2ad6) (Revision cf95702f489e37fbc5a603cd58c2372672db8ddf)) (signal-spirit FlakeLock (Revision 151d49c85b7fed2b8a27c2bb10b28c1a5c5f301a) (Revision c123651d04caac7bfde972ef5d48fb860b275431)) (signal-standard FlakeLock (Revision dfbda8d8a35bca90378571dfb28cd54bb15a0b09) (Revision a4751ad0f2b3a931f8d1d07591f4d3fc2602c809)) (version-projection FlakeLock (Revision 666c468e319af5e9b67c4cdb99451dde5e4623e1) (Revision f401ce1535afaaa1724ff181a177d1535606d336))] (drop-next af5cf6be478e8a47aabc9d8f575543f767cfdeb5))) (VerifyFailed localhost))]) (9 [(CriomOS-home (Bumped ([(agent FlakeLock (Revision 0dd4b013cc38823458296ac1a9770d16e12e2af5) (Revision 344188d207822b250b464f667a57d1ce5ef4a95a)) (chroma FlakeLock (Revision b5313b6b915d1f8de527810c9afa9ae825d8d849) (Revision 68d6678e0a5cca1d4961d5b7cacbd5799724a0e7)) (claude-answers FlakeLock (Revision 11187f6a9a612425803b75ccaad6fa5311d66ee0) (Revision f9370e715a7ca6bcb9a7b36d6f3abbd78158acbe)) (listener FlakeLock (Revision d69f4970490312aa20a886bd5efe53202d60a5bc) (Revision beabe6bbb238fe3c20d6541917e861e293bca9f5)) (lojix FlakeLock (Revision aaea314ce9ff388408f9d60d887c120805b412e7) (Revision 47b37cebe766e8ab182c6fd4bc6122a9ec6e5549)) (mentci-egui FlakeLock (Revision c0a104c3efef6b8b4e973d7d67638296e053a609) (Revision e4c1bd185247cca4837902725cab47f87461b303)) (mentci FlakeLock (Revision 5cfcc68a7119bc365594244f8f41417b30f1fd1a) (Revision cf4ccd199e6decb2d89b2139dd4c756cb3b7e462)) (orchestrate FlakeLock (Revision 8f9b41707ecbffe6206e3109adc495890c045121) (Revision 048e0290e6fd865a6eb6ee78a96dcde69f76dbee)) (spirit FlakeLock (Revision 7b0770642ab1ad7807f36c43c7e6b09935d169b2) (Revision af5cf6be478e8a47aabc9d8f575543f767cfdeb5))] (drop-next 6da5760c33b97303f288467b71580d63f51934b2))) (VerifyFailed localhost)) (persona (Bumped ([(message CargoLock (Revision 27ee6118944cea85693e35d24f15cc2600d0cd17) (Revision e355c3740db24ae5dd426836d879b430260cbc0f)) (meta-signal-message CargoLock (Revision 8b07cb1db079ae00179ecd6ebf370d3d6f4110da) (Revision 3bfd591d6e906320f09a5ba6b0a5aea5a5cd1b68)) (meta-signal-persona CargoLock (Revision 4535ddaeafc21f562e17a9a1358769b1ae4e8cb9) (Revision 413d3dee46f270dbdd9028c8f71f52de5385bd08)) (meta-signal-upgrade CargoLock (Revision 35e24f86d4d86cd58937edd8ad79786fc8c08dbf) (Revision ed22abf210c4fbdda814b22a276c8f0af795ebec)) (schema-rust CargoLock (Revision af814e757cd84fb0b3b8cce9c0623f69b6d99b5c) (Revision 67b91f5a6a70eced5854f27c7af8b39ace7e2d88)) (signal-harness CargoLock (Revision a2d15efcb8348d9493e0dc35935358011b2b716a) (Revision 55764d42ae9cdb4451e33da7395e59840b36b2fd)) (signal-introspect CargoLock (Revision f4554aee986f470001aa44684c062d1049cfa7cd) (Revision 8e21781c45156811bbcdfbd3700e5f5b6978449d)) (signal-message CargoLock (Revision 8f2ad02bf9fc5a8dbbae016b7c3bee1a2c8653f5) (Revision d16630469312c28071df5aa6feb5a862c9bbfe9d)) (signal-mind CargoLock (Revision cfe370f3f385f7d9a1c2dd843ed7bef48c058484) (Revision 176805378d778aee9e26854b66a7c17b0eb3a8b5)) (signal-persona CargoLock (Revision 97f630a0bad0ca368d9ced267d47e26b1729be15) (Revision 1a4b232a99563f27245c38952457bedca4dfa66a)) (signal-router CargoLock (Revision 93b8338b1611b6ebfceca4345eff8ed7790c7d96) (Revision 798d36aaa47f9fe5ef6138b69d7ccf761949a390)) (signal-system CargoLock (Revision ceafdbff3f50d339571dd248e0527a2555681116) (Revision fed5e72aaf6d3cc6fa6eaa6acff2b7ee5fcf02eb)) (signal-terminal CargoLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e)) (signal-upgrade CargoLock (Revision 9314618cbcda0a993daed08218cec16c5f113e0e) (Revision 26cc7bb03f528c2e1b1f9c79f8f1a99349d5b7a4)) (upgrade CargoLock (Revision 8afaa4975e049c586a4a7b4b3ac67c703ee13c8a) (Revision 4f745d3ae338a4405c84042acd3b01dc3ce920bc)) (meta-signal-persona FlakeLock (Revision 4535ddaeafc21f562e17a9a1358769b1ae4e8cb9) (Revision 413d3dee46f270dbdd9028c8f71f52de5385bd08)) (meta-signal-terminal FlakeLock (Revision 24625d8b88fd4f31d4d5762151df884ae74f5956) (Revision fbee381d6ee7cf164a7a013ca87602278286f06b)) (mind FlakeLock (Revision 334d445309cc8cc97ed096a4d8b478fc796910aa) (Revision 292b11c582197c4fb185a264635e9e4b3d923eba)) (harness FlakeLock (Revision 98380071183ed4f212b9e9daf2fbe292e8122702) (Revision 17eb8ea29231893657983d2cc85cc2a7f6769d90)) (introspect FlakeLock (Revision 5441ec3db1b0c9c8b2730b08847098c0f5329f9b) (Revision 5d22ac06bca24435c2fecf079218168b0aff7043)) (message FlakeLock (Revision 27ee6118944cea85693e35d24f15cc2600d0cd17) (Revision e355c3740db24ae5dd426836d879b430260cbc0f)) (orchestrate FlakeLock (Revision 3cc425bed039ff5dde1cd864d3b47e34b11a7edc) (Revision 048e0290e6fd865a6eb6ee78a96dcde69f76dbee)) (router FlakeLock (Revision f3482fcab8f5662c0dbc3e3c239f43ea8f56f951) (Revision 5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955)) (spirit FlakeLock (Revision 41f117309bb9a509f690247a81c3adaf98890896) (Revision af5cf6be478e8a47aabc9d8f575543f767cfdeb5)) (system FlakeLock (Revision 647f21e93df02ae8700516c857aab2e9126c82eb) (Revision ffd0b74a17587bb6c90f40d170b57b355c43648f)) (terminal FlakeLock (Revision 87a29dc1c661ed850595caff9663c8ce84842221) (Revision 5095736e0bfc27106353e40de99122118ad2424c)) (signal-mind FlakeLock (Revision cfe370f3f385f7d9a1c2dd843ed7bef48c058484) (Revision 176805378d778aee9e26854b66a7c17b0eb3a8b5)) (signal-orchestrate FlakeLock (Revision c11de16e461e8587871701f9ba77d15ef69dde9e) (Revision 53d876921a879d76345934fa44827fb94a26e7d9)) (signal-system FlakeLock (Revision ceafdbff3f50d339571dd248e0527a2555681116) (Revision fed5e72aaf6d3cc6fa6eaa6acff2b7ee5fcf02eb)) (signal-terminal FlakeLock (Revision 632c51f34a21886bcbb01137311c8be276e6402a) (Revision 41ef8763f5bba50394fd5c5b71fa3de60afe264e)) (terminal-cell FlakeLock (Revision 4676a60673a580ecc8d28e938f3c46bfbf1f5927) (Revision d879672da92c5776811bac9ff211e0c1e514168b))] (drop-next 21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae))) (VerifyFailed localhost))]) (10 [(CriomOS (Bumped ([(clavifaber FlakeLock (Revision 39f65fa195c6f17796c82168da579d1a3873716c) (Revision defd1afc8c2bbf45dd7d9f06928890bfb1a7cc06)) (criome FlakeLock (Revision 4c820a057c3c46eb8d17c5ef55c4468bfc22d85e) (Revision cf92deca79f01979ad15c314084fd690c1b30543)) (CriomOS-home FlakeLock (Revision 329c93ec0fcf868481c0a5a4477a13112ba13fca) (Revision 6da5760c33b97303f288467b71580d63f51934b2)) (lojix FlakeLock (Revision aaea314ce9ff388408f9d60d887c120805b412e7) (Revision 47b37cebe766e8ab182c6fd4bc6122a9ec6e5549)) (mirror FlakeLock (Revision 5102f5ed87d10d6a7386358b3b10214a04fdf89d) (Revision 1d152a6d98e88e99737f3d15a56091dacec54bd2)) (repository-ledger FlakeLock (Revision 48109483be504a881d3e9c81d764894c1f42b1d1) (Revision c5362157d15714da1208cc173147a91d6e8d5099)) (router FlakeLock (Revision 14ed682b47bf399aeb25ea8dea674275e15aa7a4) (Revision 5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955))] (drop-next 088d28a0cbf8da1460d77cce45d27d60a3a67f30))) (VerifyFailed localhost))])] [(meta-signal-mentci Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci/a0edf48e57e751e1122afb940c39ea3be0d1ed6b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/meta-signal-mentci/a0edf48e57e751e1122afb940c39ea3be0d1ed6b' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:116:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci/a0edf48e57e751e1122afb940c39ea3be0d1ed6b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                    ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:134:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci/a0edf48e57e751e1122afb940c39ea3be0d1ed6b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                      ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/meta-signal-mentci/a0edf48e57e751e1122afb940c39ea3be0d1ed6b»/flake.nix' does not exist
+|]) (meta-signal-mentci-client Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci-client/5f3ccf113d825f62f3849a90c457f30979d45f82"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/meta-signal-mentci-client/5f3ccf113d825f62f3849a90c457f30979d45f82' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:123:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci-client/5f3ccf113d825f62f3849a90c457f30979d45f82"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                           ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:141:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mentci-client/5f3ccf113d825f62f3849a90c457f30979d45f82"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                             ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/meta-signal-mentci-client/5f3ccf113d825f62f3849a90c457f30979d45f82»/flake.nix' does not exist
+|]) (meta-signal-mirror Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mirror/9cef2086e590342684040036546c7b6b6a54e6ea"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/meta-signal-mirror/9cef2086e590342684040036546c7b6b6a54e6ea' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:116:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mirror/9cef2086e590342684040036546c7b6b6a54e6ea"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                    ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:134:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-mirror/9cef2086e590342684040036546c7b6b6a54e6ea"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                      ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/meta-signal-mirror/9cef2086e590342684040036546c7b6b6a54e6ea»/flake.nix' does not exist
+|]) (signal-lojix Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/signal-lojix/51941ca310298cb3330c752326e2727e819ee31e"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/signal-lojix/51941ca310298cb3330c752326e2727e819ee31e' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:110:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-lojix/51941ca310298cb3330c752326e2727e819ee31e"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                              ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:128:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-lojix/51941ca310298cb3330c752326e2727e819ee31e"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/signal-lojix/51941ca310298cb3330c752326e2727e819ee31e»/flake.nix' does not exist
+|]) (signal-mirror Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/signal-mirror/9a79af11ba00bd8083e2e7170af55bd7b078028b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/signal-mirror/9a79af11ba00bd8083e2e7170af55bd7b078028b' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:111:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mirror/9a79af11ba00bd8083e2e7170af55bd7b078028b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                               ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:129:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mirror/9a79af11ba00bd8083e2e7170af55bd7b078028b"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                 ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/signal-mirror/9a79af11ba00bd8083e2e7170af55bd7b078028b»/flake.nix' does not exist
+|]) (meta-signal-lojix Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/meta-signal-lojix/f89dab1226df8ab93d9beac2b8632e73aa7c8adc"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/meta-signal-lojix/f89dab1226df8ab93d9beac2b8632e73aa7c8adc' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:115:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-lojix/f89dab1226df8ab93d9beac2b8632e73aa7c8adc"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                   ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:133:
+            1| let flake = builtins.getFlake "github:LiGoldragon/meta-signal-lojix/f89dab1226df8ab93d9beac2b8632e73aa7c8adc"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                     ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/meta-signal-lojix/f89dab1226df8ab93d9beac2b8632e73aa7c8adc»/flake.nix' does not exist
+|]) (meta-signal-spirit LockEdit [|unbumpable pin: ComponentName("meta-signal-spirit") -> schema-rust: several same-name entries pin the producer|]) (signal-mentci Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/signal-mentci/c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/signal-mentci/c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:111:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mentci/c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                               ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:129:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mentci/c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                 ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/signal-mentci/c64d7e432924cf75dd7ccf3e43dd5fc26b9e9691»/flake.nix' does not exist
+|]) (upgrade Verify [|nix build --no-link 'github:LiGoldragon/upgrade/4f745d3ae338a4405c84042acd3b01dc3ce920bc': 2a276c8f0af795ebec' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/gckxwz8anlbp9rmxamjpy1lqq1nk47j3-linkLockedDeps.drv'...
+building '/nix/store/hzpdi5fb9amhqi1n7bx36d7ii58ifyzp-cargo-git-https-github.com-LiGoldragon-signal-upgrade.git-26cc7bb03f528c2e1b1f9c79f8f1a99349d5b7a4.drv'...
+copying 1 paths...
+copying path '/nix/store/ww1l4fwn4cd305w93xai8wvhzl2bjnz2-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/nsirgij0g82jbxkig3nnsli728xvwd81-source.drv'...
+copying 1 paths...
+copying path '/nix/store/cqgvdqp4x857b5zifx1k7vb726405hxq-cargo-git-https-github.com-LiGoldragon-signal-upgrade.git-26cc7bb03f528c2e1b1f9c79f8f1a99349d5b7a4' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/m474ffyk57pk6d0vd0p09gl7f2klg8l6-linkLockedDeps.drv'...
+building '/nix/store/bvifzx7brdbc4rmib1v17v8v07c8rx6x-vendor-cargo-deps.drv'...
+copying 1 paths...
+copying path '/nix/store/ayxhspwvv8i17lb7dvz3hwfn0lnhd0sc-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/hq82j8ndcgbdx7v473m3q62dkkgbd1kw-upgrade-deps-0.1.2.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 3 paths...
+copying path '/nix/store/cf4kgbjijd1xakpj8pdgznld4qf5905f-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/i3k7b3b6avdhdah17kyhl3aw619y0p07-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/n099w6apbjyb8qjyand3ls9nmw0ja23g-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/hq82j8ndcgbdx7v473m3q62dkkgbd1kw-upgrade-deps-0.1.2.drv'...
+copying 1 paths...
+copying path '/nix/store/kvij1x35br239sa2fca0wpx1zgclgrlg-upgrade-deps-0.1.2' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/22j6v63zb5sbhqdz5qj316nnja2sp438-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv'...
+error: build of '/nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/2ncn4q6kj7xaq6zq428nh9pgyma4cfb7-upgrade-0.1.2
+       Last 25 log lines:
+       >     │   └── tracing v0.1.44
+       >     │       ├── pin-project-lite v0.2.17
+       >     │       ├── tracing-attributes v0.1.31 (proc-macro)
+       >     │       │   ├── proc-macro2 v1.0.106 (*)
+       >     │       │   ├── quote v1.0.45 (*)
+       >     │       │   └── syn v2.0.117 (*)
+       >     │       └── tracing-core v0.1.36
+       >     │           └── once_cell v1.21.4
+       >     ├── rkyv v0.8.16 (*)
+       >     ├── rustix v1.1.4
+       >     │   ├── bitflags v2.13.0
+       >     │   └── linux-raw-sys v0.12.1
+       >     ├── signal-frame v0.3.0 (https://github.com/LiGoldragon/signal-frame.git?branch=drop-next#44d22a07) (*)
+       >     ├── thiserror v2.0.18 (*)
+       >     └── tokio v1.52.3 (*)
+       >
+       > note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+       >
+       >
+       > failures:
+       >     nota_text_feature_is_the_only_text_projection_opt_in
+       >
+       > test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+       >
+       > error: test failed, to rerun pass `--test dependency_boundary`
+       For full logs, run:
+         nix log /nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv
+error: Cannot build '/nix/store/wqdnjnzwqrkz7ckk6q1ji6bymfq0g589-upgrade-0.1.2.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/2ncn4q6kj7xaq6zq428nh9pgyma4cfb7-upgrade-0.1.2
+|]) (lojix Verify [|nix build --no-link 'github:LiGoldragon/lojix/47b37cebe766e8ab182c6fd4bc6122a9ec6e5549#checks.x86_64-linux.daemon-binary' 'github:LiGoldragon/lojix/47b37cebe766e8ab182c6fd4bc6122a9ec6e5549#checks.x86_64-linux.daemon-startup-rejects-nota': building '/nix/store/lm809qyd44p5ahh11wca71dm01kzjg9b-lojix-deps-0.4.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 3 paths...
+copying path '/nix/store/b6zwsap769cv1c7jzxwca0cwmwh8gl9l-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/dzdkfv85kvimr830pg8zld2x7v7lm09f-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/g6f3mr177x67f22b8s86878qc36rsfzc-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 0 paths...
+building '/nix/store/8nrgsvdfji4h8gp5wq7bs4n3j2yn35rx-lojix-deps-0.4.0.drv'...
+building '/nix/store/lm809qyd44p5ahh11wca71dm01kzjg9b-lojix-deps-0.4.0.drv'...
+copying 1 paths...
+copying path '/nix/store/xyfx7bwgnrgifc29xxhmjrzax48vmsxs-lojix-deps-0.4.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/4fixr3c26mhf2y2qrp8i3qvyhk2nwd6y-lojix-deps-0.4.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/5p1hpfm7fv8005ia34p94jmzxp3qmhyd-lojix-0.4.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/7qs0gc16fqha05qfzwm0d4pl4wwgsddx-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/5p1hpfm7fv8005ia34p94jmzxp3qmhyd-lojix-0.4.0.drv'...
+building '/nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 0 paths...
+building '/nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv'...
+copying 1 paths...
+copying path '/nix/store/sm6cpin32sidn2qcasp9ilvfl5hx80qg-lojix-0.4.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+error: build of '/nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/38vbdpdchq80q9x142a5gbdng9hm8537-lojix-0.4.0
+       Last 25 log lines:
+       > test user_environment_realize_enters_effect_pipeline ... ok
+       >
+       > test result: ok. 10 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.10s
+       >
+       >      Running tests/horizon_materialization_contract.rs (target/release/deps/horizon_materialization_contract-ac19302a21453320)
+       >
+       > running 2 tests
+       > test nexus_schema_names_horizon_materialization_and_eval_overrides ... FAILED
+       > test runtime_no_longer_rejects_absent_build_attribute_as_unsupported ... ok
+       >
+       > failures:
+       >
+       > ---- nexus_schema_names_horizon_materialization_and_eval_overrides stdout ----
+       >
+       > thread 'nexus_schema_names_horizon_materialization_and_eval_overrides' (1239) panicked at tests/horizon_materialization_contract.rs:12:5:
+       > assertion failed: schema.contains("overrides (Vec FlakeInputOverride)")
+       > note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+       >
+       >
+       > failures:
+       >     nexus_schema_names_horizon_materialization_and_eval_overrides
+       >
+       > test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+       >
+       > error: test failed, to rerun pass `--test horizon_materialization_contract`
+       For full logs, run:
+         nix log /nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv
+error: Cannot build '/nix/store/fh99ll86a6w4gwnam2h16asd69g6p1c7-lojix-0.4.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/38vbdpdchq80q9x142a5gbdng9hm8537-lojix-0.4.0
+error: Cannot build '/nix/store/qz6rgi84avx67mjmfwdl95xllm1lipqa-lojix-daemon-startup-rejects-nota.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/60riprz2vvbr7sr9fsw50gfpskgflabk-lojix-daemon-startup-rejects-nota
+error: Build failed due to failed dependency
+|]) (meta-signal-introspect Verify [|nix build --no-link 'github:LiGoldragon/meta-signal-introspect/7ce650ef475321e410122cfbe4885beef4259df3': e/gbmn5wv0nv0s3akvzqhj5pg9gbbi0vf8-cleaned-mkDummySrc' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/qq0278qj7lnx62fcjym7c6fadm5z2kd5-vendor-cargo-deps.drv'...
+building '/nix/store/rwj11xibisakbw9gid59gzdq2ww1z6dg-source.drv'...
+copying 1 paths...
+copying path '/nix/store/v3rvxvjmiiy51fvyfba9kg310nmx5s28-source' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wdibk71jx9fdzlp19j8qd8svjl4psa9x-meta-signal-introspect-deps-0.1.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 3 paths...
+copying path '/nix/store/cfnachc86ahb0zp4b9mf10ppdk3pj2j7-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/yr4pwiim9b1d9rzx4qlhpy3xwp29cn71-linkLockedDeps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/c4a8ffb9b2ccmpxs2akvp8mbvc6kb0d1-vendor-cargo-deps' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wdibk71jx9fdzlp19j8qd8svjl4psa9x-meta-signal-introspect-deps-0.1.0.drv'...
+copying 1 paths...
+copying path '/nix/store/77vqywk9b9ia2nydfkdj6b3yggj5g9c2-meta-signal-introspect-deps-0.1.0' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/kmx9z08vfyd3zmxqzazcv26sa9x30y98-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv'...
+error: build of '/nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/y5l7xrfzi3wmz1jg8vh2vkcy870wllr7-meta-signal-introspect-0.1.0
+       Last 25 log lines:
+       > decompressing cargo artifacts from /nix/store/77vqywk9b9ia2nydfkdj6b3yggj5g9c2-meta-signal-introspect-deps-0.1.0/target.tar.zst to target
+       > Running phase: updateAutotoolsGnuConfigScriptsPhase
+       > Running phase: configurePhase
+       > will append /build/source/.cargo-home/config.toml with contents of /nix/store/c4a8ffb9b2ccmpxs2akvp8mbvc6kb0d1-vendor-cargo-deps/config.toml
+       > default configurePhase, nothing to do
+       > Running phase: buildPhase
+       > +++ command cargo --version
+       > cargo 1.89.0 (c24e10642 2025-06-23)
+       > +++ command cargo build --release --message-format json-render-diagnostics --locked
+       >    Compiling meta-signal-introspect v0.1.0 (/build/source)
+       >     Finished `release` profile [optimized] target(s) in 0.53s
+       > searching for bins/libs to install from cargo build log at cargoBuildLog8VDx.json
+       > searching for bins/libs complete
+       > Running phase: checkPhase
+       > +++ command cargo test --release --locked
+       >    Compiling meta-signal-introspect v0.1.0 (/build/source)
+       > error[E0063]: missing field `trace_socket_path` in initializer of `IntrospectDaemonConfiguration`
+       >   --> tests/round_trip.rs:21:5
+       >    |
+       > 21 |     IntrospectDaemonConfiguration {
+       >    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `trace_socket_path`
+       >
+       > For more information about this error, try `rustc --explain E0063`.
+       > error: could not compile `meta-signal-introspect` (test "round_trip") due to 1 previous error
+       > warning: build failed, waiting for other jobs to finish...
+       For full logs, run:
+         nix log /nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv
+error: Cannot build '/nix/store/q1s82kwxh3snqlcwyx7180rvqyagliz8-meta-signal-introspect-0.1.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/y5l7xrfzi3wmz1jg8vh2vkcy870wllr7-meta-signal-introspect-0.1.0
+|]) (signal-mentci-client Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/signal-mentci-client/cbfd2e0a66848fb8c22dc42f8ee419b154130ef0"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/signal-mentci-client/cbfd2e0a66848fb8c22dc42f8ee419b154130ef0' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:118:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mentci-client/cbfd2e0a66848fb8c22dc42f8ee419b154130ef0"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                      ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:136:
+            1| let flake = builtins.getFlake "github:LiGoldragon/signal-mentci-client/cbfd2e0a66848fb8c22dc42f8ee419b154130ef0"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                                        ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/signal-mentci-client/cbfd2e0a66848fb8c22dc42f8ee419b154130ef0»/flake.nix' does not exist
+|]) (system LockEdit [|transitive lock resolution for ComponentName("system"):     Updating git repository `https://github.com/LiGoldragon/nota.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/signal-persona.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-system.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-system.git`
+    Updating git repository `https://github.com/LiGoldragon/schema.git`
+    Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-persona.git`
+error: no matching package named `nota-next` found
+location searched: Git repository https://github.com/LiGoldragon/nota-next.git?branch=main
+required by package `signal-system v0.1.0 (https://github.com/LiGoldragon/signal-system.git?branch=main#97ca223e)`
+    ... which satisfies git dependency `signal-system` of package `meta-signal-system v0.1.0 (https://github.com/LiGoldragon/meta-signal-system.git?branch=drop-next#2c5a183f)`
+    ... which satisfies git dependency `meta-signal-system` (locked to 0.1.0) of package `system v0.1.0 (/tmp/synchronizer-lock-system-2029411)`
+|]) (system Verify [|nix build --no-link 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.meta-system-cli-reaches-policy-socket' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-cli-reaches-working-socket' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-daemon-answers-component-supervision-relation' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-daemon-answers-meta-system-relation' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-daemon-answers-status-readiness' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-daemon-applies-spawn-envelope-socket-mode' 'github:LiGoldragon/system/ffd0b74a17587bb6c90f40d170b57b355c43648f#checks.x86_64-linux.system-daemon-returns-typed-unimplemented': v'...
+error: build of '/nix/store/91cb733qqrb6fk9i3pf6332a3bwrs26y-system-deps-0.1.0.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/91cb733qqrb6fk9i3pf6332a3bwrs26y-system-deps-0.1.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/lkzxinmkxh8x6mmy967ydb6gvy53dxwz-system-deps-0.1.0
+       Last 25 log lines:
+       > cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+       > +++ command cargo check --release --locked --all-targets
+       >     Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+       > warning: spurious network error (3 tries remaining): failed to resolve address for github.com: Temporary failure in name resolution; class=Net (12)
+       > warning: spurious network error (2 tries remaining): failed to resolve address for github.com: Temporary failure in name resolution; class=Net (12)
+       > warning: spurious network error (1 try remaining): failed to resolve address for github.com: Temporary failure in name resolution; class=Net (12)
+       > error: failed to get `signal-frame` as a dependency of package `meta-signal-system v0.1.0 (https://github.com/LiGoldragon/meta-signal-system.git?branch=drop-next#2c5a183f)`
+       >     ... which satisfies git dependency `meta-signal-system` (locked to 0.1.0) of package `system v0.1.0 (/build/source)`
+       >
+       > Caused by:
+       >   failed to load source for dependency `signal-frame`
+       >
+       > Caused by:
+       >   unable to update https://github.com/LiGoldragon/signal-frame.git?branch=main
+       >
+       > Caused by:
+       >   failed to clone into: /build/source/.cargo-home/git/db/signal-frame-b20f3b16167ed872
+       >
+       > Caused by:
+       >   network failure seems to have happened
+       >   if a proxy or similar is necessary `net.git-fetch-with-cli` may help here
+       >   https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+       >
+       > Caused by:
+       >   failed to resolve address for github.com: Temporary failure in name resolution; class=Net (12)
+       For full logs, run:
+         nix log /nix/store/91cb733qqrb6fk9i3pf6332a3bwrs26y-system-deps-0.1.0.drv
+error: Cannot build '/nix/store/91cb733qqrb6fk9i3pf6332a3bwrs26y-system-deps-0.1.0.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/lkzxinmkxh8x6mmy967ydb6gvy53dxwz-system-deps-0.1.0
+error: Cannot build '/nix/store/1ngp1cd9bi27i3vn4apbq4hx9j5agxs9-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/sd0nc2s0dfmwi3z5m2ph46517zcz0qn8-system-test-0.1.0
+error: Cannot build '/nix/store/2gj2fq7b8lgzadsmiwd2zc39cc3z56b5-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/km1cqz3sk8wnyy6yq5rpycslrki2zj45-system-test-0.1.0
+error: Cannot build '/nix/store/2qi8sa619ys52pqs1fl8n4085rhqf6hp-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/y1qx5djqz5cqr33v5drj61b6a2acxn7n-system-test-0.1.0
+error: Cannot build '/nix/store/8fwkkyvdji4kgj7ayhdz6mvmias3f049-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/7r3waqlnmrlqplzdlqw568zdn2ff1p6y-system-test-0.1.0
+error: Cannot build '/nix/store/kcsalh0spwkscv2dknybyh7zrnal3j6p-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/b54i8fbgz6ln8vy8n98rrgsjzl0wki6y-system-test-0.1.0
+error: Cannot build '/nix/store/syfm9fdidklrwi2vz2xdp5kibhji5qvh-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/9zhwllpamc19hmfw1z3a8rdffhrq5liv-system-test-0.1.0
+error: Cannot build '/nix/store/vncya059nr979h3q1gwxgdppp5pqr2yy-system-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/m0frd9n1bw2vswsd5inl23a6whl0sapw-system-test-0.1.0
+error: Build failed due to failed dependency
+|]) (harness LockEdit [|transitive lock resolution for ComponentName("harness"):     Updating git repository `https://github.com/LiGoldragon/kameo.git`
+    Updating git repository `https://github.com/LiGoldragon/nota.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-harness.git`
+    Updating git repository `https://github.com/LiGoldragon/triad-runtime.git`
+    Updating git repository `https://github.com/LiGoldragon/message.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-router.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-rust.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-harness.git`
+    Updating git repository `https://github.com/LiGoldragon/meta-signal-message.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-message.git`
+    Updating git repository `https://github.com/LiGoldragon/schema.git`
+    Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-persona.git`
+error: failed to select a version for `signal-persona`.
+    ... required by package `signal-harness v0.3.0 (https://github.com/LiGoldragon/signal-harness.git?branch=main#9f989d24)`
+    ... which satisfies git dependency `signal-harness` of package `meta-signal-harness v0.1.0 (https://github.com/LiGoldragon/meta-signal-harness.git?branch=drop-next#7c57fd8e)`
+    ... which satisfies git dependency `meta-signal-harness` (locked to 0.1.0) of package `harness v0.1.0 (/tmp/synchronizer-lock-harness-2029411)`
+versions that meet the requirements `*` are: 0.2.0
+
+package `signal-persona` links to the native library `signal-persona`, but it conflicts with a previous package which links to `signal-persona` as well:
+package `signal-persona v0.2.0 (https://github.com/LiGoldragon/signal-persona.git?branch=drop-next#1a4b232a)`
+    ... which satisfies git dependency `signal-persona` (locked to 0.2.0) of package `harness v0.1.0 (/tmp/synchronizer-lock-harness-2029411)`
+note: only one package in the dependency graph may specify the same links value to ensure that only one copy of a native library is linked in the final binary
+for more information, see https://doc.rust-lang.org/cargo/reference/resolver.html#links
+help: try to adjust your dependencies so that only one package uses the `links = "signal-persona"` value
+
+failed to select a version for `signal-persona` which could resolve this conflict
+|]) (harness Verify [|nix build --no-link 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-cli-reaches-working-socket' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-accepts-codex-kind-from-single-binary-configuration-argument' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-accepts-fixture-kind-from-single-binary-configuration-argument' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-allows-nested-watchers-for-same-harness-without-cross-closing' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-answers-component-supervision-relation' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-answers-meta-harness-relation' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-answers-status-readiness' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-applies-configured-working-socket-mode-and-owner-only-supervision' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-binds-working-socket-with-configured-mode' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-configuration-rejects-multiple-arguments' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-delivers-message-to-terminal-endpoint' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-rejects-cross-harness-nested-watch-without-leaking-subscription' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-rejects-message-delivery-without-terminal-endpoint' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-returns-typed-unimplemented' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-unwatch-transcript-returns-final-retraction-ack-on-subscribed-stream' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-watch-transcript-returns-typed-snapshot' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.harness-daemon-watch-transcript-stream-delivers-published-observation-and-final-ack' 'github:LiGoldragon/harness/17eb8ea29231893657983d2cc85cc2a7f6769d90#checks.x86_64-linux.meta-harness-cli-reaches-policy-socket': s-deps-0.1.0
+error: Cannot build '/nix/store/1fhz2nsbnq1izlksm4plbd6n5qr92c3p-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/ra1i5wsv8k6x39vlg2ynazac83lk9sx1-harness-test-0.1.0
+error: Cannot build '/nix/store/1wissdc4nwnfs1sdqyj0ay8dg8w8g8h7-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/3hjzgbq6gw46k519548q8jrqnlpvfr2q-harness-test-0.1.0
+error: Cannot build '/nix/store/2lh81n5k3aim3qpsrnxxlxrh3m8m8cx5-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/v5zklzc1pzp6affxxi6yb7frm3q5j75y-harness-test-0.1.0
+error: Cannot build '/nix/store/5dym0hhv05qqj4xym7hz0qmxfc5ak52l-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/jxjclgnwh9dx6w5b6qnw8xyhgynj2g60-harness-test-0.1.0
+error: Cannot build '/nix/store/735bp46lc9hb7xcayy2z8jnsd1nsrnzg-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/nvzrxv1xp61vx98nrmzzzaw8599bx38d-harness-test-0.1.0
+error: Cannot build '/nix/store/9cqgpkw79cvx71ldp1n18rk9vnfvhgqv-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/7dbpd9kvcrvjcravxqmmmn5lfxi55fd9-harness-test-0.1.0
+error: Cannot build '/nix/store/9m419ykqqh095hsnnnh9bvs4w1l7c3qh-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/v1mj7j1z8q0f4cnz6qgy929h9xb5prg0-harness-test-0.1.0
+error: Cannot build '/nix/store/ckzvcn9a9kqfsgldpzzilvv72b7jb0yp-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/282dampz6q2mk1yr3883cs6s885v9vhn-harness-test-0.1.0
+error: Cannot build '/nix/store/jkkzacvb7mcr2y8ii01yfacc4gdj8pyq-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/hm96kmxxl5sg5i69nadrf92iq1n6g10v-harness-test-0.1.0
+error: Cannot build '/nix/store/kipigsa7slrbg1x20zg0mlp3iv5skwgz-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/1wh7cpxw94yi81k2iq4f0l80n6ci4cj5-harness-test-0.1.0
+error: Cannot build '/nix/store/krs4i04bcpk1iiyvjkhz7gncy84mwigv-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/nrbww1yifijsidw8174pxvjal02db7wm-harness-test-0.1.0
+error: Cannot build '/nix/store/lqn9n75cwl9ay67qswcpddcdnh3wkxfp-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/r8m8viq5p9ha04ypgjrf6icnr55aj9iy-harness-test-0.1.0
+error: Cannot build '/nix/store/nb0nql26rf964dnzsm00nwjgcjwnl9h9-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/8kr22wxj2jjvd5ji294gnvkm56dkwczd-harness-test-0.1.0
+error: Cannot build '/nix/store/nsnprwk3zqlcaks198rlm3ig82s5vmgn-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/ny1xn4qa75ghpqhk3hp09fvwl607qnb3-harness-test-0.1.0
+error: Cannot build '/nix/store/p15kxb8hv0cb2i5gs048iymy7q2hblby-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/xzrlvpx1a3c254jxq3rgl376rxx7vvlb-harness-test-0.1.0
+error: Cannot build '/nix/store/vh9vdwg84ja93w4fypgkqsc3i0n40cp0-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/2hj1ni8sifa38ww36ldzsgby687sf91z-harness-test-0.1.0
+error: Cannot build '/nix/store/xgjpipd4f2fqzj1gvwfnfq1bapc7k4y6-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/v8vjz3mr0misb5czn6ih0r9a8xgy8yq5-harness-test-0.1.0
+error: Cannot build '/nix/store/y9r2gx527j06h7aj8sa0x47zgb2wc8mz-harness-test-0.1.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/c4bvpzlaj8d0j7dyzy32jgaiv0sabyly-harness-test-0.1.0
+error: Build failed due to failed dependency
+|]) (mentci Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/mentci/cf4ccd199e6decb2d89b2139dd4c756cb3b7e462"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/mentci/cf4ccd199e6decb2d89b2139dd4c756cb3b7e462' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:104:
+            1| let flake = builtins.getFlake "github:LiGoldragon/mentci/cf4ccd199e6decb2d89b2139dd4c756cb3b7e462"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                        ^
+
+       … in the left operand of the AND (&&) operator
+         at «string»:1:122:
+            1| let flake = builtins.getFlake "github:LiGoldragon/mentci/cf4ccd199e6decb2d89b2139dd4c756cb3b7e462"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                          ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '«github:LiGoldragon/mentci/cf4ccd199e6decb2d89b2139dd4c756cb3b7e462»/flake.nix' does not exist
+|]) (mind ManifestEdit [|unbumpable pin: ComponentName("mind") -> meta-signal-mind: the entry deliberately pins an exact revision|]) (router Verify [|nix build --no-link 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.meta-router-cli-reaches-policy-socket' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-cli-reaches-working-observation-socket' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-daemon-accepts-router-observation-frames' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-daemon-accepts-signal-message-only' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-daemon-answers-component-supervision-relation' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-daemon-answers-router-summary-query' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-daemon-applies-spawn-envelope-socket-mode' 'github:LiGoldragon/router/5f9ca4dc0eb1e7d1e2f62c5a376aa807cdb63955#checks.x86_64-linux.router-generated-daemon-answers-working-and-meta-sockets': sing objects:  45% (79/174)        remote: Compressing objects:  46% (81/174)        remote: Compressing objects:  47% (82/174)        remote: Compressing objects:  48% (84/174)        remote: Compressing objects:  49% (86/174)        remote: Compressing objects:  50% (87/174)        remote: Compressing objects:  51% (89/174)        remote: Compressing objects:  52% (91/174)        remote: Compressing objects:  53% (93/174)        remote: Compressing objects:  54% (94/174)        remote: Compressing objects:  55% (96/174)        remote: Compressing objects:  56% (98/174)        remote: Compressing objects:  57% (100/174)        remote: Compressing objects:  58% (101/174)        remote: Compressing objects:  59% (103/174)        remote: Compressing objects:  60% (105/174)        remote: Compressing objects:  61% (107/174)        remote: Compressing objects:  62% (108/174)        remote: Compressing objects:  63% (110/174)        remote: Compressing objects:  64% (112/174)        remote: Compressing objects:  65% (114/174)        remote: Compressing objects:  66% (115/174)        remote: Compressing objects:  67% (117/174)        remote: Compressing objects:  68% (119/174)        remote: Compressing objects:  69% (121/174)        remote: Compressing objects:  70% (122/174)        remote: Compressing objects:  71% (124/174)        remote: Compressing objects:  72% (126/174)        remote: Compressing objects:  73% (128/174)        remote: Compressing objects:  74% (129/174)        remote: Compressing objects:  75% (131/174)        remote: Compressing objects:  76% (133/174)        remote: Compressing objects:  77% (134/174)        remote: Compressing objects:  78% (136/174)        remote: Compressing objects:  79% (138/174)        remote: Compressing objects:  80% (140/174)        remote: Compressing objects:  81% (141/174)        remote: Compressing objects:  82% (143/174)        remote: Compressing objects:  83% (145/174)        remote: Compressing objects:  84% (147/174)        remote: Compressing objects:  85% (148/174)        remote: Compressing objects:  86% (150/174)        remote: Compressing objects:  87% (152/174)        remote: Compressing objects:  88% (154/174)        remote: Compressing objects:  89% (155/174)        remote: Compressing objects:  90% (157/174)        remote: Compressing objects:  91% (159/174)        remote: Compressing objects:  92% (161/174)        remote: Compressing objects:  93% (162/174)        remote: Compressing objects:  94% (164/174)        remote: Compressing objects:  95% (166/174)        remote: Compressing objects:  96% (168/174)        remote: Compressing objects:  97% (169/174)        remote: Compressing objects:  98% (171/174)        remote: Compressing objects:  99% (173/174)        remote: Compressing objects: 100% (174/174)        remote: Compressing objects: 100% (174/174), done.        
+error:
+       … while calling the 'derivationStrict' builtin
+         at «nix-internal»/derivation-internal.nix:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
+
+       … while evaluating derivation 'router-test-0.4.1'
+         whose name attribute is located at «github:LiGoldragon/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57?narHash=sha256-EHq1/OX139R1RvBzOJ0aMRT3xnWyqtHBRUBuO1gFzjI%3D»/pkgs/stdenv/generic/make-derivation.nix:541:11
+
+       … while evaluating attribute 'cargoArtifacts' of derivation 'router-test-0.4.1'
+         at «github:ipetkov/crane/6d015ea29630b7ad2402841386da2cb617a470a7?narHash=sha256-cM/AuKy5tMhwOOQIbha8ZRRMHVfNf7cv2aljIw%2BqoCg%3D»/lib/mkCargoDerivation.nix:92:13:
+           91|   // {
+           92|     inherit cargoArtifacts;
+             |             ^
+           93|
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Failed to fetch git repository 'https://github.com/LiGoldragon/mirror.git'
+|]) (spirit Verify [|nix build --no-link 'github:LiGoldragon/spirit/af5cf6be478e8a47aabc9d8f575543f767cfdeb5': building '/nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 7 paths...
+copying path '/nix/store/0cck42lyf5lk1vdnxrkqrsr7ypc8i1wj-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/5zvvf5giqdpac58pzyvkk7ad6cnx7r21-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/87c6hpz8f3rj37czxpi36lqvxhdlypp8-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/v407mnpmriazk2mh6bm124a8w2hk70xa-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/xy9fppg980l83443vsa5mkmx7mv8i8va-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/yjh8gs2jfgi2f83nwwz3r2y3yd9szkih-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying path '/nix/store/yxc39c4br63rfip960bhvlll5zxkrdlj-source' to 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+building '/nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv'...
+error: build of '/nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome' failed: Cannot build '/nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/9gckx5zd4crspw6w6hv04hjg6z8jfywl-spirit-source-with-local-schema-patches
+       Last 1 log lines:
+       > substituteStream() in derivation spirit-source-with-local-schema-patches: ERROR: pattern mirror\\ =\\ \\{\\ git\\ =\\ \\"https://github.com/LiGoldragon/mirror.git\\"\\,\\ branch\\ =\\ \\"main\\"\\,\\ default-features\\ =\\ false\\,\\ optional\\ =\\ true\\ \\} doesn't match anything in file '/nix/store/9gckx5zd4crspw6w6hv04hjg6z8jfywl-spirit-source-with-local-schema-patches/Cargo.toml'
+       For full logs, run:
+         nix log /nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv
+error:
+       … while calling the 'derivationStrict' builtin
+         at «nix-internal»/derivation-internal.nix:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
+
+       … while evaluating derivation 'spirit'
+         whose name attribute is located at «github:NixOS/nixpkgs/f9d8b65950353691ab56561e7c73d2e1063d810b?narHash=sha256-Ly4j75O8ICaSQx3uxPnwk2x7PMF0XQvn5r0c3yBA7FI%3D»/pkgs/stdenv/generic/make-derivation.nix:647:11
+
+       … while evaluating attribute 'buildCommand' of derivation 'spirit'
+         at «github:NixOS/nixpkgs/f9d8b65950353691ab56561e7c73d2e1063d810b?narHash=sha256-Ly4j75O8ICaSQx3uxPnwk2x7PMF0XQvn5r0c3yBA7FI%3D»/pkgs/build-support/trivial-builders/default.nix:81:17:
+           80|         enableParallelBuilding = true;
+           81|         inherit buildCommand name;
+             |                 ^
+           82|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Cannot build '/nix/store/wzp57wras2l103n67y9y07vy82ldbsy5-spirit-source-with-local-schema-patches.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/9gckx5zd4crspw6w6hv04hjg6z8jfywl-spirit-source-with-local-schema-patches
+|]) (CriomOS-home Verify [|nix build --no-link 'github:LiGoldragon/CriomOS-home/6da5760c33b97303f288467b71580d63f51934b2': error: flake 'github:LiGoldragon/CriomOS-home/6da5760c33b97303f288467b71580d63f51934b2' does not provide attribute 'packages.x86_64-linux.default' or 'defaultPackage.x86_64-linux'
+|]) (persona Verify [|nix build --no-link 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-component-ready-rejects-wrong-socket-mode' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-component-ready-requires-socket-metadata-from-spawn-envelope' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-launches-message-router-topology-through-engine-supervisor' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-launches-nix-built-prototype-topology' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-launches-prototype-supervised-components-through-engine-supervisor' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-launches-three-harness-chain-topology-through-engine-supervisor' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-persists-cli-mutation-to-manager-store' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-daemon-three-harness-chain-smoke-script-builds' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-engine-layout-assigns-socket-modes-by-component-boundary' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-handoff-router-binds-socket-boundaries' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-message-daemon-stamps-origin-via-tap' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-message-router-topology-spawn-envelope-has-one-peer-socket' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-router-daemon-accepts-stamped-submission' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-router-daemon-rejects-unstamped-submission' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-router-daemon-serves-inbox-after-submit' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-spawn-envelope-carries-component-paths-and-peer-sockets' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.persona-three-harness-chain-writes-instance-specific-daemon-configurations' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-chain-reply-bytes' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-chain-reply-nota' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-chain-request-bytes' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-chain-request-nota' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-chain-summary' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-inbox-listing-reply-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-inbox-query-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-malformed-bytes-decode-rejects' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-message-channel-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-message-unimplemented-reply-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-origin-external-network-peer-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-origin-external-non-owner-uid-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-origin-external-owner-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-origin-internal-mind-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-origin-internal-router-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-stamped-submission-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-submission-accepted-reply-round-trip' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-truncated-frame-decode-rejects' 'github:LiGoldragon/persona/21a95bcc6e79c6bdaadabc9cd563cd1ddf2e6eae#checks.x86_64-linux.wire-wrong-frame-kind-decode-rejects': tas:  23% (29/125)Resolving deltas:  24% (30/125)Resolving deltas:  25% (32/125)Resolving deltas:  26% (33/125)Resolving deltas:  27% (34/125)Resolving deltas:  28% (35/125)Resolving deltas:  29% (37/125)Resolving deltas:  30% (38/125)Resolving deltas:  31% (39/125)Resolving deltas:  32% (40/125)Resolving deltas:  33% (42/125)Resolving deltas:  34% (43/125)Resolving deltas:  35% (44/125)Resolving deltas:  36% (45/125)Resolving deltas:  37% (47/125)Resolving deltas:  38% (48/125)Resolving deltas:  39% (49/125)Resolving deltas:  40% (51/125)Resolving deltas:  41% (52/125)Resolving deltas:  42% (53/125)Resolving deltas:  43% (54/125)Resolving deltas:  44% (55/125)Resolving deltas:  45% (57/125)Resolving deltas:  46% (58/125)Resolving deltas:  47% (59/125)Resolving deltas:  48% (60/125)Resolving deltas:  49% (62/125)Resolving deltas:  50% (63/125)Resolving deltas:  51% (64/125)Resolving deltas:  52% (65/125)Resolving deltas:  53% (67/125)Resolving deltas:  54% (68/125)Resolving deltas:  55% (69/125)Resolving deltas:  56% (70/125)Resolving deltas:  57% (72/125)Resolving deltas:  58% (73/125)Resolving deltas:  59% (74/125)Resolving deltas:  60% (75/125)Resolving deltas:  61% (77/125)Resolving deltas:  64% (80/125)Resolving deltas:  65% (82/125)Resolving deltas:  66% (83/125)Resolving deltas:  67% (84/125)Resolving deltas:  68% (85/125)Resolving deltas:  69% (87/125)Resolving deltas:  70% (88/125)Resolving deltas:  71% (89/125)Resolving deltas:  72% (90/125)Resolving deltas:  75% (94/125)Resolving deltas:  76% (95/125)Resolving deltas:  78% (98/125)Resolving deltas:  79% (99/125)Resolving deltas:  80% (100/125)Resolving deltas:  81% (102/125)Resolving deltas:  82% (103/125)Resolving deltas:  83% (104/125)Resolving deltas:  84% (105/125)Resolving deltas:  85% (107/125)Resolving deltas:  87% (109/125)Resolving deltas:  88% (110/125)Resolving deltas:  89% (112/125)Resolving deltas:  90% (113/125)Resolving deltas:  91% (114/125)Resolving deltas:  92% (115/125)Resolving deltas:  93% (117/125)Resolving deltas:  94% (118/125)Resolving deltas:  95% (119/125)Resolving deltas:  96% (120/125)Resolving deltas:  97% (122/125)Resolving deltas:  98% (123/125)Resolving deltas:  99% (124/125)Resolving deltas: 100% (125/125)Resolving deltas: 100% (125/125), done.
+From github.com:LiGoldragon/meta-signal-router
+ * branch            ba55f5aeae493dc49ac5bf948365cc4759e1112d -> FETCH_HEAD
+error:
+       … while calling the 'derivationStrict' builtin
+         at «nix-internal»/derivation-internal.nix:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
+
+       … while evaluating derivation 'persona-daemon-launches-nix-built-message-router-topology'
+         whose name attribute is located at «github:LiGoldragon/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57?narHash=sha256-EHq1/OX139R1RvBzOJ0aMRT3xnWyqtHBRUBuO1gFzjI%3D»/pkgs/stdenv/generic/make-derivation.nix:541:11
+
+       … while evaluating attribute 'buildCommand' of derivation 'persona-daemon-launches-nix-built-message-router-topology'
+         at «github:LiGoldragon/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57?narHash=sha256-EHq1/OX139R1RvBzOJ0aMRT3xnWyqtHBRUBuO1gFzjI%3D»/pkgs/build-support/trivial-builders/default.nix:80:17:
+           79|         enableParallelBuilding = true;
+           80|         inherit buildCommand name;
+             |                 ^
+           81|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: function 'outputs' called without required argument 'rust-build'
+       at «github:LiGoldragon/spirit/af5cf6be478e8a47aabc9d8f575543f767cfdeb5?narHash=sha256-wLYuWPQ9f1ftd4OkEYr/qNg9d5R/xXE0UwTmpSW/GHg%3D»/flake.nix:146:5:
+          145|   outputs =
+          146|     {
+             |     ^
+          147|       self,
+|]) (CriomOS Verify [|nix eval --json --expr 'let flake = builtins.getFlake "github:LiGoldragon/CriomOS/088d28a0cbf8da1460d77cce45d27d60a3a67f30"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]': unpacking 'github:LiGoldragon/CriomOS/088d28a0cbf8da1460d77cce45d27d60a3a67f30' into the Git cache...
+error:
+       … while evaluating a branch condition
+         at «string»:1:105:
+            1| let flake = builtins.getFlake "github:LiGoldragon/CriomOS/088d28a0cbf8da1460d77cce45d27d60a3a67f30"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                         ^
+
+       … in the right operand of the AND (&&) operator
+         at «string»:1:123:
+            1| let flake = builtins.getFlake "github:LiGoldragon/CriomOS/088d28a0cbf8da1460d77cce45d27d60a3a67f30"; in if flake ? checks && flake.checks ? "x86_64-linux" then builtins.attrNames flake.checks."x86_64-linux" else [ ]
+             |                                                                                                                           ^
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: CriomOS: no system input was provided.
+
+       The `system` flake input is a stub by default. Provide a real
+       one by overriding the input — typically via the `lojix`
+       orchestrator tool, which derives the system tuple from
+       `horizon.node.system` and writes a tiny content-addressed
+       flake whose only output is `system = "x86_64-linux"` (or
+       similar). The same content yields the same narHash, which lets
+       the pkgs-flake's evaluation cache stay warm across deploys
+       that target the same system.
+
+       Use the deploy materialization tool rather than hand-writing
+       local path override commands.
+|])])

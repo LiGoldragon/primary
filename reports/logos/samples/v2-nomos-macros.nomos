@@ -1,0 +1,24 @@
+;; Nomos macro definitions strawman [proposal] — scheme-current delimiters.
+;; Result section = quasiquoted logos template; Realize.(...) = unquote (realized object);
+;; pure/quoted = default. Input section = schema-typed, destructured by name (dotted field
+;; access binding.field, ruling 18). See reports/logos/nomos-macro-model-v0.md Part C.
+
+Macro.(
+  wireNewtype
+  Input.( declaration.SchemaNewtype )
+  Result.(
+    Public.Newtype.(
+      Realize.(declaration.name)
+      [ Literal.[rustfmt.skip]
+        ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
+        Derive.[rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq] ]
+      Realize.(declaration.inner)
+    )
+  )
+)
+
+Macro.(
+  vector
+  Input.( application.SchemaVector )
+  Result.( LogosGeneric.( Vec Realize.(application.element) ) )
+)

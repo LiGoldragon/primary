@@ -1,0 +1,22 @@
+; The Protos structural substrate's representable public data anatomy. Borrowed
+; reader helpers and tuple wrapper implementation details are not reflected as
+; separate Ethos shapes.
+Library
+[]
+[ Extent.{ Integer Integer }
+  Symbol.String
+  Separator.[ Period Exclamation Colon ]
+  Enclosure.[ Braced Bracketed Angled ]
+  Boundary.[ Guillemets Parentheses ]
+  Protos.[ Headed.{ Extent Symbol Option<Protos> Separator Protos }
+           Enclosed.{ Extent Enclosure Vector<Protos> }
+           Opaque.{ Extent Boundary String }
+           Bare.{ Extent String } ]
+  Error.{ Extent Problem }
+  Problem.[ Empty Multiple Unclosed.String Unexpected.String MissingHead MissingBody Budget Depth ]
+  ReaderBudget.{ Integer } ]
+[ Textualizable.[ textualize.[ String ] ]
+  Canonicalizable.[] ]
+[]
+; Rust char payloads are represented as one-character String positions because
+; Character is not an Ethos intrinsic.

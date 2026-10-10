@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unity Web DOM tests</title>
+    <link rel="stylesheet" href="../unity.css">
+    <style>
+      .test-report { max-width: 920px; margin: 24px auto; padding: 20px; }
+      .test-results { display: grid; gap: 8px; padding-left: 24px; }
+      .test-pass { color: #087f78; }
+      .test-fail { color: #a33a43; white-space: pre-wrap; }
+      .test-fixtures { display: none; }
+    </style>
+  </head>
+  <body>
+    <main class="test-report">
+      <h1>Unity Web DOM tests</h1>
+      <p id="test-summary" aria-live="polite">Running…</p>
+      <ol id="test-results" class="test-results"></ol>
+    </main>
+    <div id="test-fixtures" class="test-fixtures" aria-hidden="true"></div>
+    <script type="module" src="browser-tests.js"></script>
+  </body>
+</html>

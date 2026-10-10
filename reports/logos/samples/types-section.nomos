@@ -1,0 +1,39 @@
+;; Nomos strawman v0 — the FIRST concrete Nomos syntax ever written.
+;; Nomos defines how a schema dialect converts into logos. These definitions are
+;; CONSUMED in the logos daemon at the schema->logos conversion site [ruling 2026-07-11].
+;; Dispatch is named-then-structural; the table keys on minted identity (names via
+;; NameTable); an unknown X.() is an error [rulings 2026-07-11].
+;; EVERYTHING below is a [proposal] for psyche markup. No Nomos has landed.
+
+;; ---- Named macro: Vector -> Vec<T> ----
+;; A named macro is present in the macro table; Vector.(T) dispatches to this entry.
+Macro.{
+  Vector
+  Match.( Head.(Vector) Arity.(1) )
+  Lower.( RustGeneric.( Vec Element ) )
+}
+
+;; ---- Named macro: Map -> BTreeMap<K, V> ----
+;; Illustrative (no Map in the sampled schema); a two-argument named macro.
+Macro.{
+  Map
+  Match.( Head.(Map) Arity.(2) )
+  Lower.( RustGeneric.( BTreeMap Key Value ) )
+}
+
+;; ---- Structural macro: the Types section's "particular-struct definition" ----
+;; Applies to a PascalCase head NOT in the macro table, applied to a brace body,
+;; inside a Types section. This is the per-section positional default.
+Structural.{
+  ParticularStruct
+  Applies.( Section.(Types) UnknownHead Brace )
+  Derives.(
+    RustfmtSkip
+    CfgAttr.( nota-text Derive.( NotaDecode NotaDecodeTraced NotaEncode ) )
+    Derive.( Archive Serialize Deserialize Clone Debug PartialEq Eq )
+  )
+  Lower.(
+    Single.( TupleNewtype.( Head Field ) )
+    Multiple.( NamedStruct.( Head Fields SnakeCaseFromType ) )
+  )
+}

@@ -1,0 +1,14 @@
+{
+  "reason": "User taking Prometheus offline and requiring immediate wind-down",
+  "action": "SIGINT sent to all processes in both audit service cgroups; no final report existed at interruption",
+  "codex_thread_id": "01a08a30-d8e6-74f2-95f7-4449a68266fe",
+  "claude_transcript_candidates": [
+    {
+      "path": "/home/li/.claude/projects/-home-li-primary/0f871a65-83f2-4d45-8fc7-08a688f5a14b.jsonl",
+      "line": 3,
+      "session_id": "0f871a65-83f2-4d45-8fc7-08a688f5a14b"
+    }
+  ],
+  "service_state": "Id=flow857335-audit-opus.service\nActiveState=inactive\nSubState=dead\nExecMainCode=0\nExecMainStatus=0\n\nId=flow857335-audit-sol.service\nActiveState=inactive\nSubState=dead\nExecMainCode=0\nExecMainStatus=0\n",
+  "transcript_helper": "unavailable; limited fallback searched only user records in six newest project transcripts"
+}

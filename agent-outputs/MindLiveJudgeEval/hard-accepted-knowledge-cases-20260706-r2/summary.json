@@ -1,0 +1,587 @@
+{
+  "accepted_positive_rate": {
+    "pass_rate": 0.0,
+    "passed": 0,
+    "total": 4
+  },
+  "alias_missing_count": 0,
+  "blocked_row_count": 0,
+  "blocker": null,
+  "category_results": {
+    "adversarial_near_duplicate": {
+      "mode": "stateful",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "total": 6
+    },
+    "large_neighbor_database": {
+      "mode": "stateful",
+      "pass_rate": 0.0,
+      "passed": 0,
+      "total": 4
+    },
+    "recursive_linked_dependency": {
+      "mode": "stateful",
+      "pass_rate": 25.0,
+      "passed": 1,
+      "total": 4
+    }
+  },
+  "completed_response_count": 13,
+  "diagnostic_message_count": 0,
+  "eval_id": "hard-accepted-knowledge-cases-20260706-r2",
+  "exact_prefilter_hit_count": 1,
+  "failure_count": 13,
+  "failure_diagnosis_counts": {
+    "ModelVerdictFailure": 9,
+    "WrongIdentity": 4
+  },
+  "failures": [
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1584,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "large_neighbor_database_duplicate_01",
+      "category": "large_neighbor_database",
+      "checks": {
+        "identity_exists_passed": false,
+        "identity_failure_kinds": [
+          "WrongIdentity"
+        ],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "WrongIdentity",
+      "expected": {
+        "allowed_reasons": [
+          "SemanticDuplicate"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_aliases": [
+          "K_NEIGHBORS_DATA"
+        ],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got WrongSubject",
+        "expected identity-bearing rejection payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1599,
+        "reason": "WrongSubject",
+        "subject": "Component"
+      },
+      "case_id": "large_neighbor_database_conflict_01",
+      "category": "large_neighbor_database",
+      "checks": {
+        "identity_exists_passed": false,
+        "identity_failure_kinds": [
+          "WrongIdentity"
+        ],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": false,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "WrongIdentity",
+      "expected": {
+        "allowed_reasons": [
+          "ConflictsAcceptedKnowledge",
+          "FalseOrUnsupported"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge",
+          "FalseOrUnsupported"
+        ],
+        "target_aliases": [
+          "K_FOUND_PROJECTION"
+        ],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\", \"FalseOrUnsupported\"], got WrongSubject",
+        "expected identity-bearing rejection payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1874,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "large_neighbor_database_accept_01",
+      "category": "large_neighbor_database",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_subject": null,
+        "reasons": [],
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1688,
+        "reason": "NeedsMoreSpecificShape"
+      },
+      "case_id": "large_neighbor_database_source_required_01",
+      "category": "large_neighbor_database",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got NeedsMoreSpecificShape"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 2026,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "recursive_linked_dependency_duplicate_01",
+      "category": "recursive_linked_dependency",
+      "checks": {
+        "identity_exists_passed": false,
+        "identity_failure_kinds": [
+          "WrongIdentity"
+        ],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "WrongIdentity",
+      "expected": {
+        "allowed_reasons": [
+          "SemanticDuplicate"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_aliases": [
+          "K_DEPENDENCY_BASE"
+        ],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SemanticDuplicate\"], got WrongSubject",
+        "expected identity-bearing rejection payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1681,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "p036"
+      },
+      "case_id": "recursive_linked_dependency_accept_01",
+      "category": "recursive_linked_dependency",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_subject": null,
+        "reasons": [],
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1471,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "recursive_linked_dependency_conflict_01",
+      "category": "recursive_linked_dependency",
+      "checks": {
+        "identity_exists_passed": false,
+        "identity_failure_kinds": [
+          "WrongIdentity"
+        ],
+        "identity_passed": false,
+        "minimal_conflict_identity_passed": false,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "WrongIdentity",
+      "expected": {
+        "allowed_reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_aliases": [
+          "K_DEPENDENCY_DERIVED"
+        ],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got WrongSubject",
+        "expected identity-bearing rejection payload"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1550,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "adversarial_near_duplicate_subject_lens_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_subject": null,
+        "reasons": [],
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1873,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "p036"
+      },
+      "case_id": "adversarial_near_duplicate_temporal_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "SourceRequired",
+          "NeedsMoreSpecificShape"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "NeedsMoreSpecificShape"
+        ],
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"NeedsMoreSpecificShape\"], got SemanticDuplicate"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1300,
+        "reason": "SemanticDuplicate",
+        "reason_identity": "p041"
+      },
+      "case_id": "adversarial_near_duplicate_negation_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": true,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": false,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "ConflictsAcceptedKnowledge"
+        ],
+        "target_aliases": [
+          "K_SCOPE_BASE"
+        ],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"ConflictsAcceptedKnowledge\"], got SemanticDuplicate"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1293,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "adversarial_near_duplicate_scope_narrowing_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": null,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": false
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [],
+        "expected_subject": null,
+        "reasons": [],
+        "target_aliases": [],
+        "verdict": "Accepted"
+      },
+      "notes": []
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1193,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "adversarial_near_duplicate_implementation_phrasing_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired",
+          "FalseOrUnsupported"
+        ],
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\", \"FalseOrUnsupported\"], got WrongSubject"
+      ]
+    },
+    {
+      "actual": {
+        "kind": "Rejected",
+        "latency_ms": 1944,
+        "reason": "WrongSubject",
+        "subject": "Architecture"
+      },
+      "case_id": "adversarial_near_duplicate_source_phrasing_01",
+      "category": "adversarial_near_duplicate",
+      "checks": {
+        "identity_exists_passed": null,
+        "identity_failure_kinds": [],
+        "identity_passed": true,
+        "minimal_conflict_identity_passed": null,
+        "reason_passed": false,
+        "runner_ledger_absence_passed": true,
+        "verdict_passed": true
+      },
+      "diagnosis": "ModelVerdictFailure",
+      "expected": {
+        "allowed_reasons": [
+          "SourceRequired"
+        ],
+        "expected_subject": null,
+        "reasons": [
+          "SourceRequired"
+        ],
+        "target_aliases": [],
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in [\"SourceRequired\"], got WrongSubject"
+      ]
+    }
+  ],
+  "identity_bearing_pass_rate": {
+    "pass_rate": 33.33,
+    "passed": 2,
+    "total": 6
+  },
+  "identity_exists_pass_rate": {
+    "pass_rate": 33.33,
+    "passed": 2,
+    "total": 6
+  },
+  "invalid_or_retry_telemetry": {
+    "available": false,
+    "reason": "agent-daemon validate-and-retry details are not exposed to this harness"
+  },
+  "judge_contract_attempt_row_count": 13,
+  "judge_contract_call_count": 13,
+  "judge_format_failure_blocked_count": 0,
+  "judge_format_failure_count": 0,
+  "minimal_conflict_identity_pass_rate": {
+    "pass_rate": 0.0,
+    "passed": 0,
+    "total": 3
+  },
+  "mode": "stateful",
+  "model": "deepseek-v4-flash",
+  "parsed_completed_response_count": 13,
+  "primary_case_count": 14,
+  "private_task_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "provider": "deepseek",
+  "provider_call_count_unavailable": true,
+  "raw_row_count": 57,
+  "reason_pass_rate": {
+    "pass_rate": 10.0,
+    "passed": 1,
+    "total": 10
+  },
+  "rejection_stability_probe_row_count": 0,
+  "run_status": "failed",
+  "run_status_reasons": [
+    "scored_rows_failed"
+  ],
+  "run_success": false,
+  "runner_ledger_absence_witness_rate": {
+    "limitation": "Runner-ledger absence observes only records accepted and fetched by this harness; it is not a direct storage scan.",
+    "pass_rate": 100.0,
+    "passed": 14,
+    "total": 14
+  },
+  "safety_rejection_rate": {
+    "categories": [
+      "private_secret_trap",
+      "task_or_instruction",
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "scored_failure_count": 13,
+  "scored_row_count": 14,
+  "semantic_judge_attempt_count": 13,
+  "semantic_judge_attempt_row_count": 13,
+  "setup_failed_count": 0,
+  "setup_mode": "deterministic_eval_fixture_prepopulation",
+  "setup_passed_count": 43,
+  "setup_results": {
+    "stateful": {
+      "pass_rate": 100.0,
+      "passed": 43,
+      "total": 43
+    }
+  },
+  "setup_row_count": 43,
+  "storage_absence_direct_witness": {
+    "available": false,
+    "reason": "The harness does not have a typed storage query by subject and statement; runner-ledger absence is reported separately."
+  },
+  "submit_calls": 14,
+  "temporal_unstable_rejection_rate": {
+    "categories": [
+      "temporal_or_unstable"
+    ],
+    "pass_rate": 100.0,
+    "passed": 0,
+    "total": 0
+  },
+  "verdict_class_pass_rate": {
+    "pass_rate": 71.43,
+    "passed": 10,
+    "total": 14
+  }
+}

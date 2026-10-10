@@ -1,0 +1,644 @@
+<!--
+DESIGN PLAN
+Palette (light ground; dark theme redefines the same tokens):
+  Slate Ink #16202B  text and diagram strokes
+  Vellum    #EEF1F4  page ground, a cool-biased grey
+  Socket    #2E6F9E  accent: the wire, the live edge, the emphasised hop
+  Bronze    #A06A21  provenance: repository names and source captions
+  Plum      #9B4A63  defect and divergence marks only, never decoration
+Type: IBM Plex Sans (headings, body) with a system sans fallback; IBM Plex Mono
+(datom, ethos, Rust, paths, every diagram label) with ui-monospace fallbacks.
+Layout: one measured column of numbered sections in the order the signal travels, each
+opening with a full-width inline-SVG figure the prose then annotates.
+-->
+<title>Orchestrate Anatomy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{
+--ground:#EEF1F4; --panel:#FFFFFF; --sunken:#E3E8ED;
+--ink:#16202B; --muted:#5B6B7A; --rule:#CAD4DD;
+--socket:#2E6F9E; --bronze:#A06A21; --plum:#9B4A63;
+--wash:#DCE6EE;
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]){
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+}
+:root[data-theme="dark"]{
+--ground:#111922; --panel:#18222D; --sunken:#0C1319;
+--ink:#DCE5EC; --muted:#8FA0AF; --rule:#2B3A47;
+--socket:#6FB2DE; --bronze:#D7A257; --plum:#D2879E;
+--wash:#1D2B37;
+}
+*{box-sizing:border-box}
+body{
+background:var(--ground); color:var(--ink);
+font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+font-size:15px; line-height:1.6; margin:0;
+}
+.page{max-width:78rem;margin:0 auto;padding:44px 24px 80px;display:flex;flex-direction:column;gap:46px}
+header.top{display:flex;flex-direction:column;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:22px}
+h1{font-size:2.35rem;line-height:1.1;margin:0;font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+.stand{max-width:62ch;color:var(--muted);margin:0}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);margin:0}
+.revs{display:flex;flex-wrap:wrap;gap:6px 10px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;color:var(--muted)}
+.revs span{border:1px solid var(--rule);border-radius:2px;padding:2px 7px;background:var(--panel)}
+section{display:flex;flex-direction:column;gap:18px}
+h2{font-size:1.35rem;margin:0;font-weight:600;letter-spacing:-.01em;display:flex;gap:12px;align-items:baseline;text-wrap:balance}
+h2 .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.85rem;color:var(--socket);font-weight:500}
+h3{font-size:1rem;margin:0;font-weight:600}
+p{margin:0;max-width:70ch}
+figure{margin:0;display:flex;flex-direction:column;gap:9px;background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:16px}
+.scroll{overflow-x:auto}
+figure svg{display:block;max-width:100%;height:auto;min-width:640px}
+figcaption{font-size:.83rem;color:var(--muted);max-width:76ch}
+.src{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.7rem;color:var(--bronze);word-break:break-word}
+pre{margin:0;background:var(--sunken);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;overflow-x:auto;
+font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;line-height:1.55;color:var(--ink)}
+code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.86em;background:var(--wash);padding:.5px 4px;border-radius:2px}
+table{border-collapse:collapse;width:100%;font-size:.84rem;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;
+border-bottom:1px solid var(--ink);padding:6px 12px 6px 0;vertical-align:bottom}
+td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td code{background:none;padding:0;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.note{border-left:3px solid var(--rule);padding:2px 0 2px 14px;color:var(--muted);font-size:.87rem;max-width:72ch}
+.tag{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+border:1px solid currentColor;border-radius:2px;padding:1px 6px;white-space:nowrap}
+.t-obs{color:var(--socket)} .t-inf{color:var(--bronze)} .t-unk{color:var(--plum)}
+.defect{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--plum);border-radius:3px;
+padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.defect h3{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.minor{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.minor h3{font-size:.92rem}
+footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--muted);font-size:.8rem;display:flex;flex-direction:column;gap:6px}
+/* diagram tokens */
+.bx{fill:var(--panel);stroke:var(--rule);stroke-width:1}
+.bx-s{fill:var(--panel);stroke:var(--socket);stroke-width:1.5}
+.bx-w{fill:var(--wash);stroke:var(--rule);stroke-width:1}
+.bx-p{fill:var(--panel);stroke:var(--plum);stroke-width:1.5}
+.bx-o{fill:none;stroke:var(--rule);stroke-width:1;stroke-dasharray:4 3}
+.t{fill:var(--ink);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px}
+.tb{fill:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;font-weight:600}
+.ts{fill:var(--muted);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tr{fill:var(--bronze);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:8.8px}
+.ta{fill:var(--socket);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.tp{fill:var(--plum);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.2px}
+.ln{stroke:var(--ink);stroke-width:1.2;fill:none}
+.ln-m{stroke:var(--muted);stroke-width:1;fill:none}
+.ln-s{stroke:var(--socket);stroke-width:1.6;fill:none}
+.ln-p{stroke:var(--plum);stroke-width:1.4;fill:none}
+.ln-d{stroke:var(--muted);stroke-width:1;fill:none;stroke-dasharray:4 4}
+.life{stroke:var(--rule);stroke-width:1;stroke-dasharray:3 4}
+.ah{fill:var(--ink)} .ah-s{fill:var(--socket)} .ah-p{fill:var(--plum)} .ah-m{fill:var(--muted)}
+:focus-visible{outline:2px solid var(--socket);outline-offset:2px}
+</style>
+<div class="page">
+<header class="top">
+<p class="eyebrow">Orchestrate &middot; the concrete Nexus &middot; read 2026-09-18</p>
+<h1>Orchestrate Anatomy</h1>
+<p class="stand">Every part between a typed line and a durable lock: the two signal ethos files, the datom boundary, the frame on the wire, the one actor behind both sockets, and the three places where what runs and what is designed have come apart. Every claim carries its source.</p>
+<div class="revs">
+<span>orchestrate 9070cbb8</span><span>signal-orchestrate e7221190</span><span>meta-signal-orchestrate 4279ad05</span><span>signal 8f9a0deb (pinned)</span><span>nexus c495f2ac</span>
+</div>
+<p class="src">All revisions and claims: /home/li/primary/flows/056f6d/reports/nexus-anatomy-grounding.md &sect;0</p>
+</header>
+<!-- ================= 1 ================= -->
+<section>
+<h2><span class="n">01</span> The whole, one pass</h2>
+<p>A request leaves the living as text and comes back as text; in between it is never text again. The CLI is the only part that knows datom, the Nexus the only part that knows the store. Each box names the repository it lives in.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1200 452" role="img" aria-label="Pipeline from the living through the orchestrate CLI, datom text, protos, datom, composition, rkyv frame, socket, Nexus session and core, Sema store, and back out as a textualized reply.">
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="a1m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-m" points="0,0 10,5 0,10"/></marker>
+</defs>
+<!-- row A -->
+<rect class="bx" x="20" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="97" y="52" text-anchor="middle">Living</text>
+<text class="ts" x="97" y="70" text-anchor="middle">types one request</text>
+<text class="tr" x="97" y="88" text-anchor="middle">&mdash;</text>
+<rect class="bx-s" x="220" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="297" y="52" text-anchor="middle">orchestrate</text>
+<text class="ts" x="297" y="70" text-anchor="middle">one inline datom arg</text>
+<text class="tr" x="297" y="88" text-anchor="middle">orchestrate/crates</text>
+<rect class="bx" x="420" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="497" y="52" text-anchor="middle">datom text</text>
+<text class="ts" x="497" y="70" text-anchor="middle">positional, no names</text>
+<text class="tr" x="497" y="88" text-anchor="middle">datom-codec</text>
+<rect class="bx" x="620" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="697" y="52" text-anchor="middle">protos</text>
+<text class="ts" x="697" y="70" text-anchor="middle">the substrate tree</text>
+<text class="tr" x="697" y="88" text-anchor="middle">protos</text>
+<rect class="bx" x="820" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="897" y="52" text-anchor="middle">datom</text>
+<text class="ts" x="897" y="70" text-anchor="middle">Form at a Path</text>
+<text class="tr" x="897" y="88" text-anchor="middle">datom-codec</text>
+<rect class="bx-s" x="1020" y="30" width="155" height="70" rx="3"/>
+<text class="tb" x="1097" y="52" text-anchor="middle">compose</text>
+<text class="ts" x="1097" y="70" text-anchor="middle">actualize &rarr; Query</text>
+<text class="tr" x="1097" y="88" text-anchor="middle">signal-orchestrate</text>
+<line class="ln" x1="177" y1="65" x2="214" y2="65" marker-end="url(#a1)"/><text class="ts" x="195" y="57" text-anchor="middle">types</text>
+<line class="ln" x1="377" y1="65" x2="414" y2="65" marker-end="url(#a1)"/><text class="ts" x="395" y="57" text-anchor="middle">argv[1]</text>
+<line class="ln" x1="577" y1="65" x2="614" y2="65" marker-end="url(#a1)"/><text class="ts" x="595" y="57" text-anchor="middle">parse</text>
+<line class="ln" x1="777" y1="65" x2="814" y2="65" marker-end="url(#a1)"/><text class="ts" x="795" y="57" text-anchor="middle">walk</text>
+<line class="ln" x1="977" y1="65" x2="1014" y2="65" marker-end="url(#a1)"/><text class="ts" x="995" y="57" text-anchor="middle">budget</text>
+<polyline class="ln-m" points="1175,65 1189,65 1189,122 11,122 11,225 14,225" marker-end="url(#a1m)"/>
+<text class="ts" x="600" y="116" text-anchor="middle">one typed Query &mdash; text ends here</text>
+<!-- row B -->
+<rect class="bx" x="20" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="97" y="212" text-anchor="middle">signalize</text>
+<text class="ts" x="97" y="230" text-anchor="middle">rkyv::to_bytes</text>
+<text class="tr" x="97" y="248" text-anchor="middle">signal</text>
+<rect class="bx" x="220" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="297" y="212" text-anchor="middle">frame</text>
+<text class="ts" x="297" y="230" text-anchor="middle">4-byte BE len + body</text>
+<text class="tr" x="297" y="248" text-anchor="middle">signal</text>
+<rect class="bx-s" x="420" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="497" y="212" text-anchor="middle">socket</text>
+<text class="ts" x="497" y="230" text-anchor="middle">orchestrate.sock 0o660</text>
+<text class="tr" x="497" y="248" text-anchor="middle">$XDG_RUNTIME_DIR</text>
+<rect class="bx" x="620" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="697" y="212" text-anchor="middle">read + restore</text>
+<text class="ts" x="697" y="230" text-anchor="middle">rkyv, validated</text>
+<text class="tr" x="697" y="248" text-anchor="middle">signal</text>
+<rect class="bx" x="820" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="897" y="212" text-anchor="middle">Session</text>
+<text class="ts" x="897" y="230" text-anchor="middle">SO_PEERCRED admit</text>
+<text class="tr" x="897" y="248" text-anchor="middle">orchestrate-nexus</text>
+<rect class="bx-s" x="1020" y="190" width="155" height="70" rx="3"/>
+<text class="tb" x="1097" y="212" text-anchor="middle">NexusCore</text>
+<text class="ts" x="1097" y="230" text-anchor="middle">the one actor</text>
+<text class="tr" x="1097" y="248" text-anchor="middle">orchestrate-nexus</text>
+<line class="ln" x1="177" y1="225" x2="214" y2="225" marker-end="url(#a1)"/><text class="ts" x="195" y="217" text-anchor="middle">bytes</text>
+<line class="ln" x1="377" y1="225" x2="414" y2="225" marker-end="url(#a1)"/><text class="ts" x="395" y="217" text-anchor="middle">write</text>
+<line class="ln" x1="577" y1="225" x2="614" y2="225" marker-end="url(#a1)"/><text class="ts" x="595" y="217" text-anchor="middle">accept</text>
+<line class="ln" x1="777" y1="225" x2="814" y2="225" marker-end="url(#a1)"/><text class="ts" x="795" y="217" text-anchor="middle">Query</text>
+<line class="ln" x1="977" y1="225" x2="1014" y2="225" marker-end="url(#a1)"/><text class="ts" x="995" y="217" text-anchor="middle">ask</text>
+<polyline class="ln-m" points="1175,225 1189,225 1189,282 11,282 11,385 14,385" marker-end="url(#a1m)"/>
+<text class="ts" x="600" y="276" text-anchor="middle">the actor owns the store outright</text>
+<!-- row C -->
+<rect class="bx" x="20" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="97" y="372" text-anchor="middle">Sema store</text>
+<text class="ts" x="97" y="390" text-anchor="middle">one atomic commit</text>
+<text class="tr" x="97" y="408" text-anchor="middle">sema-engine</text>
+<rect class="bx" x="220" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="297" y="372" text-anchor="middle">Response</text>
+<text class="ts" x="297" y="390" text-anchor="middle">Locked | LockRejected</text>
+<text class="tr" x="297" y="408" text-anchor="middle">signal-orchestrate</text>
+<rect class="bx" x="420" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="497" y="372" text-anchor="middle">answer</text>
+<text class="ts" x="497" y="390" text-anchor="middle">signalize + write_frame</text>
+<text class="tr" x="497" y="408" text-anchor="middle">signal</text>
+<rect class="bx-s" x="620" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="697" y="372" text-anchor="middle">reply frame</text>
+<text class="ts" x="697" y="390" text-anchor="middle">4-byte BE len + body</text>
+<text class="tr" x="697" y="408" text-anchor="middle">socket</text>
+<rect class="bx-s" x="820" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="897" y="372" text-anchor="middle">textualize</text>
+<text class="ts" x="897" y="390" text-anchor="middle">datomize&rarr;protosize</text>
+<text class="tr" x="897" y="408" text-anchor="middle">orchestrate CLI</text>
+<rect class="bx" x="1020" y="350" width="155" height="70" rx="3"/>
+<text class="tb" x="1097" y="372" text-anchor="middle">Living</text>
+<text class="ts" x="1097" y="390" text-anchor="middle">one datom on stdout</text>
+<text class="tr" x="1097" y="408" text-anchor="middle">&mdash;</text>
+<line class="ln" x1="177" y1="385" x2="214" y2="385" marker-end="url(#a1)"/><text class="ts" x="195" y="377" text-anchor="middle">commit</text>
+<line class="ln" x1="377" y1="385" x2="414" y2="385" marker-end="url(#a1)"/><text class="ts" x="395" y="377" text-anchor="middle">typed</text>
+<line class="ln" x1="577" y1="385" x2="614" y2="385" marker-end="url(#a1)"/><text class="ts" x="595" y="377" text-anchor="middle">encode</text>
+<line class="ln" x1="777" y1="385" x2="814" y2="385" marker-end="url(#a1)"/><text class="ts" x="795" y="377" text-anchor="middle">restore</text>
+<line class="ln" x1="977" y1="385" x2="1014" y2="385" marker-end="url(#a1)"/><text class="ts" x="995" y="377" text-anchor="middle">print</text>
+</svg>
+</div>
+<figcaption>Text exists only in the first three boxes and the last two; between them the value is a typed Rust object or an rkyv archive. The Nexus crate compiles without <code>datom-codec</code> and without <code>protos</code> &mdash; a Nix check named <code>datom-free-nexus</code> witnesses it.
+<span class="src">&sect;2.3, &sect;3.4, &sect;4.3, &sect;5.1 &middot; orchestrate/crates/orchestrate-nexus/Cargo.toml:29-32,41 &middot; orchestrate/flake.nix:210-214</span></figcaption>
+</figure>
+<div class="note">The ordinary socket path shown is the one witnessed live: <code>$XDG_RUNTIME_DIR/orchestrate-nexus/orchestrate.sock</code>, mode <code>srw-rw----</code>. The meta socket on the same host is <code>meta-orchestrate.sock</code>, <code>srw-------</code> &mdash; not the name the executable's defaults carry. That divergence is &sect;7 below. <span class="src">&sect;0.2, &sect;3.2</span></div>
+</section>
+<!-- ================= 2 ================= -->
+<section>
+<h2><span class="n">02</span> The ordinary signal ethos</h2>
+<p>The wire contract for any authenticated peer, whole. It is also the CLI's help text: <code>orchestrate</code> with no arguments prints this file, then the client ethos.</p>
+<pre>; Orchestrate Lock signal — the ordinary wire contract.
+;
+; The Lock family: acquire, release, observe coordination locks.
+; Every lock carries an integer id, a name, a flow, absolute paths,
+; and a reason.
+;
+; Observe opens a subscription rather than answering once. The Nexus
+; writes one Observed frame carrying the state on open and one more
+; for every later change, on the same connection, until the peer
+; closes it. The subscription is the connection, so there is no token
+; and no Unwatch: a peer that stops reading has unsubscribed. Every
+; other query is answered with exactly one frame.
+;
+; Configure is accepted here only while the meta Configure has never
+; been done. The receipt carries that fact, and once it is set this
+; surface answers ConfigurationRefused.MetaConfigureOccurred.
+
+Signal
+
+[]
+
+[ Configure.OrchestrateNexusConfiguration  Lock.LockRequest  Release.LockId  Observe.ObserveSelection ]
+
+[ ConfigurationAccepted.ConfigurationReceipt  ConfigurationRefused.ConfigurationRejection
+  Locked.Lock  Released.Lock  Observed.Observation
+  LockRejected.LockRejection  ReleaseRejected.ReleaseRejection ]
+
+[ ConfigurationPath.String
+  OrdinarySocketPath.ConfigurationPath
+  MetaSocketPath.ConfigurationPath
+  OrchestrateNexusConfiguration.{ OrdinarySocketPath MetaSocketPath }
+  MetaConfigureDone.Boolean
+  ConfigurationReceipt.{ OrchestrateNexusConfiguration MetaConfigureDone }
+  ConfigurationRejectionReason.[ MetaConfigureOccurred InvalidConfiguration ]
+  ConfigurationRejection.{ ConfigurationRejectionReason }
+  LockId.Integer
+  LockName.String
+  FlowId.String
+  LockPath.String
+  LockReason.String
+  LockRequest.{ LockName FlowId Vector&lt;LockPath&gt; LockReason }
+  Lock.{ LockId LockName FlowId Vector&lt;LockPath&gt; LockReason }
+  LockOverlap.{ LockPath Lock }
+  LockRejection.[ DuplicateName.Lock  PathOverlap.LockOverlap ]
+  ReleaseRejection.[ UnknownLockId ]
+  ObserveSelection.[ Locks ]
+  Observation.[ Locks.Vector&lt;Lock&gt; ] ]</pre>
+<p class="src">signal-orchestrate/ethos/signal.ethos @ e7221190, lines 1-47 &mdash; grounding &sect;1.1. Sections in the Signal order: line 20 imports (empty), 22 queries, 24-26 responses, 28-47 types.</p>
+<div class="tw">
+<table>
+<thead><tr><th>Query</th><th>Payload carried</th><th>Success response</th><th>Typed refusal</th></tr></thead>
+<tbody>
+<tr><td><code>Configure</code></td><td><code>OrchestrateNexusConfiguration</code><br><span class="ts">{ OrdinarySocketPath MetaSocketPath }</span></td><td><code>ConfigurationAccepted.ConfigurationReceipt</code></td><td><code>ConfigurationRefused.ConfigurationRejection</code> &mdash; <code>MetaConfigureOccurred</code> or <code>InvalidConfiguration</code></td></tr>
+<tr><td><code>Lock</code></td><td><code>LockRequest</code><br><span class="ts">{ LockName FlowId Vector&lt;LockPath&gt; LockReason }</span></td><td><code>Locked.Lock</code></td><td><code>LockRejected.LockRejection</code> &mdash; <code>DuplicateName.Lock</code> | <code>PathOverlap.LockOverlap</code></td></tr>
+<tr><td><code>Release</code></td><td><code>LockId</code> (Integer)</td><td><code>Released.Lock</code></td><td><code>ReleaseRejected.ReleaseRejection</code> &mdash; <code>UnknownLockId</code></td></tr>
+<tr><td><code>Observe</code></td><td><code>ObserveSelection</code> &mdash; only <code>Locks</code></td><td><code>Observed.Observation</code> (<code>Locks.Vector&lt;Lock&gt;</code>), repeated</td><td><span class="tag t-unk">none</span> no refusal variant exists for Observe</td></tr>
+</tbody>
+</table>
+</div>
+<p class="src">Pairing is not expressed in the ethos syntax &mdash; the two sections are flat lists. It is the Nexus's dispatch: orchestrate-nexus/src/core.rs:138-147 and store/transition.rs:44-112,145-171. Grounding &sect;1.1.</p>
+<div class="minor"><h3>Every type the ordinary contract carries</h3><p class="src" style="color:var(--muted)">Aliases (no derive; they bear the datom kinds through the type they name): <code>ConfigurationPath.String</code>, <code>OrdinarySocketPath</code>, <code>MetaSocketPath</code>, <code>MetaConfigureDone.Boolean</code>, <code>LockId.Integer</code>, <code>LockName</code>, <code>FlowId</code>, <code>LockPath</code>, <code>LockReason</code>. Structs: <code>OrchestrateNexusConfiguration</code>, <code>ConfigurationReceipt</code>, <code>ConfigurationRejection</code>, <code>LockRequest</code>, <code>Lock</code>, <code>LockOverlap</code>. Enums: <code>ConfigurationRejectionReason</code>, <code>LockRejection</code>, <code>ReleaseRejection</code>, <code>ObserveSelection</code>, <code>Observation</code>. <span style="color:var(--bronze)">ethos:28-47 &mdash; grounding &sect;1.1</span></p></div>
+<h3>How the ethos reaches Rust</h3>
+<pre>pub enum Query {                          pub enum Response {
+    Configure(OrchestrateNexusConfiguration),  ConfigurationAccepted(ConfigurationReceipt),
+    Lock(LockRequest),                         ConfigurationRefused(ConfigurationRejection),
+    Release(LockId),                           Locked(Lock),
+    Observe(ObserveSelection),                 Released(Lock),
+}                                              Observed(Observation),
+                                               LockRejected(LockRejection),
+                                               ReleaseRejected(ReleaseRejection),
+                                           }
+
+#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Compositional))]</pre>
+<p class="src">signal-orchestrate/src/generated/signal.rs @ e7221190 &mdash; grounding &sect;2.2, &sect;2.3. The <code>datom</code> feature is enabled by the CLI (crates/orchestrate/Cargo.toml:20) and not by the Nexus (crates/orchestrate-nexus/Cargo.toml:41).</p>
+<h3>The third ethos: failures that never reach the wire</h3>
+<pre>; Datom-boundary failures for the ordinary Orchestrate client.
+Library
+[ datom_codec:Error ]
+[ SocketPath.String
+  TransportError.String
+  Unreachable.{ SocketPath TransportError }
+  ClientFailure.[ Unreadable.Error
+                  Unreachable.Unreachable ] ]
+[]
+[]</pre>
+<p class="src">orchestrate/crates/orchestrate/client.ethos, 10 lines &mdash; byte-identical to crates/orchestrate-meta/client.ethos apart from the word "privileged" on line 1. Grounding &sect;1.3. Its root is <code>Library</code>, not <code>Signal</code>: an unparseable argument or a dead socket is answered in datom by the client itself, never by the Nexus.</p>
+</section>
+<!-- ================= 3 ================= -->
+<section>
+<h2><span class="n">03</span> The meta signal ethos</h2>
+<p>Ten lines: configuration and the reversal of first configuration. Nothing else passes the privileged door.</p>
+<pre>; Orchestrate meta signal — the privileged configuration wire contract.
+Signal
+[ signal_orchestrate:[ OrchestrateNexusConfiguration ConfigurationReceipt ] ]
+[ Configure.OrchestrateNexusConfiguration ReverseMetaConfiguration ]
+[ Configured.ConfigurationReceipt OrdinaryConfigurationReopened.ConfigurationReceipt
+  ConfigurationRejected.ConfigurationRejection PeerRefused.PeerRejection ]
+[ ConfigurationRejectionReason.[ InvalidConfiguration ]
+  ConfigurationRejection.{ ConfigurationRejectionReason }
+  PeerUserId.Integer
+  PeerRejection.{ PeerUserId } ]</pre>
+<p class="src">meta-signal-orchestrate/ethos/signal.ethos @ 4279ad05, lines 1-10 &mdash; grounding &sect;1.2.</p>
+<div class="tw">
+<table>
+<thead><tr><th>Query</th><th>Payload carried</th><th>Success response</th><th>Typed refusal</th></tr></thead>
+<tbody>
+<tr><td><code>Configure</code></td><td><code>OrchestrateNexusConfiguration</code>, imported from <code>signal_orchestrate</code></td><td><code>Configured.ConfigurationReceipt</code></td><td><code>ConfigurationRejected.ConfigurationRejection</code> &mdash; <code>InvalidConfiguration</code></td></tr>
+<tr><td><code>ReverseMetaConfiguration</code></td><td>none &mdash; a bare variant</td><td><code>OrdinaryConfigurationReopened.ConfigurationReceipt</code></td><td>&mdash;</td></tr>
+<tr><td><em>pre-query, any connection</em></td><td>&mdash;</td><td>&mdash;</td><td><code>PeerRefused.PeerRejection { PeerUserId }</code></td></tr>
+</tbody>
+</table>
+</div>
+<div class="note"><strong>The pre-query check.</strong> <code>PeerRefused</code> is the one response no query produces. The session writes it <em>before reading any frame</em>, when the connecting uid is not the socket's owner. Admission reads <code>SO_PEERCRED</code> and asks <code>SocketAuthority::admits(peer_user, owner)</code>; on the ordinary socket the answer is always <code>true</code> and <code>OrdinaryResponse::peer_refusal</code> returns <code>None</code> &mdash; an exception noted at its site: "<code>None</code> is silence, and silence is what the ordinary contract can honestly say."
+<span class="src">orchestrate-nexus/src/transport/session.rs:89-93,98-104,125-138 &middot; nexus/src/authority.rs:41-46 &middot; grounding &sect;1.2, &sect;3.4, &sect;7.9</span></div>
+<p>Imported types are written fully qualified with no <code>use</code>: <code>Query::Configure(signal_orchestrate::OrchestrateNexusConfiguration)</code>. Own types carried: <code>ConfigurationRejectionReason.[ InvalidConfiguration ]</code>, <code>ConfigurationRejection</code>, <code>PeerUserId.Integer</code>, <code>PeerRejection.{ PeerUserId }</code>.
+<span class="src">meta-signal-orchestrate/src/generated/signal.rs:37-52 &mdash; grounding &sect;2.2</span></p>
+</section>
+<!-- ================= 4 ================= -->
+<section>
+<h2><span class="n">04</span> One request walked through</h2>
+<p>A <code>Lock</code> from typed text to <code>Locked.{ … }</code> or <code>LockRejected</code>, with the trait or kind named at each hop.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1100 505" role="img" aria-label="Sequence diagram: the living's Lock datom through the CLI, the socket, the Nexus session, the core actor and the Sema store, and back.">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="a2s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx" x="15" y="14" width="130" height="32" rx="3"/><text class="tb" x="80" y="34" text-anchor="middle">Living</text>
+<rect class="bx-s" x="185" y="14" width="130" height="32" rx="3"/><text class="tb" x="250" y="34" text-anchor="middle">orchestrate</text>
+<rect class="bx" x="365" y="14" width="130" height="32" rx="3"/><text class="tb" x="430" y="34" text-anchor="middle">socket</text>
+<rect class="bx" x="535" y="14" width="130" height="32" rx="3"/><text class="tb" x="600" y="34" text-anchor="middle">Session</text>
+<rect class="bx-s" x="725" y="14" width="130" height="32" rx="3"/><text class="tb" x="790" y="34" text-anchor="middle">NexusCore</text>
+<rect class="bx" x="915" y="14" width="130" height="32" rx="3"/><text class="tb" x="980" y="34" text-anchor="middle">Sema store</text>
+<line class="life" x1="80" y1="46" x2="80" y2="478"/>
+<line class="life" x1="250" y1="46" x2="250" y2="478"/>
+<line class="life" x1="430" y1="46" x2="430" y2="478"/>
+<line class="life" x1="600" y1="46" x2="600" y2="478"/>
+<line class="life" x1="790" y1="46" x2="790" y2="478"/>
+<line class="life" x1="980" y1="46" x2="980" y2="478"/>
+<line class="ln" x1="80" y1="80" x2="244" y2="80" marker-end="url(#a2)"/>
+<text class="ts" x="162" y="73" text-anchor="middle">Lock.{ … } as argv[1]</text>
+<polyline class="ln" points="250,108 316,108 316,124 256,124" marker-end="url(#a2)"/>
+<text class="ts" x="326" y="112">Potential&lt;Query&gt;::from &rarr; actualize &mdash; Compositional</text>
+<text class="ts" x="326" y="126">Budget 10 000, reader 10 000, maximum_depth 256</text>
+<line class="ln-s" x1="250" y1="158" x2="424" y2="158" marker-end="url(#a2s)"/>
+<text class="ta" x="337" y="151" text-anchor="middle">Signalizable::signalize &rarr; FrameWriting</text>
+<line class="ln-s" x1="430" y1="190" x2="594" y2="190" marker-end="url(#a2s)"/>
+<text class="ta" x="512" y="183" text-anchor="middle">AsyncFrameReading &rarr; Restorable&lt;Query&gt;</text>
+<polyline class="ln" points="600,218 666,218 666,234 606,234" marker-end="url(#a2)"/>
+<text class="ts" x="676" y="222">Admitting::admitted &mdash; SO_PEERCRED, Ordinary &rArr; true</text>
+<text class="ts" x="676" y="236">Refusing: OrdinaryResponse::peer_refusal &rArr; None</text>
+<line class="ln" x1="600" y1="268" x2="784" y2="268" marker-end="url(#a2)"/>
+<text class="ts" x="692" y="261" text-anchor="middle">core.ask(OrdinaryQuery) &middot; delivered()</text>
+<line class="ln" x1="790" y1="300" x2="974" y2="300" marker-end="url(#a2)"/>
+<text class="ts" x="882" y="293" text-anchor="middle">Locks::lock &mdash; normalize, scan</text>
+<line class="ln" x1="980" y1="330" x2="796" y2="330" marker-end="url(#a2)"/>
+<text class="ts" x="888" y="323" text-anchor="middle">StoredLock + allocator, one commit</text>
+<polyline class="ln-m" points="790,358 856,358 856,374 796,374" marker-end="url(#a2)"/>
+<text class="ts" x="866" y="362">announcements.send(Observation)</text>
+<text class="ts" x="866" y="376">only when Locked or Released</text>
+<line class="ln-s" x1="790" y1="402" x2="606" y2="402" marker-end="url(#a2s)"/>
+<text class="ta" x="698" y="395" text-anchor="middle">Locked(Lock) | LockRejected(LockRejection)</text>
+<line class="ln-s" x1="600" y1="432" x2="256" y2="432" marker-end="url(#a2s)"/>
+<text class="ta" x="428" y="425" text-anchor="middle">Exchanging::answer &rarr; signalize + write_frame &mdash; one frame</text>
+<line class="ln" x1="250" y1="466" x2="86" y2="466" marker-end="url(#a2)"/>
+<text class="ts" x="168" y="459" text-anchor="middle">datomize &rarr; protosize &rarr; textualize</text>
+</svg>
+</div>
+<figcaption>Nine cited steps: accept, admit, read the frame, decode (validating <code>rkyv::from_bytes</code>), dispatch, handle, mutate, announce, encode and write. A rejection takes the same path and the same frame &mdash; <code>DuplicateName.Lock</code> and <code>PathOverlap.LockOverlap</code> are returned by the scan before any commit.
+<span class="src">Grounding &sect;3.4 &middot; transport/mod.rs:205-215,248-263 &middot; transport/session.rs:58-78,146-157 &middot; core.rs:130-158 &middot; store/transition.rs:44-83 &middot; signal/src/portable.rs:40-47,64-73 &middot; CLI: crates/orchestrate/src/main.rs:74-128</span></figcaption>
+</figure>
+<div class="note">The datom shapes drawn here are constructed from the ethos types <code>LockRequest</code> and <code>Lock</code>; no <code>Lock</code> exchange was performed by the grounding flow. <span class="tag t-obs">observed</span> The one witnessed round trip is <code>orchestrate 'Observe.Locks'</code>, which returned <code>Observed.Locks.[ { 937 C6CraneGitBundles 542442 [ /home/li/wt/… ] «Store finite Crane Git replay artifacts» } … ]</code> &mdash; positional, guillemets where the reason has spaces, bare runs where it has none. <span class="src">&sect;4.3, &sect;9 Method</span></div>
+<p><strong>The argument rule, as implemented.</strong> Three arms: zero arguments describe, exactly one argument not starting with <code>--</code> is the datom, anything else errors with <code>accepts exactly one inline Datom query and no flags</code>. Witnessed for both <code>orchestrate --help</code> and <code>orchestrate a b</code>. The socket comes from <code>ORCHESTRATE_SOCKET</code> / <code>ORCHESTRATE_META_SOCKET</code>, supplied by the installed wrapper &mdash; never from a flag. <span class="src">crates/orchestrate/src/main.rs:24-31,62-63 &mdash; grounding &sect;4.2</span></p>
+</section>
+<!-- ================= 5 ================= -->
+<section>
+<h2><span class="n">05</span> Inside the Nexus</h2>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1100 520" role="img" aria-label="Inside orchestrate-nexus: the transport runtime with two claimed sockets, session tasks, the single NexusCore actor with its four message kinds, and the Sema store.">
+<defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="a3s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx-o" x="16" y="16" width="1068" height="470" rx="4"/>
+<text class="tr" x="30" y="34">process: orchestrate-nexus 0.35.0 &mdash; starts with zero arguments, two-worker Tokio runtime</text>
+<!-- transport -->
+<rect class="bx-w" x="40" y="52" width="470" height="152" rx="3"/>
+<text class="tb" x="56" y="72">TransportRuntime &mdash; tasks, not actors</text>
+<rect class="bx" x="56" y="84" width="205" height="46" rx="3"/>
+<text class="t" x="158" y="102" text-anchor="middle">orchestrate.sock</text>
+<text class="ts" x="158" y="119" text-anchor="middle">Ordinary &middot; 0o660 &middot; admits all</text>
+<rect class="bx-p" x="285" y="84" width="205" height="46" rx="3"/>
+<text class="t" x="387" y="102" text-anchor="middle">meta-orchestrate.sock</text>
+<text class="ts" x="387" y="119" text-anchor="middle">Privileged &middot; 0o600 &middot; uid check</text>
+<text class="ts" x="56" y="150">Both paths claimed &mdash; advisory flock on &lt;socket&gt;.claim &mdash; before either is bound.</text>
+<text class="ts" x="56" y="165">Contention yields TransportError::SocketAlreadyActive. Modes set after bind (umask).</text>
+<text class="ts" x="56" y="180">store.situate(...) records where it actually bound; only then is the core founded.</text>
+<text class="ts" x="56" y="195">Mode witnessed live on both sockets.</text>
+<!-- sessions -->
+<rect class="bx-w" x="40" y="226" width="470" height="110" rx="3"/>
+<text class="tb" x="56" y="246">JoinSet &mdash; one task per connection</text>
+<text class="ts" x="56" y="264">serve_until runs one tokio::select! over shutdown, the two</text>
+<text class="ts" x="56" y="279">listeners' accept(), and this JoinSet of Session tasks.</text>
+<text class="ts" x="56" y="299">A session on the ordinary door can construct only</text>
+<text class="ts" x="56" y="314">signal_orchestrate::Query; on the meta door only</text>
+<text class="ts" x="56" y="329">meta_signal_orchestrate::Query &mdash; type-level privilege.</text>
+<!-- defaults -->
+<rect class="bx" x="40" y="358" width="470" height="110" rx="3"/>
+<text class="tb" x="56" y="378">Default configuration, owned by the executable</text>
+<text class="ts" x="56" y="396">STATE_DIRECTORY   orchestrate-nexus</text>
+<text class="ts" x="56" y="411">STORE_FILE        orchestrate-nexus.sema</text>
+<text class="ts" x="56" y="426">ORDINARY_SOCKET   orchestrate.sock</text>
+<text class="ts" x="56" y="441">META_SOCKET       orchestrate-meta.sock</text>
+<text class="ts" x="56" y="459">New store is seeded from these; a populated store resumes its own.</text>
+<!-- core -->
+<rect class="bx-s" x="560" y="52" width="500" height="284" rx="3"/>
+<text class="tb" x="576" y="72">NexusCore &mdash; the only actor in the Nexus (Kameo)</text>
+<text class="ts" x="576" y="90">owns the store outright; one lock table is one unit of consistency</text>
+<text class="ts" x="576" y="105">MAILBOX_CAPACITY 64 &middot; ANNOUNCEMENT_BACKLOG 64 &middot; no on_stop</text>
+<rect class="bx" x="576" y="118" width="468" height="26" rx="2"/>
+<text class="t" x="586" y="136">OrdinaryQuery &rarr; Result&lt;OrdinaryResponse, StoreError&gt;</text>
+<rect class="bx" x="576" y="150" width="468" height="26" rx="2"/>
+<text class="t" x="586" y="168">MetaQuery &rarr; Result&lt;MetaResponse, StoreError&gt;</text>
+<rect class="bx-s" x="576" y="182" width="468" height="44" rx="2"/>
+<text class="t" x="586" y="200">Attending { selection } &rarr; Attendance</text>
+<text class="ta" x="586" y="216">opening state AND channel subscription in ONE core step</text>
+<rect class="bx" x="576" y="232" width="468" height="26" rx="2"/>
+<text class="t" x="586" y="250">Overtaking { selection } &rarr; Observation &mdash; re-sent on lag</text>
+<text class="ts" x="576" y="278">"Both halves are taken in one step of the core, so nothing can commit</text>
+<text class="ts" x="576" y="293">between the two. A subscriber therefore never misses a change and</text>
+<text class="ts" x="576" y="308">never sees the same one twice."  &mdash; core.rs:182-187</text>
+<text class="ts" x="576" y="326">Announcements fire only for Locked and Released.</text>
+<!-- store -->
+<rect class="bx" x="560" y="358" width="500" height="110" rx="3"/>
+<text class="tb" x="576" y="378">OrchestrateStore &rarr; sema-engine</text>
+<text class="ts" x="576" y="397">$XDG_STATE_HOME/orchestrate-nexus/orchestrate-nexus.sema</text>
+<text class="ts" x="576" y="412">witnessed live at /home/li/.local/state/... &mdash; 958 464 bytes</text>
+<text class="ts" x="576" y="430">Engine::open with SCHEMA_VERSION. No metadata row &rArr; seed from</text>
+<text class="ts" x="576" y="445">defaults; populated &rArr; resume. The store's value is handed to main,</text>
+<text class="ts" x="576" y="460">not the defaults'.</text>
+<line class="ln-s" x1="510" y1="270" x2="554" y2="180" marker-end="url(#a3s)"/>
+<text class="ta" x="497" y="240">ask</text>
+<line class="ln" x1="810" y1="336" x2="810" y2="352" marker-end="url(#a3)"/>
+<text class="ts" x="820" y="349">commit</text>
+<line class="ln-m" x1="554" y1="300" x2="512" y2="318" marker-end="url(#a3)"/>
+<text class="ts" x="560" y="316">broadcast</text>
+</svg>
+</div>
+<figcaption>Sockets are not actors and sessions are not actors. A listener is a task and a connection is a task holding a reference to this one actor; what separates the two doors is which message type the session on the other side can construct.
+<span class="src">Grounding &sect;3.1-&sect;3.3 &middot; orchestrate-nexus/src/core.rs:4-16,50-56,105-128,130-225 &middot; src/defaults.rs:11-14,30-51 &middot; src/store/mod.rs:61-170,188-227 &middot; src/transport/mod.rs:61-80,184-241 &middot; src/transport/socket.rs:8-21,36-78,95-100 &middot; nexus/src/authority.rs:33-46</span></figcaption>
+</figure>
+<p class="note"><strong>Start sequence.</strong> read defaults &rarr; open the store &rarr; build a two-worker multi-thread Tokio runtime &rarr; <code>TransportRuntime::bind(configuration, store)</code> &rarr; print <code>orchestrate-nexus ready</code> &rarr; <code>serve_until(Termination::asked()?)</code>. Two workers because "the core is one actor and its durable step is synchronous, so one worker runs that step and one keeps accepting while it does". Zero arguments are enforced: <code>if env::args_os().nth(1).is_some() { return Err(DefaultConfigurationError::StartupArguments); }</code>, with <code>#[error("accepts zero arguments")]</code>; <code>XDG_RUNTIME_DIR</code> is required and relative paths are refused. <span class="src">main.rs:8-31 &middot; defaults.rs:30-33,95-111</span></p>
+</section>
+<!-- ================= 6 ================= -->
+<section>
+<h2><span class="n">06</span> Observe today versus designed</h2>
+<p>The subscription is implemented on the server and truncated at the client. The Nexus half satisfies the design exactly; the CLI half ends at the state on open.</p>
+<figure>
+<div class="scroll">
+<svg viewBox="0 0 1080 350" role="img" aria-label="Two panels: today the CLI reads one Observed frame and exits while the Nexus would go on writing; as designed the peer holds the connection and receives each change.">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="a4m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-m" points="0,0 10,5 0,10"/></marker>
+<marker id="a4s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-s" points="0,0 10,5 0,10"/></marker></defs>
+<text class="tb" x="20" y="18">TODAY &mdash; observed</text>
+<text class="tb" x="580" y="18">AS DESIGNED &mdash; Vision/nexus.md:117-125</text>
+<!-- panel A -->
+<rect class="bx" x="20" y="32" width="150" height="40" rx="3"/><text class="t" x="95" y="56" text-anchor="middle">Nexus</text>
+<rect class="bx" x="350" y="32" width="150" height="40" rx="3"/><text class="t" x="425" y="56" text-anchor="middle">orchestrate CLI</text>
+<line class="life" x1="95" y1="72" x2="95" y2="320"/>
+<line class="life" x1="425" y1="72" x2="425" y2="150"/>
+<line class="ln-s" x1="95" y1="108" x2="419" y2="108" marker-end="url(#a4s)"/>
+<text class="ta" x="257" y="101" text-anchor="middle">Observed.Locks.[ … ] &mdash; state on open</text>
+<line class="ln-p" x1="405" y1="136" x2="445" y2="164"/><line class="ln-p" x1="445" y1="136" x2="405" y2="164"/>
+<text class="tp" x="455" y="156">exit &mdash; one frame read, connection dropped</text>
+<line class="ln-d" x1="95" y1="200" x2="419" y2="200" marker-end="url(#a4m)"/>
+<text class="ts" x="257" y="193" text-anchor="middle">Observed &mdash; change 1</text>
+<line class="ln-d" x1="95" y1="234" x2="419" y2="234" marker-end="url(#a4m)"/>
+<text class="ts" x="257" y="227" text-anchor="middle">Observed &mdash; change n</text>
+<text class="tp" x="257" y="258" text-anchor="middle">nobody is reading</text>
+<rect class="bx-p" x="20" y="276" width="480" height="48" rx="3"/>
+<text class="ts" x="34" y="295">To see a change, a caller re-issues Observe.Locks &mdash; polling,</text>
+<text class="ts" x="34" y="310">performed by callers rather than by the client.</text>
+<line class="ln-m" x1="540" y1="24" x2="540" y2="330" stroke-dasharray="3 5"/>
+<!-- panel B -->
+<rect class="bx" x="580" y="32" width="150" height="40" rx="3"/><text class="t" x="655" y="56" text-anchor="middle">Nexus</text>
+<rect class="bx-s" x="900" y="32" width="150" height="40" rx="3"/><text class="t" x="975" y="56" text-anchor="middle">subscriber</text>
+<line class="life" x1="655" y1="72" x2="655" y2="320"/>
+<line class="life" x1="975" y1="72" x2="975" y2="320"/>
+<line class="ln-s" x1="655" y1="108" x2="969" y2="108" marker-end="url(#a4s)"/>
+<text class="ta" x="812" y="101" text-anchor="middle">Observed &mdash; state on open</text>
+<line class="ln-s" x1="655" y1="164" x2="969" y2="164" marker-end="url(#a4s)"/>
+<text class="ta" x="812" y="157" text-anchor="middle">Observed &mdash; change 1</text>
+<line class="ln-s" x1="655" y1="200" x2="969" y2="200" marker-end="url(#a4s)"/>
+<text class="ta" x="812" y="193" text-anchor="middle">Observed &mdash; change n</text>
+<line class="ln-s" x1="655" y1="234" x2="969" y2="234" marker-end="url(#a4s)"/>
+<text class="ta" x="812" y="227" text-anchor="middle">Overtaking re-sends current state on lag</text>
+<rect class="bx" x="580" y="276" width="470" height="48" rx="3"/>
+<text class="ts" x="594" y="295">The connection is the subscription: no token, no Unwatch.</text>
+<text class="ts" x="594" y="310">A peer that stops reading has unsubscribed. Quiet when nothing changes.</text>
+</svg>
+</div>
+<figcaption>The one difference is the cross: the CLI stops reading after the opening frame. Everything to the left of it &mdash; <code>Attending</code>'s single-step opening plus subscription, the <code>Overtaking</code> catch-up on <code>RecvError::Lagged</code>, a peer close treated as an ordinary end &mdash; is already built.
+<span class="src">Grounding &sect;6.1-&sect;6.2 &middot; session.rs:152,170-211 &middot; core.rs:182-206,215-225 &middot; crates/orchestrate/src/main.rs:152-162 &middot; ethos/signal.ethos:10-11 &middot; Vision/nexus.md:117-125</span></figcaption>
+</figure>
+<p class="note">The CLI states its own reason at the site: "Exactly one reply is read even where the Nexus would go on writing &mdash; an Observe opens a subscription there. A CLI that takes one argument and prints one value ends at the state on open; dropping the connection is how it unsubscribes." The <code>orchestrate</code> skill already records the consequence. <span class="src">crates/orchestrate/src/main.rs:152-157 &middot; .claude/skills/orchestrate/SKILL.md</span></p>
+</section>
+<!-- ================= 7 ================= -->
+<section>
+<h2><span class="n">07</span> What was found</h2>
+<p>Each entry is an observation beside the text it sits next to. No verdicts.</p>
+<div class="defect">
+<h3><span class="tag t-obs">observed &middot; witnessed</span> The meta socket name mismatch strands <code>orchestrate-meta</code></h3>
+<div class="scroll">
+<svg viewBox="0 0 1080 262" role="img" aria-label="Three sources name the meta socket: the executable defaults and the installed wrapper say orchestrate-meta.sock, the persisted store row says meta-orchestrate.sock, which is the file that exists.">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah" points="0,0 10,5 0,10"/></marker>
+<marker id="a5p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><polygon class="ah-p" points="0,0 10,5 0,10"/></marker></defs>
+<rect class="bx" x="20" y="24" width="330" height="52" rx="3"/>
+<text class="tb" x="34" y="44">defaults.rs:14 &mdash; executable default</text>
+<text class="ts" x="34" y="62">META_SOCKET_FILE = "orchestrate-meta.sock"</text>
+<rect class="bx" x="20" y="100" width="330" height="52" rx="3"/>
+<text class="tb" x="34" y="120">installed wrapper &mdash; ORCHESTRATE_META_SOCKET</text>
+<text class="ts" x="34" y="138">…/orchestrate-nexus/orchestrate-meta.sock</text>
+<rect class="bx-s" x="20" y="176" width="330" height="52" rx="3"/>
+<text class="tb" x="34" y="196">persisted store row &mdash; resumed on start</text>
+<text class="ts" x="34" y="214">…/orchestrate-nexus/meta-orchestrate.sock</text>
+<rect class="bx-s" x="700" y="176" width="340" height="52" rx="3"/>
+<text class="tb" x="714" y="196">meta-orchestrate.sock &mdash; exists, bound</text>
+<text class="ts" x="714" y="214">srw------- 0o600, witnessed Sep 12</text>
+<rect class="bx-p" x="700" y="100" width="340" height="52" rx="3"/>
+<text class="tb" x="714" y="120">orchestrate-meta.sock &mdash; no such file</text>
+<text class="ts" x="714" y="138">nothing is bound at this path</text>
+<line class="ln-s" x1="352" y1="202" x2="694" y2="202" marker-end="url(#a5)"/>
+<text class="ta" x="523" y="195" text-anchor="middle">bind</text>
+<line class="ln-p" x1="352" y1="126" x2="694" y2="126" marker-end="url(#a5p)"/>
+<text class="tp" x="523" y="119" text-anchor="middle">connect</text>
+<line class="ln-m" x1="352" y1="50" x2="694" y2="112" marker-end="url(#a5)"/>
+<text class="ts" x="523" y="72" text-anchor="middle">would bind here on a new store</text>
+<text class="tp" x="20" y="252">orchestrate-meta 'ReverseMetaConfiguration'  &rarr;  Unreachable.{ /run/user/1001/orchestrate-nexus/orchestrate-meta.sock «Unix socket I/O failed: No such file or directory (os error 2)» }</text>
+</svg>
+</div>
+<p>The rename landed in commit <code>2266b06</code> (2026-09-12): <code>-const META_SOCKET_FILE: &amp;str = "meta-orchestrate.sock";</code> / <code>+const META_SOCKET_FILE: &amp;str = "orchestrate-meta.sock";</code>. Because a populated store resumes its own persisted configuration &mdash; which is the designed behaviour &mdash; the new default never took effect on this host. The installed meta CLI cannot reach the running Nexus.</p>
+<p class="note">Beside it: <em>"Orchestrate is deployed unconditionally, in the home, for every user. Its meta binary is part of it; a deployment without meta-orchestrate is wrong."</em> &mdash; Vision/orchestrate.md:4-7. <span class="tag t-inf">inferred</span> the store was seeded before <code>2266b06</code>. <span class="tag t-unk">unknown</span> whether <code>MetaConfigureDone</code> is set, and therefore whether ordinary <code>Configure</code> is still open as a repair &mdash; reading it requires a mutating <code>Configure</code>, which the grounding flow did not issue.</p>
+<p class="src">Grounding &sect;3.2, &sect;7.5, &sect;9 &middot; defaults.rs:14 &middot; store/mod.rs:83-87,156 &middot; cat $(which orchestrate-meta)</p>
+</div>
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> The subscription ends at the CLI</h3>
+<p>The Nexus streams; the CLI reads one frame and exits &mdash; drawn in full in section 06. Beside it: <em>"State is observed by subscription: the subscriber receives the state on open, then each change as it happens."</em> and <em>"Polling is forbidden; a correct system goes quiet when nothing changes."</em></p>
+<p class="src">Grounding &sect;6.1, &sect;7.3 &middot; Vision/nexus.md:119-125 &middot; the nexus skill</p>
+</div>
+<div class="defect">
+<h3><span class="tag t-obs">observed</span> No handshake, no contract identity on the wire</h3>
+<p>At the pinned <code>signal</code> revision nothing precedes the <code>Query</code> frame. <code>signal/src/lib.rs:9-10</code> says so directly: <em>"The protocol layered on top of the rkyv archive is not decided; nothing here anticipates it."</em> The files at that revision are <code>frame.rs</code>, <code>portable.rs</code>, <code>taxonomy.rs</code>, <code>transport.rs</code>, <code>generated/</code> &mdash; there is no <code>accord.rs</code> and no <code>exchange.rs</code>. The only thing preceding the first query is the kernel-level <code>SO_PEERCRED</code> check, which puts no bytes on the wire (and on the meta socket may put one <code>PeerRefused</code> frame there before any query is read).</p>
+<p>Beside it: <em>"Signals cross the network through a router. The router tells signal types apart by an enum that wraps the objects, held in the signal repository… That repository also holds what every signal needs in common &mdash; the handshake payload among it."</em> (Vision/nexus.md:66-72) and <em>"The protocol is to be decided."</em> (Vision/signal.md:40-43).</p>
+<p class="note"><span class="tag t-inf">inferred</span> the socket is today's only discriminator between the two contracts, so a router would need that wrapping enum, which does not exist. <span class="tag t-obs">in flight, not deployed</span> the dirty <code>signal-orchestrate/src/lib.rs</code> adds <code>impl signal::Contracted for Query { const CONTRACT_SOURCE: &amp;'static str = ETHOS; }</code> with the comment "two peers built from different sources refuse each other rather than negotiate &mdash; there is no version range, no minor tolerance and no compatibility path", and the local <code>signal</code> checkout at <code>66e7b153</code> carries <code>accord.rs</code> and <code>exchange.rs</code>. None of it is pinned by Orchestrate.</p>
+<p class="src">Grounding &sect;5.2, &sect;5.3, &sect;7.2 &middot; signal/src/lib.rs:9-10 @ 8f9a0deb &middot; signal/ethos/signal.ethos @ 8f9a0deb &middot; session.rs:151,223</p>
+</div>
+<h3>Smaller divergences</h3>
+<div class="grid2">
+<div class="minor">
+<h3><span class="tag t-obs">observed</span> Compositional vs Composing</h3>
+<p>The <strong>working tree</strong> of <code>signal-orchestrate/src/generated/signal.rs</code> emits <code>datom_codec::Composing</code> and adds <code>Eq, Hash</code>; the <strong>committed</strong> file at <code>e7221190</code> &mdash; the one Orchestrate builds &mdash; emits <code>datom_codec::Compositional</code> with no <code>Eq, Hash</code>. <code>meta-signal-orchestrate</code> and both <code>client.rs</code> files still emit <code>Compositional</code>. Three crates across two names of the same kind, pending the in-flight 4.0.0 work. Beside it: Vision/ethos.md:251-256, "Ethos Zero emits <code>Datomizable</code> and <code>Compositional</code>".</p>
+<p class="src">Grounding &sect;7.1</p>
+</div>
+<div class="minor">
+<h3><span class="tag t-obs">observed</span> Hand-written Sema records</h3>
+<p><code>store/record.rs</code> declares <code>StoredConfiguration</code>, <code>StoredMetadata</code>, <code>StoredSituation</code>, <code>StoredRelocation</code>, <code>StoredLock</code>, <code>StoredAllocator</code> as hand-written Rust with rkyv derives and <code>impl EngineRecord</code>; table names are string constants. No <code>.ethos</code> file with a <code>Sema</code> root exists anywhere in the repository &mdash; only the two <code>Library</code>-root <code>client.ethos</code> files. Beside it: Vision/sema.md:5-14, "authored in Ethos so the stored types are visible; its root, Sema, declares record types."</p>
+<p class="src">Grounding &sect;7.4 &middot; store/record.rs:17-52</p>
+</div>
+<div class="minor">
+<h3><span class="tag t-obs">observed</span> Observe has no typed refusal</h3>
+<p><code>Observe</code> is the one query with no rejection variant. A failure to subscribe surfaces as a <code>TransportError</code> and an ended connection, not as a frame. Beside it: the nexus skill, "Every surface answers with typed replies, including a typed refusal &mdash; errors are vocabulary, not strings."</p>
+<p class="src">Grounding &sect;1.1, &sect;7.7 &middot; session.rs:180-185</p>
+</div>
+<div class="minor">
+<h3><span class="tag t-obs">observed</span> Storage-shaped vocabulary, one place &mdash; with a counter-reading</h3>
+<p><code>ConfigurationReceipt</code> and <code>ConfigurationRejectionReason.MetaConfigureOccurred</code> expose on the ordinary contract whether a privileged configure was ever done. The nexus skill says storage classification vocabulary never appears on the public wire. <strong>Disconfirming:</strong> Vision/nexus.md:85-92 designs exactly this fact as wire-relevant, so <code>MetaConfigureDone</code> may be domain language for the configuration lifecycle. Recorded as an open reading, not a gap resolved.</p>
+<p class="src">Grounding &sect;7.6 &middot; ethos/signal.ethos:32-34</p>
+</div>
+<div class="minor">
+<h3><span class="tag t-obs">observed &middot; followed</span> Free functions and noted exceptions</h3>
+<p>Every verb in the three crates is a trait method; the only free functions are three <code>fn main()</code>s and <code>build.rs</code>'s. Two check scripts enforce it in the wire repos. <code>IdentifiesLock</code> is one single-method trait on <code>Lock</code> &mdash; the shape the skill warns about, present in the singular. Two exceptions are named at their sites, as the skill asks.</p>
+<p class="src">Grounding &sect;7.8, &sect;7.9 &middot; ordinary.rs:32-39 &middot; session.rs:89-93 &middot; orchestrate-nexus/Cargo.toml:22-24</p>
+</div>
+<div class="minor">
+<h3><span class="tag t-unk">unknown</span> Not established</h3>
+<p>Whether <code>MetaConfigureDone</code> is set on the live store; what <code>signal</code> at <code>66e7b153</code> does in <code>accord.rs</code> / <code>exchange.rs</code> beyond the file names; whether the <code>datom-free-nexus</code> and <code>no-free-functions</code> checks currently pass &mdash; the flake was read, not run.</p>
+<p class="src">Grounding &sect;9</p>
+</div>
+</div>
+</section>
+<!-- ================= 8 ================= -->
+<section>
+<h2><span class="n">08</span> Skills and vision touched</h2>
+<div class="tw">
+<table>
+<thead><tr><th>Part of the anatomy</th><th>Authored skill</th><th>Vision topic</th></tr></thead>
+<tbody>
+<tr><td>The ethos files, roots, sections, sweet form, derives</td><td><code>Curriculum/skills/ethos.md</code> (read as <code>.claude/skills/ethos/SKILL.md</code>)</td><td><code>Vision/ethos.md</code> &mdash; esp. "Every declared type bears both kinds" (251-264), "The datom kinds are compiled in only where text is spoken" (266-283)</td></tr>
+<tr><td>Query/Response as the Signal root's first two sections</td><td><code>Curriculum/skills/ethos.md</code></td><td><code>Vision/signal.md:14-28</code> &mdash; "A Signal declares queries and responses; input and output are too low-level for it"</td></tr>
+<tr><td>The Nexus whole: sockets, core, default clients, actors, subscription</td><td><code>Curriculum/skills/nexus.md</code></td><td><code>Vision/nexus.md</code> &mdash; all 125 lines; Sockets 33-39, Default clients 41-49, Configuration 74-81, First configuration 83-92, Actors 107-110, Observation 117-120, Polling forbidden 122-125</td></tr>
+<tr><td>Why the Nexus has the shape it has</td><td><code>Curriculum/skills/nexus-rationale.md</code></td><td><code>Vision/nexus.md</code></td></tr>
+<tr><td>The wire: rkyv, framing, portability</td><td><code>Curriculum/skills/nexus.md</code> &mdash; Signal, the wire format</td><td><code>Vision/signal.md:7-12, 40-43</code></td></tr>
+<tr><td>The CLI's one datom argument, textualize / compose</td><td><code>Curriculum/skills/datom.md</code></td><td><code>Vision/datom.md</code> &mdash; "The interface shape" (190-211), "From text and back" (151-161)</td></tr>
+<tr><td>The datom text itself: positional, guillemets, bare runs</td><td><code>Curriculum/skills/datom.md</code></td><td><code>Vision/datom.md</code> &mdash; Syntax (48-109), Strings (34-47)</td></tr>
+<tr><td>The protos substrate under datom (<code>protosize</code>, <code>textualize</code>)</td><td><code>Curriculum/skills/protos.md</code></td><td><code>Vision/protos.md</code></td></tr>
+<tr><td>The Sema store</td><td><em>no dedicated skill in the listing</em></td><td><code>Vision/sema.md</code> (15 lines)</td></tr>
+<tr><td>Using the ordinary socket in practice</td><td><code>Curriculum/skills/orchestrate.md</code></td><td><code>Vision/orchestrate.md</code> (12 lines)</td></tr>
+<tr><td>Lock etiquette between flows</td><td><code>Curriculum/skills/edit-coordination.md</code></td><td><code>Vision/orchestrate.md</code></td></tr>
+<tr><td>Relaying these findings as claims, not verdicts</td><td><code>Curriculum/skills/behavior.md</code></td><td>&mdash;</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Prose outside <code>Vision/</code> covering the same anatomy: <code>orchestrate/ARCHITECTURE.md</code>, <code>signal-orchestrate/ARCHITECTURE.md</code>, <code>signal/DESIGN.md</code>, <code>signal/ARCHITECTURE.md</code> &mdash; the last read only as a file listing at <code>8f9a0deb</code>. <span class="src">Grounding &sect;8</span></p>
+</section>
+<footer>
+<p>Every statement here is relayed from one source: <code>/home/li/primary/flows/056f6d/reports/nexus-anatomy-grounding.md</code>, at the revisions pinned in its &sect;0. Observed means read at that revision or witnessed by a command run on 2026-09-18; inferred and unknown are marked where they appear.</p>
+<p>Live witnesses were four commands: <code>ps</code>, <code>ls</code>, <code>orchestrate</code> (no arguments, <code>--help</code>, <code>a b</code>, <code>Observe.Locks</code>) and <code>orchestrate-meta 'ReverseMetaConfiguration'</code>, which failed to connect and so mutated nothing. No Lock was taken or released.</p>
+</footer>
+</div>

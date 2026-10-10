@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Run a local, no-worker smoke test of the bridge's artifact lifecycle.
+set -euo pipefail
+IFS=$'\n\t'
+
+bridge_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+bridge="$bridge_root/bin/bridge"
+state_directory=$(mktemp -d "${TMPDIR:-/tmp}/firstmate-bridge-smoke.XXXXXX")
+workspace_root=$(cd -- "$bridge_root/.." && pwd -P)
+trap 'rm -rf -- "$state_directory"' EXIT
+export FIRST_MATE_BRIDGE_HOME="$state_directory/state"
+
+brain_dump="$state_directory/brain-dump.md"
+cat >"$brain_dump" <<'EOF'
+# Brain dump
+
+Add a small local validation command, but do not publish, merge, deploy, or
+change credentials. Decide whether the command should remain a temporary bridge.
+EOF
+
+"$bridge" init "$workspace_root"
+"$bridge" intake smoke-request "$brain_dump"
+"$bridge" proposal smoke-proposal smoke-request
+"$bridge" decision smoke-decision smoke-proposal
+
+if "$bridge" validate smoke-proposal smoke-decision >/dev/null 2>&1; then
+	printf 'bridge smoke: incomplete decision unexpectedly validated\n' >&2
+	exit 1
+fi
+
+cat >"$FIRST_MATE_BRIDGE_HOME/proposals/smoke-proposal.md" <<'EOF'
+# Proposal smoke-proposal
+
+Request: smoke-request
+Status: ready-for-worker
+Decision: smoke-decision
+
+## Problem
+The coordinator needs a small, local artifact flow until the intended systems interoperate.
+
+## Constraints
+Keep the bridge local, reversible, and unable to merge, publish, spend, deploy, or expand credentials.
+
+## Options
+Use the existing Pi subagent and supervisor capabilities with Markdown artifacts rather than adding a runtime service.
+
+## Recommendation
+Use the local Markdown bridge because it reuses existing capabilities and can be removed as one directory.
+
+## Decision needed
+Confirm that a single local coordinator and worker path is acceptable for this temporary bridge.
+
+## Authority and safety check
+No public, credential, spending, merge, deployment, deletion, or irreversible action is included.
+
+## Worker plan
+Delegate one worker only after the human decision record is complete.
+
+## Validation plan
+Run the bridge validators and require worker-reported command evidence before reporting completion.
+EOF
+
+cat >"$FIRST_MATE_BRIDGE_HOME/decisions/smoke-decision.md" <<'EOF'
+# Decision smoke-decision
+
+Proposal: smoke-proposal
+Status: human-confirmed
+Selected: use the local Markdown bridge
+Evidence: explicit human confirmation recorded in the smoke fixture
+
+## Options considered
+A new service was rejected in favor of reusing the current Pi bridge.
+
+## Human confirmation
+The fixture records the explicit confirmation needed before dispatch.
+
+## Consequence
+One local worker path may be delegated, while prohibited actions remain unavailable.
+EOF
+
+"$bridge" validate smoke-proposal smoke-decision
+"$bridge" report smoke-report smoke-proposal smoke-decision
+
+cat >"$FIRST_MATE_BRIDGE_HOME/reports/smoke-report.md" <<'EOF'
+# Worker report smoke-report
+
+Proposal: smoke-proposal
+Decision: smoke-decision
+Status: complete
+
+## Worker outcome
+The synthetic worker outcome demonstrates the required report shape without launching a worker.
+
+## Changed files
+No project files changed during this smoke test.
+
+## Commands run
+bridge init, intake, proposal, decision, validate, report, and validate-report completed.
+
+## Validation output
+The proposal, decision, and report validators returned their passed markers.
+
+## Residual risks
+This smoke test validates bridge artifacts only; it does not prove a project worker's implementation.
+
+## Coordinator conclusion
+The temporary bridge lifecycle is usable without enabling any prohibited action.
+EOF
+
+"$bridge" validate-report smoke-report
+
+if "$bridge" intake smoke-request "$brain_dump" >/dev/null 2>&1; then
+	printf 'bridge smoke: duplicate intake unexpectedly succeeded\n' >&2
+	exit 1
+fi
+
+printf 'BRIDGE_SMOKE=passed\n'
+printf 'BRIDGE_SMOKE_STATE_REMOVAL=%s\n' "$FIRST_MATE_BRIDGE_HOME"

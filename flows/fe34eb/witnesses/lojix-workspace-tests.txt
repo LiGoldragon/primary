@@ -1,0 +1,228 @@
+running 96 tests
+test adapters::tests::negative_public_identifiers_are_rejected_without_wrapping ... ok
+test adapters::tests::public_key_report_drops_private_runtime_text ... ok
+test schema_runtime::tests::activation_commit_persists_computed_boot_once_slot ... ok
+test adapters::tests::ordinary_projection_keeps_only_canonical_store_item_roots ... ok
+test schema_runtime::tests::activation_commit_persists_computed_boot_profile_slot ... ok
+test bootstrap::tests::horizon_architecture_is_compared_as_a_nix_system ... ok
+test schema_runtime::tests::activation_commit_persists_computed_test_activation_slot ... ok
+test schema_runtime::tests::activation_commit_requires_closure_path ... ok
+test schema_runtime::tests::activation_unit_name_matches_the_resume_cursor_unit ... ok
+test schema_runtime::tests::activating_row_whose_system_profile_differs_is_not_recorded ... ok
+test schema_runtime::tests::boot_activation_runs_switch_to_configuration_then_releases_efi_to_loader_configuration ... ok
+test schema_runtime::tests::boot_once_unit_name_is_deterministic_in_the_deployment_identifier ... ok
+test schema_runtime::tests::boot_once_uses_simple_invocation_none ... ok
+test schema_runtime::tests::build_closure_selects_drv_outputs_not_the_bare_drv ... ok
+test schema_runtime::tests::boot_once_systemd_run_argv_shape ... ok
+test schema_runtime::tests::build_closure_stays_local_and_selects_the_realised_output ... ok
+test reconstruction::tests::reset_requires_an_existing_generated_configuration_and_store ... ok
+test schema_runtime::tests::boot_once_script_snapshot ... ok
+test reconstruction::tests::reset_cli_requires_exactly_one_inline_pathless_object ... ok
+test schema_runtime::tests::build_on_a_different_target_stays_in_the_local_owner_context ... ok
+test schema_runtime::tests::build_on_the_daemon_host_stays_local ... ok
+test schema_runtime::tests::colliding_secret_attribute_names_are_a_typed_error ... ok
+test schema_runtime::tests::copy_from_dispatcher_uses_to_only_with_substitute ... ok
+test schema_runtime::tests::copy_preserves_login_host_and_params ... ok
+test schema_runtime::tests::copy_preserves_root_login_unchanged ... ok
+test schema_runtime::tests::deployment_input_maps_complete_and_base_host_materialization ... ok
+test schema_runtime::tests::detached_handoff_name_round_trips_the_systemd_service_identity ... ok
+test schema_runtime::tests::explicit_builder_override_wins_over_the_default_local_builder ... ok
+test schema_runtime::tests::foreign_target_switch_keeps_the_foreground_path ... ok
+test schema_runtime::tests::flake_locator_policy_acceptance_matrix_is_policy_specific_and_total ... ok
+test schema_runtime::tests::guard_accepts_every_declared_action ... ok
+test schema_runtime::tests::empty_cluster_secrets_emit_empty_sops_files_attribute ... ok
+test schema_runtime::tests::flake_locator_policy_rejects_unsafe_common_forms_for_every_policy ... ok
+test schema_runtime::tests::immutable_pin_eval_omits_refresh_but_keeps_raw_and_selector ... ok
+test schema_runtime::tests::interrupted_detached_test_observer_does_not_terminalize_the_handoff ... ok
+test schema_runtime::tests::interrupted_self_switch_reconstructs_a_current_generation_record ... ok
+test schema_runtime::tests::local_eval_never_redirects_over_ssh_ng ... ok
+test schema_runtime::tests::generated_secrets_flake_maps_verbatim_stems_to_copied_files ... ok
+test schema_runtime::tests::local_eval_reads_the_daemon_host_store_with_no_redirect ... ok
+test schema_runtime::tests::matching_profile_set_boot_profile_is_not_recovered_as_a_self_switch ... ok
+test schema_runtime::tests::matching_profile_user_activation_is_not_recovered_as_a_self_switch ... ok
+test schema_runtime::tests::matching_profile_without_the_systemd_boot_backend_is_not_recovered ... ok
+test schema_runtime::tests::no_secrets_is_explicit_and_yields_no_files ... ok
+test schema_runtime::tests::non_boot_once_deploy_records_no_resume_unit ... ok
+test schema_runtime::tests::non_utf8_secret_file_name_is_a_typed_error ... ok
+test schema_runtime::tests::phase_projection_never_labels_nix_metadata_as_an_immutable_revision ... ok
+test schema_runtime::tests::pre_dispatch_unit_new_observer_accepts_only_its_exact_handoff ... ok
+test schema_runtime::tests::refresh_is_dropped_only_for_require_immutable_against_a_pinned_ref ... ok
+test schema_runtime::tests::regenerating_secrets_wipes_stale_ciphertext ... ok
+test schema_runtime::tests::remote_build_uses_the_exact_request_builder_spec_and_disables_local_fallback ... ok
+test schema_runtime::tests::remote_eval_stays_host_local_with_no_store_redirect ... ok
+test schema_runtime::tests::require_immutable_accepts_structured_revision_query ... ok
+test schema_runtime::tests::require_immutable_rejects_malformed_refs_that_only_contain_nar_hash_text ... ok
+test schema_runtime::tests::require_immutable_rejects_malformed_refs_that_only_contain_rev_text ... ok
+test schema_runtime::tests::require_immutable_rejects_mutable_flake_reference ... ok
+test reconstruction::tests::reset_rejects_symlinked_configuration_and_store_before_deletion ... ok
+test schema_runtime::tests::resolved_horizon_architecture_maps_to_nix_system ... ok
+test reconstruction::tests::reset_returns_already_current_without_touching_v5_data_or_sidecars ... ok
+test schema_runtime::tests::retained_test_completion_visible_on_the_post_subscribe_read_terminalizes ... ok
+test schema_runtime::tests::running_successor_retained_unit_attaches_the_completion_observer ... ok
+test schema_runtime::tests::secrets_input_rejects_a_symlinked_parent_directory ... ok
+test schema_runtime::tests::secrets_input_rejects_a_symlinked_sops_file_before_copying ... ok
+test schema_runtime::tests::secrets_input_rejects_nonexistent_directory ... ok
+test schema_runtime::tests::self_host_boot_does_not_take_the_self_switch_shape ... ok
+test schema_runtime::tests::self_host_switch_selects_the_detached_shape ... ok
+test schema_runtime::tests::self_host_test_activation_selects_the_detached_handoff_shape ... ok
+test schema_runtime::tests::self_switch_without_a_built_closure_records_nothing ... ok
+test schema_runtime::tests::sops_attribute_name_is_the_filename_stem_verbatim ... ok
+test schema_runtime::tests::successor_missing_then_unit_new_keeps_the_exact_handoff_pending ... ok
+test schema_runtime::tests::switch_activation_has_store_path_and_switch_subcommand_no_closure_token ... ok
+test schema_runtime::tests::test_activation_runs_switch_to_configuration_test_only_no_profile_set ... ok
+test schema_runtime::tests::resolve_and_record_records_pipeline_flake_and_eval_source_revision ... ok
+test schema_runtime::tests::user_environment_local_profile_invocation_remains_local ... ok
+test schema_runtime::tests::user_environment_matched_remote_login_runs_without_mediation ... ok
+test schema_runtime::tests::user_environment_remote_activate_uses_root_mediation ... ok
+test schema_runtime::tests::user_environment_remote_profile_uses_root_mediation ... ok
+test schema_runtime::tests::activate_command_carries_built_closure_path ... ok
+test schema_runtime::tests::nix_output_boundaries_terminalize_unsafe_paths_without_echoing_them ... ok
+test schema_runtime::tests::admission_rejects_invalid_request_owned_routing_before_snapshot_persistence ... ok
+test schema_runtime::tests::horizon_mode_without_an_actualized_definition_rejects_before_effects ... ok
+test reconstruction::tests::reset_refuses_a_sibling_spirit_database_without_deleting_it ... ok
+test schema_runtime::tests::activate_without_closure_fails_rather_than_activating_empty ... ok
+test schema_runtime::tests::recorded_source_revision_survives_event_and_state_paths ... ok
+test schema_runtime::tests::crash_after_atomic_resolved_source_commit_reopens_at_materialization_without_resolving_again ... ok
+test daemon::tests::successor_reconciles_self_switch_as_current_and_public_terminal_success ... ok
+test transition_intent_tests::fresh_job_and_gc_root_writes_reject_noncanonical_closure_paths ... ok
+test reconstruction::tests::reset_recreates_only_a_recognised_pre_v5_lojix_store_and_its_sidecars ... ok
+test schema_runtime::tests::unproven_resolver_metadata_terminalizes_before_any_later_effect ... ok
+test transition_intent_tests::reopen_rejects_an_unsafe_resumable_job_closure ... ok
+test schema_runtime::tests::injected_closure_effects_terminalize_before_build_copy_or_activation ... ok
+test transition_intent_tests::reopening_after_acknowledged_transition_compaction_does_not_redeliver ... ok
+test schema_runtime::tests::restart_restores_or_recovers_the_exact_phase_receipt_for_each_resume_continuation ... ok
+test transition_intent_tests::preflight_rejection_intent_recovers_an_acknowledged_terminal_event ... ok
+test transition_intent_tests::admission_intent_recovery_is_exactly_once_at_every_crash_window ... ok
+test transition_intent_tests::intermediate_phase_intent_recovery_acknowledges_before_continuation ... ok
+test transition_intent_tests::terminal_intent_recovery_keeps_the_job_until_local_acknowledgement ... ok
+test result: ok. 96 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+running 1 test
+test daemon_uses_actor_native_listener_runtime ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+running 5 tests
+test fixture_eval_reserves_a_durable_deployment_before_effects ... ignored, hits the network and runs nix evaluation; run with --ignored
+test owner_deploy_lowers_nonempty_secret_reference_without_reading_it ... ok
+test owner_deploy_lowers_to_runtime_shape_with_explicit_no_secrets ... ok
+test owner_request_round_trips_fresh_portable_signal_bytes ... ok
+test owner_deploy_rejection_lowers_to_public_shape ... ok
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.05s
+running 1 test
+test accepted_deploy_job_survives_a_store_reopen_with_its_correlation_identity ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+running 7 tests
+test mismatched_unprivileged_remote_login_is_rejected_before_effects ... ok
+test second_arbitrary_transport_flow_preserves_both_request_values ... ok
+test matched_user_remote_activation_runs_directly_without_runuser ... ok
+test explicit_empty_secrets_directory_is_accepted_without_public_path_leakage ... ok
+test home_transport_is_local_build_then_copy_profile_and_activate_with_exact_identity ... ok
+test invalid_explicit_secrets_inputs_fail_before_effects ... ok
+test copy_and_activation_failures_are_terminal_rejections ... ok
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+running 2 tests
+test store_self_resumes_after_reopen ... ok
+test current_generation_is_unique_per_host_or_user_environment_across_reopen ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+running 2 tests
+test capacity_rejection_is_a_correlated_terminal_record ... ok
+test accepted_submission_creates_a_correlated_durable_record ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+running 2 tests
+test deployment_events_cannot_bypass_the_transition_intent_protocol ... ok
+test event_retention_preserves_the_newest_query_window_and_monotonic_positions ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+running 2 tests
+test handwritten_nexus_names_horizon_materialization_and_eval_overrides ... ok
+test runtime_no_longer_rejects_absent_build_attribute_as_unsupported ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 2 tests
+test string_ingress_preserves_bare_paths_and_colon_urls ... ok
+test committed_ingress_is_fresh_from_its_authored_ethos ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+running 4 tests
+test owner_peer_authority_accepts_matching_user_and_group ... ok
+test owner_peer_authority_rejects_group_mismatch ... ok
+test owner_peer_authority_rejects_user_mismatch ... ok
+test owner_peer_authority_rejects_tcp_peers_without_unix_credentials ... ok
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 2 tests
+test reset_requires_one_inline_pathless_request ... ok
+test v5_refuses_the_v4_deploy_submission_layout_until_explicit_reset ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+running 5 tests
+test command_requires_one_inline_inspect_store_object ... ok
+test missing_store_path_is_reported_without_creating_file ... ok
+test populated_generation_rows_report_row_counts ... ok
+test registered_tables_with_no_rows_report_empty ... ok
+test unreadable_generation_and_event_rows_report_decode_failures ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+running 2 tests
+test malformed_legacy_row_is_refused_before_query_handling ... ok
+test current_store_reopens_through_startup_gate ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+running 1 test
+test runtime_initializes_without_a_legacy_text_protocol ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+running 2 tests
+test tests::decodes_canonical_inline_query ... ok
+test tests::rejects_non_single_inline_arguments ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 3 tests
+test legacy_configuration_archive_remains_available_to_the_offline_migrator ... ok
+test daemon_rejects_startup_arguments_before_discovering_state ... ok
+test zero_argument_daemon_persists_lifecycle_and_uses_desired_sockets_on_restart ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 13 tests
+test mutable_flakes_and_ambiguous_transport_fail_before_effects ... ok
+test private_output_parents_and_existing_collisions_fail_closed ... ok
+test nonprivate_ssh_policy_files_are_rejected_before_any_effect ... ok
+test cli_remains_exactly_one_inline_object ... ok
+test transport_identity_rejection_table_never_reaches_a_body ... ok
+test wrong_root_staging_after_crash_fails_without_deleting_it ... ok
+test substituted_journal_child_is_never_cleaned_recursively ... ok
+test failed_effect_writes_private_terminal_evidence_before_cleanup ... ok
+test build_only_has_no_transport_or_activation_body ... ok
+test local_backend_has_explicit_systemd_and_path_environment ... ok
+test remote_dispatch_is_no_block_and_identity_is_explicit ... ok
+test root_command_crash_reconciles_private_staging_for_every_mode ... ok
+test crash_receipts_resume_without_repeating_prior_effects ... ok
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+running 3 tests
+test offline_migration_executable_uses_the_legacy_archive_as_its_source_authority ... ok
+test exact_pre_nexus_store_is_never_opened_in_place_and_migrates_on_a_copy ... ok
+test configuration_lifecycle_persists_the_meta_marker_and_desired_state ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+running 3 tests
+test write_configuration_bakes_no_test_defaults_for_production ... ok
+test write_configuration_round_trips_through_rkyv ... ok
+test write_configuration_requires_one_inline_object_and_never_reads_a_request_file ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+running 3 tests
+test tests::rejects_non_single_inline_arguments ... ok
+test tests::decodes_canonical_inline_query ... ok
+test tests::actualizes_horizon_file_before_constructing_wire_query ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests lojix
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests lojix_client
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+   Doc-tests meta_lojix_client
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

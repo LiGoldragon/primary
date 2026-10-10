@@ -1,0 +1,13 @@
+{
+  "nativeThreadId": "f4b2633d-52d8-4363-b584-795fe727cd93",
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/f4b2633d-52d8-4363-b584-795fe727cd93.jsonl",
+  "transcriptSnapshotSha256": "c0cb0bab30c5660b6ae813ae0f22222a9a8cc3c4f70877a1b5f200b2dcc79575",
+  "nativeSkillCommands": [
+    "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
+  ],
+  "authRetry": true,
+  "observedIdentity": {
+    "model": "<synthetic>",
+    "effort": null
+  }
+}

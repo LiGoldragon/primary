@@ -1,0 +1,394 @@
+<title>Codex Report Loop</title>
+<style>
+  :root{
+    --bg:#f3f5f7;
+    --surface:#ffffff;
+    --surface-2:#eaeef2;
+    --text:#1a232c;
+    --text-muted:#54626e;
+    --border:#d5dce2;
+    --accent:#1f5f8b;
+    --accent-soft:#e2edf4;
+    --accent-2:#a6540f;
+    --accent-2-soft:#f6e8db;
+    --accent-3:#6a3fa0;
+    --code-bg:#eceff2;
+    --shadow: 0 1px 2px rgba(20,30,40,.06), 0 8px 24px -16px rgba(20,30,40,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12171c;
+      --surface:#1a2129;
+      --surface-2:#20282f;
+      --text:#e7ecf0;
+      --text-muted:#9aa8b3;
+      --border:#2d3841;
+      --accent:#6fb3dd;
+      --accent-soft:#1f3441;
+      --accent-2:#e0a066;
+      --accent-2-soft:#3a2c1e;
+      --accent-3:#b79bdf;
+      --code-bg:#20282f;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12171c;
+    --surface:#1a2129;
+    --surface-2:#20282f;
+    --text:#e7ecf0;
+    --text-muted:#9aa8b3;
+    --border:#2d3841;
+    --accent:#6fb3dd;
+    --accent-soft:#1f3441;
+    --accent-2:#e0a066;
+    --accent-2-soft:#3a2c1e;
+    --accent-3:#b79bdf;
+    --code-bg:#20282f;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding:2.5rem 1.25rem 5rem;
+  }
+  @media (min-width:640px){
+    .page{ padding:4rem 2rem 6rem; }
+  }
+
+  h1,h2{
+    font-family:"Fraunces","Iowan Old Style",Georgia,serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--text);
+  }
+  h1{
+    font-size:clamp(1.9rem,5vw,2.6rem);
+    line-height:1.15;
+    margin:0 0 .35rem;
+    letter-spacing:-0.01em;
+  }
+  h2{
+    font-size:clamp(1.25rem,3.2vw,1.5rem);
+    margin:2.75rem 0 1rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--border);
+    letter-spacing:-0.005em;
+  }
+  h2:first-of-type{ margin-top:2.25rem; }
+
+  .kicker{
+    font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 1.5rem;
+  }
+
+  p{ margin:0 0 1.1em; color:var(--text); }
+  p.stt{
+    color:var(--text-muted);
+  }
+  p.stt::first-letter{ color:var(--text-muted); }
+
+  strong{ color:var(--text); }
+
+  a{ color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+  a:hover{ text-decoration-thickness:2px; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  ul,ol{ margin:0 0 1.2em; padding-left:1.35em; }
+  li{ margin:0 0 .55em; }
+  li::marker{ color:var(--accent); font-family:"JetBrains Mono",monospace; font-size:.9em; }
+
+  code{
+    font-family:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+    font-size:.86em;
+    background:var(--code-bg);
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:.08em .35em;
+    color:var(--accent-3);
+    white-space:nowrap;
+  }
+
+  .table-wrap{
+    overflow-x:auto;
+    margin:0 0 1.3em;
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    background:var(--surface);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:640px;
+    font-size:.92rem;
+  }
+  caption{
+    caption-side:top;
+    text-align:left;
+    font-family:"JetBrains Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    padding:.8em 1em 0;
+  }
+  th,td{
+    text-align:left;
+    padding:.65em .85em;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  thead th{
+    background:var(--surface-2);
+    font-family:"JetBrains Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    white-space:nowrap;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:var(--surface-2); }
+
+  figure{ margin:1.6em 0 1.8em; }
+  figure.diagram{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    padding:1.25rem 1rem .5rem;
+  }
+  figure.diagram svg{ display:block; width:100%; height:auto; max-width:380px; margin:0 auto; }
+  figcaption{
+    font-size:.85rem;
+    color:var(--text-muted);
+    padding:.9rem .25rem 0;
+    border-top:1px dashed var(--border);
+    margin-top:.9rem;
+  }
+
+  .loop-node-fill{ fill:var(--surface-2); }
+  .loop-node-stroke{ stroke:var(--text); }
+  .loop-emphasis{ fill:var(--accent-soft); stroke:var(--accent); }
+  .loop-text{ fill:var(--text); }
+  .loop-arrow{ stroke:var(--text); fill:none; }
+
+  .sources li{
+    font-size:.88rem;
+    color:var(--text-muted);
+    word-break:break-word;
+  }
+  .sources code{ font-size:.85em; }
+
+  hr.rule{ border:none; border-top:1px solid var(--border); margin:2.5rem 0; }
+
+  footer.tag{
+    margin-top:3rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--border);
+    font-family:"JetBrains Mono",monospace;
+    font-size:.75rem;
+    color:var(--text-muted);
+    letter-spacing:.03em;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<div class="page">
+  <p class="kicker">Flow 7fba5f &middot; Report</p>
+  <h1>Codex Report Loop</h1>
+
+  <p class="stt">The living, 2026-09-05, STT: &quot;developing a similar workflow to use with Codex, so that Codex could also use the same protocol. It creates a Markdown file, and a sub-agent creates a web report that I could actually annotate. The Codex agent could then read the annotations that I made to the report and do all of the research you need to do to find out what the best solution is for that.&quot;</p>
+
+  <p class="stt">The contract, typed in flow 01a052b6: &quot;I want to be able to put comments from my phone. Essentially, I'm remote accessing Codex, which is running on my machine here, and then Codex would create a visual report. There would be a link I could open on my phone where I could actually put in all the comments one by one. I would be able to put in comments without triggering the session every time I put a comment. I could potentially put multiple comments and then go back to the session and tell it that I commented on the report. It would be able to see all the comments and what they refer to. Now I'm describing the flow that I have developed with Claude, and that's the kind of flow I'm looking to get with Codex.&quot;</p>
+
+  <h2>The loop</h2>
+
+  <p>Four moves, the same on both harnesses.</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 340 500" role="img" aria-label="A five-step loop: the main flow authors markdown, a subflow converts and publishes it to a page at a link, the living annotates from the phone while the session sleeps, then a subflow reads every comment with its anchor and the loop returns to the main flow.">
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" class="loop-text"></path>
+        </marker>
+      </defs>
+
+      <!-- A -->
+      <rect x="30" y="20" width="280" height="56" rx="10" class="loop-node-fill loop-node-stroke" stroke-width="1.5"></rect>
+      <text x="170" y="44" text-anchor="middle" class="loop-text" font-size="12.5">Main flow authors</text>
+      <text x="170" y="60" text-anchor="middle" class="loop-text" font-size="12.5">the markdown</text>
+
+      <line x1="170" y1="76" x2="170" y2="102" class="loop-arrow" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+
+      <!-- B -->
+      <rect x="30" y="106" width="280" height="72" rx="10" class="loop-node-fill loop-node-stroke" stroke-width="1.5"></rect>
+      <text x="170" y="130" text-anchor="middle" class="loop-text" font-size="12.5">A subflow on a</text>
+      <text x="170" y="146" text-anchor="middle" class="loop-text" font-size="12.5">cheaper model converts</text>
+      <text x="170" y="162" text-anchor="middle" class="loop-text" font-size="12.5">and publishes</text>
+
+      <line x1="170" y1="178" x2="170" y2="204" class="loop-arrow" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+
+      <!-- C -->
+      <rect x="30" y="208" width="280" height="44" rx="10" class="loop-node-fill loop-node-stroke" stroke-width="1.5"></rect>
+      <text x="170" y="235" text-anchor="middle" class="loop-text" font-size="12.5">Page at a link</text>
+
+      <line x1="170" y1="252" x2="170" y2="278" class="loop-arrow" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+
+      <!-- D (emphasis: the living's move) -->
+      <rect x="30" y="282" width="280" height="82" rx="10" class="loop-emphasis" stroke-width="1.75"></rect>
+      <text x="170" y="306" text-anchor="middle" class="loop-text" font-size="12.5">The living annotates</text>
+      <text x="170" y="322" text-anchor="middle" class="loop-text" font-size="12.5">from the phone &mdash;</text>
+      <text x="170" y="338" text-anchor="middle" class="loop-text" font-size="12.5">several comments,</text>
+      <text x="170" y="354" text-anchor="middle" class="loop-text" font-size="12.5">session asleep</text>
+
+      <line x1="170" y1="364" x2="170" y2="390" class="loop-arrow" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+
+      <!-- E -->
+      <rect x="30" y="394" width="280" height="82" rx="10" class="loop-node-fill loop-node-stroke" stroke-width="1.5"></rect>
+      <text x="170" y="418" text-anchor="middle" class="loop-text" font-size="12.5">Told &quot;I commented&quot;:</text>
+      <text x="170" y="434" text-anchor="middle" class="loop-text" font-size="12.5">a subflow reads every</text>
+      <text x="170" y="450" text-anchor="middle" class="loop-text" font-size="12.5">comment with its</text>
+      <text x="170" y="466" text-anchor="middle" class="loop-text" font-size="12.5">anchor</text>
+
+      <!-- loop back E -> A -->
+      <path d="M30,435 H14 V48 H26" class="loop-arrow" stroke-width="1.5" marker-end="url(#arrowhead)"></path>
+    </svg>
+    <figcaption>The loop closes: what the subflow reads back from move 5 becomes the psyche record the main flow authors from next.</figcaption>
+  </figure>
+
+  <ol>
+    <li>The main flow authors the report as markdown.</li>
+    <li>A subflow on a cheaper model converts it to a page and publishes it at a link.</li>
+    <li>The living opens the link on the phone and leaves several comments, each anchored to a part of the page, without waking the session.</li>
+    <li>Told &quot;I commented&quot;, the flow reads every comment with what it anchors to, and the comments enter the psyche records as the living's typed word.</li>
+  </ol>
+
+  <p>On Claude Code, moves 2 and 4 are the Artifact tool: publish, and the <code>comments</code> action, which returns each thread with what it refers to. On Codex, move 1 and the spawning half of move 2 exist today; the page and the comments do not.</p>
+
+  <h2>What Codex has today</h2>
+
+  <p>Witnessed on this machine on 2026-09-05 unless marked relayed.</p>
+
+  <ul>
+    <li>Codex CLI 0.153.2. Main model gpt-5.6-sol; default subagent model gpt-5.6-luna; a <code>worker</code> agent on gpt-5.6-terra at reasoning high. Three agent definitions (default, explorer, worker) in ~/.codex/agents, symlinked from the Home Manager store.</li>
+    <li>Subagents: <code>multi_agent = true</code>; the tools spawn_agent, send_input, resume_agent, wait_agent, close_agent; an agent definition is a TOML file with name, description, developer_instructions, and optional model and reasoning effort; a spawn-time model overrides the default subagent model (relayed: learn.chatgpt.com, subagents and config-reference pages). &quot;Terra&quot; in the 01a0428b record is gpt-5.6-terra; the living ruled it for the report writing only.</li>
+    <li>Skills: SKILL.md directories in .codex/skills, ~/.codex/skills, and .agents/skills (relayed: developers.openai.com/codex/skills.md). Here the Curriculum generates the trees; ~/.codex/AGENTS.md is empty; no user skill sits under ~/.codex/skills beyond .system.</li>
+    <li>The Sites plugin (<code>sites@openai-bundled</code>) is enabled, beside documents, presentations, visualize, browser, and chrome. On 2026-08-27 flow 01a04236 deployed one report through it to <a href="https://codex-reports-hub.ligoldragon.chatgpt.site" target="_blank" rel="noopener">https://codex-reports-hub.ligoldragon.chatgpt.site</a>: version 1, owner-only, one hardcoded page. Flow 01a030df recommended disabling the sites-building and sites-hosting skills as &quot;authority, installation, and platform-shaping skills&quot; that &quot;bypass authored Curriculum/manifests&quot;; not enacted.</li>
+    <li>A web claim, contradicted: pages fetched 2026-09-05 say Codex Sites is desktop-app-only, workspace-scoped, with no CLI path and no external link. The 01a04236 transcript shows a CLI flow deploying. The local witness stands. Whether the hub opens on the phone without the workspace login is unverified.</li>
+    <li>Codex Annotations (relayed): an in-place editing primitive, select a region and ask Codex to revise it. No comment store, no read-back.</li>
+    <li>Remote: codex-remote-control.service runs <code>codex app-server --remote-control</code> on a unix socket, and the TUI attaches only to it. That is the living's remote path to Codex. claude-remote-control.service runs beside it.</li>
+    <li>agent-intercom 0.10.0 is packaged for both harnesses: codex-intercom-mcp, claude-intercom-mcp, cci, coi, codex-intercom-bridge. coi runs. cci fails to start (&quot;Claude intercom MCP server is missing&quot;). The bridge needs the app-server.</li>
+    <li>No static web server, reverse proxy, or page host is declared in CriomOS or CriomOS-home. Tailscale is installed and logged out on this machine.</li>
+    <li>Headless Claude Code 2.1.258 (<code>claude -p</code>) has no Artifact tool: probed on 2026-09-05, 39 tools listed, Artifact absent; <code>--bare</code> refuses OAuth. A Codex flow cannot publish or read a Claude artifact through a print-mode Claude call.</li>
+  </ul>
+
+  <h2>What the Codex flows tried</h2>
+
+  <ul>
+    <li>01a04236, 2026-08-27, STT: &quot;Problem: I can't see this remotely. Is there a plugin or something to allow you to publish those on a server the way Claude puts reports on claude.ai?&quot; Then: &quot;Yes use the hub&quot;. The hub deployed. Left open: navigation across reports, updates and versions, slug collisions, rollback, whether owner-only is the default.</li>
+    <li>01a0428b, 2026-08-27, STT: &quot;Why didn't you make the web report as I asked?&quot; And: &quot;Check a recent codex session for the web reporting procedure which we'll put in a codex only skill&quot;. A Luna subflow recovered the procedure into reports/codexWebReportingProcedureRecovery.md with a proposed Codex-only skill anatomy: report schema, navigation, version flow, post-deployment QA, URL reuse, rollback, ACL. Never authored.</li>
+    <li>01a052b6, 2026-08-30 to 09-01, STT: &quot;the vocabulary proposal is approved. claude artifacts can be commented, and then the flow that produced it can see the comments. what is openai's response to that?&quot; The flow found no OpenAI surface meeting the contract and named Pastel (a Codex MCP), MarkUp.io, and a thin annotation layer on the Sites hub as candidates; none proved against the owner-only login. The living, typed: &quot;is there a stack that incorporates the concept of annotations in code instead of using haywire on web using visuals and html tags to pretend to be doing structured markup? A proper idea-editing framework, in other words.&quot;</li>
+    <li>5c8be3ca, 2026-08-21, Claude, typed: &quot;lets create a file for external edits. annotations.md?&quot;</li>
+  </ul>
+
+  <h2>The page: where Codex could publish</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Surface</th><th>Exists here</th><th>Phone</th><th>Link outside the workspace</th><th>Standing it up</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>The Sites hub (chatgpt.site)</td><td>yes, one report</td><td>unverified</td><td>unverified; the web claim says no</td><td>reuse; navigation and versions to design</td></tr>
+        <tr><td>GitHub: the markdown in a pull request, or Pages</td><td>gh available</td><td>GitHub app</td><td>yes, behind the repository's access</td><td>none</td></tr>
+        <tr><td>A static page over the tailnet</td><td>no</td><td>browser</td><td>tailnet only</td><td>a Nix service, a tailscale login</td></tr>
+        <tr><td>A Claude artifact</td><td>on Claude only</td><td>yes</td><td>private, claude.ai login</td><td>a live interactive Claude session; no headless path</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The comments: where the living could annotate, and how the flow reads back</h2>
+
+  <p>Relayed from the products' pages fetched 2026-09-05 unless marked witnessed.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Option</th><th>Anchor</th><th>Phone</th><th>Read-back</th><th>Needs</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Pull request review on the report file</td><td>line</td><td>GitHub app</td><td><code>gh api</code> on the pull request's comments: path, line, diff hunk, body</td><td>a branch and a pull request per report</td></tr>
+        <tr><td>Hypothesis</td><td>text selection (XPath, position, quote)</td><td>via.hypothes.is, no native app</td><td>REST search by URI, selectors returned</td><td>a reachable page, an API key</td></tr>
+        <tr><td>Google Docs</td><td>text selection</td><td>Docs app</td><td>Drive API comments with the quoted text</td><td>Google OAuth for Drive</td></tr>
+        <tr><td>Inline comments in the markdown over git</td><td>exact, inline</td><td>a git editor app</td><td><code>git diff</code></td><td>a convention; no rendered page</td></tr>
+        <tr><td>giscus (GitHub Discussions) on a static page</td><td>page</td><td>browser, GitHub login</td><td><code>gh api</code></td><td>a static host</td></tr>
+        <tr><td>Remark42 on a tailnet page</td><td>page</td><td>browser</td><td>REST</td><td>a Nix package, a host, the tailnet</td></tr>
+        <tr><td>Claude artifact comments</td><td>element or selection</td><td>yes</td><td>Artifact <code>comments</code> (witnessed on Claude)</td><td>a live Claude session to publish and to read</td></tr>
+        <tr><td>Pastel, MarkUp.io (from 01a052b6)</td><td>unverified</td><td>unverified</td><td>unverified</td><td>proof against the Sites login</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The loop as it would run on Codex</h2>
+
+  <ol>
+    <li>The main Codex flow authors the report as markdown in the brief to a <code>worker</code> subagent (gpt-5.6-terra), per the 01a0428b ruling.</li>
+    <li>The worker saves reports/&lt;subject&gt;.md under the flow directory, converts, publishes to the chosen surface, commits, and returns the link.</li>
+    <li>The living annotates from the phone on the chosen surface.</li>
+    <li>Told &quot;I commented&quot;, the main flow spawns a subagent that reads the comments with their anchors and returns them verbatim; the flow logs them as psyche, typed, with the anchor as context.</li>
+    <li>The skill: one shared reporting skill carries the four moves; a <code>{% if codex %}</code> section carries the Codex surface once chosen; the worker's TOML definition carries the converter's model. Today the Codex section can only say that the surface is not chosen and the markdown is the deliverable.</li>
+  </ol>
+
+  <h2>Forks</h2>
+
+  <ol>
+    <li>The page surface: the existing Sites hub; GitHub; a static page over the tailnet; or a live Claude session publishing on Codex's behalf.</li>
+    <li>The comment surface: the same product as the page (GitHub, Google Docs, a Claude artifact) or an overlay on any page (Hypothesis, giscus, Remark42).</li>
+    <li>The anchor: a line, an element, or a text selection. A Claude artifact anchors to an element or a selection; a pull request review to a line; Hypothesis to a selection.</li>
+    <li>Whether Pastel or MarkUp.io, named in 01a052b6, are proved against the owner-only Sites login before anything is built.</li>
+    <li>Whether the &quot;idea-editing framework&quot; asked for in 01a052b6 supersedes page annotation on Codex, in which case the page is a projection and a comment is an edit to a structure.</li>
+    <li>Whether the 01a030df recommendation to disable the sites skills stands, which removes the hub.</li>
+  </ol>
+
+  <h2>Unknown</h2>
+
+  <ul>
+    <li>Whether the Sites hub opens on the phone outside the workspace login.</li>
+    <li>Whether a <code>claude --bg</code> session carries the Artifact tool, and whether intercom can carry a publish request from Codex to a live Claude session once cci builds.</li>
+    <li>The documents plugin's reach: whether it publishes a document to a URL with comments.</li>
+    <li>Where the Sites annotation layer's design from 01a052b6 is written, if anywhere.</li>
+  </ul>
+
+  <h2>Sources</h2>
+
+  <ul class="sources">
+    <li>flows/7fba5f/vision/reporting.md; flows/7fba5f/log.md (the subflow returns of 2026-09-05).</li>
+    <li>flows/01a052b6/vision/reportFeedback.md, vision/ideaEditing.md, log.md; Codex transcript 01a052b6-b91c-72b2-a8e6-09f21cab3078, lines 9, 510, 679, 867.</li>
+    <li>flows/01a04236/log.md; Codex transcript 01a04236-2355-7d20-94aa-e3b814a52b32, lines 368, 462, 495.</li>
+    <li>flows/01a0428b/reports/codexWebReportingProcedureRecovery.md, vision/codexOnlySkill.md, vision/useASubflowToPutTheReportTogether.md; Codex transcript 01a0428b-fc0e-7200-904e-2e2991e5425f, lines 9, 311, 334, 389.</li>
+    <li>flows/01a030df/reports/openaiSkillsReview.md; flows/01a04e75/log.md; flows/5c8be3ca/vision/flowArtifacts.md; flows/38dec9/vision/perHarnessSkills.md; flows/7b4d4c/reports/research-codex.md.</li>
+    <li>~/.codex/config.toml; ~/.codex/agents/default.toml, explorer.toml, worker.toml; CriomOS-home packages/agent-intercom and owned-agents/codex/tui.nix; the systemd units codex-remote-control and claude-remote-control. Witnessed by the research subflow.</li>
+    <li>The probe: claude 2.1.258 <code>--help</code> and three <code>claude -p</code> runs; outputs in this flow's scratchpad. Witnessed by the probe subflow.</li>
+    <li>Web, fetched 2026-09-05, relayed: learn.chatgpt.com/docs/agent-configuration/subagents; learn.chatgpt.com/docs/config-file/config-reference; developers.openai.com/codex/skills.md; display.dev/blog/share-codex-artifacts-externally; codex.danielvaughan.com, 2026-06-03 and 2026-03-27; giscus.app; remark42.com; hypothes.is; code.claude.com/docs/en/headless; github.com/agynio/gh-pr-review.</li>
+  </ul>
+
+  <footer class="tag">flow 7fba5f &mdash; converted from reports/codexReportLoop.md, unchanged in substance</footer>
+</div>

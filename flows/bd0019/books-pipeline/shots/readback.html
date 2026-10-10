@@ -1,0 +1,391 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The anatomy of the book pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one page at a time in a grid shell; illustration pages fill the upright phone, text pages one 68ch column. */
+:root{
+  --ground:#F3EBDC; --paper:#FBF6EC; --paper-edge:#E9DCC4; --ink:#2D2219; --muted:#6E5E4D; --rule:#D9CAB0;
+  --red:#A9321F; --red-soft:#F2DCD2; --glow:#F2C46D; --brass:#B9893A; --river:#5D7E8C; --leaf:#6E8B4E;
+  --slate:#4A443D; --slate-deep:#38332D; --slate-ink:#A79C8C; --ink-on-glow:#3A2A16;
+  --hill:#B7A77E; --hill-deep:#8E8058; --wood:#8A5A34; --wood-deep:#6A4224; --sign-ink:#FBF2E2;
+  --agree:#3F6B3A; --agree-soft:#E2EBD9; --shade:rgba(45,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+    --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+    --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+    --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+    --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+  --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+  --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+  --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+  --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+svg text,code,.prov,.eyebrow,.count,.go{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{container-type:inline-size;max-width:1000px;margin-inline:auto}
+.top{position:sticky;top:0;z-index:2;background:var(--ground);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.25 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{display:block}
+.page{scroll-margin-top:64px}
+code{font-family:var(--mono);font-size:.84em;background:var(--red-soft);color:var(--ink);padding:.05em .3em;border-radius:2px;overflow-wrap:anywhere}
+
+/* illustration pages */
+.ill figure{margin:0;display:grid;grid-template-rows:auto auto;gap:8px;padding-block:16px;justify-items:center}
+.ill svg{display:block;width:auto;max-width:100%;height:calc(100dvh - 190px);min-height:300px;justify-self:center}
+.ill figcaption{font:italic 400 16px/1.4 var(--body);color:var(--muted);text-align:center;max-width:68ch;justify-self:center}
+
+/* text pages */
+.txt .sheet{max-width:68ch;margin-inline:auto;padding-block:20px 36px;display:grid;gap:14px}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;font-size:clamp(26px,7.5cqi,38px);line-height:1.1}
+.txt p{margin:0}
+.src{display:grid;gap:12px}
+.src h2.src-h{font-size:clamp(24px,7cqi,34px)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p.said{font:italic 400 18px/1.45 var(--body)}
+p.prov{font:400 12px/1.45 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+aside.note{padding:10px 12px;background:var(--agree-soft);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.note .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--agree)}
+p.mark{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;font-size:15px}
+p.mark strong{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-right:.4em}
+ol.props{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.props li{display:grid;grid-template-columns:1.2em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+ol.props .n{font:600 18px/1.4 var(--display);color:var(--red)}
+
+/* position indicator: not controls */
+.dots{grid-column:1/-1;display:grid;grid-auto-flow:column;justify-content:center;gap:10px;pointer-events:none;user-select:none}
+.dot{width:11px;height:11px;border:1.5px solid var(--muted);border-radius:50%;display:block}
+.dot.t{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+aside.witness{padding:10px 12px;background:var(--paper);border-left:3px solid var(--river);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.witness .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--river)}
+.badge{display:inline-block;margin-left:.5em;padding:.05em .45em;font:600 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--agree);box-shadow:inset 0 0 0 1px var(--agree);border-radius:2px}
+ol.props li.ruled{box-shadow:inset 0 0 0 2px var(--agree);background:var(--agree-soft)}
+@container (min-width:760px){
+  .ill figure{grid-template-rows:none;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:28px}
+  .ill svg{height:calc(100dvh - 150px);width:auto}
+  .ill figcaption{font-size:20px;text-align:left}
+}
+</style>
+
+<div class="book">
+  <header class="top"><h1>The anatomy of the book pipeline</h1><span class="count" id="count">1 / 10</span>
+    <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span><span class="dot"></span><span class="dot t"></span></div></header>
+  <main class="stage" id="stage">
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p2t">
+  <title id="p2t">A printer's brass composing stick holds a single set line of type that reads Presentation.{ «title» }. Above it, scraps of dashed paper, the old front matter, drift away and fade. Below, a clean page begins with that one line at its head.</title>
+  <defs>
+    <linearGradient id="p2-brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p2-lead" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--slate-ink)"/>
+      <stop offset="1" style="stop-color:var(--slate)"/>
+    </linearGradient>
+    <linearGradient id="p2-page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="p2-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.6"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <!-- old dashed scraps drifting up and away -->
+  <g style="opacity:.45">
+    <g transform="rotate(-14 90 70)">
+      <rect x="44" y="52" width="96" height="40" rx="2" style="fill:var(--paper);stroke:var(--rule)"/>
+      <path d="M54 66 h 10 M70 66 h 10 M86 66 h 10" style="stroke:var(--muted);stroke-width:2.5;stroke-linecap:round"/>
+      <path d="M54 80 h 64" style="stroke:var(--muted);stroke-width:1.6;stroke-linecap:round"/>
+    </g>
+    <g transform="rotate(10 270 104)">
+      <rect x="226" y="86" width="92" height="36" rx="2" style="fill:var(--paper);stroke:var(--rule)"/>
+      <path d="M236 104 h 10 M252 104 h 10 M268 104 h 10" style="stroke:var(--muted);stroke-width:2.5;stroke-linecap:round"/>
+    </g>
+    <path d="M150 128 c 10 -8 18 -2 26 -10 M196 40 c 8 6 14 2 20 10" style="fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round"/>
+  </g>
+  <!-- the stick with its one line -->
+  <ellipse cx="180" cy="210" rx="190" ry="90" style="fill:url(#p2-halo)"/>
+  <path d="M28 222 L 332 222 L 332 252 C 332 258, 328 262, 322 262 L 38 262 C 32 262, 28 258, 28 252 Z" style="fill:url(#p2-brass);stroke:var(--wood-deep);stroke-width:1.5"/>
+  <path d="M28 222 L 28 178 L 42 178 L 42 222 Z" style="fill:url(#p2-brass);stroke:var(--wood-deep);stroke-width:1.5"/>
+  <path d="M300 222 L 300 182 L 316 182 L 316 222 Z" style="fill:var(--wood);stroke:var(--wood-deep)"/>
+  <rect x="44" y="184" width="254" height="38" rx="2" style="fill:url(#p2-lead)"/>
+  <g style="stroke:var(--slate-deep);stroke-width:1;opacity:.6">
+    <path d="M60 184 v 38 M76 184 v 38 M92 184 v 38 M108 184 v 38 M124 184 v 38 M140 184 v 38 M156 184 v 38 M172 184 v 38 M188 184 v 38 M204 184 v 38 M220 184 v 38 M236 184 v 38 M252 184 v 38 M268 184 v 38 M284 184 v 38"/>
+  </g>
+  <text x="171" y="208" text-anchor="middle" style="fill:var(--sign-ink);font:600 13.5px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">Presentation.{ «title» }</text>
+  <text x="180" y="160" text-anchor="middle" style="fill:var(--ink);font:italic 600 18px var(--display)">one datom line</text>
+  <!-- the inked page below: the line stands at its head -->
+  <path d="M180 270 C 180 290, 180 300, 180 316" style="fill:none;stroke:var(--red);stroke-width:5;stroke-linecap:round"/>
+  <path d="M168 306 L 180 324 L 192 306" style="fill:none;stroke:var(--red);stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/>
+  <ellipse cx="184" cy="522" rx="130" ry="12" style="fill:var(--shade)"/>
+  <path d="M66 338 L 296 334 C 302 334, 306 338, 306 344 L 304 506 C 304 512, 300 516, 294 516 L 72 520 C 66 520, 62 516, 62 510 L 60 344 C 60 340, 62 338, 66 338 Z" style="fill:url(#p2-page);stroke:var(--rule)"/>
+  <rect x="80" y="356" width="190" height="20" rx="2" style="fill:var(--red-soft)"/>
+  <text x="86" y="371" style="fill:var(--red);font:500 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">Presentation.{ «…» }</text>
+  <path d="M80 404 c 0 0 0 0 0 0" style="stroke:none"/>
+  <text x="80" y="408" style="fill:var(--ink);font:600 17px var(--display)">The anatomy</text>
+  <g style="fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.55">
+    <path d="M80 432 c 10 -6 14 6 24 0 s 14 -8 24 0 s 12 6 24 -2 s 14 -6 24 0 s 10 4 20 0"/>
+    <path d="M80 454 c 10 -6 14 6 24 0 s 14 -8 24 0 s 12 6 24 -2 s 14 -6 24 0"/>
+    <path d="M80 476 c 10 -6 14 6 24 0 s 14 -8 24 0 s 12 6 20 -2"/>
+  </g>
+</svg>
+<figcaption>The book&#x27;s own first line: one datom, set in type. The dashed front matter drifts away.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><div class="src"><h2 class="src-h">The anatomy, revised with Opus&#x27;s view</h2></div><p class="prov">The source, verbatim: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 1091, uuid c3a069fb-6003-4e12-8d6f-baf4683f399e, 2026-10-01T19:41:42Z, between its to-the-living markers; its first line, the datom Presentation.{ «The anatomy of the book pipeline» }, gives this book its title and is not shown.</p><p class="eyebrow">Point 1 of 4</p><div class="src"><h2>The metadata is one datom line, not front matter.</h2><p>Your Android view settles the dashed kind: bad. Opus&#x27;s answer is better than my fenced block: our dialect is datom, and you had already left the door open for &quot;a typed datom value the end-of-turn hook recognises&quot; (7328f4). So the block&#x27;s first line after the start marker is <code>Presentation.{ «title» }</code>, as above. It is one plain line in any renderer, one typed value for the hook, and it needs no YAML anywhere.</p></div><blockquote class="living" data-q="bad"><p class="said">That wasn&#x27;t a question. I said it is bad.</p><p class="prov">-- psyche, typed, 2026-10-01 · flows/6997eb/vision/presentation.md</p></blockquote><blockquote class="living" data-q="datom"><p class="said">Yeah the metadata is one datom line. That&#x27;s brilliant. I love it. Let&#x27;s do it.</p><p class="prov">-- psyche, STT, 2026-10-01, after this revision was written · flows/6997eb/vision/presentation.md</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “Yeah the metadata is one datom line” (2026-10-01): one plain line survives any renderer, so what the Android view did to the dashed block cannot happen to it.</p></aside><p class="mark"><strong>Mark</strong> The phrase the source quotes as yours, “a typed datom value the end-of-turn hook recognises” (7328f4), is not in any record of your words. It is Psyche Opus 7328f4&#x27;s own question to you, which read “Is it a typed datom value, such as one called Presentation, that the end-of-turn hook recognises and passes to the flow nexus?” (7328f4 transcript, line 958, 2026-10-01).</p><aside class="witness"><p class="tag">Field Astra’s witness · 2026-10-01 · an addition, not part of the source</p><p>Field Astra witnessed that the Stop hook fires before the turn&#x27;s final record is written and that Codex continues the turn if a handler blocks; so the hook only enqueues a turn-ended request and returns, and the nexus verifies completion and deduplicates.</p><p class="prov">Relayed by Psyche Fable 6997eb for this book, to stand beside point 1.</p></aside></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p3t">
+  <title id="p3t">An hourglass has just run out: the turn has ended. A brass hook hangs from it on a red cord and pulls a bell named flow. The bell rings out a small card that says only turn ended, with a session and a path; it carries no words of the reply.</title>
+  <defs>
+    <linearGradient id="p3-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p3-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--river);stop-opacity:.25"/>
+      <stop offset=".5" style="stop-color:var(--paper);stop-opacity:.6"/>
+      <stop offset="1" style="stop-color:var(--river);stop-opacity:.25"/>
+    </linearGradient>
+    <radialGradient id="p3-ring" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.7"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <!-- the hourglass, run out -->
+  <rect x="44" y="40" width="96" height="12" rx="4" style="fill:var(--wood)"/>
+  <rect x="44" y="196" width="96" height="12" rx="4" style="fill:var(--wood)"/>
+  <path d="M54 52 C 54 100, 88 112, 88 124 C 88 136, 54 148, 54 196 L 130 196 C 130 148, 96 136, 96 124 C 96 112, 130 100, 130 52 Z" style="fill:url(#p3-glass);stroke:var(--ink);stroke-opacity:.4;stroke-width:1.5"/>
+  <path d="M58 194 C 66 168, 80 160, 92 160 C 104 160, 118 168, 126 194 Z" style="fill:var(--brass)"/>
+  <text x="92" y="232" text-anchor="middle" style="fill:var(--muted);font:italic 400 14px var(--body)">the turn ends</text>
+  <!-- the cord and the hook -->
+  <path d="M92 208 C 92 260, 120 290, 160 300 C 200 310, 214 330, 222 352" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <path d="M132 290 C 120 318, 140 340, 160 330 C 172 324, 170 308, 160 306" style="fill:none;stroke:url(#p3-brass);stroke-width:6;stroke-linecap:round"/>
+  <text x="70" y="352" style="fill:var(--ink);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">Stop hook</text>
+  <!-- the bell named flow -->
+  <ellipse cx="236" cy="420" rx="120" ry="96" style="fill:url(#p3-ring)"/>
+  <rect x="226" y="346" width="20" height="14" rx="4" style="fill:var(--wood-deep)"/>
+  <path d="M200 440 C 196 386, 212 360, 236 360 C 260 360, 276 386, 272 440 L 286 466 L 186 466 Z" style="fill:url(#p3-brass);stroke:var(--wood-deep);stroke-width:2"/>
+  <path d="M212 430 C 210 400, 218 380, 232 374" style="fill:none;stroke:var(--sign-ink);stroke-width:3;stroke-linecap:round;opacity:.6"/>
+  <circle cx="236" cy="474" r="9" style="fill:var(--wood-deep)"/>
+  <text x="236" y="448" text-anchor="middle" style="fill:var(--ink-on-glow);font:600 16px var(--display)">flow</text>
+  <g style="fill:none;stroke:var(--red);stroke-width:2.5;stroke-linecap:round">
+    <path d="M296 406 c 10 8 10 26 0 34"/><path d="M310 396 c 16 12 16 42 0 54"/>
+    <path d="M176 406 c -10 8 -10 26 0 34"/>
+  </g>
+  <!-- the card it rings out: only that the turn ended -->
+  <g transform="rotate(-8 290 270)">
+    <rect x="228" y="226" width="118" height="76" rx="3" style="fill:var(--paper);stroke:var(--brass);stroke-width:1.5"/>
+    <text x="240" y="250" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">turn ended</text>
+    <text x="240" y="272" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">session</text>
+    <text x="240" y="290" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">path</text>
+  </g>
+  <path d="M262 330 C 270 318, 276 312, 282 306" style="fill:none;stroke:var(--red);stroke-width:2;stroke-dasharray:3 5;stroke-linecap:round"/>
+  <ellipse cx="236" cy="520" rx="110" ry="10" style="fill:var(--shade)"/>
+</svg>
+<figcaption>The turn ends; the Stop hook rings flow. The card it sends names the session and the path, nothing of the reply.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 2 of 4</p><div class="src"><h2>Where we agree.</h2><p>The Stop hook calls <code>flow</code>, which you yourself asked for: &quot;an end-of-last-reply hook that notifies the Flow component using the Flow CLI&quot; (relayed by cf3553). Flow records only that a turn ended, with its session and transcript path, never the content.</p></div><blockquote class="living" data-q="hook"><p class="said">We should have an end-of-last-reply hook that notifies the Flow component using the Flow CLI of all the information it can give it. In the last response, possibly we should also send that to Flow, and then Flow would send that to the reaping agent to decide if that&#x27;s the end of Flow and if it should be reaped.</p><p class="prov">-- psyche, relayed verbatim by root on 2026-09-19 · flows/cf3553/vision/operational-finalResponseLifecycleHook.md</p></blockquote><p class="mark"><strong>Tension</strong> The source has Flow record “never the content”. In the same relay you added “possibly we should also send that to Flow”, meaning the last response.</p></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p4t">
+  <title id="p4t">One scroll, the transcript, lies open. A long brass pointer reaches across and rests on the stretch held between two red pins. A faded second copy of that stretch, drawn only as a ghost outline, is struck through: no copy travels.</title>
+  <defs>
+    <linearGradient id="p4-scroll" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".5" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <linearGradient id="p4-brass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--brass)"/>
+      <stop offset="1" style="stop-color:var(--glow)"/>
+    </linearGradient>
+    <radialGradient id="p4-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.7"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <text x="180" y="44" text-anchor="middle" style="fill:var(--ink);font:italic 600 18px var(--display)">one copy, read where it lies</text>
+  <!-- the one scroll, held at both ends -->
+  <rect x="70" y="70" width="22" height="300" rx="11" style="fill:var(--wood)"/>
+  <rect x="268" y="70" width="22" height="300" rx="11" style="fill:var(--wood)"/>
+  <path d="M90 78 C 140 70, 220 86, 270 78 L 270 362 C 220 370, 140 354, 90 362 Z" style="fill:url(#p4-scroll);stroke:var(--ink);stroke-opacity:.25"/>
+  <g style="fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;opacity:.6">
+    <path d="M108 102 h 60"/><path d="M108 116 h 110"/><path d="M108 130 h 80"/>
+    <path d="M108 318 h 90"/><path d="M108 332 h 54"/><path d="M108 346 h 120"/>
+  </g>
+  <ellipse cx="180" cy="224" rx="120" ry="80" style="fill:url(#p4-halo)"/>
+  <path d="M102 152 h 156" style="stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <path d="M102 296 h 156" style="stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <circle cx="102" cy="152" r="6" style="fill:var(--red)"/>
+  <circle cx="258" cy="296" r="6" style="fill:var(--red)"/>
+  <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+    <path d="M114 182 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0 s 10 4 18 0"/>
+    <path d="M114 210 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 12 -4 18 0"/>
+    <path d="M114 238 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+    <path d="M114 266 c 10 -7 14 7 24 0 s 14 -9 24 0 s 10 5 16 0"/>
+  </g>
+  <text x="180" y="392" text-anchor="middle" style="fill:var(--ink);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">Transcript · Block</text>
+  <!-- the pointer reaching in from below -->
+  <path d="M330 520 C 300 460, 250 380, 214 262" style="fill:none;stroke:url(#p4-brass);stroke-width:8;stroke-linecap:round"/>
+  <path d="M206 248 L 224 266 L 210 270 Z" style="fill:var(--brass)"/>
+  <circle cx="330" cy="522" r="10" style="fill:var(--wood-deep)"/>
+  <!-- the ghost copy, struck through -->
+  <g style="opacity:.5">
+    <rect x="40" y="430" width="140" height="92" rx="3" style="fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 5"/>
+    <g style="fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round">
+      <path d="M54 452 h 100"/><path d="M54 470 h 80"/><path d="M54 488 h 104"/><path d="M54 506 h 60"/>
+    </g>
+  </g>
+  <path d="M30 532 L 190 420" style="stroke:var(--red);stroke-width:5;stroke-linecap:round"/>
+  <text x="110" y="546" text-anchor="middle" style="fill:var(--muted);font:italic 400 14px var(--body)">no copy</text>
+</svg>
+<figcaption>One scroll. The reader points into it between the two markers; no copy is carried away.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 3 of 4</p><div class="src"><h2>Where Opus improves my shape.</h2><p>No copy of the block travels through Message. Flow publishes the ended turn to subscribers; Sonnet&#x27;s side subscribes and reads the block by pointer through the Transcript Nexus&#x27;s Block operation, which finds a region by its start and end markers. One copy exists, the transcript, &quot;It&#x27;s in your transcript&quot; (183ae0), and nothing polls. I take this.</p></div><blockquote class="living" data-q="transcript"><p class="said">What do you mean the prompt is committed? It&#x27;s in your transcript.</p><p class="prov">-- psyche, typed, 2026-09-29, to Psyche Opus 183ae0 · flows/fe945a/vision/transcriptOverFiles.md</p></blockquote><blockquote class="living" data-q="nocopy"><p class="said">The tool gets the right block of text because it has the right reference so we don&#x27;t need to make a copy of anything. It just fetches it programmatically.</p><p class="prov">-- living, 2026-09-24, to Mind Astra 47764b · flows/e51411/vision/refresh.md</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “we don&#x27;t need to make a copy of anything” (2026-09-24): reading the block by pointer through Transcript is this word made into a pipeline.</p></aside><p class="mark"><strong>Mark</strong> “It&#x27;s in your transcript” is cited to 183ae0, the seat you said it to; the record was written by fe945a.</p></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p5t">
+  <title id="p5t">A brass balance. In the left pan sits a small bell, the turn event, marked Flow; in the right pan a rolled scroll, the transcript, marked Transcript. The beam waits not quite level, and above the post a question hangs for the living to settle.</title>
+  <defs>
+    <linearGradient id="p5-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p5-scroll" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="p5-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.55"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="180" cy="110" rx="80" ry="60" style="fill:url(#p5-halo)"/>
+  <text x="180" y="128" text-anchor="middle" style="fill:var(--red);font:italic 600 64px var(--display)">?</text>
+  <!-- post and base -->
+  <path d="M174 170 L 186 170 L 190 470 L 170 470 Z" style="fill:url(#p5-brass);stroke:var(--wood-deep)"/>
+  <path d="M110 490 C 110 470, 140 462, 180 462 C 220 462, 250 470, 250 490 Z" style="fill:var(--wood);stroke:var(--wood-deep)"/>
+  <ellipse cx="180" cy="500" rx="120" ry="10" style="fill:var(--shade)"/>
+  <circle cx="180" cy="176" r="10" style="fill:var(--brass);stroke:var(--wood-deep);stroke-width:1.5"/>
+  <!-- the beam, slightly off level -->
+  <path d="M40 186 C 100 174, 260 170, 320 168" style="fill:none;stroke:url(#p5-brass);stroke-width:7;stroke-linecap:round"/>
+  <!-- left chains and pan -->
+  <g style="fill:none;stroke:var(--brass);stroke-width:1.8">
+    <path d="M44 188 L 20 318"/><path d="M44 188 L 92 318"/>
+    <path d="M316 170 L 268 300"/><path d="M316 170 L 340 300"/>
+  </g>
+  <path d="M12 318 C 20 346, 92 346, 100 318 Z" style="fill:url(#p5-brass);stroke:var(--wood-deep)"/>
+  <path d="M260 300 C 268 328, 340 328, 348 300 Z" style="fill:url(#p5-brass);stroke:var(--wood-deep)"/>
+  <!-- the bell in the left pan -->
+  <path d="M40 316 C 38 290, 46 278, 56 278 C 66 278, 74 290, 72 316 L 78 318 L 34 318 Z" style="fill:var(--red);stroke:var(--wood-deep)"/>
+  <rect x="52" y="270" width="8" height="9" rx="2" style="fill:var(--wood-deep)"/>
+  <text x="56" y="372" text-anchor="middle" style="fill:var(--ink);font:600 16px var(--display)">Flow</text>
+  <text x="56" y="392" text-anchor="middle" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">turn event</text>
+  <!-- the scroll in the right pan -->
+  <path d="M276 298 L 332 298 L 332 268 L 276 268 Z" style="fill:url(#p5-scroll);stroke:var(--rule)"/>
+  <ellipse cx="276" cy="283" rx="7" ry="15" style="fill:var(--wood)"/>
+  <ellipse cx="332" cy="283" rx="7" ry="15" style="fill:var(--wood)"/>
+  <path d="M286 278 h 36 M286 288 h 26" style="stroke:var(--muted);stroke-width:1.6;stroke-linecap:round"/>
+  <text x="304" y="354" text-anchor="middle" style="fill:var(--ink);font:600 16px var(--display)">Transcript</text>
+  <text x="304" y="374" text-anchor="middle" style="fill:var(--muted);font:400 12px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">content</text>
+  <text x="180" y="540" text-anchor="middle" style="fill:var(--muted);font:italic 400 15px var(--body)">or does Flow hold both?</text>
+</svg>
+<figcaption>The turn event in one pan, the transcript in the other. Which nexus holds what is yours to say.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 4 of 4</p><div class="src"><h2>A tension to rule.</h2><p>You have said both that addressing transcripts is &quot;what the Flow Nexus needs to do&quot; (b05237) and that harness transcripts belong to &quot;obviously another nexus&quot; (e06e4c). Opus and I both read the later word as the Transcript Nexus, with Flow owning only the turn event; say if you meant Flow to hold transcripts too.</p></div><blockquote class="living" data-q="flownexus"><p class="said">That&#x27;s what the logs are: they&#x27;re just references to transcripts. You find a way to address the transcript efficiently and make a tool to acquire that data quickly. That&#x27;s what the Flow Nexus needs to do.</p><p class="prov">-- psyche, to Psyche opus b05237, 2026-09-18 · flows/b05237/vision/operational-reportIsTranscript.md</p></blockquote><blockquote class="living" data-q="another"><p class="said">obviously another nexus. But we might want a small clever tool to help search those files more efficiently for now.</p><p class="prov">-- psyche, typed, 2026-08-19, design session e06e4c07 · flows/e06e4c07/vision/flowKnowledge.md</p></blockquote><blockquote class="living" data-q="which"><p class="said">They&#x27;re going to call the Nexus CLI so which Nexus do we use for this? Is this Flow, or is it Transcript, or is it something else?</p><p class="prov">-- psyche, typed (comment on «Two kinds of output»), 2026-10-01 · flows/6997eb/vision/pipeline.md</p></blockquote></div></section>
+<section class="page ill"><figure><svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="p1t">
+  <title id="p1t">A long paper scroll, the transcript, unrolls down the page. One stretch of it glows between two red pins. At the scroll's foot a brass hook catches the end of the turn and rings a small bell; a reading lens hovers over the glowing stretch, and below it a bound book waits.</title>
+  <defs>
+    <linearGradient id="p1-scroll" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".5" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="p1-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.75"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="p1-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset="1" style="stop-color:var(--brass)"/>
+    </linearGradient>
+    <linearGradient id="p1-cloth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--red)"/>
+      <stop offset="1" style="stop-color:var(--wood-deep)"/>
+    </linearGradient>
+  </defs>
+  <text x="180" y="40" text-anchor="middle" style="fill:var(--ink);font:italic 600 19px var(--display)">the anatomy</text>
+  <!-- the roller at the top -->
+  <rect x="62" y="62" width="176" height="20" rx="10" style="fill:var(--wood)"/>
+  <circle cx="62" cy="72" r="11" style="fill:var(--wood-deep)"/>
+  <circle cx="238" cy="72" r="11" style="fill:var(--wood-deep)"/>
+  <!-- the scroll, curling as it falls -->
+  <path d="M72 80 L 228 80 C 232 200, 222 300, 236 400 C 240 430, 226 452, 198 456 L 98 462 C 80 462, 70 450, 72 430 C 78 330, 66 210, 72 80 Z" style="fill:url(#p1-scroll);stroke:var(--ink);stroke-opacity:.25"/>
+  <!-- machine lines: small, terse -->
+  <g style="fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;opacity:.6">
+    <path d="M90 104 h 60"/><path d="M90 116 h 90"/><path d="M90 128 h 44"/><path d="M90 140 h 72"/>
+    <path d="M92 366 h 56"/><path d="M92 378 h 96"/><path d="M93 390 h 40"/><path d="M94 402 h 80"/>
+  </g>
+  <!-- the marked stretch, glowing -->
+  <ellipse cx="150" cy="252" rx="130" ry="110" style="fill:url(#p1-halo)"/>
+  <path d="M80 164 C 120 160, 190 160, 222 164" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <path d="M80 344 C 120 348, 190 348, 224 344" style="fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round"/>
+  <circle cx="80" cy="164" r="6" style="fill:var(--red)"/>
+  <circle cx="224" cy="344" r="6" style="fill:var(--red)"/>
+  <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.75">
+    <path d="M94 196 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+    <path d="M94 224 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 12 -4 18 0"/>
+    <path d="M94 252 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+    <path d="M94 280 c 10 -7 14 7 24 0 s 14 -9 24 0 s 10 5 16 0"/>
+    <path d="M94 308 c 10 -7 14 7 24 0 s 14 -9 24 0 s 12 7 24 -2 s 14 -7 24 0"/>
+  </g>
+  <!-- the reading lens, hovering over the stretch -->
+  <g transform="rotate(-18 286 236)">
+    <circle cx="286" cy="236" r="34" style="fill:var(--glow);fill-opacity:.18;stroke:url(#p1-brass);stroke-width:7"/>
+    <path d="M286 272 C 288 300, 290 320, 292 344" style="fill:none;stroke:var(--wood);stroke-width:10;stroke-linecap:round"/>
+  </g>
+  <!-- the hook at the scroll's foot, ringing the bell -->
+  <path d="M214 458 C 214 492, 250 500, 262 478 C 268 466, 258 456, 250 462" style="fill:none;stroke:url(#p1-brass);stroke-width:6;stroke-linecap:round"/>
+  <path d="M262 478 C 280 470, 292 470, 300 482" style="fill:none;stroke:var(--red);stroke-width:2.5;stroke-dasharray:3 5;stroke-linecap:round"/>
+  <path d="M298 484 C 298 466, 330 466, 330 484 L 336 506 L 292 506 Z" style="fill:url(#p1-brass);stroke:var(--wood-deep);stroke-width:1.5"/>
+  <circle cx="314" cy="510" r="5" style="fill:var(--wood-deep)"/>
+  <g style="fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round">
+    <path d="M342 478 c 6 4 6 12 0 16"/><path d="M286 478 c -6 4 -6 12 0 16"/>
+  </g>
+  <!-- the book, waiting -->
+  <ellipse cx="110" cy="530" rx="70" ry="9" style="fill:var(--shade)"/>
+  <path d="M50 492 L 160 484 L 168 522 L 56 530 Z" style="fill:url(#p1-cloth)"/>
+  <path d="M56 530 L 168 522 L 168 526 L 58 534 Z" style="fill:var(--paper-edge)"/>
+  <path d="M80 500 c 8 -5 12 5 20 0 s 12 -6 20 0 s 10 4 18 -1" style="fill:none;stroke:var(--glow);stroke-width:2;stroke-linecap:round"/>
+</svg>
+<figcaption>The whole anatomy: the transcript, the marked stretch, the hook and its bell, the reader, the book.</figcaption></figure></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Asked of you</p><div class="src"><h2>Rulings</h2></div><ol class="props"><li class="ruled"><span class="n">1</span><span>The datom line as the block&#x27;s metadata.<span class="badge">Ruled by the living, 2026-10-01</span></span></li><li class=""><span class="n">2</span><span>Flow for the turn event, Transcript for the content, subscription not copy.</span></li><li class=""><span class="n">3</span><span>Astra builds the hook now; Mind Sol adds the turn-ended request to Flow&#x27;s contract.</span></li></ol><p class="prov">The source, verbatim: Psyche Fable 6997eb, transcript 6997eb8a-30eb-49a1-a787-45279164a43b.jsonl, line 1091, uuid c3a069fb-6003-4e12-8d6f-baf4683f399e, 2026-10-01T19:41:42Z, between its to-the-living markers; its first line, the datom Presentation.{ «The anatomy of the book pipeline» }, gives this book its title and is not shown.</p><p class="mark"><strong>Badge</strong> Only the first is badged: you ruled it after this revision was written. No hook, no Flow turn-ended request and no Transcript read was seen landed when this book was made.</p></div></section>
+  </main>
+</div>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length,cur=1,count=document.getElementById('count');
+  function mark(n){cur=n;dots.forEach(function(d,i){d.classList.toggle('on',i===n-1);});count.textContent=n+' / '+N;}
+  function go(n){n=Math.max(1,Math.min(N,n));pages[n-1].scrollIntoView({behavior:'auto',block:'start'});mark(n);}
+  function here(){var best=1,y=window.innerHeight*0.35;pages.forEach(function(p,i){if(p.getBoundingClientRect().top<=y)best=i+1;});mark(best);}
+  window.addEventListener('scroll',here,{passive:true});window.addEventListener('resize',here);
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    if(e.key==='ArrowRight'){go(cur+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(cur-1);e.preventDefault();}
+  });
+  here();
+})();
+</script>
+
+<script>addEventListener("load",function(){var bad=[].filter.call(document.querySelectorAll("body *"),function(e){var r=e.getBoundingClientRect();return r.right>innerWidth+0.5&&!e.closest("code")&&!e.closest("svg");}).length;document.title="SW="+document.documentElement.scrollWidth+" IW="+innerWidth+" OVER="+bad+" CONTROLS="+document.querySelectorAll("button,a,input,select,textarea,details,[onclick],[role=button],[tabindex]").length+" PAGES="+document.querySelectorAll(".page").length;});</script></body></html>

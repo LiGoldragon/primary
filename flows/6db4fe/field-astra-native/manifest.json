@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wQ",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "field-astra-of-6db4fe",
+      "profileFile": "/home/li/primary/flows/6db4fe/field-astra-native/profile.json",
+      "predecessor": "6db4fe",
+      "agent": "field-astra-of-6db4fe",
+      "label": "Field Astra of 6db4fe",
+      "model": "gpt-6-astra",
+      "effort": "medium"
+    }
+  ]
+}

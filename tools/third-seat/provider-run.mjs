@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+// Gated first-provider-run driver.  It has no discovery, fallback, or retry path.
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+import http from 'node:http';
+import https from 'node:https';
+import net from 'node:net';
+import os from 'node:os';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+
+const HERE = path.dirname(new URL(import.meta.url).pathname);
+const CASES = JSON.parse(fs.readFileSync(path.join(HERE, 'fixtures/cases.json')));
+const SOURCES = JSON.parse(fs.readFileSync(path.join(HERE, 'fixtures/sources.json')));
+const VERSION = '1.17.13'; const FD_LIMIT = 16 * 1024; const OUTPUT_LIMIT = 256 * 1024;
+const REQUEST_LIMIT = 4; const CASE_TIMEOUT = 45_000;
+const value = (args, name) => { const i = args.indexOf(name); return i < 0 ? undefined : args[i + 1]; };
+const fail = (reason, code = 2) => { process.stdout.write(JSON.stringify({status: 'provider-run-failed', reason}) + '\n'); process.exitCode = code; };
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const clipped = (text, limit = OUTPUT_LIMIT) => text.length > limit ? text.slice(0, limit) : text;
+
+export function injectRouting(body, descriptor) {
+  if (!descriptor.routing) return structuredClone(body);
+  return {...structuredClone(body), provider: structuredClone(descriptor.routing.provider)};
+}
+function validateDescriptor(descriptor) {
+  if (!descriptor || typeof descriptor !== 'object' || Array.isArray(descriptor)) throw new Error('provider descriptor must be an object');
+  if (descriptor.access_authorized !== true) throw new Error('provider descriptor must set access_authorized:true');
+  if (!descriptor.provider || !descriptor.model || !descriptor.version) throw new Error('descriptor requires provider, model, and version');
+  if (descriptor.expected_opencode_version !== VERSION) throw new Error(`descriptor must pin OpenCode ${VERSION}`);
+  if (descriptor.routing !== undefined) {
+    const provider = descriptor.routing?.provider;
+    if (!provider || !Array.isArray(provider.only) || !provider.only.every(item => typeof item === 'string' && item) || typeof provider.allow_fallbacks !== 'boolean' || Object.keys(descriptor.routing).length !== 1 || Object.keys(provider).some(key => key !== 'only' && key !== 'allow_fallbacks')) throw new Error('routing must contain only provider.only and provider.allow_fallbacks');
+  }
+}
+
+function parse(args) {
+  for (const flag of ['--provider-descriptor', '--secret-fd', '--opencode', '--output']) if (!value(args, flag)) throw new Error(`${flag} is required`);
+  const binary = value(args, '--opencode'); if (!path.isAbsolute(binary) || !fs.statSync(binary).isFile()) throw new Error('explicit OpenCode binary is absent');
+  const fd = Number(value(args, '--secret-fd')); if (!Number.isInteger(fd) || fd < 3) throw new Error('secret fd must be >= 3');
+  const descriptor = JSON.parse(fs.readFileSync(value(args, '--provider-descriptor'), 'utf8'));
+  validateDescriptor(descriptor);
+  const upstream = new URL(descriptor.baseURL);
+  if (upstream.protocol !== 'https:' || upstream.username || upstream.password || upstream.search || upstream.hash) throw new Error('provider baseURL must be a credential-free HTTPS URL');
+  if (Object.keys(process.env).some(key => /(^|_)(OPENAI|ANTHROPIC|PROVIDER|API)_?KEY$|^PROVIDER_SECRET$/.test(key))) throw new Error('existing provider credential environment is refused');
+  return {binary, fd, descriptor, upstream, output: path.resolve(value(args, '--output')), dry: args.includes('--dry-run')};
+}
+
+function cleanEnv(home, config) { return {HOME: home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8', XDG_CONFIG_HOME: path.join(home, 'config'), XDG_DATA_HOME: path.join(home, 'data'), XDG_STATE_HOME: path.join(home, 'state'), XDG_CACHE_HOME: path.join(home, 'cache'), OPENCODE_CONFIG: config, OPENAI_API_KEY: 'inert-loopback-key'}; }
+function signalOwnedGroup(child, signal) { if (!child?.pid) return; try { process.kill(-child.pid, signal); } catch (error) { if (error.code !== 'ESRCH') { try { child.kill(signal); } catch {} } } }
+function terminate(child) { signalOwnedGroup(child, 'SIGTERM'); setTimeout(() => signalOwnedGroup(child, 'SIGKILL'), 750).unref(); }
+export function collect(child, timeout) { return new Promise((resolve, reject) => { let stdout = '', stderr = ''; let done = false;
+  const finish = result => { if (done) return; done = true; clearTimeout(timer); resolve({...result, stdout, stderr}); };
+  child.stdout.on('data', b => stdout = clipped(stdout + b)); child.stderr.on('data', b => stderr = clipped(stderr + b));
+  child.once('error', error => reject(new Error(`OpenCode spawn failed: ${error.message}`)));
+  child.once('close', (code, signal) => finish({code, signal}));
+  const timer = setTimeout(() => { terminate(child); setTimeout(() => finish({code: null, signal: 'timeout'}), 900).unref(); }, timeout);
+}); }
+async function version(binary) { const home=fs.mkdtempSync(path.join(os.tmpdir(),'third-stack-version-')); let child; try { child = spawn(binary, ['--version'], {env: {HOME:home, PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8'}, stdio: ['ignore', 'pipe', 'pipe'], detached:true}); const result = await collect(child, 5_000); const found = (result.stdout + result.stderr).match(/\b(\d+\.\d+\.\d+)\b/)?.[1]; if (result.code !== 0 || found !== VERSION) throw new Error(`expected OpenCode ${VERSION}`); return crypto.createHash('sha256').update(fs.readFileSync(binary)).digest('hex'); } finally { signalOwnedGroup(child, 'SIGKILL'); fs.rmSync(home,{recursive:true,force:true}); } }
+export function readSecret(fd) { return new Promise((resolve, reject) => { let size=0, done=false; const chunks=[]; const stat=fs.fstatSync(fd); const input=stat.isFile() ? fs.createReadStream(null,{fd,autoClose:false}) : new net.Socket({fd,readable:true,writable:false}); const finish=(error,value,close=false)=>{if(done)return;done=true;clearTimeout(timer);if(close)input.destroy();error?reject(error):resolve(value)}; const timer=setTimeout(()=>finish(new Error('secret fd timed out'),undefined,true),5_000); input.on('data',chunk=>{size+=chunk.length;if(size>FD_LIMIT)finish(new Error('secret fd exceeded 16KiB'),undefined,true);else chunks.push(chunk)}); input.once('error',error=>finish(error)); input.once('end',()=>{const secret=Buffer.concat(chunks).toString('utf8').trim();finish(secret?undefined:new Error('secret fd was empty'),secret)}); }); }
+function safeError() { return JSON.stringify({error: {message: 'upstream request failed'}}); }
+function upstreamRequest(upstream, secret, body, ca, signal) { return new Promise((resolve, reject) => { const target = new URL('chat/completions', upstream.href.endsWith('/') ? upstream.href : `${upstream.href}/`); const request = https.request({hostname: target.hostname, port: target.port || 443, path: target.pathname, method: 'POST', rejectUnauthorized: true, ca, headers: {authorization: `Bearer ${secret}`, 'content-type': 'application/json', 'content-length': Buffer.byteLength(body)}}, response => { const chunks = []; let size = 0; response.on('data', b => { size += b.length; if (size > OUTPUT_LIMIT) request.destroy(new Error('upstream body exceeded limit')); else chunks.push(b); }); response.once('end', () => { const ok = response.statusCode >= 200 && response.statusCode < 300; resolve({status: ok ? response.statusCode : 502, type: ok && String(response.headers['content-type'] || '').startsWith('text/event-stream') ? 'text/event-stream' : 'application/json', body: ok ? Buffer.concat(chunks) : Buffer.from(safeError())}); }); }); if(signal) signal.addEventListener('abort',()=>request.destroy(new Error('proxy closed')),{once:true}); request.once('error', reject); request.setTimeout(CASE_TIMEOUT, () => request.destroy(new Error('upstream timed out'))); request.end(body); }); }
+export async function makeProxy(upstream, secret, ca, requestFn = upstreamRequest, descriptor = {}) { let ambiguous = false; let requests = 0; const models = new Set(), open = new Set(), active = new Set(); const server = http.createServer(async (request, response) => { if (ambiguous || request.method !== 'POST' || request.url !== '/v1/chat/completions' || ++requests > REQUEST_LIMIT) { response.writeHead(502, {'content-type': 'application/json'}); response.end(safeError()); return; } const chunks=[]; let size=0; request.on('data', b => { size += b.length; if (size > OUTPUT_LIMIT) request.destroy(); else chunks.push(b); }); request.once('end', async () => { const controller=new AbortController(); active.add(controller); try { const original = JSON.parse(Buffer.concat(chunks).toString('utf8')); const forwarded = Buffer.from(JSON.stringify(injectRouting(original, descriptor))); const result = await requestFn(upstream, secret, forwarded, ca, controller.signal); if(result.status < 200 || result.status >= 300) { ambiguous=true; response.writeHead(502,{'content-type':'application/json'}); response.end(safeError()); } else { for (const match of result.body.toString('utf8').matchAll(/"model"\s*:\s*"([^"\\]{1,256})"/g)) models.add(match[1]); response.writeHead(result.status, {'content-type': result.type}); response.end(result.body); } } catch { ambiguous = true; response.writeHead(502, {'content-type':'application/json'}); response.end(safeError()); } finally { active.delete(controller); } }); }); server.on('connection', socket => { open.add(socket); socket.once('close', () => open.delete(socket)); }); await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); }); return {url: `http://127.0.0.1:${server.address().port}/v1`, requests: () => requests, providerReportedModelIds: () => [...models], async close() { for (const controller of active) controller.abort(); for (const socket of open) socket.destroy(); await Promise.race([new Promise(resolve => server.close(resolve)), sleep(1_000)]); }}; }
+function exclusiveJson(file, value) { const fd = fs.openSync(file, 'wx', 0o600); try { fs.writeFileSync(fd, JSON.stringify(value, null, 2) + '\n'); } finally { fs.closeSync(fd); } }
+function promptFor(test) { return `${test.prompt}\n\nReferenced synthetic sources:\n${test.sources.map(id => `[${id}]\n${SOURCES[id]}`).join('\n\n')}`; }
+async function oneCase(run, test, root, proxy, secret) { const workspace = path.join(root, test.id); const home = path.join(workspace, 'home'); fs.mkdirSync(path.join(home, 'config'), {recursive: true}); fs.writeFileSync(path.join(workspace, 'sources.json'), JSON.stringify(Object.fromEntries(test.sources.map(id => [id, SOURCES[id]])), null, 2)); const config = path.join(home, 'config', 'opencode.json'); const id=`fixture/${run.descriptor.model}`; fs.writeFileSync(config, JSON.stringify({enabled_providers:['fixture'], model:id, small_model:id, autoupdate:false, plugin:[], provider:{fixture:{npm:'@ai-sdk/openai-compatible', options:{baseURL:proxy.url,apiKey:'inert-loopback-key'}, models:{[run.descriptor.model]:{name:run.descriptor.model, reasoning:true, tool_call:true, interleaved:{field:'reasoning_content'}}}}}, permission:{'*':'deny', read:'allow', glob:'allow', grep:'allow', external_directory:'deny'}})); const child = spawn(run.binary, ['run', '--format', 'json', '--model', id, promptFor(test)], {cwd: workspace, env: cleanEnv(home, config), stdio:['ignore','pipe','pipe'], detached:true}); let result; try { result = await collect(child, CASE_TIMEOUT); } finally { signalOwnedGroup(child, 'SIGKILL'); } if (result.signal === 'timeout') throw new Error(`case ${test.id} timed out`); if (result.code !== 0) throw new Error(`case ${test.id} OpenCode failed`); return {case_id:test.id, provider:run.descriptor.provider, requested_model:run.descriptor.model, requested_version:run.descriptor.version, endpoint_base_url:run.upstream.href, expected_harness_version:VERSION, harness_binary_sha256:run.binaryHash, provider_reported_model_ids:proxy.providerReportedModelIds(), stdout:result.stdout.replaceAll(secret,'[redacted]'), stderr:result.stderr ? '[redacted diagnostic]' : ''}; }
+export async function main(args = process.argv.slice(2), dependencies = {}) { const run = parse(args); fs.mkdirSync(run.output, {recursive:true, mode:0o700}); if (run.dry) { exclusiveJson(path.join(run.output, 'provider-run-dry.json'), {schema:'third-stack-provider-run-dry/v2', cases:CASES.map(c => ({case_id:c.id,prompt:c.prompt,sources:c.sources})), hidden_expectations_injected:false}); return {status:'dry'}; }
+  run.binaryHash = await version(run.binary); // Must precede readSecret and all network setup.
+  const secret = await readSecret(run.fd); const root = fs.mkdtempSync(path.join(os.tmpdir(), 'third-stack-provider-')); let proxy;
+  try { const outputs=[]; let requests=0; for (const test of CASES) { proxy = await makeProxy(run.upstream, secret, dependencies.testCa, dependencies.upstreamRequest, run.descriptor); try { const result=await oneCase(run,test,root,proxy,secret); const file=path.join(run.output, `${test.id}.json`); exclusiveJson(file,result); outputs.push(file); requests += proxy.requests(); } finally { await proxy.close(); proxy=undefined; } } exclusiveJson(path.join(run.output,'provider-run.json'), {schema:'third-stack-provider-run/v2', provider:run.descriptor.provider, requested_model:run.descriptor.model, requested_version:run.descriptor.version, endpoint_base_url:run.upstream.href, expected_harness_version:VERSION, harness_binary_sha256:run.binaryHash, cases:outputs, requests, scored:false}); return {status:'completed'}; } finally { if (proxy) await proxy.close(); fs.rmSync(root,{recursive:true,force:true}); }
+}
+if (import.meta.url === `file://${process.argv[1]}`) main().then(result => process.stdout.write(JSON.stringify({status:`provider-run-${result.status}`})+'\n')).catch(error => fail(error.message));

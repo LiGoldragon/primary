@@ -1,0 +1,12 @@
+{
+  "name": "field-astra-of-6fb948",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "role": "Field Astra",
+  "predecessor": "6fb948",
+  "ancestor": "6fb948",
+  "fresh": false,
+  "skills": ["spirit", "main-flow", "field", "refresh", "psyche", "psyche-acquisition", "behavior", "correction", "vocabulary", "testing", "testing-datom-messaging", "testing-flow-titles", "testing-generated-projection", "datom", "subflow", "edit-coordination", "orchestrate", "flow-evidence", "prompt-crafting", "codex-harness", "herdr", "messaging"],
+  "sourceManifest": ["flows/6fb948/self-refresh-20260922/handoff.md", "flows/6fb948/log.md", "flows/6fb948/vision/fieldScriptsAndAspectRepositories.md", "flows/6fb948/vision/harnessResearchAndArchives.md"],
+  "sourceAudit": {"reviewedAt": "2026-09-22T19:20:00Z", "newestApplicableVision": ["flows/6fb948/vision/fieldScriptsAndAspectRepositories.md", "flows/6fb948/vision/harnessResearchAndArchives.md"]}
+}

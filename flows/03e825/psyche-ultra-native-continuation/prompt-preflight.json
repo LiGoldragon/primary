@@ -1,0 +1,16 @@
+{
+  "at": "2026-09-21T20:02:42.845601+00:00",
+  "profileSha256": "4fb1fd4ba547e3cee5b468ba411b2de67ab7f9d295bea9ee41e2bcb643b56257",
+  "renders": {
+    "role_prompt": {
+      "bytes": 24431,
+      "sha256": "2377f2f986f62bae31751cb377200705d73fafb27f82c6fa5626606074f15e98",
+      "noiseMatches": 0
+    },
+    "custom_system_prompt": {
+      "bytes": 23574,
+      "sha256": "46ae62a1a5941a4542ab7120185a9c73f619f46ea04fa664dc802738d08f44f4",
+      "noiseMatches": 0
+    }
+  }
+}

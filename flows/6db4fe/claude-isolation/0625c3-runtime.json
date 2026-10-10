@@ -1,0 +1,56 @@
+{
+  "effort": "medium (preserved actual prior CLI argv)",
+  "flowId": "0625c3",
+  "herdr": {
+    "agentName": "flow-0625c3",
+    "paneId": "wD:p7",
+    "session": "messaging-build",
+    "terminalId": "term_65bedce5d2b213a"
+  },
+  "inheritedSessionVarsPresent": [],
+  "jobDir": "/home/li/.claude/jobs/native-0625c31b-798d-44f7-a116-44a7966fe618",
+  "limitations": [
+    "pane recent-output marker was unavailable; visible-output showed the executed environment marker after shell echo",
+    "job directory was reserved empty; native process environment and sibling-title isolation were witnessed"
+  ],
+  "model": "claude-sonnet-5",
+  "nativeThreadId": "0625c31b-798d-44f7-a116-44a7966fe618",
+  "newProcessPid": 3004947,
+  "observedAt": "2026-09-21T19:33:41.031500+00:00",
+  "oldProcessPid": 1647093,
+  "remoteControl": "Psyche Flashbooks",
+  "resumeMode": "--resume same UUID; no --fork-session",
+  "scope": "one built-in /exit, one same-pane resume, one built-in /rename; no model-turn probe",
+  "siblingsAfter": {
+    "high": {
+      "nativeThreadId": "1b8ac00b-6c92-47d2-9d50-47d9428c0956",
+      "title": "Psyche High 1b8ac0",
+      "transcriptBytes": 2143334,
+      "transcriptInode": 56099107
+    },
+    "medium": {
+      "nativeThreadId": "b80e5510-ebe7-436e-9259-2a47735f232d",
+      "title": "Psyche Medium b80e55",
+      "transcriptBytes": 2980345,
+      "transcriptInode": 53915042
+    }
+  },
+  "sourceCommit": "36d2825a",
+  "title": {
+    "after": "Psyche Low 0625c3",
+    "before": "Psyche High 1b8ac0",
+    "nativeRecentEvents": [
+      "Psyche High 1b8ac0",
+      "Psyche Low 0625c3"
+    ]
+  },
+  "transcript": {
+    "afterBytes": 7387333,
+    "beforeBytes": 7373383,
+    "beforeTailSha256": "d25aca30c3eef76fbd45bb321299dee56e8e6b9ee2677ffc0b1d927874265b31",
+    "inode": 56099567,
+    "path": "/home/li/.claude/projects/-home-li-primary/0625c31b-798d-44f7-a116-44a7966fe618.jsonl",
+    "sameTailAtOriginalBoundary": true
+  },
+  "version": 1
+}

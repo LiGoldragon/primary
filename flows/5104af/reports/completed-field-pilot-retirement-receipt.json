@@ -1,0 +1,42 @@
+{
+  "native": "01a0f316-22b2-7851-8fec-203f698471a4",
+  "preHerdr": {
+    "agent": "codex",
+    "agent_session": {
+      "agent": "codex",
+      "kind": "id",
+      "source": "herdr:codex",
+      "value": "01a0f316-22b2-7851-8fec-203f698471a4"
+    },
+    "agent_status": "done",
+    "cwd": "/home/li/primary",
+    "executable": "/nix/store/nmr4py6p0kwwza41l0gkhsa13k9971jb-codex-next-flow-client/bin/codex-next-flow-client",
+    "focused": false,
+    "foreground_cwd": "/home/li/primary",
+    "interactive_ready": true,
+    "name": "field_luna_successor",
+    "pane_id": "w1:p0",
+    "revision": 5,
+    "state_change_seq": 2131,
+    "tab_id": "w1:tS",
+    "terminal_id": "term_65cb5cbee8b8a22",
+    "terminal_title": "Field.{ Sol f69847 } | primary",
+    "terminal_title_stripped": "Field.{ Sol f69847 } | primary",
+    "title": "Field.{ Sol f69847 } | GPT-6.1-Sol (Luna-tier)",
+    "workspace_id": "w1"
+  },
+  "latestLifecycleOrdinal": 178,
+  "evidenceSha256": "11c47ab3d67f49929beea60464b13de0e55831d008a0ca3b46ddc81e45aa2185",
+  "close": "{\"id\":\"cli:pane:close\",\"result\":{\"type\":\"ok\"}}\n",
+  "retire": "Retired f69847: delivery is blocked before Herdr routing\n",
+  "archive": {
+    "id": "01a0f316-22b2-7851-8fec-203f698471a4",
+    "classification": "completed_pilot",
+    "path": "/home/li/.codex-next-8mkkxq293hk2/sessions/2026/09/30/rollout-2026-09-30T10-11-49-01a0f316-22b2-7851-8fec-203f698471a4.jsonl",
+    "archivedPath": "/home/li/.codex-next-8mkkxq293hk2/archived_sessions/rollout-2026-09-30T10-11-49-01a0f316-22b2-7851-8fec-203f698471a4.jsonl",
+    "sha256": "5e590c49b5a90f099d5b13936cc56d208a615b1bcd15129b79376d4e873c811e",
+    "bytes": 2808599,
+    "nativeBytesUnchanged": true,
+    "result": {}
+  }
+}

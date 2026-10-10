@@ -1,0 +1,339 @@
+import importlib.util, importlib.machinery, json, os, pathlib, subprocess, sys, tempfile, unittest
+p=pathlib.Path(__file__).with_name('messaging.py'); s=importlib.util.spec_from_file_location('messaging',p); m=importlib.util.module_from_spec(s); sys.modules['messaging']=m; s.loader.exec_module(m)
+class Contract(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  cls.root=pathlib.Path(__file__).parents[1]
+  packaged=__import__('os').environ.get('MESSAGING_CODEC')
+  if packaged: cls.codec=pathlib.Path(packaged)
+  else:
+   cls.codec=cls.root/'tools'/'messaging-codec'/'target'/'debug'/'messaging-codec'
+   subprocess.run(['cargo','build','--offline'],cwd=cls.root/'tools'/'messaging-codec',check=True,capture_output=True)
+ def hm_send_env(self, directory, flow_id='a', exit_code=0):
+  capture=pathlib.Path(directory)/'hm-send.json'
+  fake=pathlib.Path(directory)/'hm-send'
+  fake.write_text(f'''#!{sys.executable}
+import json, os, pathlib, sys
+pathlib.Path(os.environ['HM_SEND_CAPTURE']).write_text(json.dumps({{'flow_id':os.environ.get('FLOW_ID'),'args':sys.argv[1:]}}))
+raise SystemExit(int(os.environ.get('HM_SEND_EXIT','0')))
+''')
+  fake.chmod(0o755)
+  return capture,{**os.environ,'PATH':str(directory)+':'+os.environ['PATH'],'FLOW_ID':flow_id,'HM_SEND_CAPTURE':str(capture),'HM_SEND_EXIT':str(exit_code)}
+ def test_root_is_not_a_substring(self):
+  with self.assertRaises(m.ParseError): m.relay('note MACHINE.{ Relay.{ { a b «2026-01-01T00:00:00Z» unknown [ c ] } «x» «» } }')
+ def test_backslash_is_preserved(self):
+  x='Machine.Relay.{ event a b «2026-01-01T00:00:00Z» unknown [ c ] «a\\qb» «» }'
+  self.assertEqual(m.relay(x)['quote'],'a\\qb')
+ def test_machine_is_the_only_terminal_producer(self):
+  with self.assertRaises(m.ParseError):
+   m.relay('Living.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }')
+ def test_machine_builder_is_one_root_value(self):
+  packet=m.make_machine('a','b','c','Task.{ ready }')
+  self.assertTrue(packet.startswith('Machine.Relay.{ '))
+  event=m.relay(packet)
+  self.assertEqual(event['quote'],'Task.{ ready }')
+  with self.assertRaises(m.ParseError): m.relay(packet.replace('Machine.Relay', 'MACHINE.Relay', 1))
+ def test_bare_string_positions_accept_digit_leading_flow_ids_and_revisions(self):
+  packet='Machine.Relay.{ 1b8ac0 395aed 215f2666 «2026-01-01T00:00:00Z» typed [ 1b8ac0 ] «x» «» }'
+  event=m.relay(packet)
+  self.assertEqual(event['ingress_id'],'1b8ac0')
+  self.assertEqual(event['from'],'395aed')
+  self.assertEqual(event['seat'],'215f2666')
+  self.assertEqual(event['recipients'],['1b8ac0'])
+ def test_bare_numeric_and_date_values_remain_textual(self):
+  self.assertEqual(m.actualize('75002'),m.Bare('75002'))
+  self.assertEqual(m.actualize('-42'),m.Bare('-42'))
+  self.assertEqual(m.actualize('2026-09-03'),m.Bare('2026-09-03'))
+  with self.assertRaises(m.ParseError): m.actualize('1b8ac0.{ value }')
+ def test_visible_reference_expands_only_for_prefix_collisions(self):
+  self.assertEqual(m.visible_reference('abcdef0123',{'abcdef0123','abcdef1122'}),'abcdef0')
+  self.assertEqual(m.visible_reference('12345678',{'12345678','98765432'}),'123456')
+  self.assertEqual(m.visible_reference('abc',{'abc'}),'abc')
+ def test_ledger_display_references_keep_full_identifiers(self):
+  with tempfile.TemporaryDirectory() as d:
+   ledger=m.Ledger(pathlib.Path(d)/'ledger.json')
+   event={'ingress_id':'abcdef0123','quote':'Task.{ ready }'}
+   queued=ledger.enqueue(event)
+   refs=ledger.display_references(event['ingress_id'],queued['queue_id'])
+   self.assertEqual(refs['ingress'],'abcdef')
+   self.assertEqual(ledger.data['queue'][0]['ingress_id'],'abcdef0123')
+   self.assertEqual(ledger.data['queue'][0]['id'],queued['queue_id'])
+   ledger.close()
+ def test_watcher_marks_absence_stale_without_deleting(self):
+  with tempfile.TemporaryDirectory() as d:
+   state=pathlib.Path(d)/'state.json'; roster=pathlib.Path(d)/'roster.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
+   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working','kind':'production'}})); subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster],check=True,capture_output=True)
+   roster.write_text('{}'); subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster],check=True,capture_output=True)
+   saved=json.loads(state.read_text()); self.assertEqual(saved['endpoints']['a']['state'],'stale'); self.assertGreaterEqual(len(saved['events']),2)
+ def test_ledger_is_bounded_fifo_and_preserves_failed_attempt(self):
+  with tempfile.TemporaryDirectory() as d:
+   ledger=m.Ledger(pathlib.Path(d)/'ledger.json'); ids=[]
+   for n in range(10): ids.append(ledger.enqueue({'ingress_id':'e'+str(n),'quote':str(n)})['queue_id'])
+   refused=ledger.enqueue({'ingress_id':'overflow','quote':'overflow'}); self.assertFalse(refused['accepted'])
+   attempt=ledger.attempt(ids[0],{'flow':'f','pane':'p','terminal':'t'},False)
+   self.assertIsNone(attempt['grade']); self.assertEqual(len(ledger.data['queue']),10)
+   with self.assertRaises(ValueError): ledger.acknowledge(ids[1])
+   ledger.acknowledge(ids[0]); self.assertEqual(ledger.data['queue'][0]['id'],ids[1]); ledger.close(); self.assertEqual(m.Ledger(pathlib.Path(d)/'ledger.json').data['queue'][0]['id'],ids[1]); self.assertIn('held-backpressure',[e['kind'] for e in ledger.data['events']])
+ def test_watcher_status_matrix(self):
+  loader=importlib.machinery.SourceFileLoader('field_watcher',str(pathlib.Path(__file__).with_name('field-watcher'))); spec=importlib.util.spec_from_loader('field_watcher',loader); watcher=importlib.util.module_from_spec(spec); loader.exec_module(watcher)
+  state={'version':1,'endpoints':{},'events':[]}
+  watcher.observe(state,{'a':{'status':'working'},'b':{'status':'suspect'},'c':{'status':'unreachable'},'d':{'status':'done'},'e':{'status':'other'}})
+  self.assertEqual({k:v['state'] for k,v in state['endpoints'].items()},{'a':'healthy','b':'suspect','c':'unreachable','d':'exited','e':'unknown'})
+  watcher.unreachable(state,'roster command failed')
+  self.assertEqual({k:v['state'] for k,v in state['endpoints'].items()},{'a':'unreachable','b':'unreachable','c':'unreachable','d':'exited','e':'unreachable'})
+  self.assertIn('heartbeat-failed',[x['kind'] for x in state['events']])
+ def test_ingress_id_dedup_conflict_and_crash_hold(self):
+  with tempfile.TemporaryDirectory() as d:
+   ledger=m.Ledger(pathlib.Path(d)/'ledger.json'); event={'ingress_id':'event','quote':'Task.{ ready }'}
+   first=ledger.enqueue(event); self.assertTrue(first['accepted']); self.assertTrue(ledger.enqueue(event)['duplicate'])
+   self.assertTrue(ledger.enqueue({'ingress_id':'event','quote':'Task.{ changed }'})['conflict'])
+   ledger.attempt_started(first['queue_id'],{'flow':'c','pane':'p','terminal':'t'}); ledger.close()
+   reopened=m.Ledger(pathlib.Path(d)/'ledger.json'); reopened.recover()
+   self.assertEqual(reopened.data['attempts'][0]['outcome'],'uncertain_crash'); self.assertTrue(reopened.enqueue(event)['duplicate'])
+ def test_prompt_crash_replay_never_resends(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; packet='Machine.Relay.{ crashid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; import base64
+   fake.write_text('''#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt p" ]; then printf x >> "$HERDR_CALLS"; kill -9 "$PPID"; fi
+exit 1
+'''); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_CALLS':str(calls)}
+   frame='FRAME.'+base64.b64encode(packet.encode()).decode()
+   first=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
+   self.assertNotEqual(first.returncode,0); self.assertEqual(calls.read_text(),'x')
+   second=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(second.returncode,0); self.assertEqual(calls.read_text(),'x'); self.assertEqual(ledger['attempts'][0]['outcome'],'uncertain_crash'); self.assertIn('relay ingress already recorded',second.stdout)
+ def test_watcher_excludes_fixture_but_preserves_protected(self):
+  loader=importlib.machinery.SourceFileLoader('field_watcher',str(pathlib.Path(__file__).with_name('field-watcher'))); spec=importlib.util.spec_from_loader('field_watcher',loader); watcher=importlib.util.module_from_spec(spec); loader.exec_module(watcher)
+  state={'version':1,'endpoints':{'fixture':{'state':'healthy','kind':'fixture'}},'events':[]}; watcher.observe(state,{'fixture':{'kind':'fixture','status':'working'},'test':{'kind':'test','status':'working'},'protected':{'kind':'protected','status':'working'}})
+  self.assertNotIn('fixture',state['endpoints']); self.assertNotIn('test',state['endpoints']); self.assertEqual(state['endpoints']['protected']['state'],'healthy')
+  state['endpoints']['oldfixture']={'state':'healthy','kind':'fixture'}; watcher.unreachable(state,'offline')
+  self.assertNotIn('oldfixture',state['endpoints']); self.assertNotIn('oldfixture',[e['endpoint'] for e in state['events']])
+ def test_watcher_fake_notification_file(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); state=d/'state.json'; roster=d/'roster.json'; notice=d/'notice.json'; watcher=pathlib.Path(__file__).with_name('field-watcher')
+   roster.write_text(json.dumps({'a':{'pane_id':'p','status':'working','kind':'production'}}))
+   subprocess.run([sys.executable,watcher,'--state',state,'--roster',roster,'--fake-notification-file',notice],check=True,capture_output=True)
+   self.assertEqual(json.loads(notice.read_text())[0]['endpoint'],'a')
+ def test_notification_projection_filters_persisted_test_fixture_history(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); state=d/'state.json'; roster=d/'roster.json'; notice=d/'notice.json'; watcher=pathlib.Path(__file__).with_name('field-watcher'); fake=d/'herdr'
+   events=[
+    {'id':'test','kind':'endpoint-state','endpoint':'testseat','detail':{},'provenance':{'endpoint_kind':'test'}},
+    {'id':'fixture','kind':'endpoint-state','endpoint':'fixtureseat','detail':{},'provenance':{'endpoint_kind':'fixture'}},
+    {'id':'protected','kind':'endpoint-state','endpoint':'protected','detail':{},'provenance':{'endpoint_kind':'protected'}},
+    {'id':'production','kind':'endpoint-state','endpoint':'ordinary','detail':{},'provenance':{'endpoint_kind':'production'}},
+    {'id':'legacy','kind':'endpoint-state','endpoint':'unclassified','detail':{}},
+   ]
+   state.write_text(json.dumps({'version':1,'endpoints':{'testseat':{'state':'healthy','kind':'test'},'fixtureseat':{'state':'healthy','kind':'fixture'},'protected':{'state':'healthy','kind':'protected'},'ordinary':{'state':'healthy','kind':'production'}},'events':events}))
+   fake.write_text('#!/bin/sh\nexit 1\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH']}
+   # Restarted heartbeat failure preserves old evidence but projects only proven
+   # production/protected history and the newly-proven watcher heartbeat event.
+   subprocess.run([sys.executable,watcher,'--state',state,'--heartbeat','--fake-notification-file',notice],check=True,capture_output=True,env=env)
+   projected=json.loads(notice.read_text()); names={x['endpoint'] for x in projected}
+   self.assertNotIn('testseat',names); self.assertNotIn('fixtureseat',names); self.assertNotIn('unclassified',names)
+   self.assertIn('protected',names); self.assertIn('ordinary',names); self.assertIn('watcher',names)
+   retained=json.loads(state.read_text())['events']; self.assertEqual({x['id'] for x in events}, {x['id'] for x in retained if x['id'] in {'test','fixture','protected','production','legacy'}})
+ def test_psyche_poc_ingress_is_typed_and_unverified(self):
+  packet=m.make_psyche_poc('request','effa1b','mind-sol-of-0ab019','verbatim ψ\nnot a human claim',ingress_id='psycheevent')
+  got=subprocess.run([self.codec],input=packet,text=True,capture_output=True,check=True)
+  event=json.loads(got.stdout)
+  self.assertEqual(event['producer'],'MentciPoc'); self.assertTrue(event['source_accepted_poc']); self.assertEqual(event['authentication'],'none')
+  self.assertEqual(event['request_id'],'request'); self.assertEqual(event['claimed_flow'],'effa1b'); self.assertEqual(event['quote'],'verbatim ψ\nnot a human claim')
+  self.assertNotIn('human',event)
+  fable=m.make_psyche_poc('request','c8d79f','psyche-fable-of-b05237','verbatim',ingress_id='fableevent')
+  self.assertEqual(subprocess.run([self.codec],input=fable,text=True,capture_output=True).returncode,0)
+  wrong_pair=m.make_psyche_poc('request','c8d79f','mind-sol-of-0ab019','verbatim',ingress_id='wrongpair')
+  self.assertNotEqual(subprocess.run([self.codec],input=wrong_pair,text=True,capture_output=True).returncode,0)
+ def test_msg_psyche_poc_uses_one_shot_bound_receiver(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'
+   fake.write_text("""#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"mind-sol-of-0ab019","status":"working","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"mind-sol-of-0ab019","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b","interactive_ready":true,"agent_status":"working"}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt wC:p2" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+"""); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   extra=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim','extra'],text=True,capture_output=True,env=env)
+   self.assertNotEqual(extra.returncode,0)
+   wrong=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','wrongflow','verbatim'],text=True,capture_output=True,env=env)
+   self.assertNotEqual(wrong.returncode,0)
+   sent=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','effa1b','verbatim browser text'],text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(sent.returncode,0,sent.stderr); self.assertTrue(prompt.read_text().startswith('Mentci.PsycheIngress.'))
+   self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertFalse((d/'state'/'messenger'/'pane_id').exists())
+ def test_fable_poc_done_without_readiness_uses_verified_bound_route(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'
+   fake.write_text("""#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"psyche-fable-of-b05237","status":"done","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"psyche-fable-of-b05237","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928","agent_status":"done"}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt w4:p7" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+"""); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('msg-psyche-poc')),'request','c8d79f','verbatim Fable text'],text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0,run.stderr); self.assertIn('psyche-fable-of-b05237',prompt.read_text()); self.assertEqual(ledger['attempts'][0]['grade'],'Transported')
+ def test_explicit_false_readiness_still_uses_verified_bound_route(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64
+   fake.write_text("""#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"psyche-fable-of-b05237","status":"working","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then echo '{"result":{"agent":{"name":"psyche-fable-of-b05237","pane_id":"w4:p7","terminal_id":"term_65bc83deb7ba928","agent_status":"working","interactive_ready":false}}}' ; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt w4:p7" ]; then printf x > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+"""); fake.chmod(0o755)
+   packet=m.make_psyche_poc('request','c8d79f','psyche-fable-of-b05237','deliver while working',ingress_id='false-ready')
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'--receive-poc'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0,run.stderr); self.assertEqual(prompt.read_text(),'x'); self.assertEqual(ledger['attempts'][0]['grade'],'Transported')
+ def test_mentci_poc_rejects_handcrafted_alternate_before_transport(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64
+   fake.write_text("""#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"arbitrary","status":"working","pane_id":"bad","terminal_id":"badterm"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent prompt" ]; then printf x >> "$HERDR_PROMPT"; exit 0; fi
+exit 1
+"""); fake.chmod(0o755)
+   packet=m.make_psyche_poc('request','otherflow','arbitrary','must not route',ingress_id='alternate')
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+   self.assertEqual(run.returncode,0); self.assertFalse(prompt.exists()); self.assertIn('ParseError',run.stdout)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(ledger['queue'],[]); self.assertEqual(ledger['attempts'],[])
+ def test_mentci_poc_ingress_reaches_existing_bound_delivery(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; import base64
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo \'{"agents":[{"name":"mind-sol-of-0ab019","status":"working","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b"}]}\' ; exit 0; fi\nif [ "$1 $2" = "agent get" ]; then echo \'{"result":{"agent":{"name":"mind-sol-of-0ab019","pane_id":"wC:p2","terminal_id":"term_65bc91cf241bf2b","interactive_ready":true,"agent_status":"working"}}}\' ; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt wC:p2" ]; then printf \'%s\' "$4" > "$HERDR_PROMPT"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   packet=m.make_psyche_poc('request','effa1b','mind-sol-of-0ab019','verbatim POC text',ingress_id='mentcievent')
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0); self.assertEqual(prompt.read_text(),packet); self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertEqual(ledger['queue'],[])
+ def test_real_codec_is_the_machine_boundary(self):
+  packet=m.make_machine('a','b','c','Task.{ ready }')
+  got=subprocess.run([self.codec],input=packet,text=True,capture_output=True,check=True)
+  self.assertEqual(json.loads(got.stdout)['claimed_from'],'a')
+  self.assertEqual(json.loads(got.stdout)['producer'],'Machine')
+  self.assertNotEqual(subprocess.run([self.codec],input=packet.replace('Machine.Relay', 'MACHINE.Relay', 1),text=True,capture_output=True).returncode,0)
+  refused=subprocess.run([self.codec],input='Living.Relay.{ a b «2026-01-01T00:00:00Z» typed [ c ] «x» «» }',text=True,capture_output=True)
+  self.assertNotEqual(refused.returncode,0)
+  heard=packet.split('«',2)[1][:10]
+  self.assertNotEqual(subprocess.run([self.codec],input=packet.replace(heard,'2026-99-99'),text=True,capture_output=True).returncode,0)
+  self.assertNotEqual(subprocess.run([self.codec],input=m.make_machine('a','b','c','ordinary prose'),text=True,capture_output=True).returncode,0)
+ def test_msg_accepts_multiline_before_transport(self):
+  with tempfile.TemporaryDirectory() as d:
+   capture,env=self.hm_send_env(d,exit_code=1)
+   result=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c','first\nsecond'],env=env,text=True,capture_output=True)
+   self.assertEqual(result.returncode,1)
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'a','args':['c','first\nsecond']})
+   self.assertNotIn('multiline payloads are not supported',result.stderr)
+ def test_msg_bridge_preserves_digit_leading_flow_ids(self):
+  with tempfile.TemporaryDirectory() as d:
+   capture,env=self.hm_send_env(d,flow_id='395aed')
+   send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'1b8ac0','Checkpoint.{ 1b8ac0 }'],text=True,capture_output=True,env=env)
+   self.assertEqual(send.returncode,0,send.stderr)
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'395aed','args':['1b8ac0','Checkpoint.{ 1b8ac0 }']})
+ def test_messenger_e2e_real_codec_preserves_full_envelope(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; delivered=d/'delivered'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"p\\"}]}"; exit 0; fi\nif [ "$1 $2" = "agent prompt" ]; then printf "%s" "$4" > "$HERDR_LOG"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   packet=m.make_machine('a','seat','c','Task.{ «back\\\\slash λ\nsecond line» }')
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_LOG':str(delivered),'MESSAGING_CODEC':str(self.codec)}
+   import base64
+   frame='FRAME.'+base64.b64encode(packet.encode()).decode()
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input=frame+'\n',text=True,capture_output=True,env=env,timeout=30)
+   self.assertEqual(run.returncode,0); self.assertFalse(delivered.exists()); self.assertIn('bound endpoint changed or refused',run.stdout)
+ def test_msg_forwards_multiline_body_to_hm_send(self):
+  with tempfile.TemporaryDirectory() as d:
+   capture,env=self.hm_send_env(d)
+   body='Task.{ «line one\nline two λ» }'
+   send=subprocess.run([str(pathlib.Path(__file__).with_name('msg')),'c',body],text=True,capture_output=True,env=env)
+   self.assertEqual(send.returncode,0,send.stderr)
+   self.assertEqual(json.loads(capture.read_text()),{'flow_id':'a','args':['c',body]})
+ def test_bad_frames_and_pane_only_target_are_held(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[]}"; exit 0; fi\nprintf x > "$HERDR_TOUCHED"; exit 0\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'HERDR_TOUCHED':str(touched),'MESSAGING_CODEC':str(self.codec)}
+   packet=m.make_machine('a','seat','pane','Task.{ ready }'); import base64
+   frames=['FRAME.','FRAME.%%%%','FRAME.'+base64.b64encode(b'not datom').decode(),'FRAME.'+base64.b64encode((packet+' extra').encode()).decode(),'FRAME.'+('A'*87385), 'FRAME.'+base64.b64encode(packet.encode()).decode()]
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join(frames)+'\n',text=True,capture_output=True,env=env,timeout=30)
+   self.assertEqual(run.returncode,0); self.assertFalse(touched.exists()); self.assertIn('Held.{ pane',run.stdout)
+ def test_fanout_partial_failure_holds_one_source_event(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pc\\"},{\\"name\\":\\"d\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pd\\"}]}"; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt c" ]; then exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   packet='Machine.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; import base64
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec)}
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertEqual(len(ledger['attempts']),2); self.assertEqual([x['grade'] for x in ledger['attempts']],[None,None])
+ def test_held_head_blocks_later_relay_and_protected_seat(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; touched=d/'touched'
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo "{\\"agents\\":[{\\"name\\":\\"c\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pc\\"},{\\"name\\":\\"d\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pd\\"},{\\"name\\":\\"e\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pe\\"},{\\"name\\":\\"testseat\\",\\"kind\\":\\"test\\",\\"status\\":\\"working\\",\\"pane_id\\":\\"pt\\"}]}"; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt c" ]; then exit 0; fi\nif [ "$1 $2 $3" = "agent prompt d" ]; then exit 1; fi\nprintf "%s" "$3" >> "$HERDR_TOUCHED"; exit 0\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_TOUCHED':str(touched)}; import base64
+   first='Machine.Relay.{ eventa a seat «2026-01-01T00:00:00Z» unknown [ c d ] «Task.{ ready }» «» }'; second='Machine.Relay.{ eventb a seat «2026-01-01T00:00:00Z» unknown [ e ] «Task.{ later }» «» }'
+   run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='\n'.join('FRAME.'+base64.b64encode(x.encode()).decode() for x in [first,second])+'\n',text=True,capture_output=True,env=env,timeout=30)
+   ledger=json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+   self.assertEqual(run.returncode,0); self.assertEqual(len(ledger['queue']),1); self.assertNotIn('e',touched.read_text() if touched.exists() else ''); self.assertIn('prior relay remains pending',run.stdout)
+ def test_concurrent_messenger_cannot_duplicate_attempt(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; release=d/'release'; import base64, time
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo \'{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}\' ; exit 0; fi\nif [ "$1 $2" = "agent get" ]; then echo \'{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}\' ; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt p" ]; then printf x >> "$HERDR_CALLS"; while [ ! -e "$HERDR_RELEASE" ]; do sleep .05; done; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_CALLS':str(calls),'HERDR_RELEASE':str(release)}
+   packet='Machine.Relay.{ concurrentid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'; frame='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n'; command=[str(pathlib.Path(__file__).with_name('messenger')),'m']
+   first=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env); first.stdin.write(frame); first.stdin.close()
+   for _ in range(100):
+    if calls.exists(): break
+    time.sleep(.05)
+   self.assertTrue(calls.exists())
+   second=subprocess.run(command,input=frame,text=True,capture_output=True,env=env,timeout=30)
+   self.assertEqual(second.returncode,75); self.assertEqual(calls.read_text(),'x')
+   release.touch(); self.assertEqual(first.wait(timeout=30),0); first.stdout.close(); first.stderr.close()
+ def test_completed_ingress_replay_and_conflict_do_not_prompt_again(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=pathlib.Path(d); fake=d/'herdr'; calls=d/'calls'; import base64
+   fake.write_text('#!/bin/sh\nif [ "$1 $2" = "agent list" ]; then echo \'{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}\' ; exit 0; fi\nif [ "$1 $2" = "agent get" ]; then echo \'{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"t","interactive_ready":true,"agent_status":"working"}}}\' ; exit 0; fi\nif [ "$1 $2 $3" = "agent prompt p" ]; then printf x >> "$HERDR_CALLS"; exit 0; fi\nexit 1\n'); fake.chmod(0o755)
+   env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_CALLS':str(calls)}
+   packet='Machine.Relay.{ completeid a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
+   changed=packet.replace('ready','changed')
+   def run(x): return subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(x.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+   first=run(packet)
+   self.assertEqual(first.returncode,0); self.assertEqual(calls.read_text(),'x')
+   self.assertRegex(first.stdout,r'Delivered\.\{ a c ingress-comple queue-[0-9a-f]{6} \}')
+   duplicate=run(packet); conflict=run(changed)
+   self.assertEqual(duplicate.returncode,0); self.assertEqual(conflict.returncode,0); self.assertEqual(calls.read_text(),'x')
+   self.assertIn('already recorded',duplicate.stdout); self.assertIn('conflicts with recorded payload',conflict.stdout)
+ def test_bound_pane_route_handles_replacement_races(self):
+  packet='Machine.Relay.{ event a seat «2026-01-01T00:00:00Z» unknown [ c ] «Task.{ ready }» «» }'
+  import base64
+  def run_case(mode):
+   with tempfile.TemporaryDirectory() as d:
+    d=pathlib.Path(d); fake=d/'herdr'; prompt=d/'prompt'; count=d/'get-count'
+    fake.write_text('''#!/bin/sh
+if [ "$1 $2" = "agent list" ]; then echo '{"agents":[{"name":"c","status":"working","pane_id":"p","terminal_id":"t"}]}' ; exit 0; fi
+if [ "$1 $2" = "agent get" ]; then n=0; [ -e "$HERDR_COUNT" ] && n=$(cat "$HERDR_COUNT"); n=$((n+1)); printf '%s' "$n" > "$HERDR_COUNT"; term=t; status=working; [ "$HERDR_MODE" = pre ] && term=replacement; [ "$HERDR_MODE" = post ] && [ "$n" -gt 1 ] && term=replacement; [ "$HERDR_MODE" = done ] && [ "$n" -gt 1 ] && status=done; [ "$HERDR_MODE" = pre_done ] && status=done; printf '{"result":{"agent":{"name":"c","pane_id":"p","terminal_id":"%s","interactive_ready":true,"agent_status":"%s"}}}\n' "$term" "$status"; exit 0; fi
+if [ "$1 $2 $3" = "agent prompt p" ]; then printf '%s' "$4" > "$HERDR_PROMPT"; exit 0; fi
+exit 1
+'''); fake.chmod(0o755)
+    env={**__import__('os').environ,'PATH':str(d)+':'+__import__('os').environ['PATH'],'XDG_STATE_HOME':str(d/'state'),'MESSAGING_CODEC':str(self.codec),'HERDR_PROMPT':str(prompt),'HERDR_COUNT':str(count),'HERDR_MODE':mode}
+    run=subprocess.run([str(pathlib.Path(__file__).with_name('messenger')),'m'],input='FRAME.'+base64.b64encode(packet.encode()).decode()+'\n',text=True,capture_output=True,env=env,timeout=30)
+    return run,prompt.read_text() if prompt.exists() else None,json.loads((d/'state'/'messenger'/'ledger.json').read_text())
+  stable,prompt_text,ledger=run_case('done')
+  self.assertEqual(stable.returncode,0); self.assertEqual(prompt_text,packet); self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertEqual(ledger['queue'],[])
+  pre,prompt_text,ledger=run_case('pre')
+  self.assertEqual(pre.returncode,0); self.assertIsNone(prompt_text); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
+  post,prompt_text,ledger=run_case('post')
+  self.assertEqual(post.returncode,0); self.assertEqual(prompt_text,packet); self.assertIsNone(ledger['attempts'][0]['grade']); self.assertEqual(len(ledger['queue']),1)
+  pre_done,prompt_text,ledger=run_case('pre_done')
+  self.assertEqual(pre_done.returncode,0); self.assertEqual(prompt_text,packet); self.assertEqual(ledger['attempts'][0]['grade'],'Transported'); self.assertEqual(ledger['queue'],[])
+if __name__=='__main__': unittest.main()

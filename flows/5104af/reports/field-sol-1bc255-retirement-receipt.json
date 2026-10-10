@@ -1,0 +1,30 @@
+{
+  "old_native": "01a0ee71-5824-7c40-b65c-7841bc2558eb",
+  "pre_native_last_ordinal": 8133,
+  "pre_herdr": {
+    "agent": "codex",
+    "agent_session": {
+      "agent": "codex",
+      "kind": "id",
+      "source": "herdr:codex",
+      "value": "01a0ee71-5824-7c40-b65c-7841bc2558eb"
+    },
+    "agent_status": "done",
+    "cwd": "/home/li/primary",
+    "focused": false,
+    "foreground_cwd": "/home/li/primary",
+    "name": "field_sol_1bc255",
+    "pane_id": "w1:pX",
+    "revision": 1406,
+    "state_change_seq": 2154,
+    "tab_id": "w1:tV",
+    "terminal_id": "term_65ca36abc213c1f",
+    "terminal_title": "Field.{ Sol 1bc255 } | primary",
+    "terminal_title_stripped": "Field.{ Sol 1bc255 } | primary",
+    "workspace_id": "w1"
+  },
+  "close_receipt": "{\"id\":\"cli:pane:close\",\"result\":{\"type\":\"ok\"}}\n",
+  "retire_receipt": "Retired 1bc255: delivery is blocked before Herdr routing\n",
+  "evidence_sha256": "2987bddd1fc10d2aef68de882c50bbb93a62f9aaa78c598eb8fbb72577b942e7",
+  "native_file_retained": true
+}

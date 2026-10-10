@@ -1,0 +1,31 @@
+4846e7b3283c1942d94f09dd79093c93b7082c32
+li 2026-10-03 10:13:56.000 -06:00
+
+Home: admit the witnessed Messenger predecessor
+
+diff --git a/checks/messenger-clj-package/default.nix b/checks/messenger-clj-package/default.nix
+index 98bd058421..2b2207beac 100644
+--- a/checks/messenger-clj-package/default.nix
++++ b/checks/messenger-clj-package/default.nix
+@@ -15,7 +15,7 @@
+   ];
+   managedCommands = [ "messenger-clj" ] ++ compatibilityCommands;
+   legacyMessengerClj = "/nix/store/p8mz1msm8lxiahnw6sfipi8m258x1q3z-messenger-clj-0.2.5";
+-  predecessorManagedFiles = "/nix/store/9ajs6aji25akz3dfrzpffj7j4kpqjjzv-home-manager-files";
++  predecessorManagedFiles = "/nix/store/ddp041ij4iz528qrxiz1nli5r8si6rzg-home-manager-files";
+   configuration = inputs.home-manager.lib.homeManagerConfiguration {
+     inherit pkgs;
+     extraSpecialArgs = {
+diff --git a/modules/home/profiles/min/messenger-clj.nix b/modules/home/profiles/min/messenger-clj.nix
+index c8d0bf273b..008f208a57 100644
+--- a/modules/home/profiles/min/messenger-clj.nix
++++ b/modules/home/profiles/min/messenger-clj.nix
+@@ -26,7 +26,7 @@
+   # The profile already contains this exact Home-managed 0.2.8 generation.
+   # Admit it during this one migration only by its immutable generated-files
+   # root; arbitrary local links remain rejected.
+-  predecessorManagedFiles = "/nix/store/9ajs6aji25akz3dfrzpffj7j4kpqjjzv-home-manager-files";
++  predecessorManagedFiles = "/nix/store/ddp041ij4iz528qrxiz1nli5r8si6rzg-home-manager-files";
+ in
+ {
+   config = lib.mkIf (sizeAtLeast "Min" && system == "x86_64-linux") {

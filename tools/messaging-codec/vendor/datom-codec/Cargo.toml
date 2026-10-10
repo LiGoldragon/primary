@@ -1,0 +1,35 @@
+[package]
+name        = "datom-codec"
+version     = "0.31.0"
+edition     = "2024"
+rust-version = "1.85"
+license     = "MIT OR Apache-2.0"
+repository  = "https://github.com/LiGoldragon/datom-codec"
+description = "Datomic: positional typed data over Protos."
+publish     = false
+
+[workspace]
+members = ["crates/datom-codec-derive"]
+
+[features]
+# A Signal contract archives its types. `Decimal` is the one intrinsic-backing
+# type this crate owns that a Signal position can hold, so its rkyv derives
+# live behind this feature and the Nexus enables it without enabling `datom`.
+rkyv = ["dep:rkyv"]
+
+[dependencies]
+rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"], optional = true }
+protos = { path = "../protos" }
+derive = { package = "datom-codec-derive", path = "crates/datom-codec-derive" }
+
+[dev-dependencies]
+proptest = "1.6"
+
+[lib]
+name = "datom_codec"
+path = "src/lib.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+unused      = { level = "warn", priority = -1 }
+dead_code   = "warn"

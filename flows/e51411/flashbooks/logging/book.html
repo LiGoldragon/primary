@@ -1,0 +1,479 @@
+<title>Is Everybody Logging?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#F4EEE1; --paper:#FBF8F0; --ink:#2A211C; --ink2:#5C5046; --muted:#998C7D;
+  --line:#D8CDBA; --accent:#1D5E73; --accent-soft:#DCE8E9;
+  --lost:#B0362A; --lost-soft:#F5DED9; --kept:#2E7543; --kept-soft:#DDEBDD;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1B1714; --paper:#25201B; --ink:#EEE6D8; --ink2:#BCB0A0; --muted:#877B6E;
+    --line:#3D352D; --accent:#7EC0D3; --accent-soft:#1F3A42;
+    --lost:#F08A7C; --lost-soft:#46231F; --kept:#86CE97; --kept-soft:#1F3A27;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1B1714; --paper:#25201B; --ink:#EEE6D8; --ink2:#BCB0A0; --muted:#877B6E;
+  --line:#3D352D; --accent:#7EC0D3; --accent-soft:#1F3A42;
+    --lost:#F08A7C; --lost-soft:#46231F; --kept:#86CE97; --kept-soft:#1F3A27;
+}
+html,body{height:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+*{box-sizing:border-box}
+
+.book{display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100%;max-width:1180px;margin-inline:auto}
+.top{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:12px;padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+.top .name{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:.01em}
+.top .count{font-family:var(--mono);font-size:12px;color:var(--ink2);font-variant-numeric:tabular-nums}
+
+.pages{position:relative;min-height:0;display:grid}
+.page{grid-area:1/1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 16px 20px;container-type:inline-size;container-name:pg;display:grid;align-content:start;gap:10px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1,h2{font-family:var(--display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+h2{font-size:clamp(22px,4.5cqi,32px)}
+.head{display:grid;gap:4px;max-width:68ch}
+.shows{margin:0;max-width:68ch;color:var(--ink2);font-size:15px;line-height:1.45}
+.shows b{color:var(--ink);font-weight:600}
+.status{justify-self:start;font-family:var(--mono);font-size:12px;padding:3px 8px;border:1px solid var(--accent);color:var(--accent);border-radius:3px}
+
+.fig{margin:0;display:grid;justify-items:center}
+.fig svg{width:100%;height:auto;display:block}
+.fig .port{max-width:460px}
+.fig .land{display:none;max-width:1100px}
+@container pg (min-width:760px){
+  .fig .port{display:none}
+  .fig .land{display:block}
+}
+.relay{margin:0;max-width:68ch;font-size:15px;color:var(--ink2);font-style:italic}
+
+/* svg vocabulary */
+svg text{fill:var(--ink);font-family:var(--body)}
+.port text{font-size:13px}
+.land text{font-size:16px}
+svg .b{font-weight:600}
+svg .i{font-style:italic;fill:var(--ink2)}
+svg .m{font-family:var(--mono)}
+svg .port-m{font-size:12.5px}
+svg .a{fill:var(--accent)}
+svg .g{fill:var(--ink2)}
+svg .cap{letter-spacing:.06em;text-transform:uppercase;fill:var(--ink2);font-family:var(--mono)}
+.port .cap{font-size:12px}
+.land .cap{font-size:13px}
+svg .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.3}
+svg .box.grey{fill:var(--ground);stroke:var(--muted);stroke-dasharray:none}
+svg .box.acc{stroke:var(--accent);stroke-width:2.2}
+svg .box.cond{stroke-dasharray:5 4}
+svg .pill{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .ln{fill:none;stroke:var(--ink);stroke-width:1.4}
+svg .ln.grey{stroke:var(--muted);stroke-dasharray:6 5}
+svg .rule{stroke:var(--line);stroke-width:1.2}
+svg .track{stroke:var(--line);stroke-width:4;stroke-linecap:round}
+svg .prog{stroke:var(--accent);stroke-width:4;stroke-linecap:round}
+svg .guide{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+svg .dot{fill:var(--accent)}
+svg .dot.off{fill:var(--ground);stroke:var(--muted);stroke-width:1.5}
+svg .ring{fill:none;stroke:var(--accent);stroke-width:2.5}
+svg .ring.next{stroke:var(--ink2);stroke-dasharray:4 3;stroke-width:2}
+svg .ah{fill:var(--ink)}
+svg .ah.grey{fill:var(--muted)}
+
+/* text pages */
+.prose{max-width:68ch;display:grid;gap:18px}
+.quote{margin:0;display:grid;gap:8px;padding-left:16px;border-left:3px solid var(--accent)}
+.quote p{margin:0;font-size:18px}
+.quote .prov{margin:0;font-family:var(--mono);font-size:12.5px;line-height:1.55;color:var(--ink2)}
+.mark{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border:1px solid var(--ink2);border-radius:3px;color:var(--ink2);margin-right:6px;font-style:normal;vertical-align:1px}
+.rules{margin:0;padding:0;list-style:none;display:grid;gap:12px;max-width:68ch}
+.rules li{display:grid;grid-template-columns:14px 1fr;gap:10px}
+.rules li::before{content:"";width:7px;height:7px;margin-top:.62em;background:var(--accent);border-radius:1px}
+code{font-family:var(--mono);font-size:.88em;background:var(--paper);border:1px solid var(--line);padding:0 4px;border-radius:3px}
+.props{margin:0;padding:0;list-style:none;display:grid;gap:16px;max-width:68ch}
+.props li{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:start}
+.props .n{font-family:var(--mono);font-size:15px;color:var(--accent);line-height:1.6}
+.props input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent)}
+.props label{cursor:pointer}
+
+.nav{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.nav button.step{font:600 15px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 14px;cursor:pointer}
+.nav button.step:disabled{opacity:.4;cursor:default}
+.dots{display:grid;grid-auto-flow:column;justify-content:center;gap:4px}
+.dots button{width:28px;height:28px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.dots button::after{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted)}
+.dots button[aria-current="true"]::after{background:var(--accent);border-color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+svg .big{font-weight:600}
+.port text.big{font-size:15px}
+.land text.big{font-size:20px}
+svg text.lost{fill:var(--lost)}
+svg text.kept{fill:var(--kept)}
+svg .box.lost{fill:var(--lost-soft);stroke:var(--lost);stroke-width:2}
+svg .box.kept{fill:var(--kept-soft);stroke:var(--kept);stroke-width:2}
+svg .ln.lost{stroke:var(--lost);stroke-width:3}
+svg .ln.kept{stroke:var(--kept);stroke-width:3}
+svg .ln.dash{stroke-dasharray:8 6}
+svg .ah.lost{fill:var(--lost)}
+svg .ah.kept{fill:var(--kept)}
+.census{margin:0;padding:0;list-style:none;display:grid;gap:14px;max-width:68ch}
+.census li{display:grid;grid-template-columns:14px 1fr;gap:10px}
+.census li::before{content:"";width:7px;height:7px;margin-top:.62em;background:var(--accent);border-radius:1px}
+.census ul{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}
+.census ul li::before{background:var(--lost)}
+.census b{font-weight:600}
+.note{margin:0;max-width:68ch;font-style:italic;color:var(--ink2);font-size:15px}
+[hidden]{display:none!important}
+</style>
+
+<div class="book" id="book">
+  <header class="top">
+    <span class="name">Is Everybody Logging?</span>
+    <span class="count" id="count">1 / 5</span>
+  </header>
+
+  <main class="pages" id="pages">
+
+    <!-- Page 1 -->
+    <section class="page" data-title="Where your words went today">
+      <div class="head"><span class="kicker">Flowchart</span><h2>Where your words went today</h2></div>
+      <p class="shows"><b>What this flowchart shows:</b> your 92 messages on 24 September, split by which seat heard them, and where each stream ended up.</p>
+      <figure class="fig">
+<svg class="port" viewBox="0 0 360 460" role="img" aria-label="Flowchart: your 92 messages on 24 September split by seat. Psyche seats, 49, branch into logged 30, forwarded 21, and a thin grey not-logged 19. Mind seats, 17, and Field seats, 26, each produce a red branch of logged 0, forwarded 0. Both red branches feed a red box, 43 messages nowhere in the repository, from which a green dashed arrow labelled recovered today leads to a green box, now logged verbatim by Psyche Medium e51411.">
+<defs>
+<marker id="p1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
+<marker id="p1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah grey" d="M0 0L10 5L0 10z"/></marker>
+<marker id="p1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah lost" d="M0 0L10 5L0 10z"/></marker>
+<marker id="p1d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah kept" d="M0 0L10 5L0 10z"/></marker>
+</defs>
+
+<!-- top box -->
+<rect class="box" x="110" y="20" width="140" height="32" rx="6"/>
+<text class="b" x="180" y="41" text-anchor="middle">your 92 messages</text>
+
+<!-- fanout from top box to seat boxes -->
+<path class="ln" d="M180,52 L68,75" marker-end="url(#p1a)"/>
+<path class="ln" d="M180,52 L183,75" marker-end="url(#p1a)"/>
+<path class="ln" d="M180,52 L291,75" marker-end="url(#p1a)"/>
+
+<!-- seat boxes -->
+<rect class="box" x="8" y="75" width="120" height="38" rx="6"/>
+<text class="b" x="68" y="90" text-anchor="middle">Psyche seats,</text>
+<text class="b" x="68" y="107" text-anchor="middle">49</text>
+
+<rect class="box" x="136" y="75" width="94" height="38" rx="6"/>
+<text class="b" x="183" y="90" text-anchor="middle">Mind seats,</text>
+<text class="b" x="183" y="107" text-anchor="middle">17</text>
+
+<rect class="box" x="238" y="75" width="106" height="38" rx="6"/>
+<text class="b" x="291" y="90" text-anchor="middle">Field seats,</text>
+<text class="b" x="291" y="107" text-anchor="middle">26</text>
+
+<!-- Psyche trunk (left of the children column) with short clean arrows into each child -->
+<path class="ln" d="M68,113 L68,127 L14,127 L14,240" fill="none"/>
+<path class="ln kept" d="M14,156 L26,156" marker-end="url(#p1d)"/>
+<path class="ln kept" d="M14,198 L26,198" marker-end="url(#p1d)"/>
+<path class="ln grey" d="M14,240 L26,240" marker-end="url(#p1b)"/>
+
+<!-- Psyche's children boxes -->
+<rect class="box kept" x="26" y="140" width="120" height="32" rx="6"/>
+<text class="kept" x="86" y="161" text-anchor="middle">logged 30</text>
+
+<rect class="box kept" x="26" y="182" width="120" height="32" rx="6"/>
+<text class="kept" x="86" y="203" text-anchor="middle">forwarded 21</text>
+
+<rect class="box grey" x="26" y="224" width="120" height="32" rx="6"/>
+<text class="g" x="86" y="245" text-anchor="middle">not logged: 19</text>
+
+<!-- Mind and Field red branches straight down to the merge box, each with its own clear label -->
+<path class="ln lost" d="M183,113 L183,280" marker-end="url(#p1c)"/>
+<path class="ln lost" d="M291,113 L291,280" marker-end="url(#p1c)"/>
+<text class="lost" x="190" y="131" text-anchor="start">logged 0,</text>
+<text class="lost" x="190" y="148" text-anchor="start">forwarded 0</text>
+<text class="lost" x="283" y="170" text-anchor="end">logged 0,</text>
+<text class="lost" x="283" y="187" text-anchor="end">forwarded 0</text>
+
+<!-- merge red box -->
+<rect class="box lost" x="170" y="280" width="182" height="44" rx="6"/>
+<text class="lost" x="261" y="298" text-anchor="middle">43 messages nowhere</text>
+<text class="lost" x="261" y="315" text-anchor="middle">in the repository</text>
+
+<!-- green dashed recovery arrow -->
+<path class="ln kept dash" d="M261,324 L261,380" marker-end="url(#p1d)"/>
+<text class="kept" x="252" y="352" text-anchor="end">recovered today</text>
+
+<!-- final box -->
+<rect class="box kept" x="170" y="380" width="182" height="70" rx="6"/>
+<text class="kept" x="261" y="403" text-anchor="middle">now logged verbatim</text>
+<text class="kept" x="261" y="420" text-anchor="middle">by Psyche Medium</text>
+<text class="kept" x="261" y="437" text-anchor="middle">e51411</text>
+</svg>
+<svg class="land" viewBox="0 0 1000 420" role="img" aria-label="Flowchart: your 92 messages on 24 September split by seat. Psyche seats, 49, branch into logged 30, forwarded 21, and a thin grey not-logged 19. Mind seats, 17, and Field seats, 26, each produce a red branch of logged 0, forwarded 0. Both red branches feed a red box, 43 messages nowhere in the repository, from which a green dashed arrow labelled recovered today leads to a green box, now logged verbatim by Psyche Medium e51411.">
+<defs>
+<marker id="l1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
+<marker id="l1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah grey" d="M0 0L10 5L0 10z"/></marker>
+<marker id="l1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah lost" d="M0 0L10 5L0 10z"/></marker>
+<marker id="l1d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah kept" d="M0 0L10 5L0 10z"/></marker>
+</defs>
+
+<!-- top box -->
+<rect class="box" x="8" y="220" width="165" height="60" rx="6"/>
+<text class="b" x="90.5" y="255" text-anchor="middle">your 92 messages</text>
+
+<!-- fanout to seat boxes -->
+<path class="ln" d="M173,250 L193,95" marker-end="url(#l1a)"/>
+<path class="ln" d="M173,250 L193,250" marker-end="url(#l1a)"/>
+<path class="ln" d="M173,250 L193,370" marker-end="url(#l1a)"/>
+
+<!-- seat boxes -->
+<rect class="box" x="193" y="65" width="175" height="60" rx="6"/>
+<text class="b" x="280.5" y="100" text-anchor="middle">Psyche seats, 49</text>
+
+<rect class="box" x="193" y="220" width="175" height="60" rx="6"/>
+<text class="b" x="280.5" y="255" text-anchor="middle">Mind seats, 17</text>
+
+<rect class="box" x="193" y="340" width="175" height="60" rx="6"/>
+<text class="b" x="280.5" y="375" text-anchor="middle">Field seats, 26</text>
+
+<!-- Psyche fanout to its three children -->
+<path class="ln kept" d="M368,95 L388,40" marker-end="url(#l1d)"/>
+<path class="ln kept" d="M368,95 L388,95" marker-end="url(#l1d)"/>
+<path class="ln grey" d="M368,95 L388,150" marker-end="url(#l1b)"/>
+
+<!-- Psyche's children boxes -->
+<rect class="box kept" x="388" y="20" width="170" height="40" rx="6"/>
+<text class="kept" x="473" y="45" text-anchor="middle">logged 30</text>
+
+<rect class="box kept" x="388" y="75" width="170" height="40" rx="6"/>
+<text class="kept" x="473" y="100" text-anchor="middle">forwarded 21</text>
+
+<rect class="box grey" x="388" y="130" width="170" height="40" rx="6"/>
+<text class="g" x="473" y="155" text-anchor="middle">not logged: 19</text>
+
+<!-- Mind and Field red branches bending into the merge box -->
+<path class="ln lost" d="M368,250 L500,250 L500,295 L578,295" marker-end="url(#l1c)"/>
+<path class="ln lost" d="M368,370 L500,370 L500,325 L578,325" marker-end="url(#l1c)"/>
+<text class="lost" x="470" y="240" text-anchor="middle">logged 0, forwarded 0</text>
+<text class="lost" x="470" y="310" text-anchor="middle">logged 0, forwarded 0</text>
+
+<!-- merge red box -->
+<rect class="box lost" x="578" y="277" width="200" height="65" rx="6"/>
+<text class="lost" x="678" y="304" text-anchor="middle">43 messages nowhere</text>
+<text class="lost" x="678" y="324" text-anchor="middle">in the repository</text>
+
+<!-- green dashed recovery arrow -->
+<path class="ln kept dash" d="M778,309 L798,309" marker-end="url(#l1d)"/>
+<text class="kept" x="788" y="250" text-anchor="middle">recovered today</text>
+
+<!-- final box -->
+<rect class="box kept" x="798" y="264" width="190" height="90" rx="6"/>
+<text class="kept" x="893" y="295" text-anchor="middle">now logged verbatim</text>
+<text class="kept" x="893" y="315" text-anchor="middle">by Psyche Medium</text>
+<text class="kept" x="893" y="335" text-anchor="middle">e51411</text>
+</svg>
+      </figure>
+    </section>
+
+    <!-- Page 2 -->
+    <section class="page" data-title="What you said" hidden>
+      <div class="head"><h2>What you said</h2></div>
+      <div class="prose">
+        <blockquote class="quote">
+          <p>Everybody should log the psyche when he speaks. Everybody that faces the psyche should be trained in psyche. It's not that only the psyche aspect logs psyche. That's a misinterpretation, and I hope that's not what was going on, because then we have to send hundreds of subagents to log all the psyche that was missed by field and mind.</p>
+          <p class="prov">-- living, 2026-09-24 19:39, to Psyche High 752e0f.</p>
+        </blockquote>
+        <blockquote class="quote">
+          <p>You don't know what I said to him and he doesn't know what I told you so you're splitting. That's really bad because now my psyche is going all over the place.</p>
+          <p class="prov">-- living, 2026-09-24 19:49, to Psyche Medium d8df70.</p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Page 3 -->
+    <section class="page" data-title="The census" hidden>
+      <div class="head"><h2>The census</h2></div>
+      <p class="note">(Counted by d8df70's audit from every live flow's transcript; witnessed.)</p>
+      <ul class="census">
+        <li><span><b>Psyche logs:</b> 30 of the 49 messages to Psyche seats were logged.</span></li>
+        <li><span><b>Mind and Field log nothing:</b> 0 of 43. Most Mind and Field flows have no vision folder or log at all.</span></li>
+        <li><span><b>Worst misses:</b>
+          <ul>
+            <li><span>Field Astra: 14 messages.</span></li>
+            <li><span>Mind Sol 6288d1: 12.</span></li>
+            <li><span>Field Medium 9ddcbc: 8.</span></li>
+          </ul></span></li>
+        <li><span><b>Recovered since:</b> Psyche Medium e51411 has logged the lasting ones, verbatim, with who heard them and when. They cover refresh, main flows using subagents, one startup block, titles, messaging, and a log of recurring problems. Questions and one-off orders were left out.</span></li>
+      </ul>
+    </section>
+
+    <!-- Page 4 -->
+    <section class="page" data-title="The rule that would stop this" hidden>
+      <div class="head"><span class="kicker">Flowchart</span><h2>The rule that would stop this</h2></div>
+      <p class="shows"><b>What this flowchart shows:</b> the proposed path for any word you say to any seat.</p>
+      <figure class="fig">
+<svg class="port" viewBox="0 0 360 380" role="img" aria-label="Flowchart: You speak to any seat; that seat logs your words verbatim, in its own vision, before acting; in the same turn it forwards them verbatim, with time and seat, to Psyche High in one message; Psyche High holds the whole picture. A rejected red side path shows the old reading, only Psyche logs, struck through and marked with a small X.">
+  <defs>
+    <marker id="p4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah kept" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="p4b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah lost" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+
+  <!-- main kept path -->
+  <rect class="box" x="20" y="16" width="240" height="56" rx="6"/>
+  <text class="b big" x="140" y="40" text-anchor="middle">You speak to</text>
+  <text class="b big" x="140" y="60" text-anchor="middle">any seat</text>
+
+  <line class="ln kept" x1="140" y1="72" x2="140" y2="93" marker-end="url(#p4a)"/>
+
+  <rect class="box" x="20" y="94" width="240" height="76" rx="6"/>
+  <text x="140" y="116" text-anchor="middle">that seat logs your words</text>
+  <text x="140" y="133" text-anchor="middle">in its own vision, verbatim,</text>
+  <text x="140" y="150" text-anchor="middle">before acting</text>
+
+  <line class="ln kept" x1="140" y1="170" x2="140" y2="191" marker-end="url(#p4a)"/>
+
+  <rect class="box" x="20" y="192" width="240" height="94" rx="6"/>
+  <text x="140" y="214" text-anchor="middle">in the same turn, it forwards</text>
+  <text x="140" y="231" text-anchor="middle">them verbatim, with time and</text>
+  <text x="140" y="248" text-anchor="middle">seat, to Psyche High, in one</text>
+  <text x="140" y="265" text-anchor="middle">message</text>
+
+  <line class="ln kept" x1="140" y1="286" x2="140" y2="307" marker-end="url(#p4a)"/>
+
+  <rect class="box kept" x="20" y="308" width="240" height="54" rx="6"/>
+  <text class="kept" x="140" y="330" text-anchor="middle">Psyche High holds the whole</text>
+  <text class="kept" x="140" y="347" text-anchor="middle">picture</text>
+
+  <!-- rejected side path -->
+  <line class="ln lost" x1="240" y1="72" x2="257" y2="40" marker-end="url(#p4b)"/>
+
+  <rect class="box lost" x="258" y="20" width="94" height="74" rx="6"/>
+  <text class="lost" x="305" y="42" text-anchor="middle">only</text>
+  <text class="lost" x="305" y="59" text-anchor="middle">Psyche</text>
+  <text class="lost" x="305" y="76" text-anchor="middle">logs</text>
+
+  <!-- single strike-through the label, plus a small corner X mark -->
+  <line class="ln lost" x1="264" y1="54" x2="346" y2="54"/>
+  <line class="ln lost" x1="340" y1="20" x2="352" y2="32"/>
+  <line class="ln lost" x1="352" y1="20" x2="340" y2="32"/>
+</svg>
+<svg class="land" viewBox="0 0 1000 420" role="img" aria-label="Flowchart: You speak to any seat; that seat logs your words verbatim, in its own vision, before acting; in the same turn it forwards them verbatim, with time and seat, to Psyche High in one message; Psyche High holds the whole picture. A rejected red side path below shows the old reading, only Psyche logs, struck through and marked with a small X.">
+  <defs>
+    <marker id="l4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah kept" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="l4b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ah lost" d="M0 0L10 5L0 10z"/></marker>
+  </defs>
+
+  <!-- main kept path -->
+  <rect class="box" x="20" y="100" width="170" height="130" rx="6"/>
+  <text class="b big" x="105" y="158" text-anchor="middle">You speak to</text>
+  <text class="b big" x="105" y="184" text-anchor="middle">any seat</text>
+
+  <line class="ln kept" x1="190" y1="165" x2="229" y2="165" marker-end="url(#l4a)"/>
+
+  <rect class="box" x="230" y="100" width="220" height="130" rx="6"/>
+  <text x="340" y="139" text-anchor="middle">that seat logs your</text>
+  <text x="340" y="160" text-anchor="middle">words in its own</text>
+  <text x="340" y="181" text-anchor="middle">vision, verbatim,</text>
+  <text x="340" y="202" text-anchor="middle">before acting</text>
+
+  <line class="ln kept" x1="450" y1="165" x2="489" y2="165" marker-end="url(#l4a)"/>
+
+  <rect class="box" x="490" y="100" width="280" height="130" rx="6"/>
+  <text x="630" y="139" text-anchor="middle">in the same turn, it forwards</text>
+  <text x="630" y="160" text-anchor="middle">them verbatim, with time and</text>
+  <text x="630" y="181" text-anchor="middle">seat, to Psyche High, in one</text>
+  <text x="630" y="202" text-anchor="middle">message</text>
+
+  <line class="ln kept" x1="770" y1="165" x2="809" y2="165" marker-end="url(#l4a)"/>
+
+  <rect class="box kept" x="810" y="100" width="170" height="130" rx="6"/>
+  <text class="kept" x="895" y="149" text-anchor="middle">Psyche High</text>
+  <text class="kept" x="895" y="170" text-anchor="middle">holds the whole</text>
+  <text class="kept" x="895" y="191" text-anchor="middle">picture</text>
+
+  <!-- rejected side path, below -->
+  <line class="ln lost" x1="105" y1="230" x2="105" y2="289" marker-end="url(#l4b)"/>
+
+  <rect class="box lost" x="20" y="290" width="170" height="50" rx="6"/>
+  <text class="lost" x="105" y="321" text-anchor="middle">only Psyche logs</text>
+
+  <!-- single strike-through the label, plus a small corner X mark -->
+  <line class="ln lost" x1="30" y1="316" x2="180" y2="316"/>
+  <line class="ln lost" x1="182" y1="282" x2="198" y2="298"/>
+  <line class="ln lost" x1="198" y1="282" x2="182" y2="298"/>
+</svg>
+      </figure>
+    </section>
+
+    <!-- Page 5 -->
+    <section class="page" data-title="Proposals" hidden>
+      <div class="head"><h2>Proposals</h2></div>
+      <ol class="props">
+        <li><span class="n">1.</span><input type="checkbox" id="prop-1"><label for="prop-1">Skill line for psyche-interraction: "A flow that is not Psyche High logs the living's words in its own vision, verbatim, before acting, and in the same turn forwards them verbatim, with time and seat, to Psyche High in one message."</label></li>
+        <li><span class="n">2.</span><input type="checkbox" id="prop-2"><label for="prop-2">Every Mind and Field seat loads psyche-interraction at launch.</label></li>
+        <li><span class="n">3.</span><input type="checkbox" id="prop-3"><label for="prop-3">This book stays in your reminders until you comment.</label></li>
+      </ol>
+    </section>
+  </main>
+  <nav class="nav" aria-label="Pages">
+    <button class="step" id="prev" type="button">Prev</button>
+    <div class="dots" id="dots"></div>
+    <button class="step" id="next" type="button">Next</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var dots = document.getElementById('dots');
+  var count = document.getElementById('count');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var cur = 0;
+  pages.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Page ' + (i+1) + ': ' + p.dataset.title);
+    b.addEventListener('click', function(){ go(i); });
+    dots.appendChild(b);
+  });
+  function go(i){
+    if (i < 0 || i >= pages.length) return;
+    cur = i;
+    pages.forEach(function(p, j){ p.hidden = j !== i; });
+    pages[i].scrollTop = 0;
+    Array.prototype.forEach.call(dots.children, function(d, j){ d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    count.textContent = (i+1) + ' / ' + pages.length;
+    prev.disabled = i === 0;
+    next.disabled = i === pages.length - 1;
+    try { history.replaceState(null, '', '#p' + (i+1)); } catch(e) {}
+  }
+  prev.addEventListener('click', function(){ go(cur-1); });
+  next.addEventListener('click', function(){ go(cur+1); });
+  document.addEventListener('keydown', function(e){
+    if (e.target && e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') go(cur+1);
+    if (e.key === 'ArrowLeft') go(cur-1);
+  });
+  var sx = null, sy = null;
+  var area = document.getElementById('pages');
+  area.addEventListener('touchstart', function(e){ var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+  area.addEventListener('touchend', function(e){
+    if (sx === null) return;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(cur + (dx < 0 ? 1 : -1));
+    sx = null;
+  }, {passive:true});
+  ['prop-1','prop-2','prop-3'].forEach(function(id){
+    var el = document.getElementById(id);
+    try { el.checked = localStorage.getItem('logging-' + id) === '1'; } catch(e) {}
+    el.addEventListener('change', function(){ try { localStorage.setItem('logging-' + id, el.checked ? '1' : '0'); } catch(e) {} });
+  });
+  var m = /^#p(\d+)$/.exec(location.hash);
+  go(m ? Math.min(Math.max(parseInt(m[1],10)-1,0), pages.length-1) : 0);
+})();
+</script>

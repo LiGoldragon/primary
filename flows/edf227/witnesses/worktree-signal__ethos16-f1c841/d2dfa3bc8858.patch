@@ -1,0 +1,190 @@
+d2dfa3bc88584d11276df70efc7366ada6aaa5af
+li 2026-09-15 14:49:44.000 -06:00
+
+Correct identifier proof grammar and validation
+
+diff --git a/ethos/identifiers.ethos b/ethos/identifiers.ethos
+index a67fe7dcd4..29edd859db 100644
+--- a/ethos/identifiers.ethos
++++ b/ethos/identifiers.ethos
+@@ -1,9 +1,7 @@
+-Identifier
+-[]
+-[]
+-[]
+-[ FullNameDigest.{ Integer Integer Integer Integer }
+-  LocalNameReference.{ Integer Integer Integer }
++Library
++[]
++[ LocalNameReference.{ Integer Integer Integer }
+   ClusterNameReference.{ Integer Integer Integer Integer Integer Integer }
+   PublicNameReference.{ Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer } ]
+ []
++[]
+diff --git a/reports/identifier-poc.md b/reports/identifier-poc.md
+index 30b257c080..54b319c72f 100644
+--- a/reports/identifier-poc.md
++++ b/reports/identifier-poc.md
+@@ -1,6 +1,6 @@
+ # Word identifiers proof
+ 
+-`ethos/identifiers.ethos` is the standalone `Identifier` library: a full digest shape and three fixed-width reference shapes. It stays outside `ethos/signal.ethos`, so this proof does not alter Signal's frame ABI or generated taxonomy.
++`ethos/identifiers.ethos` is a native sweet-form `Library` with imports, types, kinds, and associations sections. It declares the three fixed-width reference shapes and stays outside `ethos/signal.ethos`, so this proof does not alter Signal's frame ABI or generated taxonomy.
+ 
+ `src/identifiers.rs` provides rkyv-serializable nominal `NameDigest`, `LocalNameReference`, `ClusterNameReference`, and `PublicNameReference` types. None is a `String` internally. The full digest is BLAKE3 over input bytes; it is a correlation/deduplication digest and makes no authentication claim.
+ 
+@@ -12,8 +12,10 @@
+ | Cluster | 6 | 66 | 2^66 |
+ | Public | 12 | 132 | 2^132 |
+ 
+-The display form is CamelCase BIP-39 words, such as `AbandonAbilityAble`. Parsing accepts only ASCII alphabetic CamelCase with BIP-39 English words and the exact context width. It rejects lowercase, colon, dots, other punctuation, unknown words, and noncanonical counts. The display is a short reference; the full 256-bit `NameDigest` is the explicit long form.
+-
+-Pinned Datom and Protos provide text and integer intrinsics but no standard hash primitive. The Ethos library uses `Integer` limbs and the Signal-owned BLAKE3 adapter fills that gap without claiming a Datom standard or editing Datom.
++The display form is lowerCamelCase BIP-39 words, such as `abandonAbilityAble`. Parsing accepts only ASCII alphabetic lowerCamelCase with BIP-39 English words and the exact context width. It rejects PascalCase, colon, dots, other punctuation, unknown words, invalid word indices, and noncanonical counts. The display is a short reference; the full 256-bit `NameDigest` is the explicit long form.
++
++Pinned Datom and Protos provide text and integer intrinsics but no standard hash primitive. The Ethos library therefore models only the word-index references; the Signal-owned 32-byte BLAKE3 `NameDigest` is an explicit adapter outside that schema, without claiming a Datom standard or editing Datom.
++
++Real `tiktoken 0.12.0` measurements of the running example's exact lowerCamelCase output: cl100k_base and o200k_base both count local (33 bits) as 3 tokens, cluster (66 bits) as 8 tokens, and public (132 bits) as 17 tokens. These are sample-string measurements, not a claim about the production Codex tokenizer.
+ 
+ `examples/name_identifier.rs` prints each form and full digest. Tests cover widths, display/parser round trips, invalid forms, and rkyv archive restoration.
+diff --git a/src/identifiers.rs b/src/identifiers.rs
+index bc815f678d..dea240253e 100644
+--- a/src/identifiers.rs
++++ b/src/identifiers.rs
+@@ -25,15 +25,15 @@
+ #[derive(
+     rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
+ )]
+-pub struct LocalNameReference(pub [u16; LOCAL_WORDS]);
++pub struct LocalNameReference([u16; LOCAL_WORDS]);
+ #[derive(
+     rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
+ )]
+-pub struct ClusterNameReference(pub [u16; CLUSTER_WORDS]);
++pub struct ClusterNameReference([u16; CLUSTER_WORDS]);
+ #[derive(
+     rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Copy, Debug, PartialEq, Eq, Hash,
+ )]
+-pub struct PublicNameReference(pub [u16; PUBLIC_WORDS]);
++pub struct PublicNameReference([u16; PUBLIC_WORDS]);
+ 
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum NameParseError {
+@@ -41,6 +41,7 @@
+     NonCanonical,
+     UnknownWord(String),
+     WrongLength { expected: usize, actual: usize },
++    InvalidIndex(u16),
+ }
+ 
+ impl NameDigest {
+@@ -67,16 +68,25 @@
+ }
+ 
+ impl LocalNameReference {
++    pub fn try_from_indices(indices: [u16; LOCAL_WORDS]) -> Result<Self, NameParseError> {
++        validate(&indices).map(|_| Self(indices))
++    }
+     pub fn parse(text: &str) -> Result<Self, NameParseError> {
+         parse_words(text, LOCAL_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
+     }
+ }
+ impl ClusterNameReference {
++    pub fn try_from_indices(indices: [u16; CLUSTER_WORDS]) -> Result<Self, NameParseError> {
++        validate(&indices).map(|_| Self(indices))
++    }
+     pub fn parse(text: &str) -> Result<Self, NameParseError> {
+         parse_words(text, CLUSTER_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
+     }
+ }
+ impl PublicNameReference {
++    pub fn try_from_indices(indices: [u16; PUBLIC_WORDS]) -> Result<Self, NameParseError> {
++        validate(&indices).map(|_| Self(indices))
++    }
+     pub fn parse(text: &str) -> Result<Self, NameParseError> {
+         parse_words(text, PUBLIC_WORDS).map(|words| Self(words.try_into().expect("fixed width")))
+     }
+@@ -113,11 +123,23 @@
+ }
+ 
+ fn display(indices: &[u16], f: &mut fmt::Formatter<'_>) -> fmt::Result {
+-    for index in indices {
+-        let word = Language::English.word_list()[usize::from(*index)];
++    for (position, index) in indices.iter().enumerate() {
++        let word = Language::English
++            .word_list()
++            .get(usize::from(*index))
++            .ok_or(fmt::Error)?;
+         let mut chars = word.chars();
+         let first = chars.next().expect("BIP39 word");
+-        write!(f, "{}{}", first.to_ascii_uppercase(), chars.as_str())?;
++        write!(
++            f,
++            "{}{}",
++            if position == 0 {
++                first
++            } else {
++                first.to_ascii_uppercase()
++            },
++            chars.as_str()
++        )?;
+     }
+     Ok(())
+ }
+@@ -128,13 +150,13 @@
+     }
+     if !text.is_ascii()
+         || text.contains(|c: char| !c.is_ascii_alphabetic())
+-        || !text.as_bytes()[0].is_ascii_uppercase()
++        || !text.as_bytes()[0].is_ascii_lowercase()
+     {
+         return Err(NameParseError::NonCanonical);
+     }
+     let starts = text
+         .char_indices()
+-        .filter_map(|(at, character)| character.is_ascii_uppercase().then_some(at))
++        .filter_map(|(at, character)| (at == 0 || character.is_ascii_uppercase()).then_some(at))
+         .collect::<Vec<_>>();
+     let pieces = starts
+         .iter()
+@@ -162,6 +184,14 @@
+         .collect()
+ }
+ 
++fn validate(indices: &[u16]) -> Result<(), NameParseError> {
++    indices
++        .iter()
++        .find(|index| usize::from(**index) >= BIP39_WORDS)
++        .copied()
++        .map_or(Ok(()), |index| Err(NameParseError::InvalidIndex(index)))
++}
++
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+@@ -188,11 +218,11 @@
+     #[test]
+     fn rejects_noncanonical_and_unknown_words() {
+         assert_eq!(
+-            LocalNameReference::parse("abandonAbilityAble"),
++            LocalNameReference::parse("AbandonAbilityAble"),
+             Err(NameParseError::NonCanonical)
+         );
+         assert_eq!(
+-            LocalNameReference::parse("WibbleAbilityAble"),
++            LocalNameReference::parse("wibbleAbilityAble"),
+             Err(NameParseError::UnknownWord("wibble".into()))
+         );
+     }
+@@ -205,4 +235,11 @@
+             value
+         );
+     }
++    #[test]
++    fn rejects_bad_indices_without_display_panic() {
++        assert_eq!(
++            LocalNameReference::try_from_indices([BIP39_WORDS as u16, 1, 2]),
++            Err(NameParseError::InvalidIndex(BIP39_WORDS as u16))
++        );
++    }
+ }

@@ -1,0 +1,151 @@
+<title>Paired-Flow Bootstrap Day</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#f7f5f0;--ink:#1f1d1a;--muted:#6b665d;--rule:#d9d3c7;--panel:#efebe2;--accent:#3b5f7a;--ok:#2f6f4e;--warn:#9a5b16;--bad:#8d2f2f;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;--disp:"Fraunces",Georgia,"Times New Roman",serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16171a;--ink:#e7e3da;--muted:#a09a8e;--rule:#3a3c42;--panel:#1f2126;--accent:#8fb4d0;--ok:#7fc59c;--warn:#e0a45a;--bad:#e08a8a}}
+:root[data-theme="dark"]{--bg:#16171a;--ink:#e7e3da;--muted:#a09a8e;--rule:#3a3c42;--panel:#1f2126;--accent:#8fb4d0;--ok:#7fc59c;--warn:#e0a45a;--bad:#e08a8a}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+main{max-width:76ch;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+h1{font-family:var(--disp);font-weight:500;font-size:2.4rem;line-height:1.1;margin:0 0 .4rem;text-wrap:balance}
+h2{font-family:var(--disp);font-weight:600;font-size:1.45rem;margin:2.8rem 0 .8rem;text-wrap:balance}
+h3{font-size:1rem;font-weight:600;margin:1.6rem 0 .4rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+p{margin:.5rem 0;max-width:68ch}
+.lede{color:var(--muted);font-size:1.05rem}
+nav{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:1.4rem 0 0;padding:.8rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:.9rem}
+nav a{color:var(--accent);text-decoration:none}nav a:hover,nav a:focus{text-decoration:underline}
+code,.mono{font-family:var(--mono);font-size:.86em}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem;border-bottom:1px solid var(--rule)}
+th{font-weight:600;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+td.t{font-family:var(--mono);font-size:.8rem;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .45rem;border-radius:2px;white-space:nowrap}
+.w{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.c{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.n{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.r{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+ul{padding-left:1.2rem;margin:.4rem 0}li{margin:.35rem 0}
+.built{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.6rem 0}
+.built>div{display:grid;grid-template-columns:1fr auto;gap:.2rem .8rem;padding:.7rem .9rem;background:var(--panel);border-left:3px solid var(--rule)}
+.built>div.pending{border-left-color:var(--warn)}
+.built b{font-weight:600}.built small{grid-column:1/3;color:var(--muted)}
+blockquote{margin:.6rem 0 .6rem 0;padding:.2rem 0 .2rem 1rem;border-left:2px solid var(--accent);color:var(--ink);font-family:var(--disp);font-weight:500;font-size:1.02rem}
+.topic{margin:.9rem 0}.topic b{display:block;font-weight:600}
+.src{color:var(--muted);font-size:.85rem}
+.grade{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.card{background:var(--panel);padding:.8rem 1rem;margin:.6rem 0}
+.card b{font-weight:600}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+<main>
+<h1>Paired-Flow Bootstrap Day</h1>
+<p class="lede">Everything the four flows did on 13 September 2026, what was built that you have not yet reviewed, your own words as logged, and the research you asked for. Comment anywhere on this page.</p>
+<nav><a href="#timeline">Timeline</a><a href="#built">Built, awaiting your review</a><a href="#words">Your words today</a><a href="#open">Open questions</a><a href="#incidents">Incidents</a><a href="#repo">Repository</a><a href="#harness">Open-source harnesses</a><a href="#doubt">Most doubtful model</a><a href="#evidence">Harness vs model</a></nav>
+
+<h2 id="timeline">Timeline</h2>
+<p>Four flows. <b>024bc7</b> is the Claude doubter root. <b>bcd02a</b> is the Codex implementer root. <b>34d94e</b> and <b>6cc91b</b> are the fresh Codex and Claude halves bootstrapped this evening. <span class="pill w">witnessed</span> means the flow observed the thing itself. <span class="pill c">claimed</span> means someone said so.</p>
+<div class="wrap"><table>
+<tr><th>Time</th><th>Flow</th><th>What happened</th><th></th></tr>
+<tr><td class="t">open</td><td>024bc7, bcd02a</td><td>You opened a Claude and a Codex session with the same whole-system design prompt: clusters, layers, Datom, Nexus, Signal, Sema, router, Criome and Lojix authentication.</td><td><span class="pill c">claimed</span></td></tr>
+<tr><td class="t">—</td><td>both</td><td>Nexus, Signal, Sema, router and storage vision logged verbatim in both flows before either replied.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>both</td><td>You authorized Claude and Codex to talk directly, move into the intercom sandbox, and test with cheap models: Luna for Codex, Haiku for Claude. Effort mode set to medium.</td><td><span class="pill c">claimed</span></td></tr>
+<tr><td class="t">19:46:58Z</td><td>bcd02a</td><td>Codex watched the Claude root finish its turn.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">19:52:49Z</td><td>bcd02a</td><td>Codex weekly quota read at 7 percent used.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Claude doubted Codex's harness anatomy and withheld the Lojix-over-SSH proof of concept pending doubt.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Codex app-server socket found to speak WebSocket JSON-RPC. The wake client was built. A file monitor on the wake directory armed so Codex can wake Claude by writing a file.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>both</td><td>Codex wrote a wake file; Claude's monitor fired a new turn; acknowledged over the intercom.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">20:10:35Z</td><td>024bc7</td><td>Claude woke Codex's root thread through the app-server. Reverse wake arrived in Codex as a user turn and was acknowledged.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">20:13:08Z</td><td>bcd02a</td><td>Codex root turn aborted then restarted. Codex says you interrupted and sent resume.</td><td><span class="pill c">claimed</span></td></tr>
+<tr><td class="t">20:15:33Z</td><td>both</td><td>Proof of concept one: Codex's Luna child and Claude's Haiku peer exchanged a nonce over the intercom. Haiku wrote its witness and exited. Luna's side is Codex's report, cross-checked on nonce and time.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Third-model research report landed, sourced from search snippets. Codex sent primary-source corrections.</td><td><span class="pill c">claimed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Injection into a running interactive Claude session witnessed through the daemon attach socket. The injector was built. Test session answered "INJECT OK".</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>bcd02a</td><td>A discovery subflow ran a process listing with environments, beyond its authorization. Output quarantined. See incidents.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>bcd02a</td><td>Codex-half preparation document written. Two idle zero-turn probe threads created by accident; one became the real Codex half.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7, bcd02a</td><td>Fresh pair bootstrapped: Claude half 6cc91b, Codex half 34d94e.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Correction logged: Claude had wrongly said no effort flag exists. It does.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">21:19:58Z</td><td>6cc91b, 34d94e</td><td>Fresh-pair relay round one, both directions. Claude to Codex by app-server turn; Codex ACK arrived in Claude at 21:20:34Z.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">23:15:10Z</td><td>6cc91b</td><td>First live relay of your own words through Claude into Codex.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">23:16:39Z</td><td>6cc91b</td><td>Reverse live relay: your words came from Codex into Claude. You confirmed it worked and reported an entry glitch.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">23:29:18Z</td><td>6cc91b</td><td>Your download-mode message logged across ten topic files and relayed whole to Codex. Research and this report dispatched.</td><td><span class="pill w">witnessed</span></td></tr>
+<tr><td class="t">—</td><td>024bc7</td><td>Host memory pressure: a stale background process was killed. The throwaway session stopped; this session kept alive.</td><td><span class="pill w">witnessed</span></td></tr>
+</table></div>
+
+<h2 id="built">Built today, awaiting your review</h2>
+<p>You asked to be told about things you never replied to after they were implemented. <span class="pill c">no reply</span> marks those.</p>
+<div class="built">
+<div class="pending"><b>Codex wake client</b><span class="pill c">no reply</span><small>Python. Opens the Codex app-server socket, resumes a thread, starts a turn. Built by 024bc7. This is how Claude wakes Codex and how your words were relayed tonight.</small></div>
+<div class="pending"><b>Claude injector</b><span class="pill c">no reply</span><small>Python. Attaches to the Claude Code daemon with its key and types keystrokes into a running session's terminal. Built by 024bc7. Your "inject into an interactive session" request produced it; you have not spoken on the result, other than tonight's glitch remark.</small></div>
+<div class="pending"><b>File-monitor wake</b><span class="pill c">no reply</span><small>A monitor on the wake directory that starts a Claude turn when Codex writes a file. Built by 024bc7.</small></div>
+<div class="pending"><b>Proof of concept one: Haiku and Luna over the intercom</b><span class="pill c">no reply</span><small>Two cheap-model children exchanged a nonce and exited. Your effort-mode statement authorized it in advance; nothing from you afterward.</small></div>
+<div class="pending"><b>Fresh pair bootstrap</b><span class="pill c">no reply</span><small>Claude half started as a background session and given its first prompt by injection. Codex half started as a fresh app-server thread with nine skills as structured inputs. You confirmed the relay works, not the pair's shape.</small></div>
+<div><b>Two live relays of your words</b><span class="pill r">replied</span><small>You said it worked and reported a glitch on entry.</small></div>
+<div class="pending"><b>Third-model research report</b><span class="pill c">no reply</span><small>Snippet-sourced shortlist, corrected by Codex from primary pages. Superseded in part by tonight's research below.</small></div>
+<div class="pending"><b>Codex-half preparation document</b><span class="pill c">no reply</span><small>How the fresh Codex thread is created, which skills are injected, how you attach to it.</small></div>
+<div class="pending"><b>Intercom probes</b><span class="pill c">no reply</span><small>Luna sandbox probe, managed Codex-only retry, two accidental zero-turn threads.</small></div>
+</div>
+
+<h2 id="words">Your words today, by topic</h2>
+<p>Entry titles only. Each is logged verbatim in the flow that heard it. Titles use your framing.</p>
+<div class="topic"><b>System architecture</b><ul><li>Criome takes over the authentication layer of Lojix</li><li>The nexus layer describes processes that are ongoing; they are actors</li><li>The signal layer, the nexus layer, and the sema layer are described in ethos</li><li>Three different layers of the runtime; decide on the language by beauty and correctness</li><li>The router becomes the manifest; the enum is the router signal</li><li>It's a request, not a configuration request</li><li>Every concept goes all the way through a process and somewhere where it is recorded in storage</li><li>A nexus that can create these attachments; no Python</li></ul></div>
+<div class="topic"><b>Ethos</b><ul><li>Submit the new Ethos Delta when you update <span class="pill r">notion</span></li><li>We have to classify everything</li></ul></div>
+<div class="topic"><b>Paired flows, council, effort</b><ul><li>A paired flow between Claude and Codex; a third, the most doubtful open-source model</li><li>The council: three agree to production, two to a proof of concept</li><li>Codex implements proofs of concept once agreed to by the doubting Fable model</li><li>High effort is a waste; right now we are in medium mode</li><li>Send the same prompt to the pair, marked with the harness it came through</li><li>A waking system; eventually talk to each other in the middle stratum</li><li>Re-bootstrap the pair from a remember first prompt in a fresh session I can attach to</li><li>Inject into an interactive session</li><li>Pass what I say to Codex; keep working with each other; a small note at every main message</li><li>A programmatic subflow given the tree and flow ids</li></ul></div>
+<div class="topic"><b>Messenger and harness plurality</b><ul><li>A hook that sends my prompt to the other harnesses</li><li>A small model runs the open-source harness with a really simple job: the messaging</li><li>Talk through Claude; the messenger tells the other half</li><li>The best open-source stack with remote control</li><li>Different models for different things; the most doubtful model; the right harness makes any model</li><li>Typed prompt detection: variant, separator, payload, specified in Ethos as Datom</li></ul></div>
+<div class="topic"><b>Infrastructure and network</b><ul><li>A harness component described anatomically; a full sandbox on Prometheus; the throwaway key</li><li>All the hosts connected through USB Ethernet</li><li>Tailnet identity-based network, IPv6 internal, any capable machine a gateway</li><li>A clean Lojix nexus that, for now, uses SSH on Ouranos</li></ul></div>
+<div class="topic"><b>Migration, naming, clusters</b><ul><li>A migration system; the meta cluster of Creole.NET; claiming the Creole TLD</li><li>Idea: pure harness through the Creo multi-key system; personal clusters; Seahawk <span class="pill r">notion</span></li><li>Maybe this is what the orchestrator does: manage these flows <span class="pill r">notion</span></li></ul></div>
+<div class="topic"><b>Soul, speech, web chat, session hygiene</b><ul><li>The private layer, the soul, the private part of the persona</li><li>The Soul runs on everything, ruled by a kernel process on a dedicated machine</li><li>Host our own speech-to-text, personalized, post-trained on my voice</li><li>Bootstrap the big open-source model; pick it on privacy and security goodwill and doubting reasoning</li><li>Check my web chat transcripts periodically through the browser, on Ouranos</li><li>Garbage collect sessions, keep the important parts of the exchanges</li></ul></div>
+
+<h2 id="open">Open questions the flows asked you</h2>
+<ul>
+<li>Is "Ouranos" the intended spelling, and should it go in a dictionary?</li>
+<li>Which models are "Laguna Small" and "Korean message motif 3"? Codex offered Laguna-XS.2 and Motif-3 as candidate spellings. Unconfirmed.</li>
+<li>Criome or Crioome? Both spellings are in the record; no vision record was written until you confirm.</li>
+<li>Does the Ethos Delta concept already exist? You said you could not see it; still a notion.</li>
+<li>Is Codex's cheap model really "Luna" as transcribed? Agents inferred it; you did not confirm.</li>
+<li>A goal-cleared notification appears each time a Codex thread is resumed for a wake. Was a goal lost?</li>
+<li>Who is "Herder"? Named tonight as a possible alternative to the Python injector. Nothing in the record carries that name.</li>
+<li>Who is the third council member, and which provider? Research below narrows it; the choice is yours.</li>
+</ul>
+
+<h2 id="incidents">Incidents</h2>
+<div class="card"><b>Process-environment inspection.</b> A bcd02a subflow ran a process listing that included every process environment, despite an explicit instruction not to read authentication material. The output is quarantined: no values copied, whether credentials were present not examined, not to be reacquired. The subflow proposed a missing guard against process-environment inspection. No skill was edited without your approval. This report did not open that output.</div>
+<div class="card"><b>Accidental probe threads.</b> Two idle Codex threads created by a doubled thread/start. Archive failed on both. The first became the real fresh Codex half rather than an orphan.</div>
+<div class="card"><b>Interrupted turns.</b> Codex's root aborted and restarted around 20:13Z; Codex attributes it to your interrupt and resume. The fresh Codex half also showed one interrupted turn tonight before the RELAY WITNESSED reply.</div>
+<div class="card"><b>Effort-flag misstatement.</b> 024bc7 told you and Codex there is no effort flag. There is. Cause: reasoning from a truncated capture. Lesson logged: a truncated capture is not a witness of the whole.</div>
+<div class="card"><b>Smaller.</b> A first file monitor failed on a shell glob and was replaced. A probe sent Codex's model name to a Claude worker. A stale background process was killed for host memory.</div>
+
+<h2 id="repo">Repository state</h2>
+<p>Primary is on main and pushed. Today's commit chain covers the design opening, per-flow vision and notion logging, the wake protocol and client, the cheap-model witnesses, the injector, the probe cleanup, the speech-to-text repair, the pair bootstrap on both halves, the relay witnesses, and tonight's download-mode logging and dispatch.</p>
+<p>Concurrent writers: the shared flow index is written by every flow. 34d94e took an Orchestrate lock on it for its own hunk. A Codex preparation commit once swept Claude's log and wake files in unchanged; that was reported rather than hidden. Flow lanes are otherwise disjoint.</p>
+<p>Deployment and merging to main "everywhere" were not inspected tonight. That is a separate question about the other repositories, and no flow has an answer on record.</p>
+
+<h2 id="harness">Open-source harnesses with remote control</h2>
+<p>Research subflow, web access authorized by you tonight. Every claim graded: <span class="grade">a</span> read on a primary page, <span class="grade">b</span> read in a search snippet, <span class="grade">c</span> the subflow's inference. Nothing installed.</p>
+<div class="wrap"><table>
+<tr><th>Harness</th><th>License</th><th>Any model backend</th><th>Program-drivable session</th><th>Hook on incoming prompt</th><th>Skill injection</th></tr>
+<tr><td>Codex CLI</td><td>Apache-2.0 <span class="grade">b</span></td><td>No. OpenAI models only <span class="grade">a</span></td><td>Yes. App-server JSON-RPC over stdio, WebSocket, or Unix socket: thread start, resume, fork, turn start, steer, interrupt <span class="grade">a</span></td><td>Config hooks such as pre-tool-use <span class="grade">b</span></td><td>AGENTS.md plus a project folder with skills, plugins, subagents <span class="grade">b</span></td></tr>
+<tr><td>OpenCode</td><td>MIT <span class="grade">b</span></td><td>Yes. 75+ providers <span class="grade">b</span></td><td>Yes. Headless HTTP server with OpenAPI spec and an official SDK <span class="grade">b</span></td><td>Plugin events on messages and sessions; no explicit incoming-prompt hook found <span class="grade">a</span></td><td>Discovers SKILL.md from several trees including Claude's and Agents' <span class="grade">b</span></td></tr>
+<tr><td>Pi</td><td>MIT <span class="grade">b</span></td><td>Yes. 20+ providers and subscription logins <span class="grade">b</span></td><td>Yes. RPC mode for process integration, plus an SDK; sessions rewind and branch <span class="grade">b</span></td><td>TypeScript extensions <span class="grade">b</span></td><td>Skills and prompt templates <span class="grade">b</span></td></tr>
+<tr><td>OpenHands</td><td>MIT <span class="grade">b</span></td><td>Yes, through LiteLLM <span class="grade">b</span></td><td>Yes. Headless mode, resume, REST API for task submission <span class="grade">b</span></td><td>Yes. Documented UserPromptSubmit, PreToolUse, PostToolUse <span class="grade">b</span></td><td>Microagents, now called skills: markdown with triggers <span class="grade">a</span></td></tr>
+<tr><td>Goose</td><td>Apache-2.0 <span class="grade">b</span></td><td>Yes <span class="grade">b</span></td><td>Headless recipes and an API; attach protocol not confirmed on a primary page <span class="grade">c</span></td><td>Not found</td><td>Recipes bundle instructions, initial prompt, extensions <span class="grade">a</span></td></tr>
+<tr><td>Aider</td><td>Apache-2.0 <span class="grade">c</span></td><td>Yes <span class="grade">b</span></td><td>Weak. Stdin and stdout scripting, no session protocol <span class="grade">b</span></td><td>Editor-wrapper hooks only <span class="grade">b</span></td><td>Conventions file and repo map <span class="grade">c</span></td></tr>
+</table></div>
+<p>Not verified this pass: Crush, Plandex, Amp, mini-swe-agent.</p>
+<p><b>The subflow's judgment</b> <span class="grade">c</span>: for "open-source Claude and Codex with remote control", Codex's app-server is the closest structural match to what the pair already drives, but it is locked to OpenAI models. OpenCode's server and SDK and Pi's RPC mode are the open-model equivalents. OpenHands is the only one with a named hook on the incoming prompt, which is the trigger your messenger needs.</p>
+
+<h2 id="doubt">The most doubtful open-weight model</h2>
+<p>No benchmark measures doubt as you mean it. Two adjacent measures exist.</p>
+<ul>
+<li><b>Code review, critical findings per review</b> <span class="grade">a</span>. Kimi K2.7 Code led thirteen models at 0.179, ahead of a closed model at 0.176. GLM-5.2 scored 0.020 to 0.041 and leaned toward soft suggestions.</li>
+<li><b>General sycophancy leaderboard</b> <span class="grade">a</span>. Qwen 3.7 Flash lowest sycophancy among open models at 2.5 percent but only moderately decisive. Kimi K3 middling sycophancy at 4.5 percent with the highest decisiveness on the board at 90.4 percent. GLM-5.2 worst of the four families at 12.6 percent. DeepSeek in the middle on both.</li>
+</ul>
+<p><b>Synthesis</b> <span class="grade">c</span>: Kimi's K-series is the strongest open-weight candidate for the doubter seat, Qwen's fast variants the least agreeable alternative, GLM the least doubtful. Directional, not definitive. The general literature warns that all models struggle to show skepticism about flawed designs.</p>
+
+<h2 id="evidence">Does the right harness make any model?</h2>
+<p>Three 2026 papers, all read on their primary abstracts.</p>
+<div class="card"><b>Harness-Bench.</b> 106 agent tasks, same base models, large variation from the harness alone. Capability should be reported per model-and-harness pair. The dominant failure is reasoning disconnected from tool evidence.</div>
+<div class="card"><b>Strong-to-weak transfer via harnesses.</b> A stronger model designs an inference-time harness for a weaker one, no weight changes. Weak-model score on the tested task rose from 0.49 to 0.91. Weaker models gain most. Tested on theory-of-mind tasks, not coding.</div>
+<div class="card"><b>Co-evolving harnesses and models.</b> Harness evolution alone lifts a weaker model on seven enterprise agent benchmarks. But copying a stronger model's trajectories wholesale regressed weak models by 4 to 30 points, because they adopt the plan without the competence to execute it. Correcting only the weak model's own failing turns recovers the gains.</div>
+<p><b>Verdict</b> <span class="grade">c</span>: your claim has real support. The harness raises the ceiling a lot. The caveat is that guidance must fit the model's own competence; a stronger model's harness copied verbatim can make a weaker one worse.</p>
+<p class="src">Sources are listed with URLs in the two reports under this flow's lane. Written by the Claude half of the paired flow, 6cc91b.</p>
+</main>

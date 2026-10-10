@@ -1,0 +1,33 @@
+{
+  "name": "field-terra",
+  "model": "gpt-5.6-terra",
+  "effort": "medium",
+  "role": "Field Low",
+  "predecessor": null,
+  "ancestor": null,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "field",
+    "codex-harness"
+  ],
+  "sourceManifest": [
+    "flows/8565e8/reports/refresh-handoff.md",
+    "flows/1cb440/reports/refresh-handoff.md"
+  ],
+  "fresh": true
+}

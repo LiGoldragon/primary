@@ -1,0 +1,52 @@
+# Remote cleanup gates — 2026-09-22
+
+Controller: Field High 6fb948; reservation 4639 retained. This receipt records observations and incomplete gates, not a successful refresh.
+
+## Superseding Psyche High ruling
+
+Psyche High 1b8ac0 explicitly waived the missing original process-incarnation attestation for p9 only, citing the living's `remoteControlAndCleanup.md` direction. This is a Psyche High ruling, **not a Field attestation of historical continuity**. The ruling accepts the already observed exact PID/start, untouched ctx 0% splash, and exact Herdr agent/pane binding as sufficient exclusive-control evidence for this operation. Recheck the current binding before input.
+
+The authorized next operation is the native Remote Control command, followed by an exact pane-read footer witness. Authentication requiring the living stops progress at that screen. Only after `/rc` is witnessed may the pinned three-part payload be delivered, followed by native readiness and HM binding receipts. The RC-only source request is superseded; no original attestation will be invented or supplied to bypass the old helper.
+
+The six diverging branches remain pending the living's answer. Earlier integration commissioning is withdrawn; its correction was submitted to Sol 753e69 through HM (submission only). No client reload, retirement, or cleanup is authorized before the living answers the close list. Each gate outcome is to be relayed to 1b8ac0. Earlier observations below remain historical evidence, not the current authorization boundary.
+
+## Selected Psyche High
+
+Post-waiver result: `/remote-control` was issued to the rechecked exact p9 process. Retained pane reads show Remote Control active and `/rc`; no fresh authentication was required. The complete pinned first prompt was submitted once. Controller directly compared its native transcript user message to the assembled prompt: 16,370 received bytes versus 16,371 sent bytes, identical except the final LF. No resend was needed. Successful native Bash `flow id` returned `836818`; an independent read verified the new HM registry binds 836818 to the exact p9 terminal/native UUID while 1b8ac0 still binds p6. These gates were submitted to 1b8ac0 through HM, not claimed read.
+
+The detailed redacted operation receipt is `flows/6fb948/fable-restart-20260922/p9-waiver-and-launch-receipt.md` at 88433663af19ee1368546e4d5d4c20444ffc15a2. Latest worker observation reports 29/31 expanded native skills; main-flow and refresh require a user-side loading path still being checked. Canonical title remains `Psyche High succession and refresh payload`; the title adapter refuses live correction without isolation proof. Full native readiness is not claimed. A Claude session attribution URL was published by the new session in a commit message; it is not established to be an authentication credential. No shared-history rewrite was performed, and the session was directed to redact further public receipts.
+
+The following pre-waiver observations are historical; their no-input and missing-RC statements have been superseded by the witnessed operations above.
+
+Living selected `messaging-build/wD:p9`, agent `psyche-fable-of-1b8ac0`. pC/f4b263 stays untouched; incumbent 1b8ac0 at p6 retains its route until living retirement.
+
+Implementation observer reported p9 terminal `term_65c138019438357`, PID 3784555, argv session `836818cc-83ab-4657-8b8f-1414f887559c`, model `claude-fable-5-1[1m]`, effort medium, cwd `/home/li/primary`. Exact pane inspection showed idle, interactive, ctx 0%, but no `/RC` footer. No payload or RC command was sent. A splash, absence of transcript, or matching UUID does not establish original process continuity.
+
+The existing empty-bootstrap helper requires an original managed-start exclusive-controller attestation that is missing. That attestation must not be reconstructed as fact. A supported Herdr UI actuator exists, but a current-incarnation RC-only guard with independent tests is still needed before its use here. Native source/skill readiness, own Flow ID, canonical title, HM binding, and external reachability therefore remain unproved.
+
+Payload order required: original High transcript line 1314, Addendum 1 line 2316, then Addendum 2 in `flows/1b8ac0/log.md` at bdd2850c. Exact ordered paths and hashes are recorded in `flows/6fb948/fable-restart-20260922/p9-rc-preflight.json`, committed at b9a4286e5211d42b895a5171eb6cd408580f93da. The RC-only guard implementation request was submitted to Sol 753e69 through HM; no read or implementation receipt yet. No old session replay is authorized.
+
+## Codex resource observations
+
+Independent observer at 19:56:19 UTC verified existing app-server PID 2087, Codex 0.153.4, soft/hard nofile 524288, 826 descriptors, active user service and live control socket. Journal at 19:34:52 UTC contains real skill-loader `Too many open files (os error 24)` failures. Living reports having raised the prior 1024 limit; the current higher value is independently observed. Successful native skill reload is not yet evidenced.
+
+The request for hourly sampling was submitted through exact HM route to existing observation owner 9ddcbc; this was submission, not a read receipt. A subsequent supplied observation records 19:59:01 UTC, PID 2087, start ticks 3022 stable before/after, 829 descriptors, soft/hard 524288, and hourly cadence through the existing observation service. Its reported process start is 2026-09-10T19:30:10Z. FD count is instantaneous, not quota. No app-server restart, client reload, or lock 3776 mutation was performed by this work. Sequential client reload remains pending a supported path and native receipt, with current High first.
+
+## Integration audit
+
+Correction: the delegated provisional ancestry result was wrong. Controller independently reran merge-base and is-ancestor for each head; the corrected table below supersedes the earlier claim that all content was landed. Read-only audit fetched origin and verified main at `c2e99c73406d79e11475ef7688a45142d5b7888d`.
+
+| Branch | Verified head | Relation to main |
+|---|---|---|
+| harness-visual-indicators-753e69 | 4435501401f54509b71b85e6d2ab58fb8c869a68 | Ancestor of main; no branch-only delta |
+| transitive-network-topology-753e69 | 8433b21930c650f91ab2d8f1c38b311ab862c30c | Ancestor of main; no branch-only delta |
+| field-astra-refresh-03e825-753e69 | f213938d6500180086079701ea46e559fe6a005b | Diverged; own refresh/receipt deltas pending |
+| field-high-6fb948-fable-auth-retry | d1e11bf4fb2a5ae1504c9b47e705f74a9df1e199 | Diverged; two launcher source/test paths pending |
+| field-flow-fallback-753e69 | 4c0469d4fd7ea4043da106f1372e413552336b5f | Diverged; two preflight source/test paths pending |
+| field-flow-preflight-753e69 | 5579e9cb71edb7e2b1634e410c6d541702d2006e | Diverged; preflight source/test/report deltas pending |
+| field/curriculum-testing-continuity-6db4fe | f55f01181f661882d407b12c37101f96f2a84691 | Diverged; continuity report pending |
+| field/world-6db4fe | b57a43de02c6b3554d94f9b18d86a1a7eda50c7f | Diverged; 16 report/data paths pending |
+
+Curriculum authored commit `cac68c107a0cbff865616134b07758822666c976` adds `skills/testing-transitive-network-topology.md`. Auditor compared its bytes with Primary `.agents` and `.claude` selected skill projections: identical. This proves those projected bytes, not native injection or runtime acceptance. Independent candidate test supplied by the user remains ea8518d8c48ecb18b69fc40f50faabfb551d6db8, 7/7 including sentinel exclusion.
+
+The six diverged branches still require Sol byte/history deduplication and integration, Terra exact-revision tests, and Luna documentation/commit receipts. No branch was merged by this pass. No routes, seats, protected reservations, or worker relays were withdrawn. Current Prometheus Internet remains unproved under the latest network handoff; earlier success must not substitute for current evidence.

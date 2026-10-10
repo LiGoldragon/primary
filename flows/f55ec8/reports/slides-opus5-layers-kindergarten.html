@@ -1,0 +1,643 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Sun and Four Friends</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#FFF1DC; --card:#FFFCF5; --ink:#3D2B1E; --mute:#8B6B52;
+  --edge:#E7CFAE; --edge-2:#D8B98F;
+  --sun:#F4B63F; --sun-2:#E8A027;
+  --owl:#9A6BA8; --owl-2:#7E5490;
+  --beaver:#C9803C; --beaver-2:#A6632A;
+  --rabbit:#E27A6E; --rabbit-2:#C55C50;
+  --hog:#7C9C56; --hog-2:#5F7F3C;
+  --pale:#FFF8EC; --dark:#3D2B1E; --sky:#9CC4D8;
+  --round:"Chalkboard SE","Comic Sans MS","Marker Felt","Trebuchet MS",ui-rounded,system-ui,sans-serif;
+  --body:ui-rounded,"Segoe UI Variable Display","Trebuchet MS",ui-sans-serif,system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#241A13; --card:#33251B; --ink:#FCEDDA; --mute:#C4A68D;
+    --edge:#4E3A2A; --edge-2:#6A4F39;
+    --sun:#FFC85A; --sun-2:#F0A93A;
+    --owl:#B98AC7; --owl-2:#9C6BAC;
+    --beaver:#E09A55; --beaver-2:#BE7739;
+    --rabbit:#F0958A; --rabbit-2:#D2716A;
+    --hog:#9DBE72; --hog-2:#7F9E56;
+    --pale:#FFF6E8; --dark:#2A1D14; --sky:#7FA9BE;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#241A13; --card:#33251B; --ink:#FCEDDA; --mute:#C4A68D;
+  --edge:#4E3A2A; --edge-2:#6A4F39;
+  --sun:#FFC85A; --sun-2:#F0A93A;
+  --owl:#B98AC7; --owl-2:#9C6BAC;
+  --beaver:#E09A55; --beaver-2:#BE7739;
+  --rabbit:#F0958A; --rabbit-2:#D2716A;
+  --hog:#9DBE72; --hog-2:#7F9E56;
+  --pale:#FFF6E8; --dark:#2A1D14; --sky:#7FA9BE;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+
+.deck{position:relative;height:100dvh;min-height:440px}
+.slide{position:absolute;inset:0;display:none;overflow-y:auto;overflow-x:hidden;
+  padding:clamp(14px,2.4vw,30px) clamp(14px,3vw,40px) clamp(78px,10vh,98px)}
+.slide.is-on{display:block;animation:pop .34s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.is-on{animation:none}}
+
+.wrap{max-width:1120px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;
+  justify-content:center;gap:clamp(12px,2vh,22px)}
+
+.tag{align-self:flex-start;background:var(--sun);color:var(--dark);
+  font-family:var(--round);font-size:clamp(.72rem,.68rem + .2vw,.85rem);
+  padding:.3em 1em;border-radius:999px;letter-spacing:.02em}
+h2{margin:0;font-family:var(--round);font-weight:700;line-height:1.16;text-wrap:balance;
+  font-size:clamp(1.25rem,1rem + 1.5vw,2.15rem);max-width:24ch}
+.say{margin:0;font-family:var(--round);font-size:clamp(1.02rem,.92rem + .8vw,1.5rem);
+  line-height:1.4;max-width:30ch;color:var(--ink)}
+.whisper{margin:0;font-size:clamp(.78rem,.74rem + .18vw,.88rem);color:var(--mute);
+  line-height:1.5;max-width:52ch}
+
+figure.pic{margin:0;background:var(--card);border:3px solid var(--edge);border-radius:28px;
+  padding:clamp(10px,1.6vw,20px);display:flex;flex-direction:column;gap:8px}
+figure.pic svg{display:block;width:100%;height:auto;max-height:min(62vh,540px)}
+figcaption{font-family:var(--round);font-size:clamp(.72rem,.7rem + .15vw,.82rem);
+  color:var(--mute);line-height:1.5;text-align:center}
+
+.two{display:grid;grid-template-columns:minmax(0,26ch) minmax(0,1fr);
+  gap:clamp(16px,3vw,40px);align-items:center}
+.two .words{display:flex;flex-direction:column;gap:clamp(10px,1.6vh,18px);min-width:0}
+
+.slide--cover .wrap{align-items:center;text-align:center}
+.slide--cover h1{margin:0;font-family:var(--round);font-weight:700;line-height:1.08;
+  font-size:clamp(1.8rem,1.2rem + 3.4vw,3.4rem);text-wrap:balance}
+.slide--cover .say{max-width:34ch;margin-inline:auto}
+.slide--cover figure.pic{width:100%}
+.slide--cover figure.pic svg{max-height:min(44vh,380px)}
+
+.hud{position:fixed;left:0;right:0;bottom:0;height:clamp(60px,8vh,74px);
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:0 clamp(12px,3vw,40px);background:color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter:blur(8px);border-top:3px solid var(--edge);z-index:5}
+.hud button{font:inherit;font-family:var(--round);cursor:pointer;background:var(--sun);
+  color:var(--dark);border:3px solid var(--sun-2);width:52px;height:42px;border-radius:999px;
+  display:grid;place-items:center;font-size:1.15rem;line-height:1;
+  transition:transform .14s ease}
+.hud button:hover:not(:disabled){transform:translateY(-2px)}
+.hud button:disabled{opacity:.35;cursor:default}
+.hud button:focus-visible{outline:3px solid var(--owl);outline-offset:3px}
+.ticks{display:flex;gap:9px}
+.tick{width:16px;height:16px;padding:0;border:3px solid var(--edge-2);background:var(--card);
+  border-radius:999px;cursor:pointer}
+.tick[aria-current="true"]{background:var(--rabbit);border-color:var(--rabbit-2)}
+.tick:focus-visible{outline:3px solid var(--owl);outline-offset:3px}
+.count{font-family:var(--round);font-size:.85rem;color:var(--mute);min-width:5ch;text-align:center}
+
+svg text{font-family:var(--round)}
+.t-name{font-size:19px;fill:var(--ink)}
+.t-line{font-size:14px;fill:var(--mute)}
+.t-small{font-size:12.5px;fill:var(--mute)}
+.t-bub{font-size:16px;fill:var(--dark)}
+.t-num{font-size:15px;fill:var(--mute)}
+
+@media (max-width:860px){
+  body{overflow:auto}
+  .deck{height:auto}
+  .slide{position:static;padding-bottom:110px}
+  .slide:not(.is-on){display:none}
+  .wrap{min-height:0;justify-content:flex-start;padding-top:6px}
+  .two{grid-template-columns:minmax(0,1fr)}
+  figure.pic svg{max-height:none}
+  .say,h2,.whisper{max-width:none}
+}
+</style>
+
+<main class="deck">
+
+<section class="slide slide--cover is-on" id="s0" aria-label="Cover">
+  <div class="wrap">
+    <h1>The Sun and the Four Friends</h1>
+    <p class="say">A sun and four friends live together. This is how they work.</p>
+    <figure class="pic">
+      <svg viewBox="0 0 640 300" role="img" aria-label="A smiling sun above four friends: an owl, a beaver, a rabbit and a hedgehog, standing in a row">
+        <g transform="translate(320,70) scale(0.8)">
+          <g>
+            <line x1="0" y1="-62" x2="0" y2="-76" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="44" y1="-44" x2="54" y2="-54" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="62" y1="0" x2="76" y2="0" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="44" y1="44" x2="54" y2="54" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="0" y1="62" x2="0" y2="76" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="-44" y1="44" x2="-54" y2="54" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="-62" y1="0" x2="-76" y2="0" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <line x1="-44" y1="-44" x2="-54" y2="-54" stroke="var(--sun-2)" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="48" fill="var(--sun)"/>
+            <circle cx="-16" cy="-8" r="5" fill="var(--dark)"/>
+            <circle cx="16" cy="-8" r="5" fill="var(--dark)"/>
+            <path d="M-18 12 Q0 30 18 12" stroke="var(--dark)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+        <text x="320" y="146" class="t-line" text-anchor="middle">the living</text>
+
+        <g transform="translate(96,222) scale(0.62)">
+          <ellipse cx="0" cy="0" rx="38" ry="42" fill="var(--owl)"/>
+          <polygon points="-30,-30 -16,-48 -6,-28" fill="var(--owl)"/>
+          <polygon points="30,-30 16,-48 6,-28" fill="var(--owl)"/>
+          <circle cx="-15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="-15" cy="-8" r="6" fill="var(--dark)"/>
+          <circle cx="15" cy="-8" r="6" fill="var(--dark)"/>
+          <polygon points="0,2 -7,11 7,11" fill="var(--sun-2)"/>
+          <path d="M-22 24 Q0 36 22 24" stroke="var(--owl-2)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="96" y="272" class="t-name" text-anchor="middle">Owl</text>
+
+        <g transform="translate(245,222) scale(0.62)">
+          <ellipse cx="42" cy="18" rx="18" ry="11" fill="var(--beaver-2)" transform="rotate(25 42 18)"/>
+          <ellipse cx="0" cy="0" rx="36" ry="40" fill="var(--beaver)"/>
+          <circle cx="-26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <circle cx="26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <ellipse cx="0" cy="12" rx="21" ry="16" fill="var(--pale)"/>
+          <circle cx="-14" cy="-10" r="5" fill="var(--dark)"/>
+          <circle cx="14" cy="-10" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="4" rx="6" ry="4" fill="var(--dark)"/>
+          <rect x="-7" y="12" width="14" height="13" rx="3" fill="var(--pale)" stroke="var(--dark)" stroke-width="2"/>
+        </g>
+        <text x="245" y="272" class="t-name" text-anchor="middle">Beaver</text>
+
+        <g transform="translate(394,222) scale(0.62)">
+          <ellipse cx="-14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="-14" cy="-46" rx="4" ry="18" fill="var(--rabbit-2)"/>
+          <ellipse cx="14" cy="-46" rx="4" ry="18" fill="var(--rabbit-2)"/>
+          <ellipse cx="0" cy="0" rx="34" ry="36" fill="var(--rabbit)"/>
+          <circle cx="-12" cy="-6" r="5" fill="var(--dark)"/>
+          <circle cx="12" cy="-6" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="8" rx="5" ry="4" fill="var(--rabbit-2)"/>
+          <path d="M-12 18 Q0 27 12 18" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="394" y="272" class="t-name" text-anchor="middle">Rabbit</text>
+
+        <g transform="translate(546,222) scale(0.62)">
+          <polygon points="-34,0 -47,-10 -31,-14 -39,-28 -23,-25 -24,-42 -10,-32 -5,-48 4,-34 15,-46 17,-29 32,-36 28,-20 44,-20 33,-7 44,2 34,10 0,16 -34,8" fill="var(--hog-2)"/>
+          <ellipse cx="0" cy="4" rx="38" ry="24" fill="var(--hog)"/>
+          <ellipse cx="-32" cy="6" rx="16" ry="11" fill="var(--pale)"/>
+          <circle cx="-46" cy="4" r="4.5" fill="var(--dark)"/>
+          <circle cx="-20" cy="-4" r="4.5" fill="var(--dark)"/>
+          <path d="M-40 14 Q-32 19 -24 14" stroke="var(--dark)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="546" y="272" class="t-name" text-anchor="middle">Hedgehog</text>
+      </svg>
+      <figcaption>Owl thinks. Beaver builds. Rabbit listens and talks. Hedgehog keeps the noise out.</figcaption>
+    </figure>
+    <p class="whisper">The same four layers as the big book: Owl is the primary, Beaver the secondary, Rabbit the tertiary, Hedgehog the quaternary &mdash; and the sun is the living.</p>
+  </div>
+</section>
+
+<section class="slide" id="s1" aria-label="One mind, four friends">
+  <div class="wrap"><div class="two">
+    <div class="words">
+      <span class="tag">1 &middot; who is who</span>
+      <h2>One mind, four friends</h2>
+      <p class="say">The friend at the top thinks slowly. The friend at the bottom is quick. Each one has two helpers.</p>
+      <p class="whisper">Every layer is a pair: a Claude half and a Codex half, and the same message reaches both.</p>
+    </div>
+    <figure class="pic">
+      <svg viewBox="0 0 640 540" role="img" aria-label="A ladder of four friends under the sun: Owl thinks slowly, Beaver builds and tries things out, Rabbit listens and talks right now, Hedgehog keeps noise out before anyone hears it. Each has two helpers.">
+        <g transform="translate(320,58) scale(0.62)">
+          <line x1="0" y1="-62" x2="0" y2="-78" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="44" y1="-44" x2="56" y2="-56" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="62" y1="0" x2="78" y2="0" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="-62" y1="0" x2="-78" y2="0" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="-44" y1="-44" x2="-56" y2="-56" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="48" fill="var(--sun)"/>
+          <circle cx="-16" cy="-8" r="5" fill="var(--dark)"/>
+          <circle cx="16" cy="-8" r="5" fill="var(--dark)"/>
+          <path d="M-18 12 Q0 30 18 12" stroke="var(--dark)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="395" y="64" class="t-line">the sun &mdash; the living</text>
+
+        <line x1="90" y1="100" x2="90" y2="486" stroke="var(--edge)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="90" y1="100" x2="300" y2="100" stroke="var(--edge)" stroke-width="5" stroke-linecap="round"/>
+
+        <g transform="translate(90,150) scale(0.52)">
+          <ellipse cx="0" cy="0" rx="38" ry="42" fill="var(--owl)"/>
+          <polygon points="-30,-30 -16,-48 -6,-28" fill="var(--owl)"/>
+          <polygon points="30,-30 16,-48 6,-28" fill="var(--owl)"/>
+          <circle cx="-15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="-15" cy="-8" r="6" fill="var(--dark)"/>
+          <circle cx="15" cy="-8" r="6" fill="var(--dark)"/>
+          <polygon points="0,2 -7,11 7,11" fill="var(--sun-2)"/>
+        </g>
+        <rect x="150" y="112" width="470" height="78" rx="22" fill="var(--bg)" stroke="var(--owl)" stroke-width="3"/>
+        <text x="172" y="143" class="t-name">Owl thinks slowly</text>
+        <text x="172" y="168" class="t-line">draws the plan, makes the first little one</text>
+        <circle cx="574" cy="132" r="13" fill="var(--owl)"/>
+        <circle cx="604" cy="132" r="13" fill="var(--owl)"/>
+        <text x="589" y="176" class="t-small" text-anchor="middle">two helpers</text>
+
+        <g transform="translate(90,262) scale(0.52)">
+          <ellipse cx="42" cy="18" rx="18" ry="11" fill="var(--beaver-2)" transform="rotate(25 42 18)"/>
+          <ellipse cx="0" cy="0" rx="36" ry="40" fill="var(--beaver)"/>
+          <circle cx="-26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <circle cx="26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <ellipse cx="0" cy="12" rx="21" ry="16" fill="var(--pale)"/>
+          <circle cx="-14" cy="-10" r="5" fill="var(--dark)"/>
+          <circle cx="14" cy="-10" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="4" rx="6" ry="4" fill="var(--dark)"/>
+          <rect x="-7" y="12" width="14" height="13" rx="3" fill="var(--pale)" stroke="var(--dark)" stroke-width="2"/>
+        </g>
+        <rect x="150" y="224" width="470" height="78" rx="22" fill="var(--bg)" stroke="var(--beaver)" stroke-width="3"/>
+        <text x="172" y="255" class="t-name">Beaver builds it for real</text>
+        <text x="172" y="280" class="t-line">puts it out in the world and tries it there</text>
+        <circle cx="574" cy="244" r="13" fill="var(--beaver)"/>
+        <circle cx="604" cy="244" r="13" fill="var(--beaver)"/>
+        <text x="589" y="288" class="t-small" text-anchor="middle">two helpers</text>
+
+        <g transform="translate(90,374) scale(0.52)">
+          <ellipse cx="-14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="-14" cy="-46" rx="4" ry="18" fill="var(--rabbit-2)"/>
+          <ellipse cx="14" cy="-46" rx="4" ry="18" fill="var(--rabbit-2)"/>
+          <ellipse cx="0" cy="0" rx="34" ry="36" fill="var(--rabbit)"/>
+          <circle cx="-12" cy="-6" r="5" fill="var(--dark)"/>
+          <circle cx="12" cy="-6" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="8" rx="5" ry="4" fill="var(--rabbit-2)"/>
+          <path d="M-12 18 Q0 27 12 18" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <rect x="150" y="336" width="470" height="78" rx="22" fill="var(--bg)" stroke="var(--rabbit)" stroke-width="3"/>
+        <text x="172" y="367" class="t-name">Rabbit listens and talks</text>
+        <text x="172" y="392" class="t-line">stays awake, hears the words, answers fast</text>
+        <circle cx="574" cy="356" r="13" fill="var(--rabbit)"/>
+        <circle cx="604" cy="356" r="13" fill="var(--rabbit)"/>
+        <text x="589" y="400" class="t-small" text-anchor="middle">two helpers</text>
+
+        <g transform="translate(90,486) scale(0.52)">
+          <polygon points="-34,0 -47,-10 -31,-14 -39,-28 -23,-25 -24,-42 -10,-32 -5,-48 4,-34 15,-46 17,-29 32,-36 28,-20 44,-20 33,-7 44,2 34,10 0,16 -34,8" fill="var(--hog-2)"/>
+          <ellipse cx="0" cy="4" rx="38" ry="24" fill="var(--hog)"/>
+          <ellipse cx="-32" cy="6" rx="16" ry="11" fill="var(--pale)"/>
+          <circle cx="-46" cy="4" r="4.5" fill="var(--dark)"/>
+          <circle cx="-20" cy="-4" r="4.5" fill="var(--dark)"/>
+        </g>
+        <rect x="150" y="448" width="470" height="78" rx="22" fill="var(--bg)" stroke="var(--hog)" stroke-width="3"/>
+        <text x="172" y="479" class="t-name">Hedgehog keeps noise out</text>
+        <text x="172" y="504" class="t-line">before anyone hears it &mdash; like blinking</text>
+        <circle cx="574" cy="468" r="13" fill="var(--hog)"/>
+        <circle cx="604" cy="468" r="13" fill="var(--hog)"/>
+        <text x="589" y="512" class="t-small" text-anchor="middle">two helpers</text>
+      </svg>
+      <figcaption>Slow at the top. Quick at the bottom. Everybody has two helpers.</figcaption>
+    </figure>
+  </div></div>
+</section>
+
+<section class="slide" id="s2" aria-label="Asking the friend above you">
+  <div class="wrap"><div class="two">
+    <div class="words">
+      <span class="tag">2 &middot; the staircase</span>
+      <h2>You ask the friend just above you</h2>
+      <p class="say">If you want to do something, you ask the friend one step above &mdash; and sometimes they say: try again.</p>
+      <p class="whisper">Nobody skips a step. A wish must pass Rabbit, then Beaver, then Owl, before it ever reaches the sun.</p>
+    </div>
+    <figure class="pic">
+      <svg viewBox="0 0 640 540" role="img" aria-label="A four panel comic: Hedgehog asks Rabbit, Rabbit says try again, Hedgehog brings a better idea and it passes up through Beaver, and Owl carries it to the sun">
+        <rect x="14" y="14" width="298" height="248" rx="22" fill="var(--bg)" stroke="var(--edge-2)" stroke-width="3"/>
+        <text x="34" y="42" class="t-num">1</text>
+        <g transform="translate(78,178) scale(0.5)">
+          <polygon points="-34,0 -47,-10 -31,-14 -39,-28 -23,-25 -24,-42 -10,-32 -5,-48 4,-34 15,-46 17,-29 32,-36 28,-20 44,-20 33,-7 44,2 34,10 0,16 -34,8" fill="var(--hog-2)"/>
+          <ellipse cx="0" cy="4" rx="38" ry="24" fill="var(--hog)"/>
+          <ellipse cx="32" cy="6" rx="16" ry="11" fill="var(--pale)"/>
+          <circle cx="46" cy="4" r="4.5" fill="var(--dark)"/>
+          <circle cx="20" cy="-4" r="4.5" fill="var(--dark)"/>
+        </g>
+        <g transform="translate(236,172) scale(0.46)">
+          <ellipse cx="-14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="0" cy="0" rx="34" ry="36" fill="var(--rabbit)"/>
+          <circle cx="-12" cy="-6" r="5" fill="var(--dark)"/>
+          <circle cx="12" cy="-6" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="8" rx="5" ry="4" fill="var(--rabbit-2)"/>
+        </g>
+        <rect x="56" y="62" width="132" height="46" rx="18" fill="var(--pale)" stroke="var(--hog-2)" stroke-width="3"/>
+        <polygon points="86,106 78,128 104,108" fill="var(--pale)" stroke="var(--hog-2)" stroke-width="3"/>
+        <text x="122" y="92" class="t-bub" text-anchor="middle">Can we?</text>
+        <text x="163" y="242" class="t-small" text-anchor="middle">Hedgehog asks Rabbit</text>
+
+        <rect x="328" y="14" width="298" height="248" rx="22" fill="var(--bg)" stroke="var(--edge-2)" stroke-width="3"/>
+        <text x="348" y="42" class="t-num">2</text>
+        <g transform="translate(392,178) scale(0.5)">
+          <polygon points="-34,0 -47,-10 -31,-14 -39,-28 -23,-25 -24,-42 -10,-32 -5,-48 4,-34 15,-46 17,-29 32,-36 28,-20 44,-20 33,-7 44,2 34,10 0,16 -34,8" fill="var(--hog-2)"/>
+          <ellipse cx="0" cy="4" rx="38" ry="24" fill="var(--hog)"/>
+          <ellipse cx="-32" cy="6" rx="16" ry="11" fill="var(--pale)"/>
+          <circle cx="-46" cy="4" r="4.5" fill="var(--dark)"/>
+          <circle cx="-20" cy="-4" r="4.5" fill="var(--dark)"/>
+          <path d="M-42 16 Q-32 10 -22 16" stroke="var(--dark)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(552,172) scale(0.46)">
+          <ellipse cx="-14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="0" cy="0" rx="34" ry="36" fill="var(--rabbit)"/>
+          <circle cx="-12" cy="-6" r="5" fill="var(--dark)"/>
+          <circle cx="12" cy="-6" r="5" fill="var(--dark)"/>
+          <ellipse cx="0" cy="8" rx="5" ry="4" fill="var(--rabbit-2)"/>
+          <path d="M-12 22 Q0 14 12 22" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <rect x="414" y="62" width="168" height="46" rx="18" fill="var(--pale)" stroke="var(--rabbit-2)" stroke-width="3"/>
+        <polygon points="546,106 560,128 528,108" fill="var(--pale)" stroke="var(--rabbit-2)" stroke-width="3"/>
+        <text x="498" y="92" class="t-bub" text-anchor="middle">Try again!</text>
+        <text x="477" y="242" class="t-small" text-anchor="middle">so Hedgehog goes back to work</text>
+
+        <rect x="14" y="278" width="298" height="248" rx="22" fill="var(--bg)" stroke="var(--edge-2)" stroke-width="3"/>
+        <text x="34" y="306" class="t-num">3</text>
+        <g transform="translate(70,442) scale(0.42)">
+          <polygon points="-34,0 -47,-10 -31,-14 -39,-28 -23,-25 -24,-42 -10,-32 -5,-48 4,-34 15,-46 17,-29 32,-36 28,-20 44,-20 33,-7 44,2 34,10 0,16 -34,8" fill="var(--hog-2)"/>
+          <ellipse cx="0" cy="4" rx="38" ry="24" fill="var(--hog)"/>
+          <ellipse cx="32" cy="6" rx="16" ry="11" fill="var(--pale)"/>
+          <circle cx="46" cy="4" r="4.5" fill="var(--dark)"/>
+          <circle cx="20" cy="-4" r="4.5" fill="var(--dark)"/>
+        </g>
+        <g transform="translate(164,436) scale(0.4)">
+          <ellipse cx="-14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="14" cy="-46" rx="9" ry="27" fill="var(--rabbit)"/>
+          <ellipse cx="0" cy="0" rx="34" ry="36" fill="var(--rabbit)"/>
+          <circle cx="-12" cy="-6" r="5" fill="var(--dark)"/>
+          <circle cx="12" cy="-6" r="5" fill="var(--dark)"/>
+          <path d="M-12 18 Q0 27 12 18" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(260,432) scale(0.42)">
+          <ellipse cx="42" cy="18" rx="18" ry="11" fill="var(--beaver-2)" transform="rotate(25 42 18)"/>
+          <ellipse cx="0" cy="0" rx="36" ry="40" fill="var(--beaver)"/>
+          <circle cx="-26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <circle cx="26" cy="-32" r="9" fill="var(--beaver-2)"/>
+          <ellipse cx="0" cy="12" rx="21" ry="16" fill="var(--pale)"/>
+          <circle cx="-14" cy="-10" r="5" fill="var(--dark)"/>
+          <circle cx="14" cy="-10" r="5" fill="var(--dark)"/>
+          <rect x="-7" y="12" width="14" height="13" rx="3" fill="var(--pale)" stroke="var(--dark)" stroke-width="2"/>
+        </g>
+        <rect x="96" y="326" width="150" height="46" rx="18" fill="var(--pale)" stroke="var(--rabbit-2)" stroke-width="3"/>
+        <polygon points="150,370 142,392 168,372" fill="var(--pale)" stroke="var(--rabbit-2)" stroke-width="3"/>
+        <text x="171" y="356" class="t-bub" text-anchor="middle">Yes! Go up.</text>
+        <text x="163" y="506" class="t-small" text-anchor="middle">a better idea passes to Beaver</text>
+
+        <rect x="328" y="278" width="298" height="248" rx="22" fill="var(--bg)" stroke="var(--edge-2)" stroke-width="3"/>
+        <text x="348" y="306" class="t-num">4</text>
+        <g transform="translate(418,446) scale(0.46)">
+          <ellipse cx="0" cy="0" rx="38" ry="42" fill="var(--owl)"/>
+          <polygon points="-30,-30 -16,-48 -6,-28" fill="var(--owl)"/>
+          <polygon points="30,-30 16,-48 6,-28" fill="var(--owl)"/>
+          <circle cx="-15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="15" cy="-8" r="14" fill="var(--pale)"/>
+          <circle cx="-15" cy="-8" r="6" fill="var(--dark)"/>
+          <circle cx="15" cy="-8" r="6" fill="var(--dark)"/>
+          <polygon points="0,2 -7,11 7,11" fill="var(--sun-2)"/>
+        </g>
+        <g transform="translate(548,376) scale(0.52)">
+          <line x1="0" y1="-62" x2="0" y2="-76" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="44" y1="-44" x2="56" y2="-56" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="-44" y1="-44" x2="-56" y2="-56" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="62" y1="0" x2="78" y2="0" stroke="var(--sun-2)" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="46" fill="var(--sun)"/>
+          <circle cx="-15" cy="-8" r="5" fill="var(--dark)"/>
+          <circle cx="15" cy="-8" r="5" fill="var(--dark)"/>
+          <path d="M-17 12 Q0 29 17 12" stroke="var(--dark)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M452 424 Q488 396 512 400" stroke="var(--owl-2)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <rect x="352" y="326" width="176" height="46" rx="18" fill="var(--pale)" stroke="var(--owl-2)" stroke-width="3"/>
+        <polygon points="396,370 390,394 414,372" fill="var(--pale)" stroke="var(--owl-2)" stroke-width="3"/>
+        <text x="440" y="356" class="t-bub" text-anchor="middle">Here you are.</text>
+        <text x="477" y="506" class="t-small" text-anchor="middle">only then does the sun hear it</text>
+      </svg>
+      <figcaption>Ask &rarr; try again &rarr; ask better &rarr; up it goes. One step at a time.</figcaption>
+    </figure>
+  </div></div>
+</section>
+
+<section class="slide" id="s3" aria-label="Thinkers and doers">
+  <div class="wrap"><div class="two">
+    <div class="words">
+      <span class="tag">3 &middot; two teams</span>
+      <h2>Some friends think. Some friends do.</h2>
+      <p class="say">One team thinks up what to do, the other team does it &mdash; and one chair is still empty.</p>
+      <p class="whisper">Thinking side: Fable, the older Opus, and Astra, who says &ldquo;let&rsquo;s go!&rdquo; first and looks after. The empty chair waits for an open-source friend, large and wise. Doing side: the newer Opus, Sol, Terra and Luna.</p>
+    </div>
+    <figure class="pic">
+      <svg viewBox="0 0 640 430" role="img" aria-label="Two teams of round friends: the thinking team is Fable, the older Opus and Astra with one empty dashed chair marked with a question mark; the doing team is the newer Opus, Sol, Terra and Luna">
+        <rect x="14" y="14" width="298" height="298" rx="26" fill="var(--bg)" stroke="var(--owl)" stroke-width="3"/>
+        <text x="163" y="46" class="t-name" text-anchor="middle">We think it up</text>
+
+        <g transform="translate(88,110)">
+          <circle cx="0" cy="0" r="30" fill="var(--owl)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 20 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="88" y="158" class="t-line" text-anchor="middle">Fable</text>
+        <g transform="translate(232,110)">
+          <circle cx="0" cy="0" r="30" fill="var(--owl-2)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 18 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M-22 -22 Q0 -34 22 -22" stroke="var(--pale)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="232" y="158" class="t-line" text-anchor="middle">wise Opus</text>
+        <g transform="translate(88,222)">
+          <circle cx="0" cy="0" r="30" fill="var(--rabbit-2)"/>
+          <circle cx="-10" cy="-6" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-6" r="4.5" fill="var(--dark)"/>
+          <path d="M-12 8 Q0 22 12 8" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <polygon points="0,-42 6,-30 -6,-30" fill="var(--sun)"/>
+        </g>
+        <text x="88" y="270" class="t-line" text-anchor="middle">Astra</text>
+        <g transform="translate(232,222)">
+          <circle cx="0" cy="0" r="30" fill="none" stroke="var(--mute)" stroke-width="3" stroke-dasharray="8 7"/>
+          <text x="0" y="9" style="font-size:26px;fill:var(--mute)" text-anchor="middle">?</text>
+        </g>
+        <text x="232" y="270" class="t-line" text-anchor="middle">empty chair</text>
+        <text x="163" y="294" class="t-small" text-anchor="middle">someone big and wise is coming</text>
+
+        <rect x="328" y="14" width="298" height="298" rx="26" fill="var(--bg)" stroke="var(--beaver)" stroke-width="3"/>
+        <text x="477" y="46" class="t-name" text-anchor="middle">We get it done</text>
+        <g transform="translate(402,110)">
+          <circle cx="0" cy="0" r="30" fill="var(--beaver)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 19 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="402" y="158" class="t-line" text-anchor="middle">quick Opus</text>
+        <g transform="translate(546,110)">
+          <circle cx="0" cy="0" r="30" fill="var(--sun)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 19 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="546" y="158" class="t-line" text-anchor="middle">Sol</text>
+        <g transform="translate(402,222)">
+          <circle cx="0" cy="0" r="30" fill="var(--hog)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 19 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="402" y="270" class="t-line" text-anchor="middle">Terra</text>
+        <g transform="translate(546,222)">
+          <circle cx="0" cy="0" r="30" fill="var(--sky)"/>
+          <circle cx="-10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <circle cx="10" cy="-5" r="4.5" fill="var(--dark)"/>
+          <path d="M-11 10 Q0 19 11 10" stroke="var(--dark)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="546" y="270" class="t-line" text-anchor="middle">Luna</text>
+        <text x="477" y="294" class="t-small" text-anchor="middle">useful hands, every day</text>
+
+        <path d="M130 344 L510 344" stroke="var(--owl)" stroke-width="4" stroke-linecap="round"/>
+        <polygon points="510,336 528,344 510,352" fill="var(--owl)"/>
+        <text x="320" y="334" class="t-line" text-anchor="middle">we say what to do</text>
+        <text x="320" y="382" class="t-small" text-anchor="middle">and when there is time to spare, Astra asks the Opus friends to make something new</text>
+        <text x="320" y="410" class="t-small" text-anchor="middle">everybody does more than one job</text>
+      </svg>
+      <figcaption>Four who think, four who do &mdash; and one chair nobody sits in yet.</figcaption>
+    </figure>
+  </div></div>
+</section>
+
+<section class="slide" id="s4" aria-label="The year goes round">
+  <div class="wrap"><div class="two">
+    <div class="words">
+      <span class="tag">4 &middot; the year</span>
+      <h2>Round and round the year goes</h2>
+      <p class="say">Rain, then sun, then falling leaves, then snow &mdash; and then it all starts again.</p>
+      <p class="whisper">Spring is the living speaking. Summer is Owl growing the idea. Autumn is Beaver picking it and putting it out. Winter is Rabbit and Hedgehog doing the small quick work, so the year can turn again.</p>
+    </div>
+    <figure class="pic">
+      <svg viewBox="0 0 620 470" role="img" aria-label="A wheel of four seasons: a rain cloud for spring when the living speaks, a smiling sun for summer when the idea grows, a leaf for autumn when it is picked and put out, and a snowflake for winter when the quick small work is done">
+        <circle cx="310" cy="228" r="150" fill="none" stroke="var(--edge)" stroke-width="4" stroke-dasharray="3 12" stroke-linecap="round"/>
+
+        <path d="M372 104 A150 150 0 0 1 436 168" fill="none" stroke="var(--sun-2)" stroke-width="6" stroke-linecap="round"/>
+        <polygon points="428,158 444,178 422,174" fill="var(--sun-2)"/>
+        <path d="M436 288 A150 150 0 0 1 372 352" fill="none" stroke="var(--sun-2)" stroke-width="6" stroke-linecap="round"/>
+        <polygon points="382,344 362,360 366,338" fill="var(--sun-2)"/>
+        <path d="M248 352 A150 150 0 0 1 184 288" fill="none" stroke="var(--sun-2)" stroke-width="6" stroke-linecap="round"/>
+        <polygon points="192,298 176,278 198,282" fill="var(--sun-2)"/>
+        <path d="M184 168 A150 150 0 0 1 248 104" fill="none" stroke="var(--sun-2)" stroke-width="6" stroke-linecap="round"/>
+        <polygon points="238,112 258,96 254,118" fill="var(--sun-2)"/>
+
+        <circle cx="310" cy="88" r="62" fill="var(--card)" stroke="var(--sky)" stroke-width="3"/>
+        <g transform="translate(310,72)">
+          <circle cx="-14" cy="0" r="14" fill="var(--sky)"/>
+          <circle cx="6" cy="-6" r="17" fill="var(--sky)"/>
+          <circle cx="20" cy="2" r="12" fill="var(--sky)"/>
+          <rect x="-26" y="-2" width="50" height="12" rx="6" fill="var(--sky)"/>
+          <line x1="-14" y1="16" x2="-18" y2="28" stroke="var(--sky)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="2" y1="16" x2="-2" y2="30" stroke="var(--sky)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="18" y1="16" x2="14" y2="28" stroke="var(--sky)" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <text x="310" y="128" class="t-line" text-anchor="middle">spring &mdash; the sun speaks</text>
+
+        <circle cx="450" cy="228" r="62" fill="var(--card)" stroke="var(--sun-2)" stroke-width="3"/>
+        <g transform="translate(450,214)">
+          <line x1="0" y1="-26" x2="0" y2="-36" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="19" y1="-19" x2="26" y2="-26" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="26" y1="0" x2="36" y2="0" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="19" y1="19" x2="26" y2="26" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="-19" y1="19" x2="-26" y2="26" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="-26" y1="0" x2="-36" y2="0" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="-19" y1="-19" x2="-26" y2="-26" stroke="var(--sun-2)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="21" fill="var(--sun)"/>
+          <circle cx="-7" cy="-4" r="3" fill="var(--dark)"/>
+          <circle cx="7" cy="-4" r="3" fill="var(--dark)"/>
+          <path d="M-8 6 Q0 14 8 6" stroke="var(--dark)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <text x="450" y="266" class="t-line" text-anchor="middle">summer &mdash; it grows</text>
+
+        <circle cx="310" cy="368" r="62" fill="var(--card)" stroke="var(--beaver)" stroke-width="3"/>
+        <g transform="translate(310,352)">
+          <path d="M0 -26 C20 -12 20 14 0 30 C-20 14 -20 -12 0 -26 Z" fill="var(--beaver)"/>
+          <line x1="0" y1="-20" x2="0" y2="28" stroke="var(--beaver-2)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="0" y1="-4" x2="12" y2="2" stroke="var(--beaver-2)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="0" y1="8" x2="-11" y2="14" stroke="var(--beaver-2)" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <text x="310" y="406" class="t-line" text-anchor="middle">autumn &mdash; it is picked</text>
+
+        <circle cx="170" cy="228" r="62" fill="var(--card)" stroke="var(--sky)" stroke-width="3"/>
+        <g transform="translate(170,214)" stroke="var(--sky)" stroke-width="4" stroke-linecap="round">
+          <line x1="0" y1="-28" x2="0" y2="28"/>
+          <line x1="-24" y1="-14" x2="24" y2="14"/>
+          <line x1="-24" y1="14" x2="24" y2="-14"/>
+          <line x1="0" y1="-18" x2="-9" y2="-25"/>
+          <line x1="0" y1="-18" x2="9" y2="-25"/>
+          <line x1="0" y1="18" x2="-9" y2="25"/>
+          <line x1="0" y1="18" x2="9" y2="25"/>
+          <line x1="-18" y1="-11" x2="-27" y2="-11"/>
+          <line x1="18" y1="11" x2="27" y2="11"/>
+        </g>
+        <text x="170" y="266" class="t-line" text-anchor="middle">winter &mdash; small quick work</text>
+
+        <text x="310" y="222" class="t-line" text-anchor="middle">the year turns</text>
+        <text x="310" y="246" class="t-small" text-anchor="middle">this way &rarr;</text>
+        <text x="310" y="452" class="t-small" text-anchor="middle">and every winter wish climbs back up through autumn and summer</text>
+      </svg>
+      <figcaption>Four seasons, one year, going round for ever.</figcaption>
+    </figure>
+  </div></div>
+</section>
+
+</main>
+
+<nav class="hud" aria-label="Slide navigation">
+  <button id="prev" type="button" aria-label="Previous slide">&#8592;</button>
+  <div class="ticks">
+    <button class="tick" type="button" aria-label="Go to slide 1"></button>
+    <button class="tick" type="button" aria-label="Go to slide 2"></button>
+    <button class="tick" type="button" aria-label="Go to slide 3"></button>
+    <button class="tick" type="button" aria-label="Go to slide 4"></button>
+    <button class="tick" type="button" aria-label="Go to slide 5"></button>
+  </div>
+  <span class="count" id="count" aria-live="polite">1 / 5</span>
+  <button id="next" type="button" aria-label="Next slide">&#8594;</button>
+</nav>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var ticks=[].slice.call(document.querySelectorAll('.tick'));
+  var prev=document.getElementById('prev'),next=document.getElementById('next');
+  var count=document.getElementById('count'),i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){
+      s.classList.toggle('is-on',k===i);
+      s.setAttribute('aria-hidden',k===i?'false':'true');
+    });
+    ticks.forEach(function(t,k){t.setAttribute('aria-current',k===i?'true':'false');});
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=(i===0); next.disabled=(i===slides.length-1);
+    if(window.innerWidth>860){slides[i].scrollTop=0;}else{window.scrollTo(0,0);}
+    if(location.hash!=='#'+(i+1)){history.replaceState(null,'','#'+(i+1));}
+  }
+  prev.addEventListener('click',function(){show(i-1);});
+  next.addEventListener('click',function(){show(i+1);});
+  ticks.forEach(function(t,k){t.addEventListener('click',function(){show(k);});});
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();show(i+1);}
+    else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();show(i-1);}
+    else if(k==='Home'){e.preventDefault();show(0);}
+    else if(k==='End'){e.preventDefault();show(slides.length-1);}
+  });
+  var x0=null,y0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;
+    if(Math.abs(dx)>56&&Math.abs(dx)>Math.abs(dy)*1.6){show(dx<0?i+1:i-1);}
+    x0=null;y0=null;
+  },{passive:true});
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(isFinite(h)&&h>0?h-1:0);
+})();
+</script>

@@ -1,0 +1,46 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="k3">
+  <title id="k3">A closed book bound in cloth; a single paper tag on a red string is tied at its front cover, and only there. The tag reads title.</title>
+  <defs>
+    <linearGradient id="k3-cloth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--river)"/>
+      <stop offset="1" style="stop-color:var(--slate-deep)"/>
+    </linearGradient>
+    <linearGradient id="k3-pages" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset="1" style="stop-color:var(--paper)"/>
+    </linearGradient>
+    <linearGradient id="k3-tag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="k3-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.6"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="180" cy="300" rx="190" ry="230" style="fill:url(#k3-halo)"/>
+  <ellipse cx="190" cy="514" rx="150" ry="16" style="fill:var(--shade)"/>
+  <!-- the book, standing slightly turned -->
+  <path d="M96 120 L 266 104 L 276 494 L 104 506 Z" style="fill:url(#k3-pages);stroke:var(--ink);stroke-opacity:.35"/>
+  <path d="M84 116 L 254 100 C 260 100, 264 104, 264 110 L 270 488 C 270 494, 266 498, 260 498 L 92 510 C 86 510, 82 506, 82 500 L 76 126 C 76 120, 80 116, 84 116 Z" style="fill:url(#k3-cloth)"/>
+  <path d="M84 116 L 76 126 L 82 500 L 92 510" style="fill:none;stroke:var(--ink);stroke-width:3;stroke-opacity:.35"/>
+  <!-- the cover panel: the book's title, embossed -->
+  <path d="M108 168 L 236 158 L 240 254 L 112 262 Z" style="fill:none;stroke:var(--glow);stroke-width:1.5;opacity:.7"/>
+  <g style="fill:none;stroke:var(--glow);stroke-width:2.2;stroke-linecap:round;opacity:.85">
+    <path d="M124 196 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 12 -6 20 0 s 8 4 14 0"/>
+    <path d="M132 224 c 8 -6 12 6 20 0 s 12 -8 20 0 s 10 6 20 -2 s 8 -2 12 0"/>
+  </g>
+  <!-- the string, tied at the top of the front cover -->
+  <circle cx="232" cy="134" r="6" style="fill:none;stroke:var(--red);stroke-width:3"/>
+  <path d="M232 140 C 250 170, 290 176, 300 214 C 304 232, 296 250, 288 262" style="fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round"/>
+  <path d="M226 132 C 214 120, 210 110, 220 104" style="fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round"/>
+  <!-- the tag -->
+  <g transform="rotate(14 290 320)">
+    <path d="M262 270 L 318 270 L 330 290 L 330 380 C 330 386, 326 390, 320 390 L 260 390 C 254 390, 250 386, 250 380 L 250 290 Z" style="fill:url(#k3-tag);stroke:var(--brass);stroke-width:1.5"/>
+    <circle cx="290" cy="288" r="6" style="fill:var(--ground);stroke:var(--brass);stroke-width:2"/>
+    <text x="290" y="328" text-anchor="middle" style="fill:var(--red);font:600 13px var(--mono);font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0">title</text>
+    <path d="M264 348 c 6 -4 9 4 14 0 s 8 -5 13 0 s 7 3 12 0" style="fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.7"/>
+    <path d="M264 366 c 6 -4 9 4 14 0 s 8 -5 13 0" style="fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.7"/>
+  </g>
+  <text x="40" y="60" style="fill:var(--ink);font:italic 600 16px var(--display)">at the beginning, and only there</text>
+</svg>

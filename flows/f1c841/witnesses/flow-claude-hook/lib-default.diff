@@ -1,0 +1,13 @@
+diff --git a/lib/default.nix b/lib/default.nix
+index d42ed366db..c061687a6c 100644
+--- a/lib/default.nix
++++ b/lib/default.nix
+@@ -5,6 +5,8 @@
+   # drive and assertions.
+   components = {
+     flow = import ./components/flow.nix { inherit inputs; };
++    claude = import ./components/claude.nix { inherit inputs; };
++    flow-hook = import ./components/flow-hook.nix { inherit inputs; };
+   };
+ 
+   # The shared frame of a pure scenario: `flake.lib.scenario { pkgs, name }

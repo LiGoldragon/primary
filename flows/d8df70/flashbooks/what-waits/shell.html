@@ -1,0 +1,181 @@
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#F2EADA; --paper:#FAF5EA; --ink:#2C2219; --muted:#6D5D4C; --rule:#D8CAB1;
+  --red:#B3301C; --red-soft:#F3DCD3; --shade:rgba(44,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1B1511; --paper:#241C16; --ink:#EEE4D3; --muted:#A99A89; --rule:#3B3027;
+    --red:#E4654E; --red-soft:#3A1F18; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1B1511; --paper:#241C16; --ink:#EEE4D3; --muted:#A99A89; --rule:#3B3027;
+  --red:#E4654E; --red-soft:#3A1F18; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;container-type:inline-size;
+  max-width:1100px;margin-inline:auto}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:12px;
+  padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.2 var(--display);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{position:relative;min-height:0;display:grid}
+.page{grid-area:1/1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.page:not(.on){display:none}
+.page:focus,.page:focus-visible{outline:none}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.qn{color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+
+/* illustration pages */
+.ill figure{margin:0;display:grid;grid-template-rows:auto auto;align-content:start;gap:12px;padding-block:12px}
+.ill .frame{display:grid;place-items:start center}
+.ill img{display:block;max-width:100%;max-height:calc(100dvh - 210px);width:auto;height:auto;border-radius:3px;
+  box-shadow:0 1px 0 var(--rule),0 10px 30px -12px var(--shade)}
+.ill figcaption{display:grid;gap:4px;max-width:68ch;justify-self:center;width:100%}
+.ill h2{font-size:22px;line-height:1.15}
+.ill details{font-size:15px;color:var(--muted)}
+.ill summary{cursor:pointer;font:500 12px/1.6 var(--mono);letter-spacing:.04em;color:var(--red);list-style:none;width:max-content}
+.ill summary::-webkit-details-marker{display:none}
+.ill summary::before{content:"+ "}
+.ill details[open] summary::before{content:"\2212 "}
+.ill details p{margin:.4em 0 0}
+
+/* text pages */
+.txt .sheet{max-width:68ch;margin-inline:auto;padding-block:22px 28px;display:grid;gap:14px}
+.txt h2{font-size:clamp(26px,7cqi,40px);line-height:1.08;margin-bottom:4px}
+.txt p{margin:0}
+.txt ul,.txt ol{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.txt ul li::marker{color:var(--red)}
+ol.six{list-style:none;padding:0;gap:8px}
+ol.six li{display:grid;grid-template-columns:1.6em minmax(0,1fr);gap:6px}
+ol.six .num,.answers .num{font:600 18px/1.4 var(--display);color:var(--red)}
+dl.meta{margin:0;display:grid;gap:4px;padding:10px 12px;border-left:2px solid var(--rule);font-size:15px}
+dl.meta div{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:8px}
+dl.meta dt{font:500 11px/1.9 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+dl.meta dd{margin:0}
+p.rec{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;background:var(--paper)}
+p.rec strong{color:var(--red)}
+p.tension{padding:10px 12px;background:var(--red-soft);border-left:4px solid var(--red)}
+p.tension strong{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;
+  box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p{font:italic 400 18px/1.45 var(--body)}
+blockquote.living p.prov{font:400 12px/1.4 var(--mono);color:var(--muted);font-style:normal}
+p.prov{font:400 12px/1.4 var(--mono);color:var(--muted)}
+.answers{list-style:none;padding:0 !important;gap:10px !important}
+.tick{display:grid;grid-template-columns:22px 1.5em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;
+  background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px;cursor:pointer}
+.tick input{position:absolute;opacity:0;width:1px;height:1px}
+.tick .box{width:20px;height:20px;margin-top:3px;border:1.5px solid var(--ink);border-radius:2px;display:grid;place-items:center}
+.tick input:checked ~ .box{background:var(--red);border-color:var(--red)}
+.tick input:checked ~ .box::after{content:"";width:6px;height:11px;border:solid var(--paper);border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.tick input:checked ~ .txt{color:var(--muted)}
+.tick input:focus-visible ~ .box{outline:2px solid var(--red);outline-offset:2px}
+
+/* nav */
+.nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;
+  padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--rule)}
+.nav .btn{font:500 13px/1 var(--mono);color:var(--ink);background:var(--paper);border:1px solid var(--rule);
+  border-radius:2px;padding:10px 12px;cursor:pointer}
+.nav .btn:disabled{opacity:.35;cursor:default}
+.nav .btn:focus-visible,.dot:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.dots{display:grid;grid-auto-flow:column;justify-content:center;gap:5px}
+.dot{width:12px;height:12px;padding:0;border:1.5px solid var(--muted);background:transparent;cursor:pointer;border-radius:50%}
+.dot.txt{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+
+@container (min-width: 760px){
+  .ill img{max-height:calc(100dvh - 130px)}
+  .ill figure{grid-template-rows:auto;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
+  .ill figcaption{align-self:center}
+  .ill h2{font-size:32px}
+  .ill details{font-size:17px}
+  .dot{width:14px;height:14px}
+}
+@container (max-width: 360px){
+  .dots{gap:3px}
+  .dot{width:10px;height:10px}
+  .nav .btn{padding:10px 8px}
+}
+@media (prefers-reduced-motion: no-preference){
+  .page.on{animation:in .22s ease-out}
+  @keyframes in{from{opacity:.4}to{opacity:1}}
+}
+</style>
+
+<div class="book">
+  <header class="top">
+    <h1>{{TITLE}}</h1>
+    <span class="count" id="count">1 / {{N}}</span>
+  </header>
+  <main class="stage" id="stage">
+{{PAGES}}
+  </main>
+  <nav class="nav" aria-label="Pages">
+    <button type="button" class="btn" id="prev" aria-label="Previous page">&larr; Prev</button>
+    <div class="dots" id="dots">{{DOTS}}</div>
+    <button type="button" class="btn" id="next" aria-label="Next page">Next &rarr;</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length, cur=1;
+  var prev=document.getElementById('prev'), next=document.getElementById('next'), count=document.getElementById('count');
+  function show(n, push){
+    n=Math.max(1,Math.min(N,n)); cur=n;
+    pages.forEach(function(p,i){p.classList.toggle('on',i===n-1); if(i===n-1) p.scrollTop=0;});
+    dots.forEach(function(d,i){d.classList.toggle('on',i===n-1); d.setAttribute('aria-current',i===n-1?'page':'false');});
+    prev.disabled=n===1; next.disabled=n===N;
+    count.textContent=n+' / '+N;
+    if(push){try{history.replaceState(null,'','#p'+n);}catch(e){try{location.hash='p'+n;}catch(e2){}}}
+  }
+  function fromHash(){var m=/^#p(\d+)$/.exec(location.hash||''); return m?parseInt(m[1],10):1;}
+  prev.addEventListener('click',function(){show(cur-1,true);});
+  next.addEventListener('click',function(){show(cur+1,true);});
+  dots.forEach(function(d){d.addEventListener('click',function(){show(parseInt(d.dataset.go,10),true);});});
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey) return;
+    if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName) && e.target.type!=='checkbox') return;
+    if(e.key==='ArrowRight'){show(cur+1,true);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){show(cur-1,true);e.preventDefault();}
+  });
+  window.addEventListener('hashchange',function(){show(fromHash(),false);});
+  var sx=null, sy=0;
+  var stage=document.getElementById('stage');
+  stage.addEventListener('touchstart',function(e){if(e.touches.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY;}},{passive:true});
+  stage.addEventListener('touchend',function(e){
+    if(sx===null) return;
+    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; sx=null;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.5){show(cur+(dx<0?1:-1),true);}
+  },{passive:true});
+  // answers: per-viewer tick state
+  var KEY='what-waits-answers';
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){saved={};}
+  [].forEach.call(document.querySelectorAll('.answers input'),function(cb){
+    cb.checked=!!saved[cb.dataset.n];
+    cb.addEventListener('change',function(){
+      saved[cb.dataset.n]=cb.checked;
+      try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}
+    });
+  });
+  show(fromHash(),false);
+})();
+</script>

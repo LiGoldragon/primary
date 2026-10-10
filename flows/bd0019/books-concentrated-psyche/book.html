@@ -1,0 +1,133 @@
+<title>Concentrated psyche on the meta harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one page at a time in a grid shell; illustration pages fill the upright phone, text pages one 68ch column. */
+:root{
+  --ground:#F3EBDC; --paper:#FBF6EC; --paper-edge:#E9DCC4; --ink:#2D2219; --muted:#6E5E4D; --rule:#D9CAB0;
+  --red:#A9321F; --red-soft:#F2DCD2; --glow:#F2C46D; --brass:#B9893A; --river:#5D7E8C; --leaf:#6E8B4E;
+  --slate:#4A443D; --slate-deep:#38332D; --slate-ink:#A79C8C; --ink-on-glow:#3A2A16;
+  --hill:#B7A77E; --hill-deep:#8E8058; --wood:#8A5A34; --wood-deep:#6A4224; --sign-ink:#FBF2E2;
+  --agree:#3F6B3A; --agree-soft:#E2EBD9; --shade:rgba(45,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+    --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+    --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+    --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+    --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+  --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+  --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+  --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+  --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+svg text,code,.prov,.eyebrow,.count,.go{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{container-type:inline-size;max-width:1000px;margin-inline:auto}
+.top{position:sticky;top:0;z-index:2;background:var(--ground);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.25 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{display:block}
+.page{scroll-margin-top:64px}
+code{font-family:var(--mono);font-size:.84em;background:var(--red-soft);color:var(--ink);padding:.05em .3em;border-radius:2px;overflow-wrap:anywhere}
+
+/* text pages */
+.txt .sheet{max-width:68ch;min-width:0;margin-inline:auto;padding-block:20px 36px;display:grid;gap:14px}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;font-size:clamp(26px,7.5cqi,38px);line-height:1.1}
+.txt p{margin:0}
+.src{display:grid;gap:12px}
+.src h2.src-h{font-size:clamp(24px,7cqi,34px)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p.said{font:italic 400 18px/1.45 var(--body)}
+p.prov{font:400 12px/1.45 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+aside.note{padding:10px 12px;background:var(--agree-soft);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.note .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--agree)}
+p.mark{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;font-size:15px}
+p.mark strong{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-right:.4em}
+ol.props{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.props li{display:grid;grid-template-columns:1.2em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+ol.props .n{font:600 18px/1.4 var(--display);color:var(--red)}
+
+/* position indicator: not controls */
+.dots{grid-column:1/-1;display:grid;grid-auto-flow:column;justify-content:center;gap:10px;pointer-events:none;user-select:none}
+.dot{width:11px;height:11px;border:1.5px solid var(--muted);border-radius:50%;display:block}
+.dot.t{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+aside.witness{padding:10px 12px;background:var(--paper);border-left:3px solid var(--river);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.witness .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--river)}
+.badge{display:inline-block;margin-left:.5em;padding:.05em .45em;font:600 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--agree);box-shadow:inset 0 0 0 1px var(--agree);border-radius:2px}
+ol.props li.ruled{box-shadow:inset 0 0 0 2px var(--agree);background:var(--agree-soft)}
+
+/* the source's own code: only code scrolls sideways */
+.codewrap{max-width:100%;overflow-x:auto;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+pre.code{margin:0;padding:10px 12px;font:400 12.5px/1.5 var(--mono);color:var(--ink);white-space:pre;width:max-content;min-width:100%}
+pre.code code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+.src > *{min-width:0}
+ul.pts{margin:0;padding-left:1.1em;display:grid;gap:8px}
+ul.pts strong,.src p strong{font-weight:600}
+blockquote.doc{margin:0;padding:12px 14px;border-left:3px solid var(--brass);background:var(--paper);border-radius:2px}
+aside.note.disagree{background:var(--red-soft)}
+aside.note.disagree .tag{color:var(--red)}
+ol.props li.sup{box-shadow:inset 0 0 0 1px var(--rule);background:var(--paper)}
+.badge.sup{color:var(--muted);box-shadow:inset 0 0 0 1px var(--muted)}
+
+/* graph pages: the graph is drawn by the page script from the source's Mermaid text */
+.gfig{margin:0;padding-block:12px 24px;max-width:100%;min-width:0}
+.gfig .gbox{display:grid;justify-items:center;padding:10px 6px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px;max-width:100%;min-width:0}
+.gfig .gbox svg{max-width:100%;height:auto}
+pre.mmsrc{margin:0;max-width:100%;font:400 12px/1.4 var(--mono);color:var(--muted);white-space:pre-wrap}
+.tw{max-width:100%}
+table.ev{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px;line-height:1.35}
+table.ev th,table.ev td{padding:6px 5px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
+table.ev th{font:600 10.5px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--red)}
+table.ev td:first-child{font-weight:600}
+ul.pts ul{margin:8px 0 0;padding-left:1.1em;display:grid;gap:6px}
+.src blockquote.doc p{margin:0}
+.src blockquote.doc{display:grid;gap:8px}
+ol.props .box{display:inline-block;width:.8em;height:.8em;margin-right:.5em;box-shadow:inset 0 0 0 1.5px var(--muted);border-radius:2px;vertical-align:-.05em}
+h3{font:600 17px/1.3 var(--display);margin:0;color:var(--muted)}
+</style>
+
+<div class="book">
+  <header class="top"><h1>Concentrated psyche on the meta harness</h1><span class="count" id="count">1 / 5</span>
+    <div class="dots" aria-hidden="true"><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span></div></header>
+  <main class="stage" id="stage">
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 1 of 4</p><h2>Concentrated psyche on the meta harness</h2><p>These are your words from the correctly launched Psyche, Mind and Field flows. The headings are my concentration; only the quotes are yours.</p><h3>A seat starts whole, from Flow, almost for free (settled)</h3><blockquote class="living"><p class="said">one block of text, one user prompt only. ... Golden rule: put it at the top. This is intent.</p><p class="prov">-- typed, 2026-09-24, 752e0f</p></blockquote><blockquote class="living"><p class="said">If we need to inject something we forgot, then we inject it. It&#x27;s not forbidden.</p><p class="prov">-- typed, 2026-09-24, 752e0f</p></blockquote><blockquote class="living"><p class="said">Starting a new session should be done with the Flow Nexus using the Flow CLI.</p><p class="prov">-- 2026-09-19, b81560</p></blockquote><blockquote class="living"><p class="said">Just create new sessions, which really should be done with almost zero LLM calls, but not quite zero</p><p class="prov">-- typed, 2026-10-01, e2a70a</p></blockquote><blockquote class="living"><p class="said">Maybe we can even resume the sessions on a new server ... Unless the context is old, then we should just start a new flow for them and reparse the old one.</p><p class="prov">-- typed, 2026-10-01, 7328f4</p></blockquote><blockquote class="living"><p class="said">When that order comes in, we need to upgrade the harness. Then sessions can be reloaded in the new harness one at a time as they go idle.</p><p class="prov">-- STT, 2026-09-30, 7328f4</p></blockquote><blockquote class="living"><p class="said">we shouldn&#x27;t let the models compact. There&#x27;s no need. They&#x27;re better off rebootstrapping on with a really good first prompt on a new flow.</p><p class="prov">-- 2026-09-14, 6cc91b</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “Just create new sessions, which really should be done with almost zero LLM calls” (2026-10-01): this is the line a restarted stack is built to keep: start from Flow, with the concentrated prompt composed by a program and one fat first prompt.</p></aside><p class="mark"><strong>Marks</strong>Three quotes carry the source’s own ellipses (the first, the fifth and the fourteenth); each piece between them is checked separately against the raw record. Typed and STT are as the source gives them. The raw transcripts carry no input mode, so they were read from the vision records, which agree except where marked. The raw transcript of flow e2a70a is not on this machine, so the “almost zero” quote is checked against flows/e2a70a/vision/codex-session-creation.md, which gives its words and the mark typed; the day and the line (L585, 17:11) come from the report on the psyche since 28 September.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 2 of 4</p><h2>Hooks, not polling, and nothing blocks (settled)</h2><blockquote class="living"><p class="said">Essentially we want to avoid polling, which means we&#x27;re going to make this hook-based.</p><p class="prov">-- STT, 2026-09-30, 7328f4</p></blockquote><blockquote class="living"><p class="said">Nobody should be checking anything repeatedly.</p><p class="prov">-- typed, 2026-10-01, fe945a</p></blockquote><blockquote class="living"><p class="said">It makes perfect sense for the flow events to call the flow CLI to let the flow nexus know the state of that flow through the harnesses&#x27; interfaces, which are the hooks.</p><p class="prov">-- typed, 2026-10-01, fe945a</p></blockquote><blockquote class="living"><p class="said">The cluster needs to be able to not block itself.</p><p class="prov">-- STT, 2026-10-01, bd0019</p></blockquote><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “Nobody should be checking anything repeatedly.” (2026-10-01): it is the sharpest statement on the page, and it settles the design of seat state: hooks report to Flow, and nothing watches a screen.</p></aside><p class="mark"><strong>Mark</strong>The page-comment words on avoiding polling are from the vision record flows/7328f4/vision/hooks.md (page comment, 2026-09-30T18:47, STT). The raw transcript line that repeats them is a relayed task notification, so it is not used as the check. “The cluster needs to be able to not block itself” is marked STT by the source, and flows/fe945a/vision/cluster.md agrees, while flows/bd0019/vision/clusterNotBlocking.md says typed. The records differ, and the source’s STT stands as written.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 3 of 4</p><h2>The system retires its own seats (settled)</h2><blockquote class="living"><p class="said">When a session gets replaced, it has to be reaped so it doesn&#x27;t keep getting messages.</p><p class="prov">-- 2026-09-17, 1ac573</p></blockquote><blockquote class="living"><p class="said">Everything that has a big context should be refreshed and everything that has been abandoned needs to be reaped. I&#x27;ve been emphasizing this all along.</p><p class="prov">-- STT, 2026-09-26, 93ba9f</p></blockquote><blockquote class="living"><p class="said">Nothing is up to me. Everything is being automated. ... I&#x27;m not going to close or start anything or type anything anywhere ever.</p><p class="prov">-- STT, 2026-09-26, 93ba9f</p></blockquote><p class="mark"><strong>Mark</strong>The raw transcript for flow 1ac573 is not on this machine, so the 2026-09-17 reaping words are checked against flows/1ac573/vision/operational-reapReplacedSessions.md, where they are the opening of a longer sentence.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 4 of 4</p><h2>Skills, books and the transcript (settled)</h2><blockquote class="living"><p class="said">For me subagents are a type of skill. They&#x27;re a skill that is implemented by [a fresh flow] basically.</p><p class="prov">-- STT, 2026-10-01, fe945a</p></blockquote><blockquote class="living"><p class="said">And to be clear, now vision is skill. Let&#x27;s make that whole migration.</p><p class="prov">-- typed, 2026-10-01, fe945a</p></blockquote><blockquote class="living"><p class="said">the books become the user interface. It&#x27;s not a question anymore.</p><p class="prov">-- STT, 2026-10-01, fe945a</p></blockquote><blockquote class="living"><p class="said">Files are not really necessary unless we&#x27;re making the book.</p><p class="prov">-- typed, 2026-10-01, bd0019</p></blockquote><blockquote class="living"><p class="said">Let&#x27;s try to diminish how much of the primary layer gets disturbed and use the layer underneath to coordinate the work.</p><p class="prov">-- typed, 2026-09-30, 7328f4</p></blockquote><p class="mark"><strong>Mark</strong>The first brackets are the source’s own: the raw record reads “Freshflow”, and the vision record corrects it to “a fresh flow”. The bracketed words are not the living’s as typed or heard.</p><p class="eyebrow">Additions to point 4, relayed by Fable, not part of the source</p><blockquote class="living"><p class="said">I don&#x27;t need to be able to see them in the chat. ... If it doesn&#x27;t render it then there might be an advantage to that. Yeah maybe. Astra&#x27;s vision is better.</p><p class="prov">-- STT, 2026-10-01, to 6997eb</p></blockquote><blockquote class="living"><p class="said">Yeah the metadata is one datom line. That&#x27;s brilliant. I love it. Let&#x27;s do it.</p><p class="prov">-- STT, 2026-10-01, to 6997eb</p></blockquote><p class="mark"><strong>Mark</strong>These two quotes were added at Psyche Fable’s acceptance, relayed by Psyche Opus fe945a. They are not in the copied source text and are not Fable’s words. The first omits a sentence, as the relay does; the omitted sentence is in the raw record (6997eb L683), where the speech-to-text reads “pros”, which the vision record corrects to “prose”. Both match the raw record word for word.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Open rulings</p><h2>Open, for your word</h2><ul class="pts rulings" id="rulings"><li><strong>What passes to a new flow.</strong> On 21 August you said: &quot;there&#x27;s no handoff file; the flow <em>reads its previous flow(s)</em> ... imposing the old opinion on the new flow is the wrong approach.&quot; On 1 October you said: &quot;Let&#x27;s always get the concentrated vision from the current flow into the next one.&quot; My reading: what passes forward is only your own words, never the old flow&#x27;s opinion. You haven&#x27;t confirmed that.</li><li><strong>Subflows: tied or independent.</strong> On 31 August: &quot;I don&#x27;t want subflows to start creating their own lanes. They just use their parents.&quot; On 19 September: &quot;if the subflow is independent and can reply to a successor ... then we have an asynchronous system.&quot;</li><li><strong>Messages: Flow or Message.</strong> On 17 September: &quot;no, message, not flow-send. use the message nexus!&quot; On 24 September: &quot;I want to be able to start flows, stop flows, and send messages with Flow because it gives me the bare input.&quot;</li></ul><aside class="note agree"><p class="tag">Psyche Sonnet agrees</p><p>On “imposing the old opinion on the new flow is the wrong approach” (2026-08-21): the source’s reading, that only your own words pass forward, fits the later word of 2026-10-01 as well as this one. It stays a reading until you confirm it.</p></aside><p class="mark"><strong>Marks</strong>The “start flows, stop flows” words of 24 September are held by flows/88475f/vision/flow.md as relayed by e51411, with the original channel not stated. The 17 September words are held by flows/da1e3f/vision/operational-flowVsMessage.md, typed.</p><p class="prov">The source, verbatim: Psyche Opus fe945a, transcript fe945a2e-c785-4af4-9a46-766b6ea512e8.jsonl, line 1435, uuid 394f8933-743a-461f-a9bc-fc675c9f35e9, 2026-10-02T17:16:09Z, the second block between its to-the-living markers, titled «Concentrated psyche on the meta harness»; the marker lines and its Presentation line are not shown. It holds no graph, so this book draws none. The other block on that line is a separate book.</p></div></section>
+  </main>
+</div>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length,cur=1,count=document.getElementById('count');
+  function mark(n){cur=n;dots.forEach(function(d,i){d.classList.toggle('on',i===n-1);});count.textContent=n+' / '+N;}
+  function go(n){n=Math.max(1,Math.min(N,n));pages[n-1].scrollIntoView({behavior:'auto',block:'start'});mark(n);}
+  function here(){var best=1,y=window.innerHeight*0.35;pages.forEach(function(p,i){if(p.getBoundingClientRect().top<=y)best=i+1;});mark(best);}
+  window.addEventListener('scroll',here,{passive:true});window.addEventListener('resize',here);
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    if(e.key==='ArrowRight'){go(cur+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(cur-1);e.preventDefault();}
+  });
+  here();
+
+})();
+</script>

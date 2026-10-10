@@ -1,0 +1,15 @@
+;; Logos v1 strawman — headed-delimiter comparison (Open Choice 1, retained).
+;; Same maximally-specialized content as v1-wire-specialized.logos, but with the
+;; structure-type head as the FIRST CHILD inside the delimiter (no dot). This is the
+;; shape nota's landed StructuralMacroNode dispatch already consumes.
+
+( WireTupleStruct CommitSequence Integer )
+
+( WireTupleStruct StateDigest Integer )
+
+( WireNamedStruct
+  DatabaseMarker
+  ( ( commit_sequence CommitSequence ) ( state_digest StateDigest ) )
+)
+
+( WireTupleStruct Domains ( Vector Domain ) )

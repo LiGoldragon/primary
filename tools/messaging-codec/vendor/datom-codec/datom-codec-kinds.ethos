@@ -1,0 +1,14 @@
+; Datom's representable public conversion kinds. Borrowed reader handles and
+; operational helper kinds remain Rust implementation surface until Ethos has
+; declarations for their references and unit-yield capabilities.
+Library
+[ crate:[ Datom Budget Error Form Path Positions Potential ] ]
+[]
+[ DatomForming.[ datom_form.{ [ Path ] [ Result<Datom Error> ] } ]
+  Datomizable.[ datomize.{ [ Path ] [ Datom ] } ]
+  Composing.[ compose:{ [ Datom Budget ] [ Result<Self Error> ] } ]
+  Compositional.{ [ Composing ] [] [ ARITY.Integer ] [ from_positions:{ [ Positions ] [ Result<Self Error> ] } ] }
+  Composable.[ compose.{ [ Budget ] [ Result<Self Error> ] }
+               compose_positions.{ [ Budget ] [ Result<Self Error> ] } ]
+  Actualizing.[ actualize!{ [ Budget ] [ Result<Self Error> ] } ] ]
+[]

@@ -1,0 +1,41 @@
+{
+  "name": "psyche-sonnet",
+  "model": "claude-sonnet-5",
+  "effort": "medium",
+  "role": "Psyche Low",
+  "predecessor": null,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "flow-evidence",
+    "claude-harness",
+    "herdr",
+    "messaging"
+  ],
+  "sources": [
+    {
+      "path": "flows/f38926/reports/refresh-handoff.md",
+      "sha256": "fd0a6c7b88ea147d5d7da57fca5ebf64527a924d519fff89e6f8536bd97d1561"
+    },
+    {
+      "path": "flows/f38926/vision/nightWork.md",
+      "sha256": "7cd87e2ab309da7268024a8d1a18704830714c8c0dc2076a4e4bada5f5674bd1"
+    }
+  ],
+  "modelCatalog": [
+    {
+      "id": "claude-sonnet-5",
+      "family": "sonnet",
+      "source": "flows/f38926/log.md:153; callability pending native receipt"
+    }
+  ]
+}

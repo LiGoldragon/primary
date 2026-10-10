@@ -1,0 +1,22 @@
+Message Route: 8904b1 -> 9ac67c
+Timestamp: 2026-09-26
+Session: field-sol-correction
+
+Target Resolution: 9ac67c (live, status: working)
+Transport: Herdr 0.8.2
+Messenger: messenger-clj
+
+Message Type: Prose (correction notice)
+Grade: Transported
+
+Route Check: hm-send resolved 9ac67c against live registry immediately before send
+Binding: 9ac67c working (confirmed at send time)
+Transport Result: Accepted by Herdr for exact checked binding
+
+Body: Correction to earlier proposal regarding Flow 0.17.4 test
+- Communicates new condition from Mind Sol 56ae53
+- Withdraws previous proposal to bring session up as step in second run
+- Requests design of isolated Herdr session and its witness
+- Specifies required design elements and environment configuration
+
+Status: Message transported; no reply observed within check window

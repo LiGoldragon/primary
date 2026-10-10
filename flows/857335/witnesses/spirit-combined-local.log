@@ -1,0 +1,285 @@
+warning: patch `schema v0.2.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+warning: patch `schema-cc v0.1.0 (https://github.com/LiGoldragon/schema.git?rev=92bed64ad644ce4caa2827398ada5b7b79221165#92bed64a)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling spirit v0.27.0 (/tmp/flow857335-spirit-1050)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.21s
+     Running unittests src/lib.rs (target/debug/deps/spirit-85091180f64ed9f2)
+
+running 16 tests
+test store::compatibility_tests::data_all_is_a_parent_scope_for_concrete_data ... ok
+test production_migration::v13::tests::archived_layout_and_discriminants_are_locked ... ok
+test store::compatibility_tests::state_digest_preserves_high_bit_hash_identity ... ok
+test store::compatibility_tests::text_search_normalizes_unicode_case_and_punctuation ... ok
+test store::compatibility_tests::text_search_rewards_phrase_then_each_matching_word ... ok
+test store::error::tests::layout_mismatch_database_error_names_the_migration_tool ... ok
+test store::error::tests::non_layout_database_error_has_no_remediation_tail ... ok
+test trace::tests::projects_signal_admitted_onto_contract_event ... ok
+test trace::tests::malformed_trace_text_is_rejected ... ok
+test store::compatibility_tests::text_search_rejects_empty_or_punctuation_only_needles ... ok
+test trace::tests::nested_trace_route_round_trips_through_datom ... ok
+test trace::tests::socket_trace_events_preserve_engine_identity_and_monotonic_sequence ... ok
+test production_migration::v13::tests::records_only_archive_reader_does_not_register_live_families ... ok
+test production_migration::v13::tests::live_enumeration_preserves_identifiers_and_reruns_without_source_writes ... ok
+test production_migration::v13::tests::partial_destination_and_successful_rerun_leave_source_unchanged ... ok
+test production_migration::v13::tests::wrong_version_and_corrupt_family_leave_sources_unchanged ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests src/bin/meta-spirit.rs (target/debug/deps/meta_spirit-bd8ade9851a999fd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/spirit.rs (target/debug/deps/spirit-d51c1e284a577acd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/spirit-daemon.rs (target/debug/deps/spirit_daemon-3c6f1f393d1b0ec9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/spirit-migrate-store.rs (target/debug/deps/spirit_migrate_store-f20ca5d46792f92f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/spirit-write-configuration.rs (target/debug/deps/spirit_write_configuration-83a83ca9297e337a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cluster_gate_session.rs (target/debug/deps/cluster_gate_session-a8781e1a7a5302a4)
+
+running 12 tests
+test foreign_slot_records_are_ignored ... ok
+test grant_digest_mismatch_is_held_as_a_fault ... ok
+test grant_slot_mismatch_is_held_as_a_fault ... ok
+test granted_with_binding_grant_authorizes ... ok
+test granted_without_grant_is_held_as_a_fault ... ok
+test non_terminal_states_keep_draining ... ok
+test request_digest_mismatch_is_held_as_a_fault ... ok
+test terminal_refusals_map_to_typed_refusal_decisions ... ok
+test absent_criome_is_held_unreachable ... ok
+test hung_but_accepting_criome_is_held_unreachable_within_the_deadline ... ok
+test bare_granted_reply_is_held_as_off_contract ... ok
+test session_deadline_expiry_is_held_unreachable ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.01s
+
+     Running tests/daemon_command.rs (target/debug/deps/daemon_command-3c02ad4f4e8ffe15)
+
+running 3 tests
+test daemon_command_rejects_missing_or_extra_arguments ... ok
+test daemon_command_reads_the_single_binary_configuration_argument ... ok
+test daemon_configuration_carries_meta_socket_slot ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/dependency_surface.rs (target/debug/deps/dependency_surface-ad080e776b7c50dd)
+
+running 4 tests
+test spirit_has_no_direct_redb_dependency_or_redb_two_runtime_tree ... ok
+test normal_runtime_has_no_migration_only_legacy_dependency_path ... ok
+test text_client_surface_has_nota_runtime_dependency ... ok
+test binary_only_surface_has_no_nota_runtime_dependency ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests/generated_signal_plane.rs (target/debug/deps/generated_signal_plane-4ee71e43efc99fd6)
+
+running 4 tests
+test generated_response_round_trips_fresh_received_bytes ... ok
+test generated_read_queries_round_trip_fresh_received_bytes ... ok
+test generated_record_query_round_trips_fresh_received_bytes ... ok
+test malformed_archive_is_rejected_at_the_restore_boundary ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/guardian_journal_upgrade.rs (target/debug/deps/guardian_journal_upgrade-ebeb4f7da76cad98)
+
+running 1 test
+test current_daemon_starts_clean_against_an_existing_previous_journal ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/instrumentation_logging.rs (target/debug/deps/instrumentation_logging-c25c8c76a89f97a8)
+
+running 5 tests
+test authorization_trace_projects_to_spirit_authorization_event ... ok
+test testing_trace_records_lifecycle_hooks_from_generated_engine_traits ... ok
+test testing_trace_records_signal_rejection_without_nexus_or_sema_activations ... ok
+test testing_trace_builds_record_activations_by_default ... ok
+test testing_trace_records_real_signal_nexus_and_sema_activations ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/judge_socket.rs (target/debug/deps/judge_socket-f487f0b4e4997dfd)
+
+running 3 tests
+test daemon_admission_sends_one_typed_spirit_judge_request ... ok
+test required_guardian_rejects_proposal_when_judge_is_unconfigured ... ok
+test daemon_admission_includes_existing_record_context_for_lifecycle_operations ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/meta_configure.rs (target/debug/deps/meta_configure-33cd16b4a1f19256)
+
+running 4 tests
+test daemon_rejects_missing_meta_socket_before_serving ... ok
+test meta_socket_carries_owner_only_mode ... ok
+test working_socket_rejects_meta_configure_bytes ... ok
+test configure_sets_archive_target_and_leaves_live_database_unchanged ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/nix_integration.rs (target/debug/deps/nix_integration-0d39e829cf045892)
+
+running 9 tests
+test nix_build_default_package_emits_both_binaries ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_binaries_round_trip_representative_schema_outputs ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_alias_state_across_separate_cli_processes ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_handles_back_to_back_inputs_through_one_socket ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_observes_recorded_entries_back_through_query ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_persists_state_across_two_cli_invocations ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_rejects_invalid_input_through_schema_emitted_rejection ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_daemon_returns_missed_when_no_matching_record_exists ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+test nix_built_spirit_cli_records_through_real_socket_to_nix_built_daemon ... ignored, invokes nix build; run via cargo test --test nix_integration -- --ignored
+
+test result: ok. 0 passed; 0 failed; 9 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/observe_head.rs (target/debug/deps/observe_head-9f1c05cccaba482b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/observe_head_object.rs (target/debug/deps/observe_head_object-cc624425088dd51d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/observer_tap.rs (target/debug/deps/observer_tap-920f432c17700e45)
+
+running 4 tests
+test untap_retires_the_subscription_and_returns_its_observations ... ok
+test effects_only_filter_observes_no_operations ... ok
+test tap_starts_at_the_current_revision_without_replaying_inactive_history ... ok
+test observer_retention_is_bounded_by_active_tap_lag ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/operator_271_closed_claims.rs (target/debug/deps/operator_271_closed_claims-6ece67d3e5a4bfb8)
+
+running 3 tests
+test generated_signal_public_root_is_current ... ok
+test authored_operational_contracts_retain_current_operations ... ok
+test operational_modules_are_authored_runtime_spines ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/process_boundary.rs (target/debug/deps/process_boundary-aa3bc7d09d6c8033)
+
+running 19 tests
+test configuration_writer_encodes_observing_authorization_mode ... ok
+test configuration_writer_omitted_legacy_provider_stays_unowned_by_daemon_judge ... ok
+test configuration_writer_accepts_judge_socket_without_output_budget ... ok
+test legacy_provider_model_fields_are_ignored_by_daemon_judge_configuration ... ok
+test public_clis_reject_non_object_and_file_operands_before_transport ... ok
+test cli_and_daemon_report_version_from_bare_nota_atom ... ok
+test daemon_rejects_all_legacy_admission_invalid_families_before_mutation ... ok
+test cli_renders_alias_payload_outputs_without_wrapper_repetition ... ok
+test configuration_writer_prebuilds_binary_archive_for_daemon_startup ... ok
+test cli_and_daemon_bump_importance_without_changing_record_identifier ... ok
+test cli_and_daemon_exchange_nota_over_rkyv_socket ... ok
+test cli_and_daemon_classify_state_into_provisional_record ... ok
+test cli_and_daemon_change_record_replaces_entry_under_same_identifier ... ok
+test cli_and_daemon_resolve_clarification_edits_target_and_removes_standalone ... ok
+test text_search_returns_direct_ranked_records ... ok
+test daemon_persists_sema_file_across_a_restart ... ok
+test candidate_daemon_handover_from_production_copy_preserves_original_sema_database ... ok
+test cli_subscription_receives_matching_intent_events_without_blocking_daemon ... ok
+test cli_receives_testing_trace_events_from_daemon_trace_socket ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+     Running tests/process_harness.rs (target/debug/deps/process_harness-78a8f1d66693b596)
+
+running 9 tests
+test environment_probe_observes_explicit_environment_only ... ignored, child-only probe invoked by the isolated-command witness
+test managed_child_lifetime_probe ... ignored, child-only probe invoked by the managed-child witness
+test missing_manual_source_configuration_is_a_typed_error ... ok
+test isolated_command_exposes_only_its_explicit_environment ... ok
+test managed_child_is_reaped_and_socket_readiness_requires_a_socket ... ok
+test absent_archive_is_explicit_and_no_sibling_is_inferred ... ok
+test disposable_live_and_archive_sources_copy_independently_and_stay_unchanged ... ok
+test sandbox_contains_every_process_artifact_and_cleans_it_automatically ... ok
+test symlink_source_is_refused_before_copy ... ok
+
+test result: ok. 7 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/public_surface.rs (target/debug/deps/public_surface-7fe586448426b899)
+
+running 1 test
+test crate_root_does_not_reexport_generated_plane_nouns ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime_triad.rs (target/debug/deps/runtime_triad-029e4ef2c5c1b004)
+
+running 4 tests
+test generated_roots_implement_the_shared_runtime_roles ... ok
+test record_observe_lookup_and_count_cross_the_full_runtime ... ok
+test importance_filtering_and_bump_are_the_only_magnitude_state_path ... ok
+test text_search_and_intent_read_every_current_record_in_scope ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/socket_negative.rs (target/debug/deps/socket_negative-d77830e7246a3d9d)
+
+running 3 tests
+test transport_rejects_length_prefixed_garbage_bytes ... ok
+test generated_input_decoder_rejects_raw_nota_text_directly ... ok
+test transport_rejects_length_prefixed_raw_nota_text ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/staged_intake.rs (target/debug/deps/staged_intake-46b044df756f5299)
+
+running 6 tests
+test head_advancing_inputs_stage_and_reads_stay_immediate ... ok
+test reads_flow_ungated_while_the_gate_is_enabled_and_criome_is_absent ... ok
+test a_refused_advance_is_refused_to_the_caller_and_leaves_no_trace ... ok
+test crash_recovery_materializes_a_parked_group_on_the_recovery_grant ... ok
+test a_granted_advance_materializes_exactly_the_staged_group ... ok
+test each_terminal_refusal_reason_surfaces_to_the_caller ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/store_migration_v14.rs (target/debug/deps/store_migration_v14-fba566094a2847c8)
+
+running 2 tests
+test corrupt_or_wrong_generation_source_fails_without_rewriting_it ... ok
+test v13_projection_discards_retired_data_and_preserves_live_archive_and_rollback ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/versioned_store.rs (target/debug/deps/versioned_store-fbd52c8b7ac88644)
+
+running 3 tests
+test versioned_log_contains_only_current_record_family_payloads ... ok
+test retire_archives_before_emitting_one_retraction_tombstone ... ok
+test checkpoint_and_suffix_restore_the_identical_v14_store ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

@@ -1,0 +1,41 @@
+; datom
+
+; ReleaseTrain: type declaration
+; Library.{ 2 0 0 }
+; []
+; [ Stop.[ Crate.{ Text Text Text Text Text }               ; crate stop: repo branch rev version base
+;           Home.{ Text Text Text Text } ]                  ; home stop: repo branch rev base
+;   Deployment.[ BranchesPushed  Deployed.{ Text Text } ]    ; branches pushed, not yet merged | deployed on host at CriomOS rev
+;   ReleaseTrain.{ Text Text Text Vector<Stop> Vector<Deployment> } ; name date flow stops deployments
+; ]
+
+ReleaseTrain.{                                                                        ; the ProtoformStack branch train
+  ProtoformStack                                                                      ;   name
+  2026-09-04                                                                          ;   date
+  6329f1                                                                              ;   flow
+  [                                                                                   ;   stops
+    Crate.{ protos ProtoformStack 56c683ec8d1e 0.15.0 2f605fd }                     ;     1 protos
+    Crate.{ datomic ProtoformStack a27f9b8e7789 0.8.0 8b17abc }                     ;     2 datomic
+    Crate.{ ethos-zero ProtoformStack 185f13a90354 1.0.0 b922afb }                  ;     3 ethos-zero
+    Crate.{ signal-orchestrate ProtoformStack b25bbd9fbc8f 0.19.0 a597f1a }         ;     4 signal-orchestrate
+    Crate.{ meta-signal-orchestrate ProtoformStack 5a99ccb1781f 0.13.0 5cdf35a }    ;     5 meta-signal-orchestrate
+    Crate.{ orchestrate ProtoformStack e631bad92ef2 0.27.0 dadd537 }                ;     6 orchestrate
+    Home.{ CriomOS-home ProtoformStack f8d5c5d7b58f origin/main }                   ;     7 CriomOS-home, check and input only
+    Crate.{ datomic main e4430bfedb5c 0.9.0 a27f9b8 }                              ;     8 datomic (second wave)
+    Crate.{ ethos-zero main 8bcb0b9402fb 1.2.0 185f13a }                            ;     9 ethos-zero (second wave)
+    Crate.{ signal-orchestrate main 43db4af50686 0.20.0 b25bbd9 }                   ;    10 signal-orchestrate (second wave)
+    Crate.{ meta-signal-orchestrate main a29abc912e4a 0.14.0 5a99ccb }              ;    11 meta-signal-orchestrate (second wave)
+    Crate.{ orchestrate main 1c0dd769c827 0.29.0 e631bad }                          ;    12 orchestrate (second wave)
+    Crate.{ claude-answers main a2edb6777b60 0.5.0 d6ae3ef }                        ;    13 claude-answers
+    Crate.{ curriculum-deploy main 50e12d3ace0d 0.5.0 f3f2ee3 }                     ;    14 curriculum-deploy
+    Crate.{ protos main 48061367872b 0.15.1 56c683e }                               ;    15 protos (third wave)
+    Crate.{ datomic main 4712361c0194 0.9.1 e4430bf }                               ;    16 datomic (third wave)
+    Crate.{ ethos-zero main 0f198968d208 1.3.1 8bcb0b9 }                            ;    17 ethos-zero (third wave)
+    Crate.{ signal-orchestrate main f366d6accf8d 0.20.1 43db4af }                   ;    18 signal-orchestrate (third wave)
+    Crate.{ meta-signal-orchestrate main 3ae11c132272 0.14.1 a29abc9 }              ;    19 meta-signal-orchestrate (third wave)
+    Crate.{ orchestrate main 885f6e3e67ac 0.29.2 1c0dd76 }                          ;    20 orchestrate (third wave)
+    Crate.{ claude-answers main f5c15478bdaf 0.5.1 a2edb67 }                        ;    21 claude-answers (third wave)
+    Crate.{ curriculum-deploy main 2a1c3371a41f 0.5.1 50e12d3 }                     ;    22 curriculum-deploy (third wave)
+  ]
+  [ Deployed.{ ouranos 83b3a8f }  Deployed.{ ouranos ef4383a }  Deployed.{ ouranos eefa86f } ]  ;   deployments
+}

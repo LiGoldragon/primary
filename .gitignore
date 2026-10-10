@@ -1,0 +1,62 @@
+# Primary workspace local index
+/repos
+
+# Private role repositories — local checkouts/symlinks only, never tracked here
+/private-repos/
+
+# jj colocated repository metadata
+.jj/
+
+# direnv
+.direnv/
+
+# nix
+result
+result-*
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/issues.jsonl
+
+# local environment
+.env
+.envrc.local
+
+# local Pi continuation state; generated subagent roles are tracked
+.pi/*
+!.pi/agents/
+!.pi/agents/**
+
+# transient subagent runtime artifacts — transcripts, inputs, outputs, not history
+/.pi-subagents/
+
+# editor and language scratch
+*.swp
+*.swo
+__pycache__/
+*.pyc
+/tools/wezterm-palette-rpc-test/target/
+/tools/messaging-codec/target/
+
+# orchestration lane lock files — runtime coordination state, not history
+/orchestrate/*.lock
+/orchestrate/*.redb*
+/orchestrate/*.signal
+/orchestrate/*.sock
+/orchestrate/orchestrate-daemon.log
+
+# orchestrate-cli build outputs
+/orchestrate-cli/target/
+/test
+worktrees/aggregator-inventory-health-fixes/
+# bd worktree
+agent-worktrees/agent-toolchain-refresh-tracker/
+
+# private bootstrap records
+/.lojix-bootstrap-primary-*/
+
+# flow-id private runtime claim metadata; lanes and authored flow records remain tracked
+/flows/.*.flow-id
+/flows/.*.flow-id.lock

@@ -1,0 +1,535 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Four-Layer Cluster</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#E9EDF1; --paper:#FFFFFF; --ink:#0E1822; --mute:#5C6B79;
+  --brass:#A8701A; --brass-soft:#F4E6CA;
+  --teal:#13574C; --teal-soft:#D8E9E4;
+  --slate:#3A4C5C; --slate-soft:#DEE5EC;
+  --onfill:#FFFFFF;
+  --line:#B6C2CD; --hair:#D3DBE3;
+  --display:"Helvetica Neue",Helvetica,Arial,ui-sans-serif,system-ui,sans-serif;
+  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#080D13; --paper:#111A23; --ink:#E6ECF2; --mute:#94A6B5;
+    --brass:#E2A94F; --brass-soft:#392C13;
+    --teal:#5BBBA7; --teal-soft:#10302A;
+    --slate:#9DB3C4; --slate-soft:#1A2732;
+    --onfill:#081019;
+    --line:#2C3B48; --hair:#1E2B36;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#080D13; --paper:#111A23; --ink:#E6ECF2; --mute:#94A6B5;
+  --brass:#E2A94F; --brass-soft:#392C13;
+  --teal:#5BBBA7; --teal-soft:#10302A;
+  --slate:#9DB3C4; --slate-soft:#1A2732;
+  --onfill:#081019;
+  --line:#2C3B48; --hair:#1E2B36;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+
+.deck{position:relative;height:100dvh;min-height:440px}
+.slide{position:absolute;inset:0;display:none;overflow-y:auto;overflow-x:hidden;
+  padding:clamp(16px,2.6vw,34px) clamp(14px,3vw,46px) clamp(72px,9vh,94px)}
+.slide.is-on{display:block;animation:fade .3s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.is-on{animation:none}}
+
+.wrap{max-width:1240px;margin:0 auto;min-height:100%;
+  display:grid;grid-template-columns:minmax(0,33ch) minmax(0,1fr);
+  column-gap:clamp(22px,3.6vw,56px);row-gap:16px;align-content:center}
+.col-l{display:flex;flex-direction:column;gap:clamp(11px,1.5vh,19px);min-width:0}
+.col-r{min-width:0;align-self:center}
+
+.eyebrow{margin:0;font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:.8em}
+.eyebrow b{color:var(--brass);font-weight:700}
+.eyebrow i{flex:1;height:1px;background:var(--line);font-style:normal}
+
+h2{margin:0;font-family:var(--display);font-weight:800;line-height:1.02;
+  letter-spacing:-.028em;text-wrap:balance;
+  font-size:clamp(1.55rem,1.1rem + 2vw,2.8rem)}
+
+.metric{display:flex;align-items:baseline;gap:.65em;border-top:2px solid var(--ink);
+  border-bottom:1px solid var(--hair);padding:.5em 0 .6em}
+.metric .fig{font-family:var(--display);font-weight:800;
+  font-size:clamp(1.9rem,1.3rem + 2.4vw,3.1rem);
+  line-height:.92;letter-spacing:-.04em;color:var(--brass);font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.metric .cap{font-family:var(--mono);font-size:.66rem;line-height:1.5;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--mute);max-width:22ch}
+
+.prose{margin:0;font-size:clamp(.86rem,.8rem + .26vw,.99rem);line-height:1.6;
+  color:color-mix(in srgb, var(--ink) 86%, var(--bg));max-width:40ch}
+.prose strong{font-weight:700;color:var(--ink)}
+.prose em{font-style:italic}
+
+figure.plate{margin:0;background:var(--paper);border:1px solid var(--line);
+  padding:clamp(12px,1.6vw,22px);display:flex;flex-direction:column;gap:10px}
+figure.plate svg{display:block;width:100%;height:auto;max-height:min(64vh,520px)}
+figcaption{font-family:var(--mono);font-size:.63rem;letter-spacing:.04em;color:var(--mute);
+  line-height:1.55;border-top:1px solid var(--hair);padding-top:8px}
+
+.slide--cover .wrap{grid-template-columns:minmax(0,1fr);max-width:1020px}
+.slide--cover h1{margin:.12em 0 0;font-family:var(--display);font-weight:800;line-height:.96;
+  letter-spacing:-.036em;font-size:clamp(2.1rem,1.3rem + 4.2vw,4.3rem);text-wrap:balance}
+.slide--cover .stand{margin:.7em 0 0;font-size:clamp(.94rem,.86rem + .38vw,1.12rem);
+  line-height:1.5;max-width:54ch;color:color-mix(in srgb, var(--ink) 86%, var(--bg))}
+.slide--cover figure.plate svg{max-height:min(38vh,300px)}
+.slide--cover .src{margin:0;font-family:var(--mono);font-size:.62rem;letter-spacing:.03em;
+  color:var(--mute);line-height:1.6;max-width:78ch}
+
+.asks{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+.asks li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.85em;align-items:start;
+  border-left:3px solid var(--brass);padding:.3em 0 .3em .85em;
+  font-size:clamp(.84rem,.79rem + .22vw,.96rem);line-height:1.5}
+.asks .k{font-family:var(--mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);padding-top:.4em}
+
+.hud{position:fixed;left:0;right:0;bottom:0;height:clamp(54px,7vh,66px);
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:0 clamp(12px,3vw,40px);background:color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter:blur(8px);border-top:1px solid var(--hair);z-index:5}
+.hud button{font:inherit;cursor:pointer;background:var(--paper);color:var(--ink);
+  border:1px solid var(--line);width:38px;height:34px;display:grid;place-items:center;
+  font-size:1rem;line-height:1;transition:border-color .16s,color .16s}
+.hud button:hover:not(:disabled){border-color:var(--brass);color:var(--brass)}
+.hud button:disabled{opacity:.34;cursor:default}
+.hud button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.ticks{display:flex;gap:7px}
+.tick{width:26px;height:4px;padding:0;border:none;background:var(--line);cursor:pointer}
+.tick[aria-current="true"]{background:var(--brass)}
+.tick:hover{background:var(--mute)}
+.tick:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.count{font-family:var(--mono);font-size:.67rem;letter-spacing:.12em;color:var(--mute);
+  font-variant-numeric:tabular-nums;min-width:7ch;text-align:center}
+
+svg text{font-family:var(--body)}
+.lbl{font-size:12px;fill:var(--ink)}
+.lbl-s{font-size:10.5px;fill:var(--mute)}
+.lbl-n{font-family:var(--mono);font-size:10px;letter-spacing:.1em;fill:var(--mute)}
+.lbl-b{font-size:12.5px;font-weight:700;fill:var(--ink)}
+.lbl-band{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;fill:var(--onfill)}
+.lbl-brass{font-size:12.5px;font-weight:700;fill:var(--brass)}
+.lbl-a{font-family:var(--mono);font-size:10px;letter-spacing:.06em;fill:var(--teal)}
+
+@media (max-width:900px){
+  body{overflow:auto}
+  .deck{height:auto}
+  .slide{position:static;padding-bottom:104px}
+  .slide:not(.is-on){display:none}
+  .wrap{grid-template-columns:minmax(0,1fr);min-height:0;align-content:start;row-gap:18px}
+  figure.plate svg{max-height:none}
+  .prose,.metric .cap,.slide--cover .stand{max-width:none}
+}
+</style>
+
+<main class="deck">
+
+<section class="slide slide--cover is-on" id="s0" aria-label="Cover">
+  <div class="wrap"><div class="col-l">
+    <p class="eyebrow"><b>Prospectus</b><i></i><span>2026-09-16</span></p>
+    <h1>Four layers.<br>One mind.<br>Eight seats.</h1>
+    <p class="stand">A psyche extends itself through a cluster of flows. Here is what the cluster is, how work moves through it, who sits where &mdash; and the one seat still open.</p>
+    <figure class="plate">
+      <svg viewBox="0 0 640 208" role="img" aria-label="The cluster on one page: the living above four layers, primary, secondary, tertiary and quaternary, each staffed by a Claude half and a Codex half">
+        <text x="20" y="18" class="lbl-n">THE CLUSTER, ONE PAGE</text>
+        <rect x="20" y="26" width="600" height="26" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="34" y="44" class="lbl-brass">the living</text>
+        <text x="606" y="44" class="lbl-n" text-anchor="end">SPEAKS</text>
+
+        <rect x="20" y="60" width="600" height="32" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="60" width="5" height="32" fill="var(--teal)"/>
+        <text x="38" y="80" class="lbl-b">1 &middot; primary</text>
+        <text x="190" y="80" class="lbl-s">design &middot; thinking &middot; prototypes</text>
+        <text x="606" y="80" class="lbl-n" text-anchor="end">CLAUDE + CODEX</text>
+
+        <rect x="20" y="96" width="600" height="32" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="96" width="5" height="32" fill="var(--teal)"/>
+        <text x="38" y="116" class="lbl-b">2 &middot; secondary</text>
+        <text x="190" y="116" class="lbl-s">deployment &middot; production tests</text>
+        <text x="606" y="116" class="lbl-n" text-anchor="end">CLAUDE + CODEX</text>
+
+        <rect x="20" y="132" width="600" height="32" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="132" width="5" height="32" fill="var(--brass)"/>
+        <text x="38" y="152" class="lbl-b">3 &middot; tertiary</text>
+        <text x="190" y="152" class="lbl-s">real-time communication &middot; liveness</text>
+        <text x="606" y="152" class="lbl-n" text-anchor="end">CLAUDE + CODEX</text>
+
+        <rect x="20" y="168" width="600" height="32" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="168" width="5" height="32" fill="var(--brass)"/>
+        <text x="38" y="188" class="lbl-b">4 &middot; quaternary</text>
+        <text x="190" y="188" class="lbl-s">filter &middot; firewall &middot; pre-reflex</text>
+        <text x="606" y="188" class="lbl-n" text-anchor="end">CLAUDE + CODEX</text>
+      </svg>
+      <figcaption>Four depths, each a Claude half and a Codex half, the living above them all.</figcaption>
+    </figure>
+    <p class="src">Source: the living&rsquo;s words of 2026-09-16 &mdash; flows/efa157/vision/layers.md, flows/f55ec8/vision/layers.md, flows/f55ec8/vision/modelRoles.md. Every figure that follows is read off those records; the framing is ours, the facts are theirs.</p>
+  </div></div>
+</section>
+
+<section class="slide" id="s1" aria-label="One mind, four depths">
+  <div class="wrap">
+    <div class="col-l">
+      <p class="eyebrow"><b>01</b><i></i><span>The structure</span></p>
+      <h2>One mind at four depths &mdash; not four bosses.</h2>
+      <div class="metric"><span class="fig">4&#8202;&times;&#8202;2</span><span class="cap">Four depths, two halves each. The same message reaches both.</span></div>
+      <p class="prose">A psyche extends itself through a cluster of flows. The flows are not a hierarchy of bosses; they are one mind at four depths. The top is slow and considers; the bottom is quick and instinctive. Every depth is a pair: a <strong>Claude half</strong> and a <strong>Codex half</strong>, the same message reaching both.</p>
+    </div>
+    <div class="col-r"><figure class="plate">
+      <svg viewBox="0 0 640 428" role="img" aria-label="Org chart: the living above four layers. Primary designs and thinks, secondary deploys, tertiary carries real-time communication, liveness, speech-to-text and quick thinking, quaternary is the filter and firewall, a pre-reflex before consciousness. Each layer holds a Claude seat and a Codex seat.">
+        <rect x="245" y="8" width="150" height="32" rx="16" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="320" y="29" class="lbl-brass" text-anchor="middle">the living</text>
+        <line x1="320" y1="40" x2="320" y2="58" stroke="var(--line)"/>
+        <line x1="118" y1="58" x2="320" y2="58" stroke="var(--line)"/>
+        <line x1="118" y1="58" x2="118" y2="396" stroke="var(--line)"/>
+
+        <text x="232" y="72" class="lbl-n">CLAUDE HALF</text>
+        <text x="434" y="72" class="lbl-n">CODEX HALF</text>
+
+        <rect x="20" y="82" width="196" height="64" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="82" width="5" height="64" fill="var(--teal)"/>
+        <text x="38" y="104" class="lbl-b">1 &middot; primary</text>
+        <text x="38" y="121" class="lbl-s">design &middot; thinking</text>
+        <text x="38" y="136" class="lbl-s">prototypes</text>
+        <line x1="216" y1="114" x2="232" y2="114" stroke="var(--line)"/>
+        <rect x="232" y="94" width="186" height="40" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="325" y="119" class="lbl" text-anchor="middle">slow &middot; considers</text>
+        <rect x="434" y="94" width="186" height="40" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="527" y="119" class="lbl" text-anchor="middle">slow &middot; considers</text>
+
+        <rect x="20" y="164" width="196" height="64" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="164" width="5" height="64" fill="var(--teal)"/>
+        <text x="38" y="186" class="lbl-b">2 &middot; secondary</text>
+        <text x="38" y="203" class="lbl-s">deployment</text>
+        <text x="38" y="218" class="lbl-s">production tests</text>
+        <line x1="216" y1="196" x2="232" y2="196" stroke="var(--line)"/>
+        <rect x="232" y="176" width="186" height="40" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="325" y="201" class="lbl" text-anchor="middle">ships &middot; tests in production</text>
+        <rect x="434" y="176" width="186" height="40" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="527" y="201" class="lbl" text-anchor="middle">ships &middot; tests in production</text>
+
+        <rect x="20" y="246" width="196" height="64" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="246" width="5" height="64" fill="var(--brass)"/>
+        <text x="38" y="268" class="lbl-b">3 &middot; tertiary</text>
+        <text x="38" y="285" class="lbl-s">quick, instinctive</text>
+        <text x="38" y="300" class="lbl-s">lower cost</text>
+        <line x1="216" y1="278" x2="232" y2="278" stroke="var(--line)"/>
+        <rect x="232" y="252" width="388" height="52" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <line x1="426" y1="252" x2="426" y2="304" stroke="var(--brass)" stroke-dasharray="3 3"/>
+        <text x="426" y="272" class="lbl" text-anchor="middle">real-time communication &middot; liveness</text>
+        <text x="426" y="290" class="lbl-s" text-anchor="middle">alert and attentive &middot; speech-to-text &middot; quick thinking</text>
+
+        <rect x="20" y="328" width="196" height="68" fill="var(--paper)" stroke="var(--line)"/>
+        <rect x="20" y="328" width="5" height="68" fill="var(--brass)"/>
+        <text x="38" y="350" class="lbl-b">4 &middot; quaternary</text>
+        <text x="38" y="367" class="lbl-s">quick, instinctive</text>
+        <text x="38" y="382" class="lbl-s">lower cost</text>
+        <line x1="216" y1="362" x2="232" y2="362" stroke="var(--line)"/>
+        <rect x="232" y="334" width="388" height="56" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <line x1="426" y1="334" x2="426" y2="390" stroke="var(--brass)" stroke-dasharray="3 3"/>
+        <text x="426" y="354" class="lbl" text-anchor="middle">the filter &middot; the firewall</text>
+        <text x="426" y="371" class="lbl-s" text-anchor="middle">noise out &middot; corrects speech-to-text</text>
+        <text x="426" y="385" class="lbl-s" text-anchor="middle">pre-reflex, before the mind communicates</text>
+
+        <text x="20" y="418" class="lbl-n">SLOW AND CONSIDERING ABOVE &middot; QUICK AND INSTINCTIVE BELOW</text>
+      </svg>
+      <figcaption>Teal deliberates, brass reacts. The dashed centre line is the Claude / Codex split carried through every depth.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+<section class="slide" id="s2" aria-label="Requests climb; each layer is a filter">
+  <div class="wrap">
+    <div class="col-l">
+      <p class="eyebrow"><b>02</b><i></i><span>The mechanism</span></p>
+      <h2>Nothing reaches the top unaudited.</h2>
+      <div class="metric"><span class="fig">3</span><span class="cap">Audits between the floor and the living. What fails goes back down, not up.</span></div>
+      <p class="prose">A lower layer never bothers the one above it directly. What it wants goes to the layer just above, which reads it as an auditor: <em>did you understand the instruction?</em> If not, it says so and sends the layer back to work, to present another prospect, another proof of concept. Only what passes that audit climbs further. Any layer functions this way, all the way to the living.</p>
+    </div>
+    <div class="col-r"><figure class="plate">
+      <svg viewBox="0 0 640 430" role="img" aria-label="An upward funnel. The quaternary firewall filters noise at the widest point, the tertiary handles liveness and speech-to-text, then the secondary and the primary audit in turn, and only what survives reaches the living at the top. Dashed arrows return failed requests to the layer below.">
+        <defs>
+          <marker id="f-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker>
+          <marker id="f-bk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker>
+        </defs>
+
+        <rect x="245" y="8" width="150" height="32" rx="16" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="320" y="29" class="lbl-brass" text-anchor="middle">the living</text>
+        <line x1="320" y1="64" x2="320" y2="46" stroke="var(--teal)" stroke-width="2" marker-end="url(#f-up)"/>
+        <text x="330" y="60" class="lbl-a">only what survived</text>
+
+        <polygon points="185,142 455,142 400,66 240,66" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="320" y="96" class="lbl-b" text-anchor="middle">1 &middot; primary audits</text>
+        <text x="320" y="114" class="lbl-s" text-anchor="middle">considers, then passes it on</text>
+
+        <polygon points="150,228 490,228 455,152 185,152" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="320" y="182" class="lbl-b" text-anchor="middle">2 &middot; secondary audits</text>
+        <text x="320" y="200" class="lbl-s" text-anchor="middle">did you understand the instruction?</text>
+
+        <polygon points="110,314 530,314 490,238 150,238" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="320" y="266" class="lbl-b" text-anchor="middle">3 &middot; tertiary &mdash; the real-time layer</text>
+        <text x="320" y="284" class="lbl-s" text-anchor="middle">liveness &middot; speech-to-text &middot; quick thinking</text>
+
+        <polygon points="60,400 580,400 530,324 110,324" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="320" y="350" class="lbl-b" text-anchor="middle">4 &middot; quaternary &mdash; the firewall</text>
+        <text x="320" y="368" class="lbl-s" text-anchor="middle">noise filtered out before consciousness</text>
+        <text x="320" y="384" class="lbl-s" text-anchor="middle">corrects speech-to-text &middot; the gut reflex</text>
+
+        <path d="M436 100 C498 110 498 168 474 186" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#f-bk)"/>
+        <path d="M474 186 C540 196 540 254 510 272" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#f-bk)"/>
+        <path d="M512 272 C578 282 578 340 550 358" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#f-bk)"/>
+
+        <line x1="34" y1="398" x2="34" y2="72" stroke="var(--line)" marker-end="url(#f-up)"/>
+        <text x="24" y="250" class="lbl-n" text-anchor="middle" transform="rotate(-90 24 250)">REQUESTS CLIMB</text>
+
+        <rect x="62" y="78" width="11" height="11" fill="none" stroke="var(--brass)" stroke-dasharray="4 3"/>
+        <text x="82" y="88" class="lbl-s">not understood &rarr;</text>
+        <text x="82" y="102" class="lbl-s">back to work,</text>
+        <text x="82" y="116" class="lbl-s">another prospect</text>
+
+        <text x="606" y="420" class="lbl-n" text-anchor="end">VOLUME IN AT THE BOTTOM</text>
+      </svg>
+      <figcaption>The funnel runs upward: noise is discarded where it is cheapest, and each gate above either passes the request or returns it for another proof of concept.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+<section class="slide" id="s3" aria-label="Who thinks, who does">
+  <div class="wrap">
+    <div class="col-l">
+      <p class="eyebrow"><b>03</b><i></i><span>The bench</span></p>
+      <h2>Thinkers on one side. Doers on the other.</h2>
+      <div class="metric"><span class="fig">2</span><span class="cap">Sides, staffed separately. Each model holds several roles.</span></div>
+      <p class="prose">On the thinking side, where a psyche is being read: <strong>Fable</strong>, newest; the <strong>older Opus</strong>, the wiser one, for consideration and qualitative audits; and <strong>Astra</strong>, of the same side but another temperament, Martian: it commits easily and moves fast, sometimes recklessly, and what it did is looked at afterwards. A fourth seat there waits for an open-source model, large and wise, not yet chosen. On the doing side: the <strong>newer Opus</strong>, faster and blinder, good at getting things done; <strong>Sol</strong>, the Codex lower layers; and <strong>Terra</strong> and <strong>Luna</strong>, useful hands.</p>
+    </div>
+    <div class="col-r"><figure class="plate">
+      <svg viewBox="0 0 640 372" role="img" aria-label="Two columns. The thinking side holds Fable, the older Opus, Astra, and one unfilled open-source seat. The doing side holds the newer Opus, Sol, Terra and Luna. The thinking side decides and audits the doing side, and Astra may reach across to Opus agents for creative coding when the quota allows.">
+        <defs>
+          <marker id="q-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker>
+          <marker id="q-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker>
+        </defs>
+
+        <rect x="20" y="8" width="250" height="26" fill="var(--teal)"/>
+        <text x="145" y="25" class="lbl-band" text-anchor="middle">THINKING &middot; DESIGN &middot; PSYCHE</text>
+        <rect x="380" y="8" width="240" height="26" fill="var(--slate)"/>
+        <text x="500" y="25" class="lbl-band" text-anchor="middle">GETTING THINGS DONE</text>
+
+        <rect x="20" y="48" width="250" height="52" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="36" y="70" class="lbl-b">Fable</text>
+        <text x="36" y="89" class="lbl-s">newest</text>
+        <rect x="20" y="108" width="250" height="52" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="36" y="130" class="lbl-b">older Opus &mdash; the wiser one</text>
+        <text x="36" y="149" class="lbl-s">consideration &middot; qualitative audits</text>
+        <rect x="20" y="168" width="250" height="52" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="36" y="190" class="lbl-b">Astra &mdash; Martian</text>
+        <text x="36" y="209" class="lbl-s">commits fast, sometimes recklessly</text>
+        <rect x="20" y="228" width="250" height="52" fill="none" stroke="var(--brass)" stroke-width="2" stroke-dasharray="6 4"/>
+        <text x="36" y="250" class="lbl-brass">open-source seat</text>
+        <text x="36" y="269" class="lbl-s">large, wise &mdash; not yet chosen</text>
+
+        <rect x="380" y="48" width="240" height="52" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="396" y="70" class="lbl-b">newer Opus</text>
+        <text x="396" y="89" class="lbl-s">faster, blinder, gets things done</text>
+        <rect x="380" y="108" width="240" height="52" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="396" y="130" class="lbl-b">Sol</text>
+        <text x="396" y="149" class="lbl-s">the Codex lower layers</text>
+        <rect x="380" y="168" width="240" height="52" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="396" y="190" class="lbl-b">Terra</text>
+        <text x="396" y="209" class="lbl-s">useful hands</text>
+        <rect x="380" y="228" width="240" height="52" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="396" y="250" class="lbl-b">Luna</text>
+        <text x="396" y="269" class="lbl-s">useful hands</text>
+
+        <line x1="278" y1="140" x2="370" y2="140" stroke="var(--teal)" stroke-width="2" marker-end="url(#q-ar)"/>
+        <text x="324" y="130" class="lbl-a" text-anchor="middle">decides</text>
+        <text x="324" y="158" class="lbl-a" text-anchor="middle">audits</text>
+
+        <path d="M145 284 L145 318 L500 318 L500 286" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#q-dash)"/>
+        <text x="322" y="338" class="lbl-s" text-anchor="middle">Astra sets Opus agents to creative coding, when the quota allows</text>
+        <text x="322" y="362" class="lbl-n" text-anchor="middle">EACH MODEL HOLDS SEVERAL ROLES</text>
+      </svg>
+      <figcaption>Eight seats, seven filled. The solid arrow is authority; the dashed one is the capacity Astra can draw on when quota is free.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+<section class="slide" id="s4" aria-label="The season of each layer">
+  <div class="wrap">
+    <div class="col-l">
+      <p class="eyebrow"><b>04</b><i></i><span>The cycle</span></p>
+      <h2>A year that turns, and keeps turning.</h2>
+      <div class="metric"><span class="fig">4</span><span class="cap">Seasons in one loop. Winter carries the volume and costs the least.</span></div>
+      <p class="prose">Read the four as seasons of one year. Spring is the living speaking. Summer is the primary, where ideas are grown into prototypes. Autumn is the secondary, where what ripened is harvested into production and tested there. Winter is the quick lower layers: little light, little cost, instinct doing the small work so the year can turn again. Every winter request climbs back through autumn and summer before it reaches spring.</p>
+    </div>
+    <div class="col-r"><figure class="plate">
+      <svg viewBox="0 0 620 440" role="img" aria-label="A flywheel of four seasons: spring is the living speaking, summer is the primary growing prototypes, autumn is the secondary harvesting into production, winter is the quick low-cost layers doing the small work. An inner dashed loop shows requests climbing back the other way.">
+        <defs>
+          <marker id="w-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker>
+          <marker id="w-bk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker>
+        </defs>
+
+        <path d="M368 96 A150 150 0 0 1 434 162" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#w-ar)"/>
+        <path d="M434 278 A150 150 0 0 1 368 344" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#w-ar)"/>
+        <path d="M252 344 A150 150 0 0 1 186 278" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#w-ar)"/>
+        <path d="M186 162 A150 150 0 0 1 252 96" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#w-ar)"/>
+
+        <path d="M256 328 A100 100 0 0 0 212 284" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#w-bk)"/>
+        <path d="M212 156 A100 100 0 0 0 256 112" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#w-bk)"/>
+        <path d="M364 112 A100 100 0 0 0 408 156" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#w-bk)"/>
+
+        <circle cx="310" cy="80" r="56" fill="var(--brass-soft)" stroke="var(--brass)"/>
+        <text x="310" y="72" class="lbl-b" text-anchor="middle">spring</text>
+        <text x="310" y="90" class="lbl-s" text-anchor="middle">the living</text>
+        <text x="310" y="104" class="lbl-s" text-anchor="middle">speaks</text>
+
+        <circle cx="450" cy="220" r="56" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="450" y="212" class="lbl-b" text-anchor="middle">summer</text>
+        <text x="450" y="230" class="lbl-s" text-anchor="middle">primary grows</text>
+        <text x="450" y="244" class="lbl-s" text-anchor="middle">the idea</text>
+
+        <circle cx="310" cy="360" r="56" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="310" y="352" class="lbl-b" text-anchor="middle">autumn</text>
+        <text x="310" y="370" class="lbl-s" text-anchor="middle">secondary harvests</text>
+        <text x="310" y="384" class="lbl-s" text-anchor="middle">to production</text>
+
+        <circle cx="170" cy="220" r="56" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="170" y="212" class="lbl-b" text-anchor="middle">winter</text>
+        <text x="170" y="230" class="lbl-s" text-anchor="middle">lower layers do</text>
+        <text x="170" y="244" class="lbl-s" text-anchor="middle">the small work</text>
+
+        <text x="310" y="214" class="lbl-n" text-anchor="middle">THE YEAR TURNS &rarr;</text>
+        <text x="310" y="234" class="lbl-s" text-anchor="middle">requests climb back &larr;</text>
+
+        <text x="596" y="426" class="lbl-n" text-anchor="end">LITTLE LIGHT, LITTLE COST</text>
+      </svg>
+      <figcaption>Solid teal is the year turning &mdash; speak, grow, harvest, rest. Dashed brass is the return path every winter request takes, audited through autumn and summer.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+<section class="slide" id="s5" aria-label="The ask">
+  <div class="wrap">
+    <div class="col-l">
+      <p class="eyebrow"><b>05</b><i></i><span>The ask</span></p>
+      <h2>One seat is open. Fill it.</h2>
+      <div class="metric"><span class="fig">1&#8202;/&#8202;8</span><span class="cap">Seats unfilled &mdash; the fourth on the thinking side.</span></div>
+      <ul class="asks">
+        <li><span class="k">Ask</span><span>A fourth thinking seat: an <strong>open-source model, large and wise</strong>. Not yet chosen.</span></li>
+        <li><span class="k">Spec</span><span>It should <strong>resist the temptation to act</strong> &mdash; question, doubt, seek clarification &mdash; and understand the unspoken part of a design, reword it, and ask the psyche whether that is what was meant.</span></li>
+        <li><span class="k">Cost</span><span>The two bottom layers already run on <strong>lower-cost models at medium effort</strong> by default. The volume sits where the price is lowest.</span></li>
+        <li><span class="k">Upside</span><span>When the quota allows, <strong>Astra sets Opus agents to creative coding</strong> &mdash; spare capacity turns into work instead of idling.</span></li>
+      </ul>
+    </div>
+    <div class="col-r"><figure class="plate">
+      <svg viewBox="0 0 640 326" role="img" aria-label="The bench with one vacancy: three filled thinking seats beside one dashed empty seat marked open source, large, wise and unchosen, above four filled doing seats.">
+        <rect x="20" y="8" width="600" height="26" fill="var(--teal)"/>
+        <text x="320" y="25" class="lbl-band" text-anchor="middle">THINKING SIDE &mdash; 3 FILLED, 1 OPEN</text>
+
+        <rect x="20" y="46" width="140" height="76" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="90" y="80" class="lbl-b" text-anchor="middle">Fable</text>
+        <text x="90" y="99" class="lbl-s" text-anchor="middle">seated</text>
+        <rect x="173" y="46" width="140" height="76" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="243" y="80" class="lbl-b" text-anchor="middle">older Opus</text>
+        <text x="243" y="99" class="lbl-s" text-anchor="middle">seated</text>
+        <rect x="326" y="46" width="140" height="76" fill="var(--teal-soft)" stroke="var(--teal)"/>
+        <text x="396" y="80" class="lbl-b" text-anchor="middle">Astra</text>
+        <text x="396" y="99" class="lbl-s" text-anchor="middle">seated</text>
+
+        <rect x="479" y="42" width="141" height="84" fill="none" stroke="var(--brass)" stroke-width="2.4" stroke-dasharray="7 5"/>
+        <text x="549" y="72" style="font-size:24px;font-weight:800;fill:var(--brass)" text-anchor="middle">?</text>
+        <text x="549" y="94" class="lbl-brass" text-anchor="middle">open source</text>
+        <text x="549" y="112" class="lbl-s" text-anchor="middle">large &middot; wise &middot; unchosen</text>
+
+        <rect x="20" y="146" width="600" height="26" fill="var(--slate)"/>
+        <text x="320" y="163" class="lbl-band" text-anchor="middle">DOING SIDE &mdash; 4 FILLED</text>
+        <rect x="20" y="184" width="140" height="62" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="90" y="212" class="lbl-b" text-anchor="middle">newer Opus</text>
+        <text x="90" y="230" class="lbl-s" text-anchor="middle">seated</text>
+        <rect x="173" y="184" width="140" height="62" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="243" y="212" class="lbl-b" text-anchor="middle">Sol</text>
+        <text x="243" y="230" class="lbl-s" text-anchor="middle">seated</text>
+        <rect x="326" y="184" width="140" height="62" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="396" y="212" class="lbl-b" text-anchor="middle">Terra</text>
+        <text x="396" y="230" class="lbl-s" text-anchor="middle">seated</text>
+        <rect x="479" y="184" width="141" height="62" fill="var(--slate-soft)" stroke="var(--slate)"/>
+        <text x="549" y="212" class="lbl-b" text-anchor="middle">Luna</text>
+        <text x="549" y="230" class="lbl-s" text-anchor="middle">seated</text>
+
+        <line x1="20" y1="272" x2="620" y2="272" stroke="var(--line)"/>
+        <text x="20" y="294" class="lbl-n">THE CLUSTER IS BUILT. THE BENCH IS ONE SHORT.</text>
+        <text x="20" y="314" class="lbl-s">Names the living has raised, none settled: K3 &middot; Motif &middot; Laguna Medium &mdash; or something really large, actually really wise.</text>
+      </svg>
+      <figcaption>The only vacancy in the cluster, drawn against the seven seats already working.</figcaption>
+    </figure></div>
+  </div>
+</section>
+
+</main>
+
+<nav class="hud" aria-label="Slide navigation">
+  <button id="prev" type="button" aria-label="Previous slide">&#8592;</button>
+  <div class="ticks">
+    <button class="tick" type="button" aria-label="Go to slide 1"></button>
+    <button class="tick" type="button" aria-label="Go to slide 2"></button>
+    <button class="tick" type="button" aria-label="Go to slide 3"></button>
+    <button class="tick" type="button" aria-label="Go to slide 4"></button>
+    <button class="tick" type="button" aria-label="Go to slide 5"></button>
+    <button class="tick" type="button" aria-label="Go to slide 6"></button>
+  </div>
+  <span class="count" id="count" aria-live="polite">01 / 06</span>
+  <button id="next" type="button" aria-label="Next slide">&#8594;</button>
+</nav>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var ticks=[].slice.call(document.querySelectorAll('.tick'));
+  var prev=document.getElementById('prev'),next=document.getElementById('next');
+  var count=document.getElementById('count'),i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){
+      s.classList.toggle('is-on',k===i);
+      s.setAttribute('aria-hidden',k===i?'false':'true');
+    });
+    ticks.forEach(function(t,k){t.setAttribute('aria-current',k===i?'true':'false');});
+    count.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    prev.disabled=(i===0); next.disabled=(i===slides.length-1);
+    if(window.innerWidth>900){slides[i].scrollTop=0;}else{window.scrollTo(0,0);}
+    if(location.hash!=='#'+(i+1)){history.replaceState(null,'','#'+(i+1));}
+  }
+  prev.addEventListener('click',function(){show(i-1);});
+  next.addEventListener('click',function(){show(i+1);});
+  ticks.forEach(function(t,k){t.addEventListener('click',function(){show(k);});});
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();show(i+1);}
+    else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();show(i-1);}
+    else if(k==='Home'){e.preventDefault();show(0);}
+    else if(k==='End'){e.preventDefault();show(slides.length-1);}
+  });
+  var x0=null,y0=null;
+  document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;
+    if(Math.abs(dx)>56&&Math.abs(dx)>Math.abs(dy)*1.6){show(dx<0?i+1:i-1);}
+    x0=null;y0=null;
+  },{passive:true});
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(isFinite(h)&&h>0?h-1:0);
+})();
+</script>

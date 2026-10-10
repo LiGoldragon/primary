@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "session": "default",
+  "workspace": "w1",
+  "cwd": "/home/li/wt/primary/opus-sonnet-56ae53",
+  "mainFlowReminderEvery": 20,
+  "seats": [{"harness": "claude", "profile": "psyche-sonnet-recovery-9c7514", "profileFile": "/home/li/wt/primary/opus-sonnet-56ae53/flows/56ae53/sonnet-recovery/profile.json", "fresh": false, "predecessor": "9c7514", "agent": "psyche_sonnet_9c7514", "label": "Psyche Sonnet recovery", "model": "claude-sonnet-5", "effort": "medium"}]
+}

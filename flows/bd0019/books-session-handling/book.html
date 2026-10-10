@@ -1,0 +1,172 @@
+<title>Session handling as it is</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one page at a time in a grid shell; illustration pages fill the upright phone, text pages one 68ch column. */
+:root{
+  --ground:#F3EBDC; --paper:#FBF6EC; --paper-edge:#E9DCC4; --ink:#2D2219; --muted:#6E5E4D; --rule:#D9CAB0;
+  --red:#A9321F; --red-soft:#F2DCD2; --glow:#F2C46D; --brass:#B9893A; --river:#5D7E8C; --leaf:#6E8B4E;
+  --slate:#4A443D; --slate-deep:#38332D; --slate-ink:#A79C8C; --ink-on-glow:#3A2A16;
+  --hill:#B7A77E; --hill-deep:#8E8058; --wood:#8A5A34; --wood-deep:#6A4224; --sign-ink:#FBF2E2;
+  --agree:#3F6B3A; --agree-soft:#E2EBD9; --shade:rgba(45,34,25,.14);
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4","Source Serif Pro",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+    --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+    --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+    --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+    --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1C1611; --paper:#261E17; --paper-edge:#35291F; --ink:#EFE5D4; --muted:#AA9A88; --rule:#40342A;
+  --red:#E46A52; --red-soft:#3C2119; --glow:#C9953F; --brass:#D2A75A; --river:#7FA3B1; --leaf:#8FAE6B;
+  --slate:#2B2723; --slate-deep:#211D1A; --slate-ink:#7F7466; --ink-on-glow:#2A1C0C;
+  --hill:#5E5338; --hill-deep:#463D28; --wood:#9A6A42; --wood-deep:#74492A; --sign-ink:#FBF2E2;
+  --agree:#9CC48F; --agree-soft:#22301F; --shade:rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box}
+svg text,code,.prov,.eyebrow,.count,.go{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);
+  padding-inline:16px;overflow-x:hidden;-webkit-text-size-adjust:100%}
+.book{container-type:inline-size;max-width:1000px;margin-inline:auto}
+.top{position:sticky;top:0;z-index:2;background:var(--ground);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;padding-block:10px 8px;border-bottom:1px solid var(--rule)}
+.top h1{margin:0;font:600 15px/1.25 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .count{font:500 12px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{display:block}
+.page{scroll-margin-top:64px}
+code{font-family:var(--mono);font-size:.84em;background:var(--red-soft);color:var(--ink);padding:.05em .3em;border-radius:2px;overflow-wrap:anywhere}
+
+/* text pages */
+.txt .sheet{max-width:68ch;min-width:0;margin-inline:auto;padding-block:20px 36px;display:grid;gap:14px}
+.eyebrow{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;font-size:clamp(26px,7.5cqi,38px);line-height:1.1}
+.txt p{margin:0}
+.src{display:grid;gap:12px}
+.src h2.src-h{font-size:clamp(24px,7cqi,34px)}
+blockquote.living{margin:0;padding:12px 14px;background:var(--paper);border-radius:2px;display:grid;gap:6px;box-shadow:inset 0 0 0 1px var(--rule)}
+blockquote.living p.said{font:italic 400 18px/1.45 var(--body)}
+p.prov{font:400 12px/1.45 var(--mono);color:var(--muted);overflow-wrap:anywhere}
+aside.note{padding:10px 12px;background:var(--agree-soft);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.note .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--agree)}
+p.mark{padding:10px 12px;border:1px dashed var(--red);border-radius:2px;font-size:15px}
+p.mark strong{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-right:.4em}
+ol.props{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.props li{display:grid;grid-template-columns:1.2em minmax(0,1fr);gap:8px;align-items:start;padding:10px 12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+ol.props .n{font:600 18px/1.4 var(--display);color:var(--red)}
+
+/* position indicator: not controls */
+.dots{grid-column:1/-1;display:grid;grid-auto-flow:column;justify-content:center;gap:10px;pointer-events:none;user-select:none}
+.dot{width:11px;height:11px;border:1.5px solid var(--muted);border-radius:50%;display:block}
+.dot.t{border-radius:1px}
+.dot.on{background:var(--red);border-color:var(--red)}
+aside.witness{padding:10px 12px;background:var(--paper);border-left:3px solid var(--river);border-radius:2px;display:grid;gap:4px;font-size:15px}
+aside.witness .tag{font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--river)}
+.badge{display:inline-block;margin-left:.5em;padding:.05em .45em;font:600 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--agree);box-shadow:inset 0 0 0 1px var(--agree);border-radius:2px}
+ol.props li.ruled{box-shadow:inset 0 0 0 2px var(--agree);background:var(--agree-soft)}
+
+/* the source's own code: only code scrolls sideways */
+.codewrap{max-width:100%;overflow-x:auto;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px}
+pre.code{margin:0;padding:10px 12px;font:400 12.5px/1.5 var(--mono);color:var(--ink);white-space:pre;width:max-content;min-width:100%}
+pre.code code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+.src > *{min-width:0}
+ul.pts{margin:0;padding-left:1.1em;display:grid;gap:8px}
+ul.pts strong,.src p strong{font-weight:600}
+blockquote.doc{margin:0;padding:12px 14px;border-left:3px solid var(--brass);background:var(--paper);border-radius:2px}
+aside.note.disagree{background:var(--red-soft)}
+aside.note.disagree .tag{color:var(--red)}
+ol.props li.sup{box-shadow:inset 0 0 0 1px var(--rule);background:var(--paper)}
+.badge.sup{color:var(--muted);box-shadow:inset 0 0 0 1px var(--muted)}
+
+/* graph pages: the graph is drawn by the page script from the source's Mermaid text */
+.gfig{margin:0;padding-block:12px 24px;max-width:100%;min-width:0}
+.gfig .gbox{display:grid;justify-items:center;padding:10px 6px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);border-radius:2px;max-width:100%;min-width:0}
+.gfig .gbox svg{max-width:100%;height:auto}
+pre.mmsrc{margin:0;max-width:100%;font:400 12px/1.4 var(--mono);color:var(--muted);white-space:pre-wrap}
+.tw{max-width:100%}
+table.ev{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px;line-height:1.35}
+table.ev th,table.ev td{padding:6px 5px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
+table.ev th{font:600 10.5px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--red)}
+table.ev td:first-child{font-weight:600}
+ul.pts ul{margin:8px 0 0;padding-left:1.1em;display:grid;gap:6px}
+.src blockquote.doc p{margin:0}
+.src blockquote.doc{display:grid;gap:8px}
+ol.props .box{display:inline-block;width:.8em;height:.8em;margin-right:.5em;box-shadow:inset 0 0 0 1.5px var(--muted);border-radius:2px;vertical-align:-.05em}
+</style>
+
+<div class="book">
+  <header class="top"><h1>Session handling as it is</h1><span class="count" id="count">1 / 5</span>
+    <div class="dots" aria-hidden="true"><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span><span class="dot t"></span></div></header>
+  <main class="stage" id="stage">
+<section class="page txt"><div class="sheet"><p class="eyebrow">The shape today</p><h2>Session handling as it is</h2><figure class="gfig"><div class="gbox" id="g1" data-src="flowchart LR
+  L[hand-run launcher] --&gt;|one prompt| S[new seat]
+  L --&gt;|polls the transcript every second| S
+  S --&gt;|registers after first reply| H[Herdr + messenger]
+  F[Flow Nexus] -. starts nothing live .-&gt; S
+  O[old seat] --&gt;|closed by hand, via a subflow| X[gone; transcript not archived]"><pre class="mmsrc">flowchart LR
+  L[hand-run launcher] --&gt;|one prompt| S[new seat]
+  L --&gt;|polls the transcript every second| S
+  S --&gt;|registers after first reply| H[Herdr + messenger]
+  F[Flow Nexus] -. starts nothing live .-&gt; S
+  O[old seat] --&gt;|closed by hand, via a subflow| X[gone; transcript not archived]</pre></div></figure><p class="mark"><strong>Direction</strong> The source wrote this graph left to right (<code>flowchart LR</code>); it is drawn as written.</p></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 1 of 4</p><h2>Starting a seat</h2><ul class="pts"><li><strong>Claude seats.</strong> They start from a hand-run launcher with no model calls. It names the seat first and sends one full prompt, which is right. Then it checks the transcript every second until the seat replies, and only then registers it.</li><li><strong>Codex seats.</strong> Each launch is a one-off script a flow writes, and the seat names itself with its own model turns.</li><li><strong>Flow.</strong> No live seat came through Flow, so its Start operation exists but isn&#x27;t used.</li></ul></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 2 of 4</p><h2>Restarting and retiring</h2><ul class="pts"><li><strong>Restarting.</strong> A successor&#x27;s brief is written by the old seat&#x27;s model, and a subflow launches it. That cost about a million tokens for Fable&#x27;s relaunch, against your &quot;almost zero&quot;.</li><li><strong>Retiring.</strong> A subflow closes the old seat by hand, and deregistering needs four exact values. Nothing archives Claude transcripts. The reaper has never been applied, so 347 flow folders sit in place, and Flow keeps 25 rows for dead seats.</li><li><strong>Skills.</strong> No skill says how to restart or retire a seat.</li></ul><blockquote class="living" data-q="zero"><p class="said">Just create new sessions, which really should be done with almost zero LLM calls, but not quite zero: very, very small calls that would be extremely fast and cost almost nothing.</p><p class="prov">-- the living, 2026-10-01 17:11, flow e2a70a, line 585, typed, as gathered in flows/6997eb/reports/psyche-since-28-september.md</p></blockquote><aside class="note agree" data-note="agree"><p class="tag">Psyche Sonnet agrees</p><p>On “almost zero LLM calls” (2026-10-01): the words name the target. The source reports a million tokens for one relaunch, so the gap between the word and the present is large and is the thing to close.</p></aside></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 3 of 4</p><h2>Messages and state</h2><ul class="pts"><li><strong>Messages bypass the nexuses.</strong> Messages go straight to the screen through Herdr, past the Message and Flow nexuses. A message held for a busy or blocked seat is never sent later.</li><li><strong>Herdr&#x27;s screen reading</strong> is how seat state is known, and it is the one part that keeps checking. The only hook anywhere tells Herdr a session started.</li><li><strong>Flow can&#x27;t take reports.</strong> It has no request a hook could call to report idle, blocked or done.</li><li><strong>Sonnet blocked again.</strong> It appears to have been stuck a second time today, for over eleven hours, on a permission dialog.</li></ul><blockquote class="living" data-q="poll"><p class="said">Essentially we want to avoid polling, which means we&#x27;re going to make this hook-based.</p><p class="prov">-- the living, 2026-09-30 17:16, flow 7328f4, line 552, speech to text, as gathered in flows/6997eb/reports/psyche-since-28-september.md</p></blockquote><blockquote class="living" data-q="nobody"><p class="said">Nobody should be checking anything repeatedly.</p><p class="prov">-- the living, 2026-10-01, flow fe945a, a comment on the book «Where books go, and the anatomy of the book pipeline», flows/fe945a/vision/polling.md</p></blockquote><blockquote class="living" data-q="reap"><p class="said">When a session gets replaced, it has to be reaped so it doesn&#x27;t keep getting messages.</p><p class="prov">-- the living, 2026-09-17, flow 1ac573, flows/1ac573/vision/operational-reapReplacedSessions.md</p></blockquote><aside class="note agree" data-note="agree"><p class="tag">Psyche Sonnet agrees</p><p>On “Nobody should be checking anything repeatedly” (2026-10-01): the source finds two checkers still running, the launcher at one second and Herdr&#x27;s screen reading. This seat holds that both fall under your word.</p></aside></div></section>
+<section class="page txt"><div class="sheet"><p class="eyebrow">Point 4 of 4</p><h2>Short-lived flows</h2><ul class="pts"><li><strong>Subagent models.</strong> Claude subagents come in Haiku, Sonnet and Opus. The book maker is Haiku with no skill, though you ruled it a light Sonnet. Codex subagents still name last generation&#x27;s models.</li><li><strong>One-off flows</strong> have no path of their own.</li></ul><blockquote class="living" data-q="skill"><p class="said">For me subagents are a type of skill.</p><p class="prov">-- the living, 2026-10-01 19:54, a comment, transcript fe945a line 934</p></blockquote><p class="prov">The source, verbatim: Psyche Opus fe945a, transcript fe945a2e-c785-4af4-9a46-766b6ea512e8.jsonl, line 1435, uuid 394f8933-743a-461f-a9bc-fc675c9f35e9, 2026-10-02T17:16:09Z, the block between its to-the-living markers titled «Session handling as it is»; marker lines and its Presentation datom line are not shown. The block carries no rulings, so there is no rulings page.</p></div></section>
+  </main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.min.js"></script>
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=[].slice.call(document.querySelectorAll('.dot'));
+  var N=pages.length,cur=1,count=document.getElementById('count');
+  function mark(n){cur=n;dots.forEach(function(d,i){d.classList.toggle('on',i===n-1);});count.textContent=n+' / '+N;}
+  function go(n){n=Math.max(1,Math.min(N,n));pages[n-1].scrollIntoView({behavior:'auto',block:'start'});mark(n);}
+  function here(){var best=1,y=window.innerHeight*0.35;pages.forEach(function(p,i){if(p.getBoundingClientRect().top<=y)best=i+1;});mark(best);}
+  window.addEventListener('scroll',here,{passive:true});window.addEventListener('resize',here);
+  document.addEventListener('keydown',function(e){
+    if(e.altKey||e.ctrlKey||e.metaKey)return;
+    if(e.key==='ArrowRight'){go(cur+1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'){go(cur-1);e.preventDefault();}
+  });
+  here();
+
+  /* Mermaid: drawn here, in the page, from the source text kept in each block's data-src. */
+  var n=0;
+  function v(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+  function draw(){
+    if(!window.mermaid)return;
+    var ink=v('--ink'),muted=v('--muted'),paper=v('--paper'),red=v('--red'),rule=v('--rule'),ground=v('--ground');
+    var host=document.querySelector('.gbox');
+    var w=Math.max(260,Math.min(620,(host?host.clientWidth:340)-12));
+    mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:'base',
+      fontFamily:'"Source Serif 4",Georgia,serif',
+      themeVariables:{primaryColor:paper,primaryTextColor:ink,primaryBorderColor:red,lineColor:muted,
+        secondaryColor:paper,tertiaryColor:ground,edgeLabelBackground:ground,textColor:ink,
+        background:ground,fontFamily:'"Source Serif 4",Georgia,serif',
+        xyChart:{backgroundColor:paper,titleColor:ink,xAxisLabelColor:ink,xAxisTitleColor:ink,
+          xAxisTickColor:muted,xAxisLineColor:muted,yAxisLabelColor:ink,yAxisTitleColor:ink,
+          yAxisTickColor:muted,yAxisLineColor:muted,plotColorPalette:red}},
+      flowchart:{useMaxWidth:true,htmlLabels:true,padding:8,nodeSpacing:30,rankSpacing:36},
+      xyChart:{width:w,height:Math.round(w*0.8),titleFontSize:16,labelFontSize:12,showTitle:true}});
+    [].slice.call(document.querySelectorAll('.gbox')).forEach(function(box){
+      var src=box.getAttribute('data-src');
+      mermaid.render('mmd'+(n++),src).then(function(r){box.innerHTML=r.svg;box.setAttribute('data-drawn','1');})
+        .catch(function(){box.setAttribute('data-drawn','error');});
+    });
+  }
+  function boot(){draw();
+    if(window.matchMedia){var q=matchMedia('(prefers-color-scheme: dark)');
+      (q.addEventListener?q.addEventListener.bind(q,'change'):q.addListener.bind(q))(draw);}
+    new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});}
+  if(document.readyState==='complete')boot();else window.addEventListener('load',boot);
+})();
+</script>

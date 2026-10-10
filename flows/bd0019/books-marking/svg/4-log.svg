@@ -1,0 +1,55 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t4">
+  <title id="t4">A wall of short, even machine lines in grey, and in the middle of it a window of warm light where handwriting grows like a vine.</title>
+  <defs>
+    <linearGradient id="l-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color:var(--slate)"/>
+      <stop offset="1" style="stop-color:var(--slate-deep)"/>
+    </linearGradient>
+    <radialGradient id="l-window" cx="50%" cy="45%" r="70%">
+      <stop offset="0" style="stop-color:var(--glow)"/>
+      <stop offset=".75" style="stop-color:var(--glow);stop-opacity:.85"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:.5"/>
+    </radialGradient>
+    <radialGradient id="l-spill" cx="50%" cy="50%" r="50%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.45"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect x="20" y="20" width="320" height="520" rx="10" style="fill:url(#l-wall)"/>
+  <!-- log lines, mechanical -->
+  <g id="l-rows" style="fill:var(--slate-ink);opacity:.75">
+    <rect x="40" y="44" width="18" height="6" rx="1"/><rect x="64" y="44" width="120" height="6" rx="1"/>
+    <rect x="40" y="62" width="18" height="6" rx="1"/><rect x="64" y="62" width="88" height="6" rx="1"/>
+    <rect x="40" y="80" width="18" height="6" rx="1"/><rect x="64" y="80" width="150" height="6" rx="1"/>
+    <rect x="40" y="98" width="18" height="6" rx="1"/><rect x="64" y="98" width="70" height="6" rx="1"/>
+    <rect x="40" y="116" width="18" height="6" rx="1"/><rect x="64" y="116" width="134" height="6" rx="1"/>
+    <rect x="40" y="134" width="18" height="6" rx="1"/><rect x="64" y="134" width="96" height="6" rx="1"/>
+    <rect x="40" y="420" width="18" height="6" rx="1"/><rect x="64" y="420" width="112" height="6" rx="1"/>
+    <rect x="40" y="438" width="18" height="6" rx="1"/><rect x="64" y="438" width="160" height="6" rx="1"/>
+    <rect x="40" y="456" width="18" height="6" rx="1"/><rect x="64" y="456" width="80" height="6" rx="1"/>
+    <rect x="40" y="474" width="18" height="6" rx="1"/><rect x="64" y="474" width="128" height="6" rx="1"/>
+    <rect x="40" y="492" width="18" height="6" rx="1"/><rect x="64" y="492" width="100" height="6" rx="1"/>
+  </g>
+  <!-- one error line, small and condensed -->
+  <rect x="40" y="510" width="18" height="6" rx="1" style="fill:var(--red)"/><rect x="64" y="510" width="90" height="6" rx="1" style="fill:var(--red);opacity:.8"/>
+  <text x="320" y="56" text-anchor="end" style="fill:var(--slate-ink);font:500 12px var(--mono);letter-spacing:.08em">LOG</text>
+  <!-- spill of light -->
+  <ellipse cx="180" cy="280" rx="170" ry="150" style="fill:url(#l-spill)"/>
+  <!-- the window -->
+  <path d="M60 172 C 60 160, 300 160, 300 172 L 300 382 C 300 396, 60 396, 60 382 Z" style="fill:url(#l-window)"/>
+  <!-- vine of handwriting -->
+  <g style="fill:none;stroke:var(--ink-on-glow);stroke-width:2.2;stroke-linecap:round">
+    <path d="M84 206 c 10 -8 14 6 24 0 s 12 -10 22 -2 s 12 8 22 0 s 14 -8 22 0 s 12 6 22 -2 s 12 -4 22 0 s 12 6 20 -2 s 8 -2 14 0"/>
+    <path d="M84 236 c 10 -6 14 6 22 0 s 12 -8 22 0 s 10 6 20 -2 s 14 -6 22 0 s 12 6 22 -2 s 10 -4 20 0"/>
+    <path d="M84 266 c 8 -8 14 6 20 0 s 12 -10 24 -2 s 10 8 22 0 s 12 -6 22 0 s 10 6 20 -2 s 12 -4 22 0 s 10 4 16 0"/>
+    <path d="M84 296 c 10 -6 14 6 22 0 s 12 -8 20 0 s 12 6 22 -2 s 12 -6 20 0 s 12 6 20 -2"/>
+    <path d="M84 326 c 8 -6 12 6 20 0 s 12 -8 22 0 s 10 6 18 -2 s 12 -4 18 0"/>
+  </g>
+  <!-- leaves along the vine -->
+  <g style="fill:var(--leaf);opacity:.85">
+    <path d="M276 196 c 8 -10 22 -8 22 -8 c 0 0 -4 14 -22 8 z"/>
+    <path d="M250 352 c -6 10 -20 10 -20 10 c 0 0 2 -14 20 -10 z"/>
+    <path d="M264 346 c 10 -4 18 4 18 4 c 0 0 -10 8 -18 -4 z"/>
+  </g>
+  <text x="180" y="370" text-anchor="middle" style="fill:var(--ink-on-glow);font:italic 600 15px var(--display)">prose, to you</text>
+</svg>

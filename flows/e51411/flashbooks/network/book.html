@@ -1,0 +1,450 @@
+<title>Prometheus and the Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#F4EDDF; --paper:#FBF7EE; --ink:#33261B; --muted:#76665A; --rule:#D9CDB8;
+  --accent:#2F5D7C; --accent-soft:#E1E9EE;
+  --ok:#2F6B34; --ok-soft:#E3EEDC; --bad:#A8322A; --bad-soft:#F6DFD9;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1D1813; --paper:#27211A; --ink:#EEE3D1; --muted:#B3A391; --rule:#4A3F33;
+    --accent:#8FBAD8; --accent-soft:#233340;
+    --ok:#93CB86; --ok-soft:#1F3320; --bad:#F29A8B; --bad-soft:#3E2220;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1D1813; --paper:#27211A; --ink:#EEE3D1; --muted:#B3A391; --rule:#4A3F33;
+  --accent:#8FBAD8; --accent-soft:#233340;
+  --ok:#93CB86; --ok-soft:#1F3320; --bad:#F29A8B; --bad-soft:#3E2220;
+}
+html,body{height:100%}
+body{background:var(--ground); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.5; overflow:hidden}
+*{box-sizing:border-box}
+
+.book{height:100%; display:grid; grid-template-rows:auto 1fr auto; grid-template-columns:minmax(0,1fr); max-width:1040px; margin:0 auto; padding-inline:16px}
+.top{display:grid; grid-template-columns:1fr auto; align-items:baseline; gap:12px; padding-block:12px 8px; border-bottom:1px solid var(--rule)}
+.top h1{margin:0; font-family:var(--display); font-weight:650; font-size:1.05rem; letter-spacing:.01em; text-wrap:balance}
+.count{font-family:var(--mono); font-size:.78rem; color:var(--muted); font-variant-numeric:tabular-nums}
+
+.stage{container-type:inline-size; overflow-y:auto; overflow-x:hidden; min-height:0}
+.page{display:grid; grid-template-columns:minmax(0,1fr); align-content:start; gap:12px; padding-block:14px 20px}
+.page[hidden]{display:none!important}
+.kicker{font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent)}
+.page h2{margin:0; font-family:var(--display); font-weight:500; font-size:1.6rem; line-height:1.15; text-wrap:balance; max-width:22ch}
+.lede{margin:0; max-width:68ch; color:var(--ink)}
+.lede strong{font-weight:600}
+.prose{max-width:68ch}
+
+figure{margin:0; display:grid}
+.fc{display:block; width:100%; max-width:100%; height:auto; color:var(--ink)}
+.fc-land{display:none}
+@container (min-width: 720px){
+  .fc-port{display:none}
+  .fc-land{display:block}
+  .page h2{font-size:2.1rem; max-width:28ch}
+  .page{padding-block:28px 32px; gap:18px}
+}
+.fc text{fill:var(--ink); font-family:var(--body); font-size:13px}
+.fc.L text{font-size:14.5px}
+.fc text.b{font-weight:600}
+.fc text.h{font-family:var(--display); font-weight:650; font-size:15px}
+.fc.L text.h{font-size:16px}
+.fc text.m{font-family:var(--mono); font-size:12px; fill:var(--muted); letter-spacing:.04em}
+.fc.L text.m{font-size:13px}
+.fc text.tok{fill:var(--ok); font-weight:600}
+.fc text.tbad{fill:var(--bad); font-weight:600}
+.fc text.tmut{fill:var(--muted)}
+.fc text.tacc{fill:var(--accent)}
+.fc .node{fill:var(--paper); stroke:var(--ink); stroke-width:1.25}
+.fc .fw{fill:var(--accent-soft); stroke:var(--accent); stroke-width:2}
+.fc .ok{fill:var(--ok-soft); stroke:var(--ok); stroke-width:1.5}
+.fc .bad{fill:var(--bad-soft); stroke:var(--bad); stroke-width:1.75}
+.fc .off{fill:var(--ground); stroke:var(--muted); stroke-width:1.25; stroke-dasharray:5 4}
+.fc .fix{fill:var(--paper); stroke:var(--accent); stroke-width:1.5; stroke-dasharray:7 5}
+.fc .dash{stroke-dasharray:7 5}
+.fc .edge{fill:none; stroke:var(--ink); stroke-width:1.5}
+.fc .ebad{fill:none; stroke:var(--bad); stroke-width:1.75; stroke-dasharray:6 4}
+.fc .eacc{fill:none; stroke:var(--accent); stroke-width:1.5; stroke-dasharray:7 5}
+.fc .strike{stroke:var(--bad); stroke-width:2}
+.fc .ah{fill:var(--ink)} .fc .ahb{fill:var(--bad)} .fc .aha{fill:var(--accent)}
+
+blockquote{margin:0; padding:0 0 0 16px; border-left:3px solid var(--accent); font-size:1.12rem; line-height:1.45}
+blockquote p{margin:0}
+.prov{margin:6px 0 0 16px; font-family:var(--mono); font-size:.78rem; color:var(--muted)}
+.quotes{display:grid; gap:22px; max-width:68ch}
+
+.points{list-style:none; margin:0; padding:0; display:grid; gap:14px; max-width:68ch}
+.points li{padding-left:16px; border-left:2px solid var(--rule)}
+.points strong{font-weight:600}
+.mark{font-style:italic; color:var(--accent); background:var(--accent-soft); padding:0 5px; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone}
+
+.props{list-style:none; margin:0; padding:0; display:grid; gap:12px; max-width:68ch}
+.props li{display:grid; grid-template-columns:auto auto 1fr; gap:10px; align-items:start; padding:12px 14px; background:var(--paper); border:1px solid var(--rule); border-radius:6px}
+.props .n{font-family:var(--mono); font-size:.85rem; color:var(--accent); padding-top:3px; font-variant-numeric:tabular-nums}
+.props input{width:20px; height:20px; margin:3px 0 0; accent-color:var(--accent)}
+.props label{cursor:pointer}
+.props input:checked + label{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--rule)}
+
+.nav{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding-block:10px calc(10px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--rule)}
+.nav button.step{font-family:var(--mono); font-size:.85rem; color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:9px 12px; cursor:pointer}
+.nav button.step:disabled{opacity:.4; cursor:default}
+.dots{display:grid; grid-auto-flow:column; justify-content:center; gap:2px; min-width:0}
+.dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.dots button::after{content:""; width:9px; height:9px; border-radius:50%; background:var(--rule)}
+.dots button[aria-current="true"]::after{background:var(--accent); width:11px; height:11px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+
+<div class="book">
+  <header class="top">
+    <h1>Prometheus and the Network</h1>
+    <span class="count" id="count">1 / 6</span>
+  </header>
+
+  <main class="stage" id="stage">
+
+<!-- PAGE 1 -->
+<section class="page" id="p1" aria-label="Page 1">
+  <div class="kicker">Page 1 · Flowchart</div>
+  <h2>The cable between ouranos and Prometheus</h2>
+  <p class="lede"><strong>What this flowchart shows:</strong> the direct cable link as witnessed on 09-24 morning, and which traffic gets through Prometheus's firewall.</p>
+  <figure>
+    <svg class="fc fc-port" viewBox="0 0 360 496" role="img" aria-label="ouranos's USB network card connects by cable to Prometheus eno1, its WAN side, then the firewall. ssh and ping get through; binary cache on port 80 and IPv6 neighbour discovery are dropped. A second, longer path, Yggdrasil over wireless via br-lan, works but is slow at 92 ms.">
+      <defs>
+        <marker id="p1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="node" x="20" y="8" width="320" height="48" rx="6"/>
+      <text class="h" x="180" y="28" text-anchor="middle">ouranos</text>
+      <text x="180" y="47" text-anchor="middle">USB network card</text>
+      <line class="edge" x1="180" y1="56" x2="180" y2="85" marker-end="url(#p1a)"/>
+      <text class="m" x="192" y="76">cable</text>
+      <rect class="node" x="20" y="88" width="320" height="48" rx="6"/>
+      <text class="h" x="180" y="108" text-anchor="middle">Prometheus eno1</text>
+      <text x="180" y="127" text-anchor="middle">its WAN side</text>
+      <line class="edge" x1="180" y1="136" x2="180" y2="157" marker-end="url(#p1a)"/>
+      <rect class="fw" x="110" y="160" width="140" height="40" rx="6"/>
+      <text class="h" x="180" y="185" text-anchor="middle">firewall</text>
+      <path class="edge" d="M110,180 H36 V378"/>
+      <line class="edge" x1="36" y1="234" x2="54" y2="234" marker-end="url(#p1a)"/>
+      <rect class="node" x="56" y="214" width="194" height="40" rx="6"/>
+      <text class="b" x="153" y="239" text-anchor="middle">ssh (22)</text>
+      <line class="edge" x1="250" y1="234" x2="266" y2="234" marker-end="url(#p1a)"/>
+      <rect class="ok" x="268" y="219" width="80" height="30" rx="15"/>
+      <text class="tok" x="308" y="239" text-anchor="middle">through</text>
+      <line class="edge" x1="36" y1="282" x2="54" y2="282" marker-end="url(#p1a)"/>
+      <rect class="node" x="56" y="262" width="194" height="40" rx="6"/>
+      <text class="b" x="153" y="287" text-anchor="middle">ping</text>
+      <line class="edge" x1="250" y1="282" x2="266" y2="282" marker-end="url(#p1a)"/>
+      <rect class="ok" x="268" y="267" width="80" height="30" rx="15"/>
+      <text class="tok" x="308" y="287" text-anchor="middle">through</text>
+      <line class="edge" x1="36" y1="330" x2="54" y2="330" marker-end="url(#p1a)"/>
+      <rect class="node" x="56" y="310" width="194" height="40" rx="6"/>
+      <text class="b" x="153" y="335" text-anchor="middle">binary cache (port 80)</text>
+      <line class="edge" x1="250" y1="330" x2="266" y2="330" marker-end="url(#p1a)"/>
+      <rect class="bad" x="268" y="315" width="80" height="30" rx="15"/>
+      <text class="tbad" x="308" y="335" text-anchor="middle">dropped</text>
+      <line class="edge" x1="36" y1="378" x2="54" y2="378" marker-end="url(#p1a)"/>
+      <rect class="node" x="56" y="358" width="194" height="40" rx="6"/>
+      <text class="b" x="153" y="375" text-anchor="middle">neighbour discovery</text>
+      <text class="b" x="153" y="392" text-anchor="middle">(IPv6)</text>
+      <line class="edge" x1="250" y1="378" x2="266" y2="378" marker-end="url(#p1a)"/>
+      <rect class="bad" x="268" y="363" width="80" height="30" rx="15"/>
+      <text class="tbad" x="308" y="383" text-anchor="middle">dropped</text>
+      <text class="m" x="20" y="424">SECOND, LONGER PATH</text>
+      <rect class="ok dash" x="20" y="432" width="320" height="58" rx="6"/>
+      <text x="180" y="455" text-anchor="middle">Yggdrasil over wireless, via br-lan</text>
+      <text class="tok" x="180" y="478" text-anchor="middle">works, but slow (92 ms)</text>
+    </svg>
+    <svg class="fc fc-land L" viewBox="0 0 940 376" role="img" aria-label="ouranos's USB network card connects by cable to Prometheus eno1, its WAN side, then the firewall. ssh and ping get through; binary cache on port 80 and IPv6 neighbour discovery are dropped. A second, longer path, Yggdrasil over wireless via br-lan, works but is slow at 92 ms.">
+      <defs>
+        <marker id="p1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="node" x="16" y="112" width="170" height="56" rx="6"/>
+      <text class="h" x="101" y="136" text-anchor="middle">ouranos</text>
+      <text x="101" y="157" text-anchor="middle">USB network card</text>
+      <line class="edge" x1="186" y1="140" x2="255" y2="140" marker-end="url(#p1b)"/>
+      <text class="m" x="221" y="130" text-anchor="middle">cable</text>
+      <rect class="node" x="258" y="112" width="180" height="56" rx="6"/>
+      <text class="h" x="348" y="136" text-anchor="middle">Prometheus eno1</text>
+      <text x="348" y="157" text-anchor="middle">its WAN side</text>
+      <line class="edge" x1="438" y1="140" x2="485" y2="140" marker-end="url(#p1b)"/>
+      <rect class="fw" x="488" y="118" width="112" height="44" rx="6"/>
+      <text class="h" x="544" y="145" text-anchor="middle">firewall</text>
+      <path class="edge" d="M600,140 H622 V50 H649" marker-end="url(#p1b)"/>
+      <path class="edge" d="M622,140 V110 H649" marker-end="url(#p1b)"/>
+      <path class="edge" d="M622,140 V170 H649" marker-end="url(#p1b)"/>
+      <path class="edge" d="M622,140 V230 H649" marker-end="url(#p1b)"/>
+      <rect class="node" x="652" y="28" width="180" height="44" rx="6"/>
+      <text class="b" x="742" y="55" text-anchor="middle">ssh (22)</text>
+      <rect class="node" x="652" y="88" width="180" height="44" rx="6"/>
+      <text class="b" x="742" y="115" text-anchor="middle">ping</text>
+      <rect class="node" x="652" y="148" width="180" height="44" rx="6"/>
+      <text class="b" x="742" y="175" text-anchor="middle">binary cache (port 80)</text>
+      <rect class="node" x="652" y="208" width="180" height="44" rx="6"/>
+      <text class="b" x="742" y="226" text-anchor="middle">neighbour discovery</text>
+      <text class="b" x="742" y="244" text-anchor="middle">(IPv6)</text>
+      <line class="edge" x1="832" y1="50" x2="847" y2="50" marker-end="url(#p1b)"/>
+      <line class="edge" x1="832" y1="110" x2="847" y2="110" marker-end="url(#p1b)"/>
+      <line class="edge" x1="832" y1="170" x2="847" y2="170" marker-end="url(#p1b)"/>
+      <line class="edge" x1="832" y1="230" x2="847" y2="230" marker-end="url(#p1b)"/>
+      <rect class="ok" x="850" y="33" width="84" height="34" rx="17"/>
+      <text class="tok" x="892" y="55" text-anchor="middle">through</text>
+      <rect class="ok" x="850" y="93" width="84" height="34" rx="17"/>
+      <text class="tok" x="892" y="115" text-anchor="middle">through</text>
+      <rect class="bad" x="850" y="153" width="84" height="34" rx="17"/>
+      <text class="tbad" x="892" y="175" text-anchor="middle">dropped</text>
+      <rect class="bad" x="850" y="213" width="84" height="34" rx="17"/>
+      <text class="tbad" x="892" y="235" text-anchor="middle">dropped</text>
+      <text class="m" x="16" y="300">SECOND, LONGER PATH</text>
+      <rect class="ok dash" x="16" y="310" width="584" height="54" rx="6"/>
+      <text x="36" y="342">Yggdrasil over wireless, via br-lan</text>
+      <text class="tok" x="580" y="342" text-anchor="end">works, but slow (92 ms)</text>
+    </svg>
+  </figure>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page" id="p2" aria-label="Page 2" hidden>
+  <div class="kicker">Page 2</div>
+  <h2>What you said</h2>
+  <div class="quotes">
+    <div>
+      <blockquote><p>Well when the builder isn't reachable we just build locally.</p></blockquote>
+      <p class="prov">-- living, 2026-09-24.</p>
+    </div>
+    <div>
+      <blockquote><p>Is there a firewall problem on Prometheus? ... I want Prometheus up, right? Let's fix the firewall so it's fully up or whatever is wrong with it.</p></blockquote>
+      <p class="prov">-- living, 2026-09-24, to d8df70.</p>
+    </div>
+    <div>
+      <blockquote><p>They're built and installed from CriomOS so you can check the source that built that generation. I guess find out how that link is made if you want to know.</p></blockquote>
+      <p class="prov">-- living, 2026-09-24, on how running services trace back to source.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3 -->
+<section class="page" id="p3" aria-label="Page 3" hidden>
+  <div class="kicker">Page 3 · Flowchart</div>
+  <h2>Why port 80 is dropped</h2>
+  <p class="lede"><strong>What this flowchart shows:</strong> the composition fault d8df70 witnessed in CriomOS source.</p>
+  <figure>
+    <svg class="fc fc-port" viewBox="0 0 360 456" role="img" aria-label="The cache module opens port 80 into the NixOS firewall, which is switched off on routers. The router module writes its own nftables rules by hand, and only ssh is opened. Result: port 80 never reaches the router's rules; the same happens to port 11434, the local LLM. Proposed fix: the router reads the node's declared open ports, so every declared port is honoured.">
+      <defs>
+        <marker id="p3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="p3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahb" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="p3c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="aha" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="node" x="12" y="10" width="162" height="56" rx="6"/>
+      <text class="b" x="93" y="33" text-anchor="middle">cache module:</text>
+      <text x="93" y="53" text-anchor="middle">open port 80</text>
+      <line class="edge" x1="93" y1="66" x2="93" y2="93" marker-end="url(#p3a)"/>
+      <rect class="off" x="12" y="96" width="162" height="56" rx="6"/>
+      <text class="b tmut" x="93" y="119" text-anchor="middle">NixOS firewall</text>
+      <text class="tbad" x="93" y="139" text-anchor="middle">switched off on routers</text>
+      <rect class="node" x="186" y="10" width="162" height="72" rx="6"/>
+      <text class="b" x="267" y="32" text-anchor="middle">router module:</text>
+      <text x="267" y="52" text-anchor="middle">writes its own nftables</text>
+      <text x="267" y="70" text-anchor="middle">rules by hand</text>
+      <line class="edge" x1="267" y1="82" x2="267" y2="109" marker-end="url(#p3a)"/>
+      <rect class="node" x="186" y="112" width="162" height="40" rx="6"/>
+      <text class="b" x="267" y="137" text-anchor="middle">only ssh opened</text>
+      <line class="ebad" x1="93" y1="152" x2="93" y2="183" marker-end="url(#p3b)"/>
+      <line class="edge" x1="267" y1="152" x2="267" y2="183" marker-end="url(#p3a)"/>
+      <rect class="bad" x="12" y="186" width="336" height="92" rx="6"/>
+      <text class="tbad" x="180" y="212" text-anchor="middle">port 80 never reaches the router's rules</text>
+      <text x="180" y="238" text-anchor="middle">The same happens to port 11434</text>
+      <text x="180" y="258" text-anchor="middle">(the local LLM).</text>
+      <text class="m" x="12" y="310" style="fill:var(--accent)">PROPOSED FIX</text>
+      <rect class="fix" x="12" y="320" width="336" height="50" rx="6"/>
+      <text class="tacc" x="180" y="350" text-anchor="middle">router reads the node's declared open ports</text>
+      <line class="eacc" x1="180" y1="370" x2="180" y2="397" marker-end="url(#p3c)"/>
+      <rect class="fix" x="12" y="400" width="336" height="44" rx="6"/>
+      <text class="tacc b" x="180" y="427" text-anchor="middle">every declared port is honoured</text>
+    </svg>
+    <svg class="fc fc-land L" viewBox="0 0 920 300" role="img" aria-label="The cache module opens port 80 into the NixOS firewall, which is switched off on routers. The router module writes its own nftables rules by hand, and only ssh is opened. Result: port 80 never reaches the router's rules; the same happens to port 11434, the local LLM. Proposed fix: the router reads the node's declared open ports, so every declared port is honoured.">
+      <defs>
+        <marker id="p3d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="p3e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahb" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="p3f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="aha" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="node" x="16" y="20" width="240" height="56" rx="6"/>
+      <text class="b" x="136" y="44" text-anchor="middle">cache module:</text>
+      <text x="136" y="65" text-anchor="middle">open port 80</text>
+      <line class="edge" x1="256" y1="48" x2="303" y2="48" marker-end="url(#p3d)"/>
+      <rect class="off" x="306" y="20" width="240" height="56" rx="6"/>
+      <text class="b tmut" x="426" y="44" text-anchor="middle">NixOS firewall</text>
+      <text class="tbad" x="426" y="65" text-anchor="middle">switched off on routers</text>
+      <rect class="node" x="16" y="110" width="240" height="72" rx="6"/>
+      <text class="b" x="136" y="133" text-anchor="middle">router module:</text>
+      <text x="136" y="153" text-anchor="middle">writes its own nftables</text>
+      <text x="136" y="172" text-anchor="middle">rules by hand</text>
+      <line class="edge" x1="256" y1="146" x2="303" y2="146" marker-end="url(#p3d)"/>
+      <rect class="node" x="306" y="124" width="240" height="44" rx="6"/>
+      <text class="b" x="426" y="151" text-anchor="middle">only ssh opened</text>
+      <path class="ebad" d="M546,48 H580 V80 H617" marker-end="url(#p3e)"/>
+      <path class="edge" d="M546,146 H580 V120 H617" marker-end="url(#p3d)"/>
+      <rect class="bad" x="620" y="40" width="284" height="120" rx="6"/>
+      <text class="tbad" x="762" y="76" text-anchor="middle">port 80 never reaches</text>
+      <text class="tbad" x="762" y="96" text-anchor="middle">the router's rules</text>
+      <text x="762" y="124" text-anchor="middle">The same happens to port 11434</text>
+      <text x="762" y="143" text-anchor="middle">(the local LLM).</text>
+      <text class="m" x="16" y="226" style="fill:var(--accent)">PROPOSED FIX</text>
+      <rect class="fix" x="16" y="236" width="400" height="52" rx="6"/>
+      <text class="tacc" x="216" y="267" text-anchor="middle">router reads the node's declared open ports</text>
+      <line class="eacc" x1="416" y1="262" x2="475" y2="262" marker-end="url(#p3f)"/>
+      <rect class="fix" x="478" y="236" width="300" height="52" rx="6"/>
+      <text class="tacc b" x="628" y="267" text-anchor="middle">every declared port is honoured</text>
+    </svg>
+  </figure>
+</section>
+
+<!-- PAGE 4 -->
+<section class="page" id="p4" aria-label="Page 4" hidden>
+  <div class="kicker">Page 4</div>
+  <h2>Where it stands</h2>
+  <ul class="points">
+    <li><strong>Neighbour discovery:</strong> Terra's fix is in CriomOS main. On 09-24 morning it wasn't deployed on Prometheus. <em class="mark">(Witnessed by d8df70; current state in the overview.)</em></li>
+    <li><strong>Port 80:</strong> a source fix was ordered. Whether it should open to the WAN at all is your call: the cache already works over Yggdrasil.</li>
+    <li><strong>Builder recovered:</strong> b80e55 reports the whole chain proven, ouranos → Prometheus → Zeus, with a runtime firewall fix persisted. The declarative source still needs a typed capability for USB Internet sharing. <em class="mark">(Relayed.)</em></li>
+    <li><strong>IPv6 on ouranos's cable side:</strong> turned off since 09-21.</li>
+  </ul>
+</section>
+
+<!-- PAGE 5 -->
+<section class="page" id="p5" aria-label="Page 5" hidden>
+  <div class="kicker">Page 5 · Flowchart</div>
+  <h2>The open question on port 80</h2>
+  <p class="lede"><strong>What this flowchart shows:</strong> the choice the witness left for you, as a fork.</p>
+  <figure>
+    <svg class="fc fc-port" viewBox="0 0 360 340" role="img" aria-label="Binary cache must reach ouranos. Left: open port 80 on the router's WAN, only on cache nodes, only from the cable's subnet; fast, direct, the cache is exposed upstream. Right: use the cache over Yggdrasil only; already works, nothing opened, slower path.">
+      <defs>
+        <marker id="p5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="fw" x="40" y="10" width="280" height="48" rx="6"/>
+      <text class="h" x="180" y="39" text-anchor="middle">Binary cache must reach ouranos</text>
+      <path class="edge" d="M180,58 V78 M93,78 H267"/>
+      <line class="edge" x1="93" y1="78" x2="93" y2="101" marker-end="url(#p5a)"/>
+      <line class="edge" x1="267" y1="78" x2="267" y2="101" marker-end="url(#p5a)"/>
+      <rect class="node" x="12" y="104" width="162" height="116" rx="6"/>
+      <text x="93" y="129" text-anchor="middle">open port 80 on the</text>
+      <text x="93" y="148" text-anchor="middle">router's WAN,</text>
+      <text x="93" y="167" text-anchor="middle">only on cache nodes,</text>
+      <text x="93" y="186" text-anchor="middle">only from the</text>
+      <text x="93" y="205" text-anchor="middle">cable's subnet</text>
+      <rect class="node" x="186" y="104" width="162" height="116" rx="6"/>
+      <text x="267" y="157" text-anchor="middle">use the cache over</text>
+      <text x="267" y="176" text-anchor="middle">Yggdrasil only</text>
+      <line class="edge" x1="93" y1="220" x2="93" y2="245" marker-end="url(#p5a)"/>
+      <line class="edge" x1="267" y1="220" x2="267" y2="245" marker-end="url(#p5a)"/>
+      <rect class="off" x="12" y="248" width="162" height="80" rx="6"/>
+      <text class="b" x="93" y="274" text-anchor="middle">fast, direct;</text>
+      <text class="b" x="93" y="293" text-anchor="middle">the cache is exposed</text>
+      <text class="b" x="93" y="312" text-anchor="middle">upstream</text>
+      <rect class="off" x="186" y="248" width="162" height="80" rx="6"/>
+      <text class="b" x="267" y="274" text-anchor="middle">already works;</text>
+      <text class="b" x="267" y="293" text-anchor="middle">nothing opened;</text>
+      <text class="b" x="267" y="312" text-anchor="middle">slower path</text>
+    </svg>
+    <svg class="fc fc-land L" viewBox="0 0 920 292" role="img" aria-label="Binary cache must reach ouranos. Left: open port 80 on the router's WAN, only on cache nodes, only from the cable's subnet; fast, direct, the cache is exposed upstream. Right: use the cache over Yggdrasil only; already works, nothing opened, slower path.">
+      <defs>
+        <marker id="p5b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="fw" x="300" y="10" width="320" height="48" rx="6"/>
+      <text class="h" x="460" y="40" text-anchor="middle">Binary cache must reach ouranos</text>
+      <path class="edge" d="M460,58 V80 M230,80 H690"/>
+      <line class="edge" x1="230" y1="80" x2="230" y2="103" marker-end="url(#p5b)"/>
+      <line class="edge" x1="690" y1="80" x2="690" y2="103" marker-end="url(#p5b)"/>
+      <rect class="node" x="40" y="106" width="380" height="86" rx="6"/>
+      <text x="230" y="134" text-anchor="middle">open port 80 on the router's WAN,</text>
+      <text x="230" y="155" text-anchor="middle">only on cache nodes,</text>
+      <text x="230" y="176" text-anchor="middle">only from the cable's subnet</text>
+      <rect class="node" x="500" y="106" width="380" height="86" rx="6"/>
+      <text x="690" y="155" text-anchor="middle">use the cache over Yggdrasil only</text>
+      <line class="edge" x1="230" y1="192" x2="230" y2="217" marker-end="url(#p5b)"/>
+      <line class="edge" x1="690" y1="192" x2="690" y2="217" marker-end="url(#p5b)"/>
+      <rect class="off" x="40" y="220" width="380" height="60" rx="6"/>
+      <text class="b" x="230" y="255" text-anchor="middle">fast, direct; the cache is exposed upstream</text>
+      <rect class="off" x="500" y="220" width="380" height="60" rx="6"/>
+      <text class="b" x="690" y="255" text-anchor="middle">already works; nothing opened; slower path</text>
+    </svg>
+  </figure>
+</section>
+
+<!-- PAGE 6 -->
+<section class="page" id="p6" aria-label="Page 6" hidden>
+  <div class="kicker">Page 6</div>
+  <h2>Proposals</h2>
+  <ol class="props">
+    <li><span class="n">1.</span><input type="checkbox" id="prop1"><label for="prop1">Deploy the neighbour-discovery fix to Prometheus (a rebuild against current CriomOS main).</label></li>
+    <li><span class="n">2.</span><input type="checkbox" id="prop2"><label for="prop2">Choose the port 80 fork: open it to the WAN on cache nodes only, or use Yggdrasil only.</label></li>
+    <li><span class="n">3.</span><input type="checkbox" id="prop3"><label for="prop3">Have the router module honour every port a node declares open, fixing the whole class of faults, not just this one.</label></li>
+  </ol>
+</section>
+
+  </main>
+
+  <nav class="nav" aria-label="Pages">
+    <button class="step" id="prev" type="button">← Prev</button>
+    <div class="dots" id="dots"></div>
+    <button class="step" id="next" type="button">Next →</button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var stage = document.getElementById('stage');
+  var dots = document.getElementById('dots');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var count = document.getElementById('count');
+  var cur = 0;
+  pages.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Page ' + (i+1));
+    b.addEventListener('click', function(){ show(i); });
+    dots.appendChild(b);
+  });
+  function show(i){
+    if (i < 0 || i >= pages.length) return;
+    cur = i;
+    pages.forEach(function(p, j){ p.hidden = j !== i; });
+    Array.prototype.forEach.call(dots.children, function(d, j){ d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    prev.disabled = i === 0; next.disabled = i === pages.length - 1;
+    count.textContent = (i+1) + ' / ' + pages.length;
+    stage.scrollTop = 0;
+    try { history.replaceState(null, '', '#p' + (i+1)); } catch(e) {}
+  }
+  prev.addEventListener('click', function(){ show(cur-1); });
+  next.addEventListener('click', function(){ show(cur+1); });
+  document.addEventListener('keydown', function(e){
+    if (e.target && e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') show(cur+1);
+    else if (e.key === 'ArrowLeft') show(cur-1);
+  });
+  var sx = null, sy = null;
+  stage.addEventListener('touchstart', function(e){ var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+  stage.addEventListener('touchend', function(e){
+    if (sx === null) return;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(dx < 0 ? cur+1 : cur-1);
+    sx = sy = null;
+  }, {passive:true});
+  document.querySelectorAll('.props input').forEach(function(box){
+    try { box.checked = localStorage.getItem('prometheus-network-' + box.id) === '1'; } catch(e) {}
+    box.addEventListener('change', function(){
+      try { localStorage.setItem('prometheus-network-' + box.id, box.checked ? '1' : '0'); } catch(e) {}
+    });
+  });
+  var m = /^#p(\d+)$/.exec(location.hash);
+  show(m ? Math.min(Math.max(parseInt(m[1], 10) - 1, 0), pages.length - 1) : 0);
+})();
+</script>

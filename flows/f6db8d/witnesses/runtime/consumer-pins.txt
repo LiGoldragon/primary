@@ -1,0 +1,27 @@
+# Consumer-pin witness
+
+## CriomOS hard assertion holds both lockfiles at the OLD orchestrate revision
+/git/github.com/LiGoldragon/CriomOS/checks/lojix-ownership/default.nix
+  expectedOrchestrateRevision = "5f016531e765d9b679a86cc47a2d75eaca43d624";
+assert !(builtins.hasAttr "lojix" homeLock.nodes);
+assert rootLock.nodes.orchestrate.locked.rev == expectedOrchestrateRevision;
+assert homeLock.nodes.orchestrate.locked.rev == expectedOrchestrateRevision;
+
+The prepared patch /home/li/primary/flows/857335/reports/orchestrate-deployment.patch
+touches only CriomOS-home (flake.nix, flake.lock, one module, two checks). It does not
+touch CriomOS/flake.nix, CriomOS/flake.lock, or this assertion.
+
+## Duplicate generator revisions in orchestrate 1bc55af1 Cargo.lock
+[[package]]
+name = "ethos-zero"
+version = "6.1.0"
+source = "git+https://github.com/LiGoldragon/ethos-zero.git?rev=6e5ad400c2aed197c5daadf9a8bb6abf183b1439#6e5ad400c2aed197c5daadf9a8bb6abf183b1439"
+[[package]]
+name = "ethos-zero"
+version = "6.1.2"
+source = "git+https://github.com/LiGoldragon/ethos-zero.git?rev=daf007296a19ad2f9c8a1e67e102b2e3f09db327#daf007296a19ad2f9c8a1e67e102b2e3f09db327"
+
+## Live deployed pin (CriomOS-home/flake.nix:138, unmodified)
+    orchestrate.url = "github:LiGoldragon/orchestrate/5f016531e765d9b679a86cc47a2d75eaca43d624";
+
+## 0.31.0 was never built on this host

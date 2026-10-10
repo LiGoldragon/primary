@@ -1,0 +1,25 @@
+;; Nomos macro sketch — OWN SYNTAX, minimal, [proposal] throughout. NOT logos data and
+;; NOT a Rust macro; Nomos is the transformation language [ruling 2026-07-11].
+;; Purpose: show WHERE the WireNewtype-style compression now lives — in a Nomos macro,
+;; not as a distinct logos type [ruling 2: no type proliferation].
+;; This file is illustrative; Nomos's grammar is unsettled, so it is NOT parse-checked
+;; against nota (Nomos may not be NOTA-shaped — [open]).
+;;
+;; The macro takes a BRIEF schema newtype  ( name.{ Inner } , per schema-rust
+;; ARCHITECTURE.md:186-197 ) and expands it into the WORDY logos Public.Newtype form
+;; carrying the standard wire attribute vector.
+
+macro wireNewtype (name Inner) -> logos {
+  Public.Newtype.(
+    name
+    standardWireAttributes
+    Inner
+  )
+}
+
+;; a reusable Nomos binding for the constant wire attribute vector (dotted paths,
+;; no double colons [ruling 7]; projection translates . -> :: on emit).
+let standardWireAttributes =
+  [ Literal.[rustfmt.skip]
+    ConfigurationAttribute.Feature.( nota-text [NotaDecode NotaDecodeTraced NotaEncode] )
+    Derive.[ rkyv.[Archive Serialize Deserialize] Clone Debug PartialEq Eq ] ]

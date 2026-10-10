@@ -1,0 +1,1398 @@
+{
+  "cluster": "goldragon",
+  "tailnetBaseDomain": "tailnet.goldragon.criome",
+  "trustedBuildPublicKeys": [
+    "ouranos.goldragon.criome:5dAiX3j76V5tKyvTYxjrCoZjz3IuunoyK+J282hmFrs=",
+    "prometheus.goldragon.criome:vCjiTyT4+sVkjvASSKteq7RZ1/b8hploA7kliKnrpKk=",
+    "tiger.goldragon.criome:/1SYuET5/IIscPvZcgZyrfsMcRiCFcmV051+0U5YXVM=",
+    "zeus.goldragon.criome:35/dVZHU8IKAHRMLgmYKW8ZulqATh4sSueMkthLVM2g="
+  ],
+  "node": {
+    "name": "ouranos",
+    "variant": "Installation",
+    "isLive": false,
+    "isInstallation": true,
+    "installation": {
+      "bootloader": "Uefi",
+      "disks": [
+        {
+          "device": "/dev/disk/by-uuid/38a88e99-3b6e-4de6-9772-05adddc3a1ca",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        },
+        {
+          "device": "/dev/disk/by-uuid/725A-E86A",
+          "mount": "/boot",
+          "fs_type": "Vfat",
+          "options": [
+            "fmask=0022",
+            "dmask=0022"
+          ]
+        }
+      ],
+      "swapDevices": [
+        {
+          "device": "/swapfile",
+          "sizeMebibytes": 32768
+        }
+      ]
+    },
+    "installationDisks": [
+      {
+        "device": "/dev/disk/by-uuid/38a88e99-3b6e-4de6-9772-05adddc3a1ca",
+        "mount": "/",
+        "fs_type": "Ext4",
+        "options": []
+      },
+      {
+        "device": "/dev/disk/by-uuid/725A-E86A",
+        "mount": "/boot",
+        "fs_type": "Vfat",
+        "options": [
+          "fmask=0022",
+          "dmask=0022"
+        ]
+      }
+    ],
+    "size": "Large",
+    "trust": "Max",
+    "online": null,
+    "keyboard": "Colemak",
+    "compressedSwapMemoryPercent": 25,
+    "machine": {
+      "kind": "Metal",
+      "architecture": "x86_64",
+      "host": null,
+      "additionalHosts": [],
+      "user": null,
+      "diskGib": null,
+      "hardware": {
+        "cores": 12,
+        "model": "ThinkPadT14Gen5Intel",
+        "motherboard": null,
+        "chipGeneration": 12,
+        "ramGib": 32,
+        "location": null
+      }
+    },
+    "network": {
+      "linkLocalIps": [],
+      "nodeIp": "5::3/128",
+      "wireguardPublicKey": null,
+      "wireguardProxies": [],
+      "routerInterfaces": null
+    },
+    "keys": {
+      "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIP/v8LZFBXHMzflegvnHEgi6EyDn8P5i//iGjboVjtRr",
+      "nix": "5dAiX3j76V5tKyvTYxjrCoZjz3IuunoyK+J282hmFrs=",
+      "yggdrasil": {
+        "publicKey": "6487aabfe0d4f491a2986f4b41388ebcbd3c69a654f32feb9b1fba351bbd590a",
+        "address": "201:6de1:5500:7cac:2db9:759e:42d2:fb1d",
+        "subnet": "301:6de1:5500:7cac"
+      }
+    },
+    "capabilities": [
+      {
+        "kind": "edge"
+      },
+      {
+        "kind": "lowPower"
+      },
+      {
+        "kind": "nextGeneration"
+      },
+      {
+        "kind": "nordvpn"
+      },
+      {
+        "kind": "hardwareVideo"
+      },
+      {
+        "kind": "tailnetClient"
+      },
+      {
+        "kind": "tailnetController"
+      },
+      {
+        "kind": "nixBuilder",
+        "maximum_jobs": null
+      },
+      {
+        "kind": "openCodeTesting"
+      },
+      {
+        "kind": "personaDevelopment",
+        "capabilities": [
+          "GitoliteServer"
+        ]
+      }
+    ],
+    "criomeDomainName": "ouranos.goldragon.criome",
+    "system": "x86_64-linux",
+    "maxJobs": 1,
+    "buildCores": 1,
+    "isFullyTrusted": true,
+    "isRemoteNixBuilder": true,
+    "isDispatcher": true,
+    "isNixCache": false,
+    "isLargeEdge": true,
+    "enableNetworkManager": true,
+    "hasBasePublicKeys": true,
+    "nixPublicKeyLine": "ouranos.goldragon.criome:5dAiX3j76V5tKyvTYxjrCoZjz3IuunoyK+J282hmFrs=",
+    "nixCacheDomain": null,
+    "nixUrl": null,
+    "behavesAs": {
+      "center": false,
+      "router": false,
+      "edge": true,
+      "nextGeneration": true,
+      "lowPower": true,
+      "bareMetal": true,
+      "virtualMachine": false,
+      "iso": false,
+      "largeAi": false,
+      "testVm": false,
+      "cloudNode": false
+    },
+    "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/v8LZFBXHMzflegvnHEgi6EyDn8P5i//iGjboVjtRr",
+    "builderConfigs": [
+      {
+        "hostName": "prometheus.goldragon.criome",
+        "sshUser": "nix-ssh",
+        "sshKey": "/etc/ssh/ssh_host_ed25519_key",
+        "supportedFeatures": [
+          "big-parallel",
+          "kvm"
+        ],
+        "system": "x86_64-linux",
+        "maxJobs": 6,
+        "publicHostKey": "AAAAC3NzaC1lZDI1NTE5AAAAIAWX4CiSoep1+JuiYEpMzBj/H24eCYR+ZWaG3z2pg4Pk",
+        "publicHostKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWX4CiSoep1+JuiYEpMzBj/H24eCYR+ZWaG3z2pg4Pk"
+      }
+    ],
+    "cacheUrls": [
+      "http://nix.prometheus.goldragon.criome"
+    ],
+    "exNodesSshPublicKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPvxPTAPPKe6Ne9MW4C04Ihe0g4NS12xydci/JW59pIe",
+      "ssh-ed25519 ssh-ed25519-installer-graphical",
+      "ssh-ed25519 ssh-ed25519-installer-minimal",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEUzIXi0SSbJ3IkGxva2LbV7CtNCk1pdd/PR0Q2Nip8",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKCowaN7+eTLF4QLEtozm7KqZrX3V3g7jIlasr7QXR",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWX4CiSoep1+JuiYEpMzBj/H24eCYR+ZWaG3z2pg4Pk",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeoCIfvbUDue17FBglmKF1N2cKH9CWsS5EcXOyBxq5T",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1fnOKW4Z4Ia7KsdLAIyptCb9m1W+HIIGdazjlAYfi2",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAZxp1YpShbxSy1/Khu4wc57o+yWyuMh/80+dKHg6TW"
+    ],
+    "dispatchersSshPublicKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEUzIXi0SSbJ3IkGxva2LbV7CtNCk1pdd/PR0Q2Nip8",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKCowaN7+eTLF4QLEtozm7KqZrX3V3g7jIlasr7QXR",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeoCIfvbUDue17FBglmKF1N2cKH9CWsS5EcXOyBxq5T",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1fnOKW4Z4Ia7KsdLAIyptCb9m1W+HIIGdazjlAYfi2",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAZxp1YpShbxSy1/Khu4wc57o+yWyuMh/80+dKHg6TW"
+    ],
+    "adminSshPublicKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGhaPt/4ytqbJ9oPk5DE5WEK23N36pZRbvaEuqr/MtfF",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMioAruS5HbgT8hUOVAgKKUP0P6s4gXliVb+AcrtWr4V",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEtxRF2wjSD1DzlYCW9BivOsz9X0P95msrbXvGATy/p",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILTm644m4foET1j+DGHl0gfEyGD9A4YltsNOidDUn3BG",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII6G7yMqNXJSuHDlH8R2JRSLSM6sZZLULaK8yDzquwO"
+    ],
+    "imageExchangePublicKeys": [],
+    "fixedLocation": {
+      "latitude": 16.736944,
+      "longitude": -92.6375,
+      "altitude": 2121.0,
+      "accuracy": 1000.0
+    }
+  },
+  "exNodes": {
+    "balboa": {
+      "name": "balboa",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uboot",
+        "disks": [
+          {
+            "device": "/dev/disk/by-label/NIXOS_SD",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/disk/by-label/NIXOS_SD",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        }
+      ],
+      "size": "Zero",
+      "trust": "Min",
+      "online": false,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "aarch64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 4,
+          "model": "rock64",
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": null,
+          "location": null
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": null,
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIPvxPTAPPKe6Ne9MW4C04Ihe0g4NS12xydci/JW59pIe",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [
+        {
+          "kind": "center"
+        }
+      ],
+      "criomeDomainName": "balboa.goldragon.criome",
+      "system": "aarch64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": false,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": false,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": false,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": true,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": false,
+        "largeAi": false,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPvxPTAPPKe6Ne9MW4C04Ihe0g4NS12xydci/JW59pIe",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "live-install-graphical": {
+      "name": "live-install-graphical",
+      "variant": "Live",
+      "isLive": true,
+      "isInstallation": false,
+      "installation": null,
+      "installationDisks": [],
+      "size": "Min",
+      "trust": "Min",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "x86_64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 2,
+          "model": null,
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": null,
+          "location": "installer-media"
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": null,
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "ssh-ed25519-installer-graphical",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [
+        {
+          "kind": "graphical"
+        }
+      ],
+      "criomeDomainName": "live-install-graphical.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": false,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": false,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": false,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": true,
+        "largeAi": false,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 ssh-ed25519-installer-graphical",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "live-install-minimal": {
+      "name": "live-install-minimal",
+      "variant": "Live",
+      "isLive": true,
+      "isInstallation": false,
+      "installation": null,
+      "installationDisks": [],
+      "size": "Min",
+      "trust": "Min",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "x86_64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 2,
+          "model": null,
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": null,
+          "location": "installer-media"
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": null,
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "ssh-ed25519-installer-minimal",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [],
+      "criomeDomainName": "live-install-minimal.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": false,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": false,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": false,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": true,
+        "largeAi": false,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 ssh-ed25519-installer-minimal",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "mirror-alpha": {
+      "name": "mirror-alpha",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/vda",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/vda",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        }
+      ],
+      "size": "Min",
+      "trust": "Max",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "VirtualMachine",
+        "architecture": "x86_64",
+        "host": "prometheus",
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": 8,
+        "hardware": {
+          "cores": 2,
+          "model": null,
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": 4,
+          "location": "home-lab"
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": "5::7/128",
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIJEUzIXi0SSbJ3IkGxva2LbV7CtNCk1pdd/PR0Q2Nip8",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [
+        {
+          "kind": "testVm"
+        },
+        {
+          "kind": "tailnetClient"
+        }
+      ],
+      "criomeDomainName": "mirror-alpha.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": true,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": true,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": false,
+        "virtualMachine": true,
+        "iso": false,
+        "largeAi": false,
+        "testVm": true,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEUzIXi0SSbJ3IkGxva2LbV7CtNCk1pdd/PR0Q2Nip8",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "mirror-beta": {
+      "name": "mirror-beta",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/vda",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/vda",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        }
+      ],
+      "size": "Min",
+      "trust": "Max",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "VirtualMachine",
+        "architecture": "x86_64",
+        "host": "prometheus",
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": 8,
+        "hardware": {
+          "cores": 2,
+          "model": null,
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": 4,
+          "location": "home-lab"
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": "5::8/128",
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIHyKCowaN7+eTLF4QLEtozm7KqZrX3V3g7jIlasr7QXR",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [
+        {
+          "kind": "testVm"
+        },
+        {
+          "kind": "tailnetClient"
+        }
+      ],
+      "criomeDomainName": "mirror-beta.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": true,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": true,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": false,
+        "virtualMachine": true,
+        "iso": false,
+        "largeAi": false,
+        "testVm": true,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyKCowaN7+eTLF4QLEtozm7KqZrX3V3g7jIlasr7QXR",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "prometheus": {
+      "name": "prometheus",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+            "mount": "/",
+            "fs_type": "Btrfs",
+            "options": [
+              "subvol=root"
+            ]
+          },
+          {
+            "device": "/dev/disk/by-uuid/A252-A02B",
+            "mount": "/boot",
+            "fs_type": "Vfat",
+            "options": []
+          },
+          {
+            "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+            "mount": "/home",
+            "fs_type": "Btrfs",
+            "options": [
+              "subvol=home"
+            ]
+          },
+          {
+            "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+            "mount": "/nix",
+            "fs_type": "Btrfs",
+            "options": [
+              "subvol=nix"
+            ]
+          },
+          {
+            "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+            "mount": "/var",
+            "fs_type": "Btrfs",
+            "options": [
+              "subvol=var"
+            ]
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+          "mount": "/",
+          "fs_type": "Btrfs",
+          "options": [
+            "subvol=root"
+          ]
+        },
+        {
+          "device": "/dev/disk/by-uuid/A252-A02B",
+          "mount": "/boot",
+          "fs_type": "Vfat",
+          "options": []
+        },
+        {
+          "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+          "mount": "/home",
+          "fs_type": "Btrfs",
+          "options": [
+            "subvol=home"
+          ]
+        },
+        {
+          "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+          "mount": "/nix",
+          "fs_type": "Btrfs",
+          "options": [
+            "subvol=nix"
+          ]
+        },
+        {
+          "device": "/dev/disk/by-uuid/d3ad7f53-2470-4744-9ddf-b183c7c22f31",
+          "mount": "/var",
+          "fs_type": "Btrfs",
+          "options": [
+            "subvol=var"
+          ]
+        }
+      ],
+      "size": "Max",
+      "trust": "Max",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "x86_64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 8,
+          "model": "GMKtec EVO-X2",
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": 128,
+          "location": null
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": "5::5/128",
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": {
+          "wan": "eno1",
+          "wlan": "wlp195s0",
+          "wlanBand": "2g",
+          "wlanChannel": 6,
+          "wlanStandard": "Wifi4",
+          "wpa3SaePasswordReference": "routerWifiSaePasswords",
+          "backupWireless": {
+            "interface": "wlp199s0f0u4",
+            "networkName": "criome-backup",
+            "band": "2g",
+            "channel": 11,
+            "standard": "Wifi4",
+            "passwordReference": "routerBackupWifiPassword"
+          }
+        }
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIAWX4CiSoep1+JuiYEpMzBj/H24eCYR+ZWaG3z2pg4Pk",
+        "nix": "vCjiTyT4+sVkjvASSKteq7RZ1/b8hploA7kliKnrpKk=",
+        "yggdrasil": {
+          "publicKey": "9adf4a76f8229421981cdaaaf4d0177a57119eee5848499eaa9e0fdf107363cf",
+          "address": "200:ca41:6b12:fba:d7bc:cfc6:4aaa:165f",
+          "subnet": "300:ca41:6b12:fba"
+        }
+      },
+      "capabilities": [
+        {
+          "kind": "center"
+        },
+        {
+          "kind": "largeAi"
+        },
+        {
+          "kind": "router"
+        },
+        {
+          "kind": "tailnetClient"
+        },
+        {
+          "kind": "nixBuilder",
+          "maximum_jobs": 6
+        },
+        {
+          "kind": "nixCache"
+        },
+        {
+          "kind": "vmHost",
+          "guest_subnet": "169.254.100.0/22",
+          "kvm": "Available",
+          "maximum_guests": 4
+        }
+      ],
+      "criomeDomainName": "prometheus.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 6,
+      "buildCores": 6,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": true,
+      "isDispatcher": false,
+      "isNixCache": true,
+      "isLargeEdge": false,
+      "enableNetworkManager": false,
+      "hasBasePublicKeys": true,
+      "nixPublicKeyLine": "prometheus.goldragon.criome:vCjiTyT4+sVkjvASSKteq7RZ1/b8hploA7kliKnrpKk=",
+      "nixCacheDomain": "nix.prometheus.goldragon.criome",
+      "nixUrl": "http://nix.prometheus.goldragon.criome",
+      "behavesAs": {
+        "center": true,
+        "router": true,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": false,
+        "largeAi": true,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWX4CiSoep1+JuiYEpMzBj/H24eCYR+ZWaG3z2pg4Pk",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "tiger": {
+      "name": "tiger",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/disk/by-uuid/158a5a78-3dbc-4c80-99b6-96e433bd836a",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          },
+          {
+            "device": "/dev/disk/by-uuid/50F3-9E04",
+            "mount": "/boot",
+            "fs_type": "Vfat",
+            "options": []
+          }
+        ],
+        "swapDevices": [
+          {
+            "device": "/dev/disk/by-uuid/4dcf2ad2-4677-483f-9900-046f0f53053a",
+            "sizeMebibytes": null
+          }
+        ]
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/disk/by-uuid/158a5a78-3dbc-4c80-99b6-96e433bd836a",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        },
+        {
+          "device": "/dev/disk/by-uuid/50F3-9E04",
+          "mount": "/boot",
+          "fs_type": "Vfat",
+          "options": []
+        }
+      ],
+      "size": "Max",
+      "trust": "Max",
+      "online": false,
+      "keyboard": "Colemak",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "x86_64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 4,
+          "model": "ThinkPadE15Gen2Intel",
+          "motherboard": null,
+          "chipGeneration": 12,
+          "ramGib": null,
+          "location": null
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": "5::4/128",
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIKeoCIfvbUDue17FBglmKF1N2cKH9CWsS5EcXOyBxq5T",
+        "nix": "/1SYuET5/IIscPvZcgZyrfsMcRiCFcmV051+0U5YXVM=",
+        "yggdrasil": {
+          "publicKey": "38ed4c7c9ffd2e79361af3202f406810069fa37ff991e6d1d434a529ba75dfb3",
+          "address": "202:3895:9c1b:16:8c36:4f28:66fe:85fc",
+          "subnet": "302:3895:9c1b:16"
+        }
+      },
+      "capabilities": [
+        {
+          "kind": "edge"
+        },
+        {
+          "kind": "lowPower"
+        },
+        {
+          "kind": "nextGeneration"
+        },
+        {
+          "kind": "hardwareVideo"
+        },
+        {
+          "kind": "nixBuilder",
+          "maximum_jobs": null
+        }
+      ],
+      "criomeDomainName": "tiger.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": true,
+      "isNixCache": false,
+      "isLargeEdge": true,
+      "enableNetworkManager": true,
+      "hasBasePublicKeys": true,
+      "nixPublicKeyLine": "tiger.goldragon.criome:/1SYuET5/IIscPvZcgZyrfsMcRiCFcmV051+0U5YXVM=",
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": true,
+        "nextGeneration": true,
+        "lowPower": true,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": false,
+        "largeAi": false,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKeoCIfvbUDue17FBglmKF1N2cKH9CWsS5EcXOyBxq5T",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "vm-testing": {
+      "name": "vm-testing",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/vda",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/vda",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        }
+      ],
+      "size": "Min",
+      "trust": "Max",
+      "online": true,
+      "keyboard": "Qwerty",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "VirtualMachine",
+        "architecture": "x86_64",
+        "host": "prometheus",
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": 40,
+        "hardware": {
+          "cores": 4,
+          "model": null,
+          "motherboard": null,
+          "chipGeneration": null,
+          "ramGib": 8,
+          "location": "home-lab"
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": "5::6/128",
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAID1fnOKW4Z4Ia7KsdLAIyptCb9m1W+HIIGdazjlAYfi2",
+        "nix": null,
+        "yggdrasil": null
+      },
+      "capabilities": [
+        {
+          "kind": "testVm"
+        },
+        {
+          "kind": "tailnetClient"
+        }
+      ],
+      "criomeDomainName": "vm-testing.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": true,
+      "isNixCache": false,
+      "isLargeEdge": false,
+      "enableNetworkManager": true,
+      "hasBasePublicKeys": false,
+      "nixPublicKeyLine": null,
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": false,
+        "nextGeneration": false,
+        "lowPower": false,
+        "bareMetal": false,
+        "virtualMachine": true,
+        "iso": false,
+        "largeAi": false,
+        "testVm": true,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID1fnOKW4Z4Ia7KsdLAIyptCb9m1W+HIIGdazjlAYfi2",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    },
+    "zeus": {
+      "name": "zeus",
+      "variant": "Installation",
+      "isLive": false,
+      "isInstallation": true,
+      "installation": {
+        "bootloader": "Uefi",
+        "disks": [
+          {
+            "device": "/dev/disk/by-uuid/4bd0cbe7-082d-4f06-9283-978b834a85db",
+            "mount": "/",
+            "fs_type": "Ext4",
+            "options": []
+          },
+          {
+            "device": "/dev/disk/by-uuid/1491-B84C",
+            "mount": "/boot",
+            "fs_type": "Vfat",
+            "options": [
+              "fmask=0022",
+              "dmask=0022"
+            ]
+          }
+        ],
+        "swapDevices": []
+      },
+      "installationDisks": [
+        {
+          "device": "/dev/disk/by-uuid/4bd0cbe7-082d-4f06-9283-978b834a85db",
+          "mount": "/",
+          "fs_type": "Ext4",
+          "options": []
+        },
+        {
+          "device": "/dev/disk/by-uuid/1491-B84C",
+          "mount": "/boot",
+          "fs_type": "Vfat",
+          "options": [
+            "fmask=0022",
+            "dmask=0022"
+          ]
+        }
+      ],
+      "size": "Max",
+      "trust": "Max",
+      "online": null,
+      "keyboard": "Colemak",
+      "compressedSwapMemoryPercent": null,
+      "machine": {
+        "kind": "Metal",
+        "architecture": "x86_64",
+        "host": null,
+        "additionalHosts": [],
+        "user": null,
+        "diskGib": null,
+        "hardware": {
+          "cores": 4,
+          "model": "ThinkPadT14Gen2Intel",
+          "motherboard": null,
+          "chipGeneration": 12,
+          "ramGib": null,
+          "location": null
+        }
+      },
+      "network": {
+        "linkLocalIps": [],
+        "nodeIp": null,
+        "wireguardPublicKey": null,
+        "wireguardProxies": [],
+        "routerInterfaces": null
+      },
+      "keys": {
+        "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIMAZxp1YpShbxSy1/Khu4wc57o+yWyuMh/80+dKHg6TW",
+        "nix": "35/dVZHU8IKAHRMLgmYKW8ZulqATh4sSueMkthLVM2g=",
+        "yggdrasil": {
+          "publicKey": "f40458290d7a2d79efdbef4b5f046fb7f825626eda9d118e4f2b869c105f6ec4",
+          "address": "200:17f7:4fad:e50b:a50c:2048:2169:41f7",
+          "subnet": "300:17f7:4fad:e50b"
+        }
+      },
+      "capabilities": [
+        {
+          "kind": "edge"
+        },
+        {
+          "kind": "lowPower"
+        },
+        {
+          "kind": "hardwareVideo"
+        }
+      ],
+      "criomeDomainName": "zeus.goldragon.criome",
+      "system": "x86_64-linux",
+      "maxJobs": 1,
+      "buildCores": 1,
+      "isFullyTrusted": true,
+      "isRemoteNixBuilder": false,
+      "isDispatcher": true,
+      "isNixCache": false,
+      "isLargeEdge": true,
+      "enableNetworkManager": true,
+      "hasBasePublicKeys": true,
+      "nixPublicKeyLine": "zeus.goldragon.criome:35/dVZHU8IKAHRMLgmYKW8ZulqATh4sSueMkthLVM2g=",
+      "nixCacheDomain": null,
+      "nixUrl": null,
+      "behavesAs": {
+        "center": false,
+        "router": false,
+        "edge": true,
+        "nextGeneration": false,
+        "lowPower": true,
+        "bareMetal": true,
+        "virtualMachine": false,
+        "iso": false,
+        "largeAi": false,
+        "testVm": false,
+        "cloudNode": false
+      },
+      "sshPublicKeyLine": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAZxp1YpShbxSy1/Khu4wc57o+yWyuMh/80+dKHg6TW",
+      "builderConfigs": [],
+      "cacheUrls": [],
+      "exNodesSshPublicKeys": [],
+      "dispatchersSshPublicKeys": [],
+      "adminSshPublicKeys": [],
+      "imageExchangePublicKeys": [],
+      "fixedLocation": null
+    }
+  },
+  "users": [
+    {
+      "name": "bird",
+      "role": "Multimedia",
+      "size": "Large",
+      "trust": "Max",
+      "keyboard": "Colemak",
+      "style": "Emacs",
+      "githubId": "bird",
+      "fastRepeat": null,
+      "publicKeys": [
+        {
+          "node": "tiger",
+          "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIGhaPt/4ytqbJ9oPk5DE5WEK23N36pZRbvaEuqr/MtfF",
+          "keygrip": "943502A0A9D25EF34C16E2ED2A120C26279C4248"
+        },
+        {
+          "node": "zeus",
+          "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIMioAruS5HbgT8hUOVAgKKUP0P6s4gXliVb+AcrtWr4V",
+          "keygrip": "962157586FC998370969F675812FE1EBBD9CF8DA"
+        }
+      ],
+      "editor": null,
+      "textSize": null,
+      "hasPublicKey": false,
+      "emailAddress": "bird@goldragon.criome.net",
+      "matrixId": "@bird:goldragon.criome.net",
+      "gitSigningKey": null,
+      "useColemak": true,
+      "useFastRepeat": true,
+      "isMultimediaDev": true,
+      "isCodeDev": false,
+      "preferredEditor": "Codium",
+      "resolvedTextSize": "Medium",
+      "sshPublicKeys": [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGhaPt/4ytqbJ9oPk5DE5WEK23N36pZRbvaEuqr/MtfF",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMioAruS5HbgT8hUOVAgKKUP0P6s4gXliVb+AcrtWr4V"
+      ],
+      "sshPublicKey": null,
+      "extraGroups": [
+        "audio",
+        "video",
+        "adbusers",
+        "nixdev",
+        "systemd-journal",
+        "dialout",
+        "plugdev",
+        "power",
+        "storage",
+        "libvirtd"
+      ],
+      "enableLinger": false
+    },
+    {
+      "name": "li",
+      "role": "Unlimited",
+      "size": "Large",
+      "trust": "Max",
+      "keyboard": "Colemak",
+      "style": "Emacs",
+      "githubId": "LiGoldragon",
+      "fastRepeat": null,
+      "publicKeys": [
+        {
+          "node": "ouranos",
+          "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIHEtxRF2wjSD1DzlYCW9BivOsz9X0P95msrbXvGATy/p",
+          "keygrip": "7FAFE190D2C749B222B249E54E5A7AD71C1BDDBD"
+        },
+        {
+          "node": "tiger",
+          "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAILTm644m4foET1j+DGHl0gfEyGD9A4YltsNOidDUn3BG",
+          "keygrip": "1785B4D2813D7ED1913A05FA74FF42B9153EEFF0"
+        },
+        {
+          "node": "zeus",
+          "ssh": "AAAAC3NzaC1lZDI1NTE5AAAAIII6G7yMqNXJSuHDlH8R2JRSLSM6sZZLULaK8yDzquwO",
+          "keygrip": "CEEA0DD02CA901E5F71A8CB3EB5C5EB902AA210E"
+        }
+      ],
+      "editor": null,
+      "textSize": "Small",
+      "hasPublicKey": true,
+      "emailAddress": "li@goldragon.criome.net",
+      "matrixId": "@li:goldragon.criome.net",
+      "gitSigningKey": "&7FAFE190D2C749B222B249E54E5A7AD71C1BDDBD",
+      "useColemak": true,
+      "useFastRepeat": true,
+      "isMultimediaDev": true,
+      "isCodeDev": true,
+      "preferredEditor": "Emacs",
+      "resolvedTextSize": "Small",
+      "sshPublicKeys": [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEtxRF2wjSD1DzlYCW9BivOsz9X0P95msrbXvGATy/p",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILTm644m4foET1j+DGHl0gfEyGD9A4YltsNOidDUn3BG",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII6G7yMqNXJSuHDlH8R2JRSLSM6sZZLULaK8yDzquwO"
+      ],
+      "sshPublicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEtxRF2wjSD1DzlYCW9BivOsz9X0P95msrbXvGATy/p",
+      "extraGroups": [
+        "audio",
+        "video",
+        "adbusers",
+        "nixdev",
+        "systemd-journal",
+        "dialout",
+        "plugdev",
+        "power",
+        "storage",
+        "libvirtd"
+      ],
+      "enableLinger": false
+    }
+  ],
+  "domains": [],
+  "trust": {
+    "cluster": "Max",
+    "clusters": [],
+    "nodes": [
+      {
+        "name": "balboa",
+        "magnitude": "Max"
+      },
+      {
+        "name": "ouranos",
+        "magnitude": "Max"
+      },
+      {
+        "name": "prometheus",
+        "magnitude": "Max"
+      },
+      {
+        "name": "tiger",
+        "magnitude": "Max"
+      },
+      {
+        "name": "vm-testing",
+        "magnitude": "Max"
+      },
+      {
+        "name": "zeus",
+        "magnitude": "Max"
+      }
+    ],
+    "users": [
+      {
+        "name": "bird",
+        "magnitude": "Max"
+      },
+      {
+        "name": "li",
+        "magnitude": "Max"
+      }
+    ]
+  },
+  "domainConfiguration": {
+    "internalSuffix": "criome",
+    "publicClusterDomains": [
+      "goldragon.criome.net"
+    ]
+  }
+}

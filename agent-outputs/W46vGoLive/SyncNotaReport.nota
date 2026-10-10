@@ -1,0 +1,114 @@
+(1783034606 1783034793 [(0 [(signal-frame AlreadyAligned NotAttempted)]) (1 [(signal-harness (Bumped ([(signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642))] (synchronizer e98c31045a9e889bfba8746e8630d7bd70ef6061))) (Verified (prometheus DefaultPackage))) (signal-router (Bumped ([(signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision d0dd5c0b66a90c1af72d45920e31c2b3049437f9) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642))] (synchronizer 963ddb00c369e773f12fa0d87f4509b5867c9496))) (Verified (prometheus DefaultPackage)))]) (2 [(introspect (Bumped ([(signal-router CargoManifest (Reference main) (Reference synchronizer)) (signal-frame CargoLock (Revision c75053210b1b1e0d22833f0cfc461363213cf860) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision c75053210b1b1e0d22833f0cfc461363213cf860) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-router CargoLock (Revision c4dbbbc4860ad9cdd3f843eac839b7984a934bba) (Revision 963ddb00c369e773f12fa0d87f4509b5867c9496))] (synchronizer 4f65c5a8b5485b6e417f1875c4dc357f90953870))) (VerifyFailed prometheus))]) (3 [(persona (Bumped ([(signal-harness CargoManifest (Reference main) (Reference synchronizer)) (signal-router CargoManifest (Reference main) (Reference synchronizer)) (signal-frame CargoLock (Revision 166bda84dc63bf8461fff11a41c43d6a1c92a941) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-frame CargoLock (Revision 166bda84dc63bf8461fff11a41c43d6a1c92a941) (Revision 0027ea3cef353b1c168ca6862e40c6077a853642)) (signal-harness CargoLock (Revision 623baf60312c0e5a711012a533eab87520ed9235) (Revision e98c31045a9e889bfba8746e8630d7bd70ef6061)) (signal-router CargoLock (Revision f81d46469e948b1d29d77e226f53bfe679eeb023) (Revision 963ddb00c369e773f12fa0d87f4509b5867c9496)) (introspect FlakeLock (Revision fe028946c799b130aba5e506072fcdd1413a6b12) (Revision 4f65c5a8b5485b6e417f1875c4dc357f90953870))] (synchronizer a2e21fbf41948424137ce91c8c1ac6f1b69795d3))) (VerifyFailed prometheus))])] [(introspect LockEdit [|transitive lock resolution for ComponentName("introspect"):     Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-router.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-rust-next.git`
+error: no matching package named `nota-next` found
+location searched: Git repository https://github.com/LiGoldragon/nota-next.git?branch=main
+required by package `introspect v0.2.0 (/tmp/synchronizer-lock-introspect-140011)`
+|]) (introspect Verify [|nix build --no-link 'github:LiGoldragon/introspect/4f65c5a8b5485b6e417f1875c4dc357f90953870#checks.x86_64-linux.test-daemon-answers-typed-meta-policy-relation' 'github:LiGoldragon/introspect/4f65c5a8b5485b6e417f1875c4dc357f90953870#checks.x86_64-linux.test-daemon-applies-configured-socket-mode' 'github:LiGoldragon/introspect/4f65c5a8b5485b6e417f1875c4dc357f90953870#checks.x86_64-linux.test-daemon-socket' 'github:LiGoldragon/introspect/4f65c5a8b5485b6e417f1875c4dc357f90953870#checks.x86_64-linux.test-introspect-cli-reaches-working-socket' 'github:LiGoldragon/introspect/4f65c5a8b5485b6e417f1875c4dc357f90953870#checks.x86_64-linux.test-meta-introspect-cli-reaches-policy-socket': ource.drv
+  /nix/store/gjg1s5rx33g6scg8cv2w35b92hwpj9g5-introspect-deps-0.2.0.drv
+  /nix/store/cc9bafn0n5xxwgwb074rwr735lq8fz24-introspect-test-0.2.0.drv
+  /nix/store/gdhkdl0p820jmb6cqxc8pwvbii1k7b8v-introspect-test-0.2.0.drv
+  /nix/store/gjg92siy5asvk2d7a67v15f38xqjy9jq-introspect-test-0.2.0.drv
+  /nix/store/l3qma545gksf1pin4fp8sp9g0anx5a69-introspect-test-0.2.0.drv
+  /nix/store/x8dbzmb7169ivsnrqhzx1z4xch9xp1cc-introspect-test-0.2.0.drv
+building '/nix/store/1r5vlddcpdx0x8fwm59fx7ryrisph18x-cargo-git-https-github.com-LiGoldragon-signal-router.git-963ddb00c369e773f12fa0d87f4509b5867c9496.drv'...
+building '/nix/store/3vcw31nsvbdbdvvqax3rqdlbdsw7l9wq-Cargo.toml.drv'...
+building '/nix/store/mdhd305wmw1difh3qbsk79qadvv5cp3l-source.drv'...
+building '/nix/store/1h76jxnh9lpmjmrz2q6wxl4v5prjr72z-linkLockedDeps.drv'...
+building '/nix/store/4g0k24a98nsil0wsdjvr6i062ijk2c0f-vendor-cargo-deps.drv'...
+building '/nix/store/gjg1s5rx33g6scg8cv2w35b92hwpj9g5-introspect-deps-0.2.0.drv'...
+error: Cannot build '/nix/store/gjg1s5rx33g6scg8cv2w35b92hwpj9g5-introspect-deps-0.2.0.drv'.
+       Reason: builder failed with exit code 101.
+       Output paths:
+         /nix/store/9a7wfkjjpx9qblswc7jqp70ahncl00iw-introspect-deps-0.2.0
+       Last 25 log lines:
+       > Running phase: patchPhase
+       > Executing configureCargoCommonVars
+       > Running phase: updateAutotoolsGnuConfigScriptsPhase
+       > Running phase: configurePhase
+       > will append /build/source/.cargo-home/config.toml with contents of /nix/store/k0c6dnfb4dvph3hqisk9czp232q7lbgd-vendor-cargo-deps/config.toml
+       > default configurePhase, nothing to do
+       > Running phase: buildPhase
+       > +++ command cargo --version
+       > cargo 1.95.0 (f2d3ce0bd 2026-03-21)
+       > +++ command cargo check --release --locked --all-targets
+       > error: failed to get `schema-rust` as a dependency of package `signal-router v0.2.0 (https://github.com/LiGoldragon/signal-router.git?branch=synchronizer#963ddb00)`
+       >     ... which satisfies git dependency `signal-router` (locked to 0.2.0) of package `introspect v0.2.0 (/build/source)`
+       >
+       > Caused by:
+       >   failed to load source for dependency `schema-rust`
+       >
+       > Caused by:
+       >   unable to update https://github.com/LiGoldragon/schema-rust-next.git?branch=main
+       >
+       > Caused by:
+       >   the source https://github.com/LiGoldragon/schema-rust-next.git?branch=main requires a lock file to be present first before it can be
+       >   used against vendored source code
+       >
+       >   remove the source replacement configuration, generate a lock file, and then
+       >   restore the source replacement configuration to continue the build
+       For full logs, run:
+         nix log /nix/store/gjg1s5rx33g6scg8cv2w35b92hwpj9g5-introspect-deps-0.2.0.drv
+error: Cannot build '/nix/store/cc9bafn0n5xxwgwb074rwr735lq8fz24-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/k6hx7mhgrc644qw770l6i4i05133fmwm-introspect-test-0.2.0
+error: Cannot build '/nix/store/gdhkdl0p820jmb6cqxc8pwvbii1k7b8v-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/kxi37zhsbazp69mmv11r6mfsbyz5vz2i-introspect-test-0.2.0
+error: Cannot build '/nix/store/gjg92siy5asvk2d7a67v15f38xqjy9jq-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/h48rjkwf7839f394k83jvs6903yq0fmv-introspect-test-0.2.0
+error: Cannot build '/nix/store/l3qma545gksf1pin4fp8sp9g0anx5a69-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/d33qkjc084bdribjhrgpyy7bnac7l1zx-introspect-test-0.2.0
+error: Cannot build '/nix/store/x8dbzmb7169ivsnrqhzx1z4xch9xp1cc-introspect-test-0.2.0.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/90vvwqxyxy3lcmb7052g8syylll6am0d-introspect-test-0.2.0
+error: Build failed due to failed dependency
+|]) (persona LockEdit [|transitive lock resolution for ComponentName("persona"):     Updating crates.io index
+    Updating git repository `https://github.com/LiGoldragon/nota-next.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-frame.git`
+    Updating git repository `https://github.com/LiGoldragon/signal-harness.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-next.git`
+    Updating git repository `https://github.com/LiGoldragon/schema-rust-next.git`
+error: no matching package named `nota-next` found
+location searched: Git repository https://github.com/LiGoldragon/nota-next.git?branch=main
+required by package `persona v0.2.0 (/tmp/synchronizer-lock-persona-140011)`
+|]) (persona Verify [|nix build --no-link 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-component-ready-rejects-wrong-socket-mode' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-component-ready-requires-socket-metadata-from-spawn-envelope' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-launches-message-router-topology-through-engine-supervisor' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-launches-nix-built-message-router-topology' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-launches-nix-built-prototype-topology' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-launches-prototype-supervised-components-through-engine-supervisor' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-launches-three-harness-chain-topology-through-engine-supervisor' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-persists-cli-mutation-to-manager-store' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-daemon-three-harness-chain-smoke-script-builds' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-engine-layout-assigns-socket-modes-by-component-boundary' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-handoff-router-binds-socket-boundaries' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-message-daemon-stamps-origin-via-tap' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-message-router-topology-spawn-envelope-has-one-peer-socket' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-router-daemon-accepts-stamped-submission' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-router-daemon-rejects-unstamped-submission' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-router-daemon-serves-inbox-after-submit' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-spawn-envelope-carries-component-paths-and-peer-sockets' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.persona-three-harness-chain-writes-instance-specific-daemon-configurations' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-chain-reply-bytes' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-chain-reply-nota' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-chain-request-bytes' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-chain-request-nota' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-chain-summary' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-inbox-listing-reply-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-inbox-query-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-malformed-bytes-decode-rejects' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-message-channel-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-message-unimplemented-reply-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-origin-external-network-peer-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-origin-external-non-owner-uid-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-origin-external-owner-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-origin-internal-mind-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-origin-internal-router-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-stamped-submission-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-submission-accepted-reply-round-trip' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-truncated-frame-decode-rejects' 'github:LiGoldragon/persona/a2e21fbf41948424137ce91c8c1ac6f1b69795d3#checks.x86_64-linux.wire-wrong-frame-kind-decode-rejects': : Compressing objects:  10% (5/50)        remote: Compressing objects:  12% (6/50)        remote: Compressing objects:  14% (7/50)        remote: Compressing objects:  16% (8/50)        remote: Compressing objects:  18% (9/50)        remote: Compressing objects:  20% (10/50)        remote: Compressing objects:  22% (11/50)        remote: Compressing objects:  24% (12/50)        remote: Compressing objects:  26% (13/50)        remote: Compressing objects:  28% (14/50)        remote: Compressing objects:  30% (15/50)        remote: Compressing objects:  32% (16/50)        remote: Compressing objects:  34% (17/50)        remote: Compressing objects:  36% (18/50)        remote: Compressing objects:  38% (19/50)        remote: Compressing objects:  40% (20/50)        remote: Compressing objects:  42% (21/50)        remote: Compressing objects:  44% (22/50)        remote: Compressing objects:  46% (23/50)        remote: Compressing objects:  48% (24/50)        remote: Compressing objects:  50% (25/50)        remote: Compressing objects:  52% (26/50)        remote: Compressing objects:  54% (27/50)        remote: Compressing objects:  56% (28/50)        remote: Compressing objects:  58% (29/50)        remote: Compressing objects:  60% (30/50)        remote: Compressing objects:  62% (31/50)        remote: Compressing objects:  64% (32/50)        remote: Compressing objects:  66% (33/50)        remote: Compressing objects:  68% (34/50)        remote: Compressing objects:  70% (35/50)        remote: Compressing objects:  72% (36/50)        remote: Compressing objects:  74% (37/50)        remote: Compressing objects:  76% (38/50)        remote: Compressing objects:  78% (39/50)        remote: Compressing objects:  80% (40/50)        remote: Compressing objects:  82% (41/50)        remote: Compressing objects:  84% (42/50)        remote: Compressing objects:  86% (43/50)        remote: Compressing objects:  88% (44/50)        remote: Compressing objects:  90% (45/50)        remote: Compressing objects:  92% (46/50)        remote: Compressing objects:  94% (47/50)        remote: Compressing objects:  96% (48/50)        remote: Compressing objects:  98% (49/50)        remote: Compressing objects: 100% (50/50)        remote: Compressing objects: 100% (50/50), done.        
+remote: Total 80 (delta 40), reused 64 (delta 24), pack-reused 0 (from 0)        
+From https://github.com/LiGoldragon/version-projection
+ * branch            1a1eeab4adf2c53e3bb8ba6de46303c256f39e23 -> FETCH_HEAD
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+error:
+       … while calling the 'derivationStrict' builtin
+         at «nix-internal»/derivation-internal.nix:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
+
+       … while evaluating derivation 'persona-daemon-launches-nix-built-message-router-topology'
+         whose name attribute is located at «github:LiGoldragon/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57?narHash=sha256-EHq1/OX139R1RvBzOJ0aMRT3xnWyqtHBRUBuO1gFzjI%3D»/pkgs/stdenv/generic/make-derivation.nix:541:11
+
+       … while evaluating attribute 'buildCommand' of derivation 'persona-daemon-launches-nix-built-message-router-topology'
+         at «github:LiGoldragon/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57?narHash=sha256-EHq1/OX139R1RvBzOJ0aMRT3xnWyqtHBRUBuO1gFzjI%3D»/pkgs/build-support/trivial-builders/default.nix:80:17:
+           79|         enableParallelBuilding = true;
+           80|         inherit buildCommand name;
+             |                 ^
+           81|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Failed to fetch git repository 'ssh://git@github.com/LiGoldragon/router.git'
+|])])

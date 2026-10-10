@@ -1,0 +1,5 @@
+Library
+[ std:Clonable.Clone ]
+[ A.{ String } ]
+[]
+[ A.[ Clonable ] ]

@@ -1,0 +1,193 @@
+<title>Quota Anatomy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#f7f6f2; --ink:#22252a; --muted:#6e6a63; --rule:#dcd9d1;
+  --accent:#2f6b74; --accent-soft:#e2eeef;
+  --amber:#a2681c; --amber-soft:#f5ead6;
+  --violet:#5a4a8c; --violet-soft:#ebe7f6;
+  --code-bg:#efede7; --quote:#4b4f56;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#17191c; --ink:#e4e1da; --muted:#9a958c; --rule:#33373d;
+    --accent:#7cc3cb; --accent-soft:#1f3236;
+    --amber:#dba64a; --amber-soft:#3a2d16;
+    --violet:#b3a3e6; --violet-soft:#2a2540;
+    --code-bg:#1f2227; --quote:#c9c5bd;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#17191c; --ink:#e4e1da; --muted:#9a958c; --rule:#33373d;
+  --accent:#7cc3cb; --accent-soft:#1f3236;
+  --amber:#dba64a; --amber-soft:#3a2d16;
+  --violet:#b3a3e6; --violet-soft:#2a2540;
+  --code-bg:#1f2227; --quote:#c9c5bd;
+  color-scheme:dark;
+}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;font-size:17px;line-height:1.55;margin:0}
+main{max-width:40rem;margin:0 auto;padding:1.5rem 1.1rem 4rem}
+h1,h2,h3{font-family:Fraunces,Georgia,"Times New Roman",serif;font-weight:600;line-height:1.15;text-wrap:balance;color:var(--ink)}
+h1{font-size:2rem;margin:.5rem 0 1rem;font-variation-settings:"opsz" 144}
+h2{font-size:1.35rem;margin:2.6rem 0 .8rem;padding-top:1rem;border-top:1px solid var(--rule)}
+h3{font-size:1.1rem;margin:1.6rem 0 .5rem}
+p{margin:.7rem 0;max-width:65ch}
+a{color:var(--accent)}
+strong{font-weight:600}
+code{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--code-bg);padding:.05em .3em;border-radius:3px}
+pre{background:var(--code-bg);border-left:3px solid var(--accent);padding:.8rem .9rem;overflow-x:auto;margin:1rem 0;border-radius:0 4px 4px 0}
+pre code{background:none;padding:0;font-size:.8rem;line-height:1.5}
+ul,ol{padding-left:1.2rem}
+li{margin:.35rem 0}
+li.q{list-style:none;margin:.6rem 0 .6rem -1.2rem;padding:.6rem .8rem .6rem .9rem;background:var(--violet-soft);border-left:3px solid var(--violet);border-radius:0 4px 4px 0}
+li.q strong{color:var(--violet);font-family:"JetBrains Mono",monospace;font-size:.85em;letter-spacing:.02em}
+.badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.03em;padding:0 .35em;border-radius:3px;line-height:1.6}
+.badge.rec{background:var(--accent-soft);color:var(--accent)}
+.badge.inf{background:var(--amber-soft);color:var(--amber)}
+.tablewrap{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;font-size:.92rem;min-width:100%}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td:nth-child(3){font-family:"JetBrains Mono",monospace;font-size:.8rem;white-space:nowrap}
+.lede{color:var(--quote);font-size:1.02rem}
+.key{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;font-size:.9rem;color:var(--muted);margin:1rem 0 0}
+nav.toc{font-size:.92rem;margin:1.2rem 0 0;padding:.8rem 1rem;border:1px solid var(--rule);border-radius:4px}
+nav.toc b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem}
+nav.toc a{text-decoration:none;display:inline-block;margin:.1rem .7rem .1rem 0}
+nav.toc a:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:480px){body{font-size:16px} h1{font-size:1.65rem} main{padding:1rem .9rem 3rem}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+nav.web{display:flex;flex-wrap:wrap;gap:.35rem .5rem;align-items:center;font-size:.8rem;margin:0 0 1.2rem;padding:.55rem .7rem;border:1px solid var(--rule);border-radius:6px;background:var(--code-bg,var(--box))}
+nav.web b{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:.3rem;font-weight:600}
+nav.web a{text-decoration:none;color:var(--accent);padding:.1rem .45rem;border-radius:4px;border:1px solid transparent}
+nav.web a[aria-current="page"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+nav.web a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+nav.web b.also{flex-basis:100%;margin-top:.3rem}
+
+</style>
+<main>
+<nav class="web"><b>Web of vision</b><a href="https://claude.ai/code/artifact/10c1001a-335a-46cc-8571-4690f951380a">Vision, easy</a><a href="https://claude.ai/code/artifact/71ba909a-0674-49d8-9813-44f27fb078fb">Vision, whole</a><a href="https://claude.ai/code/artifact/d6d8303f-aad5-4ff5-b0af-289827e9bd84">Situation, easy</a><a href="https://claude.ai/code/artifact/2375214d-fa67-4033-ac47-4f661bc4f0df">Situation, whole</a><a href="https://claude.ai/code/artifact/9c5339d5-62b2-4665-9d89-ae5da2292400" aria-current="page">Quota anatomy</a><a href="https://claude.ai/code/artifact/aec7d804-708b-499e-b0cc-c0e40e385b76">Original blueprint</a><b class="also">Also, by a parallel flow</b><a href="https://claude.ai/artifact/DdW7DDwgvmqUbGm2MA64sJ">Vision at a glance</a><a href="https://claude.ai/artifact/YaJXDmZahA5jvJqEN2NyBo">Situation</a><a href="https://claude.ai/artifact/2rJZEZCAi8UQA8Le9uBUaq">Quota Pulse</a></nav>
+<div id="out"></div>
+</main>
+<script type="text/markdown" id="src">
+# Quota Anatomy
+
+A unified vision document from Psyche Fable, subflow of b05237, 2026-09-18, on the living's request: "Show me the anatomy of all that: the quota visualization interface." Six parts, each naming where it would land. Nothing here runs yet. An approved version of this document means the system below is built, running, and tested in a near-production emulation.
+
+## The easy version
+
+**What we see.** Each harness already knows the quota. Claude Code hands its status line, on every refresh, the five-hour and seven-day percentage used, when each resets, the context percentage, and the session cost. Codex shows a weekly limit on its own status line. No flow records any of it, so nothing can say how fast it is burning or whether the week is on pace. Your rhythm, spoken on 09-14, is about fourteen percent a day on each subscription so both meet at the end of the week.
+
+**The whole in one line.**
+
+```
+harness status line  -->  sensor writes a row  -->  ledger (mind)  -->  five metrics
+                                                                        |-> attached to the flow's next message, timestamped
+                                                                        |-> quota tile on every situation report
+                                                                        '-> pushed to you only when pace breaks
+```
+
+**Not sure.** Whether the display script may double as the sensor. Where Codex's numbers can be read from. Whether the block attaches to every message or only when a metric crosses a line. How wide the burn window is. Whether fourteen percent a day is still the pace line.
+
+## Part 1. The sensor
+
+Where it lands: the field, as a field data feed; the `claude-harness` and `codex-harness` skills say how each harness exposes it.
+
+Claude Code has one documented programmatic source: the status-line command receives a JSON object each time the line refreshes. It carries `rate_limits.five_hour.used_percentage` and `resets_at`, the same for `seven_day`, `context_window.used_percentage`, `cost.total_cost_usd`, and the model. Hooks receive none of this. The status-line script on this machine already reads these fields to paint the line; it would also append one row to the ledger. The display becomes the sensor, at no extra call.
+
+Codex shows `weekly-limit` and `context-used` on its status line, but I found no documented or witnessed way for a script to read them. That is an unknown, not a gap I can close from here.
+
+Rests on: "log how much context and how many tokens ... programmatically, without asking the agents" (09-14); "Every codex flow enters into a quota check" (09-16); "the quota accounting ... would be in the Codex bridge component" (09-16); "Persona keeps track" (09-15). Three homes have been named for accounting: Persona, the Codex bridge, and now the field. Records, not a ruling.
+
+## Part 2. The ledger
+
+Where it lands: mind data, since it is chronology of what ran; on main today, under the flow that ran the sensor, until Primary Next mounts mind data.
+
+One row per sample, typed, not prose, in the spirit of the structured-log record of 09-17. Fields:
+
+| Field | Meaning |
+|---|---|
+| at | sample time, seconds |
+| account | the subscription sampled: claude-max, codex |
+| flow | the flow whose harness reported |
+| model | the seat |
+| window | five-hour or seven-day |
+| used | percent used, 0 to 100 |
+| resets | reset time, seconds |
+| context | the flow's context percent |
+| cost | session cost so far, where the harness gives it |
+
+A row is a datom; the shape is written as an ethos once the datom skill is loaded for it. Retention: the seven-day window needs a week of rows; older rows compact to one row per hour.
+
+## Part 3. The five metrics
+
+Where it lands: computed by the field from the ledger; named in the `models` vision beside power levels, since spending is what power means.
+
+1. **Left.** Percent remaining and hours to reset, per window.
+2. **Burn.** Percent per hour over the recent window. The width is a question below.
+3. **Pace.** Share used against share of the window elapsed. Your line is fourteen percent a day; above it or below it, as you asked on 09-15.
+4. **Runway.** Hours until exhaustion at the current burn, against hours to reset. Runway shorter than reset means the week ends early.
+5. **Balance.** Claude's weekly percent against Codex's, and the gap. Your 09-14 rhythm wants the gap near zero.
+
+Beside them, not a quota: the flow's own **context** percent against the refresh thresholds already in vision, thirty percent for a Fable, sixty at most.
+
+## Part 4. The attachment
+
+Where it lands: the `messaging` skill, and the harness skills for the mechanism.
+
+The living's idea: the metrics ride along with the next message, timestamped, so the model never stops to check. Claude Code offers two hooks that add text the model sees. A prompt-submit hook adds context to the turn it fires on, so whatever message is submitted next carries the block. A stop hook adds context that reaches the model on the following turn. There is no timer hook and no way to queue a message without a prompt. So the periodic part is the messenger's: the central messenger already queues messages between flows, and the hook attaches the block to whatever goes in next.
+
+The block is a datom, so by the 09-18 rule it reads as machine, never as psyche. Five lines at most: the timestamp, then one line per metric. Codex has no documented hook that injects text; there the messenger carries the block as a message.
+
+Always or on threshold is the open question. Always is simplest and honest; on threshold is quieter and matches "bothered as little as possible" (09-16).
+
+## Part 5. The interface
+
+Where it lands: the situation report's standing header, and a page of its own under the visualization skill.
+
+- **In every situation report:** the Quotas tile shows pace and runway per account in one line each.
+- **The quota page:** two bars per account, five-hour and seven-day, with the pace line drawn across; a small burn line over the last day; the balance gap between accounts as one number. Mobile first.
+- **In a response:** the same five numbers as one ASCII line, since visuals in a response are ASCII by the 08-21 rule.
+- **Push:** only when pace breaks or runway falls under reset, on the channel you pick, per the 09-14 ping record.
+
+## Part 6. Who decides on the numbers
+
+Where it lands: the `flow` vision, since dispatch is Flow's.
+
+The records already say what the numbers are for: Flow may pick Claude or Codex by quota awareness (09-17); a Codex flow checks quota against its priority before starting (09-16); Codex takes the work when Claude burns faster (09-15); high effort is allowed only to use up quota about to expire (09-13). None of that runs today. This document gives it the numbers it would need.
+
+## Questions
+
+1. May the status-line script write the ledger, or should nothing but the Field Nexus sense, so we wait for it?
+2. Codex's quota numbers: is there a source you know of, or is this a field research task?
+3. Attach the block to every message, or only when a metric crosses a line?
+4. Burn window: one hour, or three?
+5. Is fourteen percent a day still the pace line for both accounts?
+6. Do the accounting homes named earlier, Persona and the Codex bridge, stand, or does the field take it?
+7. Should the on-threshold push reach you on the same channel as other pings, once that channel exists?
+
+## Sources
+
+Harness facts: Claude Code status-line and hooks documentation, checked 2026-09-18 by a documentation subflow; the local script `~/.claude/statusline.sh`; the local Codex configuration. Psyche records: `flows/6cc91b/vision/quotas.md`, `flows/692df8/vision/quota.md`, `flows/f55ec8/vision/quota.md`, `flows/5f4fea/vision/quotaAccounting.md`, `flows/024bc7/vision/effort.md`, `flows/692df8/vision/pair.md`, `flows/9993b5/vision/workspaceProvisioning.md`, `flows/9993b5/vision/structuredLog.md`, `flows/f55ec8/vision/flowRefresh.md`, `flows/6cc91b/vision/flowLifecycle.md`, `flows/6cc91b/vision/notifications.md`, `flows/f55ec8/vision/layers.md`, `vision-raw/visuals.md`, `flows/b05237/vision/operational-quotaBurnRateHook.md`, `operational-fullSignalCommunicationToPsyche.md`, `operational-messagingToDeployment.md`.
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<script>
+(function(){
+  var out = document.getElementById('out');
+  out.innerHTML = marked.parse(document.getElementById('src').textContent, {gfm:true, breaks:false});
+  out.querySelectorAll('pre code, p, li').forEach(function(el){
+    el.innerHTML = el.innerHTML
+      .replace(/\[recorded(, [a-z]+)?\]/g, function(m,x){return '<span class="badge rec">recorded'+(x||'')+'</span>';})
+      .replace(/\[inferred(, [a-z]+)?\]/g, function(m,x){return '<span class="badge inf">inferred'+(x||'')+'</span>';});
+  });
+  out.querySelectorAll('li').forEach(function(li){ if(/^<strong>Q\d+\.<\/strong>/.test(li.innerHTML.trim())) li.classList.add('q'); });
+  out.querySelectorAll('table').forEach(function(t){ var w=document.createElement('div'); w.className='tablewrap'; t.parentNode.insertBefore(w,t); w.appendChild(t); });
+  var h1 = out.querySelector('h1'); var first = h1 && h1.nextElementSibling; if(first && first.tagName==='P') first.classList.add('lede');
+  var toc=document.createElement('nav'); toc.className='toc'; var b=document.createElement('b'); b.textContent='On this page'; toc.appendChild(b);
+  out.querySelectorAll('h2').forEach(function(h,i){ h.id='s'+i; var a=document.createElement('a'); a.href='#s'+i; a.textContent=h.textContent; toc.appendChild(a); });
+  if(first) first.after(toc);
+})();
+</script>

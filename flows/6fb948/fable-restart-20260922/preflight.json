@@ -1,0 +1,16 @@
+{
+  "kind": "fresh-fable-replacement-preflight",
+  "flowId": "6fb948",
+  "predecessor": "1b8ac0",
+  "oldTargets": ["messaging-build/wD:p6", "messaging-build/wD:p9"],
+  "oldTargetPolicy": "no input, resume, fork, reap, or route mutation",
+  "profile": "/home/li/primary/flows/03e825/refresh-round-20260922/psyche-high/profile.json",
+  "profileSha256": "b70671df424f58f2c3ab861a189259d718a7b38e7ca8d0027e5231ce6a9924c9",
+  "launcher": "/home/li/primary/tools/native-batch-refresh.mjs",
+  "remoteControlCapability": "installed Claude supports --remote-control, but current authenticated remote registration is unavailable: Claude reports login required",
+  "localPaneCreatedAndClosed": {
+    "paneId": "wD:pA",
+    "terminalId": "term_65c1716b6951b59",
+    "reason": "native-batch-refresh has no documented existing-pane option and creates its own tab"
+  }
+}

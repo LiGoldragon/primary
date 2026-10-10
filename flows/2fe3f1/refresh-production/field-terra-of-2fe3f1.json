@@ -1,0 +1,34 @@
+{
+  "name": "field-terra-of-2fe3f1",
+  "model": "gpt-5.6-terra",
+  "effort": "medium",
+  "role": "Field Low",
+  "predecessor": "2fe3f1",
+  "ancestor": "2fe3f1",
+  "fresh": false,
+  "skills": [
+    "spirit",
+    "main-flow",
+    "refresh",
+    "psyche",
+    "psyche-acquisition",
+    "behavior",
+    "correction",
+    "vocabulary",
+    "testing",
+    "subflow",
+    "edit-coordination",
+    "orchestrate",
+    "flow-evidence",
+    "prompt-crafting",
+    "herdr",
+    "messaging",
+    "field",
+    "codex-harness"
+  ],
+  "sourceManifest": [
+    "flows/2fe3f1/reports/field-low-gc-12-seat-refresh-handoff-2026-09-20.md",
+    "flows/2fe3f1/reports/field-low-roster-closure-ledger-2026-09-20.md",
+    "flows/1cb440/reports/refresh-handoff.md"
+  ]
+}

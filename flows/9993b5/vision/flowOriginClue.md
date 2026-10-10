@@ -1,0 +1,9 @@
+# Flow origin clue
+
+## One of the clues is probably going to be a programmatically provided origin of where the Flow is requested from, so there is going to be a clue on why it was started; you can always go and read that transcript with the subflow itself, if it is a really light type of specialized subflow, if you will
+
+Context: typed to primary Psyche opus (this flow, 9993b5) on 2026-09-17 closing the message that also carries the one-shared-primary, psyche-vs-mind, and easy-flow-dispatch visions (oneSharedPrimary.md, psycheVsMind.md, easyFlowDispatch.md, same date). Names the mechanism that answers a spawned flow's "why am I here?" — the Flow CLI records, programmatically, the origin of the request (which flow made it, from which session, at which turn), and the spawned flow reads that origin transcript with its own light-weight subflow to reconstruct the intent. Complements the easy-flow-dispatch vision (same day): the goal description the caller supplies is small because the callee can pull the surrounding context by tracing the origin. The "light specialized subflow" reads as: a predefined subflow type whose only job is fetching the launching transcript segment (from the origin session, at or near the origin turn) and returning it as context. Related to the caller-identity vision (callerIdentity.md, same day) — the origin clue is a specific use of the identity chain (caller session + turn) as a context-locator. Logged by the main flow before acting.
+
+> One of the clues is probably going to be a programmatically provided origin of where the Flow is requested from, so there's going to be a clue on why it was started. You can always go and read that transcript with the subflow itself, if it's a really light type of specialized subflow, if you will.
+
+-- psyche, typed.

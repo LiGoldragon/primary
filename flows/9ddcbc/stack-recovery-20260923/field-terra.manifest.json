@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wQ",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "field-terra-recovery",
+      "profileFile": "/home/li/primary/flows/9ddcbc/stack-recovery-20260923/field-terra.profile.json",
+      "fresh": true,
+      "predecessor": null,
+      "agent": "field-terra-recovery",
+      "label": "Field Low recovery",
+      "model": "gpt-5.6-terra",
+      "effort": "medium"
+    }
+  ]
+}

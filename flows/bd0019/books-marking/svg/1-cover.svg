@@ -1,0 +1,74 @@
+<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t1">
+  <title id="t1">A long scroll of grey machine lines; in its middle one warm block of handwriting, held between two red brush-stroke marks.</title>
+  <defs>
+    <radialGradient id="c-sky" cx="70%" cy="22%" r="85%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.55"/>
+      <stop offset=".55" style="stop-color:var(--ground);stop-opacity:.0"/>
+    </radialGradient>
+    <linearGradient id="c-paper" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" style="stop-color:var(--paper-edge)"/>
+      <stop offset=".12" style="stop-color:var(--paper)"/>
+      <stop offset=".88" style="stop-color:var(--paper)"/>
+      <stop offset="1" style="stop-color:var(--paper-edge)"/>
+    </linearGradient>
+    <radialGradient id="c-warm" cx="50%" cy="50%" r="65%">
+      <stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/>
+      <stop offset=".7" style="stop-color:var(--glow);stop-opacity:.45"/>
+      <stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/>
+    </radialGradient>
+    <filter id="c-rough" x="-5%" y="-20%" width="110%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="3"/>
+    </filter>
+  </defs>
+  <rect width="360" height="560" style="fill:url(#c-sky)"/>
+  <!-- rays -->
+  <g style="fill:var(--glow);opacity:.18">
+    <path d="M300 -10 L150 300 L190 300 Z"/>
+    <path d="M330 -10 L230 300 L262 300 Z"/>
+    <path d="M360 20 L292 300 L318 300 Z"/>
+  </g>
+  <!-- scroll body -->
+  <path d="M58 46 C 58 30, 302 30, 302 46 L 302 506 C 302 524, 58 524, 58 506 Z" style="fill:url(#c-paper);stroke:var(--rule);stroke-width:1.2"/>
+  <!-- top roll -->
+  <path d="M46 40 C 46 22, 314 22, 314 40 C 314 58, 46 58, 46 40 Z" style="fill:var(--paper-edge);stroke:var(--ink);stroke-width:1.4;stroke-opacity:.35"/>
+  <ellipse cx="46" cy="40" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <ellipse cx="314" cy="40" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <!-- bottom roll -->
+  <path d="M46 512 C 46 494, 314 494, 314 512 C 314 530, 46 530, 46 512 Z" style="fill:var(--paper-edge);stroke:var(--ink);stroke-width:1.4;stroke-opacity:.35"/>
+  <ellipse cx="46" cy="512" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <ellipse cx="314" cy="512" rx="8" ry="15" style="fill:var(--rule);stroke:var(--ink);stroke-opacity:.35"/>
+  <!-- machine lines above -->
+  <g style="fill:var(--muted);opacity:.42">
+    <rect x="80" y="74" width="150" height="5" rx="2.5"/><rect x="236" y="74" width="40" height="5" rx="2.5"/>
+    <rect x="80" y="90" width="96" height="5" rx="2.5"/><rect x="182" y="90" width="70" height="5" rx="2.5"/>
+    <rect x="80" y="106" width="182" height="5" rx="2.5"/>
+    <rect x="80" y="122" width="60" height="5" rx="2.5"/><rect x="146" y="122" width="118" height="5" rx="2.5"/>
+    <rect x="80" y="138" width="130" height="5" rx="2.5"/>
+    <rect x="80" y="154" width="170" height="5" rx="2.5"/>
+  </g>
+  <!-- warm glow behind block -->
+  <ellipse cx="180" cy="288" rx="150" ry="104" style="fill:url(#c-warm)"/>
+  <!-- the opening mark: a red brush brace -->
+  <g filter="url(#c-rough)">
+    <path d="M74 196 C 74 182, 92 184, 112 184 L 160 184 C 172 184, 176 178, 180 170 C 184 178, 188 184, 200 184 L 248 184 C 268 184, 286 182, 286 196" style="fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round;stroke-linejoin:round"/>
+    <path d="M74 380 C 74 394, 92 392, 112 392 L 160 392 C 172 392, 176 398, 180 406 C 184 398, 188 392, 200 392 L 248 392 C 268 392, 286 394, 286 380" style="fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round;stroke-linejoin:round"/>
+  </g>
+  <!-- the handwriting: prose to the living -->
+  <g style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.85">
+    <path d="M92 220 c 8 -8 12 6 20 0 s 10 -10 18 -2 s 12 6 20 -2 s 10 -6 18 0 s 12 8 22 -2 s 10 -4 18 0 s 12 4 20 -2 s 10 -2 16 0"/>
+    <path d="M92 246 c 10 -6 14 6 22 0 s 12 -8 20 0 s 10 6 18 -2 s 14 -6 22 0 s 12 6 20 -2 s 10 -4 20 0 s 8 4 14 0"/>
+    <path d="M92 272 c 6 -8 12 6 18 0 s 12 -10 22 -2 s 10 8 20 0 s 12 -6 20 0 s 10 6 18 -2 s 12 -4 22 0"/>
+    <path d="M92 298 c 8 -6 14 6 22 0 s 10 -8 18 0 s 14 6 22 -2 s 10 -6 18 0 s 12 6 20 -2 s 10 -4 22 0 s 6 2 10 0"/>
+    <path d="M92 324 c 10 -8 12 6 20 0 s 12 -6 20 0 s 10 8 20 -2 s 12 -6 18 0 s 14 4 20 -2"/>
+    <path d="M92 350 c 8 -6 12 6 20 0 s 12 -8 22 0 s 10 6 18 -2 s 8 -2 12 0"/>
+  </g>
+  <!-- machine lines below -->
+  <g style="fill:var(--muted);opacity:.42">
+    <rect x="80" y="424" width="120" height="5" rx="2.5"/><rect x="206" y="424" width="64" height="5" rx="2.5"/>
+    <rect x="80" y="440" width="176" height="5" rx="2.5"/>
+    <rect x="80" y="456" width="84" height="5" rx="2.5"/><rect x="170" y="456" width="90" height="5" rx="2.5"/>
+    <rect x="80" y="472" width="140" height="5" rx="2.5"/>
+  </g>
+  <text x="180" y="550" text-anchor="middle" style="fill:var(--ink);font:italic 600 16px var(--display)">to the living</text>
+</svg>

@@ -1,0 +1,3 @@
+   Compiling synchronizer v0.2.0 (/git/github.com/LiGoldragon/synchronizer)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.62s
+     Running `target/debug/synchronizer /home/li/primary/agent-outputs/RenamePropagator/worker2-synchronizer-full.nota staged-cascade`

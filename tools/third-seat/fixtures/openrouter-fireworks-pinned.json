@@ -1,0 +1,14 @@
+{
+  "access_authorized": false,
+  "provider": "openrouter-fireworks-pinned",
+  "baseURL": "https://openrouter.ai/api/v1",
+  "model": "moonshotai/kimi-k3",
+  "version": "OpenRouter Kimi K3 via Fireworks",
+  "expected_opencode_version": "1.17.13",
+  "routing": {
+    "provider": {
+      "only": ["Fireworks"],
+      "allow_fallbacks": false
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "session": "messaging-build",
+  "workspace": "wQ",
+  "cwd": "/home/li/primary",
+  "seats": [
+    {
+      "harness": "codex",
+      "profile": "mind-astra-current",
+      "predecessor": "9e7ea5",
+      "agent": "mind-astra-of-9e7ea5",
+      "label": "Mind Astra of 9e7ea5",
+      "model": "gpt-6-astra",
+      "effort": "medium"
+    },
+    {
+      "harness": "claude",
+      "profile": "psyche-opus-of-b81560",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/psyche-opus-of-b81560.json",
+      "predecessor": "b81560",
+      "agent": "psyche-opus-of-b81560",
+      "label": "Psyche Medium",
+      "model": "claude-opus-4-6[1m]",
+      "effort": "medium"
+    },
+    {
+      "harness": "claude",
+      "profile": "psyche-fable-of-f38926",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/psyche-fable-of-f38926.json",
+      "predecessor": "f38926",
+      "agent": "psyche-fable-of-f38926",
+      "label": "PsycheHigh",
+      "model": "claude-fable-5-1[1m]",
+      "effort": "medium"
+    },
+    {
+      "harness": "codex",
+      "profile": "field-astra-current",
+      "predecessor": "1cb440",
+      "agent": "field-astra-of-1cb440",
+      "label": "Field Astra of 1cb440",
+      "model": "gpt-6-astra",
+      "effort": "medium"
+    },
+    {
+      "harness": "claude",
+      "profile": "psyche-sonnet",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/psyche-sonnet.json",
+      "predecessor": null,
+      "agent": "psyche-sonnet",
+      "label": "Psyche Low",
+      "model": "claude-sonnet-5",
+      "effort": "medium",
+      "fresh": true
+    },
+    {
+      "harness": "claude",
+      "profile": "psyche-haiku",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/psyche-haiku.json",
+      "predecessor": null,
+      "agent": "psyche-haiku",
+      "label": "Psyche Ultra Low",
+      "model": "claude-haiku-4-5-20251001",
+      "effort": "medium",
+      "fresh": true
+    },
+    {
+      "harness": "codex",
+      "profile": "mind-terra",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/mind-terra.json",
+      "predecessor": null,
+      "agent": "mind-terra",
+      "label": "Mind Low",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "fresh": true
+    },
+    {
+      "harness": "codex",
+      "profile": "mind-luna",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/mind-luna.json",
+      "predecessor": null,
+      "agent": "mind-luna",
+      "label": "Mind Ultra Low",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "fresh": true
+    },
+    {
+      "harness": "codex",
+      "profile": "field-terra",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/field-terra.json",
+      "predecessor": null,
+      "agent": "field-terra",
+      "label": "Field Low",
+      "model": "gpt-5.6-terra",
+      "effort": "medium",
+      "fresh": true
+    },
+    {
+      "harness": "codex",
+      "profile": "field-luna",
+      "profileFile": "/home/li/primary/flows/395aed/refresh-production/field-luna.json",
+      "predecessor": null,
+      "agent": "field-luna",
+      "label": "Field Ultra Low",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "fresh": true
+    }
+  ]
+}

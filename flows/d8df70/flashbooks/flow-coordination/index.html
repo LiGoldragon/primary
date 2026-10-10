@@ -1,0 +1,500 @@
+<title>Flow coordination · answers and three rulings sought</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --ground:#f3ebd9; --paper:#faf4e6; --ink:#3b2b1e; --soft:#735f4a; --faint:#cdbd9f;
+  --accent:#b9352a; --accent-soft:#e7a58f;
+  --ochre:#d8b36e; --sage:#a3b08e; --dusk:#8797a8; --glow:#f6d98b; --fog:#e4dac6;
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1f1914; --paper:#2a221b; --ink:#efe3cc; --soft:#bba98f; --faint:#54473a;
+    --accent:#e2634f; --accent-soft:#7a3a2e;
+    --ochre:#9c7a3f; --sage:#5f6c52; --dusk:#4b5a6b; --glow:#e8c270; --fog:#3a3129;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#1f1914; --paper:#2a221b; --ink:#efe3cc; --soft:#bba98f; --faint:#54473a;
+  --accent:#e2634f; --accent-soft:#7a3a2e;
+  --ochre:#9c7a3f; --sage:#5f6c52; --dusk:#4b5a6b; --glow:#e8c270; --fog:#3a3129;
+}
+html,body{height:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;overflow:hidden}
+.book{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;height:100%;padding-inline:16px;box-sizing:border-box}
+.stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);container-type:size;min-height:0;overflow:hidden}
+.page{grid-area:1/1;display:grid;grid-template-columns:minmax(0,1fr);min-height:0;min-width:0}
+.ill{grid-template-rows:minmax(0,1fr) auto;padding-block:10px 4px;gap:6px}
+.ill svg{width:100%;height:100%;display:block;max-width:100%}
+.ill .cap{font-family:var(--display);font-size:clamp(15px,3.6cqi,20px);text-align:center;color:var(--soft);text-wrap:balance;font-style:italic}
+.txt{overflow-y:auto;align-content:safe center;padding-block:18px}
+.txt .col{max-width:68ch;width:100%;justify-self:center;display:grid;gap:14px}
+.txt p{margin:0;font-size:clamp(16px,3.9cqi,19px)}
+h1,h2{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(24px,6cqi,34px)}
+h2{font-size:clamp(20px,5cqi,27px)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+pre{font-family:var(--mono);font-size:13px;line-height:1.5;background:var(--paper);border:1px solid var(--faint);padding:10px 12px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;border-radius:4px}
+.mark{border-left:3px solid var(--accent);padding:4px 0 4px 12px;font-size:15px;color:var(--soft)}
+.mark b{color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;display:block}
+.prov{font-family:var(--mono);font-size:12px;color:var(--soft)}
+details{font-size:14px}
+summary{cursor:pointer;color:var(--soft);font-family:var(--mono);font-size:12px}
+details pre{margin-top:8px}
+ol.rulings{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ol.rulings li{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;background:var(--paper);border:1px solid var(--faint);border-radius:6px;padding:10px 12px}
+ol.rulings input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent)}
+ol.rulings label{font-family:var(--display);font-weight:600;font-size:17px;cursor:pointer}
+ol.rulings .q{grid-column:2;font-size:14px;color:var(--soft);font-style:italic}
+.badge{grid-column:2;justify-self:start;font-family:var(--mono);font-size:12px;border:1px dashed var(--soft);color:var(--soft);padding:1px 8px;border-radius:99px}
+nav{container-type:inline-size;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding-block:8px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--faint)}
+nav button.step{font-family:var(--display);font-size:16px;background:var(--paper);color:var(--ink);border:1px solid var(--faint);border-radius:99px;padding:8px 16px;cursor:pointer;min-width:44px}
+nav button.step:disabled{opacity:.35;cursor:default}
+.dots{display:grid;grid-auto-flow:column;justify-content:center;gap:4px}
+.dots button{width:18px;height:24px;border:0;background:transparent;padding:0;cursor:pointer;display:grid;place-items:center}
+.dots button::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--faint)}
+.dots button[aria-current="true"]::after{background:var(--accent);width:10px;height:10px}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@container (max-width:420px){ nav button.step .w{display:none} nav button.step{padding:8px 14px} .dots{gap:0} .dots button{width:16px} }
+@container (min-width:760px){ .txt .col{gap:18px} }
+/* svg paint */
+.s-ink{fill:var(--ink)} .s-soft{fill:var(--soft)} .s-paper{fill:var(--paper)} .s-ground{fill:var(--ground)}
+.s-acc{fill:var(--accent)} .s-ochre{fill:var(--ochre)} .s-sage{fill:var(--sage)} .s-dusk{fill:var(--dusk)} .s-glow{fill:var(--glow)} .s-fog{fill:var(--fog)} .s-faint{fill:var(--faint)}
+.l-ink{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}
+.l-soft{fill:none;stroke:var(--soft);stroke-linecap:round;stroke-linejoin:round}
+.l-acc{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round}
+.lab{font-family:var(--mono);font-size:13px;fill:var(--ink)}
+.labd{font-family:var(--display);font-size:16px;fill:var(--ink);font-style:italic}
+@media (prefers-reduced-motion:no-preference){ .page:not([hidden]){animation:fade .25s ease-out} @keyframes fade{from{opacity:.4}to{opacity:1}} }
+</style>
+
+<div class="book" id="book">
+<div class="stage" id="stage">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="hand" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="4"/>
+    </filter>
+    <radialGradient id="gGlow"><stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/><stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/></radialGradient>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--paper)"/><stop offset="1" style="stop-color:var(--fog)"/></linearGradient>
+    <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--ochre)"/><stop offset="1" style="stop-color:var(--soft)"/></linearGradient>
+    <linearGradient id="gGhost" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--dusk);stop-opacity:.55"/><stop offset="1" style="stop-color:var(--dusk);stop-opacity:.1"/></linearGradient>
+    <marker id="headAcc" viewBox="0 0 20 20" refX="10" refY="10" markerWidth="4.2" markerHeight="4.2" orient="auto-start-reverse"><path d="M2 2 L18 10 L2 18 Q7 10 2 2Z" style="fill:var(--accent)"/></marker>
+    <marker id="headInk" viewBox="0 0 20 20" refX="10" refY="10" markerWidth="5" markerHeight="5" orient="auto"><path d="M3 3 L17 10 L3 17" style="fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round"/></marker>
+  </defs>
+</svg>
+
+<!-- 1 · cover -->
+<section class="page ill" data-kind="ill" aria-label="Cover">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A folded FinalResponse letter on a desk sends two paper birds: one to the woven Flow side, one to the lit window of the living.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <!-- window of the living -->
+  <circle cx="300" cy="120" r="95" fill="url(#gGlow)"/>
+  <path d="M255 190 V110 Q255 62 300 62 Q345 62 345 110 V190 Z" class="s-glow" opacity=".85"/>
+  <path d="M255 190 V110 Q255 62 300 62 Q345 62 345 110 V190 Z M300 64 V190 M256 128 H344" class="l-ink" stroke-width="3"/>
+  <text x="300" y="214" text-anchor="middle" class="labd">the living</text>
+  <!-- woven knot of the Flow side -->
+  <g transform="translate(88 150)">
+    <path d="M-50 0 C-30 -40 30 -40 50 0 C30 40 -30 40 -50 0Z" class="l-soft" stroke-width="7" opacity=".6"/>
+    <path d="M0 -50 C40 -30 40 30 0 50 C-40 30 -40 -30 0 -50Z" class="l-ink" stroke-width="5"/>
+    <path d="M-50 0 C-30 -40 30 -40 50 0" class="l-ink" stroke-width="5"/>
+    <path d="M-35 -35 C0 -10 0 10 35 35 M35 -35 C10 0 -10 0 -35 35" class="l-soft" stroke-width="3"/>
+    <circle r="9" class="s-acc"/>
+  </g>
+  <text x="88" y="232" text-anchor="middle" class="labd">Flow side</text>
+  <!-- flight trails -->
+  <path d="M200 400 C160 350 190 300 150 262 S110 230 120 214" class="l-soft" stroke-width="2" stroke-dasharray="3 7"/>
+  <path d="M212 398 C260 350 230 300 270 260 S300 228 296 204" class="l-soft" stroke-width="2" stroke-dasharray="3 7"/>
+  <!-- paper birds -->
+  <g transform="translate(150 265) rotate(-25)">
+    <path d="M0 0 L-30 -8 L-8 4Z" class="s-paper"/><path d="M0 0 L-24 -22 L-10 2Z" class="s-faint"/>
+    <path d="M0 0 L-30 -8 L-8 4Z M0 0 L-24 -22 L-10 2Z" class="l-ink" stroke-width="1.5"/>
+  </g>
+  <g transform="translate(268 262) rotate(-60)">
+    <path d="M0 0 L-30 -8 L-8 4Z" class="s-paper"/><path d="M0 0 L-24 -22 L-10 2Z" class="s-faint"/>
+    <path d="M0 0 L-30 -8 L-8 4Z M0 0 L-24 -22 L-10 2Z" class="l-ink" stroke-width="1.5"/>
+  </g>
+  <!-- desk -->
+  <path d="M-10 470 Q200 430 410 470 V610 H-10Z" fill="url(#gWood)"/>
+  <path d="M-10 470 Q200 430 410 470" class="l-ink" stroke-width="2.5"/>
+  <path d="M20 520 Q200 490 380 520 M40 565 Q200 540 360 565" class="l-soft" stroke-width="1.2" opacity=".6"/>
+  <!-- the folded letter -->
+  <g transform="translate(200 432) rotate(-6)">
+    <path d="M-78 -46 H78 V46 H-78Z" class="s-paper"/>
+    <path d="M-78 -46 L0 10 L78 -46" class="s-faint"/>
+    <path d="M-78 -46 H78 V46 H-78Z M-78 -46 L0 10 L78 -46 M-78 46 L-18 -2 M78 46 L18 -2" class="l-ink" stroke-width="2.2"/>
+    <text x="0" y="36" text-anchor="middle" style="font-family:var(--display);font-size:24px;fill:var(--accent)">« »</text>
+    <circle cx="0" cy="10" r="11" class="s-acc"/><circle cx="0" cy="10" r="6" class="l-ink" stroke-width="1" opacity=".5"/>
+  </g>
+</svg>
+<div class="cap">Flow coordination · answers and three rulings sought</div>
+</section>
+
+<!-- 2 · recipient type -->
+<section class="page txt" data-kind="txt" hidden aria-label="On the recipient type">
+<div class="col">
+<div class="eyebrow">836818 MainFlow · FinalResponse · 2026-09-23 22:12Z</div>
+<h1>Flow coordination · answers and three rulings sought</h1>
+<p><strong>To the Flow side, on the recipient type.</strong> No Datom type exists today for a design question to Psyche. The only typed shape near it is the Question field of FinalResponse, which is Markdown inside a datom, not a message. So this prose contract is the intended interim route. I propose the type below for the living's approval; until approved, prose stands.</p>
+<pre>Type
+DesignQuestion.{ FlowId Topic Markdown Vector&lt;Recommendation&gt; }
+[ FlowId.String  Topic.String  Markdown.String  Recommendation.{ Markdown Grade }  Grade.[ Recommended Acceptable Refused ] ]</pre>
+</div>
+</section>
+
+<!-- 3 · the flowchart, illustrated -->
+<section class="page ill" data-kind="ill" hidden aria-label="Scattered sources gathering to one owner">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Two fog-bound houses holding padlocks, 553901 with two and f72ab7 with three, and two workbenches with slices, 2c61af and e798f3, all send fat red hand-coloured arrows down to one lantern-lit house, 47764b. At the bottom corners 6db4fe and 9ddcbc stay where they are.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <!-- fog bands -->
+  <path d="M-10 40 Q100 20 200 45 T410 35 V150 Q300 130 200 150 T-10 140Z" class="s-fog" opacity=".9"/>
+  <!-- ghost house 553901 -->
+  <g transform="translate(78 92)">
+    <path d="M-44 50 V0 L0 -38 L44 0 V50Z" fill="url(#gGhost)"/>
+    <path d="M-44 50 V0 L0 -38 L44 0 V50Z" class="l-soft" stroke-width="2" stroke-dasharray="5 4"/>
+    <g transform="translate(-14 20)"><path d="M-7 0 V-8 Q0 -17 7 -8 V0" class="l-ink" stroke-width="2.4"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="s-ochre"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="l-ink" stroke-width="1.6"/></g>
+    <g transform="translate(14 20)"><path d="M-7 0 V-8 Q0 -17 7 -8 V0" class="l-ink" stroke-width="2.4"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="s-ochre"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="l-ink" stroke-width="1.6"/></g>
+    <text y="70" text-anchor="middle" class="lab">553901</text>
+    <text y="-46" text-anchor="middle" class="lab" style="font-size:12px;fill:var(--soft)">no route</text>
+  </g>
+  <!-- ghost house f72ab7 -->
+  <g transform="translate(322 92)">
+    <path d="M-50 50 V0 L0 -38 L50 0 V50Z" fill="url(#gGhost)"/>
+    <path d="M-50 50 V0 L0 -38 L50 0 V50Z" class="l-soft" stroke-width="2" stroke-dasharray="5 4"/>
+    <g transform="translate(-26 20)"><path d="M-7 0 V-8 Q0 -17 7 -8 V0" class="l-ink" stroke-width="2.4"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="s-ochre"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="l-ink" stroke-width="1.6"/></g>
+    <g transform="translate(0 20)"><path d="M-7 0 V-8 Q0 -17 7 -8 V0" class="l-ink" stroke-width="2.4"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="s-ochre"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="l-ink" stroke-width="1.6"/></g>
+    <g transform="translate(26 20)"><path d="M-7 0 V-8 Q0 -17 7 -8 V0" class="l-ink" stroke-width="2.4"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="s-ochre"/><rect x="-10" y="-1" width="20" height="16" rx="3" class="l-ink" stroke-width="1.6"/></g>
+    <text y="70" text-anchor="middle" class="lab">f72ab7</text>
+    <text y="-46" text-anchor="middle" class="lab" style="font-size:12px;fill:var(--soft)">unreachable</text>
+  </g>
+  <!-- workbenches with slices -->
+  <g transform="translate(70 262)">
+    <path d="M-40 10 H40 M-32 10 V36 M32 10 V36" class="l-ink" stroke-width="3"/>
+    <path d="M0 6 L0 -24 A30 30 0 0 1 26 -9Z" class="s-sage"/><path d="M-6 6 L-26 -14 A28 28 0 0 1 -8 -24Z" class="s-ochre"/>
+    <path d="M0 6 L0 -24 A30 30 0 0 1 26 -9Z M-6 6 L-26 -14 A28 28 0 0 1 -8 -24Z" class="l-ink" stroke-width="1.6"/>
+    <text y="56" text-anchor="middle" class="lab">2c61af</text>
+  </g>
+  <g transform="translate(330 262)">
+    <path d="M-40 10 H40 M-32 10 V36 M32 10 V36" class="l-ink" stroke-width="3"/>
+    <path d="M4 6 L-22 -12 A30 30 0 0 1 4 -24Z" class="s-sage"/><path d="M10 6 L12 -22 A28 28 0 0 1 30 -4Z" class="s-ochre"/>
+    <path d="M4 6 L-22 -12 A30 30 0 0 1 4 -24Z M10 6 L12 -22 A28 28 0 0 1 30 -4Z" class="l-ink" stroke-width="1.6"/>
+    <text y="56" text-anchor="middle" class="lab">e798f3</text>
+  </g>
+  <!-- fat red hand-coloured arrows -->
+  <g filter="url(#hand)">
+    <path d="M86 172 C110 260 160 300 182 372" class="l-acc" stroke-width="11" marker-end="url(#headAcc)" opacity=".92"/>
+    <path d="M316 172 C290 260 240 300 218 372" class="l-acc" stroke-width="11" marker-end="url(#headAcc)" opacity=".92"/>
+    <path d="M104 318 C140 340 160 360 176 384" class="l-acc" stroke-width="9" marker-end="url(#headAcc)" opacity=".85"/>
+    <path d="M296 318 C260 340 240 360 224 384" class="l-acc" stroke-width="9" marker-end="url(#headAcc)" opacity=".85"/>
+  </g>
+  <!-- lantern house 47764b -->
+  <circle cx="200" cy="440" r="92" fill="url(#gGlow)"/>
+  <g transform="translate(200 452)">
+    <path d="M-52 52 V0 L0 -46 L52 0 V52Z" class="s-paper"/>
+    <path d="M-52 52 V0 L0 -46 L52 0 V52Z" class="l-ink" stroke-width="3"/>
+    <path d="M-16 52 V18 Q0 4 16 18 V52" class="s-glow"/>
+    <path d="M-16 52 V18 Q0 4 16 18 V52" class="l-ink" stroke-width="2"/>
+    <circle cx="0" cy="-14" r="8" class="s-glow"/><circle cx="0" cy="-14" r="8" class="l-ink" stroke-width="1.8"/>
+    <text y="74" text-anchor="middle" class="lab" style="font-weight:600">47764b</text>
+    <text y="92" text-anchor="middle" class="labd" style="font-size:14px">one owner · Mind High</text>
+  </g>
+  <!-- rooted, staying -->
+  <g transform="translate(46 560)">
+    <path d="M-22 10 V-12 L0 -30 L22 -12 V10Z" class="s-sage"/><path d="M-22 10 V-12 L0 -30 L22 -12 V10Z" class="l-ink" stroke-width="2"/>
+    <path d="M-16 10 Q-20 20 -26 22 M0 10 V24 M16 10 Q20 20 26 22" class="l-soft" stroke-width="1.8"/>
+    <path d="M26 -30 C52 -46 60 -10 30 -8" class="l-ink" stroke-width="2" marker-end="url(#headInk)"/>
+    <text x="30" y="-40" class="lab" style="font-size:12px">6db4fe</text>
+  </g>
+  <g transform="translate(354 560)">
+    <path d="M-22 10 V-12 L0 -30 L22 -12 V10Z" class="s-sage"/><path d="M-22 10 V-12 L0 -30 L22 -12 V10Z" class="l-ink" stroke-width="2"/>
+    <path d="M-16 10 Q-20 20 -26 22 M0 10 V24 M16 10 Q20 20 26 22" class="l-soft" stroke-width="1.8"/>
+    <path d="M-26 -30 C-52 -46 -60 -10 -30 -8" class="l-ink" stroke-width="2" marker-end="url(#headInk)"/>
+    <text x="-30" y="-40" text-anchor="end" class="lab" style="font-size:12px">9ddcbc</text>
+  </g>
+  <text x="200" y="590" text-anchor="middle" class="labd" style="font-size:14px;fill:var(--soft)">stay</text>
+</svg>
+<div class="cap">Five locks, two slices, one owner proposed</div>
+</section>
+
+<!-- 4 · the canonical owner -->
+<section class="page txt" data-kind="txt" hidden aria-label="On the canonical Flow source owner">
+<div class="col">
+<p><strong>To the Flow side, on the canonical Flow source owner.</strong> Unresolved, and not mine to assign. Today the sources sit under two flows nobody can reach, holding five locks, plus four flows with slices. My recommendation to the living is below.</p>
+<div class="mark"><b>Tension, left open</b>The owner is named as "not mine to assign": 836818 recommends, the living decides.</div>
+<details>
+<summary>The source's flowchart, verbatim</summary>
+<pre>flowchart LR
+  A[553901 locks 1834 1835, no route] --&gt; O[one owner: Mind High 47764b]
+  B[f72ab7 locks 2836 2862 2864, unreachable] --&gt; O
+  C[2c61af, e798f3 slices] --&gt; O
+  D[6db4fe Curriculum source, 9ddcbc Home consumers] --&gt;|stay| D</pre>
+</details>
+</div>
+</section>
+
+<!-- 5 · ruling 1 illustration -->
+<section class="page ill" data-kind="ill" hidden aria-label="Registered before confirmed">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A seat's arched door with its nameplate hung but its lamp unlit; a letter waits on a stool at the threshold, tied with a red ribbon, until the seat's first receipt arrives.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <!-- wall stones -->
+  <path d="M20 540 V150 Q20 60 200 50 Q380 60 380 150 V540Z" class="s-fog"/>
+  <path d="M40 200 H110 M150 180 H250 M290 200 H360 M30 300 H90 M310 300 H370 M40 420 H100 M300 420 H360" class="l-soft" stroke-width="1.4" opacity=".6"/>
+  <!-- door -->
+  <path d="M120 520 V230 Q120 140 200 140 Q280 140 280 230 V520Z" fill="url(#gWood)"/>
+  <path d="M120 520 V230 Q120 140 200 140 Q280 140 280 230 V520Z M200 142 V520 M160 160 V520 M240 160 V520" class="l-ink" stroke-width="2.6"/>
+  <circle cx="220" cy="350" r="6" class="s-ink"/>
+  <!-- unlit lamp -->
+  <path d="M200 60 V92" class="l-ink" stroke-width="2"/>
+  <path d="M184 92 H216 L210 124 H190Z" class="s-paper"/>
+  <path d="M184 92 H216 L210 124 H190Z M188 124 H212" class="l-ink" stroke-width="2"/>
+  <path d="M200 102 V114" class="l-soft" stroke-width="2"/>
+  <!-- nameplate hung -->
+  <path d="M168 218 L200 196 L232 218" class="l-ink" stroke-width="1.6"/>
+  <rect x="140" y="218" width="120" height="34" rx="6" class="s-paper"/>
+  <rect x="140" y="218" width="120" height="34" rx="6" class="l-ink" stroke-width="2"/>
+  <text x="200" y="240" text-anchor="middle" class="lab">unconfirmed</text>
+  <!-- stool with held letter -->
+  <path d="M290 540 Q330 520 370 540" class="l-ink" stroke-width="3"/>
+  <path d="M300 536 L294 580 M360 536 L366 580" class="l-ink" stroke-width="3"/>
+  <g transform="translate(330 510) rotate(-4)">
+    <rect x="-34" y="-20" width="68" height="40" rx="2" class="s-paper"/>
+    <path d="M-34 -20 L0 4 L34 -20" class="l-ink" stroke-width="1.6"/>
+    <rect x="-34" y="-20" width="68" height="40" rx="2" class="l-ink" stroke-width="1.8"/>
+    <path d="M-36 0 H36 M0 -22 V22" class="l-acc" stroke-width="4"/>
+    <path d="M0 0 C-14 -14 -20 -2 -6 2 M0 0 C14 -14 20 -2 6 2" class="l-acc" stroke-width="3"/>
+  </g>
+  <!-- threshold -->
+  <path d="M100 524 H300" class="l-ink" stroke-width="5"/>
+  <!-- receipt seal still on its way (dotted path from inside) -->
+  <path d="M80 470 C60 420 90 380 70 330" class="l-soft" stroke-width="2" stroke-dasharray="2 8"/>
+  <circle cx="70" cy="318" r="14" class="s-ochre" opacity=".5"/>
+  <circle cx="70" cy="318" r="14" class="l-soft" stroke-width="1.6" stroke-dasharray="3 3"/>
+</svg>
+<div class="cap">The seat exists; nothing crosses the threshold yet</div>
+</section>
+
+<!-- 6 · ruling 1 text -->
+<section class="page txt" data-kind="txt" hidden aria-label="Ruling 1">
+<div class="col">
+<h2>For the living, three rulings, each as a recommendation</h2>
+<p><strong>1. Registered before Confirmed.</strong> A launcher registers a seat before the seat has spoken. Recommendation: the Flow Nexus answers a resolve for that seat with its binding marked unconfirmed, so a sender can see it exists, but delivery and work admission stay held until the seat's first turn returns its exact native receipt. No message is written into a pane that has not confirmed.</p>
+</div>
+</section>
+
+<!-- 7 · ruling 2 illustration -->
+<section class="page ill" data-kind="ill" hidden aria-label="Successor link now, forwarding later">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="An old stump, 1b8ac0, with its small door still open, and a sapling, 836818, growing beside it, tied by a red thread. A letter on the path halts at a closed gate that opens only on a typed handoff.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <path d="M-10 430 Q120 400 220 420 T410 410 V610 H-10Z" class="s-sage" opacity=".75"/>
+  <!-- stump -->
+  <g transform="translate(120 400)">
+    <path d="M-66 40 Q-70 -40 -58 -70 L58 -70 Q70 -40 66 40 Q80 56 96 60 H-96 Q-80 56 -66 40Z" fill="url(#gWood)"/>
+    <ellipse cx="0" cy="-70" rx="58" ry="16" class="s-ochre"/>
+    <ellipse cx="0" cy="-70" rx="58" ry="16" class="l-ink" stroke-width="2.2"/>
+    <ellipse cx="0" cy="-70" rx="40" ry="10" class="l-soft" stroke-width="1.3"/>
+    <ellipse cx="0" cy="-70" rx="22" ry="5" class="l-soft" stroke-width="1.3"/>
+    <path d="M-66 40 Q-70 -40 -58 -70 M58 -70 Q70 -40 66 40 Q80 56 96 60 M-66 40 Q-80 56 -96 60" class="l-ink" stroke-width="2.2"/>
+    <!-- open door -->
+    <path d="M-20 44 V0 Q0 -22 20 0 V44Z" class="s-glow"/>
+    <path d="M-20 44 V0 Q0 -22 20 0 V44Z" class="l-ink" stroke-width="2"/>
+    <path d="M20 0 L34 6 V50 L20 44" class="s-paper"/><path d="M20 0 L34 6 V50 L20 44" class="l-ink" stroke-width="1.8"/>
+    <text y="90" text-anchor="middle" class="lab">1b8ac0</text>
+  </g>
+  <!-- sapling -->
+  <g transform="translate(290 450)">
+    <path d="M0 0 C-4 -60 6 -120 0 -200" class="l-ink" stroke-width="5"/>
+    <path d="M0 -80 C24 -96 40 -90 50 -110 C30 -118 10 -108 0 -80Z" class="s-sage"/>
+    <path d="M0 -130 C-26 -140 -44 -134 -52 -154 C-30 -162 -8 -152 0 -130Z" class="s-sage"/>
+    <path d="M0 -170 C20 -186 36 -180 44 -198 C24 -206 6 -196 0 -170Z" class="s-sage"/>
+    <path d="M0 -200 C-10 -220 -2 -236 6 -240 C12 -226 8 -212 0 -200Z" class="s-sage"/>
+    <path d="M0 -80 C24 -96 40 -90 50 -110 C30 -118 10 -108 0 -80Z M0 -130 C-26 -140 -44 -134 -52 -154 C-30 -162 -8 -152 0 -130Z M0 -170 C20 -186 36 -180 44 -198 C24 -206 6 -196 0 -170Z" class="l-ink" stroke-width="1.6"/>
+    <path d="M-10 0 Q0 10 10 0" class="l-ink" stroke-width="2"/>
+    <text y="40" text-anchor="middle" class="lab">836818</text>
+  </g>
+  <!-- red thread SuccessorOf -->
+  <path d="M172 334 C210 250 250 300 288 330" class="l-acc" stroke-width="4" filter="url(#hand)"/>
+  <circle cx="172" cy="334" r="5" class="s-acc"/><circle cx="288" cy="330" r="5" class="s-acc"/>
+  <!-- path and gate -->
+  <path d="M60 590 C120 540 200 540 220 500" class="l-soft" stroke-width="16" opacity=".35"/>
+  <g transform="translate(220 520)">
+    <path d="M-24 22 V-20 M24 22 V-20" class="l-ink" stroke-width="4"/>
+    <path d="M-24 -10 H24 M-24 4 H24 M-24 18 H24 M-12 -10 V18 M0 -10 V18 M12 -10 V18" class="l-ink" stroke-width="2"/>
+    <circle cx="0" cy="-2" r="6" class="s-ochre"/><circle cx="0" cy="-2" r="6" class="l-ink" stroke-width="1.5"/>
+  </g>
+  <g transform="translate(150 562) rotate(-12)">
+    <rect x="-22" y="-14" width="44" height="28" rx="2" class="s-paper"/>
+    <rect x="-22" y="-14" width="44" height="28" rx="2" class="l-ink" stroke-width="1.6"/>
+    <path d="M-22 -14 L0 2 L22 -14" class="l-ink" stroke-width="1.4"/>
+  </g>
+</svg>
+<div class="cap">Lineage tied at once; the gate waits for a handoff</div>
+</section>
+
+<!-- 8 · ruling 2 text -->
+<section class="page txt" data-kind="txt" hidden aria-label="Ruling 2">
+<div class="col">
+<p><strong>2. Successor link now, forwarding later.</strong> Recommendation: when a successor claims its ID, Flow records SuccessorOf at once, so the lineage is never lost. Delivery to the old ID does not forward automatically yet. It forwards only after a typed handoff says so, and the predecessor's own route stays addressable until it is separately retired. This matches how I stand beside 1b8ac0 today.</p>
+</div>
+</section>
+
+<!-- 9 · ruling 3 illustration -->
+<section class="page ill" data-kind="ill" hidden aria-label="Five locks released">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="An iron ring hangs from a hook with five padlocks, 1834, 1835, 2836, 2862 and 2864, their shackles springing open as a red ribbon of the living's word touches the ring; below, their keys drop into one lit keeper's hand-lamp.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <!-- the word ribbon from above -->
+  <path d="M40 20 C120 60 90 110 170 120 S230 150 200 176" class="l-acc" stroke-width="9" filter="url(#hand)" opacity=".9"/>
+  <!-- hook and ring -->
+  <path d="M200 30 V120 Q200 150 180 150 Q166 150 168 136" class="l-ink" stroke-width="5"/>
+  <circle cx="200" cy="290" r="110" class="l-ink" stroke-width="9"/>
+  <circle cx="200" cy="290" r="110" style="fill:none;stroke:var(--soft);stroke-width:3" transform="translate(-2 -2)" opacity=".5"/>
+  <!-- five padlocks around the lower ring, shackles open -->
+  <g class="locks">
+    <g transform="translate(100 340) rotate(22)"><path d="M-9 -14 V-26 Q0 -38 9 -26 V-16" class="l-ink" stroke-width="3" transform="rotate(-30 -9 -14)"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="s-ochre"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="l-ink" stroke-width="2"/><circle cy="-3" r="3" class="s-ink"/></g>
+    <g transform="translate(140 390) rotate(12)"><path d="M-9 -14 V-26 Q0 -38 9 -26 V-16" class="l-ink" stroke-width="3" transform="rotate(-30 -9 -14)"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="s-ochre"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="l-ink" stroke-width="2"/><circle cy="-3" r="3" class="s-ink"/></g>
+    <g transform="translate(200 408)"><path d="M-9 -14 V-26 Q0 -38 9 -26 V-16" class="l-ink" stroke-width="3" transform="rotate(-30 -9 -14)"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="s-ochre"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="l-ink" stroke-width="2"/><circle cy="-3" r="3" class="s-ink"/></g>
+    <g transform="translate(260 390) rotate(-12)"><path d="M-9 -14 V-26 Q0 -38 9 -26 V-16" class="l-ink" stroke-width="3" transform="rotate(-30 -9 -14)"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="s-ochre"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="l-ink" stroke-width="2"/><circle cy="-3" r="3" class="s-ink"/></g>
+    <g transform="translate(300 340) rotate(-22)"><path d="M-9 -14 V-26 Q0 -38 9 -26 V-16" class="l-ink" stroke-width="3" transform="rotate(-30 -9 -14)"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="s-ochre"/><rect x="-14" y="-14" width="28" height="24" rx="4" class="l-ink" stroke-width="2"/><circle cy="-3" r="3" class="s-ink"/></g>
+  </g>
+  <!-- sparks of release -->
+  <path d="M88 300 l-10 -6 M92 290 l-4 -12 M312 300 l10 -6 M308 290 l4 -12" class="l-acc" stroke-width="2.5"/>
+  <!-- labels -->
+  <text x="68" y="378" class="lab" style="font-size:12px">1834</text>
+  <text x="104" y="430" class="lab" style="font-size:12px">1835</text>
+  <text x="200" y="448" text-anchor="middle" class="lab" style="font-size:12px">2836</text>
+  <text x="272" y="430" class="lab" style="font-size:12px">2862</text>
+  <text x="306" y="378" class="lab" style="font-size:12px">2864</text>
+  <!-- keys falling into a lamp -->
+  <path d="M170 462 C176 484 186 500 194 520 M230 462 C224 484 214 500 206 520" class="l-soft" stroke-width="1.8" stroke-dasharray="3 6"/>
+  <circle cx="200" cy="548" r="60" fill="url(#gGlow)"/>
+  <path d="M160 530 H240 L230 576 H170Z" class="s-paper"/>
+  <path d="M160 530 H240 L230 576 H170Z M166 530 Q200 508 234 530" class="l-ink" stroke-width="2.2"/>
+  <text x="200" y="558" text-anchor="middle" class="lab" style="font-weight:600">47764b</text>
+</svg>
+<div class="cap">Released by the Field, on your word</div>
+</section>
+
+<!-- 10 · ruling 3 text -->
+<section class="page txt" data-kind="txt" hidden aria-label="Ruling 3">
+<div class="col">
+<p><strong>3. One owner for the Flow source.</strong> Recommendation: Mind High 47764b becomes the canonical owner of the Flow and Message sources. The five locks held by the two unreachable flows are released by the Field on your word, since releasing another flow's lock is cleanup, and 2c61af's and e798f3's slices merge under that owner. Curriculum's source and Home's consumers keep their owners.</p>
+</div>
+</section>
+
+<!-- 11 · awaiting illustration -->
+<section class="page ill" data-kind="ill" hidden aria-label="Awaiting the living's word">
+<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Three blank paper slips, numbered 1, 2 and 3, hang from a line with wooden pegs, waiting; below, a quill rests in an inkpot beside a smaller fourth slip for the type.">
+  <rect x="0" y="0" width="400" height="600" rx="14" fill="url(#gSky)"/>
+  <circle cx="200" cy="120" r="140" fill="url(#gGlow)" opacity=".7"/>
+  <path d="M10 110 Q200 170 390 110" class="l-ink" stroke-width="2.4"/>
+  <g transform="translate(90 138) rotate(-4)">
+    <path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="s-paper"/><path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="l-ink" stroke-width="2"/>
+    <rect x="-6" y="-16" width="12" height="30" rx="3" class="s-ochre"/><rect x="-6" y="-16" width="12" height="30" rx="3" class="l-ink" stroke-width="1.5"/>
+    <text y="56" text-anchor="middle" style="font-family:var(--display);font-size:34px;fill:var(--accent)">1</text>
+    <path d="M-24 90 H24 M-24 110 H24" class="l-soft" stroke-width="1.2" stroke-dasharray="2 5"/>
+  </g>
+  <g transform="translate(200 158)">
+    <path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="s-paper"/><path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="l-ink" stroke-width="2"/>
+    <rect x="-6" y="-16" width="12" height="30" rx="3" class="s-ochre"/><rect x="-6" y="-16" width="12" height="30" rx="3" class="l-ink" stroke-width="1.5"/>
+    <text y="56" text-anchor="middle" style="font-family:var(--display);font-size:34px;fill:var(--accent)">2</text>
+    <path d="M-24 90 H24 M-24 110 H24" class="l-soft" stroke-width="1.2" stroke-dasharray="2 5"/>
+  </g>
+  <g transform="translate(310 138) rotate(4)">
+    <path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="s-paper"/><path d="M-40 0 H40 V150 Q20 160 0 150 T-40 150Z" class="l-ink" stroke-width="2"/>
+    <rect x="-6" y="-16" width="12" height="30" rx="3" class="s-ochre"/><rect x="-6" y="-16" width="12" height="30" rx="3" class="l-ink" stroke-width="1.5"/>
+    <text y="56" text-anchor="middle" style="font-family:var(--display);font-size:34px;fill:var(--accent)">3</text>
+    <path d="M-24 90 H24 M-24 110 H24" class="l-soft" stroke-width="1.2" stroke-dasharray="2 5"/>
+  </g>
+  <!-- table, inkpot, quill -->
+  <path d="M-10 470 Q200 440 410 470 V610 H-10Z" fill="url(#gWood)"/>
+  <path d="M-10 470 Q200 440 410 470" class="l-ink" stroke-width="2.4"/>
+  <g transform="translate(150 480)">
+    <path d="M-30 30 Q-34 0 -18 -8 H18 Q34 0 30 30Z" class="s-ink"/>
+    <ellipse cx="0" cy="-8" rx="18" ry="5" class="s-soft"/>
+    <path d="M4 -6 C20 -60 60 -120 110 -150 C90 -110 60 -60 8 -4Z" class="s-paper"/>
+    <path d="M4 -6 C20 -60 60 -120 110 -150 C90 -110 60 -60 8 -4Z M6 -6 C40 -70 70 -110 106 -146" class="l-ink" stroke-width="1.8"/>
+    <path d="M30 -60 l14 -4 M44 -84 l14 -4 M60 -106 l14 -4" class="l-soft" stroke-width="1.4"/>
+  </g>
+  <g transform="translate(280 520) rotate(8)">
+    <rect x="-40" y="-22" width="80" height="44" rx="3" class="s-paper"/><rect x="-40" y="-22" width="80" height="44" rx="3" class="l-ink" stroke-width="1.8"/>
+    <text y="6" text-anchor="middle" class="lab">Type</text>
+  </g>
+</svg>
+<div class="cap">Yes, no, or otherwise, to each</div>
+</section>
+
+<!-- 12 · checklist -->
+<section class="page txt" data-kind="txt" hidden aria-label="The rulings">
+<div class="col">
+<p>Say yes, no, or otherwise to each of the three, and I pass it to 47764b as your ruling, not mine.</p>
+<ol class="rulings">
+  <li><input type="checkbox" id="r1"><label for="r1">1. Registered before Confirmed</label>
+    <span class="q">«Ruling 1: may Registered resolve as unconfirmed while delivery and work admission are held until the exact native receipt confirms?»</span>
+    <span class="badge">awaiting ruling</span></li>
+  <li><input type="checkbox" id="r2"><label for="r2">2. Successor link now, forwarding later</label>
+    <span class="q">«Ruling 2: may SuccessorOf be recorded at once, with forwarding of old-ID delivery waiting for a typed handoff and the predecessor's route kept until separately retired?»</span>
+    <span class="badge">awaiting ruling</span></li>
+  <li><input type="checkbox" id="r3"><label for="r3">3. One owner for the Flow source</label>
+    <span class="q">«Ruling 3: is Mind High 47764b the canonical Flow source owner, with the five locks of 553901 and f72ab7 released by the Field?»</span>
+    <span class="badge">awaiting ruling</span></li>
+  <li><input type="checkbox" id="rt"><label for="rt">Type · DesignQuestion</label>
+    <span class="q">«Type: approve DesignQuestion as the typed route for design questions to Psyche, or keep prose?»</span>
+    <span class="badge">awaiting ruling</span></li>
+</ol>
+<div class="mark"><b>Inference · badges</b>None is badged landed. Witnessed 2026-09-23: 836818's log records the questions put to the living and no ruling after them; the living's next message in that transcript corrected the response format only; DesignQuestion and SuccessorOf appear nowhere in primary outside that log. The ticks are yours, kept only in this browser.</div>
+<div class="prov">Italic questions: the Question field of the same FinalResponse, verbatim. Transcript 836818cc…, record line 594.</div>
+</div>
+</section>
+
+</div>
+<nav aria-label="Pages">
+  <button class="step" id="prev" type="button" aria-label="Previous page">‹<span class="w"> Prev</span></button>
+  <div class="dots" id="dots"></div>
+  <button class="step" id="next" type="button" aria-label="Next page"><span class="w">Next </span>›</button>
+</nav>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var dots=document.getElementById('dots'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  var cur=0;
+  pages.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Page '+(i+1)+' of '+pages.length);
+    b.addEventListener('click',function(){show(i)}); dots.appendChild(b);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(pages.length-1,i));
+    pages.forEach(function(p,j){p.hidden=j!==cur});
+    [].forEach.call(dots.children,function(d,j){d.setAttribute('aria-current',j===cur?'true':'false')});
+    prev.disabled=cur===0; next.disabled=cur===pages.length-1;
+    try{history.replaceState(null,'','#p'+(cur+1))}catch(e){}
+  }
+  prev.addEventListener('click',function(){show(cur-1)});
+  next.addEventListener('click',function(){show(cur+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.target&&e.target.tagName==='INPUT')return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'){show(cur+1);e.preventDefault()}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault()}
+  });
+  var sx=null,sy=null, stage=document.getElementById('stage');
+  stage.addEventListener('touchstart',function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
+  stage.addEventListener('touchend',function(e){
+    if(sx===null)return; var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy; sx=null;
+    if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.3) show(cur+(dx<0?1:-1));
+  },{passive:true});
+  var boxes=document.querySelectorAll('ol.rulings input');
+  [].forEach.call(boxes,function(b){
+    try{b.checked=localStorage.getItem('fc-'+b.id)==='1'}catch(e){}
+    b.addEventListener('change',function(){try{localStorage.setItem('fc-'+b.id,b.checked?'1':'0')}catch(e){}});
+  });
+  var m=/^#p(\d+)$/.exec(location.hash||''); show(m?parseInt(m[1],10)-1:0);
+})();
+</script>

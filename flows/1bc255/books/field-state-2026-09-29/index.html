@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Field — present cluster state</title>
+  <style>
+    :root { color-scheme: light dark; --paper: #fffdf8; --ink: #211d18; --muted: #695f54; --line: #d9cfc2; --accent: #1d5f70; --warn: #87500d; --alert: #953b32; --soft: #f4eee4; }
+    @media (prefers-color-scheme: dark) { :root { --paper: #1e1b17; --ink: #f4eee5; --muted: #c7bcae; --line: #50483e; --accent: #8bd0e1; --warn: #efb56d; --alert: #ffaaa0; --soft: #29241f; } }
+    * { box-sizing: border-box; }
+    html { background: var(--soft); overflow-x: hidden; }
+    body { margin: 0; background: var(--soft); color: var(--ink); font: 18px/1.55 Georgia, serif; overflow-x: hidden; }
+    main { width: min(100%, 440px); margin: 0 auto; padding: 18px 16px calc(30px + env(safe-area-inset-bottom)); }
+    article { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px 28px; box-shadow: 0 3px 18px rgb(0 0 0 / .06); }
+    .eyebrow { margin: 0 0 8px; color: var(--accent); font: 700 12px/1.2 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(31px, 10vw, 42px); line-height: 1.06; letter-spacing: -.025em; }
+    .lede { margin: 12px 0 0; color: var(--muted); }
+    section { margin-top: 30px; border-top: 1px solid var(--line); padding-top: 20px; }
+    h2 { margin: 0 0 11px; font-size: 25px; line-height: 1.14; letter-spacing: -.015em; }
+    p { margin: 0 0 14px; overflow-wrap: anywhere; }
+    strong { font-weight: 700; }
+    .observed { color: var(--accent); font-weight: 700; }
+    .hypothesis { color: var(--warn); font-weight: 700; }
+    .blocked { color: var(--alert); font-weight: 700; }
+    .sources { font-size: 15px; color: var(--muted); }
+    .sources p { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <p class="eyebrow">Field · 29 September · 15:36 snapshot</p>
+      <h1>Present cluster state</h1>
+      <p class="lede">What answers now, what the cable changed, and the one fact Field still needs before changing anything.</p>
+
+      <section>
+        <h2>The hosts that answer now</h2>
+        <p><strong>Ouranos</strong> is online on the Prometheus LAN at 10.18.0.101, with its default route through 10.18.0.1. Its USB downlink is configured as 10.44.0.1. SSH, Yggdrasil, NetworkManager, networkd, Tailscale, and Lojix were active. The OpenCode testing service was inactive. <span class="observed">[H1]</span></p>
+        <p><strong>Prometheus</strong> answered through 10.18.0.1. Its LAN bridge is 10.18.0.1; its upstream is presently 192.168.1.11. SSH, Yggdrasil, networkd, Tailscale, and Nix were active. NetworkManager was inactive. <span class="observed">[H1]</span></p>
+        <p><strong>Zeus has no current contact witness.</strong> Field did not reuse an old address or lease after the topology changed. <span class="blocked">[Z1]</span></p>
+      </section>
+
+      <section>
+        <h2>Zeus: what changed</h2>
+        <p>The living checked that the cable was plugged at both ends, unplugged and replugged it once, and then saw a light. Ouranos recorded carrier returning at 15:26:41; at 15:35 its USB downlink and bridge were still up and forwarding. The timing may align, but the physical act and carrier transition were not witnessed together. <span class="observed">[P1] [Z1]</span></p>
+        <p>Carrier did not bring back a known downstream endpoint. After the replug, the bridge had no learned client MAC, Kea had no new lease event, and the known Zeus overlay address did not answer the bounded ICMP or SSH checks. <span class="blocked">[Z1]</span></p>
+      </section>
+
+      <section>
+        <h2>The likely boundary</h2>
+        <p><span class="hypothesis">Hypothesis:</span> the unresolved boundary is the physical attachment after Ouranos's USB downlink: Zeus's power or boot state, the connected NIC, the cable or peer, or Zeus failing to emit frames. Carrier without a learned peer supports this hypothesis. It does not identify a firewall, DHCP, NAT, Yggdrasil, or CriomOS defect. <span class="hypothesis">[Z1]</span></p>
+        <p>Confirmation needs a Zeus-side console or directly observed peer: power and boot state, connected NIC, carrier, MAC, current address, and matching traffic on Ouranos's downlink. <span class="blocked">[Z1]</span></p>
+      </section>
+
+      <section>
+        <h2>What Field did today</h2>
+        <p>Field made bounded read-only checks of Ouranos and Prometheus. It proved that the old 10.44.0.148 lease and MAC belong to Prometheus's integrated NIC, and withdrew that address as a possible Zeus target. The old 10.18.0.103 Zeus address also belongs to the former topology. <span class="observed">[Z1]</span></p>
+        <p>Field made no host, network, service, or source change during this diagnosis. The physical replug restored visible carrier only; it did not restore Zeus reachability. <span class="observed">[Z1]</span></p>
+      </section>
+
+      <section>
+        <h2>The present blocker</h2>
+        <p>The next useful fact is local to Zeus, not another guessed network change. Until the physical endpoint is identified, the cluster has no evidenced address to test and no basis for a durable software repair. <span class="blocked">[Z1]</span></p>
+      </section>
+
+      <section class="sources">
+        <h2>Evidence notes</h2>
+        <p><strong>[H1]</strong> Field's 15:36 read-only snapshot of Ouranos and Prometheus.</p>
+        <p><strong>[P1]</strong> The living's direct account carried by Fable: one unplug/replug, then a light.</p>
+        <p><strong>[Z1]</strong> Field's 29 September bounded Zeus reachability witness, later synthesized by Mind without changing its findings.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

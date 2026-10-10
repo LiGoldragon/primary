@@ -1,0 +1,17 @@
+{
+  "kind": "ImmutableOwnerAddendumSource",
+  "ownerFlowId": "753e69",
+  "role": "Field Medium Sol owner",
+  "sourceCommit": "09074869b294648dc535803126cb351b024e2f8d",
+  "sourcePath": "flows/753e69/reports/measured-refresh-owner-addendum-2026-09-22.md",
+  "capturedPath": "flows/03e825/refresh-round-20260922/field-medium/addendum-1.md",
+  "sha256": "cc07ae89557541a76de96218ee9b297857e425bce27f0c6f5ce7e21ac9c43c3f",
+  "byteLength": 11057,
+  "supersedesUncapturedSourceCommit": "3618aed4",
+  "remoteAncestry": "source commit is reachable from current main",
+  "actualOccupancy": "unknown",
+  "proxyValue": 151173,
+  "proxyMeaning": "census last-input proxy; not occupancy or threshold proof; owner pane was pane_not_found at checkpoint",
+  "incorporationGrade": "owner-authored work relay; not native acceptance or readiness",
+  "method": "jj file show at source commit, byte-preserving copy, SHA-256 readback"
+}

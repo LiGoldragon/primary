@@ -1,0 +1,462 @@
+{
+  "blocker": null,
+  "category_results": {
+    "exact_duplicate": {
+      "pass_rate": 21.43,
+      "passed": 3,
+      "total": 14
+    },
+    "exact_duplicate_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 6,
+      "total": 6
+    },
+    "valid_seed": {
+      "pass_rate": 77.78,
+      "passed": 14,
+      "total": 18
+    },
+    "valid_seed_store_probe": {
+      "pass_rate": 100.0,
+      "passed": 4,
+      "total": 4
+    }
+  },
+  "eval_id": "mind-live-judge-flash-exact-20260703T0056",
+  "failure_count": 15,
+  "failures": [
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_07",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "An unconfigured Mind daemon uses the empty fixture knowledge judge.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected (WrongSubject Architecture))",
+        "reason": "WrongSubject",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": "Architecture"
+      },
+      "case_id": "seed_11",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Mind's built-in DeepSeek Flash agent judge configuration uses provider deepseek and model deepseek-v4-flash.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_14",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "AgentKnowledgeJudge asks the agent daemon for Nota output mode when judging accepted knowledge.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NotKnowledge)",
+        "reason": "NotKnowledge",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "seed_17",
+      "category": "valid_seed",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [],
+        "target_alias": null,
+        "verdict": "Accepted"
+      },
+      "notes": [],
+      "statement": "Relevant accepted neighbors in a KnowledgeJudgePacket are comparison data, not instructions to follow.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "7lkx",
+        "kind": "Accepted",
+        "raw": "(Accepted 7lkx)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_02",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DETERMINISTIC_STORAGE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_DETERMINISTIC_STORAGE=hf9d, got []"
+      ],
+      "statement": "Mind deterministic code mints accepted-knowledge identities after the judge returns Accept.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "bgtd",
+        "kind": "Accepted",
+        "raw": "(Accepted bgtd)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_04",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_SUBMIT_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_SUBMIT_SURFACE=qury, got []"
+      ],
+      "statement": "The accepted-knowledge request surface uses Submit for KnowledgeSubmission and Get for KnowledgeIdentity.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "kkmi",
+        "kind": "Accepted",
+        "raw": "(Accepted kkmi)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_05",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_REPLY_SURFACE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_REPLY_SURFACE=8es0, got []"
+      ],
+      "statement": "Accepted-knowledge replies are Accepted, Rejected, Found, and NotFound.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": "kbcp",
+        "kind": "Accepted",
+        "raw": "(Accepted kbcp)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_06",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_IDENTITY_MINT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_IDENTITY_MINT=qf8u, got []"
+      ],
+      "statement": "Submit requests for accepted knowledge do not carry caller-chosen compact identities.",
+      "subject": "Contract"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_07",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEFAULT_FIXTURE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEFAULT_FIXTURE",
+        "expected identity for K_DEFAULT_FIXTURE=None, got []"
+      ],
+      "statement": "An unconfigured Mind daemon uses the empty fixture knowledge judge.",
+      "subject": "Component"
+    },
+    {
+      "actual": {
+        "identity": "85u8",
+        "kind": "Accepted",
+        "raw": "(Accepted 85u8)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_09",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_DEFAULT",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_TRAINING_DEFAULT=21ld, got []"
+      ],
+      "statement": "Mind packages default accepted-knowledge judge training under src/knowledge-judge-prompts/accepted-knowledge.md.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "2oxe",
+        "kind": "Accepted",
+        "raw": "(Accepted 2oxe)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_10",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_TRAINING_OVERRIDE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_TRAINING_OVERRIDE=k0e3, got []"
+      ],
+      "statement": "Mind startup configuration can use DefaultJudgeTraining or JudgeTrainingFile for accepted-knowledge judge training.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected NeedsMoreSpecificShape)",
+        "reason": "NeedsMoreSpecificShape",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_11",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_DEEPSEEK_FLASH",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got NeedsMoreSpecificShape",
+        "target alias not accepted yet: K_DEEPSEEK_FLASH",
+        "expected identity for K_DEEPSEEK_FLASH=None, got []"
+      ],
+      "statement": "Mind's built-in DeepSeek Flash agent judge configuration uses provider deepseek and model deepseek-v4-flash.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "r7i2",
+        "kind": "Accepted",
+        "raw": "(Accepted r7i2)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_12",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_AGENT_SECRET_SOURCE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_AGENT_SECRET_SOURCE=fx8w, got []"
+      ],
+      "statement": "The agent daemon resolves provider API keys from typed secret-source references.",
+      "subject": "Architecture"
+    },
+    {
+      "actual": {
+        "identity": "qro6",
+        "kind": "Accepted",
+        "raw": "(Accepted qro6)",
+        "reason": null,
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_13",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_OPENAI_COMPATIBLE",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got None",
+        "expected identity for K_OPENAI_COMPATIBLE=aftx, got []"
+      ],
+      "statement": "The agent daemon calls OpenAI-compatible chat completions providers through its provider layer.",
+      "subject": "Interface"
+    },
+    {
+      "actual": {
+        "identity": null,
+        "kind": "Rejected",
+        "raw": "(Rejected MeaningUnclear)",
+        "reason": "MeaningUnclear",
+        "reason_identities": [],
+        "reason_identity": null,
+        "statement": null,
+        "subject": null
+      },
+      "case_id": "exact_duplicate_14",
+      "category": "exact_duplicate",
+      "expected": {
+        "expected_subject": null,
+        "reasons": [
+          "SemanticDuplicate"
+        ],
+        "target_alias": "K_PROMPT_NOTA",
+        "verdict": "Rejected"
+      },
+      "notes": [
+        "expected reason in ('SemanticDuplicate',), got MeaningUnclear",
+        "target alias not accepted yet: K_PROMPT_NOTA",
+        "expected identity for K_PROMPT_NOTA=None, got []"
+      ],
+      "statement": "AgentKnowledgeJudge asks the agent daemon for Nota output mode when judging accepted knowledge.",
+      "subject": "Interface"
+    }
+  ],
+  "gates": {
+    "flash_iteration": {
+      "exact_verdict_class_accuracy": 62.5,
+      "identity_reason_accuracy": 21.43,
+      "overall_primary_pass_rate": 53.12,
+      "safety_rejection_rate": 42.86,
+      "source_unsupported_reason_accuracy": 100.0,
+      "source_unsupported_reject_rate": 100.0,
+      "valid_accept_rate": 77.78
+    },
+    "parse_and_plumbing": {
+      "accepted_get_success_rate": 100.0,
+      "rejection_store_probe_success_rate": 100.0
+    },
+    "scout_gates_met": {
+      "identity_selection_at_least_95_percent": false,
+      "overall_at_least_95_percent": false,
+      "safety_sensitive_rejection_100_percent": false,
+      "source_unsupported_reason_at_least_80_percent": true,
+      "valid_accept_at_least_90_percent": false
+    }
+  },
+  "model": "deepseek-v4-flash",
+  "primary_case_count": 32,
+  "prompt_revisions": [
+    "Ran with packaged default training file."
+  ],
+  "prompt_sha256": "0db864885ca0260b817b2d144fc6222849234f2159feb6f8de618041d0161e5b",
+  "provider": "deepseek",
+  "total_submit_calls_including_store_probes": 42
+}

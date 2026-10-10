@@ -1,0 +1,592 @@
+    Checking mirror v1.0.0 (/git/github.com/LiGoldragon/mirror)
+error[E0432]: unresolved imports `meta_signal_mirror::ConfigurationArchiveError`, `meta_signal_mirror::z2VXab`
+  --> src/config.rs:12:26
+   |
+12 | use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^ no `z2VXab` in the root
+   |                          |
+   |                          no `ConfigurationArchiveError` in the root
+   |
+help: a similar name exists in the module
+   |
+12 - use meta_signal_mirror::{ConfigurationArchiveError, z2VXab};
+12 + use meta_signal_mirror::{ConfigurationArchivePath, z2VXab};
+   |
+
+error[E0432]: unresolved imports `signal_mirror::z2VLxP`, `signal_mirror::z2VQTe`, `signal_mirror::z2VTXE`, `signal_mirror::z2VUTH`, `signal_mirror::z2VWFj`, `signal_mirror::z2VaxY`, `signal_mirror::z2VbP4`, `signal_mirror::z2VcqM`, `signal_mirror::z2Vcs2`, `signal_mirror::z2VcyE`, `signal_mirror::z2VdLR`, `signal_mirror::z2Ve8p`
+ --> src/decision.rs:8:5
+  |
+8 |     z2VLxP, z2VQTe, z2VTXE, z2VUTH, z2VWFj, z2VaxY, z2VbP4, z2VcqM, z2Vcs2, z2VcyE, z2VdLR, z2Ve8p,
+  |     ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^
+  |     |       |       |       |       |       |       |       |       |       |
+  |     |       |       |       |       |       |       |       |       |       no `z2VcyE` in the root
+  |     |       |       |       |       |       |       |       |       no `z2Vcs2` in the root
+  |     |       |       |       |       |       |       |       no `z2VcqM` in the root
+  |     |       |       |       |       |       |       no `z2VbP4` in the root
+  |     |       |       |       |       |       no `z2VaxY` in the root
+  |     |       |       |       |       no `z2VWFj` in the root
+  |     |       |       |       no `z2VUTH` in the root
+  |     |       |       no `z2VTXE` in the root
+  |     |       no `z2VQTe` in the root
+  |     no `z2VLxP` in the root
+
+error[E0432]: unresolved imports `meta_signal_mirror::z2VUH6`, `meta_signal_mirror::z2VWt5`
+  --> src/service.rs:21:26
+   |
+21 | use meta_signal_mirror::{z2VUH6 as MetaOutput, z2VWt5 as MetaInput};
+   |                          ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^ no `z2VWt5` in the root
+   |                          |
+   |                          no `z2VUH6` in the root
+
+error[E0432]: unresolved imports `signal_mirror::z2VTqL`, `signal_mirror::z2VVny`
+  --> src/service.rs:22:21
+   |
+22 | use signal_mirror::{z2VTqL as WorkingOutput, z2VVny as WorkingInput};
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^ no `z2VVny` in the root
+   |                     |
+   |                     no `z2VTqL` in the root
+
+error[E0432]: unresolved imports `signal_mirror::z2VLxP`, `signal_mirror::z2VPuU`, `signal_mirror::z2VSAK`, `signal_mirror::z2VTXE`, `signal_mirror::z2VTq5`, `signal_mirror::z2VTqL`, `signal_mirror::z2VUKn`, `signal_mirror::z2VUwg`, `signal_mirror::z2VUxk`, `signal_mirror::z2VVny`, `signal_mirror::z2VcqM`, `signal_mirror::z2Ve8p`
+  --> src/shipper.rs:13:5
+   |
+13 |     z2VLxP, z2VPuU, z2VSAK, z2VTXE, z2VTq5, z2VTqL, z2VUKn, z2VUwg, z2VUxk, z2VVny, z2VcqM, z2Ve8p,
+   |     ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^
+   |     |       |       |       |       |       |       |       |       |       |
+   |     |       |       |       |       |       |       |       |       |       no `z2VVny` in the root
+   |     |       |       |       |       |       |       |       |       no `z2VUxk` in the root
+   |     |       |       |       |       |       |       |       no `z2VUwg` in the root
+   |     |       |       |       |       |       |       no `z2VUKn` in the root
+   |     |       |       |       |       |       no `z2VTqL` in the root
+   |     |       |       |       |       no `z2VTq5` in the root
+   |     |       |       |       no `z2VTXE` in the root
+   |     |       |       no `z2VSAK` in the root
+   |     |       no `z2VPuU` in the root
+   |     no `z2VLxP` in the root
+
+error[E0432]: unresolved import `signal_standard::z2VSyM`
+  --> src/shipper.rs:15:5
+   |
+15 | use signal_standard::z2VSyM;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^ no `z2VSyM` in the root
+
+error[E0432]: unresolved imports `signal_mirror::z2VLxP`, `signal_mirror::z2VPgu`, `signal_mirror::z2VPuU`, `signal_mirror::z2VSAK`, `signal_mirror::z2VTXE`, `signal_mirror::z2VTq5`, `signal_mirror::z2VUKn`, `signal_mirror::z2VUwg`, `signal_mirror::z2VUxk`, `signal_mirror::z2VY7x`, `signal_mirror::z2VYSu`, `signal_mirror::z2VZWt`, `signal_mirror::z2VaxY`, `signal_mirror::z2VbBN`, `signal_mirror::z2Vbm6`, `signal_mirror::z2VbvA`, `signal_mirror::z2VcqM`, `signal_mirror::z2Vdqa`, `signal_mirror::z2Ve8p`
+  --> src/store.rs:13:5
+   |
+13 |     z2VLxP, z2VPgu, z2VPuU, z2VSAK, z2VTXE, z2VTq5, z2VUKn, z2VUwg, z2VUxk, z2VY7x, z2VYSu, z2VZWt,
+   |     ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^
+   |     |       |       |       |       |       |       |       |       |       |
+   |     |       |       |       |       |       |       |       |       |       no `z2VY7x` in the root
+   |     |       |       |       |       |       |       |       |       no `z2VUxk` in the root
+   |     |       |       |       |       |       |       |       no `z2VUwg` in the root
+   |     |       |       |       |       |       |       no `z2VUKn` in the root
+   |     |       |       |       |       |       no `z2VTq5` in the root
+   |     |       |       |       |       no `z2VTXE` in the root
+   |     |       |       |       no `z2VSAK` in the root
+   |     |       |       no `z2VPuU` in the root
+   |     |       no `z2VPgu` in the root
+   |     no `z2VLxP` in the root
+14 |     z2VaxY, z2VbBN, z2Vbm6, z2VbvA, z2VcqM, z2Vdqa, z2Ve8p,
+   |     ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^  ^^^^^^
+
+error[E0432]: unresolved import `signal_standard::z2VSyM`
+  --> src/store.rs:16:5
+   |
+16 | use signal_standard::z2VSyM;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^ no `z2VSyM` in the root
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+  --> src/daemon.rs:52:28
+   |
+52 |             signal_mirror::ContractMarker::decode_single_request(&body.into_bytes())?;
+   |                            ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `ContractMarker` in `meta_signal_mirror`
+  --> src/daemon.rs:76:33
+   |
+76 |             meta_signal_mirror::ContractMarker::decode_single_request(&body.into_bytes())?;
+   |                                 ^^^^^^^^^^^^^^ could not find `ContractMarker` in `meta_signal_mirror`
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+   --> src/service.rs:307:28
+    |
+307 |             signal_mirror::ContractMarker::decode_single_request(&body.into_bytes())?;
+    |                            ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `ContractMarker` in `signal_mirror`
+  --> src/shipper.rs:54:30
+   |
+54 |         match signal_mirror::ContractMarker::decode_frame(&reply.into_bytes())?.into_body() {
+   |                              ^^^^^^^^^^^^^^ could not find `ContractMarker` in `signal_mirror`
+
+error[E0433]: cannot find `FrameBody` in `signal_mirror`
+  --> src/shipper.rs:55:28
+   |
+55 |             signal_mirror::FrameBody::Reply { reply, .. } => match reply {
+   |                            ^^^^^^^^^ could not find `FrameBody` in `signal_mirror`
+
+error[E0433]: cannot find `z2VTJB` in `meta_signal_mirror`
+   --> src/store.rs:161:37
+    |
+161 |                 meta_signal_mirror::z2VTJB::z2VXE8(store) => Some(store.payload().clone()),
+    |                                     ^^^^^^ could not find `z2VTJB` in `meta_signal_mirror`
+
+error[E0433]: cannot find `z2VTJB` in `meta_signal_mirror`
+   --> src/store.rs:162:37
+    |
+162 |                 meta_signal_mirror::z2VTJB::z2VcDy => None,
+    |                                     ^^^^^^ could not find `z2VTJB` in `meta_signal_mirror`
+
+error[E0433]: cannot find `z2VWXC` in `meta_signal_mirror`
+   --> src/store.rs:165:37
+    |
+165 |                 meta_signal_mirror::z2VWXC::z2VaQ8 => RetentionRule::KeepEverything,
+    |                                     ^^^^^^ could not find `z2VWXC` in `meta_signal_mirror`
+
+error[E0433]: cannot find `z2VWXC` in `meta_signal_mirror`
+   --> src/store.rs:166:37
+    |
+166 |                 meta_signal_mirror::z2VWXC::z2VXbW(count) => {
+    |                                     ^^^^^^ could not find `z2VWXC` in `meta_signal_mirror`
+
+error[E0433]: cannot find `z2VQWA` in `meta_signal_mirror`
+   --> src/store.rs:473:32
+    |
+473 |         Ok(meta_signal_mirror::z2VQWA::new(
+    |                                ^^^^^^ could not find `z2VQWA` in `meta_signal_mirror`
+
+error[E0433]: cannot find `z2VT8Z` in `meta_signal_mirror`
+   --> src/store.rs:476:48
+    |
+476 |                 .map(|row| meta_signal_mirror::z2VT8Z::new(z2Ve8p::new(row.store.clone())))
+    |                                                ^^^^^^ could not find `z2VT8Z` in `meta_signal_mirror`
+
+error[E0425]: cannot find type `SocketModeRangeError` in crate `meta_signal_mirror`
+   --> src/config.rs:104:44
+    |
+104 |     SocketMode(#[from] meta_signal_mirror::SocketModeRangeError),
+    |                                            ^^^^^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VPuU` in crate `signal_mirror`
+   --> src/decision.rs:126:62
+    |
+126 |     fn suffix_inconsistency(&self, entries: &[signal_mirror::z2VPuU]) -> Option<z2VcyE> {
+    |                                                              ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2VPuU` in crate `signal_mirror`
+   --> src/decision.rs:143:35
+    |
+143 |         entries: &[signal_mirror::z2VPuU],
+    |                                   ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2VPuU` in crate `signal_mirror`
+   --> src/decision.rs:167:58
+    |
+167 |     fn known_divergence(&self, entries: &[signal_mirror::z2VPuU]) -> Option<z2VcyE> {
+    |                                                          ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2VPuU` in crate `signal_mirror`
+   --> src/decision.rs:181:67
+    |
+181 |     fn body_addressing_violation(&self, entries: &[signal_mirror::z2VPuU]) -> Option<z2VcyE> {
+    |                                                                   ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `signal_mirror`
+  --> src/error.rs:33:40
+   |
+33 |     OrdinarySignalFrame(signal_mirror::SignalFrameError),
+   |                                        ^^^^^^^^^^^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `meta_signal_mirror`
+  --> src/error.rs:36:41
+   |
+36 |     MetaSignalFrame(meta_signal_mirror::SignalFrameError),
+   |                                         ^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `OctetRangeError` in crate `signal_mirror`
+  --> src/error.rs:39:34
+   |
+39 |     Octet(#[from] signal_mirror::OctetRangeError),
+   |                                  ^^^^^^^^^^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2VcyE` in crate `signal_mirror`
+  --> src/error.rs:64:32
+   |
+64 |         reason: signal_mirror::z2VcyE,
+   |                                ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2VcqM` in crate `signal_mirror`
+  --> src/error.rs:65:37
+   |
+65 |         head: Option<signal_mirror::z2VcqM>,
+   |                                     ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `z2Vcs2` in crate `signal_mirror`
+  --> src/error.rs:69:52
+   |
+69 |     MirrorPublishRejected { reason: signal_mirror::z2Vcs2 },
+   |                                                    ^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `signal_mirror`
+   --> src/error.rs:102:26
+    |
+102 | impl From<signal_mirror::SignalFrameError> for Error {
+    |                          ^^^^^^^^^^^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `signal_mirror`
+   --> src/error.rs:103:35
+    |
+103 |     fn from(error: signal_mirror::SignalFrameError) -> Self {
+    |                                   ^^^^^^^^^^^^^^^^ not found in `signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `meta_signal_mirror`
+   --> src/error.rs:108:31
+    |
+108 | impl From<meta_signal_mirror::SignalFrameError> for Error {
+    |                               ^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `SignalFrameError` in crate `meta_signal_mirror`
+   --> src/error.rs:109:40
+    |
+109 |     fn from(error: meta_signal_mirror::SignalFrameError) -> Self {
+    |                                        ^^^^^^^^^^^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VSyM` in crate `signal_standard`
+  --> src/readback.rs:63:58
+   |
+63 |     pub fn addresses_to(&self, digest: &signal_standard::z2VSyM) -> bool {
+   |                                                          ^^^^^^ not found in `signal_standard`
+
+error[E0425]: cannot find type `z2VXLU` in crate `meta_signal_mirror`
+   --> src/store.rs:158:47
+    |
+158 |     fn from_order(order: &meta_signal_mirror::z2VXLU) -> Self {
+    |                                               ^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VXLU` in crate `meta_signal_mirror`
+   --> src/store.rs:397:69
+    |
+397 |     pub fn persist_retention(&mut self, order: &meta_signal_mirror::z2VXLU) -> Result<()> {
+    |                                                                     ^^^^^^ not found in `meta_signal_mirror`
+
+error[E0425]: cannot find type `z2VQWA` in crate `meta_signal_mirror`
+   --> src/store.rs:471:63
+    |
+471 |     pub fn load_registry(&self) -> Result<meta_signal_mirror::z2VQWA> {
+    |                                                               ^^^^^^ not found in `meta_signal_mirror`
+
+warning: unused import: `RetentionReceipt`
+ --> src/engine.rs:9:21
+  |
+9 |     RetentionOrder, RetentionReceipt, StoreRegistration,
+  |                     ^^^^^^^^^^^^^^^^
+  |
+  = note: `-W unused-imports` implied by `-W unused`
+  = help: to override `-W unused` add `#[allow(unused_imports)]`
+
+error[E0277]: the trait bound `NovelSuffix: Eq` is not satisfied
+   --> src/decision.rs:19:12
+    |
+ 17 | #[derive(Clone, Debug, PartialEq, Eq)]
+    |                                   -- in this derive macro expansion
+ 18 | pub enum AppendDecision {
+ 19 |     Accept(NovelSuffix),
+    |            ^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Eq` is not implemented for `NovelSuffix`
+   --> src/ledger.rs:13:1
+    |
+ 13 | pub struct NovelSuffix {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `std::cmp::AssertParamIsEq`
+   --> /nix/store/33jgdx2kaiiyfkk9f9wv6l1lyb3hj8c5-rust-minimal-1.96.0/lib/rustlib/src/rust/library/core/src/cmp.rs:379:31
+    |
+379 | pub struct AssertParamIsEq<T: Eq + PointeeSized> {
+    |                               ^^ required by this bound in `AssertParamIsEq`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:44:68
+   |
+44 |             return AppendDecision::Refuse(append_rejection(request.field_0, z2VcyE::z2VcFn, None));
+   |                                                                    ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_2` on type `EntrySuffix`
+  --> src/decision.rs:46:31
+   |
+46 |         let entries = request.field_2;
+   |                               ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:49:25
+   |
+49 |                 request.field_0,
+   |                         ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:56:25
+   |
+56 |                 request.field_0,
+   |                         ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_1` on type `EntrySuffix`
+  --> src/decision.rs:61:70
+   |
+61 |         if let Some(reason) = ledger.expected_head_violation(request.field_1.as_ref(), &entries) {
+   |                                                                      ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:63:25
+   |
+63 |                 request.field_0,
+   |                         ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:70:25
+   |
+70 |                 request.field_0,
+   |                         ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:77:25
+   |
+77 |                 request.field_0,
+   |                         ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+  --> src/decision.rs:95:29
+   |
+95 |                     request.field_0,
+   |                             ^^^^^^^ unknown field
+   |
+   = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+   --> src/decision.rs:101:34
+    |
+101 |                 field_0: request.field_0,
+    |                                  ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `EntrySuffix`
+   --> src/decision.rs:105:57
+    |
+105 |         AppendDecision::Accept(NovelSuffix::new(request.field_0, suffix_end, novel))
+    |                                                         ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark_option`, `entry_envelope_vector`
+
+error[E0609]: no field `field_0` on type `&HeadMark`
+   --> src/decision.rs:119:44
+    |
+119 |         self.head().map_or(0, |head| *head.field_0.payload())
+    |                                            ^^^^^^^ unknown field
+    |
+    = note: available fields are: `commit_sequence`, `object_digest`
+
+error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
+   --> src/decision.rs:187:58
+    |
+187 |                     entry.field_3.octets().map_or(true, |octets| {
+    |                                                          ^^^^^^ doesn't have a size known at compile-time
+    |
+    = help: the trait `Sized` is not implemented for `[u8]`
+    = note: all function arguments must have a statically known size
+
+error[E0609]: no field `field_0` on type `CheckpointArtifact`
+   --> src/decision.rs:204:35
+    |
+204 |                 field_0: artifact.field_0,
+    |                                   ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_1` on type `&CheckpointArtifact`
+   --> src/decision.rs:211:47
+    |
+211 |                 let latest_sequence = *latest.field_1.payload();
+    |                                               ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_1` on type `CheckpointArtifact`
+   --> src/decision.rs:212:51
+    |
+212 |                 let artifact_sequence = *artifact.field_1.payload();
+    |                                                   ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_2` on type `CheckpointArtifact`
+   --> src/decision.rs:213:69
+    |
+213 |                 if artifact_sequence == latest_sequence && artifact.field_2 == latest.field_2 {
+    |                                                                     ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_2` on type `&CheckpointArtifact`
+   --> src/decision.rs:213:87
+    |
+213 |                 if artifact_sequence == latest_sequence && artifact.field_2 == latest.field_2 {
+    |                                                                                       ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_2` on type `CheckpointArtifact`
+   --> src/decision.rs:217:34
+    |
+217 |                     || *artifact.field_2.payload() < *latest.field_2.payload()
+    |                                  ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_2` on type `&CheckpointArtifact`
+   --> src/decision.rs:217:62
+    |
+217 |                     || *artifact.field_2.payload() < *latest.field_2.payload()
+    |                                                              ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_0` on type `CheckpointArtifact`
+   --> src/decision.rs:220:43
+    |
+220 |                         field_0: artifact.field_0,
+    |                                           ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `checkpoint_sequence`, `commit_sequence`, `object_digest`, `artifact_bytes`
+
+error[E0609]: no field `field_0` on type `ObjectNotice`
+   --> src/decision.rs:238:33
+    |
+238 |                 field_0: notice.field_0,
+    |                                 ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark`, `standard_socket_option`
+
+error[E0609]: no field `field_1` on type `ObjectNotice`
+   --> src/decision.rs:243:42
+    |
+243 |         if ledger.has_known_head(&notice.field_1) {
+    |                                          ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark`, `standard_socket_option`
+
+error[E0609]: no field `field_0` on type `ObjectNotice`
+   --> src/decision.rs:245:33
+    |
+245 |                 field_0: notice.field_0,
+    |                                 ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark`, `standard_socket_option`
+
+error[E0609]: no field `field_1` on type `ObjectNotice`
+   --> src/decision.rs:246:33
+    |
+246 |                 field_1: notice.field_1,
+    |                                 ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark`, `standard_socket_option`
+
+error[E0609]: no field `field_0` on type `ObjectNotice`
+   --> src/decision.rs:250:29
+    |
+250 |             field_0: notice.field_0,
+    |                             ^^^^^^^ unknown field
+    |
+    = note: available fields are: `store_name`, `head_mark`, `standard_socket_option`
+
+error[E0599]: no variant, associated function, or constant named `z2VPC3` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:101:39
+    |
+101 |                 OrderRejectionReason::z2VPC3,
+    |                                       ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:108:67
+    |
+108 |                 return Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string());
+    |                                                                   ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VY7i` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:117:39
+    |
+117 |                 OrderRejectionReason::z2VY7i,
+    |                                       ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:125:70
+    |
+125 |             Err(error) => Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string()),
+    |                                                                      ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:133:67
+    |
+133 |                 return Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string());
+    |                                                                   ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VLwk` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:141:63
+    |
+141 |             return Self::meta_rejection(OrderRejectionReason::z2VLwk, "store is not registered");
+    |                                                               ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:145:70
+    |
+145 |             Err(error) => Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string()),
+    |                                                                      ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:156:70
+    |
+156 |             Err(error) => Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string()),
+    |                                                                      ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VMiY` found for enum `OrderRejectionReason` in the current scope
+   --> src/engine.rs:165:60
+    |
+165 |                 Self::meta_rejection(OrderRejectionReason::z2VMiY, &error.to_string())
+    |                                                            ^^^^^^ variant, associated function, or constant not found in `OrderRejectionReason`
+
+error[E0599]: no variant, associated function, or constant named `z2VPpj` found for enum `signal_mirror::Response` in the current scope
+   --> src/engine.rs:177:19
+    |
+177 |         Response::z2VPpj(FaultReport {
+    |                   ^^^^^^ variant, associated function, or constant not found in `signal_mirror::Response`
+
+error[E0560]: struct `String` has no field named `fault_detail`
+   --> src/engine.rs:178:13
+    |
+178 |             fault_detail: error.to_string(),
+    |             ^^^^^^^^^^^^ `String` does not have this field
+    |
+    = note: all struct fields are already assigned
+
+error[E0599]: no method named `payload` found for struct `String` in the current scope
+   --> src/store.rs:337:42
+    |
+337 |                 store: suffix.store_name.payload().clone(),
+    |                                          ^^^^^^^ method not found in `String`
+
+Some errors have detailed explanations: E0277, E0425, E0432, E0433, E0560, E0599, E0609.
+For more information about an error, try `rustc --explain E0277`.
+warning: `mirror` (lib) generated 1 warning
+error: could not compile `mirror` (lib) due to 77 previous errors; 1 warning emitted

@@ -1,0 +1,17 @@
+{
+  "nativeThreadId": "f61ea06b-b5ba-45be-8313-0afe7d84fd03",
+  "transcriptPath": "/home/li/.claude/projects/-home-li-primary/f61ea06b-b5ba-45be-8313-0afe7d84fd03.jsonl",
+  "observedIdentity": {
+    "model": "claude-haiku-4-5-20251001",
+    "effort": null
+  },
+  "provisionalTitles": [
+    "Psyche Ultra Low (claim pending)",
+    "Psyche Ultra Low (claim pending)",
+    "Psyche Ultra Low (claim pending)"
+  ],
+  "nativeSkillCommands": [
+    "<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"
+  ],
+  "transcriptSnapshotSha256": "1dea250e70440fd61c0509202a79ae0909bc984034fe6e8f4305d82ffa357cac"
+}

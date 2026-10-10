@@ -1,0 +1,2 @@
+{"id":1,"method":"initialize","params":{"clientInfo":{"name":"witness-f55ec8","version":"0.0.1"}}}
+{"id":2,"method":"account/rateLimits/read","params":{}}

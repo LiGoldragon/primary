@@ -1,0 +1,1 @@
+target/debug/flow-nexus  cwd=/home/li/wt/github.com/LiGoldragon/flow/codex-session-binding-6fe957

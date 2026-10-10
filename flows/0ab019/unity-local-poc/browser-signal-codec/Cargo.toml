@@ -1,0 +1,14 @@
+[package]
+name = "browser-signal-codec"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+js-sys = "=0.3.104"
+signal.workspace = true
+signal-mentci.workspace = true
+wasm-bindgen = "=0.2.127"

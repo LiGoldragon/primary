@@ -1,0 +1,33 @@
+warning: not writing modified lock file of flake 'path:/home/li/wt/github.com/LiGoldragon/CriomOS-home/flow0106-b7da5d':
+• Updated input 'horizon':
+    'path:./stubs/no-horizon'
+  → 'path:/home/li/.cache/lojix/horizon/goldragon/ouranos?lastModified=1781904081&narHash=sha256-xtHztvp1rdPdLgvZSi7hPga6y2NjuXxvBIw8ZQUVp2g%3D' (2026-06-19)
+• Updated input 'system':
+    'path:./stubs/no-system'
+  → 'path:/home/li/.cache/lojix/system/x86_64-linux?lastModified=1781904081&narHash=sha256-g41gddg2mh9bfbjhMx8OcM85QybWnVBpVv8C3dfn1w0%3D' (2026-06-19)
+evaluation warning: Package 'gemini-cli-0.47.0' in /nix/store/31w94yhfpllma9jnlgavjkzsfs548ijx-source/pkgs/by-name/ge/gemini-cli/package.nix:115 has the following problem: removal: Unpaid tier and Google AI Pro/Ultra users: Gemini CLI was replaced by Antigravity CLI. (https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/) See https://nixos.org/manual/nixpkgs/unstable#sec-problems
+evaluation warning: stdenv.isLinux is deprecated, use stdenv.hostPlatform.isLinux instead
+evaluation warning: stdenv.isDarwin is deprecated, use stdenv.hostPlatform.isDarwin instead
+error:
+       … in the left operand of the update (//) operator
+         at /nix/store/qy6vz65m2isyvzbnqrjcdw68aqda7m51-source/flake.nix:581:9:
+          580|         in
+          581|         checks
+             |         ^
+          582|         // {
+
+       … while calling the 'removeAttrs' builtin
+         at /nix/store/31w94yhfpllma9jnlgavjkzsfs548ijx-source/lib/attrsets.nix:667:28:
+          666|   */
+          667|   filterAttrs = pred: set: removeAttrs set (filter (name: !pred name set.${name}) (attrNames set));
+             |                            ^
+          668|
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: attribute 'command' missing
+       at /nix/store/qy6vz65m2isyvzbnqrjcdw68aqda7m51-source/checks/chatgpt-voice-niri-rule/default.nix:42:27:
+           41|   ) null settings.window-rules;
+           42|   microphoneMuteBinding = settings.binds."XF86AudioMicMute".action.command;
+             |                           ^
+           43| in

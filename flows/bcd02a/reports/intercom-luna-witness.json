@@ -1,0 +1,24 @@
+{
+  "flow_id": "bcd02a",
+  "child_identity": "codex-bcd02a-intercom-luna-3763973",
+  "child_endpoint": "codex-3763973-6b793a4f",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "nonce": "bcd02a-024bc7-sandbox-1",
+  "parent_session": "codex-3752558-f7566c95",
+  "peer_identity": null,
+  "sent_message": null,
+  "received_ack": null,
+  "timestamps": {
+    "child_session": "01a09c54-c79a-70e1-a1ae-93afd07f84fc",
+    "stopped_by_parent_gate": true
+  },
+  "outcome": "terminated_pending_no_peer",
+  "evidence": {
+    "cli_header": "Codex v0.153.4; workdir /tmp/bcd02a-intercom-luna; model gpt-5.6-luna; approval never; sandbox danger-full-access; reasoning effort medium",
+    "live_tools": ["intercom_whoami", "intercom_send", "intercom_pending"],
+    "parent_notification": "Child reported whoami identity and nonce-tagged notification sent to parent; repeated pending checks returned without a supplied Haiku peer endpoint.",
+    "message_exchange": "No peer message was sent and no acknowledgement was received.",
+    "process": "Own held PID 3763776 was sent SIGTERM after no peer endpoint arrived; no production or configuration action occurred."
+  }
+}

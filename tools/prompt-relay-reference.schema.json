@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://goldragon.criome.net/schemas/prompt-relay-transcript-reference-v1.json",
+  "title": "Prompt relay transcript reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "record", "selection"],
+  "properties": {
+    "schema_version": { "const": "prompt-relay-transcript-reference/v1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["harness", "transcript_path", "native_thread_id"],
+      "properties": {
+        "harness": { "enum": ["codex", "claude"] },
+        "transcript_path": { "type": "string", "minLength": 1 },
+        "native_thread_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "role", "turn_id", "item_id", "title", "line_hint", "sha256_utf8"],
+      "properties": {
+        "kind": { "const": "assistant-message" },
+        "role": { "const": "assistant" },
+        "turn_id": { "type": "string", "minLength": 1 },
+        "item_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "line_hint": { "type": "integer", "minimum": 1 },
+        "sha256_utf8": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "selection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "sha256_utf8"],
+          "properties": {
+            "kind": { "const": "whole-message" },
+            "sha256_utf8": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "start_byte", "end_byte", "sha256_utf8"],
+          "properties": {
+            "kind": { "const": "utf8-bytes" },
+            "start_byte": { "type": "integer", "minimum": 0 },
+            "end_byte": { "type": "integer", "minimum": 0 },
+            "sha256_utf8": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        }
+      ]
+    }
+  }
+}

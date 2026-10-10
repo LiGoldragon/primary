@@ -1,0 +1,289 @@
+{
+  "payload_sha256": "a6935f0da0109a20a271ace6985669f90c5e7b7f2dc35c3552b8b2015fb04e77",
+  "prompt_sha256": "8c33eeecf52828dbf34fbeb0d47ebd61f351e21449ec17ecf2adbd3dfa7bd1e6",
+  "prompt_bytes": 142942,
+  "inputs": [
+    {
+      "kind": "skill",
+      "name": "spirit",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/spirit.md",
+      "sha256": "4ff172000c5054d055521e48c58f56867bb34d2e76b11392e295c9ff993ec596"
+    },
+    {
+      "kind": "skill",
+      "name": "main-flow",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/main-flow.md",
+      "sha256": "ad77a0e41c352b2ec192ea9c337c7d79da04c86bbf8b57887ab67266eca0eb66"
+    },
+    {
+      "kind": "skill",
+      "name": "refresh",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/refresh.md",
+      "sha256": "01811981106e15dea359f8f8353f66f023821fded74e7e6c7146a86a6b1cb879"
+    },
+    {
+      "kind": "skill",
+      "name": "psyche",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/psyche.md",
+      "sha256": "a40fec16bd2631e98a0dd341587b74a88ebf48090a04b9f8cb0779f248382b7b"
+    },
+    {
+      "kind": "skill",
+      "name": "psyche-acquisition",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/psyche-acquisition.md",
+      "sha256": "f0a8401ef74474257c51c777e7d9795b10876fcdd1d86046d6a165a8b5b1dea2"
+    },
+    {
+      "kind": "skill",
+      "name": "behavior",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/behavior.md",
+      "sha256": "d51e1581903086f0ddb69eafb25c871df60e40312d99bd98d83bb58e72bc0584"
+    },
+    {
+      "kind": "skill",
+      "name": "correction",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/correction.md",
+      "sha256": "47235d84f99eef4e657484da0bf641c6f269db719b9ab11c90444fbfa1dd6ad1"
+    },
+    {
+      "kind": "skill",
+      "name": "vocabulary",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/vocabulary.md",
+      "sha256": "875cfddf755362362ed218b5f04b6f759c39dde6356942a7a2049a16b1946562"
+    },
+    {
+      "kind": "skill",
+      "name": "testing",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/testing.md",
+      "sha256": "3730dbb781b345dc67ca102f3dbd9404c1a264c132eb09f46a3832a53b1a0fd0"
+    },
+    {
+      "kind": "skill",
+      "name": "subflow",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/subflow.md",
+      "sha256": "296b4e6b6bff6afa0fb6c7aaff0ebb3b89ab59dbaf999a759a4081f3ed770e2d"
+    },
+    {
+      "kind": "skill",
+      "name": "edit-coordination",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/edit-coordination.md",
+      "sha256": "54b6b62dd1715e9db7a5a4ec25d484c0912d52c4e15c3302408013b91fb5ae32"
+    },
+    {
+      "kind": "skill",
+      "name": "orchestrate",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/orchestrate.md",
+      "sha256": "e600602d1a2ba7a365a3aa29403683751f71772d3b35dfba4ce240c970412fe8"
+    },
+    {
+      "kind": "skill",
+      "name": "flow-evidence",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/flow-evidence.md",
+      "sha256": "34043c9afc633c61c90282dd10663f3410c422e1d6f19f3ddb3efe7e735336a0"
+    },
+    {
+      "kind": "skill",
+      "name": "prompt-crafting",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/prompt-crafting.md",
+      "sha256": "f072894a4442bf9c92d3f2c8ec077d81dc29c362271f06918af3789cfc611430"
+    },
+    {
+      "kind": "skill",
+      "name": "herdr",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/herdr.md",
+      "sha256": "9a7e526ccd54bc8c608b5b25e4c3b120034f3847c65c0f3f12719a3dcc9eef0b"
+    },
+    {
+      "kind": "skill",
+      "name": "messaging",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/messaging.md",
+      "sha256": "961b02f30bf723c78bb119ca6a1f616c1fd70ebcc3972e782837deffeff26449"
+    },
+    {
+      "kind": "skill",
+      "name": "psyche-interraction",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/psyche-interraction.md",
+      "sha256": "efaacafb6867d64e3c59eb62a43bdc3bec1709e36c217dc2f4a5f9aee2ea3257"
+    },
+    {
+      "kind": "skill",
+      "name": "psyche-distillation",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/psyche-distillation.md",
+      "sha256": "692245d82af0a2e1b484c3ca8952dc7e9d7a8d6d5f43bbb5575064b196f669ef"
+    },
+    {
+      "kind": "skill",
+      "name": "file-editing",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/file-editing.md",
+      "sha256": "6791c7116ecf93701a61e44c58683458fea4ec76e1690f290a8fd8bb155871e4"
+    },
+    {
+      "kind": "skill",
+      "name": "nexus",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/nexus.md",
+      "sha256": "e3ed87f132a310ef7a4699828a8280405a9ac68e11fd13207b69beb7220f9f43"
+    },
+    {
+      "kind": "skill",
+      "name": "claude-harness",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/claude-harness.md",
+      "sha256": "9c73e366f9179919a316a2a0c5241689fd11db8969b1b970ed916112237018ce"
+    },
+    {
+      "kind": "skill",
+      "name": "flow-communication",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/flow-communication.md",
+      "sha256": "996f701c9dd9f2001cc9cee72e4fb3d5f13adfaf0f8375dbed86d7f9ba193aab"
+    },
+    {
+      "kind": "skill",
+      "name": "flow-aspect",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/flow-aspect.md",
+      "sha256": "47c141f592fc3b49c023031b72566e1803a877117d9894c48b11ecb1a9ae86f1"
+    },
+    {
+      "kind": "skill",
+      "name": "datom",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/datom.md",
+      "sha256": "883df47f006060b55ceb9a87b00d7080957d3ceb48083784b0ddbe899b4fc108"
+    },
+    {
+      "kind": "skill",
+      "name": "protos",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/protos.md",
+      "sha256": "229f0410a05b7846627ab55d5aa090ce7e79d5d32038e1792b291e39a502e86f"
+    },
+    {
+      "kind": "skill",
+      "name": "subflow-scripts",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/subflow-scripts.md",
+      "sha256": "e328bce040a80ddf5b841fa4e082ea3f386d18ec2e18685bd15b55a4aacd6f4c"
+    },
+    {
+      "kind": "skill",
+      "name": "operational-layer-communication",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/operational-layer-communication.md",
+      "sha256": "bef598cfaf02517f9a746e5e9f2742255688773335024d3ff7c948f843d899fe"
+    },
+    {
+      "kind": "skill",
+      "name": "operational-final-response",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/operational-final-response.md",
+      "sha256": "c4b7bd065090ea159a2bf67b170b7ea67eb13946ea06589eb4297cccb345f8ef"
+    },
+    {
+      "kind": "skill",
+      "name": "transcript-search",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/transcript-search.md",
+      "sha256": "5d477f2fa10a04ae6600ecf365eadb61fb1e96bd46acdfd177fbd6ccb2c49c20"
+    },
+    {
+      "kind": "skill",
+      "name": "context-strata",
+      "path": "/git/github.com/LiGoldragon/Curriculum/skills/context-strata.md",
+      "sha256": "1b538dab7d5736d82a15b86017e9551c42e773d30aac12553ad3bdf09d4f1f83"
+    },
+    {
+      "kind": "source",
+      "path": "flows/f38926/reports/refresh-handoff.md",
+      "sha256": "fd0a6c7b88ea147d5d7da57fca5ebf64527a924d519fff89e6f8536bd97d1561"
+    },
+    {
+      "kind": "source",
+      "path": "flows/f38926/summary.md",
+      "sha256": "6f08805ff26a2b773cef0bb59979cc97f2a025de930f9400d3edb0fa3be2b012"
+    },
+    {
+      "kind": "source",
+      "path": "flows/f38926/vision/nightWork.md",
+      "sha256": "7cd87e2ab309da7268024a8d1a18704830714c8c0dc2076a4e4bada5f5674bd1"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/messaging.md",
+      "sha256": "c8907401db9f57d19c26c0e0f76186080bd77aa5997f5fb4344381ee4aff0476"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/flowNexus.md",
+      "sha256": "eb7fac0ae5ca309f72cb2274b1ce24c8904e34f08e65c6be9496531d8d0d84f2"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/orchestrate.md",
+      "sha256": "9cced928c8bdc0e9ab58ca50053d00c5a0e6081f599d240ac927b97ba29f93d9"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/nexus.md",
+      "sha256": "8a40043950dd475963ca3b901f0c3eb37bc8041d280f2e46a0331262ce1d2676"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/datom.md",
+      "sha256": "2c6e16373dc7649e63f6173be2013752d508137bff87256ee79408f8d15efc8c"
+    },
+    {
+      "kind": "source",
+      "path": "Vision/psyche.md",
+      "sha256": "a95e10ede5a92a780e093dd3ddbbb371c0b501df4fd4d3eec7dbd37411dc8cd8"
+    },
+    {
+      "kind": "source",
+      "path": "flows/b81560/vision/operational-refreshOutboxAndMessageChannels.md",
+      "sha256": "0209171b3a7b537b2a94e4c1fdc3cd91a6f2165e0cf9759af205093be3f9ebae"
+    },
+    {
+      "kind": "source",
+      "path": "flows/b81560/vision/operational-refreshFlowAndMessageFlowCoordination.md",
+      "sha256": "ca897e41f65da52b44da6f50f3d9800c08ca2fd62ba66e4b03b6554ed6ae56ed"
+    },
+    {
+      "kind": "source",
+      "path": "flows/b81560/vision/operational-herderMessagingReport.md",
+      "sha256": "5fb19bdeb07d717cef4f40edd51b70d7137572eee9449f75895027e4405e4237"
+    },
+    {
+      "kind": "source",
+      "path": "flows/b81560/vision/operational-verticalRoutingThroughPsycheFirst.md",
+      "sha256": "52664a74d63c8bace67518385c2f59646305e0294aa351817d159050fbd7ac26"
+    },
+    {
+      "kind": "source",
+      "path": "flows/108ab0/vision/operational-designMosaic.md",
+      "sha256": "f9308e1a04ba826b43083afd80d3add6a5f3001efa68d120dfb0cf577b778848"
+    },
+    {
+      "kind": "source",
+      "path": "flows/f38926/vision/refresh.md",
+      "sha256": "d75f51f694e92fab61101b057164d2b4bdb6a41f478f88585bee73f5a078e3e2"
+    },
+    {
+      "kind": "native-user-turn",
+      "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl",
+      "line": 1105,
+      "timestamp": "2026-09-20T17:16:50.722Z",
+      "sha256": "967177c3a29cad4d22d2f14a75d2771d1b9ef4690c470d6127b9f4b43b3b6991"
+    },
+    {
+      "kind": "native-user-turn",
+      "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl",
+      "line": 1173,
+      "timestamp": "2026-09-20T17:20:01.078Z",
+      "sha256": "41c026a4130a79b59c6a82c53c1d6dee4a129501e125feaae35f2c9ccd7df09a"
+    },
+    {
+      "kind": "native-user-turn",
+      "path": "/home/li/.codex/sessions/2026/09/20/rollout-2026-09-20T18-15-41-01a0bf9a-1517-7193-9c17-d1a395aed1c5.jsonl",
+      "line": 1249,
+      "timestamp": "2026-09-20T17:22:27.208Z",
+      "sha256": "d2e99d7efe9976bc4632bb99eace678840333570d34bb7cf329a8da34687dd9f"
+    }
+  ],
+  "receipt_kind": "first-user-message-structured-context",
+  "prompt_path": "flows/395aed/refresh-production/psychehigh-one-turn-20260920/first-prompt.txt",
+  "profile": "/home/li/primary/flows/395aed/refresh-production/psyche-fable-of-f38926.json",
+  "model": "claude-fable-5-1[1m]",
+  "effort": "medium",
+  "role": "PsycheHigh"
+}

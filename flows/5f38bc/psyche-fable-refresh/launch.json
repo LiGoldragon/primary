@@ -1,0 +1,106 @@
+{
+  "at": "2026-09-25T15:10:02.140251+00:00",
+  "phase": "native-started-readiness-pending",
+  "flowId": "38de5b",
+  "thread": "38de5bbb-be48-4bae-883e-2d622fb79c9e",
+  "predecessor": "752e0f",
+  "agent": {
+    "agent": "claude",
+    "agent_session": {
+      "agent": "claude",
+      "kind": "id",
+      "source": "herdr:claude",
+      "value": "38de5bbb-be48-4bae-883e-2d622fb79c9e"
+    },
+    "agent_status": "working",
+    "cwd": "/home/li/primary",
+    "focused": false,
+    "foreground_cwd": "/home/li/primary",
+    "launch_pending": true,
+    "name": "psyche-fable-refresh-5f38bc",
+    "pane_id": "wD:pR",
+    "revision": 11,
+    "state_change_seq": 4347,
+    "tab_id": "wD:tG",
+    "terminal_id": "term_65c500aa730757c",
+    "terminal_title": "\u25d0 Psyche Fable 38de5b",
+    "terminal_title_stripped": "Psyche Fable 38de5b",
+    "workspace_id": "wD"
+  },
+  "processInfo": {
+    "foreground_process_group_id": 157498,
+    "foreground_processes": [
+      {
+        "argv": [
+          "claude",
+          "--dangerously-skip-permissions",
+          "--session-id",
+          "38de5bbb-be48-4bae-883e-2d622fb79c9e",
+          "--model",
+          "claude-fable-5-1",
+          "--effort",
+          "medium",
+          "--name",
+          "Psyche Fable 38de5b",
+          "--remote-control",
+          "--dangerously-skip-permissions",
+          "--system-prompt-file",
+          "/home/li/primary/tools/main-flow-mode/system-prompt.md",
+          "/main-flow /refresh Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now."
+        ],
+        "cmdline": "claude --dangerously-skip-permissions --session-id 38de5bbb-be48-4bae-883e-2d622fb79c9e --model claude-fable-5-1 --effort medium --name Psyche Fable 38de5b --remote-control --dangerously-skip-permissions --system-prompt-file /home/li/primary/tools/main-flow-mode/system-prompt.md /main-flow /refresh Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now.",
+        "cwd": "/home/li/primary",
+        "name": ".claude-wrapped",
+        "pid": 157498
+      },
+      {
+        "argv": [
+          "/nix/store/glcp73hgagq2b24i80jlgbvj28vdb6kk-nodejs-24.19.0/bin/node",
+          "/nix/store/q7dksdns2w9fcc6jz11nx88y1kpj58dv-agent-intercom-0.10.0/share/agent-intercom/claude/claude-server.mjs"
+        ],
+        "cmdline": "/nix/store/glcp73hgagq2b24i80jlgbvj28vdb6kk-nodejs-24.19.0/bin/node /nix/store/q7dksdns2w9fcc6jz11nx88y1kpj58dv-agent-intercom-0.10.0/share/agent-intercom/claude/claude-server.mjs",
+        "cwd": "/home/li/primary",
+        "name": "MainThread",
+        "pid": 157636
+      }
+    ],
+    "pane_id": "wD:pR",
+    "shell_pid": 156071
+  },
+  "nativeTranscript": {
+    "path": "/home/li/.claude/projects/-home-li-primary/38de5bbb-be48-4bae-883e-2d622fb79c9e.jsonl",
+    "sha256": "dd8e4a217a99f5a8d59027913741fff3a5f416af16482922c77a7a5f895e70c5",
+    "mainAndRefreshStartRecords": [
+      {
+        "timestamp": "2026-09-25T15:05:59.008Z",
+        "uuid": "5f16b79a-1472-4c2d-ac62-7ed72cf13985",
+        "content": "<command-message>main-flow</command-message>\n<command-name>/main-flow</command-name>\n<command-args>Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now.</command-args>"
+      },
+      {
+        "timestamp": "2026-09-25T15:05:59.012Z",
+        "uuid": "12c1fa5b-63e1-4924-9352-3733e54a6ea7",
+        "content": "<command-message>refresh</command-message>\n<command-name>/refresh</command-name>\n<command-args>Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now.</command-args>"
+      }
+    ],
+    "bundleReadToolWitness": true
+  },
+  "bundle": {
+    "path": "flows/752e0f/refresh-bundle.md",
+    "sha256": "16dc1824eb2422965c2bf902e82740a51b9d4d4bf68fd6529cff8f1fb6cc8737"
+  },
+  "systemPrompt": {
+    "path": "tools/main-flow-mode/system-prompt.md",
+    "sha256": "a0cfec7610d9908db6a7b9abaf5c5329f3fa2817a56e4699d708e3b8d8bfb03a"
+  },
+  "firstStartArgument": "/main-flow /refresh Flow ID is 38de5b. Read flows/752e0f/refresh-bundle.md in full now.",
+  "identityGate": {
+    "claimMarker": "flows/.38de5b.flow-id",
+    "claimMarkerSha256": "694a11637964c41e9db2b565306eb598c41056eea191136ba6fdb7e1dced3488",
+    "title": "Psyche Fable 38de5b"
+  },
+  "readinessGate": {
+    "state": "pending",
+    "reason": "Herdr agent has launch_pending=true; hm registration probe refuses before readiness probe evaluation"
+  },
+  "predecessorLifecycle": "untouched"
+}

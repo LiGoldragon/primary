@@ -1,0 +1,10 @@
+[package]
+name = "nexus-entry"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+kameo.workspace = true
+tokio.workspace = true
+rkyv.workspace = true

@@ -1,0 +1,422 @@
+<title>Work Essay and Audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Public+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper: #eef1ea;
+  --paper-raised: #e4e9df;
+  --ink: #1c2420;
+  --ink-soft: #47554c;
+  --ink-faint: #6e7d72;
+  --rule: #c7d0c3;
+  --accent: #1f6f5c;
+  --accent-ink: #123c31;
+  --accent-soft: #dbe9e2;
+  --accent-soft-border: #b9d4c8;
+  --code-bg: #e1e6da;
+  --code-ink: #274236;
+  --shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper: #12160f;
+    --paper-raised: #191f16;
+    --ink: #e8ede4;
+    --ink-soft: #b3c0b1;
+    --ink-faint: #82927f;
+    --rule: #2c352a;
+    --accent: #56c2a2;
+    --accent-ink: #d6f2e6;
+    --accent-soft: #17251f;
+    --accent-soft-border: #2b4038;
+    --code-bg: #1b2117;
+    --code-ink: #cfe2ce;
+  }
+}
+:root[data-theme="dark"]{
+  --paper: #12160f;
+  --paper-raised: #191f16;
+  --ink: #e8ede4;
+  --ink-soft: #b3c0b1;
+  --ink-faint: #82927f;
+  --rule: #2c352a;
+  --accent: #56c2a2;
+  --accent-ink: #d6f2e6;
+  --accent-soft: #17251f;
+  --accent-soft-border: #2b4038;
+  --code-bg: #1b2117;
+  --code-ink: #cfe2ce;
+}
+
+*{box-sizing:border-box;}
+body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection{ background: var(--accent-soft-border); color: var(--ink); }
+
+.skip{ position:absolute; left:-9999px; }
+.skip:focus{
+  left: 1rem; top: 0.5rem; z-index: 50;
+  background: var(--paper-raised); color: var(--ink); padding: 0.4rem 0.8rem; border-radius: 4px;
+}
+
+a{ color: var(--accent-ink); text-decoration-color: var(--accent-soft-border); text-underline-offset: 2px; }
+a:hover{ text-decoration-color: var(--accent); }
+a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.toc{
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: 0.65rem clamp(1rem, 4vw, 2.5rem);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  font-family: "Public Sans", system-ui, sans-serif;
+}
+.toc__mark{
+  font-weight: 600; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint); white-space: nowrap; margin-right: auto;
+}
+.toc__links{ display:flex; gap: 1.1rem; flex-wrap: wrap; }
+.toc a{
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-soft); text-decoration: none; padding: 0.2rem 0.1rem; border-bottom: 2px solid transparent;
+}
+.toc a:hover{ color: var(--accent-ink); border-bottom-color: var(--accent); }
+
+main{
+  max-width: 72ch;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 1.5rem) 5rem;
+}
+
+header.masthead{
+  padding-bottom: 1.75rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.eyebrow{
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-ink);
+  margin: 0 0 0.6rem;
+}
+h1.page-title{
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4vw, 2.15rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem;
+  text-wrap: balance;
+  color: var(--ink);
+}
+.masthead__meta{
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+}
+.masthead__meta span:not(:last-child)::after{ content: "\00b7"; margin-left: 0.5rem; color: var(--rule); }
+
+section{ margin-top: 3.25rem; }
+section:first-of-type{ margin-top: 0; }
+
+.section-head{
+  display: flex; align-items: baseline; gap: 0.65rem;
+  margin-bottom: 1.1rem;
+}
+.section-num{
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+h2.section-title{
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+}
+.section-desc{
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  margin: -0.6rem 0 1.25rem;
+}
+
+.verdict-card{
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft-border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+.verdict-card p.lede{
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+.verdict-card ol{
+  list-style: none;
+  counter-reset: verdict;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 0.85rem;
+}
+.verdict-card li{
+  counter-increment: verdict;
+  display: grid;
+  grid-template-columns: 1.9rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.98rem;
+}
+.verdict-card li::before{
+  content: counter(verdict);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--accent-ink);
+  background: var(--paper);
+  border: 1px solid var(--accent-soft-border);
+  border-radius: 50%;
+  width: 1.9rem; height: 1.9rem;
+  display: flex; align-items: center; justify-content: center;
+  font-variant-numeric: tabular-nums;
+  align-self: flex-start;
+}
+
+.prose{ color: var(--ink); }
+.prose h1{
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.35rem, 3.4vw, 1.75rem);
+  line-height: 1.25;
+  text-wrap: balance;
+  margin: 0 0 1.4rem;
+  color: var(--ink);
+}
+.prose h2{
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  text-wrap: balance;
+  margin: 2.4rem 0 0.9rem;
+  color: var(--ink);
+  padding-top: 0.1rem;
+}
+.prose h2:first-child{ margin-top: 0; }
+.prose p{ margin: 0 0 1.1rem; }
+.prose p:last-child{ margin-bottom: 0; }
+.prose strong{ color: var(--ink); font-weight: 600; }
+.prose em{ font-style: italic; }
+.prose hr{
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.6rem 0;
+}
+.prose ul, .prose ol{ margin: 0 0 1.1rem; padding-left: 1.4rem; }
+.prose li{ margin-bottom: 0.5rem; }
+.prose li:last-child{ margin-bottom: 0; }
+.prose code{
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.86em;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  word-break: break-word;
+}
+
+#audit .prose{
+  border-left: 3px solid var(--accent-soft-border);
+  padding-left: 1.3rem;
+}
+
+.wide-scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+footer.colophon{
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 520px){
+  .toc__mark{ display:none; }
+}
+
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+</style>
+<a class="skip" href="#verdict">Skip to content</a>
+<nav class="toc" aria-label="Table of contents">
+  <span class="toc__mark">Work Essay &amp; Audit</span>
+  <span class="toc__links">
+    <a href="#verdict">Verdict</a>
+    <a href="#essay">Essay</a>
+    <a href="#audit">Audit</a>
+  </span>
+</nav>
+<main>
+  <header class="masthead">
+    <p class="eyebrow">For the living psyche &middot; Flow 840e42</p>
+    <h1 class="page-title">The work essay, and the audit that checked it</h1>
+    <p class="masthead__meta">
+      <span>Essay dated 2026-09-15</span>
+      <span>Audit dated 2026-09-15</span>
+      <span>Presented whole and unabridged</span>
+    </p>
+  </header>
+
+  <section id="verdict">
+    <div class="section-head">
+      <span class="section-num">00</span>
+      <h2 class="section-title">Verdict, first</h2>
+    </div>
+    <p class="section-desc">The audit's own five-line verdict, read before either document below.</p>
+    <div class="verdict-card">
+      <p class="lede">From <code>workEssayAudit.md</code>:</p>
+      <ol>
+<li>Of 41 claims marked witnessed, 34 confirmed, 4 contradicted, 3 mislabeled (relayed claims marked witnessed).</li>
+<li>The “six of nine blocked behind Flow” count is unsupported by the essay’s own enumeration; two components (relay, Persona) are named, and the relay is already being built against a marked Flow seam.</li>
+<li>The seven-flow-month total does not follow from the essay’s own scale (four large, three medium, two small is about five).</li>
+<li>The “most sensible part now” verdict rests on stale numbers (3 of 8 rostered; today 7 of 12) and a cause stated as witnessed that no source witnesses.</li>
+<li>My verdict: the launch record is the right shape but is already Codex item 31’s stated design; what is sensibly built now is what is actually building: the Prometheus services (item 47) and the relay PoC, with the launch record folded into item 31 rather than started fresh.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="essay">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The essay, whole</h2>
+    </div>
+    <p class="section-desc"><code>workEssayPage.html</code> presents <code>flows/840e42/reports/workEssay.md</code> unabridged below.</p>
+    <div class="prose wide-scroll">
+<h1 id="how-much-work-the-program-in-motion-is-and-what-it-looks-like-built">How much work the program in motion is, and what it looks like built</h1>
+<p>An essay for the living psyche. Flow 840e42, 2026-09-15.</p>
+<p>Sizes are for one Codex or Claude flow working steadily: <strong>small</strong> is a day, <strong>medium</strong> a week, <strong>large</strong> a month. Every size is this flow’s own judgment. Every fact is marked <strong>witnessed</strong> (this flow read the file or ran the command) or <strong>claimed</strong> (a report asserted it).</p>
+<p>The program is nine components, about seven flow-months of work — but the ordering matters far more than the total, because six of the nine are blocked behind the same missing thing.</p>
+<hr />
+<h2 id="flow-launch-recycle-hooks-as-notifications-a-thin-event-log">1. Flow — launch, recycle, hooks as notifications, a thin event log</h2>
+<p><strong>Size: large.</strong></p>
+<p>What exists: nothing named Flow. Witnessed — there is no <code>flow</code> repository under <code>/git/github.com/LiGoldragon</code>; <code>Vision/flowNexus.md</code> describes the component and Codex 5f4fea lists item 31 as “in progress, pending” in <code>overview-facts.md</code>. Witnessed — Claude’s own <code>claude --bg</code> contract ignores a caller-supplied <code>--session-id</code>, mints its own, and records <code>dispatch.isolation: "none"</code>, so fixed successor identity is unavailable through that path (Codex, <code>to-fd0f97.md</code>). Claimed — <code>~/.claude/daemon/roster.json</code> holds 3 workers against 8 live sessions, so sessions launched outside the daemon are permanently unreachable; 93 <code>.&lt;alias&gt;.flow-id</code> markers exist and the relay chain does not read them (secondary, <code>messageRelayNexusPocs.md</code>). Claimed — the current session is parented to a terminal, not a supervisor, and dies on logout; linger is off for the user (secondary, <code>sessionPersistence.md</code>).</p>
+<p>Built, it looks like this. A Nexus with the ordinary/meta socket pair the <code>nexus</code> crate already defines (witnessed: <code>ConfigurationState&lt;C&gt;</code>, <code>SocketAuthority</code>, <code>Situation</code>). One durable launch record per flow: requested alias, harness, daemon-minted identity, the per-flow systemd scope it owns, the working directory, the vision files injected. A launch is one datom value naming a flow <em>type</em> — the psyche’s <code>flows/fd0f97/vision/flowTypes.md</code> asks for exactly that, preprogrammed types that need no behavioural instruction. Recycle is a state machine on that record: the predecessor emits the recycle signal and stops; a small model confirms the successor answers; only on failure is the predecessor woken, with “unable to recycle your flow” (<code>flows/fd0f97/vision/flowLifecycle.md</code>, witnessed). Harness hooks are registered by Flow at launch and arrive as notifications it may act on (<code>flows/840e42/vision/flow.md</code>, witnessed). The log is the psyche’s enum log: integers, scalars, booleans, enum variants, a string only where a string is unavoidable, garbage-collectable (<code>flows/840e42/vision/logging.md</code>, witnessed).</p>
+<p>The month is mostly the launch record and the supervision, not the log.</p>
+<h2 id="psyche-four-levels-a-domains-enum-migrating-the-files">2. Psyche — four levels, a domains enum, migrating the files</h2>
+<p><strong>Size: medium.</strong></p>
+<p>Witnessed: the <code>psyche</code> repository exists at 872K and its README says plainly “There is no supported runtime or public Rust API yet” — an isolated scaffold. Witnessed: the four levels are already named and ordered in the psyche skill — Spirit, Intent, Vision, Notion, descending authority — and the file layout is <code>Vision/&lt;topic&gt;.md</code>, <code>Intent/&lt;topic&gt;.md</code>, <code>flows/&lt;id&gt;/vision/&lt;topic&gt;.md</code>, <code>flows/&lt;id&gt;/notion/&lt;topic&gt;.md</code>, plus the draining legacy <code>vision-raw/</code>. Witnessed: 13 Vision files and 6 Intent files, 1320 lines together; flow 840e42 holds 16 raw vision files, fd0f97 holds 15.</p>
+<p>Built: a Sema-backed Nexus whose schema is those four levels as one enum and the topic names as a <strong>domains</strong> enum — so <code>Vision.Quota</code> is a typed address, not a path string. Each record carries the verbatim words, who heard them, which flow, whether typed or spoken, and the context paragraph the current files carry by convention. Migration is mechanical because the convention is already uniform across every file this flow read; the week is schema design plus the reader that replaces <code>grep -rn flows/*/vision/</code>. The psyche asked for exactly this substitution — “components like Psyche instead of this makeshift file system”, “everything with easy, minimal Datom object syntax” (<code>flows/fd0f97/vision/psyche.md</code>, witnessed).</p>
+<h2 id="the-message-relay-nexus-flow-delivery-receipts-the-persona-mcp-bridge">3. The message relay Nexus — flow delivery, receipts, the persona MCP bridge</h2>
+<p><strong>Size: medium.</strong></p>
+<p>This is the nearest-finished component and the most painfully mis-wired. Witnessed: <code>message</code> is 3.2G on disk with <code>message</code>, <code>meta-message</code>, <code>message-daemon</code> and a <code>messenger.sema</code> ledger, inbox, thread index, agent registry and delivery outbox. Claimed: the running daemon is version <strong>0.11.1</strong> while the repository is 0.12.0, and the store schema moved 3→4 with no migration, so the deployed daemon and the source disagree on the wire (secondary, <code>messageRelayNexusPocs.md</code>). Claimed: the store holds no registered flow and no real message; both delivery legs terminate at processes that are not running. Claimed: delivery is refused in practice — <code>session 942914a6 is not uniquely witnessed idle</code> (secondary, <code>thirdMember.md</code>). Witnessed, from the psyche: “I feel like I don’t see my messages being passed along to the other parts of the cluster. It’s like there’s a cluster failure” (<code>flows/fd0f97/vision/flowLifecycle.md</code>).</p>
+<p>Built: the agent registry is populated by Flow at launch, so a flow is addressed by its alias and never by a session UUID. Every message carries an identity and a parent on the wire, not only in the store. A receipt returns to the sender when the target actually consumed the turn — today <code>SubmissionAccepted</code> acknowledges submission only (claimed). And the psyche’s bridge: one MCP tool taking a single string that is a datom value, <code>orchestrate</code> or <code>message</code> as the head and the variant as the payload (<code>flows/840e42/vision/messages.md</code>, witnessed), so a flow prints its instruction in its own response and the tool carries it — cheaper than starting a subflow, which is what the psyche asked for (<code>flows/fd0f97/vision/messages.md</code>, witnessed).</p>
+<h2 id="cloud-a-provider-object-per-provider-cloudflare-first-the-git-server-on-prometheus">4. Cloud — a provider object per provider, Cloudflare first; the Git server on Prometheus</h2>
+<p><strong>Size: large</strong> (the provider refactor medium, the Git server small, the build-and-review pipeline medium).</p>
+<p>Witnessed: <code>cloud</code> is 7.5M and already ships <code>cloud-daemon</code>, <code>cloud</code>, <code>meta-cloud</code>, ordinary and meta sockets, a <code>PreparePlan</code>/<code>ApprovePlan</code>/ <code>ApplyPlan</code> ceremony, and a Cloudflare DNS path through a packaged <code>flarectl</code> wrapper that loads its token from <code>gopass</code>. So the psyche’s “an object for every provider, like Cloudflare, we should do that first” (<code>flows/840e42/vision/cloud.md</code>, witnessed) is a refactor of a working runtime, not a new build: lift the Cloudflare path into a provider trait with DNS, zones, records, and the DigitalOcean adapter (claimed to exist at <code>cloud/src/digitalocean.rs</code>) as the second implementation.</p>
+<p>The Git server is the psyche’s stated reason for the whole component — “we have all the repositories anyway, and we have a domain name, so it’s taking control with the cloud component” (<code>flows/840e42/vision/repositories.md</code>, witnessed). Built: a Git service on Prometheus defined as a CriomOS module, one repository per web-app mapping, the <code>webapi:</code> namespace of <code>flows/840e42/vision/namespace.md</code> resolving by longest match, and a change to a mapping arriving at the psyche as a proposal to approve or review. The pipeline builds the Slint app on Prometheus and presents it for the living’s review (<code>flows/840e42/vision/prometheus.md</code>, witnessed).</p>
+<h2 id="persona-the-meta-harness-keeper-ledger-quota-driven-operation-model-fallback">5. Persona — the meta-harness keeper: ledger, quota-driven operation, model fallback</h2>
+<p><strong>Size: large.</strong></p>
+<p>Witnessed: <code>persona</code> is 27M with a daemon directory, schema, and a minimal datom client over an in-process engine-manager stub; its README names itself “the engine manager and integration repository”. Claimed: item 13 produced a pinned Nexus/Sema adapter draft whose five tests use fake storage with no live engine, deployment held (Codex, <code>overview-facts.md</code>). Claimed: a live quota collector succeeds with 12 tests passing, but there is no scheduler and no hook, and the accounting policy is provisional.</p>
+<p>Built: Persona holds the ledger of every model call — inputs, model, what it had access to, what it produced — reviewable before the data is erased, which is the psyche’s rating design (<code>flows/840e42/vision/rating.md</code>, witnessed). It reads quota against the five-hour window, treats unused daily and hourly quota as slack, and spends slack on light encouragement to keep concepts materialised so they can be tested; when Fable is overused it falls back to Opus; when Codex is abundant it thinks out loud through Codex subagents (<code>flows/840e42/vision/quota.md</code>, witnessed). It decides when to start a flow and asks Flow to start it. The month is the ledger schema and the policy engine; the quota reading is already a working day’s worth.</p>
+<h2 id="mentci-the-thin-mobile-client-on-slint-embedding-a-minimal-criomos">6. Mentci — the thin mobile client on Slint embedding a minimal CriomOS</h2>
+<p><strong>Size: large, and this flow judges it the one likely to exceed a month.</strong></p>
+<p>Witnessed: <code>mentci</code> is 8.9M and is already the daemon for “the programmable human approval surface” — <code>mentci-daemon</code>, a thin <code>mentci</code> client, <code>observe</code>/<code>answer:approve</code>/<code>answer:reject</code>/<code>answer:defer</code> atoms, a preflight-launch datom schema. Witnessed: <code>CriomOS</code> is 133M of Nix modules, packages, gates and checks. Claimed: CriomOS has zero occurrences of <code>disko</code>, <code>nixos-anywhere</code>, <code>nixos-install</code> or <code>nixos-generate-config</code> — no install-from-scratch path exists (secondary, <code>clusterSpinup.md</code>).</p>
+<p>Built: an Android/Linux Slint app, a thin asynchronous client holding a foreground job so the OS keeps it alive, no LLM on the phone, the harness part running to the cloud, a debug mode with a small local server, and enough local function to work with the upstream unreachable (<code>flows/840e42/vision/mobile.md</code>, witnessed). “A very minimal CriomOS” is the part that is not a month: deciding the minimum is a design question the psyche left open, and the packaging path does not exist yet. This also answers the channel question — the psyche’s own alternative to XMPP and Matrix was “just straight up write our own app as a Slint Android project” (<code>flows/840e42/vision/notification.md</code>, witnessed).</p>
+<h2 id="identifier-types-in-signal">7. Identifier types in signal</h2>
+<p><strong>Size: small.</strong></p>
+<p>Witnessed: <code>signal</code> is 6.6M and owns exactly three things — the portable frame, the four-byte length framing, and the taxonomy generated from <code>ethos/signal.ethos</code>; its source is eight files. Witnessed: there is no identifier module in it today. Claimed: Codex measured both tokenizers across nine separator forms and three- and four-word identifiers, and produced a real tiktoken sample table, with the production form not yet selected (Codex, <code>overview-facts.md</code>, items 9, 15, 26, 27, 32). The psyche’s instruction is direct: the name-based hash goes in the signal library, sensible name, sensible anatomy, shown whole, rewritten later where it does not fit (<code>flows/fd0f97/vision/identifiers.md</code>, witnessed).</p>
+<p>Built: a type in <code>signal</code> that mints a word identifier from a name, a round-trip proof, and the whole thing shown to the psyche in one screen. A day, because the measurement work is done and only the decision and the type remain.</p>
+<h2 id="the-third-seat-on-prometheus">8. The third seat on Prometheus</h2>
+<p><strong>Size: small.</strong></p>
+<p>Claimed, and unusually well-witnessed by the secondary: the Prometheus llama router is an active systemd unit answering OpenAI-shaped JSON at <code>10.18.0.1:11434</code>; <code>qwen3.5-122b-a10b</code> at 131072 context is the load-on-startup preset, already resident; <code>gpt-oss-120b</code> is the fallback. Claimed: Codex accepts an arbitrary <code>model_providers</code> entry — a <code>--strict-config</code> probe naming Prometheus exited 0 — so a <code>~/.codex/prometheus.config.toml</code> profile and <code>codex -p prometheus</code> is the whole client side. Claimed: the one real blocker is the bearer key, which exists only on Prometheus, mode 0400, owned by <code>llama</code>; running the seat <em>on</em> Prometheus removes both the key problem and the network hop. Claimed: <code>dsh</code> is documented by a skill but installed nowhere.</p>
+<p>Built: a third flow in the cluster, on the house model, costing nothing per token — which is what makes the quota design of §5 affordable, and what the private layer chartered in CLAUDE.md will eventually need.</p>
+<h2 id="zeus-and-prometheus-deploys-under-boot-counting">9. Zeus and Prometheus deploys under boot counting</h2>
+<p><strong>Size: medium.</strong></p>
+<p>Claimed, from Lojix source: <code>HostDeployAction</code> has six verbs and <strong>no rollback</strong>; <code>GenerationSlot::Rollback</code> is declared in two places and never written or read. The one real primitive is <code>ScheduleBootOnce</code> — it reads the current entry from <code>bootctl</code>, sets the new closure, then sets the old entry as default and the new as one-shot, so reboot 1 lands new and reboot 2 returns to old, dispatched under <code>systemd-run --wait</code> so it survives ssh death (secondary, <code>countdownRollbackAnatomy.md</code>). Claimed: Ouranos and Zeus are UEFI/systemd-boot; Prometheus is systemd-boot by partition layout but unconfirmed by one <code>bootctl status</code>; DigitalOcean droplets are BIOS/GRUB and cannot use BootOnce at all. Claimed: Zeus’s only recovery today is the physical boot menu on someone’s daily driver.</p>
+<p>Built: an armed countdown around that primitive. A transient PID-1-owned unit fires the return reboot unless a witness on a peer host cancels it, the witness proving it is answering from the candidate closure by returning the store path of <code>/run/current-system</code>; the generation slots move on bless. Proved first on a VM guest through CriomOS’s existing test substrate, never on Zeus first.</p>
+<hr />
+<h2 id="the-order">The order</h2>
+<p><strong>What unblocks the most.</strong> Flow, decisively. Six of the other eight wait on it: the relay cannot address a flow that no registry seats (§3); Persona cannot start flows it cannot launch or supervise (§5); recycle, remote control, and the coloured terminal are all the same missing launch record (§1); the psyche’s messages do not reach the cluster for this reason and no other (witnessed, <code>flowLifecycle.md</code>). Second is the relay, which unblocks the psyche’s own bandwidth into the system. Third is Persona, which cannot exist before either.</p>
+<p><strong>What is cheap and unblocks something.</strong> The identifier types (§7, a day, and everything else is named by them) and the third seat (§8, a day, and it makes the quota policy affordable). Both are worth doing in the first week regardless of order, because neither blocks on anything.</p>
+<p><strong>What can wait.</strong> Mentci (§6) and the cloud Git server and pipeline (§4) are the longest and the least blocking. Boot counting (§9) is medium and urgent only in the sense that Zeus currently has no recovery but a physical boot menu — it should precede any Zeus deploy and no other work.</p>
+<p><strong>The most sensible part to implement now: the launch half of the Flow component — the durable launch record.</strong> Not the whole Nexus, not recycle, not the log. One record per flow, written by the launcher and read by everyone: requested alias, harness, the daemon-minted identity, the per-flow scope, the working directory, the injected vision files.</p>
+<p>The reason is that it is the smallest thing that stops a witnessed, recurring, psyche-visible failure. The evidence is unusually converging: <code>claude --bg</code> mints its own identity and refuses the caller’s (witnessed); the roster holds 3 of 8 sessions (claimed); 93 flow-id markers exist and nothing reads them (claimed); the relay refuses delivery for want of a uniquely witnessed idle session (claimed); the psyche reports a cluster failure in his own words (witnessed). One record reconciles all five. It is two or three days, not a month, and every one of the six blocked components can start against it the moment it exists — which is precisely what the psyche asked for when he said to put the pieces together and bring it online.</p>
+<hr />
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Witnessed by this flow: <code>/home/li/primary/Vision/*.md</code>, <code>/home/li/primary/Intent/*.md</code> (line counts, <code>flowNexus.md</code>, <code>orchestrate.md</code>, <code>signal.md</code>, <code>highLevelView.md</code>, <code>anatomy.md</code>, <code>context.md</code> read in full).</li>
+<li>Witnessed: all 16 files of <code>/home/li/primary/.claude/worktrees/flow-840e42/flows/840e42/vision/</code> and all 15 of <code>/home/li/primary/flows/fd0f97/vision/</code>, read in full.</li>
+<li>Witnessed: <code>/home/li/primary/.claude/skills/psyche/SKILL.md</code> (four levels, psyche file layout).</li>
+<li>Witnessed: repository sizes by <code>du -sh</code> and README/tree inspection under <code>/git/github.com/LiGoldragon/</code> — <code>orchestrate</code> 34M, <code>message</code> 3.2G, <code>lojix</code> 46M, <code>nexus</code> 3.3M, <code>persona</code> 27M, <code>cloud</code> 7.5M, <code>CriomOS</code> 133M, <code>signal</code> 6.6M, <code>mentci</code> 8.9M, <code>psyche</code> 872K.</li>
+<li>Claimed, read by delegated subflows and relayed here as claims: <code>/home/li/secondary/flows/57a7aa/reports/messageRelayNexusPocs.md</code>, <code>clusterSpinup.md</code>, <code>sessionPersistence.md</code>, <code>thirdMember.md</code>, <code>countdownRollbackAnatomy.md</code>; <code>layerNames.md</code> read directly by this flow.</li>
+<li>Witnessed by this flow, read in full: <code>/home/li/wt/primary-5f4fea/flows/5f4fea/reports/to-fd0f97.md</code> and <code>overview-facts.md</code> — their contents are Codex’s claims.</li>
+<li>All sizes and the ordering are this flow’s own judgment, inferred from the above.</li>
+</ul>
+    </div>
+  </section>
+
+  <section id="audit">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">The audit, whole</h2>
+    </div>
+    <p class="section-desc"><code>workEssayAudit.md</code> checked the essay above claim by claim; presented unabridged below, verdict included again in place.</p>
+    <div class="prose wide-scroll">
+<h1 id="audit-of-workessay.md">Audit of workEssay.md</h1>
+<p>Written by a Fable audit subflow of flow 840e42 on 2026-09-15; placed here verbatim by the main flow because the subflow ran read-only. Everything marked witnessed was read or run by that subflow on 2026-09-15.</p>
+<p><strong>Verdict</strong></p>
+<ol type="1">
+<li>Of 41 claims marked witnessed, 34 confirmed, 4 contradicted, 3 mislabeled (relayed claims marked witnessed).</li>
+<li>The “six of nine blocked behind Flow” count is unsupported by the essay’s own enumeration; two components (relay, Persona) are named, and the relay is already being built against a marked Flow seam.</li>
+<li>The seven-flow-month total does not follow from the essay’s own scale (four large, three medium, two small is about five).</li>
+<li>The “most sensible part now” verdict rests on stale numbers (3 of 8 rostered; today 7 of 12) and a cause stated as witnessed that no source witnesses.</li>
+<li>My verdict: the launch record is the right shape but is already Codex item 31’s stated design; what is sensibly built now is what is actually building: the Prometheus services (item 47) and the relay PoC, with the launch record folded into item 31 rather than started fresh.</li>
+</ol>
+<h2 id="witnessed-claim-check-by-section">Witnessed-claim check, by section</h2>
+<p><strong>§1 Flow.</strong> No <code>flow</code> repository: confirmed (<code>ls /git/github.com/LiGoldragon/flow</code> fails). <code>flowNexus.md</code> exists, item 31 “in progress, pending”: confirmed (<code>overview-facts.md</code>). “Witnessed: <code>claude --bg</code> ignores a caller-supplied <code>--session-id</code>”: <strong>mislabeled</strong>. The source is <code>to-fd0f97.md</code>, Codex’s claim; the essay read the report, not the contract. The roster is ambiguous on it: worker <code>6cc91bd5</code> was launched with <code>--session-id 6cc91bd5-...</code> matching its sessionId. Nexus types <code>ConfigurationState&lt;C&gt;</code>, <code>SocketAuthority</code>, <code>Situation</code>: confirmed (<code>nexus/src/configuration.rs:9</code>, <code>authority.rs:18</code>, <code>situation.rs:139</code>). All fd0f97 and 840e42 vision quotes: confirmed verbatim, including “Unable to recycle your flow” (<code>flowLifecycle.md:11</code>). Roster “3 workers against 8 live sessions”: correctly marked claimed, but <strong>stale</strong>: <code>roster.json</code> today holds 7 workers; live <code>claude</code> sessions number 12 (8 daemon <code>bg-pty-host</code> pairs, 4 terminal-launched). 93 <code>.flow-id</code> markers: confirmed. “The relay chain does not read them”: <strong>contradicted today</strong>. <code>message/src/flow_registry.rs</code> resolves <code>TargetFlowName</code> from <code>.flow-id</code> markers (secondary stage 3, commit 243eb82, 7 tests, its claim; the file is in the working tree, witnessed).</p>
+<p><strong>§2 Psyche.</strong> README sentence, 872K, four levels in the psyche skill, 13 Vision and 6 Intent files, 1320 lines, 15 fd0f97 vision files: all confirmed. “16 raw vision files” in 840e42: 17 today (<code>core.md</code> landed 16:08, the essay at 16:10; a drift, not an error).</p>
+<p><strong>§3 Relay.</strong> Version 0.12.0 in <code>Cargo.toml</code>: confirmed. Bins <code>message_daemon</code>, <code>meta_message</code>, <code>message</code> (<code>main.rs</code>): confirmed. The five arrangements: confirmed in <code>tables.rs:98-103</code>. <strong>Size contradicted</strong>: <code>du -sh message</code> is 4.4G today, not 3.2G (target growth plausible; the number is unstable and mostly <code>target/</code>). <code>SubmissionAccepted</code>: confirmed (<code>engine.rs:186</code>). “Not uniquely witnessed idle”: confirmed in <code>thirdMember.md:122</code> and, unmentioned, witnessed by 840e42’s own log line 43 against the secondary.</p>
+<p><strong>§4 Cloud.</strong> 7.5M, three bins, <code>PreparePlan</code> in <code>lib.rs</code>, <code>flarectl</code> wrapped with <code>gopass show cloudflare/api-token</code> (<code>flake.nix:36-41</code>): confirmed. <code>digitalocean.rs</code> is marked claimed but exists, and so does <code>hetzner.rs</code>, unmentioned: the provider trait already has three concrete paths to lift, not two.</p>
+<p><strong>§5 Persona.</strong> 27M, README “engine manager and integration repository”: confirmed. “A daemon directory”: <strong>contradicted</strong>. <code>persona/daemon</code> is a stale unix socket file (srwxr-xr-x, May 11), as is <code>persona/v config</code>; only <code>schema/</code> is real. Codex items 11 and 13: confirmed as claims.</p>
+<p><strong>§6 Mentci.</strong> 8.9M, <code>mentci-daemon</code>, <code>answer:approve</code>/<code>answer:defer</code> (<code>client.rs:190,199</code>), <code>schema/preflight-launch.datom.md</code>, CriomOS 133M: confirmed. Zero <code>disko</code>/<code>nixos-anywhere</code>/<code>nixos-install</code>/<code>nixos-generate-config</code> hits: confirmed by my own grep. The notification quote drops the word “Unity” (“write our own Unity app right now as a concept, as a Slint Android project”); the meaning survives.</p>
+<p><strong>§7 Identifiers.</strong> Three-thing ownership, <code>ethos/signal.ethos</code>, no identifier module in <code>signal</code>: confirmed (source is 9 <code>.rs</code> files counting <code>generated/</code>, “eight” is loose). <strong>Omitted</strong>: <code>/git/github.com/LiGoldragon/signal-5f4fea-word-identifiers</code> (created 14:44 today) already carries <code>src/identifiers.rs</code> with <code>NameDigest</code>, <code>LocalNameReference</code>, <code>ClusterNameReference</code>, <code>PublicNameReference</code>, BIP-39 alphabet, round-trip tests and <code>reports/identifier-poc.md</code>. The “type and round-trip proof” the essay budgets a day for exists as Codex’s proof; what remains is the living’s review and the merge.</p>
+<p><strong>§8 Third seat.</strong> Router at <code>10.18.0.1:11434</code>, <code>--strict-config</code> exit 0, key mode 0400 owner <code>llama</code>, <code>dsh</code> not found: confirmed as the secondary’s witnesses. “Already resident”: the report’s own witnessed <code>/v1/models</code> shows every preset <code>status.value: "unloaded"</code> (<code>thirdMember.md:60</code>); residency is the secondary’s inference and the essay relays it as fact.</p>
+<p><strong>§9 Boot counting.</strong> Six verbs, no <code>Rollback</code> action (<code>runtime_model.rs:445-452</code>), <code>GenerationSlot::Rollback</code> declared twice and never used (<code>adapters.rs:246</code>, <code>runtime_model.rs:133</code>, no other hits): confirmed by my own grep. <code>ScheduleBootOnce</code> anatomy, Prometheus unconfirmed by <code>bootctl status</code>, droplets BIOS/GRUB, “daily driver”: confirmed in <code>countdownRollbackAnatomy.md</code>.</p>
+<h2 id="sizes">Sizes</h2>
+<p>By the essay’s own scale (large = month, medium = week, small = day) the nine sum to about five flow-months, not seven. Where I size differently: §7 is not a day of building but a review, since the type exists; §3 is medium only if the 0.11.1 to 0.12.0 deploy (Codex item 35 migration, secondary deploy under countdown) is counted, and that deploy gates everything on the wire; §5 Persona is large but its “working day” of quota reading is Codex’s collector, uninstalled; §1 is large as written, but the launch half is under a week and is item 31’s scope, not a new lane. §6 and §4 sizes are reasonable. §9 medium is right but carries the untested VM-first proof; the countdown skill is a proposal (<code>5f8c389</code>), not landed.</p>
+<h2 id="the-verdict-judged">The verdict, judged</h2>
+<p>The essay’s “launch record” is a good shape and matches Codex’s own design conclusion in <code>to-fd0f97.md</code> (“a persisted typed launch record mapping requested alias to daemon-generated identifier, daemon-owned per-flow unit/cgroup creation, and persisted hook configuration”). The essay does not credit that, nor Codex’s launcher prototype (<code>proposal/5f4fea-item30-launcher</code>, <code>tools/flow-component</code> proposed), nor that this very session was launched by that path and its launch witness (log line 13) found the living’s gates met.</p>
+<p>The disconfirming evidence for “most sensible now”: (a) the relay is not blocked; the secondary’s PoC reads <code>.flow-id</code> markers through a marked seam, stage 3 green; (b) the delivery failures 840e42 witnessed today are approval-held cross-session messages (log lines 17, 25, 33) and an unreliable intercom route (line 61), neither cured by a launch record; (c) the living’s own priorities today are the Prometheus services with the Git server (item 47, already ordered “built now”), the XMPP chime (item 48), the core layer (item 49, “set it up now”), and the relay (approved: “Yes, extend the message Nexus, go ahead”). The essay’s alternatives section never weighs these three, which are what the living said and what is in motion.</p>
+<p>My verdict: build the launch record inside item 31, not as a new “most sensible part”; let the Prometheus services and the relay PoC proceed as the parts already chosen; the identifier work is a review, do it this week.</p>
+<h2 id="quackery">Quackery</h2>
+<ul>
+<li>“For this reason and no other (witnessed, <code>flowLifecycle.md</code>)”: the file witnesses the living’s words, not the cause. Inference dressed as witness.</li>
+<li>“Six of the other eight wait on it”: the enumeration names two components plus three sub-parts of §1.</li>
+<li>“About seven flow-months”: no arithmetic supports it.</li>
+<li>“Two or three days, not a month”: no source, and Codex has already spent days in this area.</li>
+<li>“Already resident”: contradicted by the source’s own data.</li>
+<li>“3 of 8” reused in the verdict as if current; the roster today reads 7 of 12.</li>
+<li>“Witnessed” on the <code>claude --bg</code> contract, a relayed claim.</li>
+</ul>
+<h2 id="sources-this-audit">Sources (this audit)</h2>
+<p>Witnessed: <code>/git/github.com/LiGoldragon/{nexus,message,cloud,persona,mentci,signal,signal-5f4fea-word-identifiers,lojix,CriomOS,psyche}</code>; <code>~/.claude/daemon/roster.json</code>; <code>pgrep</code> on ouranos; all vision files cited; <code>flows/840e42/log.md</code>; <code>/home/li/secondary/flows/57a7aa/{log.md,reports/*}</code>; <code>/home/li/wt/primary-5f4fea/flows/5f4fea/reports/{overview-facts,to-fd0f97,to-840e42}.md</code>. The secondary’s and Codex’s contents are their claims.</p>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p>Built by a subflow of Flow 840e42 for the living psyche's reading. The essay and the audit above are reproduced whole from <code>reports/workEssay.md</code> and <code>reports/workEssayAudit.md</code>; nothing in either was cut, reordered, or paraphrased in the conversion to this page.</p>
+  </footer>
+</main>

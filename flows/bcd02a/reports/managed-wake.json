@@ -1,0 +1,21 @@
+{
+  "flow_id": "bcd02a",
+  "worker_session": "wake-poc-codex-retry-20260913",
+  "model": "gpt-5.6-luna",
+  "reasoning_effort": "medium",
+  "requests": [
+    {
+      "id": "6d3b37e0-3a22-4146-a5b0-c5d129f05845",
+      "terminal_outcome": "completed",
+      "reply": "OK"
+    },
+    {
+      "id": "126d7f26-e4c2-4cbd-b644-bbc75fcbb46d",
+      "terminal_outcome": "completed",
+      "reply": "continuity pass"
+    }
+  ],
+  "continuity": "PASS",
+  "cleanup": "owned retry processes stopped",
+  "underlying_turn_ids": "not exposed by wrapper"
+}

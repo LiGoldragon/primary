@@ -1,0 +1,8 @@
+{
+  "access_authorized": false,
+  "provider": "fireworks",
+  "baseURL": "https://api.fireworks.ai/inference/v1",
+  "model": "accounts/fireworks/models/kimi-k3",
+  "version": "Fireworks Kimi K3 serverless",
+  "expected_opencode_version": "1.17.13"
+}
