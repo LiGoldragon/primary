@@ -182,3 +182,5 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — publish blocked: PrimaryPublish lock 15975 held by 445410 («Publish flow directory»). Asked 445410 to take the file in under its lock or signal release; no stale-lock path while it is live.
 
 ## 2026-10-10 — item 5 final packet (Field receipts via Sol/1d0733, not witnessed here): 07714b formatter-only over a09bb8; seven checks at a09bb8, fmt at 07714b. Ruled: rerun the seven at 07714b so all eight stand on one revision; then item 5 lands first and the 1-2 set rebases onto it, Fork 3 being unruled.
+
+## 2026-10-10 — 0c85a3 (Mind Astra) direct: item 5 status as Field's packet; asks Fork 3 status. Answered: unruled, before the living through 445410; sequence unchanged.
