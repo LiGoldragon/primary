@@ -43,9 +43,11 @@ Library                         ; Flow's
    Source.{                     ; where a module's
       Repository.String         ; text lives: the
       Hash.Blake3               ; containing source,
-      Path.String }             ; hashed, relative
+      Path }                    ; hashed, relative
    Path.String                  ; a path relative to
                                 ; a source
+   Reason.String                ; why a store
+                                ; refuses
    Key.{                        ; a module's key,
       Subaspect                 ; written as the
       Topic }                   ; pair
@@ -102,8 +104,8 @@ Library                         ; Flow's
       MetaSocketPath.String     ; Nexus's start
       StorePath.String }        ; command
    StoreRefusal.{               ; the store at
-      Path.String               ; StorePath is not
-      Reason.String }           ; Flow's own, or
+      Path                      ; StorePath is not
+      Reason }                  ; Flow's own, or
                                 ; cannot be opened
    StartRefusal.[               ; the start reply
       Store.StoreRefusal ]      ; when it refuses
