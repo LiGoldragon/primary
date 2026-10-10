@@ -111,3 +111,47 @@
 2026-10-10 — 9fed42: the seven changes are f5a6e9's rulings as Flow Primary, relayed by 9fed42, not before the living; the Psyche name clash is answered by renaming to Said (two enums may share a variant name) and has gone to the living through 445410 as an Ethos finding; f5a6e9 is asked whether Send carries an Up recipient. The Message design's attribution to 9fed42 needs correcting to f5a6e9.
 
 2026-10-10 — f5a6e9's ruling (current best) via 9fed42: Up stays on the wire as Send.{ Recipient.[ Address Up ] Request }; Flow resolves it for tonight's build; NoneAbove at the top; the living's ruling on book 4 may move resolving to Message. Design and tests told to follow.
+
+2026-10-10 — Landing: message-test candidate (9e94e23d) handed to 445410 for Mind. Lint, VM and runner checks pass; 14 tests fail at setup because Message is not built to the design (message-meta.sock); tests 15–16 blocked on a Claude login on Prometheus, ruling asked.
+
+2026-10-10 — 445410: message-test forwarded to Mind as Message's acceptance suite; tests 15–16 run on the laptop, and no credential moves to Prometheus.
+
+2026-10-10 — 445410: a checkout at 00:04:39 moved Primary onto main and dropped unpushed commits and untracked files under flows/. This flow's directory restored in the working tree from recovery (73da46) and origin bae554, with the old drafts deleted and the log merged. Not committed. The attribution fix (c8d5ab) exists only on local main; the Up subflow's publish is to carry it.
+
+2026-10-10 — 445410: compensation-primary-commit governs. Publish flows/73ada7 only, from an independent clone; no commits in the shared copy; leave any local commits there for Field's reconciliation. Publish dispatched.
+
+2026-10-10 — Astra (via 445410) disqualified message-test 9e94e2 by reading: pins on Flow 0.24 and Message 0.19.1, a fixture expecting an endpoint the pinned Message never binds, no persisted configuration and restart. Revise and pin to Flow 72418b11 (or the folded 0.25) and Message ebc914. The governing Message design is newer than ebc914 (bae554 and the pending Up restore), so the revision pins the newest; 445410 is told why. Revision dispatched.
+
+2026-10-10 — The three paths Field held are byte-identical in recovery, da9eda and bae554, so there is no conflict: shared content governs until the Up restore. da9eda's six re-added old drafts are to be deleted. Receipts sent to 445410 for Field.
+
+2026-10-10 — 9fed42 and d5df1d are waiting on PrimaryPublish lock 16030, held by one of this flow's publishing subflows. Both subflows were asked to finish and release it; the waiters will be told on release.
+
+2026-10-10 — Failure (reported by subflow, unwitnessed): main is 899d194 (f5a6e9's Up publish) with a one-file tree over da9eda. The Up restore commit c60dd29e is ready in an independent clone but not pushed; lock 16030 released. 9fed42, d5df1d and 445410 warned; this flow's publishes are held until main is whole.
+
+2026-10-10 — Witnessed: origin main 899d194 has a 1-file tree; its parent da9eda has 8775. Sent to 445410.
+
+2026-10-10 — Both publishing subflows hold nothing and pushed nothing. The restore publish and the Up commit c60dd29e wait for main to be whole.
+
+2026-10-10 — 445410: main whole again (Field's repair becbf2, 8775 entries). Publish from a full clone; before each push check that only own paths change and that the file count is not below main's. Restore publish released; the Up publish follows it.
+
+2026-10-10 — 445410 for Field: audit of this flow's operations outside its own directory in the shared working copy since 00:04 (the second deletion of flows/445410). Audit subflow dispatched. No in-flight shared-tree mutation of this flow is known: the restore publish works in an independent clone, and the test revision works outside Primary.
+
+2026-10-10 — Landing: message-test revision 8fe8f02b (Flow 962ad12, Message 6fa4d0c, designs 72418b11 and bae5545f) handed to 445410. Fixture passes setup; tests 1, 3–14 fail on Message refusing the design's Configure (arity); 2, 8, 15 pending; 15–16 not run on Prometheus.
+
+2026-10-10 — 445410: message-test forwarded to Mind; publish the Up restore now, with the full-clone and pre-push checks. Released to its subflow.
+
+2026-10-10 — 445410: d5df1d's shared-copy commit aeffbd61e also deleted flows/73ada7/reports/build/message-design.md; who staged it is unknown. The Up publish subflow is told to add the file in full if main lacks it.
+
+2026-10-10 — Audit report sent to 445410 for Field (reports/audit-0004.md). Subflow a8d84b pushed into the shared copy's checked-out main at 00:05:39, using a clone whose origin was /home/li/primary; a643fd ran git checkout recovery in the shared copy at 00:09:33. Correction: compensation-primary-commit says only "an independent Git clone of Primary", which allowed a clone whose origin is the shared copy. Proposed line sent: the clone's origin is GitHub, never the shared working copy.
+
+2026-10-10 — Landing: Up restore on main 9541cd (Send.{ Recipient.[ Address Up ] Request }, NoneAbove, ResolveUp as need N14, attribution to f5a6e9); paths and file-count checks passed. Lock released; 9fed42 publishes next, then the directory restore.
+
+2026-10-10 — 9fed42 published (e992c3); the directory restore is released to take the lock. Field qualified the pins: the Flow design is e846c2 (blob d45c1d4); the Message paths are governed by 9541cd; the shared copy's local versions are stale. Re-pin of message-test dispatched; the heavy rerun waits for Mind's commits.
+
+2026-10-10 — Landing: message-test re-pinned as 3636bc (designs e846c2 and 9541cd); no-build evaluation passes; heavy checks wait for Mind's commits. Mismatch raised with 9fed42: Flow e846c2 writes Lock.Recipient, the Message design writes Lock.{ Address }.
+
+2026-10-10 — f5a6e9's ruling via 9fed42: the lock is Lock.Recipient; Flow resolves Up on the lock (one round trip), answering Locked.Lock with the resolved Address or NoneAbove; no ResolveUp. Design update and test update dispatched.
+
+2026-10-10 — Landing: message-test dc0d73 follows Lock.Recipient (test 8 trace Identified, Locked, Delivered; test 9 refused on the lock); no-build evaluation passes; Message design pin waits for the design update.
+
+2026-10-10 — For Astra: message-design.md is governed by 9541cd08, blob 1ce61fb1, which carries the three-path Configuration and both Configure contracts; no later commit (existing objects only). Sent to 445410; the Lock.Recipient publish will supersede it.
