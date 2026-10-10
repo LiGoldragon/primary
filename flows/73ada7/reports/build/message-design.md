@@ -221,6 +221,7 @@ Signal
      Unknown.[ Address          ; no such metaflow
                Lock ]           ; the lock is not held any more
      Ended.Address              ; returned to its sender
+     Asleep                     ; the sender's metaflow sleeps
      NoneAbove                  ; Up from the top layer
      OffRoute                   ; refused at Lock; off the routes
      Held.Lock                  ; another lock holds the metaflow
@@ -367,12 +368,43 @@ sent. The Nexus never sees text [R].
 "a Nexus knows its caller by the process, never by a claim" [R]
 (vision-nexus).
 
-1. Message reads the peer's pid with `SO_PEERCRED` on the accepted
-   connection, kept from what is deployed. That pid is the
-   `Process.{ Pid.Integer Started.Integer }` of Flow's Library: the pid
-   with the start time of `/proc/<pid>/stat` field 22, intended to tell
-   a reused pid apart. No concrete atomic algorithm for this pid-reuse
-   guard is specified or proven yet (see finding X4).
+1. Message reads the caller as Flow's Library
+   `Process.{ Pid.Integer Started.Integer }`: the pid with the start
+   time of `/proc/<pid>/stat` field 22. It reads them on the accepted
+   connection in this order [I] (designed, not yet witnessed; test 24):
+
+   1. `getsockopt(SO_PEERPIDFD)` gives a pidfd `F` of the socket's
+      peer pid. That peer pid is the connecting process's thread-group
+      leader, taken at `connect(2)` [K1]. On Linux 6.5 to 6.15 the call
+      fails `EINVAL` if that process is already reaped; from 6.16 it
+      returns `F` for the reaped process [K2]. A failure ends the
+      connection with no answer and no call to Flow.
+   2. `getsockopt(SO_PEERCRED)` gives the pid `N`, read from the same
+      peer pid [K1].
+   3. Message reads field 22 of `/proc/N/stat`: the start time `T`, in
+      clock ticks after boot [K5].
+   4. `pidfd_send_signal(F, 0, NULL, 0)` sends no signal and checks
+      that the process exists [K3][K6]. `ESRCH` means it has
+      "terminated and been waited on" [K3]: `N` may then name another
+      process, `T` is discarded, and the connection ends with no
+      answer and no call to Flow. `0` or `EPERM` means it was not yet
+      reaped, because the kernel answers `ESRCH` before it checks
+      permission [K6].
+   5. `Process.{ N T }` goes to Flow in `Identify`, and Message closes
+      `F`.
+
+   Why the order is race-free: the kernel recycles a pid only after
+   its process is reaped, and a zombie keeps its pid [K4]. Reaping is
+   final, so a process unreaped at step 4 was unreaped at steps 2 and
+   3. `N` then named `F`'s process throughout, and `T` is that
+   process's start time. Message and its callers share one pid
+   namespace; a pidfd from a namespace Message cannot see fails
+   `EINVAL` at step 4 [K6], and the connection ends.
+
+   Minimum kernel: Linux 6.5, the first release with `SO_PEERPIDFD`
+   (`net/core/sock.c` has no `SO_PEERPIDFD` at tag v6.4 and has it at
+   v6.5); `pidfd_send_signal` is from 5.1 [K3]. This host runs Linux
+   7.1.8 (`uname -r`, 2026-10-10).
 2. Operation `Identify.Process` goes to Flow as `Identify.Process`.
    Flow walks the process's ancestors to the harness process and
    compares both the pid and the start time of a Flow record's
@@ -381,7 +413,16 @@ sent. The Nexus never sees text [R].
    variable is read and Message knows no pane (Flow's design F 559-563;
    f5a6e9 confirms it, current best). How deep the walk goes is Flow's.
 3. That Address becomes the `Sender` of the lock (`Sender.Address`),
-   and the lock carries it to Flow and back.
+   and the lock carries it to Flow and back. Trust at `Lock` rests on
+   Flow's gate (section 7.6): Flow does not re-check the sender's
+   process; it takes the `Sender` Message names (f5a6e9, current best).
+4. A Sender must be Awake. At `Lock` Flow reads the sender's metaflow:
+   no record gives `Unknown.Address`, Asleep gives `Asleep`, and Ended
+   gives `Ended.Address` (f5a6e9, current best). Message answers each
+   as `Refused.Unknown.Address`, `Refused.Asleep` and
+   `Refused.Ended.Address` (section 7.5). The Address in `Unknown` and
+   `Ended` names the sender, which tells it apart from the same
+   refusal for the recipient.
 
 A flow that is no metaflow,
 such as a side job or the living's own terminal, gets `Unidentified`
@@ -402,7 +443,7 @@ to f5a6e9's design and are shown only as far as Message sees them.
 2  Message Identify.{ 4127 88231904 }              ; Operation, Process.{ Pid Started }
            → Flow Identify.Process → Identified.{ Psyche nexus Secondary }
 3  Message Lock.{ S { Mind nexus Secondary } }              ; Operation, Sender and Recipient
-           → Flow Lock.{ Sender Recipient }                 ; checks the route; Memory: lock record, Until = now + lease
+           → Flow Lock.{ Sender Recipient }                 ; trusts the gate for S; checks S Awake, the route; Memory: lock record, Until = now + lease
            → Locked.{ S { Mind nexus Secondary } U }        ; the Library Lock; U is Until
 4  Message Deliver.{ L Order.«…» }                          ; Operation, L the lock of step 3; not sent once now ≥ U
            → Flow Deliver.{ Lock Request }                  ; Flow trusts the route; checks the lock, the state
@@ -483,8 +524,11 @@ sends `Release.Lock` before it answers.
 | Identify | Unidentified.Process | Refused.Unidentified.Process | no |
 | Lock | NoneAbove | Refused.NoneAbove | no |
 | Lock | OffRoute | Refused.OffRoute | no (no lock exists) |
-| Lock | Unknown.Address | Refused.Unknown.Address | no |
-| Lock | Ended.Address | Refused.Ended.Address | no |
+| Lock | Unknown.Address (sender has no record) | Refused.Unknown.Address | no |
+| Lock | Asleep (sender's metaflow sleeps) | Refused.Asleep | no |
+| Lock | Ended.Address (sender's metaflow ended) | Refused.Ended.Address | no |
+| Lock | Unknown.Address (recipient) | Refused.Unknown.Address | no |
+| Lock | Ended.Address (recipient) | Refused.Ended.Address | no |
 | Lock | Refused.Held.Lock | Refused.Held.Lock | no |
 | Lock | Refused.Locked | Refused.Locked | no |
 | Deliver | Unknown.Lock (never granted, or no longer held) | Refused.Unknown.Lock | no (the lock ended) |
@@ -505,9 +549,12 @@ neither retries nor holds the request [I]; see fork F3.
 
 ### 7.6 Start, and the Bind
 
-At start, after the store is opened and before either socket listens,
-Message registers itself with Flow [P] (f5a6e9, current best, not
-before the living):
+Startup order (f5a6e9, current best): Flow starts and receives
+`Configure.Nexus`, whose new field `MessageNexusBinary.String` is the
+store path of the running Message's executable; only then does
+Message start. At start, after the store is opened and before either
+socket listens, Message registers itself with Flow [P] (f5a6e9,
+current best, not before the living):
 
 ```
 Bind.{ { Field message Primary } P }
@@ -517,11 +564,15 @@ Bind.{ { Field message Primary } P }
 Field's body, not a flow of a layer, so Message binds under Field and
 not under Mind (f5a6e9, current best). `P` is
 `Process.{ Pid.Integer Started.Integer }` of Message's own process: its
-pid and the start time of `/proc/<pid>/stat` field 22. Flow holds the
+pid and the start time of `/proc/<pid>/stat` field 22. Flow accepts
+`Bind` under `{ Field message Primary }` only from a peer whose
+kernel-read executable equals `MessageNexusBinary`; any other peer is
+refused `NotMessage`, and before `Configure.Nexus` the `Bind` is
+refused `NotConfigured` (f5a6e9, current best). Flow holds the
 binding. At the gate it compares the connecting peer's kernel pid and
-start time with the bound process's; they must be equal. This pid
-plus start time comparison is the pid-reuse guard, and no concrete
-atomic algorithm for it is specified or proven yet. No ancestor
+start time with the bound process's; they must be equal. How Flow
+reads its peer is Flow's; section 6 gives the race-free read Message
+uses for its own callers. No ancestor
 walk happens at the gate, so a process that descends from Message is
 refused. Message itself is therefore the process that connects to Flow
 for `Lock`, `Deliver` and `Release`; no helper process and no CLI
@@ -533,7 +584,9 @@ connects for it.
 - `Bind` goes to Flow's ordinary socket, the path Message already
   holds as `Flow` in its Configuration (f5a6e9, current best).
 - Flow unreachable at start (connect or frame failure), or `Bind`
-  refused (`Unidentified.Process`, or `Taken.Address` while the process
+  refused (`Unidentified.Process`; `NotMessage`, its executable not
+  `MessageNexusBinary`; `NotConfigured`, Flow not yet given
+  `Configure.Nexus`; or `Taken.Address` while the process
   bound under that address lives): Message does not
   start. It exits with a nonzero status after writing the cause to its
   trace. It retries nothing and listens on no socket [I]; restarting it
@@ -569,7 +622,13 @@ Release.L         ─────────▶    delete the record if it equa
   the process bound as Message at start (section 7.6), whose pid and
   start time must equal the connecting peer's; there is no ancestor
   walk at the gate. Any other peer is refused `NotMessage` (f5a6e9,
-  current best).
+  current best). The `Bind` itself is taken only from a peer whose
+  kernel-read executable equals `Configure.Nexus`'s
+  `MessageNexusBinary`.
+- Trust at `Lock` rests on the gate: Flow does not re-check the
+  sender's process. It checks the `Sender` Awake: no record →
+  `Unknown.Address`, Asleep → `Asleep`, Ended → `Ended.Address`
+  (f5a6e9, current best).
 - Flow's `Refresh` or `End` while a lock is held is refused
   `Refused.Held.Lock`, and proceeds after release or lapse.
 - `OffRoute` is refused at Lock, before any lock exists; Deliver
@@ -640,6 +699,12 @@ pane move to the semi-sandbox below.
 | 19 | `message-nexus` killed, then started again | Flow's trace shows `Bind` answered `Bound`; the send of test 1 succeeds |
 | 20 | A fresh store; a meta `Configure` that changes a socket path | `RestartRequired`; an ordinary `Configure` is then `Refused.AlreadyConfigured` (the marker is set); the seed before it was false |
 | 21 | A version-1 store of old Message at the store path | start refused naming the path and version 1; the file's checksum is unchanged (fork F14) |
+| 24 | Pid reuse. A developer build of `message-nexus` pauses between section 6 steps 2 and 3. A client connects and is killed and reaped during the pause; a process is then created with the same pid (`clone3` with `set_tid` in the test VM), and the pause ends | no `Identify` reaches Flow's trace; the trace names the reaped peer (`ESRCH` at step 4); the connection closes unanswered. Run with the pause instead before step 1: the same, failing at step 1 on 6.5–6.15 or step 4 from 6.16 |
+| 25 | The sender's metaflow has no Flow record at `Lock` (a Flow stand-in answers `Identify` with an Address Flow holds no record of) | `Refused.Unknown.Address` naming the sender; no lock record |
+| 26 | The sender's metaflow is Asleep in Flow while its stand-in shell still runs, then that shell sends | `Refused.Asleep`; no lock record |
+| 27 | The sender's metaflow is Ended in Flow while its stand-in shell still runs, then that shell sends | `Refused.Ended.Address` naming the sender; no lock record |
+| 28 | A `message-nexus` from another store path than `MessageNexusBinary` is started | Flow answers its `Bind` `NotMessage`; it exits nonzero naming `NotMessage`; no socket listens |
+| 29 | A fresh Flow with no `Configure.Nexus`, then `message-nexus` started | Flow answers `Bind` `NotConfigured`; Message exits nonzero naming `NotConfigured`; no socket listens; after `Configure.Nexus` a start binds and test 1 succeeds |
 
 Flow's own lock contract is tested in `flow-test`, not here: a `Deliver`
 under a lock never granted, `Release` after `Deliver` or after a lapse,
@@ -732,7 +797,11 @@ What remains is Flow's to rule, or the living's where marked.
   three only from the exact process Message bound at its start (pid and
   start time equal, no ancestor walk), refusing any other peer
   `NotMessage`. `Bind` is taken on Flow's ordinary socket, so Message
-  keeps only Flow's ordinary path. A `Bind` under an address whose bound
+  keeps only Flow's ordinary path. `Bind` under
+  `{ Field message Primary }` is accepted only from a peer whose
+  kernel-read executable equals `Configure.Nexus`'s
+  `MessageNexusBinary.String`, else `NotMessage`, and is refused
+  `NotConfigured` before `Configure.Nexus`. A `Bind` under an address whose bound
   process is gone (its pid and start time no longer name a live
   process; how that is read atomically is not specified or proven)
   replaces the binding and is answered `Bound`; `Taken.Address`
@@ -890,10 +959,13 @@ witnessed here).
 - **X4** Flow's Library gives `Process.{ Pid.Integer Started.Integer }`,
   the kernel's start time of the pid. Message reads the pid from
   `SO_PEERCRED` and the start time from `/proc/<pid>/stat` field 22.
-  The pid-reuse guard (pid plus start time) has no concrete atomic
-  algorithm specified or proven yet: the two reads are separate
-  steps, and what makes the pair belong to one process is open.
-  Nothing in this design is proven about it.
+  The pid-reuse guard is section 6's order: `SO_PEERPIDFD` first,
+  then the pid by `SO_PEERCRED` and the start time from
+  `/proc/<pid>/stat`, then `pidfd_send_signal(F, 0, NULL, 0)`. Only a
+  process not yet reaped at that check yields `Process.{ N T }`, and
+  the kernel recycles no pid before reaping [K3][K4]. Minimum kernel
+  Linux 6.5; this host runs 7.1.8. Designed, not yet witnessed: the
+  proof is test 24, which reuses a pid.
 - **X5** ethos-zero 16.0.0 `Check` reads one file and does not resolve
   an import across files, so the five files do not Check together as
   a unit. The imports were read against the published sources, fetched
@@ -923,6 +995,36 @@ witnessed here).
   `Request`, `Lock`, `Recipient`, `Process`, `Sender`) are absent
   from all three and wait on Mind's next Library candidate. Each
   declaration was witnessed by grep at the stated file and line.
+
+## Kernel citations
+
+- [K1] Linux v6.5 source: `net/core/sock.c` `sk_getsockopt`, cases
+  `SO_PEERCRED` (`cred_to_ucred(sk->sk_peer_pid, …)`) and
+  `SO_PEERPIDFD` (`pidfd_prepare(sk->sk_peer_pid, …)`);
+  `net/unix/af_unix.c` `init_peercred`
+  (`sk->sk_peer_pid = get_pid(task_tgid(current))`). Commit 7b26952a91cf
+  "net: core: add getsockopt SO_PEERPIDFD". unix(7): the credentials
+  "were in effect at the time of the call to connect(2), listen(2),
+  or socketpair(2)".
+- [K2] Commit fd0a109a0f6b "net, pidfs: prepare for handing out
+  pidfds for reaped sk->sk_peer_pid": before it, SO_PEERPIDFD
+  "returns EINVAL" for a reaped peer. `net/core/sock.c` at v6.16
+  passes `PIDFD_STALE` for `AF_UNIX`; v6.15 does not.
+- [K3] pidfd_send_signal(2): ESRCH, "The target process does not
+  exist (i.e., it has terminated and been waited on)"; "a PID file
+  descriptor is a stable reference to a specific process"; HISTORY
+  Linux 5.1.
+- [K4] pidfd_open(2): a terminated, unreaped child's "PID will not
+  have been recycled and the returned file descriptor will refer to
+  the resulting zombie process".
+- [K5] proc_pid_stat(5): "(22) starttime %llu — The time the process
+  started after system boot", in clock ticks since Linux 2.6.
+- [K6] kill(2): "If sig is 0, then no signal is sent, but existence
+  and permission checks are still performed". Linux v6.5
+  `kernel/signal.c`: `kill_pid_info` returns `-ESRCH` when
+  `pid_task` finds no task, before `group_send_sig_info` runs
+  `check_kill_permission`; `pidfd_send_signal` returns `-EINVAL`
+  when `access_pidfd_pidns` fails.
 
 ## Sources
 
