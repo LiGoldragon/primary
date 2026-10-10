@@ -1,7 +1,7 @@
 ; What Message does: one operation for every effect
 
 Operation
-[ flow_ethos:[ FlowId Address Request Lock Sender Recipient Process ]
+[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
 [ Bind.{ Address                ; at start: register this process as
          Process }              ; the Message Nexus

@@ -61,9 +61,9 @@ rewritten in place; no compatibility path is kept [R] (spirit).
 | Repository | Holds |
 |---|---|
 | `message` | crates `message-nexus` (lib + bin `message-nexus`), `message` (bin, ordinary CLI), `message-meta` (bin, meta CLI), `message-defaults` (the default configuration constant) |
-| `signal-message` | `ethos/library.ethos` (Message's Library), `ethos/signal.ethos` (ordinary socket), generated Rust |
+| `signal-message` | `ethos/message_library.ethos` (Message's Library), `ethos/signal.ethos` (ordinary socket), generated Rust |
 | `meta-signal-message` | `ethos/signal.ethos` (meta socket), generated Rust |
-| `signal-flow` (f5a6e9's) | Flow's Library, `flow_ethos` (see note), and Flow's ordinary Signal. Message depends on it as the edge contract. |
+| `signal-flow` (f5a6e9's) | Flow's Library, imported as `signal_flow` (see note), and Flow's ordinary Signal. Message depends on it as the edge contract. |
 | `message-test` | new; integration scenarios (section 9) |
 
 `message-nexus` carries `ethos/operation.ethos` and
@@ -72,7 +72,8 @@ A `build.rs` freshness check guards them, as the signal repositories
 do today.
 
 Note [I]: f5a6e9's design names the Library `flow_ethos` but does not
-say which repository holds it. Message needs it on the wire, and
+say which repository holds it. Message imports it by the crate name,
+`signal_flow`. Message needs it on the wire, and
 peers depend on each other's wire repositories, never on each other's
 Nexuses [R] (vision-nexus). So this design places it in
 `signal-flow/ethos/library.ethos`.
@@ -148,9 +149,10 @@ Every generated type derives rkyv. Its datom forms sit behind the
 
 Message's five files are in
 `/home/li/primary/flows/73ada7/reports/message-flow/`. Each passes
-`ethos-zero Check` (ethos-zero 16.0.0), checked alone with its
-imports unresolved. Message declares no shared type: it imports them
-from Flow's Library, `flow_ethos`, as f5a6e9's design at main e17a62ca
+`ethos-zero Check` (ethos-zero 16.0.0) one file at a time;
+ethos-zero resolves no import across files, so the imports are
+cross-read against Flow's sources separately (see X5). Message declares no shared type: it imports them
+from Flow's Library, as f5a6e9's design at main e17a62ca
 declares them: `FlowId`, `Request` (with `Psyche.Said` and
 `Psyches.Vector<Said>`), `Said`, `Address.{ Aspect Topic Layer }`,
 `Lock.{ Sender Address Until.Integer }`, `Process`,
@@ -188,7 +190,7 @@ written short: `{ Psyche flow Primary }`. Message's
 Operation names these as its effects, with the imported types as
 payloads.
 
-### 4.1 Message's Library — `signal-message/ethos/library.ethos`
+### 4.1 Message's Library — `signal-message/ethos/message_library.ethos`
 
 ```
 Library
@@ -205,7 +207,7 @@ Library
 
 ```
 Signal
-[ flow_ethos:[ Address Recipient Request Process Lock ]
+[ signal_flow:[ Address Recipient Request Process Lock ]
   message_library:Configuration ]
 [ Send.{ Recipient              ; Address, or Up: the layer above
          Request }
@@ -280,7 +282,7 @@ privileged send. The raw pane send is a Flow meta operation [V]
 
 ```
 Operation
-[ flow_ethos:[ FlowId Address Request Lock Sender Recipient Process ]
+[ signal_flow:[ FlowId Address Request Lock Sender Recipient Process ]
   message_library:Configuration ]
 [ Bind.{ Address                ; at start: register this process as
          Process }              ; the Message Nexus; section 7.6
@@ -368,8 +370,9 @@ sent. The Nexus never sees text [R].
 1. Message reads the peer's pid with `SO_PEERCRED` on the accepted
    connection, kept from what is deployed. That pid is the
    `Process.{ Pid.Integer Started.Integer }` of Flow's Library: the pid
-   with the start time of `/proc/<pid>/stat` field 22, so a reused pid
-   is told apart (see finding X4).
+   with the start time of `/proc/<pid>/stat` field 22, intended to tell
+   a reused pid apart. No concrete atomic algorithm for this pid-reuse
+   guard is specified or proven yet (see finding X4).
 2. Operation `Identify.Process` goes to Flow as `Identify.Process`.
    Flow walks the process's ancestors to the harness process and
    compares both the pid and the start time of a Flow record's
@@ -396,7 +399,7 @@ to f5a6e9's design and are shown only as far as Message sees them.
 
 ```
 1  CLI     Send.{ { Mind nexus Secondary } Order.«…» }   ; text → Query::Send
-2  Message Identify.4127                          ; Operation
+2  Message Identify.{ 4127 88231904 }              ; Operation, Process.{ Pid Started }
            → Flow Identify.Process → Identified.{ Psyche nexus Secondary }
 3  Message Lock.{ S { Mind nexus Secondary } }              ; Operation, Sender and Recipient
            → Flow Lock.{ Sender Recipient }                 ; checks the route; Memory: lock record, Until = now + lease
@@ -451,7 +454,7 @@ Flow's Deliver answers `Queued` and `Woken.FlowId` as well as
 
 ```
 1  CLI     Send.{ Up Order.«…» }
-2  Message Identify.4127                          ; Operation
+2  Message Identify.{ 4127 88231904 }              ; Operation, Process.{ Pid Started }
            → Identified.{ Mind nexus Secondary }  ; the sender S
 3  Message Lock.{ S Up }                          ; Operation
            → Flow Lock.{ Sender Recipient }       ; Flow resolves Up relative to S
@@ -516,7 +519,9 @@ not under Mind (f5a6e9, current best). `P` is
 `Process.{ Pid.Integer Started.Integer }` of Message's own process: its
 pid and the start time of `/proc/<pid>/stat` field 22. Flow holds the
 binding. At the gate it compares the connecting peer's kernel pid and
-start time with the bound process's; they must be equal. No ancestor
+start time with the bound process's; they must be equal. This pid
+plus start time comparison is the pid-reuse guard, and no concrete
+atomic algorithm for it is specified or proven yet. No ancestor
 walk happens at the gate, so a process that descends from Message is
 refused. Message itself is therefore the process that connects to Flow
 for `Lock`, `Deliver` and `Release`; no helper process and no CLI
@@ -729,7 +734,8 @@ What remains is Flow's to rule, or the living's where marked.
   `NotMessage`. `Bind` is taken on Flow's ordinary socket, so Message
   keeps only Flow's ordinary path. A `Bind` under an address whose bound
   process is gone (its pid and start time no longer name a live
-  process) replaces the binding and is answered `Bound`; `Taken.Address`
+  process; how that is read atomically is not specified or proven)
+  replaces the binding and is answered `Bound`; `Taken.Address`
   comes only while the old process lives.
 - **N8** Where a request lands in an awake flow: ruling 3 of
   «The Flow Nexus vision», third edition (book 17), (a) end of the
@@ -882,8 +888,22 @@ witnessed here).
   `Psyche.Said` for the Request variant, so Message imports `Said`
   only through `Request`.
 - **X4** Flow's Library gives `Process.{ Pid.Integer Started.Integer }`,
-  the kernel's start time of the pid. Message reads both from
-  `SO_PEERCRED` and `/proc/<pid>/stat` field 22.
+  the kernel's start time of the pid. Message reads the pid from
+  `SO_PEERCRED` and the start time from `/proc/<pid>/stat` field 22.
+  The pid-reuse guard (pid plus start time) has no concrete atomic
+  algorithm specified or proven yet: the two reads are separate
+  steps, and what makes the pair belong to one process is open.
+  Nothing in this design is proven about it.
+- **X5** ethos-zero 16.0.0 `Check` reads one file and does not resolve
+  an import across files, so the five files do not Check together as
+  a unit. The imports were cross-read against the real sources by a
+  separate script: `Address`, `Recipient`, `Request`, `Lock`,
+  `Sender`, `Process` are declared in the uncommitted
+  `signal-flow/ethos/library.ethos` (signal-flow 11.0.0 working tree),
+  and are absent from `signal-flow` f95034de and `meta-signal-flow`
+  54eb5618, the revisions Flow 0.25.0's Cargo.toml pins. The Library
+  therefore reaches Flow only once signal-flow 11.0.0 is committed and
+  Flow's pin moves to it.
 
 ## Sources
 

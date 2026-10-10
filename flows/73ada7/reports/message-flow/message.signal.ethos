@@ -1,7 +1,7 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ flow_ethos:[ Address Recipient Request Process Lock ]
+[ signal_flow:[ Address Recipient Request Process Lock ]
   message_library:Configuration ]
 [ Send.{ Recipient              ; Address, or Up: the layer above
          Request }

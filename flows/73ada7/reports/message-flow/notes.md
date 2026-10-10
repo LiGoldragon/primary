@@ -8,7 +8,7 @@ Records were read as quoted in `F/d4ae97/reports/topic-nexus/context.md`;
 Files, each one root, each checked by ethos-zero 16.0.0
 (`/git/github.com/LiGoldragon/ethos-zero/target/debug/ethos-zero`) as `Checked`:
 
-- Message: `message.library.ethos`, `message.signal.ethos`, `message.meta.signal.ethos`, `message.operation.ethos`, `message.memory.ethos`. The shared types (FlowId, Request, Address, Recipient, Lock, Process) are Flow's Library, f5a6e9's design at main e17a62ca, and are imported as `flow_ethos`; Flow's own files are f5a6e9's.
+- Message: `message_library.ethos`, `message.signal.ethos`, `message.meta.signal.ethos`, `message.operation.ethos`, `message.memory.ethos`. The shared types (FlowId, Request, Address, Recipient, Lock, Process) are Flow's Library, f5a6e9's design at main e17a62ca, and are imported from the `signal_flow` crate; Flow's own files are f5a6e9's.
 
 A file imports another by its library's name (`address:`, `lock:`, `request:`). Three drafts rest on books that await the living's rulings, each marked "proposal, pending ruling":
 
