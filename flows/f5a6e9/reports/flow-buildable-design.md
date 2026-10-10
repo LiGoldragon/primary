@@ -101,6 +101,12 @@ Library                         ; Flow's
       OrdinarySocketPath.String ; argument of the
       MetaSocketPath.String     ; Nexus's start
       StorePath.String }        ; command
+   StoreRefusal.{               ; the store at
+      Path.String               ; StorePath is not
+      Reason.String }           ; Flow's own, or
+                                ; cannot be opened
+   StartRefusal.[               ; the start reply
+      Store.StoreRefusal ]      ; when it refuses
    Nexus.{                      ; the Nexus's own
       SourceRoot.String         ; setup payload
       StableCodex.CodexEndpoint
@@ -121,9 +127,10 @@ Library                         ; Flow's
 
 The Library declares once the types both Signals and
 Memory use: Said, Aspect, Address, Metaflow, Lock,
-Process, Sender, Key, Start and Nexus. Memory and both
-Signals import them (status: current best, not before
-the living).
+Process, Sender, Key, Start and Nexus, and the start
+refusal types StoreRefusal and StartRefusal. Memory
+and both Signals import them (status: current best,
+not before the living).
 
 Flow's two listening sockets, the ordinary socket and
 the meta socket, and the store path come from its start
@@ -134,10 +141,11 @@ missing store file is created; one Flow recognises as
 its own (its Memory schema, with the schema's version
 written in the file at creation) is opened and
 continued from; anything else at StorePath, an old
-0.14 store included, refuses to start, the refusal a
-datom on standard output, Refused.Store.{ Path.String
-Reason.String }, with a non-zero exit so the unit
-records it (current best).
+0.14 store included, refuses to start. The start
+reply is StartRefusal.[ Store.StoreRefusal ], printed
+on standard output as Store.{ <path> «<reason>» }
+with a non-zero exit so the unit records it
+(current best).
 
 The Nexus payload's type is declared once, here, as
 Nexus. It carries no socket path. MessageNexusPath is
