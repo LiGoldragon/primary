@@ -268,3 +268,19 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — publish refused: PrimaryPublish 16588 held by f5a6e9. Asked f5a6e9 for a release line.
 
 ## 2026-10-10 — f5a6e9 released 16588; publisher re-dispatched.
+
+## 2026-10-10 — records published to main as f78e40 (from 2e64c5, lock 16636, six paths all mine, 8782 files). 1d0733 told for 445410.
+
+## 2026-10-10 — 445410 task via 1d0733: the Ethos side of the special representation (declaration form, Represented emission from datom-codec 776cf4), fitting both Fork 3 answers, tested against 07714b, landing nothing. Subflow reading 445410's design and the derive before the form is chosen.
+
+## 2026-10-10 — special representation, the ethos form (design's own, for 445410's book): association form `Ticket.[ Represented.{ Representation.Vector<Digit> } ]`; the type declared as usual in the types section (`Ticket.Integer`); generator emits `#[derive(Represented)]` in place of the datom derives and a compile-time assertion pinning Representation; the impl bodies hand-written. No collision: period+brace binds associated types of a known trait; no colon so no source; associations never read as variants.
+
+## 2026-10-10 — design read confirms: no ethos form in 445410's design; derive takes no attributes; its open note imagines an impl skeleton. The form sent stands; the assertion is chosen over a skeleton (a generated impl with holes does not build); 445410 to accept or amend.
+
+## 2026-10-10 — 445410 accepts the special-representation form as proposed (assertion, hand-written bodies, no skeleton); folding it into its design; build continues.
+
+## 2026-10-10 — reports/special-representation-form.md written (23 lines); unpublished until the next publish turn.
+
+## 2026-10-10 — special-representation candidate (1d0733): bare green with 8 new tests; braced impossible until the set has a braced variant. Ruled: (1) test (3) restated as witnessed (E0271 pin, E0277 at the impl); (2) emit the source name consistently as written, trait-as-type import a known gap, not built; (3) names: Binding → AssociatedType, Borne → Bearing.[ Derived Represented ]; (4) build the braced variant of the whole set so both Fork 3 answers are complete candidates. Report flows/1d0733/reports/ethos-represented.md.
+
+## 2026-10-10 — reports/special-representation-form.md at the witnessed state (26 lines); unpublished until the next publish turn.
