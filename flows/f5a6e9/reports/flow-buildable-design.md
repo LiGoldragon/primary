@@ -628,9 +628,18 @@ the metaflow awake, and answers Bound.FlowId. A Bind
 under an address whose bound process is gone replaces
 the binding. Taken.Address is refused only while the
 old process lives; a dead or reused process is refused
-Unidentified.Process. Bind also serves debugging and
-flows launched before Flow existed (status: current
-best, not before the living).
+Unidentified.Process. When Message binds its process
+at its start with Bind.{ Address Process } under
+{ Field message Primary }, Flow resolves both the
+peer's executable (read from the kernel's record of
+the process) and the configured MessageNexusBinary to
+their canonical paths, following symlinks, and
+compares the results; MessageNexusBinary is the
+resolved store path of the Message binary; a
+configured value that resolves to no file refuses the
+Nexus payload with NoSource.Path. Bind also serves
+debugging and flows launched before Flow existed
+(status: current best, not before the living).
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the caller's ancestors to a Flow record's
