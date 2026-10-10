@@ -1,0 +1,35 @@
+; Flow's meta socket. Design: section 1, Signal,
+; the meta socket.
+Signal                          ; the meta socket
+[  flow_ethos:[ Subaspect Topic Layer
+                Source Address Process
+                FlowId Path ] ]
+[  Configure.[
+      Module.{                  ; the registry
+         Subaspect
+         Topic
+         Source }
+      Model.{                   ; the layer's model
+         Layer
+         Native.String }        ; the model's name
+                                ; as the harness
+                                ; knows it
+      Threshold.{               ; percent of window
+         Layer
+         Handover.Integer       ; 20
+         Refresh.Integer } ]    ; 40
+   Forget.{                     ; a module leaves
+      Subaspect
+      Topic }
+   Bind.{                       ; a running process
+      Address                   ; becomes this
+      Process } ]               ; metaflow's flow
+[  Configured
+   Forgotten
+   Bound.FlowId                 ; the flow reserved
+   Refused.[
+      Unknown.Topic
+      NoSource.Path
+      HashMismatch
+      Taken.Address ] ]         ; already awake
+[]

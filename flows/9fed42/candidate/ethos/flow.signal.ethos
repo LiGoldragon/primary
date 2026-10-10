@@ -1,0 +1,61 @@
+; Flow's flow socket. Design: section 1, Signal,
+; the flow socket.
+Signal                          ; what Flow is asked
+[  flow_ethos:[ Address FlowId Request Lock
+                Sender Process ]
+   curriculum:[ Name ] ]
+[  Launch.{                     ; a metaflow's first
+      Address                   ; flow; the address
+      Modules.Vector<Name>      ; written short
+      Brief.String }            ; a small paragraph
+   Wake.{                       ; a sleeping
+      Address                   ; metaflow's next
+      Request }                 ; the waking request
+   Refresh.Address              ; the next link
+   End.Address
+   Current.Address
+   Lock.Address                 ; Message asks; time
+                                ; bound
+   Identify.Process             ; who is the caller
+   Deliver.{                    ; under the lock
+      Lock
+      Sender                    ; for the route
+      Request }
+   Release.Lock ]
+[  Launched.FlowId
+   Refreshed.{
+      FlowId                    ; the successor
+      FlowId }                  ; the predecessor
+   Ended
+   Current.[
+      Awake.FlowId
+      Asleep
+      Ended
+      Unknown ]
+   Locked.Lock
+   Identified.Address           ; the caller's
+   Delivered                    ; placed in the
+                                ; awake flow
+   Queued                       ; asleep, or awake
+                                ; and busy: waits
+   Woken.FlowId                 ; asleep: woken; the
+                                ; queue drained with
+                                ; the first prompt
+   Released
+   Refused.[
+      Locked                    ; refresh under way
+      Held.Lock                 ; already locked
+      Lapsed                    ; the lock ran out
+      UnknownModule.Name        ; a module
+      NoLayer                   ; no model for it
+      Unknown.Address           ; no such metaflow
+      Ended.Address             ; returned to its
+                                ; sender
+      OffRoute                  ; sender and
+                                ; recipient aspect,
+                                ; layer, topic off
+                                ; the vision-aspects
+                                ; routes
+      Unidentified.Process      ; in no metaflow
+      NoneAbove ] ]             ; Up at the top layer
+[]

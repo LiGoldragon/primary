@@ -1,0 +1,8 @@
+; Test stand-in for the curriculum crate's Name,
+; a module's name. Curriculum declares no Name
+; type today.
+Library
+[]
+[  Name.String ]
+[]
+[]
