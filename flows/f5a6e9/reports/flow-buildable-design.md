@@ -182,13 +182,13 @@ Window.Integer }, Stopped.
 Written, two metaflows:
 
 ```
-Metaflow.{
+{
    { Psyche core Primary }
    Awake.startInputVital
    [ zooWrongYouth ]
    [ ] }
 
-Metaflow.{
+{
    { Mind flowRefresh Secondary }
    Asleep
    [ ]
@@ -283,7 +283,7 @@ Launch.{
 Signal                          ; the meta socket
 [  flow_ethos:[ Subaspect Topic Layer
                 Source Address FlowId
-                Process ] ]
+                Process Path ] ]
 [  Configure.[
       Module.{                  ; the registry
          Subaspect
