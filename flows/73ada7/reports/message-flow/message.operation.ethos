@@ -1,18 +1,17 @@
 ; What Message does: one operation for every effect
 
 Operation
-[ flow_ethos:[ FlowId Address Recipient Request Lock Process Sender ]
+[ flow_ethos:[ FlowId Address Request Lock Process ]
   message_library:Configuration ]
 [ Identify.Process              ; ask Flow which metaflow runs it
-  Lock.Recipient                ; ask Flow for the lock; Flow
-                                ; resolves Up on it
-  Deliver.{ Lock                ; hand Flow the request under it
-            Sender
-            Request }
+  Lock.Lock                     ; Lock.{ Sender Recipient }: Flow
+                                ; resolves Up relative to the Sender
+  Deliver.{ Lock                ; hand Flow the request under the
+            Request }           ; lock; the sender is inside it
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
 [ Identified.Address
-  Locked.Lock                   ; carries the resolved Address
+  Locked.Lock                   ; its Recipient is the resolved Address
   Delivered
   Woken.FlowId
   Queued

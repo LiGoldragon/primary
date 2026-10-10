@@ -14,7 +14,7 @@ Signal
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.Address            ; no such metaflow
      Ended.Address              ; returned to its sender
-     NoneAbove                  ; Up from the top layer
+     NoneAbove                  ; Up from the top layer of the sender
      OffRoute                   ; off the vision-aspects routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
