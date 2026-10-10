@@ -15,6 +15,7 @@
          <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
        </ol></section>
      Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
      Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
      A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
      that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
@@ -54,6 +55,7 @@ h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-bl
 h2{font-size:1.18rem;font-weight:600;margin:0}
 h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
 p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
 :where(article,section,div,li)>*+*{margin-top:.7em}
 a{color:var(--accent)}
 :not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
