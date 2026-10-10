@@ -896,14 +896,33 @@ witnessed here).
   Nothing in this design is proven about it.
 - **X5** ethos-zero 16.0.0 `Check` reads one file and does not resolve
   an import across files, so the five files do not Check together as
-  a unit. The imports were cross-read against the real sources by a
-  separate script: `Address`, `Recipient`, `Request`, `Lock`,
-  `Sender`, `Process` are declared in the uncommitted
-  `signal-flow/ethos/library.ethos` (signal-flow 11.0.0 working tree),
-  and are absent from `signal-flow` f95034de and `meta-signal-flow`
-  54eb5618, the revisions Flow 0.25.0's Cargo.toml pins. The Library
-  therefore reaches Flow only once signal-flow 11.0.0 is committed and
-  Flow's pin moves to it.
+  a unit. The imports were read against the published sources, fetched
+  from GitHub into a scratch clone: Flow 0.25.0 is
+  `LiGoldragon/flow` 962ad12, which pins `signal-flow` 11.0.0 at
+  068f0e and `meta-signal-flow` 15.0.0 at 88f375
+  (`Cargo.toml:17-18`). Each name the five files import, and where it
+  is declared at those exact revisions (a version number alone proves
+  no import resolves):
+
+  | Name | Imported from | Declared at |
+  |---|---|---|
+  | `FlowId` | `signal_flow` (message.operation) | signal-flow 068f0e `ethos/signal.ethos:123`, `FlowId.String` |
+  | `Address` | `signal_flow` (operation, signal) | absent from all three; waits on Mind's next Library candidate |
+  | `Request` | `signal_flow` (operation, signal) | absent from all three; waits on Mind's next Library candidate |
+  | `Lock` | `signal_flow` (operation, signal) | absent from all three; waits on Mind's next Library candidate |
+  | `Recipient` | `signal_flow` (operation, signal) | absent from all three; waits on Mind's next Library candidate |
+  | `Process` | `signal_flow` (operation, signal) | absent from all three; waits on Mind's next Library candidate |
+  | `Sender` | `signal_flow` (message.operation) | not declared in signal-flow 068f0e or flow 962ad12; meta-signal-flow 88f375 `ethos/signal.ethos:132` declares a different `Sender.[ Flow.FlowId Owner ]`, which is not in `signal_flow` and not the `Sender.Address` Message uses; waits on Mind's next Library candidate |
+  | `Configuration` | `message_library` (memory, meta.signal, operation, signal) | Message's own `message_library.ethos:5`; not imported from Flow (meta-signal-flow 88f375 `ethos/signal.ethos:94` declares an unrelated `Configuration`) |
+
+  No file imports from `meta_signal_flow`. Flow 962ad12 declares
+  only `crates/flow-nexus/ethos/operation.ethos`, which imports from
+  `signal_flow` and declares none of these names. Of the eight
+  imported names, one (`FlowId`) is declared in a published
+  revision, one (`Configuration`) is Message's own, and six (`Address`,
+  `Request`, `Lock`, `Recipient`, `Process`, `Sender`) are absent
+  from all three and wait on Mind's next Library candidate. Each
+  declaration was witnessed by grep at the stated file and line.
 
 ## Sources
 
