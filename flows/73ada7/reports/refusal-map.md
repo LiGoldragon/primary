@@ -1,19 +1,14 @@
 # Refusal map: Flow's Identify, Lock and Deliver against Message's Send refusals
 
 Flow design: `flows/f5a6e9/reports/flow-buildable-design.md` at
-commit a5b2c27d42a3ced6257da09cb5cced6538140df1, blob
-33e8c2cfa9928f9a62e4a661ee4010a0e76ab16b. "F n" below is a line of
-that blob.
+commit 439dc64, cited at lines 702–714. "F n" below is a line of
+that design.
 
 Message design: `flows/73ada7/reports/build/message-design.md` at
-commit c6a2c4cdbd1bc37d19a930a55e10751957c6a882 (the newest
-origin/main commit touching it after `git fetch`), blob
-15222457a44aae1931ad825347aa577969d5d484. "M n" below is a line of
-that blob. Its ethos drafts at the same commit:
-`flows/73ada7/reports/message-flow/message.signal.ethos` (blob
-d2eb15daa237a1a462842e20b043f0c72c2fe90a) and
-`message.operation.ethos` (blob
-42548864f14daf1298f909f3b5972b675afbfbe8).
+commit d9703b5, "M n" below is a line of
+that design. Its ethos drafts at the same commit:
+`flows/73ada7/reports/message-flow/message.signal.ethos` and
+`message.operation.ethos`.
 
 "SendRefusal" is not a name in the Message design. The refusal Message
 answers a Send with is the anonymous `Refused.[ … ]` of the ordinary
@@ -79,27 +74,23 @@ the Operation's `Failed.[ … ]` (M 324-336; draft
 | 12 | Lock | Taken.Address | unreachable | Handling: F 666-694. Cause: F 375-376, F 711-713, F 759-760, Bind only. | none |
 | 13 | Deliver | Awake.FlowId | unreachable | Handling: F 615-618, Awake "the request is delivered now", or Queued when busy (F 632-636); answers Delivered (F 314-315) or Queued (F 316-317). Cause: F 334-336, Launch only. | none |
 | 14 | Deliver | Unknown.FlowId | unreachable | Handling: F 670-672, F 613-636; Deliver carries a Lock and a Request, no FlowId (F 288-290). Cause: F 389-390. | none |
-| 15 | Deliver | Unknown.Key | unreachable | f5a6e9's ruling (current best, relayed in the order to 73ada7): a wake composes whatever modules exist for the topic when it wakes, so no forgotten Key can stop it; Unknown.Key stays only for Launch and Forget. Rule text: `flows/f5a6e9/reports/flow-buildable-design.md` at 439dc64b4. Superseded reading: the unresolved question on whether a Deliver-driven wake carries the Launch refusals. | none |
-| 16 | Deliver | NoLayer | unresolved: needs f5a6e9 | Handling: the wake composes from "the layer's model" (F 589-591, F 609-611); a Launch before its Model is refused NoLayer (F 520-521). The design does not say whether a Deliver-driven wake carries this refusal. A metaflow made by Bind (F 707-710) needs no Model for its layer, and becomes Asleep when its process exits (F 727-733), so a waking Deliver to it can meet a layer with no model. | if ruled reachable: none exists; see below |
+| 15 | Deliver | Unknown.Key | unreachable | Handling: a waking Deliver wakes, and "A wake launches the same way" (F 609-611), composing from the registry (F 589-591); a Launch whose Module is missing is refused Unknown.Key (F 520-521). The design does not say whether a Deliver-driven wake carries this refusal. A metaflow made by Bind (F 707-710) had no Launch, and a wake composes from an existing metaflow record's address only (F 78-87). | none |
+| 16 | Deliver | NoLayer | reachable | Handling: F 439dc64 lines 702–714. f5a6e9 rules: NoLayer at Lock, and at Deliver when the configuration changed between Lock and Deliver, never Queued. When configuration changes between Lock and Deliver, the wake can meet a layer with no model. | Refused.NoLayer | d9703b5: Refused type |
 | 17 | Deliver | NotConfigured | unreachable | Gate/order: F 522-524, Configure.Nexus "not [needed] for … Deliver". The wake is a launch (F 609-611), but Deliver passes the gate only from the process bound under the Message address (F 696-705), that Bind needs Configure.Nexus (F 522-523, F 714-723), the Nexus payload is stored once (F 220-221), and nothing removes it (meta requests F 440-457: only Forget.Key removes). | none |
 | 18 | Deliver | Taken.Address | unreachable | Handling: F 670-672, F 613-636. Cause: F 375-376, F 711-713, F 759-760, the Bind request only; the bind step inside a launch (F 597-599) is not the Bind request. | none |
 
-Counts: reachable 0, unreachable 17, unresolved 1 (row 16, Deliver × NoLayer).
+Counts: reachable 1, unreachable 17.
 
 ## Variants to add
 
-No reachable pair, so no variant is required by this map.
+Row 16 (Deliver × NoLayer) is reachable.
 
-NoLayer is already a variant of Message's Send refusal. Row 15 is
-unreachable, so `Unknown.Key` is not added.
-
-The row 16 variant, kept for reference:
-
-- Row 16, `NoLayer`: same contract and file; a unit variant `NoLayer`
-  inside `Refused.[ … ]`, M 220-234, draft `message.signal.ethos`
-  lines 13-26 (after line 22, `Lapsed`); and inside `Failed.[ … ]`,
-  M 324-336, draft `message.operation.ethos` lines 23-35 (after line
-  33).
+Row 16, `NoLayer`: contract `signal-message`,
+`ethos/signal.ethos` (M 64, M 207); a unit variant `NoLayer`
+inside `Refused.[ … ]`, M 220-234, draft `message.signal.ethos`
+lines 13-26 (after line 22, `Lapsed`); and inside `Failed.[ … ]`,
+M 324-336, draft `message.operation.ethos` lines 23-35 (after line
+33).
 
 ## Cross-check against 9fed42
 
@@ -110,14 +101,11 @@ Launch causes. f5a6e9's log, `flows/f5a6e9/log.md` line 215, records
 same as f5a6e9's confirmation; it is a claim, and the design at
 a5b2c27d4 does not carry it.
 
-Rows 1-14, 17 and 18 agree. Rows 15 and 16 differ: 9fed42 marks
-Deliver × Unknown.Key and Deliver × NoLayer unreachable; this map
-marks them unresolved. Neither 9fed42's table nor f5a6e9's log line
-215 addresses the wake a waking Deliver runs, which "launches the same
-way" (F 609-611) and composes from the registry and the layer's model
-(F 589-591), while Unknown.Key and NoLayer are the Launch refusals for
-a missing Module or Model (F 520-521). Whether the wake carries them
-stays for f5a6e9 to rule.
+Rows 1-14, 17 and 18 agree. Row 15 agrees with 9fed42 (unreachable).
+Row 16 differs: 9fed42 marks Deliver × NoLayer unreachable; f5a6e9
+rules it reachable when configuration changes between Lock and Deliver.
+f5a6e9 rules: NoLayer at Lock, and at Deliver when the configuration
+changed between Lock and Deliver, never Queued (F 439dc64 lines 702–714).
 
 ## New Flow refusals (current best, fold publishing)
 
@@ -159,12 +147,10 @@ lists it for both; the one variant serves all three.
 
 ## Sources
 
-Read: `git show a5b2c27d4:flows/f5a6e9/reports/flow-buildable-design.md`;
-`git show c6a2c4cd:flows/73ada7/reports/build/message-design.md`;
-`git show c6a2c4cd:flows/73ada7/reports/message-flow/message.signal.ethos`;
-`git show c6a2c4cd:flows/73ada7/reports/message-flow/message.operation.ethos`;
-`flows/9fed42/reachability-a5b2c27d4.md` (working tree);
-`flows/f5a6e9/log.md` line 215 (working tree); the coordinator's
-message relaying f5a6e9's rulings.
-Every status above is this flow's reading of those two designs; no
+Read: `git show 439dc64:flows/f5a6e9/reports/flow-buildable-design.md` lines 702–714;
+`git show d9703b5:flows/73ada7/reports/build/message-design.md`;
+`git show d9703b5:flows/73ada7/reports/message-flow/message.signal.ethos`;
+`git show d9703b5:flows/73ada7/reports/message-flow/message.operation.ethos`;
+f5a6e9's ruling relayed by the coordinator: NoLayer at Lock, and at Deliver when the configuration changed between Lock and Deliver, never Queued.
+Every status above is this flow's reading of those designs and f5a6e9's ruling; no
 code ran against Flow or Message. Provenance receipt: unavailable.

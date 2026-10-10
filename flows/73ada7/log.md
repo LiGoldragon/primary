@@ -155,3 +155,217 @@
 2026-10-10 — Landing: message-test dc0d73 follows Lock.Recipient (test 8 trace Identified, Locked, Delivered; test 9 refused on the lock); no-build evaluation passes; Message design pin waits for the design update.
 
 2026-10-10 — For Astra: message-design.md is governed by 9541cd08, blob 1ce61fb1, which carries the three-path Configuration and both Configure contracts; no later commit (existing objects only). Sent to 445410; the Lock.Recipient publish will supersede it.
+
+2026-10-10 — d5df1d is waiting on PrimaryPublish 16275, held by one of this flow's publishers (the directory restore or the Lock.Recipient design update); to be told at release.
+
+2026-10-10 — Landing: directory restore on main 5374e1 (log, audit and design-source reports added, six old drafts deleted, main's Message files kept); checks passed. d5df1d told the lock is free.
+
+2026-10-10 — Landing: Message design on Lock.Recipient (3a4bbb); both Ethos files Checked. Open points sent to 9fed42: Recipient must be declared in Flow's Library; how Flow knows the sender's process on the lock. 445410 told of the new governing revision.
+
+2026-10-10 — f5a6e9 via 9fed42: Recipient is in Flow's Library (e846c2); the lock is Lock.{ Sender Recipient }, with the Sender from Message's Identify; Deliver.{ Lock Request }. Flow's design is folding to it. Message design update dispatched; message-test re-pin held for both new revisions.
+
+2026-10-10 — message-test 23baf8 pins the Message design at 3a4bbb (blob 1a211b8) and passes the no-build evaluation; the next re-pin waits for the Lock.{ Sender Recipient } designs.
+
+2026-10-10 — Landing: Message design on Lock.{ Sender Recipient } (172860, blob ca8f628); both Ethos files Checked. Readings sent to 9fed42 to confirm; 445410 told of the governing revision.
+
+2026-10-10 — f5a6e9 via 9fed42: Locked.Lock carries the resolved Address (confirmed); Until stays on the lock, Lock { Sender Address Until }, so Message must not deliver after Until. Design correction dispatched.
+
+2026-10-10 — f5a6e9 via 9fed42, current best on Message's side of the lock: OffRoute refused at Lock; one delivery per lock; Unknown.Lock and Lapsed answers; lease Configure.Nexus Lease 60 s (book 8 still open); Up within topic and aspect; Refresh and End refused while held. Folded into the running design update.
+
+2026-10-10 — Landing: Message design e275b6 (blob 66d3fdc): Until on the lock and the six lock rulings, tests 16–20 added. Finding X5 (ethos refuses two Unknown variants in one enum) sent to 9fed42; governing revision sent to 445410. The publisher used plain git rather than jj, a departure from compensation-primary-commit; the guards held.
+
+2026-10-10 — 9fed42: Flow's folded design is on main at 9613a5 (sender on the lock, thirteen behaviours); f5a6e9 asks that message-test re-pin to it. Re-pin to 9613a5 and e275b6 dispatched; one more Flow commit is to follow.
+
+2026-10-10 — 9fed42: f5a6e9 rules the same shape, Refused.Unknown.[ Address Lock FlowId Key ], in its next commit after 9613a5. Message's Unknown.[ Address Lock ] matches. X5 is settled.
+
+2026-10-10 — 9fed42: Flow's design with seven more rulings is on main at 5f0e64f (Unknown.[ Address Lock FlowId Key ] on the flow socket; a bare Unknown.Key on meta). message-test told to pin 5f0e64f with e275b6.
+
+2026-10-10 — Landing: message-test 68ac7a (Flow 5f0e64f, Message e275b6); no-build evaluation passes. Question sent to 9fed42: does Flow accept Configure.Model before Configure.Nexus. Revision sent to 445410.
+
+2026-10-10 — f5a6e9 via 9fed42: Flow runs with nothing configured (sockets from its start command); Model and Module are accepted before Configure.Nexus; Nexus is needed only before Launch; the lease defaults to 60 s. message-test's fixture stands; it re-pins when the fold lands.
+
+2026-10-10 — Ruling to the message-test subflow: the semi-sandbox runner builds its Configure.Nexus from skill variables (SKILL_VARIABLES.md) at run time, hard-codes no path, and stops naming any missing variable.
+
+2026-10-10 — 9fed42: Flow's configure order is on main at d849975. message-test re-pin dispatched.
+
+2026-10-10 — 445410 relays Astra's three runtime-contract questions on Message (Flow edge and Identify; meta owner-only versus allowlist and the owner's identity; persisted configuration, migration marker, schema and version). Reading subflow dispatched against e275b6 and Flow d849975.
+
+2026-10-10 — Landing: message-test a2dfc4 (Flow d849975, Message e275b6); no-build evaluation passes; the semi-sandbox runner builds Configure.Nexus from six skill variables, not yet in SKILL_VARIABLES.md. Asked 9fed42 whether MessageNexusPath is a socket or a binary, and whether Lease is optional.
+
+2026-10-10 — f5a6e9 via 9fed42: MessageNexusPath is Message's ordinary socket (in a sandbox, the sandbox's own); Lease stays required, 60 is right. The runner derives the path from its sandbox root; five skill variables remain.
+
+2026-10-10 — Astra's three runtime answers sent to 445410 (reports/astra-runtime.md): Flow edge settled; owner identity and store migration need the living; Identify mismatch, Flow's admission gate and a stale Deliver line sent to 9fed42; schema and marker gaps are ours to fill. Five runner skill variables flagged to 445410.
+
+2026-10-10 — Landing: message-test c03792 derives MessageNexusPath from the sandbox ($XDG_RUNTIME_DIR/message/message.sock); five skill variables remain. Design gap fill dispatched (seed marker, RestartRequired marker, schema v2, Identify aligned to Flow, migration as fork F14).
+
+2026-10-10 — 445410: put the two open rulings before the living as books (the meta owner-identity mechanism; the v1 store migration) and fill the design's own gaps in place. Books 11 and 12 drafting; the gap fill is already running.
+
+2026-10-10 — f5a6e9 via 9fed42 (current best): Identify walks ancestors, with no environment read; Flow admits Lock, Deliver and Release only from Message's own process, which Message registers at start with Bind.{ Address Process } under { Mind message <layer> }; NotMessage otherwise. Folded into the design gap fill.
+
+2026-10-10 — Books 11 (meta owner) and 12 (old store) passed the checker and are publishing. Field asks for the runner's source packet (revision, reader schema, exact values with evidence); a reading subflow is assembling it.
+
+2026-10-10 — Landing: book 12 «What the new Message does with the old store» published, https://claude.ai/artifact/HA9wcza7qh1r9gTYS1jvG3; sent to 445410.
+
+2026-10-10 — Landing: book 11 «How Message's meta socket knows its owner» published, https://claude.ai/artifact/CQU2Mcpo89xibaGpPrfBEX; sent to 445410. The session's 10-watch limit leaves books 11 and 4 unwatched.
+
+2026-10-10 — Runner packet assembled (reports/runner-packet.md) and sent to 445410 for Field, with additions held: the runner's reader bug (being fixed), Codex String versus tuple (asked of f5a6e9), and the pinned Flow lacking Configure.Model and Nexus. Concrete gaps: harness profiles and meta aspects are not deployed.
+
+2026-10-10 — 445410: f5a6e9 already answered: Configure.Nexus carries CodexEndpoint and HarnessProfile values whole, from signal_flow at Flow 0.25.0's pin; socket paths come from Start.{ ordinary meta }. Runner alignment sent to the test subflow.
+
+2026-10-10 — 9fed42 confirms: CodexEndpoint is the full tuple (client path, home, control socket, model names); HarnessProfile is (harness kind, command sigils, interrupt keys, submit keys); both come from signal-flow ethos/signal.ethos at Flow 0.25.0's pin; MetaAspects is asked of f5a6e9.
+
+2026-10-10 — f5a6e9 via 9fed42: MetaAspects is Vector<Aspect>; its value is read by Field from the running Configuration. Sent to the runner subflow and to 445410.
+
+2026-10-10 — Landing: message-test 7e9d41 (reader fixed, whole Configure.Nexus values, Flow Start command); 16 skill variables sent to 445410 for Field. Raised with 9fed42: the types live in meta-signal-flow, and FlowAspect against Aspect. The pure frame told to use Start too.
+
+2026-10-10 — Field via 445410: the pinned meta-signal-flow 88f375 knows only Configure.ConfigureRequest, so the runner cannot pass until Mind's Flow is built to d849975. The runner's code pin and typed Configure wire are to align with that build; the skill variables stay held, their values to be read from Flow's typed configuration once it exists.
+
+2026-10-10 — f5a6e9 via 9fed42 accepts the correction: CodexEndpoint and HarnessProfile are imported from meta_signal_flow at Flow's pin; MetaAspects is Vector<FlowAspect>. message-test already follows it; the design folds later.
+
+2026-10-10 — Landing: message-test a22e69 (pure frame on Start); paused until Mind's Flow and Message commits exist.
+
+2026-10-10 — 9fed42: Flow design 83c2ee5 on main (the Message gate, the corrected Deliver line); two more commits follow; message-test re-pins once, on the last.
+
+2026-10-10 — 9fed42: Flow's design is complete for this round at 7398a43 (the Start argument, the typed Configure.Nexus, the Configuration read). message-test Flow-design re-pin dispatched; the code pins wait for Mind.
+
+2026-10-10 — f5a6e9 via 9fed42 (current best): the gate checks the exact connecting process; Message binds as { Field message Primary }; the datom bare-string rule. Folded into the design gap fill and the message-test re-pin.
+
+2026-10-10 — The design gap fill is ready and waiting on the publish lock (held by f5a6e9): seed marker, RestartRequired, schema v2, Identify aligned, F14 migration, startup Bind as { Field message Primary }, NotMessage, tests 21–25. F15 raised with 9fed42: Bind sits on Flow's meta socket, which Message has no path to; and Taken.Address after a restart.
+
+2026-10-10 — f5a6e9 via 9fed42 answers F15: Bind on Flow's ordinary socket; a Bind replaces a binding whose process is gone, and Taken.Address comes only while the old process lives. Folded into the pending design publish.
+
+2026-10-10 — message-test b7842a (Flow design 7398a43, datom bare-string rule, gate applied); tests 11 and 16–20 pending under the gate. Raised with 9fed42: 7398a43 lacks the described changes and drops the gate; proposed that Flow's lock-contract tests move to flow-test.
+
+2026-10-10 — 9fed42: flow-test takes Flow's own lock contract (it already covers it); message-test keeps only what is observable through Message. Tests 16–20 are to be removed from message-test. Point 1 (7398a43's gaps) is passed to f5a6e9.
+
+2026-10-10 — Design publish told to drop rows 16–20 (now flow-test's). My acknowledgement to 9fed42 on the split was a routine receipt that compensation-messenger-clj forbids; the needed fold went to the subflow, not to 9fed42.
+
+2026-10-10 — Landing: message-test f806d3, Flow's lock-contract tests removed (flow-test covers them); test 11 held for the design update; no-build evaluation passes.
+
+2026-10-10 — 9fed42: f5a6e9 released the lock; concurrent folds had clobbered Flow's design file, and f5a6e9 is rebuilding it from 83c2ee with every later ruling, to publish once after this flow's publish. Both test repositories wait for it.
+
+2026-10-10 — Landing: Message design 4dc4f8 (blob 7112c6) with the gaps filled and f5a6e9's gate, Bind and rebind rulings; F14 open; rows 16–20 moved to flow-test; all Ethos Checked. 9fed42 told the lock is free; 445410 told of the governing revision.
+
+2026-10-10 — Field qualified Message design 4dc4f8: stale scalar Identify examples; library.ethos should be message_library.ethos; the files are to Check together with resolved imports; the pid-reuse guard is not presented as proven. Fix dispatched.
+
+2026-10-10 — Landing: message-test 51982c pins the Message design 4dc4f8; tests 16–21 written, 11 pending (needs a Flow stand-in); no-build evaluation passes. It waits for Flow's rebuilt design and Mind's code.
+
+2026-10-10 — Landing: Message design a31dc4 (blob d53e82): typed Identify examples, message_library.ethos, imports from signal_flow, pid-reuse guard marked unproven. Every file Checks alone; ethos-zero cannot check across files. The imported names exist only in the uncommitted signal-flow 11.0.0 working tree, not in Flow's pins. Failure: my brief said "both pre-push checks" without naming them, and the subflow ran neither; a read-only scope check is dispatched.
+
+2026-10-10 — Witnessed: a31dc4 changes only five paths under flows/73ada7/; file count 8777 holds; it is on origin/main. Candidate and Check limits sent to 445410 for Field.
+
+2026-10-10 — Field via 445410: X5 named a stale checkout. Flow 0.25 is published as 962ad12, pinning signal-flow 068f0e and meta-signal-flow 88f375; each import is to be checked against those. Correction dispatched, with both pre-push checks named.
+
+2026-10-10 — 9fed42: Flow's rebuilt design is on main at 30e8efc (blob 4bad082), carrying every ruling. message-test re-pin dispatched.
+
+2026-10-10 — Landing: message-test 165aec (Flow 30e8efc, Message 4dc4f8; Bind on the ordinary socket); no-build evaluation passes. Sent to 445410.
+
+2026-10-10 — Landing: X5 corrected (2e64c5, blob 1a60d90) against published flow 962ad12, signal-flow 068f0e and meta-signal-flow 88f375: only FlowId is present; Address, Request, Lock, Recipient, Process and Sender wait on Mind's Library candidate. Sent to 445410.
+
+2026-10-10 — 445410 relays Astra's trusted-origin question (the proof chain from the client's kernel process through Identify to the Lock's Sender, and whether Flow trusts or re-verifies it), to be answered jointly with f5a6e9. Reading subflow dispatched.
+
+2026-10-10 — Trusted-origin chain traced (reports/trusted-origin.md): links 1–2 authored; 3 authored only as a statement; 4 (Flow's check of the Sender at Lock) unresolved. Message's side sent to 9fed42 for the joint reply.
+
+2026-10-10 — 9fed42: the joint chain went to 445410; f5a6e9 holds three open rulings (re-verifying the Sender at Lock, Ended or Asleep Senders, protecting Message's Bind from another process binding first). The pid-reuse guard is Message's to resolve; a design subflow is dispatched (race-free method from kernel primitives, marked unwitnessed, with a test row).
+
+2026-10-10 — f5a6e9 via 9fed42 (current best): trust rests on the gate, no re-check; a Sender must be Awake (Unknown, Asleep, Ended refusals); Message's Bind is admitted only from the executable named by Configure.Nexus's new MessageNexusBinary, and is NotConfigured before it. Folded into the pending design publish; message-test told to send Configure.Nexus before Message starts, in every frame.
+
+2026-10-10 — Landing: message-test 0f6607 (Flow gets Configure.Nexus with MessageNexusBinary before Message starts, in the frame and the runner; a NotConfigured test added; asleep-sender pending). Asked 9fed42 where MessageNexusBinary sits, and whether flow-test takes Refused.Asleep.
+
+2026-10-10 — 9fed42: flow-test takes Refused.Asleep; the MessageNexusBinary position is asked of f5a6e9. message-test is to drop its asleep test.
+
+2026-10-10 — f5a6e9 via 9fed42: MessageNexusBinary sits after MessageNexusPath and before Lease, as message-test has it. An Asleep Sender arises only from a stale Sender (the identified flow stopped before Lock); flow-test produces it.
+
+2026-10-10 — Landing: Message design 23d2c4 (blob 24fee3c): the pidfd-based pid-reuse guard (designed, not witnessed; Linux 6.5+, cited K1–K6) and f5a6e9's trusted-origin rulings, rows 24–29. Sent to 445410 with a proposed compensation-primary-commit line on tracking main@origin. message-test re-pin dispatched.
+
+2026-10-10 — 9fed42: Flow's trusted-origin fold is on main at 186dd70. message-test is to re-pin to it with Message 23d2c4.
+
+2026-10-10 — 9fed42: Flow's design moved to e876d77 (canonical-path comparison of the binary; NoSource.Path for a missing file). message-test is told to pin e876d77.
+
+2026-10-10 — Landing: message-test 1d0801 (Flow e876d77, Message 23d2c4); tests 27–29 written; 24 and 25 pending; 26 left to flow-test; no-build evaluation passes. Sent to 445410.
+
+2026-10-10 — 9fed42: Flow design f5e69dd carries every trusted-origin ruling. message-test re-pin dispatched.
+
+2026-10-10 — Landing: message-test d11502 (Flow f5e69dd, Message 23d2c4); no test change was needed; no-build evaluation passes. Sent to 445410.
+
+2026-10-10 — Astra's kernel qualification (source evidence): pidfd stops retargeting; ESRCH means reaped; EPERM and success prove nothing (against the design's K6 reading); execve keeps the pid, so the binary check holds only at Bind. Open question sent to f5a6e9 via 9fed42: does Flow re-check the executable after Bind? The guard stays "designed, not proven".
+
+2026-10-10 — f5a6e9 via 9fed42: the gate re-checks the executable on every Lock, Deliver and Release; a mismatch is refused NotMessage and drops the binding. Message design fold dispatched, with Astra's EPERM objection recorded beside K6.
+
+2026-10-10 — 9fed42: Flow design c82223e carries the executable re-check. message-test told to re-pin both designs in one push once the Message fold lands.
+
+2026-10-10 — Landing: Message design be5c2e (blob e3ea987): the executable re-check, Message exiting on NotMessage, test 30 (execve), and Astra's qualification recorded with the EPERM reading unreconciled. Sent to 445410; message-test re-pin released.
+
+2026-10-10 — Landing: message-test a3061b (Flow c82223e, Message be5c2e); test 30 pending; no-build evaluation passes. Sent to 445410.
+
+2026-10-10 — 445410, under the usage order (22% of the week left): make message-test's pending tests 30 (an execve helper as MessageNexusBinary), 24 (a pid-reuse pause or why none exists) and 25 (a Flow stand-in) runnable without modifying Message, and check them on Prometheus. A fresh subflow is dispatched, since the prior test subflow's context exceeds 200k.
+
+2026-10-10 — message-test 07bad15: tests 24, 25 and 30 stay pending (no published design wire; no guard in Message 0.19.1); a ptrace or seccomp pause for 24 is feasible once the guard exists. Blocker sent to 445410: Mind must publish a design-built signal-flow and Message.
+
+2026-10-10 — 445410: Mind reports that signal-flow a991c149 (Signal 12 leaf) carries the design's ordinary wire. Tests 25 and 30 to be built against it, with the helper kept out of production configuration; 24 waits for a section 6 Message. Dispatched to the test subflow.
+
+2026-10-10 — signal-flow a991c149 confirmed in source. Failure: the harness refused building the test-30 execve helper; reported once, not retried; proposed to f5a6e9 that flow-test take test 30. Asked whether Flow's edge uses the signal greeting, which test 25's stand-in waits on. Reported to 445410.
+
+2026-10-10 — 9fed42: flow-test already covers the execve re-check (flow-lock-message-exec, flow-test 446478). Test 30 leaves message-test; Message exiting on NotMessage stays. The greeting question is with f5a6e9.
+
+2026-10-10 — f5a6e9 via 9fed42: both sockets speak exactly what the pinned signal crate speaks; the greeting is a fact of that revision, read from it, never hand-built. Test 25's stand-in to be built on that crate.
+
+2026-10-10 — Failure: the harness classifier interrupted the test-25 stand-in subflow three times; reported once, not retried. The spec for another flow to build went to 445410 (signal-flow a991c149, signal e0e3c055, which greets). README-only push dispatched.
+
+2026-10-10 — Landing: message-test 9409cb7 (README: test 30 to flow-test, row 31 pending); no-build evaluation passes. Sent to 445410.
+
+2026-10-10 — Test 25 boundary sent to 445410 for Mind's launch_evidence writer (paths, seam, selector). A stray file v reached message-test 9409cb7 through my README push; its removal waits until after the fixture lands.
+
+2026-10-10 — 445410, under the usage order (21% left): write test 24's pid-reuse supervisor (seccomp user-notify or ptrace, clone3 set_tid) as a standalone message-test fixture, self-tested on Prometheus against a trivial target; a classifier stop is reported once. Dispatched.
+
+2026-10-10 — Failure: the harness classifier stopped the test-24 supervisor before anything was written. Reported once to 445410; not retried; test 24 stays pending.
+
+2026-10-10 — 445410: the second route. Test 24 becomes a reaped-peer test (SIGSTOP Message, kill and reap the client, SIGCONT, expect an unanswered connection); the design states pid-reuse resistance as resting on K1–K6, unwitnessed. Test and design subflows dispatched.
+
+2026-10-10 — 9fed42: Flow design 9b006dd closes the last gaps (printed forms, Module, Report, Model { Layer Harness Native }, Observed, Ended refusals). Folded into the test-24 push.
+
+2026-10-10 — Landing: Message design ea2dca (blob 52bb5a8): pid-reuse resistance rests on K1–K6, unwitnessed; row 24 is the reaped-peer test, witnessing ESRCH only.
+
+2026-10-10 — Landing: message-test 4d40751 (test 24 reaped-peer, Flow pin 9b006dd, the new Configure.Model form, lint fixed); VM checks stop at Configure.Model under pinned Flow 0.25. Sent to 445410 with the rebase warning for test 25's writer.
+
+2026-10-10 — 445410: Field needs a packet to merge Mind's test 25 stand-in (13378c44) onto message-test 4d40751, assembled privately with no rebase of the shared checkout. Packet subflow dispatched.
+
+2026-10-10 — Test 25 merge packet written (reports/test25-merge-packet.md) and sent to 445410: the merge is clean; the README is ours, flake.nix merged, lib/default.nix theirs; the new inputs are unlocked; the candidate lacks a test-25 check file.
+
+2026-10-10 — The governing Message design sent to 445410 in full: ea2dcaab…, blob 52bb5a85…, copy at reports/message-design-governing.md.
+
+2026-10-10 — Field's checks on Mind's signal-message-flow 12 candidate (c6839e84) fail two of the design's written forms (Send with a bare address; Refused.Unknown.Address). Inspection and correction dispatched.
+
+2026-10-10 — 445410: the Recipient and Unknown corrections pass on Mind's candidate ed67f061; Refused.Ended.Address still fails (expected Struct, found Variant). Folded into the running correction.
+
+2026-10-10 — Landing: Message design c6a2c4 (blob 1522245): datom forms corrected and round-tripped on the candidate; the faults split between the design (Send) and the contract (Unknown at c6839e; the Ended and Held test fixtures at ead9eb49). Sent to 445410.
+
+2026-10-10 — 445410: make row 31 runnable. Answered: test configuration alone gives NotMessage at Bind (test 28), not at Lock. Row 31 needs Flow to accept a second Configure.Nexus and re-check against the current binary. Asked of f5a6e9 via 9fed42.
+
+2026-10-10 — 445410: a disagreeing Nexus repeat is refused Conflict (an existing ruling); row 31 closes as covered by test 28 and flow-test's exec test, with no design change sought. Question to f5a6e9 withdrawn; README close dispatched.
+
+2026-10-10 — Landing: message-test 76ce7da closes row 31 (covered by test 28 and flow-test); no-build evaluation passes. 445410 asks whether the 2026-09-24 record on old stores settles F14; the record is being fetched. Deployed Flow is 0.14.0 on stable and 0.17.4 on Next, per 445410.
+
+2026-10-10 — The 2026-09-24 record (836818 flowNexus.md:47–53; d8df70 deployment.md:9–13) rules out migration and any duty to keep the old store, but rests on "not even live yet"; F14 still open on whether that holds. The book stands; 445410 told.
+
+2026-10-10 — 445410 for Astra: an exhaustive refusal map (Identify, Lock and Deliver against six Flow refusals) under Flow a5b2c27 and the current Message design, joint with f5a6e9. Reading subflow dispatched.
+
+2026-10-10 — 9fed42: f5a6e9 confirms all six refusals are unreachable from Identify, Lock and Deliver; new current-best refusals at Lock and Deliver (Unknown.Address, Ended, Lapsed, NotMessage on a dead bound process) and Store from Identify. Added to the refusal map.
+
+2026-10-10 — Refusal map written (reports/refusal-map.md): 0 reachable, 16 unreachable, 2 unresolved (a waking Deliver × Unknown.Key and NoLayer), asked of f5a6e9; Store.String is to be added. Sent to 445410. Design fixes follow.
+
+2026-10-10 — f5a6e9 via 9fed42 rules rows 15 and 16 reachable: an Asleep recipient's Lock checks the wake's preconditions (a Model for the layer, modules for the topic), else NoLayer or Unknown.Key, at Lock and at Deliver. Folded into the design fix.
+
+2026-10-10 — Landing: Message design 288cd0 (blob cc22abb): Store, NoLayer, Unknown.Key and Asleep variants; complete 7.5 rows; tests 31–34. Sent to 445410.
+
+2026-10-10 — 445410's standing order: every design commit reported carries its full 40-character commit hash, its full blob hash and a readable copy path. 288cd0 being resolved.
+
+2026-10-10 — 288cd0 resolved and sent in full: commit 288cd062…, blob cc22abb0…, copy at reports/message-design-288cd0.md.
+
+2026-10-10 — 9fed42: Flow design 439dc64 carries the reachability rules; rows 15–16 confirmed reachable (Lock 702–714, and Deliver after a configuration change); Unknown.Key names only a forgotten module the wake would compose. The Message design (288cd0) already maps both. message-test's Flow pin is to move to 439dc64 at the next re-pin.
+
+2026-10-10 — f5a6e9 via 9fed42 drops the forgotten-Key case: Unknown.Key is unreachable from Lock and Deliver; NoLayer stays. Removal from the design and the map dispatched.
+
+2026-10-10 — Landing: Message design d9703b5 (blob 7e4db16, copy reports/message-design-d9703b.md): Unknown.Key removed; NoLayer kept. My brief named map row 16 where the Unknown.Key row is 15; the subflow corrected it, and row 16 (Deliver × NoLayer) is still to be marked reachable. 9fed42 told of Flow 439dc64's stale lines 710–711.
+
+2026-10-10 — 445410 relays the living's order to refresh every Claude flow. Handover written (handover.md). This flow has no Primary of its own.
