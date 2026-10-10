@@ -293,6 +293,8 @@ Signal                          ; what Flow is asked
                                 ; Observe.Agent
          Key ]                  ; a module
       NoLayer                   ; no model for it
+      NotConfigured             ; Launch before
+                                ; Configure.Nexus
       Ended.Address             ; End of an Ended
                                 ; metaflow: returned
                                 ; to its sender
@@ -362,8 +364,6 @@ Signal                          ; the meta socket
          Handover.Integer       ; 20
          Refresh.Integer }      ; 40
       Nexus.{                   ; the Nexus's own
-         OrdinarySocketPath.String
-         MetaSocketPath.String
          SourceRoot.String
          StableCodex.String
          NextCodex.String
@@ -397,9 +397,14 @@ Signal                          ; the meta socket
 []
 ```
 
-Configure.Nexus arrives first. Model and Module follow
-it in any order, both before any Launch; a Launch
-before them is refused NoLayer or Unknown.Key. A
+Flow's listening sockets, the ordinary socket and the
+meta socket, come from its start command, not from
+Configure. Model and Module are accepted before any
+Configure.Nexus, in any order. Configure.Nexus must
+arrive before any Launch, which otherwise is refused
+NotConfigured; a Launch before its Model or Module is
+refused NoLayer or Unknown.Key. Configure.Nexus is not
+needed for Lock, Deliver, Release or Identify. A
 changed Model or Threshold for a layer already set is
 an update, answered Configured (current best).
 
@@ -541,7 +546,8 @@ one layer above, within the sender's aspect; above
 Primary it is refused NoneAbove. A Sender whose address
 names no metaflow, or an Up resolving to a layer with no
 metaflow, is refused Unknown.Address. The lock's span is the Lease
-of Configure.Nexus, in seconds, 60 by default. A lock
+of Configure.Nexus, in seconds, 60 by default until
+Configure.Nexus sets Lease. A lock
 ends by Deliver (one delivery per lock), Release, lapse,
 or a refusal at Deliver; Release after Deliver is
 refused Unknown.Lock, Release of a granted lock that ran
