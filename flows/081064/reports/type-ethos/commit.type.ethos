@@ -1,0 +1,14 @@
+; the head: a type file, one type
+type
+; the one type: an enum, one variant per kind
+CommitMessage.[
+  ; a distillation's references: a vector
+  VisionDistillation.Vector<
+    ; of Reference, named and declared in place
+    Reference.{
+      ; type check: open book «The prototype name»
+      Topic.String
+      ; flow id: a String for now
+      FlowId.String }>
+  ; a mixed commit: a vector of the same enum
+  Mixed.Vector<CommitMessage> ]

@@ -73,3 +73,33 @@ Context: same book and heading, anchored on «Two registry types: one for librar
 
 Each of the seven entries above dated 2026-10-10 and marked "STT" is typed: they are the living's comments on the published book «Sources and the registry» and «The inline import, third edition», recorded typed by d68c82, which relayed them. The relay envelopes carried no input mode; "STT" was an assumption. Read every provenance line above as `-- psyche, typed, 2026-10-10, relayed by 23824a.`
 
+## 2026-10-10 — trailing Sources sections in vision skills
+
+Context: on the trailing Sources sections of vision skills, the example being 058f16's `source` lines; relayed by 41fa34 to 0c85a3 to this flow. Input mode not established.
+
+> To me that looks like noise. There's nothing about this that I want to load into it. It's ridiculous. What the fuck? This is noise. That's not vision; that's noise. If there is a technical reason to have that data, it does not belong in the vision. I can almost be certain of that.
+
+-- psyche, input mode unqualified, 2026-10-10, relayed by 0c85a3.
+
+## 2026-10-10 — the type ethos, and commit messages in datom
+
+Context: comment on the hub's book «Sources in the commit message», ruling 1 (references in the landing commit's message); relayed by 23824a. Input mode not established.
+
+> Yeah this is good. We could also improve the format so that it essentially fits a datom, which would mean creating an ethos specification, but we wouldn't need to make an implementation that uses it yet. It would just be the ethos that shows. You can use a type, `type ethos`. It just starts with `type` and it defines a single type and you can define everything inline, like these quick type definitions, where you can use the inline import syntax.
+>
+> You can land this now and then let's do another landing. We won't need to backport the new syntax to the [commits]. We can do that later. We can improve the syntax so that it's eventually compatible with Datom message. We could even define a specification and ethos for different variants of commit messages so our commit messages would start to be written in a Datom syntax with different variants.
+>
+> I guess you could use vectors when there's more than one type of thing in a commit. It would be good to support that just in case we can't force the commit to be split up or something but we would encourage only one variant per commit message.
+
+-- psyche, input mode unqualified, 2026-10-10, relayed by 23824a; the bracket is the relay's.
+
+## 2026-10-10 — the commit message as a variant with a struct
+
+Context: same book, at the example commit message listing vision-distillation's references; relayed by 23824a. Input mode not established.
+
+> So you can see how you could easily turn this into a variant with a struct in Elm [sic] syntax, right? Your variant would be `vision distillation` and then it would just be a vector of a name to flow ID.
+>
+> I mean topic and Flow ID.
+
+-- psyche, input mode unqualified, 2026-10-10, relayed by 23824a; the [sic] is the relay's.
+
