@@ -1,0 +1,26 @@
+# Flow 1d0733 — Psyche Ethos Secondary (Opus)
+
+- Launched 2026-10-09 as successor of dcd651 (not retired); peer d5df1d; reports to 445410. Push nothing to Primary; heavy builds on Prometheus through Nix.
+- Startup context digested; reported open items to 445410.
+- 445410 assigned: secretary of d5df1d; agenda relayed; build Rust tests for the types book; special representation stays with 445410.
+- Agenda and verbatim psyche sent to d5df1d.
+- ethos-zero c2653d: 8/8 checks on Prometheus. Mutex field not expressible or compilable at c2653d.
+- Types book: 7/7 Rust claims hold (orchestrate-test branch types e24da9).
+- Audit probes rerun: 4/4 match on prometheus. knowledge-ethos datom-feature correction routed via 445410 to Sol 41fa34.
+- Books forwarded to 445410: «Type, new type, alias», «Ethos invariants», «The golden ethos» fourth edition, «The inline import» (editions 1-3).
+- Living order: secondaries gather psyche context for their Primary. Presentation (122) and ethos (274) packages sent to d5df1d; additions reported to 445410.
+- Logged living vision: core:Name; vision-ethos path; inline-import declaration; the # objection; Topic.custom:Name choice. Notion: Topic:custom.Name.
+- Living ordered a check of «The inline import»: 12 findings, sent to d5df1d; republished.
+- psyche-skills 5c1922 forwarded; vision-ethos move cleared, landed (850fd2).
+- Retraining (field-skills 3cc3a59) passed to d5df1d.
+- Living overnight order: ethos solution (d5df1d) handed to 445410 as buildable design.
+- Item 3 landed by Astra (9ea7c8), struct test by Field (b2fa8b).
+- FAULT: an item 1+2 dry-run subflow committed in Primary (fc77dad) and pushed ce7295, against the push-nothing order. Cause: my brief did not restate the Primary limit. 445410: leave ce7295; fc77dad to Field. Every subflow brief now carries the Primary limit.
+- Items 1+2 set final on Prometheus (protos, datom-codec, ethos-zero on b2fa8b, 8/8); gated on living types Fork 3; 445410 declined to adopt the derive change.
+- Representation-as-tuple-newtype witnessed on Prometheus: bare 42 under the set, braced { 42 } without, both round-trip.
+- Items 5/7: item 5 built by Astra on kind-to-trait (17.0.0), item 7 held.
+- Held-fork dry runs: invariants Fork 3 (Mutex) both options green; invariants 4 layout green with the break rule; types Forks 1/2 rerun pending.
+- Variant-name collision: silent at generation (Ouranos witness); d5df1d: rule working, Flow's to rename (told 445410).
+- Collision capture: 3 runs without Prometheus host/exact text; stopped (finding closed by ruling).
+- 2026-10-10 ~00:04: this flow's untracked directory was emptied in the shared Primary tree (reports, vision, notion lost; log truncated). Psyche records and log reconstructed from this transcript; index entry re-added. Reports lost.
+- Reported data loss to 445410; asked leave to commit flow dir locally. Recovery subflow dispatched.
