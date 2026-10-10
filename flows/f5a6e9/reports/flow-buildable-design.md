@@ -15,7 +15,10 @@ canonical vertical three-space form.
 
 ```
 Library                         ; Flow's
-[]
+[  meta_signal_flow:[           ; at the revision
+      CodexEndpoint             ; Flow pins
+      HarnessProfile            ; (88f37592), as
+      FlowAspect ] ]            ; the meta socket
 [  FlowId.String                ; unideal now: a
                                 ; real id built on
                                 ; the hash bits that
@@ -41,11 +44,12 @@ Library                         ; Flow's
       Repository.String         ; text lives: the
       Hash.Blake3               ; containing source,
       Path.String }             ; hashed, relative
+   Path.String                  ; a path relative to
+                                ; a source
    Key.{                        ; a module's key,
       Subaspect                 ; written as the
-      Topic }                   ; the pair
+      Topic }                   ; pair
                                 ; { Vision flow }
-                                ; (current best)
    Said.{                       ; his words, relayed
       Context.String            ; where it was said
       Verbatim.String }         ; the words whole
@@ -70,8 +74,7 @@ Library                         ; Flow's
    Recipient.[ Address Up ]     ; Up: same topic,
                                 ; one layer above
                                 ; the sender, in its
-                                ; aspect (current
-                                ; best)
+                                ; aspect
    Metaflow.{                   ; one per address
       Address
       State.[
@@ -94,18 +97,42 @@ Library                         ; Flow's
                                 ; so a reused pid is
                                 ; told apart
    Sender.Address
-   Start.{                        ; one datom
-      OrdinarySocketPath.String   ; argument of the
-      MetaSocketPath.String }     ; Nexus start
-                                ; command ]
+   Start.{                      ; the one datom
+      OrdinarySocketPath.String ; argument of the
+      MetaSocketPath.String }   ; Nexus's start
+                                ; command
+   Nexus.{                      ; the Nexus's own
+      SourceRoot.String         ; setup payload
+      StableCodex.CodexEndpoint
+      NextCodex.CodexEndpoint
+      HarnessProfiles.Vector<HarnessProfile>
+      MetaAspects.Vector<FlowAspect>
+      MessageNexusPath.String   ; Message's
+                                ; ordinary socket
+      Lease.Integer } ]         ; seconds; 60
+                                ; before any Nexus
+                                ; payload
 []
 []
 ```
 
 The Library declares once the types both Signals and
-Memory use: Said, Aspect, Address, Metaflow, Lock, Process
-and Sender. Memory and both Signals import them (status:
-current best, not before the living).
+Memory use: Said, Aspect, Address, Metaflow, Lock,
+Process, Sender, Key, Start and Nexus. Memory and both
+Signals import them (status: current best, not before
+the living).
+
+Flow's two listening sockets, the ordinary socket and
+the meta socket, come from its start command,
+`flow-nexus 'Start.{ … }'`, whose one datom argument is
+Start. No environment variable and no config file
+names them (current best).
+
+The Nexus payload's type is declared once, here, as
+Nexus. It carries no socket path. MessageNexusPath is
+the Message Nexus's ordinary socket path. Lease is the
+lock's span in seconds; Flow runs with 60 before any
+Nexus payload (current best).
 
 Build note. ethos-zero 16.0.0 cannot yet express
 `Topic:Name` (the inline import, the Ethos topic's)
@@ -150,10 +177,8 @@ waking request last:
 
 ```
 Memory                          ; Flow's
-[  flow_ethos:[ FlowId Topic Layer
-                Request Subaspect
-                Source Address
-                Process ]
+[  flow_ethos:[ FlowId Layer Key
+                Source Process ]
    signal_flow:[ Event ] ]
 [  Flow.{                       ; one per run
       FlowId
@@ -163,11 +188,8 @@ Memory                          ; Flow's
                                 ; start time learned
                                 ; at spawn or bind
       Events.Vector<Event> }    ; signal-flow's
-                                ; type at the
-                                ; revision Flow pins
    Module.{                     ; the registry: one
-      Subaspect                 ; per subaspect and
-      Topic                     ; topic
+      Key                       ; per key
       Source }
    Model.{                      ; one per layer
       Layer
@@ -179,6 +201,8 @@ Memory                          ; Flow's
                                 ; naming a Library
                                 ; type
    Lock.flow_ethos:Lock         ; likewise
+   Nexus.flow_ethos:Nexus       ; the Nexus payload
+                                ; stored, one at most
    Threshold.{                  ; one per layer
       Layer
       Handover.Integer
@@ -186,19 +210,15 @@ Memory                          ; Flow's
 ```
 
 Module, Model and Threshold hold what the meta socket's
-Configure sets. The Library's Lock is stored one per
-metaflow while held. The Flow record's Process holds
-the calling process's pid and start time, learned at
-spawn or at Bind (status: current best, not before
-the living).
+Configure sets. A Module is a Key and a Source (current
+best). The Library's Lock is stored one per metaflow
+while held. The Flow record's Process holds the calling
+process's pid and start time, learned at spawn or at
+Bind (status: current best, not before the living).
 
 Event is imported from signal-flow: Started,
-                                ; type at the
-                                ; revision Flow pins
 ToolUsed.String, ContextMeasured.{ Tokens.Integer
 Window.Integer }, Stopped. In this build signal-flow
-                                ; type at the
-                                ; revision Flow pins
 gains ContextMeasured.{ Tokens.Integer Window.Integer }
 (current best).
 
@@ -227,7 +247,8 @@ the flow's words, never the model:
 ```
 Signal                          ; what Flow is asked
 [  flow_ethos:[ Address FlowId Request Lock
-                Sender Process Key Metaflow ]
+                Sender Recipient Process Key
+                Metaflow ]
    signal_flow:[ Event ] ]
 [  Launch.{                     ; a metaflow's first
       Address                   ; flow; the address
@@ -239,12 +260,16 @@ Signal                          ; what Flow is asked
    Refresh.Address              ; the next link
    End.Address
    Current.Address
-   Lock.{ Sender Recipient }    ; Message asks; time
-                                ; bound
+   Bind.{                       ; a running process
+      Address                   ; becomes this
+      Process }                 ; metaflow's flow
+   Lock.{                       ; Message asks; time
+      Sender                    ; bound
+      Recipient }
    Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
-      Lock
-      Request }                 ; sender in lock
+      Lock                      ; sender in lock
+      Request }
    Release.Lock
    Report.{                     ; the hook's request
       FlowId
@@ -264,7 +289,9 @@ Signal                          ; what Flow is asked
       Asleep
       Ended
       Unknown ]
-   Locked.Lock
+   Bound.FlowId                 ; the flow reserved
+   Locked.Lock                  ; carries the
+                                ; resolved Address
    Identified.Address           ; the caller's
    Delivered                    ; placed in the
                                 ; awake flow
@@ -282,41 +309,48 @@ Signal                          ; what Flow is asked
       Locked                    ; refresh under way
       Held.Lock                 ; lock held: also
                                 ; Refresh and End
-                                ; (current best)
       Awake.FlowId              ; Launch of an awake
                                 ; metaflow: its
                                 ; current flow
       Asleep                    ; Refresh of a
                                 ; sleeper
-      Lapsed                    ; granted, ran out
+      Lapsed                    ; a granted lock
+                                ; that ran out
       Unknown.[                 ; each inner variant
                                 ; carries its type
          Address                ; no such metaflow;
-                                ; a Sender's address
-                                ; naming none; an Up
-                                ; to a layer with
-                                ; none
+                                ; a Sender or an Up
+                                ; target naming none
          Lock                   ; never granted, or
-                                ; consumed by a
-                                ; delivery, release
+                                ; already consumed
          FlowId                 ; Report, Stop or
                                 ; Observe.Agent
          Key ]                  ; a module
       NoLayer                   ; no model for it
       NotConfigured             ; Launch before
                                 ; Configure.Nexus
+      HashMismatch              ; a module recorded
+                                ; unchecked fails
+                                ; its hash at its
+                                ; first compose
       Ended.Address             ; End of an Ended
-                                ; metaflow: returned
-                                ; to its sender
+                                ; metaflow
       OffRoute                  ; at Lock: sender,
                                 ; recipient aspect,
                                 ; layer, topic off
                                 ; the vision-aspects
                                 ; routes
-      NoneAbove                 ; Up above Primary:
-                                ; sender at the
-                                ; top of its aspect
-      Unidentified.Process ] ]  ; in no metaflow
+      NoneAbove                 ; Up above Primary
+      NotMessage                ; Lock, Deliver or
+                                ; Release from a
+                                ; peer not the bound
+                                ; Message process
+      Unidentified.Process      ; Identify: in no
+                                ; metaflow; Bind: a
+                                ; dead or reused
+                                ; process
+      Taken.Address ] ]         ; Bind: the old
+                                ; process lives
 []
 ```
 
@@ -324,23 +358,29 @@ Identify and the Deliver responses and refusals above
 are current best, not before the living. Also current
 best: Launch of an awake metaflow is Refused.Awake.FlowId
 and Refresh of an asleep one Refused.Asleep; Refresh or
-End under a held lock is Refused.Held.Lock. The unknown
-refusals are one Unknown.[ Address Lock FlowId Key ],
-each inner variant carrying its type. Unknown.FlowId
-answers Report, Stop and Observe.Agent of an unknown
-flow; Unknown.Lock answers Deliver or Release under a
-lock never granted or already consumed by a delivery or
-a release; Lapsed answers Release of a granted lock
-that ran out. A Sender whose address names no metaflow,
-or an Up resolving to a layer with no metaflow, is
-Unknown.Address. End of an Ended metaflow is
-Refused.Ended.Address. Report, Observe.Agent, Stop
-and Metaflows, with Reported, Observed.Agent, Stopped
-and Listed, are current best: Report is the hook's
-request, Stop reaps a flow with no successor, and
-Observe.Agent.FlowId and Observed.Agent.String are named
-here because the Flow 0.25.0 payload is unknown to this
-design; Observed carries Herdr's agent state as today.
+End under a held lock is Refused.Held.Lock. The flow
+socket has one Unknown.[ Address Lock FlowId Key ],
+each inner variant carrying its type (current best).
+Unknown.FlowId answers Report, Stop and Observe.Agent
+of an unknown flow. Lapsed answers a granted lock that
+ran out; Unknown.Lock answers a lock never granted or
+already consumed. A Sender whose address names no
+metaflow, or an Up whose target names no metaflow, is
+Unknown.Address; NoneAbove is only for an Up above
+Primary. End of an Ended metaflow is
+Refused.Ended.Address (current best). Report,
+Observe.Agent, Stop and Metaflows, with Reported,
+Observed.Agent, Stopped and Listed, are current best:
+Report is the hook's request, Stop reaps a flow with no
+successor, and Observe.Agent.FlowId and
+Observed.Agent.String are named here because the Flow
+0.25.0 payload is unknown to this design; Observed
+carries Herdr's agent state as today.
+
+Bind, Bound.FlowId, Taken.Address and
+Unidentified.Process for a Bind are on the ordinary
+socket: a process binding itself is ordinary work
+(current best).
 
 Written, a launch of this flow:
 
@@ -356,15 +396,22 @@ Launch.{
 
 ```
 Signal                          ; the meta socket
-[  flow_ethos:[ Subaspect Topic Layer
-                Source Address FlowId
-                Process Path Aspect ]
-   signal_flow:[ CodexEndpoint
-                 HarnessProfile ] ]
+[  flow_ethos:[ Layer Key Source Path
+                Nexus ]
+   meta_signal_flow:[           ; meta-signal-flow
+      CodexEndpoint             ; at the revision
+      HarnessProfile            ; Flow pins
+      FlowAspect ] ]            ; (88f37592);
+                                ; FlowAspect and the
+                                ; Library's Aspect
+                                ; name the same
+                                ; three; the
+                                ; duplicate goes
+                                ; when the Library
+                                ; lands in code
 [  Configure.[
-      Module.{                  ; the registry
-         Subaspect
-         Topic
+      Module.{                  ; the registry: one
+         Key                    ; per key
          Source }
       Model.{                   ; the layer's model
          Layer
@@ -375,71 +422,62 @@ Signal                          ; the meta socket
          Layer
          Handover.Integer       ; 20
          Refresh.Integer }      ; 40
-      Nexus.{                   ; the Nexus's own
-         SourceRoot.String
-         StableCodex.CodexEndpoint  ; signal-flow's
-                                ; type at the
-                                ; revision Flow pins
-         NextCodex.CodexEndpoint
-         HarnessProfiles.Vector<HarnessProfile>
-         MetaAspects.Vector<Aspect>
-         MessageNexusPath.String
-         Lease.Integer } ]      ; seconds, 60 by
-                                ; default: lock span
-                                ; (current best)
-   Forget.{                     ; a module leaves
-      Subaspect
-      Topic }
-   Bind.{                       ; a running process
-      Address                   ; becomes this
-      Process } ]               ; metaflow's flow
+      Nexus ]                   ; the Library's: the
+                                ; Nexus's own setup
+   Forget.Key                   ; a module leaves
+   Configuration ]              ; what is set
 [  Configured
    Forgotten
-   Bound.FlowId                 ; the flow reserved
+   Configuration.{              ; the runner values
+      Nexus
+      Models.Vector<Model>
+      Thresholds.Vector<Threshold>
+      Modules.Vector<Module> }
+   Unconfigured                 ; no Nexus payload
+                                ; yet
    Refused.[
       NoSource.Path
       HashMismatch
-      Conflict                  ; Nexus setup
-                                ; payloads that
-                                ; disagree in one
-                                ; start
-      Unknown.Key               ; Forget of an
+      Conflict                  ; Nexus payloads
+                                ; that disagree in
+                                ; one start
+      Unknown.Key ] ]           ; Forget of an
                                 ; unknown key
-      Unidentified.Process      ; Bind of a dead or
-                                ; reused process
-      Taken.Address ] ]         ; already awake
 []
 ```
 
-Flow's listening sockets, the ordinary socket and the
-meta socket, come from its start command, not from
-Configure. Model and Module are accepted before any
-Configure.Nexus, in any order. Configure.Nexus must
-arrive before any Launch, which otherwise is refused
-NotConfigured; a Launch before its Model or Module is
-refused NoLayer or Unknown.Key. Configure.Nexus is not
-needed for Lock, Deliver, Release or Identify. A
+Configure.Nexus carries no socket path (current best).
+Configuration takes no payload and answers
+Configuration, or Unconfigured before any Nexus
+payload; Field reads the runner values from it
+(current best).
+
+Order (current best). Model and Module are accepted
+before any Nexus payload, in any order. Configure.Nexus
+must arrive before any Launch, which otherwise is
+refused NotConfigured; a Launch before its Model or
+Module is refused NoLayer or Unknown.Key.
+Configure.Nexus is not needed for Lock, Deliver,
+Release or Identify. A Module arriving before
+Configure.Nexus is recorded unchecked; its hash is
+checked at its first compose into a launch, and a
+mismatch refuses that Launch with HashMismatch. A
 changed Model or Threshold for a layer already set is
-an update, answered Configured (current best).
+an update, answered Configured; Conflict is only for
+Nexus payloads that disagree within one start.
 
-Bind is for debugging and for flows launched before
-Flow existed: it reserves a flow id, records the
-process as the Flow record's Process, and sets the
-metaflow awake (status: current best, not before the
-living).
-
-Written, one payload file of psyche-skills:
+Written, one Module of psyche-skills:
 
 ```
-Configure.Module.{
-   { Vision flow }
+{  { Vision flow }
    { psyche-skills
-     a3f1…9c2e
+     <hash>
      vision/flow.md } }
 ```
 
-A Key is written as the pair, { Vision flow } (current
-best).
+A Key is written as the pair, { Vision flow }; Forget
+takes a Key, and an unknown one is refused Unknown.Key
+(current best).
 
 Configuration lives in datom files in the repositories
 that own it, one file per concern. The CLI sends them
@@ -447,13 +485,11 @@ in succession over the meta socket; nothing is expanded
 across files. Each payload lands whole or is refused
 whole. Payloads go in succession, each whole, and
 flow-meta's composing of fragments ends. The same Key
-with a new hash is an update, answered Configured;
-Conflict is only for Nexus setup payloads that disagree
-within one start (current best). A module is found by
-subaspect and topic; its
-file's place is Curriculum's to know, checked against
-the hash on a read or a write. The Nexus composes from
-the registry and reads no path a caller writes.
+with a new hash is an update, answered Configured. A
+module is found by its Key; its file's place is
+Curriculum's to know, checked against the hash on a
+read or a write. The Nexus composes from the registry
+and reads no path a caller writes.
 
 ### Message's simple and extended forms
 
@@ -545,49 +581,74 @@ predecessor to Past (the last few only); unlock. The
 handover is a small paragraph: only what is still
 undecided passes; what was decided went into modules.
 
-**The lock.** Message asks Flow for a lock on the
-metaflow, bounded in time; with the lock it hands Flow
-the request, and Flow places it by the waking rule. A
-lock that lapses is released by Flow. What reaches a
-flow is a request, never a letter; Flow holds no
-messages beyond a queue of requests. While a refresh is
-under way the metaflow is locked and a lock request is
-refused Locked; a held lock refuses Held. Message
-speaks in metaflows and need not know flows. Flow
-resolves Up from the sender's identified address and
-includes it in the returned lock. Up is the same topic,
-one layer above, within the sender's aspect; above
-Primary it is refused NoneAbove. A Sender whose address
-names no metaflow, or an Up resolving to a layer with no
-metaflow, is refused Unknown.Address. The lock's span is the Lease
-of Configure.Nexus, in seconds, 60 by default until
-Configure.Nexus sets Lease. A lock
-ends by Deliver (one delivery per lock), Release, lapse,
-or a refusal at Deliver; Release after Deliver is
-refused Unknown.Lock, Release of a granted lock that ran
-out Lapsed, of one never granted Unknown.Lock.
-OffRoute is refused at Lock; Deliver trusts its lock. Stop leaves the metaflow
-Asleep; only End ends it.
-Status: current best, not before the living.
+**The lock.** Message asks Flow for a lock with
+Lock.{ Sender Recipient }, bounded in time; Flow
+answers Locked.Lock, the Library's Lock.{ Sender
+Address Until }, carrying the resolved Address. With
+the lock Message hands Flow the request as Deliver.{
+Lock Request }, and Flow places it by the waking rule.
+What reaches a flow is a request, never a letter; Flow
+holds no messages beyond a queue of requests. While a
+refresh is under way the metaflow is locked and a lock
+request is refused Locked; a held lock refuses Held.
+Message speaks in metaflows and need not know flows.
+Flow resolves Up from the sender's identified address
+and includes it in the returned lock. Up is the same
+topic, one layer above, within the sender's aspect;
+above Primary it is refused NoneAbove. A Sender, or an
+Up target, naming no metaflow is refused
+Unknown.Address. The lock's span is the Lease of the
+Nexus payload, in seconds; Flow runs with 60 before
+any Nexus payload. A lock ends by Deliver (one
+delivery per lock), Release, lapse, or a refusal at
+Deliver. A granted lock that ran out is refused
+Lapsed; one never granted or already consumed is
+refused Unknown.Lock. OffRoute is refused at Lock;
+Deliver trusts its lock. Stop leaves the metaflow
+Asleep; only End ends it. Status: current best, not
+before the living.
+
+**The Message gate.** Flow reads the connecting peer's
+credentials from the kernel. Lock, Deliver and Release
+are accepted only when the connecting process's pid and
+start time equal the bound Message process's exactly,
+with no ancestor walk; otherwise they are refused
+NotMessage. Message binds its process at its start with
+Bind.{ Address Process } under { Field message Primary
+}, a Nexus being Field's body (status: current best,
+not before the living).
+
+**Bind.** A running process becomes a metaflow's flow
+by Bind on the ordinary socket: it reserves a flow id,
+records the process as the Flow record's Process, sets
+the metaflow awake, and answers Bound.FlowId. A Bind
+under an address whose bound process is gone replaces
+the binding. Taken.Address is refused only while the
+old process lives; a dead or reused process is refused
+Unidentified.Process. Bind also serves debugging and
+flows launched before Flow existed (status: current
+best, not before the living).
 
 **Who is the caller.** Flow answers Identify.Process:
-it walks the process's ancestors to the harness
-process and compares both the pid and start time
-of a Flow record's Process, returning that flow's
-address, else Unidentified.Process. The Sender of a
-Deliver is that address (status: current best, not
-before the living).
+it walks the caller's ancestors to a Flow record's
+Process, comparing both pid and start time, and
+returns that flow's address, else
+Unidentified.Process. No environment variable is read.
+The Sender of a Lock is that address (status: current
+best, not before the living).
 
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
 an aspect and across aspects at the same layer in a
-shared topic). Also, by Signal: Locked, Held.Lock, Awake.FlowId, Asleep,
-Lapsed, Unknown.[ Address Lock FlowId Key ],
-NoLayer, Ended.Address, OffRoute
-(Sender and recipient aspect, layer and topic do not
-match the routes), NoneAbove, Unidentified.Process, and
-for a Configure NoSource, HashMismatch,
-Conflict, and for a Bind Taken or Unidentified.Process.
+shared topic). Also, on the flow socket: Locked,
+Held.Lock, Awake.FlowId, Asleep, Lapsed,
+Unknown.[ Address Lock FlowId Key ], NoLayer,
+NotConfigured, HashMismatch, Ended.Address, OffRoute
+(sender and recipient aspect, layer and topic do not
+match the routes), NoneAbove, NotMessage,
+Unidentified.Process, and for a Bind Taken.Address or
+Unidentified.Process. On the meta socket: NoSource,
+HashMismatch, Conflict and Unknown.Key.
 
 **Context modules, background.** A module is one file
 of prompt text with a subaspect, a topic, a
@@ -600,9 +661,10 @@ at registration. Placement: words holding for the whole
 flow on every turn go in the system prompt; words of
 this flow's task go in the first prompt, where a
 refresh replaces them; what is needed on occasion stays
-loadable. The registry shape is now Configure's
-Module; the earlier Facet and Location.[ Path Text ]
-shapes of book 1 are not in the ethos above.
+loadable. The registry shape is Configure's
+Module.{ Key Source }; the earlier Facet and
+Location.[ Path Text ] shapes of book 1 are not in the
+ethos above.
 
 ## 3. Today and to build
 
@@ -626,9 +688,11 @@ store and types into Herdr panes. The bottom layer of
 each aspect runs the refresh.
 
 **To build** (none in production): the Library, Memory
-and both Signals above; the metaflow record written at
-reservation; the Configure and Forget meta socket with
-Blake3 hash checks; the module registry and
+and both Signals above; the Start argument of the start
+command; the metaflow record written at reservation;
+the Configure, Forget and Configuration meta socket
+with Blake3 hash checks; Bind and the Message gate on
+the ordinary socket; the module registry and
 composition from it and the layer's model; the waking
 rule with a persistent queue; the Wake, Refresh, End
 and Current requests; ContextMeasured reading the
@@ -687,13 +751,15 @@ Address type with the Metaflow record
 shapes of the metaflow.
 
 Current best, not before the living: the Memory
-records Module, Model, Threshold, Metaflow and Lock;
-Aspect, Address, Metaflow, Lock, Process and Sender
-declared once in the Library with Subaspect and
-Source; Process on the Flow record;
-the lock, Identify and Deliver queries, responses and
-refusals of the flow socket; Bind on the meta socket;
-who resolves Up is before the living in 73ada7's «Who
+records Module.{ Key Source }, Model, Threshold,
+Metaflow and Lock; Aspect, Address, Metaflow, Lock,
+Process, Sender, Key, Start and Nexus declared once in
+the Library with Subaspect and Source; Process on the
+Flow record; the Start argument; the Nexus payload and
+the Configuration query with its order; the lock,
+Bind, Identify and Deliver queries, responses and
+refusals of the flow socket; the Message gate; who
+resolves Up is before the living in 73ada7's «Who
 works out where send up goes»; the build has Flow
 resolve it, current best.
 
@@ -708,10 +774,10 @@ still open here; its list has no N9, N10 or N12:
   in an awake flow (book 17, ruling 3).
 
 Answered in the design, current best: N1 and N2
-(Deliver.{ Lock Sender Request }), N4 declaration in
+(Deliver.{ Lock Request }), N4 declaration in
 the Library, N5 (Identify.Process, Process on Flow),
 N6 (refusals), N7 (Queued, Woken.FlowId), N11
-(Configure.Nexus Lease), N13 (Bind).
+(the Nexus payload's Lease), N13 (Bind).
 
 FlowId.String is his word for now; a hash-based id is
 wanted later.
@@ -728,7 +794,3 @@ From the handover, undecided:
 - knowledge-flow holds the deployed procedure,
   trial-succession the checks, vision-flow changes
   only by the living's ruling.
-
-Gap found while assembling (the flow's own
-inference): FlowId remains String (comment in
-Library).
