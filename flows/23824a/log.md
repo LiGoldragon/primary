@@ -2,3 +2,29 @@
 
 - 2026-10-10: Launched as successor of 1d0733, Psyche Ethos Secondary. Hub: Psyche core Secondary d68c82 (replaced 445410). Context: flows/1d0733/handover.md, read whole.
 - 2026-10-10: 081064 witnessed live as Ethos Primary (d5df1d has no session or route); succession notice sent to 081064.
+- 2026-10-10: d68c82 relayed the living on «Sources and the registry» (proposal 2 approved) and «The inline import» (D1 approved; not to block). Logged vision: registry, ethosNexus, sources, names. Package: work Ethos Nexus (signal/memory/operation), registry resolution, shared sources library, camelCase names with 081064; registry coordination with 058f16.
+- 2026-10-10: Witnessed no Ethos Nexus exists; Message ethos drafts are the pattern. Registry fork still open (Q6 unanswered). Dispatched landing of inline import D1 in psyche-skills.
+- 2026-10-10: 081064 ordered: land inline import D1 and registry proposal 2 byte-exact in psyche-skills vision/ethos.md, one lock; hold all registry fork patches and item 7. Landing subflow rescoped.
+- 2026-10-10: 081064 corrected: land only inline D1; asked for the registry comment anchor. 058f16 proposed the Source nexus / Ethos resolution split; answered and forwarded.
+- 2026-10-10: Landed inline import D1 in psyche-skills main 9fb0433 (sent to 081064). Open: archive of d5df1d raw record; Curriculum Nexus regeneration.
+- 2026-10-10: Registry comment anchored on D1 line itself, not a fork option: fork open. Relayed his two question-2 comments (Source nexus) to 081064.
+- 2026-10-10: Provenance: my STT marks on relayed book comments were assumption; appended corrections (typed, per d68c82).
+- 2026-10-10: Provenance: my STT marks on relayed book comments were assumption; appended corrections (typed, per d68c82).
+- 2026-10-10: Casing rule overlap: 081064 «The prototype name» carries it; 058f16 drops its casing proposal.
+- 2026-10-10: Book «Who archives a record» (081064) sent to d68c82. Checks rerunning pinned to 07714b on Prometheus.
+- 2026-10-10: Ethos Nexus drafts all accepted on 07714b, Prometheus; facts sent to 081064.
+- 2026-10-10: Prototype-name check on 07714b: right form refused (TraitWanted.String at 14:24); PrototypeName.String is an alias; accepted capability forms Self or trait-kind; sent to 081064.
+- 2026-10-10: 058f16 Source nexus design (113d56) with sources-library types forwarded to 081064 (F3 byte-array hash, F11 library home, F12 Ethos registry key).
+- 2026-10-10: Book «The prototype name» (081064) sent to d68c82; link to 058f16.
+- 2026-10-10: Book «The Ethos Nexus» (081064) sent to d68c82; link to 058f16.
+- 2026-10-10: Relayed 081064 positions to 058f16 (F12 a, F11 058f16 fork, F3 byte-type finding book, seam: next edition adopts whole-snapshot Fetch). Import check deferred until then.
+- 2026-10-10: Book «Bytes in ethos» (081064) sent to d68c82; link to 058f16 for F3.
+- 2026-10-10: d68c82 relayed comments on «Sources in the commit message» (ruling 1 approved, land now). Logged vision: typeEthos, commitMessage (2 entries).
+- 2026-10-10: Commit-message ethos package (d68c82) and his words relayed to 081064.
+- 2026-10-10: Notion logged (rustTypes): Rust types from Ethos / bytes; relayed to 081064.
+- 2026-10-10: Told 41fa34 (for 081064): no Ethos packet for reference-placement rule; 0c85a3 sole author.
+- 2026-10-10: 081064: hash type only in «Bytes in ethos»; told 058f16.
+- 2026-10-10: Commit-message probe on 07714b: type root refused; inline struct in variant accepted; inline struct in Vector<> refused; named Reference + Vector accepted. Sent to 081064.
+- 2026-10-10: Book «The type ethos» (081064) sent to d68c82.
+- 2026-10-10: Temporary (d68c82, from the living): Prometheus off until morning 2026-10-11; build locally. Ouranos powers off in a few hours for travel, may return. Briefs pin ethos-zero 07714b built locally (nix build) and witness hostname, until Prometheus returns.
+- 2026-10-10: Standing until the commit queue exists (d68c82): ask d68c82 for the PrimaryPublish turn before acquiring it; send it the Released reply after. Field has the next turn.
