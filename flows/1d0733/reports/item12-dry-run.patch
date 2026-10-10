@@ -1,0 +1,1526 @@
+diff --git a/error.ethos b/error.ethos
+index 8867aca..ef5a31b 100644
+--- a/error.ethos
++++ b/error.ethos
+@@ -21,7 +21,8 @@ Library
+             KindWanted.String
+             Intrinsic.String
+             Case.String
+-            Renamed.String ]
++            Renamed.String
++            SinglePosition ]
+   Form.[ File Section Import Name Declaration Variant Reference Constraint Kind Capability Constant Association ]
+   Location.{ Line Column }
+   Line.Integer
+diff --git a/fixtures/composition-types.ethos b/fixtures/composition-types.ethos
+index d1b17bc..ea9af3f 100644
+--- a/fixtures/composition-types.ethos
++++ b/fixtures/composition-types.ethos
+@@ -5,6 +5,6 @@
+ ; enum's datomization, so a Box in the module captures it.
+ Library
+ []
+-[ Vec.{ String } Tree.{ Option<Self> Result<Vec Integer> } Nested.[ Choice.[ Item.{ Vec Integer } ] ] ]
++[ Vec.String Tree.{ Option<Self> Result<Vec Integer> } Nested.[ Choice.[ Item.{ Vec Integer } ] ] ]
+ []
+ []
+diff --git a/fixtures/empty-signal.ethos b/fixtures/empty-signal.ethos
+index 59d3f82..036d6ee 100644
+--- a/fixtures/empty-signal.ethos
++++ b/fixtures/empty-signal.ethos
+@@ -1 +1 @@
+-Signal [] [] [] [ Shared.{ Name } Name.String ]
++Signal [] [] [] [ Shared.Name Name.String ]
+diff --git a/fixtures/generic-shadow.ethos b/fixtures/generic-shadow.ethos
+index c9daace..838abb7 100644
+--- a/fixtures/generic-shadow.ethos
++++ b/fixtures/generic-shadow.ethos
+@@ -1 +1 @@
+-Library [] [ A.{ String } Holder.{ String A } ] [] []
++Library [] [ A.String Holder.{ String A } ] [] []
+diff --git a/fixtures/inline-collision.ethos b/fixtures/inline-collision.ethos
+index 7e6ade1..ab877f4 100644
+--- a/fixtures/inline-collision.ethos
++++ b/fixtures/inline-collision.ethos
+@@ -3,9 +3,9 @@
+ ; stays free; a payload unique in the file keeps its short name.
+ Library
+ []
+-[ P.[ X.{ String }  Y.[ X.{ Integer } ] ]
+-  Q.[ X.{ Integer } ]
++[ P.[ X.String  Y.[ X.String ] ]
++  Q.[ X.String ]
+   X_Data.String
+-  R.[ Z.{ String } ] ]
++  R.[ Z.String ] ]
+ []
+ []
+diff --git a/fixtures/nested-collision.ethos b/fixtures/nested-collision.ethos
+index 2c054f0..8ee0891 100644
+--- a/fixtures/nested-collision.ethos
++++ b/fixtures/nested-collision.ethos
+@@ -1 +1 @@
+-Library [] [ Outer.[ A.[ X.{ String } ] B.[ X.{ Integer } ] ] Rejection.[ PathOverlap.{ String String } ] ] [] []
++Library [] [ Outer.[ A.[ X.String ] B.[ X.String ] ] Rejection.[ PathOverlap.{ String String } ] ] [] []
+diff --git a/fixtures/signal-decimal.ethos b/fixtures/signal-decimal.ethos
+index 25b6441..b139160 100644
+--- a/fixtures/signal-decimal.ethos
++++ b/fixtures/signal-decimal.ethos
+@@ -2,4 +2,4 @@ Signal
+ []
+ [ Measure.Measurement ]
+ [ Measured.Measurement ]
+-[ Measurement.{ Decimal } ]
++[ Measurement.Decimal ]
+diff --git a/fixtures/tree-types.ethos b/fixtures/tree-types.ethos
+index 9bf963f..d41c70f 100644
+--- a/fixtures/tree-types.ethos
++++ b/fixtures/tree-types.ethos
+@@ -8,8 +8,8 @@ Signal
+   Twin.{ Twig Twig }
+   Twig.[ Tip  Grow.Twin ]
+   Knot.[ End  Loop ]
+-  Loop.{ Knot }
++  Loop.Knot
+   Forest.Vector<Tree>
+   Wrapped.{ Option<Integer> Result<String Integer> Vector<Option<String>> }
+-  Nested.[ A.[ X Y.Integer ]  B.{ String } ]
++  Nested.[ A.[ X Y.Integer ]  B.String ]
+   Deep.Vector<Vector<Vector<Option<Result<String Integer>>>>> ]
+diff --git a/src/checking.rs b/src/checking.rs
+index 9672b69..ebebd7a 100644
+--- a/src/checking.rs
++++ b/src/checking.rs
+@@ -64,7 +64,7 @@ impl Resolving for TypeDeclaration {
+         let declared = match self {
+             TypeDeclaration::Struct(identity, _)
+             | TypeDeclaration::Enum(identity, _)
+-            | TypeDeclaration::Alias(identity, _) => &identity.name,
++            | TypeDeclaration::NewType(identity, _) => &identity.name,
+         };
+         if declared == name {
+             Resolution::Type(name.clone())
+@@ -283,7 +283,7 @@ impl Naming for TypeDeclaration {
+         match self {
+             TypeDeclaration::Struct(identity, _)
+             | TypeDeclaration::Enum(identity, _)
+-            | TypeDeclaration::Alias(identity, _) => vec![DeclarationSite {
++            | TypeDeclaration::NewType(identity, _) => vec![DeclarationSite {
+                 name: identity.name.clone(),
+                 path: vec![0],
+             }],
+@@ -372,7 +372,7 @@ impl Spanning for Reference {
+ impl Spanning for TypeDeclaration {
+     fn span(&self) -> Integer {
+         match self {
+-            TypeDeclaration::Alias(_, aliased) => aliased.span(),
++            TypeDeclaration::NewType(_, aliased) => aliased.span(),
+             TypeDeclaration::Struct(_, _) | TypeDeclaration::Enum(_, _) => 1,
+         }
+     }
+@@ -594,7 +594,7 @@ impl Inhabiting for TypeDeclaration {
+                         .iter()
+                         .any(|variant| variant.inhabited(file, owner, known))
+             }
+-            TypeDeclaration::Alias(_, aliased) => aliased.inhabited(file, owner, known),
++            TypeDeclaration::NewType(_, aliased) => aliased.inhabited(file, owner, known),
+         }
+     }
+ }
+@@ -649,7 +649,7 @@ impl Identified for TypeDeclaration {
+         match self {
+             TypeDeclaration::Struct(identity, _)
+             | TypeDeclaration::Enum(identity, _)
+-            | TypeDeclaration::Alias(identity, _) => identity,
++            | TypeDeclaration::NewType(identity, _) => identity,
+         }
+     }
+ }
+@@ -1152,7 +1152,9 @@ impl Referring for Reference {
+                             .map(|declaration| match declaration {
+                                 TypeDeclaration::Struct(identity, _)
+                                 | TypeDeclaration::Enum(identity, _)
+-                                | TypeDeclaration::Alias(identity, _) => identity.constraints.len(),
++                                | TypeDeclaration::NewType(identity, _) => {
++                                    identity.constraints.len()
++                                }
+                             });
+                     ReferenceRequirement {
+                         role: Role::Type,
+@@ -1260,15 +1262,16 @@ impl Cycling for Reference {
+                 }
+                 visited.push(name.clone());
+                 match file.declaration(&name) {
+-                    Some(TypeDeclaration::Alias(identity, aliased)) => aliased.cycles_substituting(
+-                        target,
+-                        file,
+-                        visited,
+-                        AliasApplication {
+-                            identity,
+-                            arguments: &self.arguments,
+-                        },
+-                    ),
++                    Some(TypeDeclaration::NewType(identity, aliased)) => aliased
++                        .cycles_substituting(
++                            target,
++                            file,
++                            visited,
++                            AliasApplication {
++                                identity,
++                                arguments: &self.arguments,
++                            },
++                        ),
+                     _ => false,
+                 }
+             }
+@@ -1317,15 +1320,16 @@ impl Cycling for Reference {
+                 }
+                 visited.push(name.clone());
+                 match file.declaration(&name) {
+-                    Some(TypeDeclaration::Alias(identity, aliased)) => aliased.cycles_substituting(
+-                        target,
+-                        file,
+-                        visited,
+-                        AliasApplication {
+-                            identity,
+-                            arguments: &self.arguments,
+-                        },
+-                    ),
++                    Some(TypeDeclaration::NewType(identity, aliased)) => aliased
++                        .cycles_substituting(
++                            target,
++                            file,
++                            visited,
++                            AliasApplication {
++                                identity,
++                                arguments: &self.arguments,
++                            },
++                        ),
+                     _ => false,
+                 }
+             }
+@@ -1413,7 +1417,7 @@ impl Checkable for TypeDeclaration {
+         let identity = match self {
+             TypeDeclaration::Struct(identity, _)
+             | TypeDeclaration::Enum(identity, _)
+-            | TypeDeclaration::Alias(identity, _) => identity,
++            | TypeDeclaration::NewType(identity, _) => identity,
+         };
+         if !identity.constraints.is_empty() {
+             return Err(Error::conceptual(
+@@ -1429,7 +1433,10 @@ impl Checkable for TypeDeclaration {
+             associated: scope.associated,
+         };
+         match self {
+-            TypeDeclaration::Struct(_, positions) => positions.check_children(&inner).place(1),
++            TypeDeclaration::Struct(_, positions) => {
++                positions.single()?;
++                positions.check_children(&inner).place(1)
++            }
+             TypeDeclaration::Enum(_, variants) => {
+                 let mut names = variants.names_in(0);
+                 for declared in &mut names {
+@@ -1439,7 +1446,7 @@ impl Checkable for TypeDeclaration {
+                 names.distinct()?;
+                 variants.check_children(&inner).place(1)
+             }
+-            TypeDeclaration::Alias(identity, aliased) => {
++            TypeDeclaration::NewType(identity, aliased) => {
+                 aliased.check(&inner).lifted(1)?;
+                 if aliased.cycles(&identity.name, scope.file, &mut vec![]) {
+                     return Err(Error::conceptual(
+@@ -1453,6 +1460,21 @@ impl Checkable for TypeDeclaration {
+     }
+ }
+ 
++/// The kind whose capability refuses a struct of one position: a type that
++/// holds one other type is written as its name, a dot and that type.
++trait Single {
++    fn single(&self) -> Result<(), Error>;
++}
++
++impl Single for [Position] {
++    fn single(&self) -> Result<(), Error> {
++        if self.len() == 1 {
++            return Err(Error::conceptual(vec![], Problem::SinglePosition));
++        }
++        Ok(())
++    }
++}
++
+ impl Checkable for Variant {
+     fn check(&self, scope: &Scope) -> Result<(), Error> {
+         match self {
+@@ -1463,6 +1485,7 @@ impl Checkable for Variant {
+             }
+             Variant::Struct(name, positions) => {
+                 name.define().place(0)?;
++                positions.single()?;
+                 positions.check_children(scope).place(1)
+             }
+             Variant::Enum(name, variants) => {
+diff --git a/src/conception.rs b/src/conception.rs
+index 03b1071..09b70b5 100644
+--- a/src/conception.rs
++++ b/src/conception.rs
+@@ -244,7 +244,7 @@ impl Declaring for Protos {
+     ) -> Result<TypeDeclaration, Error> {
+         let mut declaration: TypeDeclaration = self.conceive().place(index as Integer)?;
+         if let Some(children) = arguments {
+-            let TypeDeclaration::Alias(_, reference) = &mut declaration else {
++            let TypeDeclaration::NewType(_, reference) = &mut declaration else {
+                 return Err(Error::conceptual(
+                     vec![(index + 1) as Integer],
+                     Problem::Expected(Form::Declaration),
+@@ -472,7 +472,10 @@ impl Conceiving<TypeDeclaration> for Protos {
+         } else if let Some(v) = body.children(Enclosure::Bracketed) {
+             Ok(TypeDeclaration::Enum(identity, v.variants().place(1)?))
+         } else {
+-            Ok(TypeDeclaration::Alias(identity, body.conceive().place(1)?))
++            Ok(TypeDeclaration::NewType(
++                identity,
++                body.conceive().place(1)?,
++            ))
+         }
+     }
+ }
+diff --git a/src/error.rs b/src/error.rs
+index d4001e0..d83e25c 100644
+--- a/src/error.rs
++++ b/src/error.rs
+@@ -47,6 +47,7 @@ pub enum Problem {
+     Intrinsic(String),
+     Case(String),
+     Renamed(String),
++    SinglePosition,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+@@ -73,6 +74,10 @@ pub struct Location {
+     pub column: Column,
+ }
+ #[rustfmt::skip]
+-pub type Line = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Line(pub i64);
+ #[rustfmt::skip]
+-pub type Column = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Column(pub i64);
+diff --git a/src/generation.rs b/src/generation.rs
+index 9e41479..4844621 100644
+--- a/src/generation.rs
++++ b/src/generation.rs
+@@ -26,8 +26,8 @@ use crate::sectioning::{Hoisting, Referencing, ReferencingEach, Sectioning};
+ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+     AssociatedConstant, AssociatedType, Association, Capability, Constraint, File, Generating,
+-    Identity, Intrinsic, KindBody, KindDeclaration, Name, Position, Receiver, Reference,
+-    Resolution, Resolving, Scope, Signature, Source, TypeDeclaration, Variant,
++    Identifiable, Identity, Intrinsic, KindBody, KindDeclaration, Name, Position, Receiver,
++    Reference, Resolution, Resolving, Scope, Signature, Source, TypeDeclaration, Variant,
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -350,7 +350,7 @@ impl Reaching for TypeDeclaration {
+                 positions.reaches(target, passage, file, visited)
+             }
+             TypeDeclaration::Enum(_, variants) => variants.reaches(target, passage, file, visited),
+-            TypeDeclaration::Alias(_, aliased) => aliased.reaches(target, passage, file, visited),
++            TypeDeclaration::NewType(_, aliased) => aliased.reaches(target, passage, file, visited),
+         }
+     }
+ }
+@@ -442,7 +442,7 @@ impl Closing for Reference {
+         match file.resolve(&self.name) {
+             Resolution::Intrinsic(Intrinsic::Vector) => return false,
+             Resolution::Type(name) => match file.declaration(&name) {
+-                Some(TypeDeclaration::Alias(_, aliased)) => {
++                Some(TypeDeclaration::NewType(_, aliased)) => {
+                     if aliased.closes(owner, file) {
+                         return true;
+                     }
+@@ -784,6 +784,31 @@ impl DatomDeriving for Identity {
+     }
+ }
+ 
++/// The kind whose capability tells whether a reference names a plain value.
++trait Plain {
++    fn plain(&self) -> bool;
++}
++
++/// A plain value is a String, an Integer, a Decimal or a Boolean, named
++/// without a source or arguments. A new type over one is emitted as a struct
++/// of one unnamed position; a name over anything else stays an alias until
++/// its ruling.
++impl Plain for Reference {
++    fn plain(&self) -> bool {
++        self.source.is_none()
++            && self.arguments.is_empty()
++            && matches!(
++                Intrinsic::identify(&self.name.0),
++                Some(
++                    Intrinsic::String
++                        | Intrinsic::Integer
++                        | Intrinsic::Decimal
++                        | Intrinsic::Boolean
++                )
++            )
++    }
++}
++
+ /// A type declared in a position is emitted before the struct that holds
+ /// it, as a declaration of the file outside the enclosing identity; the
+ /// position then holds it by name.
+@@ -873,7 +898,7 @@ impl Emitting for TypeDeclaration {
+                 };
+                 variants.enumeration(&inner, &identity.name, identity)
+             }
+-            TypeDeclaration::Alias(identity, aliased) => {
++            TypeDeclaration::NewType(identity, held) => {
+                 let inner = Scope {
+                     file: scope.file,
+                     identity: Some(identity),
+@@ -881,8 +906,13 @@ impl Emitting for TypeDeclaration {
+                 };
+                 let name = identity.name.tokens();
+                 let parameters = identity.parameters(&inner);
+-                let aliased = aliased.emit(&inner);
+-                quote! { #[rustfmt::skip] pub type #name #parameters = #aliased; }
++                let emitted = held.emit(&inner);
++                if held.plain() {
++                    let derive = identity.datom_derives();
++                    quote! { #derive pub struct #name #parameters (pub #emitted); }
++                } else {
++                    quote! { #[rustfmt::skip] pub type #name #parameters = #emitted; }
++                }
+             }
+         }
+     }
+diff --git a/src/lib.rs b/src/lib.rs
+index 80b3927..846062b 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -274,15 +274,16 @@ pub enum Position {
+     Declared(TypeDeclaration),
+ }
+ 
+-/// A type declaration: a struct of positions, an enum of variants, or an alias.
++/// A type declaration: a struct of positions, an enum of variants, or a
++/// new type: a name over one type.
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum TypeDeclaration {
+     /// A headed brace: the positions in order.
+     Struct(Identity, Vec<Position>),
+     /// A headed bracket: the variants.
+     Enum(Identity, Vec<Variant>),
+-    /// A headed bare: the aliased type.
+-    Alias(Identity, Reference),
++    /// A headed bare: the one type it holds, `FlowId.String`.
++    NewType(Identity, Reference),
+ }
+ 
+ /// A variant of an enum.
+@@ -819,7 +820,7 @@ mod behavior {
+ 
+     #[test]
+     fn approved_declared_and_inline_payloads_generate_named_fields() {
+-        let source = "Library [] [ Generation.{ String String } FilePath.String SyntaxError.Vector<FilePath> GenerationFailure.[ SyntaxError Unwritable ] Lock.{ String } LockRejection.[ DuplicateName.Lock PathOverlap.{ Lock Lock } ] ] [] []";
++        let source = "Library [] [ Generation.{ String String } FilePath.String SyntaxError.Vector<FilePath> GenerationFailure.[ SyntaxError Unwritable ] Lock.String LockRejection.[ DuplicateName.Lock PathOverlap.{ Lock Lock } ] ] [] []";
+         let file = match Potential::<File>::from(source).actualize() {
+             Ok(file) => file,
+             Err(_) => {
+@@ -844,7 +845,7 @@ mod behavior {
+ 
+     #[test]
+     fn library_kinds_generate_trait_surfaces() {
+-        let source = "Library [ std:[ Clonable Sendable Serializable ] ] [ SinkError.[ Closed ] Sink.{ String } ] [ Fillable.[ push!{ [ Serializable ] [ Result<Integer SinkError> ] } drain![ Vector<String> ] create:[ Self ] ] Streamable.{ [ Fillable ] [ Item<Serializable> ] [ CAPACITY.Integer ] [ next![ Option<Item> ] ] } Processable<[Clonable Sendable] Serializable>.[ process.[ String ] ] ] [ Sink.[ Fillable ] ]";
++        let source = "Library [ std:[ Clonable Sendable Serializable ] ] [ SinkError.[ Closed ] Sink.String ] [ Fillable.[ push!{ [ Serializable ] [ Result<Integer SinkError> ] } drain![ Vector<String> ] create:[ Self ] ] Streamable.{ [ Fillable ] [ Item<Serializable> ] [ CAPACITY.Integer ] [ next![ Option<Item> ] ] } Processable<[Clonable Sendable] Serializable>.[ process.[ String ] ] ] [ Sink.[ Fillable ] ]";
+         let file = match Potential::<File>::from(source).actualize() {
+             Ok(file) => file,
+             Err(_) => {
+@@ -998,7 +999,7 @@ mod behavior {
+ 
+     #[test]
+     fn constrained_data_declarations_are_rejected() {
+-        let source = "Library [] [ Box<Sized>.{ String } ] [] []";
++        let source = "Library [] [ Box<Sized>.String ] [] []";
+         assert!(matches!(
+             Potential::<File>::from(source).actualize(),
+             Err(Error::Conceptual(_))
+@@ -1035,7 +1036,7 @@ mod behavior {
+ 
+     #[test]
+     fn nested_inline_data_names_include_ancestry_after_the_first_level() {
+-        let source = "Library [] [ Outer.[ A.[ X.{ String } ] B.[ X.{ Integer } ] ] Rejection.[ PathOverlap.{ String String } ] ] [] []";
++        let source = "Library [] [ Outer.[ A.[ X.String ] B.[ X.String ] ] Rejection.[ PathOverlap.{ String String } ] ] [] []";
+         let file = match Potential::<File>::from(source).actualize() {
+             Ok(file) => file,
+             Err(_) => panic!("nested collision source reads"),
+@@ -1044,8 +1045,10 @@ mod behavior {
+             Ok(rust) => rust,
+             Err(_) => panic!("nested collision source generates"),
+         };
+-        assert!(rust.contains("struct A_Data_X_Data"));
+-        assert!(rust.contains("struct B_Data_X_Data"));
++        assert!(rust.contains("pub enum A_Data"));
++        assert!(rust.contains("pub enum B_Data"));
++        assert_eq!(rust.matches("X(String)").count(), 2);
++        assert!(!rust.contains("X_Data"));
+         assert!(rust.contains("struct PathOverlap_Data"));
+         syn::parse_file(&rust).expect("generated nested data is Rust");
+     }
+@@ -1172,10 +1175,10 @@ mod behavior {
+             "Library [] [ T.String ] [ K.[] ] [ T.[ 1 ] ]",
+             "Library [] [ Rec.{ String Bogus } ] [] []",
+             "Library [] [ Rec.{ Vector<String> Option<Bogus> } ] [] []",
+-            "Library [] [ Rec.{ Vector<Option<Bogus>> } ] [] []",
++            "Library [] [ Rec.Vector<Option<Bogus>> ] [] []",
+             "Library [] [ Alias.Result<String Bogus> ] [] []",
+             "Library [] [ E.[ A.Vector<String> B.Option<Bogus> ] ] [] []",
+-            "Library [ x:[ T ] ] [ Rec.{ x:T<Bogus> } ] [] []",
++            "Library [ x:[ T ] ] [ Rec.x:T<Bogus> ] [] []",
+             "Library [] [] [ K.[ run.{ [ Self Bogus ] [ String ] } ] ] []",
+             "Library [] [] [ K.[ run.{ [ Self ] [ Vector<Bogus> ] } ] ] []",
+             "Library [] [] [ K.{ [] [ Item<Bogus> ] [] [] } ] []",
+@@ -1197,7 +1200,7 @@ mod behavior {
+                 .or_else(|| source.find("<1>").map(|at| at + 1))
+                 .expect("one offending token");
+             assert_eq!(
+-                (location.line, location.column),
++                (location.line.0, location.column.0),
+                 (1, offending as i64 + 1),
+                 "{source}: {error:?}"
+             );
+diff --git a/src/location.rs b/src/location.rs
+index e73e53d..577dfc9 100644
+--- a/src/location.rs
++++ b/src/location.rs
+@@ -9,7 +9,9 @@
+ use datom_codec::Integer;
+ use protos::{Extent, Protos, Protosizable};
+ 
+-use crate::{Canonicalizable, Error, File, Locating, Location, Potential, Resituating};
++use crate::{
++    Canonicalizable, Column, Error, File, Line, Locating, Location, Potential, Resituating,
++};
+ 
+ /// The kind whose capability finds the extent of the node a path names.
+ trait Finding {
+@@ -86,8 +88,8 @@ impl Lining for str {
+             None => before.chars().count() + 1,
+         };
+         Location {
+-            line: line as Integer,
+-            column: column as Integer,
++            line: Line(line as Integer),
++            column: Column(column as Integer),
+         }
+     }
+ }
+diff --git a/src/protosization.rs b/src/protosization.rs
+index 741b42e..c6c2393 100644
+--- a/src/protosization.rs
++++ b/src/protosization.rs
+@@ -137,7 +137,9 @@ impl DeclarationsProtosizing for [TypeDeclaration] {
+         let mut nodes = Vec::new();
+         for declaration in self {
+             match declaration {
+-                TypeDeclaration::Alias(identity, reference) if !reference.arguments.is_empty() => {
++                TypeDeclaration::NewType(identity, reference)
++                    if !reference.arguments.is_empty() =>
++                {
+                     let body = match &reference.source {
+                         Some(source) => source.as_ref().headed(
+                             None,
+@@ -266,7 +268,7 @@ impl Protosizing for TypeDeclaration {
+                 Separator::Period,
+                 "".enclosed(Enclosure::Bracketed, variants.variant_nodes()),
+             ),
+-            Self::Alias(identity, reference) => {
++            Self::NewType(identity, reference) => {
+                 identity.heading(Separator::Period, reference.protos())
+             }
+         }
+diff --git a/src/sectioning.rs b/src/sectioning.rs
+index af551a1..752199e 100644
+--- a/src/sectioning.rs
++++ b/src/sectioning.rs
+@@ -158,7 +158,7 @@ impl Hoist for TypeDeclaration {
+         match self {
+             TypeDeclaration::Struct(_, positions) => positions.hoist_positions(body, placed),
+             TypeDeclaration::Enum(_, variants) => variants.hoist_variants(body, placed),
+-            TypeDeclaration::Alias(_, _) => {}
++            TypeDeclaration::NewType(_, _) => {}
+         }
+     }
+ }
+diff --git a/tests/cli.rs b/tests/cli.rs
+index 7caea75..bec2b2f 100644
+--- a/tests/cli.rs
++++ b/tests/cli.rs
+@@ -161,7 +161,7 @@ fn a_bad_ethos_file_is_rejected_at_its_line_and_column_and_nothing_is_written()
+     assert_eq!(
+         output,
+         format!(
+-            "Rejected.{{ {source} {{ 3 19 }} Conceptual.{{ [ 1 1 0 1 1 ] Undeclared.Bogus }} }}\n"
++            "Rejected.{{ {source} {{ {{ 3 }} {{ 19 }} }} Conceptual.{{ [ 1 1 0 1 1 ] Undeclared.Bogus }} }}\n"
+         )
+     );
+     assert!(!std::path::Path::new(&target).exists());
+@@ -189,7 +189,7 @@ fn check_locates_an_undeclared_name_below_a_comment() {
+     assert_eq!(
+         output,
+         format!(
+-            "Rejected.{{ {source} {{ 5 26 }} Conceptual.{{ [ 1 1 0 1 2 1 0 ] Undeclared.Bogus }} }}\n"
++            "Rejected.{{ {source} {{ {{ 5 }} {{ 26 }} }} Conceptual.{{ [ 1 1 0 1 2 1 0 ] Undeclared.Bogus }} }}\n"
+         )
+     );
+ }
+@@ -199,7 +199,7 @@ fn check_locates_a_duplicate_at_its_second_declaration() {
+     let directory = "duplicate".scratch();
+     let source = directory.write_source(
+         "duplicate",
+-        "Library\n[]\n[ Record.{ String }\n  Record.{ Integer } ]\n[]\n[]\n",
++        "Library\n[]\n[ Record.String\n  Record.Integer ]\n[]\n[]\n",
+     );
+     let argument = check(&source);
+     let (success, output) = [argument.as_str()].invoke();
+@@ -207,7 +207,7 @@ fn check_locates_a_duplicate_at_its_second_declaration() {
+     assert_eq!(
+         output,
+         format!(
+-            "Rejected.{{ {source} {{ 4 3 }} Conceptual.{{ [ 1 1 1 0 ] Duplicate.Record }} }}\n"
++            "Rejected.{{ {source} {{ {{ 4 }} {{ 3 }} }} Conceptual.{{ [ 1 1 1 0 ] Duplicate.Record }} }}\n"
+         )
+     );
+ }
+@@ -225,7 +225,7 @@ fn check_locates_an_arity_error_at_the_reference() {
+     assert_eq!(
+         output,
+         format!(
+-            "Rejected.{{ {source} {{ 4 10 }} Conceptual.{{ [ 1 1 0 1 1 ] Arity.{{ 2 1 }} }} }}\n"
++            "Rejected.{{ {source} {{ {{ 4 }} {{ 10 }} }} Conceptual.{{ [ 1 1 0 1 1 ] Arity.{{ 2 1 }} }} }}\n"
+         )
+     );
+ }
+@@ -238,7 +238,9 @@ fn check_locates_a_structural_error_at_its_extent() {
+     let (success, output) = [argument.as_str()].invoke();
+     assert!(!success);
+     assert!(
+-        output.starts_with(&format!("Rejected.{{ {source} {{ 3 19 }} Structural.")),
++        output.starts_with(&format!(
++            "Rejected.{{ {source} {{ {{ 3 }} {{ 19 }} }} Structural."
++        )),
+         "{output}"
+     );
+ }
+@@ -275,7 +277,7 @@ fn check_takes_a_kind_in_an_input_and_locates_a_concrete_type_there() {
+     assert_eq!(
+         output,
+         format!(
+-            "Rejected.{{ {refused} {{ 4 28 }} Conceptual.{{ [ 1 2 0 1 0 1 0 0 ] KindWanted.Rec }} }}\n"
++            "Rejected.{{ {refused} {{ {{ 4 }} {{ 28 }} }} Conceptual.{{ [ 1 2 0 1 0 1 0 0 ] KindWanted.Rec }} }}\n"
+         )
+     );
+ }
+@@ -289,7 +291,9 @@ fn a_file_headed_sema_is_rejected_naming_memory() {
+     assert!(!success);
+     assert_eq!(
+         output,
+-        format!("Rejected.{{ {source} {{ 1 1 }} Conceptual.{{ [ 0 ] Renamed.Memory }} }}\n")
++        format!(
++            "Rejected.{{ {source} {{ {{ 1 }} {{ 1 }} }} Conceptual.{{ [ 0 ] Renamed.Memory }} }}\n"
++        )
+     );
+ }
+ 
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index e2f81b5..63ea13d 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -14,7 +14,7 @@ fn read(source: &str) -> File {
+ 
+ #[test]
+ fn full_library_round_trips_and_generates_named_types_and_kinds() {
+-    let source = "Library [ std:[ Clonable Sendable Serializable ] ] [ SinkError.[ Closed ] Sink.{ String } ] [ Fillable.[ push!{ [ Serializable ] [ Result<Integer SinkError> ] } drain![ Vector<String> ] create:[ Self ] ] Streamable.{ [ Fillable ] [ Item<Serializable> ] [ CAPACITY.Integer ] [ next![ Option<Item> ] ] } Processable<[Clonable Sendable] Serializable>.[ process.[ String ] ] ] [ Sink.[ Fillable ] ]";
++    let source = "Library [ std:[ Clonable Sendable Serializable ] ] [ SinkError.[ Closed ] Sink.String ] [ Fillable.[ push!{ [ Serializable ] [ Result<Integer SinkError> ] } drain![ Vector<String> ] create:[ Self ] ] Streamable.{ [ Fillable ] [ Item<Serializable> ] [ CAPACITY.Integer ] [ next![ Option<Item> ] ] } Processable<[Clonable Sendable] Serializable>.[ process.[ String ] ] ] [ Sink.[ Fillable ] ]";
+     let file = read(source);
+     let repeated = read(&file.protosize().textualize());
+     assert_eq!(file, repeated);
+@@ -23,8 +23,7 @@ fn full_library_round_trips_and_generates_named_types_and_kinds() {
+         Ok(rust) => rust,
+         Err(_) => panic!("checked Library generates"),
+     };
+-    assert!(rust.contains("pub struct Sink"));
+-    assert!(rust.contains("pub string: String"));
++    assert!(rust.contains("pub struct Sink(pub String);"));
+     assert!(rust.contains("std::result::Result<i64, SinkError>"));
+     assert!(rust.contains("pub trait Streamable"));
+     assert!(rust.contains("pub trait Processable"));
+@@ -41,7 +40,7 @@ fn signal_generates_query_response_and_optional_datom_derives() {
+     assert!(rust.contains("pub enum Response"));
+     assert!(rust.contains("feature = \"datom\""));
+     assert!(rust.contains("datom_codec::Datomizable, datom_codec::Composing"));
+-    assert!(rust.contains("pub type LockId = i64"));
++    assert!(rust.contains("pub struct LockId(pub i64);"));
+ }
+ 
+ #[test]
+@@ -89,12 +88,12 @@ fn operation_generates_its_operation_and_outcome_enums_with_their_payloads() {
+ #[test]
+ fn an_operation_declaring_the_operation_or_outcome_type_is_refused() {
+     assert!(
+-        read("Operation [] [ Go.Operation ] [ Gone ] [ Operation.{ String } ]")
++        read("Operation [] [ Go.Operation ] [ Gone ] [ Operation.String ]")
+             .generate()
+             .is_err()
+     );
+     assert!(
+-        read("Operation [] [ Go ] [ Gone.Outcome ] [ Outcome.{ String } ]")
++        read("Operation [] [ Go ] [ Gone.Outcome ] [ Outcome.String ]")
+             .generate()
+             .is_err()
+     );
+@@ -110,7 +109,7 @@ fn a_named_position_declares_its_type_in_place() {
+         Ok(rust) => rust,
+         Err(_) => panic!("a struct with named positions generates"),
+     };
+-    assert!(rust.contains("pub type Brief = String;"), "{rust}");
++    assert!(rust.contains("pub struct Brief(pub String);"), "{rust}");
+     assert!(rust.contains("pub enum State {"), "{rust}");
+     assert!(rust.contains("pub struct Capsule {"), "{rust}");
+     assert!(
+@@ -145,7 +144,7 @@ fn a_variant_payload_declares_named_positions_in_place() {
+             Ok(rust) => rust,
+             Err(_) => panic!("a payload with a named position generates"),
+         };
+-    assert!(rust.contains("pub type Brief = String;"), "{rust}");
++    assert!(rust.contains("pub struct Brief(pub String);"), "{rust}");
+     assert!(rust.contains("pub brief: Brief"), "{rust}");
+ }
+ 
+@@ -161,11 +160,11 @@ fn retired_roots_are_not_accepted() {
+ 
+ #[test]
+ fn operation_free_signal_generates_only_its_declared_shared_data() {
+-    let generated = match read("Signal [] [] [] [ Shared.{ Name } Name.String ]").generate() {
++    let generated = match read("Signal [] [] [] [ Shared.Name Name.String ]").generate() {
+         Ok(generated) => generated,
+         Err(_) => panic!("operation-free Signal generates"),
+     };
+-    assert!(generated.contains("pub struct Shared"));
++    assert!(generated.contains("pub type Shared = Name;"));
+     assert!(!generated.contains("pub enum Query"));
+     assert!(!generated.contains("pub enum Response"));
+ }
+@@ -175,15 +174,14 @@ fn a_signal_declaring_the_query_type_is_refused() {
+     // The generator emits `pub enum Query` (Vision/ethos.md: "pub enum Query
+     // { Lock(LockRequest), Release(LockId) }"), so `Query` is the name a
+     // Signal may not also declare.
+-    let signal = read("Signal [] [ Ask.Query ] [ Told.Query ] [ Query.{ String } ]");
++    let signal = read("Signal [] [ Ask.Query ] [ Told.Query ] [ Query.String ]");
+     assert!(signal.generate().is_err());
+     // `Request` is an ordinary name: nothing is generated under it.
+-    let generated = match read("Signal [] [ Ask.Request ] [ Told.Request ] [ Request.{ String } ]")
+-        .generate()
+-    {
+-        Ok(generated) => generated,
+-        Err(_) => panic!("a Signal declaring Request generates"),
+-    };
++    let generated =
++        match read("Signal [] [ Ask.Request ] [ Told.Request ] [ Request.String ]").generate() {
++            Ok(generated) => generated,
++            Err(_) => panic!("a Signal declaring Request generates"),
++        };
+     assert!(generated.contains("pub struct Request"));
+     assert_eq!(generated.matches("pub enum Query").count(), 1);
+ }
+@@ -191,7 +189,7 @@ fn a_signal_declaring_the_query_type_is_refused() {
+ #[test]
+ fn a_signal_declaring_the_response_type_is_refused() {
+     assert!(
+-        read("Signal [] [ Ask.Response ] [ Told.Response ] [ Response.{ String } ]")
++        read("Signal [] [ Ask.Response ] [ Told.Response ] [ Response.String ]")
+             .generate()
+             .is_err()
+     );
+@@ -213,14 +211,14 @@ fn memory_generates_a_record_type_named_record() {
+ #[test]
+ fn memory_generates_every_declared_record_and_refuses_a_duplicate() {
+     let generated =
+-        match read("Memory [] [ Entry.{ String } Record.{ Entry Vector<Entry> } ]").generate() {
++        match read("Memory [] [ Entry.String Record.{ Entry Vector<Entry> } ]").generate() {
+             Ok(generated) => generated,
+             Err(_) => panic!("a two-record Memory generates"),
+         };
+     assert!(generated.contains("pub struct Entry"));
+     assert!(generated.contains("pub entry_vector: std::vec::Vec<Entry>"));
+     assert!(
+-        read("Memory [] [ Entry.{ String } Entry.{ Integer } ]")
++        read("Memory [] [ Entry.String Entry.Integer ]")
+             .generate()
+             .is_err()
+     );
+@@ -241,50 +239,34 @@ fn self_in_a_data_position_is_named_for_the_enclosing_type() {
+ fn a_sourced_generic_in_a_data_position_reads_and_reprints() {
+     // ethos-zero's own printer emits `external:Vector<String>`; its reader
+     // must take that shape back.
+-    let file = read("Library [ external:[ Vector ] ] [ Record.{ external:Vector<String> } ] [] []");
++    let file = read("Library [ external:[ Vector ] ] [ Record.external:Vector<String> ] [] []");
+     assert_eq!(file, read(&file.protosize().textualize()));
+     let generated = match file.generate() {
+         Ok(generated) => generated,
+         Err(_) => panic!("a sourced generic position generates"),
+     };
+-    assert!(generated.contains("pub string_vector: external::Vector<String>"));
++    assert!(generated.contains("pub type Record = external::Vector<String>;"));
+ }
+ 
+ #[test]
+-fn an_authored_name_capturing_a_derived_inline_name_is_refused() {
+-    // The audit's row-15 probe: two enums each declare X in place, and an
+-    // authored X_Data would capture the short name. The authored name is
+-    // the occurrence refused, at its declaration.
+-    let probe = "Library [] [ P.[ X.{ String } ] Q.[ X.{ Integer } ] X_Data.String ] [] []";
+-    assert!(read(probe).generate().is_ok());
+-    let captured = "Library [] [ P.[ X.{ String } ] P_X_Data.String ] [] []";
+-    assert!(read(captured).generate().is_ok());
+-    let captured = "Library [] [ P.[ X.{ String } ] Q.[ X.{ Integer } ] P_X_Data.String ] [] []";
+-    match read(captured).generate() {
+-        Err(Error::Conceptual(data)) => {
+-            assert_eq!(data.problem, Problem::Duplicate("P_X_Data".to_owned()));
+-            assert_eq!(data.integer_vector, vec![1, 1, 2, 0]);
+-        }
+-        _ => panic!("an authored name capturing a derived one is refused"),
+-    }
+-    let captured = "Library [] [ P.[ X.{ String } ] X_Data.String ] [] []";
+-    match read(captured).generate() {
+-        Err(Error::Conceptual(data)) => {
+-            assert_eq!(data.problem, Problem::Duplicate("X_Data".to_owned()));
+-            assert_eq!(data.integer_vector, vec![1, 1, 1, 0]);
+-        }
+-        _ => panic!("an authored X_Data beside a unique inline X is refused"),
++fn a_variant_carrying_one_type_derives_no_inline_name() {
++    // The audit's row-15 probe, rewritten: X.String is a variant carrying a
++    // String, so no X_Data, P_X_Data or Query_Ask_Data is derived, and an
++    // authored name of that shape captures nothing.
++    for source in [
++        "Library [] [ P.[ X.String ] Q.[ X.String ] X_Data.String ] [] []",
++        "Library [] [ P.[ X.String ] P_X_Data.String ] [] []",
++        "Library [] [ P.[ X.String ] Q.[ X.String ] P_X_Data.String ] [] []",
++        "Library [] [ P.[ X.String ] X_Data.String ] [] []",
++    ] {
++        assert!(read(source).generate().is_ok(), "{source} generates");
+     }
+-}
+-
+-#[test]
+-fn signal_query_and_response_inline_payloads_are_unique_file_wide() {
+-    let generated = match read("Signal [] [ Ask.{ String } ] [ Ask.{ Integer } ] []").generate() {
++    let generated = match read("Signal [] [ Ask.String ] [ Ask.String ] []").generate() {
+         Ok(generated) => generated,
+-        Err(_) => panic!("Query and Response each declaring Ask in place generate"),
++        Err(_) => panic!("Query and Response each carrying Ask generate"),
+     };
+-    assert!(generated.contains("pub struct Query_Ask_Data"));
+-    assert!(generated.contains("pub struct Response_Ask_Data"));
++    assert_eq!(generated.matches("Ask(String)").count(), 2);
++    assert!(!generated.contains("Ask_Data"));
+     syn::parse_file(&generated).expect("generated Rust parses");
+ }
+ 
+@@ -308,7 +290,7 @@ fn a_declared_intrinsic_name_is_refused_by_name() {
+     // Declaring Result used to shadow the intrinsic, and the later
+     // Result<String Integer> failed as an obscure Arity.{ 0 2 }.
+     assert_eq!(
+-        "Library [] [ Result.{ String } Pair.{ Result<String Integer> } ] [] []".refusal(),
++        "Library [] [ Result.String Pair.Result<String Integer> ] [] []".refusal(),
+         (vec![1, 1, 0, 0], Problem::Intrinsic("Result".to_owned()))
+     );
+     assert_eq!(
+@@ -326,7 +308,7 @@ fn a_declared_intrinsic_name_is_refused_by_name() {
+         Problem::Intrinsic("Vector".to_owned())
+     );
+     assert_eq!(
+-        "Signal [] [] [] [ Integer.{ String } ]".refusal(),
++        "Signal [] [] [] [ Integer.String ]".refusal(),
+         (vec![1, 3, 0, 0], Problem::Intrinsic("Integer".to_owned()))
+     );
+ }
+@@ -334,7 +316,7 @@ fn a_declared_intrinsic_name_is_refused_by_name() {
+ #[test]
+ fn a_lowercase_type_or_kind_name_is_refused() {
+     assert_eq!(
+-        "Library [] [ a.{ String } ] [] []".refusal(),
++        "Library [] [ a.String ] [] []".refusal(),
+         (vec![1, 1, 0, 0], Problem::Case("a".to_owned()))
+     );
+     assert_eq!(
+@@ -342,7 +324,7 @@ fn a_lowercase_type_or_kind_name_is_refused() {
+         (vec![1, 2, 0, 0], Problem::Case("runnable".to_owned()))
+     );
+     assert_eq!(
+-        "Memory [] [ record.{ String } ]".refusal(),
++        "Memory [] [ record.String ]".refusal(),
+         (vec![1, 1, 0, 0], Problem::Case("record".to_owned()))
+     );
+ }
+@@ -350,42 +332,46 @@ fn a_lowercase_type_or_kind_name_is_refused() {
+ #[test]
+ fn a_type_with_no_finite_value_is_refused() {
+     assert_eq!(
+-        "Library [] [ S.{ Self } ] [] []".refusal(),
++        "Library [] [ S.Self ] [] []".refusal(),
+         (vec![1, 1, 0, 0], Problem::Cycle("S".to_owned()))
+     );
+     assert_eq!(
+-        "Library [] [ Leaf.String A.{ Leaf B } B.{ A } ] [] []".refusal(),
++        "Library [] [ Leaf.String A.{ Leaf B } B.A ] [] []".refusal(),
+         (vec![1, 1, 1, 0], Problem::Cycle("A".to_owned()))
+     );
+     assert_eq!(
+         "Library [] [ E.[ Only.E ] ] [] []".refusal(),
+         (vec![1, 1, 0, 0], Problem::Cycle("E".to_owned()))
+     );
+-    // A Vector, an Option or another variant is a way out.
++    // Another variant is a way out.
+     for finite in [
++        "Library [] [ E.[ Leaf Node.{ E E } ] ] [] []",
++        "Library [] [ Never.[] Holder.Never ] [] []",
++    ] {
++        assert!(read(finite).generate().is_ok(), "{finite} generates");
++    }
++    // A struct of one position holding itself through a container is
++    // refused for its one position before its finiteness is weighed.
++    for single in [
+         "Library [] [ S.{ Vector<Self> } ] [] []",
+         "Library [] [ S.{ Option<Self> } ] [] []",
+-        "Library [] [ E.[ Leaf Node.{ E E } ] ] [] []",
+         "Library [] [ S.{ Result<Self String> } ] [] []",
+-        "Library [] [ Never.[] Holder.{ Never } ] [] []",
+     ] {
+-        assert!(read(finite).generate().is_ok(), "{finite} generates");
++        assert_eq!(single.refusal(), (vec![1, 1, 0], Problem::SinglePosition));
+     }
+ }
+ 
+ #[test]
+ fn outer_option_and_result_are_written_fully_qualified() {
+-    let generated = match read(
+-        "Library [] [ Wrapped.{ Option<Integer> Result<String Integer> } Chain.{ Option<Chain> } ] [] []",
+-    )
+-    .generate()
+-    {
+-        Ok(generated) => generated,
+-        Err(_) => panic!("outer containers generate"),
+-    };
++    let generated =
++        match read("Library [] [ Wrapped.{ Option<Integer> Result<String Integer> } ] [] []")
++            .generate()
++        {
++            Ok(generated) => generated,
++            Err(_) => panic!("outer containers generate"),
++        };
+     assert!(generated.contains("pub integer_option: std::option::Option<i64>"));
+     assert!(generated.contains("pub string_integer_result: std::result::Result<String, i64>"));
+-    assert!(generated.contains("std::option::Option<std::boxed::Box<Chain>>"));
+     assert!(!generated.contains(" Option<"));
+     assert!(!generated.contains(" Result<"));
+ }
+@@ -520,3 +506,47 @@ fn a_concrete_type_in_an_input_is_refused_as_wanting_a_kind() {
+         Problem::KindWanted("String".to_owned())
+     );
+ }
++
++#[test]
++fn a_struct_of_one_position_is_refused() {
++    assert_eq!(
++        "Library [] [ Age.{ Integer } ] [] []".refusal(),
++        (vec![1, 1, 0], Problem::SinglePosition)
++    );
++    assert!(read("Library [] [ Age.Integer ] [] []").generate().is_ok());
++    assert_eq!(
++        "Library [] [ Event.[ Started.{ String } ] ] [] []".refusal(),
++        (vec![1, 1, 0, 1, 0], Problem::SinglePosition)
++    );
++    assert_eq!(
++        "Library [] [ P.[ X.{ String } ] Q.[ X.{ Integer } ] X_Data.String ] [] []".refusal(),
++        (vec![1, 1, 0, 1, 0], Problem::SinglePosition)
++    );
++    assert_eq!(
++        "Signal [] [ Ask.{ String } ] [ Ask.{ Integer } ] []".refusal(),
++        (vec![1, 1, 0], Problem::SinglePosition)
++    );
++    assert_eq!(
++        "Library [] [ Chain.{ Option<Chain> } ] [] []".refusal(),
++        (vec![1, 1, 0], Problem::SinglePosition)
++    );
++}
++
++#[test]
++fn a_new_type_over_a_plain_value_is_a_struct_of_one_unnamed_position() {
++    let generated = match read("Library [] [ FlowId.String Age.Integer ] [] []").generate() {
++        Ok(generated) => generated,
++        Err(_) => panic!("plain new types generate"),
++    };
++    assert!(
++        generated.contains("pub struct FlowId(pub String);"),
++        "{generated}"
++    );
++    assert!(
++        generated.contains("pub struct Age(pub i64);"),
++        "{generated}"
++    );
++    assert_eq!(generated.matches("datom_codec::Datomizable").count(), 2);
++    assert!(!generated.contains("pub type"));
++    syn::parse_file(&generated).expect("generated Rust parses");
++}
+diff --git a/tests/flow_contract.rs b/tests/flow_contract.rs
+index 9a9fa95..135937c 100644
+--- a/tests/flow_contract.rs
++++ b/tests/flow_contract.rs
+@@ -26,7 +26,7 @@ mod wire {
+     fn every_root_crosses_the_wire() {
+         crosses(library::Voice::Mind(library::Rank::Primary));
+         crosses(signal::Query::Report(signal::Report_Data {
+-            flow_id: 7,
++            flow_id: library::FlowId(7),
+             event: library::Event::ToolUsed("Bash".to_owned()),
+         }));
+         crosses(signal::Response::Refused(signal::Refused_Data::VoiceBusy(
+@@ -35,13 +35,13 @@ mod wire {
+         crosses(operation::Operation::Start(operation::Start_Data {
+             voice: library::Voice::Psyche(library::Rank::Secondary),
+             capsule: operation::Capsule {
+-                home: "/home/flow".to_owned(),
++                home: operation::Home("/home/flow".to_owned()),
+                 login: vec!["claude".to_owned()],
+             },
+         }));
+         crosses(operation::Outcome::Failed("no capsule".to_owned()));
+         crosses(memory::Flow {
+-            flow_id: 7,
++            flow_id: library::FlowId(7),
+             voice: library::Voice::Mind(library::Rank::Primary),
+             state: memory::State::Ended,
+             event_vector: vec![library::Event::Started, library::Event::Stopped],
+diff --git a/tests/generated.rs b/tests/generated.rs
+index 2949338..416415c 100644
+--- a/tests/generated.rs
++++ b/tests/generated.rs
+@@ -73,29 +73,19 @@ mod tree_types;
+ 
+ #[test]
+ fn nested_inline_payloads_have_distinct_rust_types() {
+-    let left = nested_collision::Outer::A(nested_collision::A_Data::X(
+-        nested_collision::A_Data_X_Data {
+-            string: String::new(),
+-        },
+-    ));
+-    let right = nested_collision::Outer::B(nested_collision::B_Data::X(
+-        nested_collision::B_Data_X_Data { integer: 1 },
+-    ));
++    let left = nested_collision::Outer::A(nested_collision::A_Data::X(String::new()));
++    let right = nested_collision::Outer::B(nested_collision::B_Data::X(String::new()));
+     assert!(matches!(left, nested_collision::Outer::A(_)));
+     assert!(matches!(right, nested_collision::Outer::B(_)));
+ }
+ 
+ #[test]
+ fn colliding_inline_payloads_are_named_for_their_enums() {
+-    let p = inline_collision::P::X(inline_collision::P_X_Data {
+-        string: String::new(),
+-    });
+-    let nested = inline_collision::P::Y(inline_collision::Y_Data::X(
+-        inline_collision::Y_Data_X_Data { integer: 2 },
+-    ));
+-    let q = inline_collision::Q::X(inline_collision::Q_X_Data { integer: 1 });
+-    let authored: inline_collision::X_Data = String::new();
+-    let unique = inline_collision::R::Z(inline_collision::Z_Data { string: authored });
++    let p = inline_collision::P::X(String::new());
++    let nested = inline_collision::P::Y(inline_collision::Y_Data::X(String::new()));
++    let q = inline_collision::Q::X(String::new());
++    let authored = inline_collision::X_Data(String::new());
++    let unique = inline_collision::R::Z(authored.0);
+     assert!(matches!(p, inline_collision::P::X(_)));
+     assert!(matches!(nested, inline_collision::P::Y(_)));
+     assert!(matches!(q, inline_collision::Q::X(_)));
+@@ -126,9 +116,9 @@ fn generated_signal_query_round_trips_as_a_portable_archive() {
+ 
+ #[test]
+ fn generated_decimal_signal_archives_and_bears_datom_derives() {
+-    let query = signal_decimal::Query::Measure(signal_decimal::Measurement {
+-        decimal: datom_codec::Decimal::try_from(1.25).expect("1.25 is finite"),
+-    });
++    let query = signal_decimal::Query::Measure(signal_decimal::Measurement(
++        datom_codec::Decimal::try_from(1.25).expect("1.25 is finite"),
++    ));
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&query).expect("archive decimal query");
+     let restored = rkyv::from_bytes::<signal_decimal::Query, rkyv::rancor::Error>(&bytes)
+         .expect("restore decimal query");
+@@ -180,11 +170,9 @@ fn recursive_generated_signal_archives_and_restores() {
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&chain).expect("archive chain");
+     let restored = rkyv::from_bytes::<Chain, rkyv::rancor::Error>(&bytes).expect("restore chain");
+     assert_eq!(restored, chain);
+-    let knot = tree_types::Knot::Loop(tree_types::Loop {
+-        knot: Box::new(tree_types::Knot::Loop(tree_types::Loop {
+-            knot: Box::new(tree_types::Knot::End),
+-        })),
+-    });
++    let knot = tree_types::Knot::Loop(Box::new(tree_types::Knot::Loop(Box::new(
++        tree_types::Knot::End,
++    ))));
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&knot).expect("archive knot");
+     let restored =
+         rkyv::from_bytes::<tree_types::Knot, rkyv::rancor::Error>(&bytes).expect("restore knot");
+@@ -214,9 +202,7 @@ fn operation_free_signal_shared_record_archives_and_round_trips_as_datom_text()
+     use datom_codec::{Actualizing, Budget, Datomizable, Potential};
+     use protos::{Protosizable, ReaderBudget, Textualizable};
+ 
+-    let shared = empty_signal::Shared {
+-        name: "domain".to_owned(),
+-    };
++    let shared: empty_signal::Shared = empty_signal::Name("domain".to_owned());
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&shared).expect("archive shared record");
+     assert_eq!(
+         rkyv::from_bytes::<empty_signal::Shared, rkyv::rancor::Error>(&bytes)
+@@ -268,9 +254,11 @@ fn generated_memory_records_round_trip_as_datom_text() {
+ 
+ #[test]
+ fn aliases_name_their_types() {
+-    let short: alias_format::Short = String::new();
+-    let provider: alias_format::OptionalSpiritGuardianProviderName = Some(short);
+-    let tokens: alias_format::OptionalSpiritGuardianMaximumOutputTokens = Some(4_096);
++    let short = alias_format::Short(String::new());
++    let provider: alias_format::OptionalSpiritGuardianProviderName =
++        Some(alias_format::SpiritGuardianProviderName(short.0));
++    let tokens: alias_format::OptionalSpiritGuardianMaximumOutputTokens =
++        Some(alias_format::SpiritGuardianMaximumOutputTokens(4_096));
+     let nested: alias_format::Nested = vec![Some(Ok(String::new())), Some(Err(1)), None];
+     assert!(provider.is_some() && tokens.is_some());
+     assert_eq!(nested.len(), 3);
+@@ -335,15 +323,11 @@ fn declared_container_names_do_not_capture_the_generated_containers() {
+             tree_option: None,
+             vec_integer_result: Err(1),
+         })),
+-        vec_integer_result: Ok(composition_types::Vec {
+-            string: String::new(),
+-        }),
++        vec_integer_result: Ok(composition_types::Vec(String::new())),
+     };
+     let nested = composition_types::Nested::Choice(composition_types::Choice_Data::Item(
+         composition_types::Choice_Data_Item_Data {
+-            vec: composition_types::Vec {
+-                string: String::new(),
+-            },
++            vec: composition_types::Vec(String::new()),
+             integer: 0,
+         },
+     ));
+@@ -355,11 +339,9 @@ fn declared_container_names_do_not_capture_the_generated_containers() {
+ fn a_declared_single_letter_type_is_not_shadowed() {
+     let holder = generic_shadow::Holder {
+         string: String::new(),
+-        a: generic_shadow::A {
+-            string: "a".to_owned(),
+-        },
++        a: generic_shadow::A("a".to_owned()),
+     };
+-    assert_eq!(holder.a.string, "a");
++    assert_eq!(holder.a.0, "a");
+ }
+ 
+ #[test]
+@@ -372,13 +354,13 @@ fn several_declarations_generate_side_by_side() {
+         string: String::new(),
+         integer_vector: vec![record.integer],
+     };
+-    let id: multi_types::LockId = 7;
++    let id = multi_types::LockId(7);
+     assert_eq!(report.integer_vector, vec![1]);
+     assert!(matches!(
+         multi_types::SinkError::Closed,
+         multi_types::SinkError::Closed
+     ));
+-    assert_eq!(id, 7);
++    assert_eq!(id.0, 7);
+ }
+ 
+ #[test]
+@@ -451,7 +433,7 @@ fn the_flow_nexus_operation_and_memory_compile_and_round_trip_as_datom_text() {
+     let operation = flow_operation::Operation::Start(flow_operation::Start_Data {
+         voice: Voice::Mind(flow_library::Rank::Primary),
+         capsule: flow_operation::Capsule {
+-            home: "/home/flow".to_owned(),
++            home: flow_operation::Home("/home/flow".to_owned()),
+             login: vec!["claude".to_owned()],
+         },
+     });
+@@ -461,10 +443,13 @@ fn the_flow_nexus_operation_and_memory_compile_and_round_trip_as_datom_text() {
+         pending.actualize(&mut budget()).expect("restore operation"),
+         operation
+     );
+-    let outcome = flow_operation::Outcome::Started(7);
+-    assert!(matches!(outcome, flow_operation::Outcome::Started(7)));
++    let outcome = flow_operation::Outcome::Started(FlowId(7));
++    assert!(matches!(
++        outcome,
++        flow_operation::Outcome::Started(FlowId(7))
++    ));
+     let memory = flow_memory::Flow {
+-        flow_id: 7,
++        flow_id: FlowId(7),
+         voice: Voice::Psyche(flow_library::Rank::Secondary),
+         state: flow_memory::State::Running,
+         event_vector: vec![
+@@ -481,3 +466,23 @@ fn the_flow_nexus_operation_and_memory_compile_and_round_trip_as_datom_text() {
+     );
+     let _: FlowId = memory.flow_id;
+ }
++
++#[test]
++fn a_new_type_has_its_value_size_and_reads_as_its_value_in_datom() {
++    use datom_codec::Datomizable;
++    use protos::{Protosizable, Textualizable};
++
++    assert_eq!(
++        std::mem::size_of::<orchestrate::FlowId>(),
++        std::mem::size_of::<String>()
++    );
++    assert_eq!(
++        std::mem::size_of::<flow_library::FlowId>(),
++        std::mem::size_of::<i64>()
++    );
++    let text = orchestrate::FlowId("abc123".to_owned())
++        .datomize(vec![])
++        .protosize()
++        .textualize();
++    assert_eq!(text.trim(), "{ abc123 }");
++}
+diff --git a/tests/generated/alias-format.rs b/tests/generated/alias-format.rs
+index 9ea77f7..104101b 100644
+--- a/tests/generated/alias-format.rs
++++ b/tests/generated/alias-format.rs
+@@ -1,6 +1,8 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
+-pub type Short = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Short(pub String);
+ #[rustfmt::skip]
+ pub type OptionalSpiritGuardianProviderName = std::option::Option<
+     SpiritGuardianProviderName,
+@@ -12,6 +14,10 @@ pub type OptionalSpiritGuardianMaximumOutputTokens = std::option::Option<
+ #[rustfmt::skip]
+ pub type Nested = std::vec::Vec<std::option::Option<std::result::Result<String, i64>>>;
+ #[rustfmt::skip]
+-pub type SpiritGuardianProviderName = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct SpiritGuardianProviderName(pub String);
+ #[rustfmt::skip]
+-pub type SpiritGuardianMaximumOutputTokens = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct SpiritGuardianMaximumOutputTokens(pub i64);
+diff --git a/tests/generated/composition-types.rs b/tests/generated/composition-types.rs
+index e134162..429fe18 100644
+--- a/tests/generated/composition-types.rs
++++ b/tests/generated/composition-types.rs
+@@ -2,9 +2,7 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Vec {
+-    pub string: String,
+-}
++pub struct Vec(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/empty-signal.rs b/tests/generated/empty-signal.rs
+index 2d1f7d3..0186a5a 100644
+--- a/tests/generated/empty-signal.rs
++++ b/tests/generated/empty-signal.rs
+@@ -1,9 +1,7 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
++pub type Shared = Name;
++#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Shared {
+-    pub name: Name,
+-}
+-#[rustfmt::skip]
+-pub type Name = String;
++pub struct Name(pub String);
+diff --git a/tests/generated/flow-library.rs b/tests/generated/flow-library.rs
+index a555b3a..90b2bfb 100644
+--- a/tests/generated/flow-library.rs
++++ b/tests/generated/flow-library.rs
+@@ -1,6 +1,8 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
+-pub type FlowId = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct FlowId(pub i64);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/flow-operation.rs b/tests/generated/flow-operation.rs
+index 5b6d870..2b3c103 100644
+--- a/tests/generated/flow-operation.rs
++++ b/tests/generated/flow-operation.rs
+@@ -1,6 +1,8 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
+-pub type Home = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Home(pub String);
+ #[rustfmt::skip]
+ pub type Login = std::vec::Vec<String>;
+ #[rustfmt::skip]
+diff --git a/tests/generated/flow-signal.rs b/tests/generated/flow-signal.rs
+index 4794091..4e1ff47 100644
+--- a/tests/generated/flow-signal.rs
++++ b/tests/generated/flow-signal.rs
+@@ -1,6 +1,8 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
+-pub type Brief = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Brief(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/generic-shadow.rs b/tests/generated/generic-shadow.rs
+index e66752a..4e7d90e 100644
+--- a/tests/generated/generic-shadow.rs
++++ b/tests/generated/generic-shadow.rs
+@@ -2,9 +2,7 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct A {
+-    pub string: String,
+-}
++pub struct A(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/inline-collision.rs b/tests/generated/inline-collision.rs
+index 710bb4b..9e2b271 100644
+--- a/tests/generated/inline-collision.rs
++++ b/tests/generated/inline-collision.rs
+@@ -2,51 +2,29 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct P_X_Data {
+-    pub string: String,
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Y_Data_X_Data {
+-    pub integer: i64,
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Y_Data {
+-    X(Y_Data_X_Data),
++    X(String),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum P {
+-    X(P_X_Data),
++    X(String),
+     Y(Y_Data),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Q_X_Data {
+-    pub integer: i64,
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Q {
+-    X(Q_X_Data),
++    X(String),
+ }
+ #[rustfmt::skip]
+-pub type X_Data = String;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Z_Data {
+-    pub string: String,
+-}
++pub struct X_Data(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum R {
+-    Z(Z_Data),
++    Z(String),
+ }
+diff --git a/tests/generated/multi-types.rs b/tests/generated/multi-types.rs
+index ea73851..4182f5e 100644
+--- a/tests/generated/multi-types.rs
++++ b/tests/generated/multi-types.rs
+@@ -21,4 +21,6 @@ pub enum SinkError {
+     Full,
+ }
+ #[rustfmt::skip]
+-pub type LockId = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct LockId(pub i64);
+diff --git a/tests/generated/nested-collision.rs b/tests/generated/nested-collision.rs
+index d64f652..cc6e192 100644
+--- a/tests/generated/nested-collision.rs
++++ b/tests/generated/nested-collision.rs
+@@ -2,26 +2,14 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct A_Data_X_Data {
+-    pub string: String,
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum A_Data {
+-    X(A_Data_X_Data),
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct B_Data_X_Data {
+-    pub integer: i64,
++    X(String),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum B_Data {
+-    X(B_Data_X_Data),
++    X(String),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/tests/generated/orchestrate.rs b/tests/generated/orchestrate.rs
+index e1d6f94..7c99f3f 100644
+--- a/tests/generated/orchestrate.rs
++++ b/tests/generated/orchestrate.rs
+@@ -1,16 +1,26 @@
+ #![allow(dead_code, non_camel_case_types, non_snake_case)]
+ #[rustfmt::skip]
+-pub type LockId = i64;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct LockId(pub i64);
+ #[rustfmt::skip]
+-pub type LockName = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct LockName(pub String);
+ #[rustfmt::skip]
+-pub type FlowId = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct FlowId(pub String);
+ #[rustfmt::skip]
+-pub type LockPath = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct LockPath(pub String);
+ #[rustfmt::skip]
+ pub type LockPaths = std::vec::Vec<LockPath>;
+ #[rustfmt::skip]
+-pub type LockReason = String;
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct LockReason(pub String);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/signal-decimal.rs b/tests/generated/signal-decimal.rs
+index 13174ea..ed21652 100644
+--- a/tests/generated/signal-decimal.rs
++++ b/tests/generated/signal-decimal.rs
+@@ -2,9 +2,7 @@
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Measurement {
+-    pub decimal: datom_codec::Decimal,
+-}
++pub struct Measurement(pub datom_codec::Decimal);
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/tree-types.rs b/tests/generated/tree-types.rs
+index 439195b..a67ac9a 100644
+--- a/tests/generated/tree-types.rs
++++ b/tests/generated/tree-types.rs
+@@ -118,27 +118,10 @@ pub enum Twig {
+ )]
+ pub enum Knot {
+     End,
+-    Loop(#[rkyv(omit_bounds)] Loop),
++    Loop(#[rkyv(omit_bounds)] std::boxed::Box<Loop>),
+ }
+ #[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-#[rkyv(
+-    serialize_bounds(
+-        __S:rkyv::ser::Writer+rkyv::ser::Allocator,
+-        __S::Error:rkyv::rancor::Source
+-    )
+-)]
+-#[rkyv(deserialize_bounds(__D::Error:rkyv::rancor::Source))]
+-#[rkyv(
+-    bytecheck(
+-        bounds(__C:rkyv::validation::ArchiveContext, __C::Error:rkyv::rancor::Source)
+-    )
+-)]
+-pub struct Loop {
+-    #[rkyv(omit_bounds)]
+-    pub knot: std::boxed::Box<Knot>,
+-}
++pub type Loop = Knot;
+ #[rustfmt::skip]
+ pub type Forest = std::vec::Vec<Tree>;
+ #[rustfmt::skip]
+@@ -159,15 +142,9 @@ pub enum A_Data {
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct B_Data {
+-    pub string: String,
+-}
+-#[rustfmt::skip]
+-#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Nested {
+     A(A_Data),
+-    B(B_Data),
++    B(String),
+ }
+ #[rustfmt::skip]
+ pub type Deep = std::vec::Vec<

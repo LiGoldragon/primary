@@ -1,0 +1,857 @@
+diff --git a/error.ethos b/error.ethos
+index ef5a31b..40f4f24 100644
+--- a/error.ethos
++++ b/error.ethos
+@@ -22,7 +22,10 @@ Library
+             Intrinsic.String
+             Case.String
+             Renamed.String
+-            SinglePosition ]
++            SinglePosition
++            WrapsContainer
++            WrapsStructure
++            DoubleWrap ]
+   Form.[ File Section Import Name Declaration Variant Reference Constraint Kind Capability Constant Association ]
+   Location.{ Line Column }
+   Line.Integer
+diff --git a/fixtures/alias-format.ethos b/fixtures/alias-format.ethos
+index 672b59d..e5a8c0c 100644
+--- a/fixtures/alias-format.ethos
++++ b/fixtures/alias-format.ethos
+@@ -1,9 +1,6 @@
+ Library
+ []
+ [ Short.String
+-  OptionalSpiritGuardianProviderName.Option<SpiritGuardianProviderName>
+-  OptionalSpiritGuardianMaximumOutputTokens.Option<SpiritGuardianMaximumOutputTokens>
+-  Nested.Vector<Option<Result<String Integer>>>
+   SpiritGuardianProviderName.String
+   SpiritGuardianMaximumOutputTokens.Integer ]
+ []
+diff --git a/fixtures/empty-signal.ethos b/fixtures/empty-signal.ethos
+index 036d6ee..f03185e 100644
+--- a/fixtures/empty-signal.ethos
++++ b/fixtures/empty-signal.ethos
+@@ -1 +1 @@
+-Signal [] [] [] [ Shared.Name Name.String ]
++Signal [] [] [] [ Name.String ]
+diff --git a/fixtures/orchestrate.ethos b/fixtures/orchestrate.ethos
+index e7c1fd0..7f3b7f3 100644
+--- a/fixtures/orchestrate.ethos
++++ b/fixtures/orchestrate.ethos
+@@ -7,14 +7,11 @@ Signal
+   LockName.String
+   FlowId.String
+   LockPath.String
+-  LockPaths.Vector<LockPath>
+   LockReason.String
+-  LockRequest.{ LockName FlowId LockPaths LockReason }
+-  Lock.{ LockId LockName FlowId LockPaths LockReason }
+-  DuplicateName.Lock
++  LockRequest.{ LockName FlowId Vector<LockPath> LockReason }
++  Lock.{ LockId LockName FlowId Vector<LockPath> LockReason }
+   LockOverlap.{ LockPath Lock }
+   LockRejection.[ DuplicateName.Lock  PathOverlap.LockOverlap ]
+   ReleaseRejection.[ UnknownLockId ]
+   ObserveSelection.[ Locks ]
+-  Locks.Vector<Lock>
+-  Observation.[ Locks.Locks ] ]
++  Observation.[ Locks.Vector<Lock> ] ]
+diff --git a/fixtures/print/flow-operation.ethos b/fixtures/print/flow-operation.ethos
+index 8c8d9d7..2ba0b7c 100644
+--- a/fixtures/print/flow-operation.ethos
++++ b/fixtures/print/flow-operation.ethos
+@@ -6,4 +6,4 @@ Operation
+   Recorded
+   Failed.String ]
+ [ Capsule.{ Home.String
+-            Login.Vector<String> } ]
++            Vector<String> } ]
+diff --git a/fixtures/tree-types.ethos b/fixtures/tree-types.ethos
+index d41c70f..ba6f16a 100644
+--- a/fixtures/tree-types.ethos
++++ b/fixtures/tree-types.ethos
+@@ -2,14 +2,11 @@
+ Signal
+ []
+ [ Plant.Tree  Twine.Twin ]
+-[ Planted.Forest  Twined.Twig ]
++[ Planted.Vector<Tree>  Twined.Twig ]
+ [ Tree.[ Leaf.Integer  Node.{ Tree Tree }  Many.Vector<Tree>  Maybe.Option<Tree> ]
+   Chain.{ String Option<Chain> }
+   Twin.{ Twig Twig }
+   Twig.[ Tip  Grow.Twin ]
+-  Knot.[ End  Loop ]
+-  Loop.Knot
+-  Forest.Vector<Tree>
+-  Wrapped.{ Option<Integer> Result<String Integer> Vector<Option<String>> }
+-  Nested.[ A.[ X Y.Integer ]  B.String ]
+-  Deep.Vector<Vector<Vector<Option<Result<String Integer>>>>> ]
++  Knot.[ End  Loop.Knot ]
++  Wrapped.{ Option<Integer> Result<String Integer> Vector<Option<String>> Vector<Vector<Vector<Option<Result<String Integer>>>>> }
++  Nested.[ A.[ X Y.Integer ]  B.String ] ]
+diff --git a/src/checking.rs b/src/checking.rs
+index ebebd7a..4896510 100644
+--- a/src/checking.rs
++++ b/src/checking.rs
+@@ -1454,8 +1454,37 @@ impl Checkable for TypeDeclaration {
+                         Problem::Cycle(identity.name.0.clone()),
+                     ));
+                 }
+-                Ok(())
++                aliased.wraps(&inner)
++            }
++        }
++    }
++}
++
++/// The kind whose capability refuses what a new type may not hold: a Vector
++/// or an Option, `WrapsContainer`, the container being written inline where
++/// it is used; a struct or an enum declared in the file, `WrapsStructure`; a
++/// new type declared in the file, `DoubleWrap`.
++trait Wrapping {
++    fn wraps(&self, scope: &Scope) -> Result<(), Error>;
++}
++
++impl Wrapping for Reference {
++    fn wraps(&self, scope: &Scope) -> Result<(), Error> {
++        if self.source.is_some() {
++            return Ok(());
++        }
++        match scope.resolve(&self.name) {
++            Resolution::Intrinsic(Intrinsic::Vector | Intrinsic::Option) => {
++                Err(Error::conceptual(vec![], Problem::WrapsContainer))
+             }
++            Resolution::Type(name) => match scope.file.declaration(&name) {
++                Some(TypeDeclaration::NewType(_, _)) => {
++                    Err(Error::conceptual(vec![], Problem::DoubleWrap))
++                }
++                Some(_) => Err(Error::conceptual(vec![], Problem::WrapsStructure)),
++                None => Ok(()),
++            },
++            _ => Ok(()),
+         }
+     }
+ }
+diff --git a/src/error.rs b/src/error.rs
+index d83e25c..97e75c8 100644
+--- a/src/error.rs
++++ b/src/error.rs
+@@ -1,4 +1,4 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(dead_code, non_camel_case_types, non_snake_case, clippy::type_complexity)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+@@ -48,6 +48,9 @@ pub enum Problem {
+     Case(String),
+     Renamed(String),
+     SinglePosition,
++    WrapsContainer,
++    WrapsStructure,
++    DoubleWrap,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/src/ethos-zero.rs b/src/ethos-zero.rs
+index 2105f04..9a0edc3 100644
+--- a/src/ethos-zero.rs
++++ b/src/ethos-zero.rs
+@@ -1,4 +1,4 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(dead_code, non_camel_case_types, non_snake_case, clippy::type_complexity)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/src/generation.rs b/src/generation.rs
+index 4844621..5685bf4 100644
+--- a/src/generation.rs
++++ b/src/generation.rs
+@@ -1218,7 +1218,7 @@ impl Emitting for File {
+             }
+         }
+         quote! {
+-            #![allow(dead_code, non_camel_case_types, non_snake_case)]
++            #![allow(dead_code, non_camel_case_types, non_snake_case, clippy::type_complexity)]
+             #( #items )*
+         }
+     }
+diff --git a/src/lib.rs b/src/lib.rs
+index 846062b..0b816e0 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -820,7 +820,7 @@ mod behavior {
+ 
+     #[test]
+     fn approved_declared_and_inline_payloads_generate_named_fields() {
+-        let source = "Library [] [ Generation.{ String String } FilePath.String SyntaxError.Vector<FilePath> GenerationFailure.[ SyntaxError Unwritable ] Lock.String LockRejection.[ DuplicateName.Lock PathOverlap.{ Lock Lock } ] ] [] []";
++        let source = "Library [] [ Generation.{ String String } FilePath.String GenerationFailure.[ SyntaxError.Vector<FilePath> Unwritable ] Lock.String LockRejection.[ DuplicateName.Lock PathOverlap.{ Lock Lock } ] ] [] []";
+         let file = match Potential::<File>::from(source).actualize() {
+             Ok(file) => file,
+             Err(_) => {
+@@ -837,7 +837,7 @@ mod behavior {
+         };
+         assert!(rust.contains("pub first_string: String"));
+         assert!(rust.contains("pub second_string: String"));
+-        assert!(rust.contains("SyntaxError(SyntaxError)"));
++        assert!(rust.contains("SyntaxError(std::vec::Vec<FilePath>)"));
+         assert!(rust.contains("PathOverlap(PathOverlap_Data)"));
+         assert!(rust.contains("pub first_lock: Lock"));
+         assert!(rust.contains("pub second_lock: Lock"));
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index e3b9256..59ba2f8 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -102,7 +102,7 @@ fn an_operation_declaring_the_operation_or_outcome_type_is_refused() {
+ #[test]
+ fn a_named_position_declares_its_type_in_place() {
+     let file = read(
+-        "Memory [] [ Flow.{ Integer Brief.String State.[ Running Ended ] Capsule.{ Home.String Login.Vector<String> } } ]",
++        "Memory [] [ Flow.{ Integer Brief.String State.[ Running Ended ] Capsule.{ Home.String Vector<String> } } ]",
+     );
+     assert_eq!(file, read(&file.protosize().textualize()));
+     let rust = match file.generate() {
+@@ -113,11 +113,10 @@ fn a_named_position_declares_its_type_in_place() {
+     assert!(rust.contains("pub enum State {"), "{rust}");
+     assert!(rust.contains("pub struct Capsule {"), "{rust}");
+     assert!(
+-        rust.contains("pub type Login = std::vec::Vec<String>;"),
++        rust.contains("pub string_vector: std::vec::Vec<String>"),
+         "{rust}"
+     );
+     assert!(rust.contains("pub home: Home"), "{rust}");
+-    assert!(rust.contains("pub login: Login"), "{rust}");
+     assert!(rust.contains("pub brief: Brief"), "{rust}");
+     assert!(rust.contains("pub state: State"), "{rust}");
+     assert!(rust.contains("pub capsule: Capsule"), "{rust}");
+@@ -160,11 +159,11 @@ fn retired_roots_are_not_accepted() {
+ 
+ #[test]
+ fn operation_free_signal_generates_only_its_declared_shared_data() {
+-    let generated = match read("Signal [] [] [] [ Shared.Name Name.String ]").generate() {
++    let generated = match read("Signal [] [] [] [ Name.String ]").generate() {
+         Ok(generated) => generated,
+         Err(_) => panic!("operation-free Signal generates"),
+     };
+-    assert!(generated.contains("pub type Shared = Name;"));
++    assert!(generated.contains("pub struct Name(pub String);"));
+     assert!(!generated.contains("pub enum Query"));
+     assert!(!generated.contains("pub enum Response"));
+ }
+@@ -386,7 +385,7 @@ fn a_type_with_no_finite_value_is_refused() {
+     );
+     assert_eq!(
+         "Library [] [ Leaf.String A.{ Leaf B } B.A ] [] []".refusal(),
+-        (vec![1, 1, 1, 0], Problem::Cycle("A".to_owned()))
++        (vec![1, 1, 2], Problem::WrapsStructure)
+     );
+     assert_eq!(
+         "Library [] [ E.[ Only.E ] ] [] []".refusal(),
+@@ -395,7 +394,7 @@ fn a_type_with_no_finite_value_is_refused() {
+     // Another variant is a way out.
+     for finite in [
+         "Library [] [ E.[ Leaf Node.{ E E } ] ] [] []",
+-        "Library [] [ Never.[] Holder.Never ] [] []",
++        "Library [] [ Never.[] Holder.{ Never Integer } ] [] []",
+     ] {
+         assert!(read(finite).generate().is_ok(), "{finite} generates");
+     }
+@@ -438,7 +437,9 @@ fn every_generated_item_carries_rustfmt_skip() {
+     for path in generated {
+         let text = std::fs::read_to_string(&path).expect("generated module reads");
+         assert!(
+-            text.starts_with("#![allow(dead_code, non_camel_case_types, non_snake_case)]\n"),
++            text.starts_with(
++                "#![allow(dead_code, non_camel_case_types, non_snake_case, clippy::type_complexity)]\n"
++            ),
+             "{path} opens with the generated-file header"
+         );
+         let file = syn::parse_file(&text).expect("generated module parses");
+@@ -599,3 +600,50 @@ fn a_new_type_over_a_plain_value_is_a_struct_of_one_unnamed_position() {
+     assert!(!generated.contains("pub type"));
+     syn::parse_file(&generated).expect("generated Rust parses");
+ }
++
++#[test]
++fn a_name_over_a_declared_type_is_refused() {
++    let source =
++        "Library [] [ Lock.{ String Integer } DuplicateName.Lock FlowId.String Job.FlowId ] [] []";
++    assert_eq!(source.refusal(), (vec![1, 1, 1], Problem::WrapsStructure));
++    assert_eq!(
++        "Library [] [ Lock.{ String Integer } FlowId.String Job.FlowId ] [] []".refusal(),
++        (vec![1, 1, 2], Problem::DoubleWrap)
++    );
++    assert_eq!(
++        "Library [] [ Never.[] Holder.Never ] [] []".refusal(),
++        (vec![1, 1, 1], Problem::WrapsStructure)
++    );
++    assert!(
++        read("Library [] [ FlowId.String ] [] []")
++            .generate()
++            .is_ok()
++    );
++}
++
++#[test]
++fn a_name_over_a_container_is_refused() {
++    assert_eq!(
++        "Library [] [ LockPath.String LockPaths.Vector<LockPath> ] [] []".refusal(),
++        (vec![1, 1, 1], Problem::WrapsContainer)
++    );
++    assert_eq!(
++        "Library [] [ Opt.Option<String> ] [] []".refusal(),
++        (vec![1, 1, 0], Problem::WrapsContainer)
++    );
++    assert_eq!(
++        "Memory [] [ Flow.{ Integer Login.Vector<String> } ]".refusal(),
++        (vec![1, 1, 0, 1, 1], Problem::WrapsContainer)
++    );
++    let generated =
++        match read("Library [] [ LockPath.String Lock.{ LockPath Vector<LockPath> } ] [] []")
++            .generate()
++        {
++            Ok(generated) => generated,
++            Err(_) => panic!("a container written inline generates"),
++        };
++    assert!(
++        generated.contains("pub lock_path_vector: std::vec::Vec<LockPath>"),
++        "{generated}"
++    );
++}
+diff --git a/tests/flow_contract.rs b/tests/flow_contract.rs
+index 135937c..d35ff5a 100644
+--- a/tests/flow_contract.rs
++++ b/tests/flow_contract.rs
+@@ -36,7 +36,7 @@ mod wire {
+             voice: library::Voice::Psyche(library::Rank::Secondary),
+             capsule: operation::Capsule {
+                 home: operation::Home("/home/flow".to_owned()),
+-                login: vec!["claude".to_owned()],
++                string_vector: vec!["claude".to_owned()],
+             },
+         }));
+         crosses(operation::Outcome::Failed("no capsule".to_owned()));
+diff --git a/tests/generated.rs b/tests/generated.rs
+index 875bc9f..57eafd0 100644
+--- a/tests/generated.rs
++++ b/tests/generated.rs
+@@ -120,7 +120,7 @@ fn named_fields_and_signal_query_response_compile() {
+         integer: 1990,
+     };
+     assert_eq!(record.integer, 1990);
+-    let query = orchestrate::Query::Observe(orchestrate::ObserveSelection::Locks(vec![]));
++    let query = orchestrate::Query::Observe(orchestrate::ObserveSelection::Locks);
+     let response = orchestrate::Response::Observed(orchestrate::Observation::Locks(vec![]));
+     assert!(matches!(query, orchestrate::Query::Observe(_)));
+     assert!(matches!(response, orchestrate::Response::Observed(_)));
+@@ -128,7 +128,7 @@ fn named_fields_and_signal_query_response_compile() {
+ 
+ #[test]
+ fn generated_signal_query_round_trips_as_a_portable_archive() {
+-    let query = orchestrate::Query::Observe(orchestrate::ObserveSelection::Locks(vec![]));
++    let query = orchestrate::Query::Observe(orchestrate::ObserveSelection::Locks);
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&query).expect("archive query");
+     let restored =
+         rkyv::from_bytes::<orchestrate::Query, rkyv::rancor::Error>(&bytes).expect("restore query");
+@@ -223,15 +223,15 @@ fn operation_free_signal_shared_record_archives_and_round_trips_as_datom_text()
+     use datom_codec::{Actualizing, Budget, Datomizable, Potential};
+     use protos::{Protosizable, ReaderBudget, Textualizable};
+ 
+-    let shared: empty_signal::Shared = empty_signal::Name("domain".to_owned());
++    let shared = empty_signal::Name("domain".to_owned());
+     let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&shared).expect("archive shared record");
+     assert_eq!(
+-        rkyv::from_bytes::<empty_signal::Shared, rkyv::rancor::Error>(&bytes)
++        rkyv::from_bytes::<empty_signal::Name, rkyv::rancor::Error>(&bytes)
+             .expect("restore shared record"),
+         shared
+     );
+     let text = shared.clone().datomize(vec![]).protosize().textualize();
+-    let mut pending = Potential::<empty_signal::Shared>::from(text);
++    let mut pending = Potential::<empty_signal::Name>::from(text);
+     assert_eq!(
+         pending
+             .actualize(&mut Budget {
+@@ -274,15 +274,13 @@ fn generated_memory_records_round_trip_as_datom_text() {
+ }
+ 
+ #[test]
+-fn aliases_name_their_types() {
++fn new_types_name_their_types() {
+     let short = alias_format::Short(String::new());
+-    let provider: alias_format::OptionalSpiritGuardianProviderName =
++    let provider: Option<alias_format::SpiritGuardianProviderName> =
+         Some(alias_format::SpiritGuardianProviderName(short.0));
+-    let tokens: alias_format::OptionalSpiritGuardianMaximumOutputTokens =
++    let tokens: Option<alias_format::SpiritGuardianMaximumOutputTokens> =
+         Some(alias_format::SpiritGuardianMaximumOutputTokens(4_096));
+-    let nested: alias_format::Nested = vec![Some(Ok(String::new())), Some(Err(1)), None];
+     assert!(provider.is_some() && tokens.is_some());
+-    assert_eq!(nested.len(), 3);
+ }
+ 
+ /// A sink bearing the fixture's own capability kind.
+@@ -455,7 +453,7 @@ fn the_flow_nexus_operation_and_memory_compile_and_round_trip_as_datom_text() {
+         voice: Voice::Mind(flow_library::Rank::Primary),
+         capsule: flow_operation::Capsule {
+             home: flow_operation::Home("/home/flow".to_owned()),
+-            login: vec!["claude".to_owned()],
++            string_vector: vec!["claude".to_owned()],
+         },
+     });
+     let text = operation.datomize(vec![]).protosize().textualize();
+diff --git a/tests/generated/alias-format.rs b/tests/generated/alias-format.rs
+index 104101b..7bfe733 100644
+--- a/tests/generated/alias-format.rs
++++ b/tests/generated/alias-format.rs
+@@ -1,19 +1,14 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct Short(pub String);
+ #[rustfmt::skip]
+-pub type OptionalSpiritGuardianProviderName = std::option::Option<
+-    SpiritGuardianProviderName,
+->;
+-#[rustfmt::skip]
+-pub type OptionalSpiritGuardianMaximumOutputTokens = std::option::Option<
+-    SpiritGuardianMaximumOutputTokens,
+->;
+-#[rustfmt::skip]
+-pub type Nested = std::vec::Vec<std::option::Option<std::result::Result<String, i64>>>;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct SpiritGuardianProviderName(pub String);
+diff --git a/tests/generated/capability-kinds.rs b/tests/generated/capability-kinds.rs
+index f3ecaeb..01318a8 100644
+--- a/tests/generated/capability-kinds.rs
++++ b/tests/generated/capability-kinds.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ pub trait Summarizable {
+     fn summarize(&self) -> String;
+diff --git a/tests/generated/composition-types.rs b/tests/generated/composition-types.rs
+index 429fe18..beac0cf 100644
+--- a/tests/generated/composition-types.rs
++++ b/tests/generated/composition-types.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/empty-signal.rs b/tests/generated/empty-signal.rs
+index 0186a5a..07515c8 100644
+--- a/tests/generated/empty-signal.rs
++++ b/tests/generated/empty-signal.rs
+@@ -1,6 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
+-#[rustfmt::skip]
+-pub type Shared = Name;
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/entry-memory.rs b/tests/generated/entry-memory.rs
+index 562933d..1feabd1 100644
+--- a/tests/generated/entry-memory.rs
++++ b/tests/generated/entry-memory.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/flow-library.rs b/tests/generated/flow-library.rs
+index 90b2bfb..0e6df57 100644
+--- a/tests/generated/flow-library.rs
++++ b/tests/generated/flow-library.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/flow-memory.rs b/tests/generated/flow-memory.rs
+index 59d616f..884773f 100644
+--- a/tests/generated/flow-memory.rs
++++ b/tests/generated/flow-memory.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/flow-operation.rs b/tests/generated/flow-operation.rs
+index 2b3c103..28bbc98 100644
+--- a/tests/generated/flow-operation.rs
++++ b/tests/generated/flow-operation.rs
+@@ -1,16 +1,19 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct Home(pub String);
+ #[rustfmt::skip]
+-pub type Login = std::vec::Vec<String>;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct Capsule {
+     pub home: Home,
+-    pub login: Login,
++    pub string_vector: std::vec::Vec<String>,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/tests/generated/flow-signal.rs b/tests/generated/flow-signal.rs
+index 4e1ff47..5dd81d8 100644
+--- a/tests/generated/flow-signal.rs
++++ b/tests/generated/flow-signal.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/generic-shadow.rs b/tests/generated/generic-shadow.rs
+index 4e7d90e..cabbff4 100644
+--- a/tests/generated/generic-shadow.rs
++++ b/tests/generated/generic-shadow.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/inline-collision.rs b/tests/generated/inline-collision.rs
+index 5662c77..2d93150 100644
+--- a/tests/generated/inline-collision.rs
++++ b/tests/generated/inline-collision.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/multi-types.rs b/tests/generated/multi-types.rs
+index 4182f5e..768acd9 100644
+--- a/tests/generated/multi-types.rs
++++ b/tests/generated/multi-types.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/nested-collision.rs b/tests/generated/nested-collision.rs
+index d449541..67692d7 100644
+--- a/tests/generated/nested-collision.rs
++++ b/tests/generated/nested-collision.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/orchestrate.rs b/tests/generated/orchestrate.rs
+index 7c99f3f..60f6c8d 100644
+--- a/tests/generated/orchestrate.rs
++++ b/tests/generated/orchestrate.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+@@ -16,8 +21,6 @@ pub struct FlowId(pub String);
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct LockPath(pub String);
+ #[rustfmt::skip]
+-pub type LockPaths = std::vec::Vec<LockPath>;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct LockReason(pub String);
+@@ -27,7 +30,7 @@ pub struct LockReason(pub String);
+ pub struct LockRequest {
+     pub lock_name: LockName,
+     pub flow_id: FlowId,
+-    pub lock_paths: LockPaths,
++    pub lock_path_vector: std::vec::Vec<LockPath>,
+     pub lock_reason: LockReason,
+ }
+ #[rustfmt::skip]
+@@ -37,12 +40,10 @@ pub struct Lock {
+     pub lock_id: LockId,
+     pub lock_name: LockName,
+     pub flow_id: FlowId,
+-    pub lock_paths: LockPaths,
++    pub lock_path_vector: std::vec::Vec<LockPath>,
+     pub lock_reason: LockReason,
+ }
+ #[rustfmt::skip]
+-pub type DuplicateName = Lock;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct LockOverlap {
+@@ -66,15 +67,13 @@ pub enum ReleaseRejection {
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum ObserveSelection {
+-    Locks(Locks),
++    Locks,
+ }
+ #[rustfmt::skip]
+-pub type Locks = std::vec::Vec<Lock>;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Observation {
+-    Locks(Locks),
++    Locks(std::vec::Vec<Lock>),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/tests/generated/placed-types.rs b/tests/generated/placed-types.rs
+index 532a215..d574557 100644
+--- a/tests/generated/placed-types.rs
++++ b/tests/generated/placed-types.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/processable-kinds.rs b/tests/generated/processable-kinds.rs
+index e92211b..01c13b9 100644
+--- a/tests/generated/processable-kinds.rs
++++ b/tests/generated/processable-kinds.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ pub trait Processable<A: std::clone::Clone + std::marker::Send, B: serde::Serialize> {
+     fn process(&self) -> String;
+diff --git a/tests/generated/record-types.rs b/tests/generated/record-types.rs
+index 4872cf8..d47d659 100644
+--- a/tests/generated/record-types.rs
++++ b/tests/generated/record-types.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/self-kinds.rs b/tests/generated/self-kinds.rs
+index f5a1728..7a01aa2 100644
+--- a/tests/generated/self-kinds.rs
++++ b/tests/generated/self-kinds.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ pub trait Mixed {
+     fn inspect(&self) -> String;
+diff --git a/tests/generated/signal-decimal.rs b/tests/generated/signal-decimal.rs
+index ed21652..7704c9a 100644
+--- a/tests/generated/signal-decimal.rs
++++ b/tests/generated/signal-decimal.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/sink-associations.rs b/tests/generated/sink-associations.rs
+index 8b4cae2..748997f 100644
+--- a/tests/generated/sink-associations.rs
++++ b/tests/generated/sink-associations.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+diff --git a/tests/generated/streamable-kind.rs b/tests/generated/streamable-kind.rs
+index 6284407..85717cb 100644
+--- a/tests/generated/streamable-kind.rs
++++ b/tests/generated/streamable-kind.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ pub trait Streamable: super::Fillable {
+     type Item: super::Serializable;
+diff --git a/tests/generated/tree-types.rs b/tests/generated/tree-types.rs
+index a67ac9a..7d5a5ea 100644
+--- a/tests/generated/tree-types.rs
++++ b/tests/generated/tree-types.rs
+@@ -1,4 +1,9 @@
+-#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#![allow(
++    dead_code,
++    non_camel_case_types,
++    non_snake_case,
++    clippy::type_complexity
++)]
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+@@ -118,19 +123,20 @@ pub enum Twig {
+ )]
+ pub enum Knot {
+     End,
+-    Loop(#[rkyv(omit_bounds)] std::boxed::Box<Loop>),
++    Loop(#[rkyv(omit_bounds)] std::boxed::Box<Knot>),
+ }
+ #[rustfmt::skip]
+-pub type Loop = Knot;
+-#[rustfmt::skip]
+-pub type Forest = std::vec::Vec<Tree>;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub struct Wrapped {
+     pub integer_option: std::option::Option<i64>,
+     pub string_integer_result: std::result::Result<String, i64>,
+     pub string_option_vector: std::vec::Vec<std::option::Option<String>>,
++    pub string_integer_result_option_vector_vector_vector: std::vec::Vec<
++        std::vec::Vec<
++            std::vec::Vec<std::option::Option<std::result::Result<String, i64>>>,
++        >,
++    >,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+@@ -147,10 +153,6 @@ pub enum Nested {
+     B(String),
+ }
+ #[rustfmt::skip]
+-pub type Deep = std::vec::Vec<
+-    std::vec::Vec<std::vec::Vec<std::option::Option<std::result::Result<String, i64>>>>,
+->;
+-#[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Query {
+@@ -161,6 +163,6 @@ pub enum Query {
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Response {
+-    Planted(Forest),
++    Planted(std::vec::Vec<Tree>),
+     Twined(Twig),
+ }
