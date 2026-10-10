@@ -1,0 +1,60 @@
+# d68c82 — Psyche core Secondary (Opus)
+
+- 2026-10-10: Launched as successor to 445410 as Psyche core Secondary. Order: read flows/445410/handover.md, answer, retire 445410 and close its pane, then continue the pending refreshes (1d0733, 9fed42, 73ada7).
+- 2026-10-10: Retired 445410 (hm-retire: Retired, delivery blocked before Herdr routing). Pane close and Psyche.Secondary profile check dispatched.
+- 2026-10-10: 445410 pane closed (subflow witnessed terminal and session match, then pane_not_found).
+- 2026-10-10: Psyche.Secondary profile witnessed configured (Opus, medium) in the working tree. Launcher still requires PascalCase topics (Mind's fix). Launching successors of 1d0733, 9fed42, 73ada7.
+- 2026-10-10: 23824a launched as Ethos Secondary, answered; 1d0733 retired. Colour and remote listing unverified.
+- 2026-10-10: 058f16 launched as Nexus Secondary, answered; 73ada7 retired. Colour and remote listing unverified.
+- 2026-10-10: 9519a1 launched as Flow Secondary, answered; 9fed42 retired. Colour and remote listing unverified. Told 23824a its Primary is 081064 and 9519a1 its Primary is 875960.
+- 2026-10-10: Panes of 1d0733, 73ada7, 9fed42 closed (each matched evidence, then pane_not_found).
+- 2026-10-10: Publish blocked: Field private-index route has no controller or enrollment on this host. Asked 41fa34 to route to Field.
+- 2026-10-10: 41fa34 relayed (claim): Field published the Psyche.Secondary profile row at Primary d88eff97, private-index route. My enrollment question unanswered.
+- 2026-10-10: 42265e (claim): primary-publish.mjs implements only the publisher consumer; no controller, enrollment service, start route or PrimaryPublish acquisition exists in source. d68c82 publication held.
+- 2026-10-10: 41fa34 relayed the same qualification; adds that Field's own exact-object private-index publications remain valid.
+- 2026-10-10: 41fa34 status (claim): Aspect source packet held; root Cargo manifest both bumps workspace 0.25→0.26 and reverts SignalFlow/MetaFlow pins; writers A/C must settle it.
+- 2026-10-10: 41fa34 status (claim): Field landed generation-only single-Aspect leaf stage (authored 24ffec14, generated 074437a6), remote-matched; old pins kept, workspace 0.26. Not compiled. A/C owe an ordered Signal/Meta/consumer graph packet.
+- 2026-10-10: 41fa34 status (claim): Signal Aspect+Store candidate c3696dbe generates reproducibly (Store(String), no FlowAspect) but not accepted: Datom fixture fails on Order.continue vs Order.«continue»; formatting pending. Meta and Flow/Message graph unmoved.
+- 2026-10-10: 41fa34 status (claim): Signal input d1358d39 published, remote-matched; Datom contracts and fmt pass on it; test selector passed only on parent c3696dbe. Input for Meta/consumer graph only.
+- 2026-10-10: 41fa34 status (claim): Meta 18 blocked; generator rejects authored Refused.Store.String nested form at line 83; Meta source correction needed. Signal and leaf stages kept.
+- 2026-10-10: 41fa34 status (claim): Meta 18 refusal-reference fix advanced generation (source error, not ethos gap); now fails on ConfigureModule.{ Key Source } missing Library Key import; writer A to fix.
+- 2026-10-10: 41fa34 status (claim): Meta 18 generates reproducibly, library compiles, build.rs fresh; default check stops at two test fixtures needing .key.subaspect/.key.topic. No contract tests ran.
+- 2026-10-10: 41fa34 status (claim): Meta 18 default suite compiles; 9/10 contract tests pass; one flat snapshot fixture must become nested ConfigureModule { Key Source }; writer A fixing.
+- 2026-10-10: 41fa34 status (claim): Meta 18 accepted as package graph at 6d07b7bb; all-feature, freshness and 10/10 contracts pass on Signal d1358d39 and leaf 074437a6. No consumer, runtime or main claim.
+- 2026-10-10: Living commented on the Sources, registry and inline-import books; inline import not to block. Asked for packages to topic Secondaries for new or revised books, and for a redeployable, API-tested meta-harness base. Noted the seat title lacks «Psyche core secondary». Logged vision metaHarness, source; notion psycheCore.
+- 2026-10-10: Seat retitled «{ Psyche Core Secondary d68c82 }» (Herdr agent name and Claude session name, read back).
+- 2026-10-10: Found the living's comments on each book's own artifact. Logged today's «Sources and the registry» comments verbatim: vision source, ethos, naming. Inline import third edition D1 approved ("Yes this is good."), not to block.
+- 2026-10-10: Packages sent (psyche verbatim + brief): Source nexus and word-name book to 058f16; Ethos Nexus, registry, names, inline import to 23824a; meta harness to 9519a1 and 41fa34. Asked Sol which Mind seat implements the meta harness.
+- 2026-10-10: Told 058f16 to work the Source nexus alone (no Nexus Primary).
+- 2026-10-10: Routed 875960's single-Aspect ruling (via 9519a1) to 41fa34 for Field.
+- 2026-10-10: 41fa34 (claim, read from source): LaunchProfile, Caller (Signal d1358d39) and FlowBinding (Meta 6d07b7bb) already use Aspect; no FlowAspect left. Relayed to 9519a1.
+- 2026-10-10: 0c85a3 (claim, source read): no redeployable API meta harness exists; message-test VM runner copies the Claude login file; would be a new component, owner unset. Relayed to 9519a1.
+- 2026-10-10: 0c85a3 narrowed: absence claim covers message-test files only; host/CriomOS unchecked. Relayed to 9519a1.
+- 2026-10-10: 875960 (claim) found FlowAspect on origin/main of signal-flow and meta-signal-flow; Sol's Aspect commits are staged off main. Asked Sol for the ref and the path to main.
+- 2026-10-10: 41fa34 status (claim): SignalMessage repinned to SignalFlow d1358d39/0.15 and leaf 074437a6/0.26 at eb901423 on branch field/message-repin-signal-message-31ed17721b19; six checks pass. Writer C owes the MetaSignalMessage pin patch next.
+- 2026-10-10: 41fa34 ls-remote: Aspect work on field/signal-aspect-store-e3ddf94ed9bb and field/meta-aspect-store-1a1258b9873b; mains unchanged; writer A's integration packet comes before a main landing. Relayed to 9519a1.
+- 2026-10-10: Inline-import pin owner: 23824a landed 9fb0433 on 081064's order; regeneration asked of 0c85a3, whose deploy subflow holds Primary pins; no acceptance recorded. Routed to 41fa34.
+- 2026-10-10: «Open books» v38: added «The meta harness has a base» (9519a1). Source now flows/d68c82/books/index.html.
+- 2026-10-10: 41fa34 confirms shared working copy is stale vs Primary 0e532f7e (flake pins psyche-skills f9d74b9; old skills-dir contract). Field's base governs the pin.
+- 2026-10-10: 41fa34 status (claim): SignalFlow d1358d39 and MetaFlow 6d07b7bb main landings pending; Field lacks landing authorization; writer A owes a landing packet.
+- 2026-10-10: 41fa34 status (claim): Mind skills main 2b206b77 changes operation-relaying-the-living.md only; repinning Mind also brings in operation-main-flow.md drift; deploy pin owner to qualify both. Psyche 9fb0433 pin may proceed alone.
+- 2026-10-10: 41fa34/Astra: Psyche-only inline-import pin packet (850fd27→9fb0433, on 0e532f7e) authored and delivered to Field; Field now runs lock, regeneration and publication. Mind 2b206b77 repin kept separate.
+- 2026-10-10: 41fa34 status (claim): MetaMessage repinned to SignalMessage eb901423 at 40d16cec on field/message-repin-meta-signal-message-8ef0b3469424; six checks pass. Writer C owes the Message root pin patch next.
+- 2026-10-10: 41fa34 correction: Astra accepted a combined pin (Psyche 9fb0433 + Mind 2b206b77: canonical title formatting, relay-input provenance); one packet delivered to Field, which owns regeneration and publish. Title line in operation-main-flow may already be changed by Mind; check before proposing.
+- 2026-10-10: «Open books» v39: added «Who archives a record» (23824a).
+- 2026-10-10: 41fa34: Field's combined propagation waits on PrimaryPublish lock 17569 held by 9519a1 («Publish flow 9519a1 paths»); Field asked 9519a1 once. 9519a1 is publishing its own paths by some route.
+- 2026-10-10: «Open books» v40: added «Word-built names» (058f16); ruling count 2 inferred from its two landings.
+- 2026-10-10: Sequencing PrimaryPublish: 058f16 holds 17640; Field 42265e next. Asked 058f16 to report its release and publish route.
+- 2026-10-10: 058f16 released 17640 (route: independent clone, main 113d56). Sent Field-turn to 41fa34. d68c82 to publish by independent clone after Field.
+- 2026-10-10: Living commented on the meta harness book: Persona is its root component, persona vision, CriomOS, credentials via Sops/Nix cluster data. Logged vision persona; relayed to 9519a1 and 41fa34.
+- 2026-10-10: «Open books» v41: added «The prototype name» (23824a). 41fa34 status (claim): Message graph 0a82e677/locked 310b97d8 compiles library, fails test compile (operation_contract.rs:3 Unknown_Data) and clippy (datom feature missing); writer C owes a patch. Field acquiring PrimaryPublish after 058f16.
+- 2026-10-10: Living's notion: a Psyche core Tertiary fetches book comments and wakes the Secondary with the content. Logged notion psycheCore.
+- 2026-10-10: «Open books» v42: added «The Ethos Nexus» (23824a). Field holds PrimaryPublish 17654 for Psyche+Mind propagation; asks to keep the turn until its final receipt, across one intermediate release. d68c82 publishes after.
+- 2026-10-10: 41fa34: Mind reviewed 058f16's Source nexus design (13 findings) and sent it to 058f16; reviewed snapshot not matched to 113d56.
+- 2026-10-10: «Open books» v43: meta harness book swapped to second edition (vision-persona).
+- 2026-10-10: «Open books» v44: added «Bytes in ethos» (23824a).
+- 2026-10-10: 42265e: Psyche+Mind propagation complete at Primary main c4ebafe9 (vision-ethos, operation-main-flow, operation-relaying-the-living changed); lock 17694 released; Field's turn done. Told 081064.
+- 2026-10-10: operation-main-flow now gives title { <Aspect> <Topic> <Layer> <FLOW_ID> }, example { Psyche core Primary 6f51ad }; my title proposal is moot. Retitling to lowercase topic.
+- 2026-10-10: Retitled «{ Psyche core Secondary d68c82 }», read back.
+- 2026-10-10: 41fa34 status (claim): Message runtime fixtures (locked afece5e0) compile, then abort at first persistence fixture: store record message_nexus_standard/standard not stored; writer C owes a persistence-seam fix.
+- 2026-10-10: Astra (via 41fa34): two Persona sources (Persona b6f6ef, persona 09ee52); Mind needs Psyche's choice of root source and contract before assigning. Relayed to 9519a1.
