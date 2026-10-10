@@ -182,6 +182,7 @@ waking request last:
 Memory                          ; Flow's
 [  flow_ethos:[ FlowId Layer Key
                 Source Process ]
+   meta_signal_flow:[ HarnessKind ]
    signal_flow:[ Event ] ]
 [  Flow.{                       ; one per run
       FlowId
@@ -193,9 +194,13 @@ Memory                          ; Flow's
       Events.Vector<Event> }    ; signal-flow's
    Module.{                     ; the registry: one
       Key                       ; per key
-      Source }
+      Source
+      Checked.Boolean }         ; false until its
+                                ; first compose
+                                ; checks the hash
    Model.{                      ; one per layer
       Layer
+      Harness.HarnessKind       ; how it is driven
       Native.String }           ; the model's name
                                 ; as the harness
                                 ; knows it
@@ -305,7 +310,11 @@ Signal                          ; what Flow is asked
                                 ; the first prompt
    Released
    Reported
-   Observed.Agent.String        ; agent state
+   Observed.Agent.[             ; Herdr's agent
+      Working                   ; states as it
+      Idle                      ; reports them
+      Done
+      Absent ]
    Stopped
    Listed.Vector<Metaflow>
    Refused.[
@@ -336,8 +345,9 @@ Signal                          ; what Flow is asked
                                 ; unchecked fails
                                 ; its hash at its
                                 ; first compose
-      Ended.Address             ; End of an Ended
-                                ; metaflow
+      Ended.Address             ; Wake, Lock,
+                                ; Refresh or End of
+                                ; an Ended metaflow
       OffRoute                  ; at Lock: sender,
                                 ; recipient aspect,
                                 ; layer, topic off
@@ -370,15 +380,17 @@ ran out; Unknown.Lock answers a lock never granted or
 already consumed. A Sender whose address names no
 metaflow, or an Up whose target names no metaflow, is
 Unknown.Address; NoneAbove is only for an Up above
-Primary. End of an Ended metaflow is
-Refused.Ended.Address (current best). Report,
+Primary. Wake, Lock, Refresh and End of an Ended
+metaflow are all refused Refused.Ended.Address
+(current best). Report,
 Observe.Agent, Stop and Metaflows, with Reported,
 Observed.Agent, Stopped and Listed, are current best:
 Report is the hook's request, Stop reaps a flow with no
 successor, and Observe.Agent.FlowId and
-Observed.Agent.String are named here because the Flow
-0.25.0 payload is unknown to this design; Observed
-carries Herdr's agent state as today.
+Observed.Agent.[ Working Idle Done Absent ] are named
+here because the Flow 0.25.0 payload is unknown to this
+design; Observed carries Herdr's agent states as it
+reports them.
 
 Bind, Bound.FlowId, Taken.Address and
 Unidentified.Process for a Bind are on the ordinary
@@ -403,8 +415,9 @@ Signal                          ; the meta socket
                 Nexus ]
    meta_signal_flow:[           ; meta-signal-flow
       CodexEndpoint             ; at the revision
-      HarnessProfile            ; Flow pins
-      FlowAspect ] ]            ; (88f37592);
+      HarnessKind               ; Flow pins
+      HarnessProfile            ; (88f37592);
+      FlowAspect ] ]            ;
                                 ; FlowAspect and the
                                 ; Library's Aspect
                                 ; name the same
@@ -415,9 +428,13 @@ Signal                          ; the meta socket
 [  Configure.[
       Module.{                  ; the registry: one
          Key                    ; per key
-         Source }
+         Source
+         Checked.Boolean }      ; false until its
+                                ; first compose
+                                ; checks the hash
       Model.{                   ; the layer's model
          Layer
+         Harness.HarnessKind    ; how it is driven
          Native.String }        ; the model's name
                                 ; as the harness
                                 ; knows it
@@ -455,6 +472,33 @@ Configuration, or Unconfigured before any Nexus
 payload; Field reads the runner values from it
 (current best).
 
+Printed forms. Responses print in datom's canonical
+form: entries in insertion order (first bound first),
+an empty vector as [], one space inside every bracket
+and brace. Written, with one entry each:
+
+```
+Listed.[
+   { { Psyche core Primary }
+     Awake.startInputVital
+     [ zooWrongYouth ]
+     [] } ]
+
+Configuration.{
+   <nexus>
+   [ { Primary Claude «opus» } ]
+   [ { Primary 20 40 } ]
+   [ { { Vision flow }
+       { psyche-skills
+         <hash>
+         vision/flow.md }
+       false } ] }
+
+Unconfigured
+```
+
+Unconfigured prints bare.
+
 Order (current best). Model and Module are accepted
 before any Nexus payload, in any order. Configure.Nexus
 must arrive before any Launch, which otherwise is
@@ -476,7 +520,8 @@ Written, one Module of psyche-skills:
 {  { Vision flow }
    { psyche-skills
      <hash>
-     vision/flow.md } }
+     vision/flow.md }
+   false }
 ```
 
 A Key is written as the pair, { Vision flow }; Forget
@@ -490,9 +535,10 @@ across files. Each payload lands whole or is refused
 whole. Payloads go in succession, each whole, and
 flow-meta's composing of fragments ends. The same Key
 with a new hash is an update, answered Configured. A
-module is found by its Key; its file's place is
-Curriculum's to know, checked against the hash on a
-read or a write. The Nexus composes from the registry
+module is found by its Key; its source file is at
+SourceRoot/Repository/Path, Repository being the
+checkout's directory under SourceRoot, Hash the blake3
+of that file, checked on a read or a write. The Nexus composes from the registry
 and reads no path a caller writes.
 
 ### Message's simple and extended forms
@@ -536,7 +582,14 @@ before any harness runs (identity is a field of the
 request, not read off a title or a model); opens the
 pane; spawns the harness; binds the flow to the session
 the harness reports; titles it; submits the first
-prompt once. The hook reports Started. A new flow's
+prompt once. The hook reports Report.{ FlowId Started }
+at the harness's session start; it learns its FlowId
+from the environment Flow sets in the pane at spawn
+(the FlowId reserved before the harness ran). The
+session id is bound as today: chosen by Flow at
+reserve for Claude, reported by Codex's app-server at
+bind. HarnessProfile carries how a kind is driven, one
+per kind. A new flow's
 first response is a presentation of its context in its
 role. A wake launches the same way, the drained queue
 delivered with the first prompt, the waking request
