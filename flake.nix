@@ -19,11 +19,11 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/73414b693b6331e4d5398ced576b765efeed1763";
+      url = "github:LiGoldragon/Curriculum/c86bc953e391cf178e3fc49dbc8f73498ba10839";
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/f9d74b9ef85e461f2f8f0dec722637192341596f";
+      url = "github:LiGoldragon/psyche-skills/850fd27228cb7c4a5fb71f7409109d4a437578be";
       flake = false;
     };
     mind-skills = {
@@ -226,7 +226,7 @@
                 cp -R ${self}/. "$workspace/"
                 chmod -R u+rwX "$workspace"
                 export XDG_RUNTIME_DIR="$runtime_root"
-                export CURRICULUM_PSYCHES_SKILLS_DIR="${inputs."psyche-skills"}/skills"
+                export CURRICULUM_PSYCHES_REPOSITORY_DIR="${inputs."psyche-skills"}"
                 export CURRICULUM_MIND_SKILLS_DIR="${inputs."mind-skills"}/skills"
                 export CURRICULUM_FIELD_SKILLS_DIR="${inputs."field-skills"}/skills"
                 export CURRICULUM_ROLES_FILE="${curriculum}/roles.datom"

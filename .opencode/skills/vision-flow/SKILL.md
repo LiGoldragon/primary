@@ -22,7 +22,9 @@ launched with specialized system prompts.
 
 A voice is an aspect carrying a rank, `Psyche.Primary`: Psyche, Mind, Field by Primary, Secondary, Tertiary, nine voices. The model behind a voice is configuration, declared once in Flow and changed only over its meta wire; not every model is exposed to every voice. Voices are addressed by name; a flow id is for the ledger and the archive, and is written in words. A side flow is a job, not a voice: focused, not long-lived, gone when its mission is done; a message sent to it after that returns to its sender with notice that the flow has ended.
 
-Speech runs horizontally between aspects at equal rank and vertically within an aspect one rung at a time. Field speaks to Mind, for what must be changed in code and documentation and tested before Field deploys it; Mind speaks to Psyche for judgment on design and choice, and rarely. Sol speaks to Opus, not to Fable; Fable is spoken to least. Design is Astra's, not Sol's.
+Every flow has a topic; a flow with no special topic has the topic core, the heart of its aspect. A topic is a core:Name, a camelCaseExpression checked when created. A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary <id> }.
+
+Who speaks to whom, within an aspect and across aspects at the same layer in a shared topic, is the vision-aspects skill's. Flow refuses a request that leaves those routes.
 
 ## Repository and skills
 

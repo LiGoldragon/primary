@@ -4,6 +4,10 @@ description: Which model seat thinks, designs, delegates or speaks to the living
 dependencies: []
 ---
 
+## Roles are explained by layer, not by model
+
+Roles are explained by layer, not by model; one skill maps layer to model.
+
 ## Opus is two seats, not one model
 
 The older Opus is the wiser seat. The newer Opus is faster and blinder, and
@@ -41,10 +45,6 @@ each also in a `[1m]` form. The bare alias resolves to the newest Opus:
 
     claude --model opus          # takes whatever Opus shipped most recently
     claude --model claude-opus-4-6[1m]   # names the seat
-
-## The lower layer's main flow is the older Opus
-
-On the Codex side it is the latest Sol. At the higher layer it is Astra.
 
 ## Delegation ceiling
 
