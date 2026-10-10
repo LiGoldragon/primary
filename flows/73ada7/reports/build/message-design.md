@@ -173,7 +173,8 @@ them: `Bind.{ Address Process }` (once, at start; section 7.6),
 `OffRoute`, `Unidentified.Process`, `Taken.Address` (a Bind) and
 `NotMessage`. Flow accepts `Lock`, `Deliver` and `Release` only from the
 Message Nexus's own process, which Message registered with `Bind` at
-its start; any other peer is refused `NotMessage` (f5a6e9, current best,
+its start; any other peer, or a peer whose executable is not
+`MessageNexusBinary`, is refused `NotMessage` (f5a6e9, current best,
 not before the living). Every other Flow query stays open to any local
 peer the socket admits. The lock request is
 `Lock.{ Sender Recipient }`: Message identifies the sender by process
@@ -389,7 +390,10 @@ sent. The Nexus never sees text [R].
       process, `T` is discarded, and the connection ends with no
       answer and no call to Flow. `0` or `EPERM` means it was not yet
       reaped, because the kernel answers `ESRCH` before it checks
-      permission [K6].
+      permission [K6]. Astra's kernel qualification (source
+      evidence, not a runtime witness) disagrees with this reading
+      of `EPERM`: see [K6] and X4. The guard is designed, not
+      proven.
    5. `Process.{ N T }` goes to Flow in `Identify`, and Message closes
       `F`.
 
@@ -534,7 +538,7 @@ sends `Release.Lock` before it answers.
 | Deliver | Unknown.Lock (never granted, or no longer held) | Refused.Unknown.Lock | no (the lock ended) |
 | Deliver | a refusal of the waking rule | that refusal | no (a refusal at Deliver ends the lock) |
 | before Deliver | Message's clock is at or past `Until` | Refused.Lapsed | no (the lock lapsed; Release would answer Lapsed) |
-| Lock, Deliver, Release | NotMessage | Refused.NotMessage | no (Flow does not take this process as Message; nothing is held by it) |
+| Lock, Deliver, Release | NotMessage (pid or start time unequal, or the executable is not `MessageNexusBinary`; the binding is dropped) | Refused.NotMessage, then Message exits naming it (section 7.6) | no (Flow does not take this process as Message; nothing is held by it) |
 | any | connect or frame failure | Refused.FlowUnreachable | yes, if Locked was received |
 
 A lock ends by Deliver (one delivery per lock), by Release, by lapse,
@@ -569,12 +573,16 @@ pid and the start time of `/proc/<pid>/stat` field 22. Flow accepts
 kernel-read executable equals `MessageNexusBinary`; any other peer is
 refused `NotMessage`, and before `Configure.Nexus` the `Bind` is
 refused `NotConfigured` (f5a6e9, current best). Flow holds the
-binding. At the gate it compares the connecting peer's kernel pid and
-start time with the bound process's; they must be equal. How Flow
-reads its peer is Flow's; section 6 gives the race-free read Message
-uses for its own callers. No ancestor
-walk happens at the gate, so a process that descends from Message is
-refused. Message itself is therefore the process that connects to Flow
+binding. At the gate, on every `Lock`, `Deliver` and `Release`, Flow
+compares the connecting peer's kernel pid and start time with the
+bound process's; they must be equal. Beside them it re-checks the
+peer's executable against `MessageNexusBinary`, both resolved to
+canonical paths (f5a6e9, current best). A mismatch of the executable
+is refused `NotMessage` and drops the binding, so Message must `Bind`
+again, which a process of another binary cannot pass. How Flow reads
+its peer is Flow's; section 6 gives the race-free read Message uses
+for its own callers. No ancestor walk happens at the gate, so a
+process that descends from Message is refused. Message itself is therefore the process that connects to Flow
 for `Lock`, `Deliver` and `Release`; no helper process and no CLI
 connects for it.
 
@@ -592,9 +600,13 @@ connects for it.
   trace. It retries nothing and listens on no socket [I]; restarting it
   is the service manager's, outside this design. Neither the design
   nor Flow's gives a retry.
-- After a start that bound, a `NotMessage` from Flow means the binding
-  was lost; Message answers `Refused.NotMessage` to the sender and
-  does not rebind [I].
+- After a start that bound, a `NotMessage` from Flow at `Lock`,
+  `Deliver` or `Release` means the binding is gone. Message's own side
+  does not change otherwise. As this flow's choice [I], Message
+  answers the sender in hand `Refused.NotMessage`, then exits with a
+  nonzero status naming `NotMessage` in its trace, the same as a
+  refused `Bind` at start; it does not rebind in place, and the
+  service manager's restart runs the `Bind` again.
 
 ## 8. The lock protocol with Flow
 
@@ -622,8 +634,12 @@ Release.L         ─────────▶    delete the record if it equa
   the process bound as Message at start (section 7.6), whose pid and
   start time must equal the connecting peer's; there is no ancestor
   walk at the gate. Any other peer is refused `NotMessage` (f5a6e9,
-  current best). The `Bind` itself is taken only from a peer whose
-  kernel-read executable equals `Configure.Nexus`'s
+  current best). On every one of the three, Flow also re-checks the
+  peer's executable against `MessageNexusBinary`, both resolved to
+  canonical paths; a mismatch is refused `NotMessage` and drops the
+  binding, so Message must `Bind` again, which another binary cannot
+  pass (f5a6e9, current best). The `Bind` itself is taken only from a
+  peer whose kernel-read executable equals `Configure.Nexus`'s
   `MessageNexusBinary`.
 - Trust at `Lock` rests on the gate: Flow does not re-check the
   sender's process. It checks the `Sender` Awake: no record →
@@ -705,6 +721,7 @@ pane move to the semi-sandbox below.
 | 27 | The sender's metaflow is Ended in Flow while its stand-in shell still runs, then that shell sends | `Refused.Ended.Address` naming the sender; no lock record |
 | 28 | A `message-nexus` from another store path than `MessageNexusBinary` is started | Flow answers its `Bind` `NotMessage`; it exits nonzero naming `NotMessage`; no socket listens |
 | 29 | A fresh Flow with no `Configure.Nexus`, then `message-nexus` started | Flow answers `Bind` `NotConfigured`; Message exits nonzero naming `NotConfigured`; no socket listens; after `Configure.Nexus` a start binds and test 1 succeeds |
+| 30 | After a bind, the bound process is replaced in place by another binary (`execve` keeps the pid and start time), then it sends `Lock` | Flow answers `NotMessage` and drops the binding; a `Bind` from that binary is `NotMessage` too; no lock record |
 
 Flow's own lock contract is tested in `flow-test`, not here: a `Deliver`
 under a lock never granted, `Release` after `Deliver` or after a lapse,
@@ -795,8 +812,10 @@ What remains is Flow's to rule, or the living's where marked.
   ordinary socket: answered by f5a6e9 (current best, not before the
   living). Flow reads the peer's kernel credentials and accepts these
   three only from the exact process Message bound at its start (pid and
-  start time equal, no ancestor walk), refusing any other peer
-  `NotMessage`. `Bind` is taken on Flow's ordinary socket, so Message
+  start time equal, no ancestor walk), and re-checks on each the peer's
+  executable against `MessageNexusBinary`, both canonical paths; any
+  other peer, or a mismatch, is refused `NotMessage`, and a mismatch
+  drops the binding. `Bind` is taken on Flow's ordinary socket, so Message
   keeps only Flow's ordinary path. `Bind` under
   `{ Field message Primary }` is accepted only from a peer whose
   kernel-read executable equals `Configure.Nexus`'s
@@ -964,8 +983,14 @@ witnessed here).
   `/proc/<pid>/stat`, then `pidfd_send_signal(F, 0, NULL, 0)`. Only a
   process not yet reaped at that check yields `Process.{ N T }`, and
   the kernel recycles no pid before reaping [K3][K4]. Minimum kernel
-  Linux 6.5; this host runs 7.1.8. Designed, not yet witnessed: the
-  proof is test 24, which reuses a pid.
+  Linux 6.5; this host runs 7.1.8. Designed, not proven: the proof is
+  test 24, which reuses a pid. Astra's kernel qualification (source
+  evidence, not a runtime witness): a pidfd stops pid-reuse
+  retargeting on Linux 6.5 and later; `ESRCH` means the peer was
+  reaped; `EPERM` proves nothing and success does not prove the peer
+  is running, against this design's reading of `kernel/signal.c` v6.5
+  in [K6]. `execve` keeps the pid, so the binary check holds only
+  where it is made.
 - **X5** ethos-zero 16.0.0 `Check` reads one file and does not resolve
   an import across files, so the five files do not Check together as
   a unit. The imports were read against the published sources, fetched
@@ -1025,6 +1050,16 @@ witnessed here).
   `pid_task` finds no task, before `group_send_sig_info` runs
   `check_kill_permission`; `pidfd_send_signal` returns `-EINVAL`
   when `access_pidfd_pidns` fails.
+  Astra's kernel qualification (source evidence from Astra's reading,
+  not a runtime witness of this flow): a pidfd stops pid-reuse
+  retargeting on Linux 6.5 and later; `ESRCH` means the peer was
+  reaped; `EPERM` proves nothing, and success does not prove the peer
+  is running. Astra holds this against this design's reading of
+  `kernel/signal.c` v6.5 above, that `EPERM` shows the peer was not yet
+  reaped. The two readings are unreconciled; this flow did not run
+  either. The guard stays designed, not proven. `execve` keeps the
+  pid, so the binary check in section 7.6 holds only where it is made,
+  at each `Lock`, `Deliver` and `Release`.
 
 ## Sources
 
