@@ -41,9 +41,11 @@ Library                         ; Flow's
       Repository.String         ; text lives: the
       Hash.Blake3               ; containing source,
       Path.String }             ; hashed, relative
-   Key.{                        ; a module's
-      Subaspect                 ; registry key
-      Topic }                   ; (current best)
+   Key.{                        ; a module's key,
+      Subaspect                 ; written as the
+      Topic }                   ; the pair
+                                ; { Vision flow }
+                                ; (current best)
    Said.{                       ; his words, relayed
       Context.String            ; where it was said
       Verbatim.String }         ; the words whole
@@ -65,9 +67,11 @@ Library                         ; Flow's
       Aspect                    ; written short:
       Topic                     ; { Psyche flow
       Layer }                   ; Primary }
-   Recipient.[ Address Up ]     ; Up is the layer
-                                ; above the sender
-                                ; within its aspect
+   Recipient.[ Address Up ]     ; Up: same topic,
+                                ; one layer above
+                                ; the sender, in its
+                                ; aspect (current
+                                ; best)
    Metaflow.{                   ; one per address
       Address
       State.[
@@ -79,6 +83,7 @@ Library                         ; Flow's
       Queue.Vector<Request> }   ; waiting, oldest
                                 ; first
    Lock.{                       ; one per metaflow,
+      Sender                    ; resolved address
       Address                   ; while held
       Until.Integer }           ; seconds since the
                                 ; epoch; lapses
@@ -224,13 +229,12 @@ Signal                          ; what Flow is asked
    Refresh.Address              ; the next link
    End.Address
    Current.Address
-   Lock.Recipient               ; Message asks; time
+   Lock.{ Sender Recipient }    ; Message asks; time
                                 ; bound
    Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
       Lock
-      Sender                    ; for the route
-      Request }
+      Request }                 ; sender in lock
    Release.Lock
    Report.{                     ; the hook's request
       FlowId
@@ -266,27 +270,46 @@ Signal                          ; what Flow is asked
    Listed.Vector<Metaflow>
    Refused.[
       Locked                    ; refresh under way
-      Held.Lock                 ; already locked
-      Lapsed                    ; the lock ran out
+      Held.Lock                 ; lock held: also
+                                ; Refresh and End
+                                ; (current best)
+      Awake.FlowId              ; Launch of an awake
+                                ; metaflow: its
+                                ; current flow
+      Asleep                    ; Refresh of a
+                                ; sleeper
+      Lapsed                    ; Release of a
+                                ; lapsed lock
+      Unknown.Lock              ; Deliver or Release
+                                ; under a lock not
+                                ; held
+      Unknown.FlowId            ; Report, Stop or
+                                ; Observe.Agent
       UnknownModule.Key         ; a module
       NoLayer                   ; no model for it
       Unknown.Address           ; no such metaflow
       Ended.Address             ; returned to its
                                 ; sender
-      OffRoute                  ; sender and
+      OffRoute                  ; at Lock: sender,
                                 ; recipient aspect,
                                 ; layer, topic off
                                 ; the vision-aspects
                                 ; routes
-      NoneAbove                 ; the sender is at
-                                ; the top of its
-                                ; aspect
+      NoneAbove                 ; Up at Primary: the
+                                ; sender is at the
+                                ; top of its aspect
       Unidentified.Process ] ]  ; in no metaflow
 []
 ```
 
 Identify and the Deliver responses and refusals above
-are current best, not before the living. Unknown module
+are current best, not before the living. Also current
+best: Launch of an awake metaflow is Refused.Awake.FlowId
+and Refresh of an asleep one Refused.Asleep; Refresh or
+End under a held lock is Refused.Held.Lock; Unknown.FlowId
+answers Report, Stop and Observe.Agent of an unknown
+flow; Unknown.Lock answers Deliver or Release under a
+lock not held; Lapsed answers Release of a lapsed lock. Unknown module
 is renamed UnknownModule.Key so that Unknown.Address
 can be a variant of its own. Report, Observe.Agent, Stop
 and Metaflows, with Reported, Observed.Agent, Stopped
@@ -301,8 +324,8 @@ Written, a launch of this flow:
 ```
 Launch.{
    { Psyche flow Primary }      ; written short
-   [ vision-flow
-     knowledge-ethos ]
+   [ { Vision flow }
+     { Knowledge ethos } ]
    «Design Flow's module registry.» }
 ```
 
@@ -335,7 +358,10 @@ Signal                          ; the meta socket
          NextCodex.String
          HarnessProfiles.Vector<String>
          MetaAspects.Vector<Aspect>
-         MessageNexusPath.String } ]
+         MessageNexusPath.String
+         Lease.Integer } ]      ; seconds, 60 by
+                                ; default: lock span
+                                ; (current best)
    Forget.{                     ; a module leaves
       Subaspect
       Topic }
@@ -349,9 +375,14 @@ Signal                          ; the meta socket
       Unknown.Topic
       NoSource.Path
       HashMismatch
-      Conflict                  ; a repeat that
-                                ; disagrees with one
-                                ; held
+      Conflict                  ; Nexus setup
+                                ; payloads that
+                                ; disagree in one
+                                ; start
+      UnknownModule.Key         ; Forget of an
+                                ; unknown key
+      Unidentified.Process      ; Bind of a dead or
+                                ; reused process
       Taken.Address ] ]         ; already awake
 []
 ```
@@ -366,21 +397,25 @@ Written, one payload file of psyche-skills:
 
 ```
 Configure.Module.{
-   Vision
-   flow
+   { Vision flow }
    { psyche-skills
      a3f1…9c2e
      vision/flow.md } }
 ```
+
+A Key is written as the pair, { Vision flow } (current
+best).
 
 Configuration lives in datom files in the repositories
 that own it, one file per concern. The CLI sends them
 in succession over the meta socket; nothing is expanded
 across files. Each payload lands whole or is refused
 whole. Payloads go in succession, each whole, and
-flow-meta's composing of fragments ends. A repeated
-payload that agrees with one already held is accepted;
-one that disagrees is refused Conflict (current best). A module is found by subaspect and topic; its
+flow-meta's composing of fragments ends. The same Key
+with a new hash is an update, answered Configured;
+Conflict is only for Nexus setup payloads that disagree
+within one start (current best). A module is found by
+subaspect and topic; its
 file's place is Curriculum's to know, checked against
 the hash on a read or a write. The Nexus composes from
 the registry and reads no path a caller writes.
@@ -396,8 +431,8 @@ omitted from either; shown here for the lock.
       Request }
    Deliver.{                    ; extended: Message
       Lock                      ; to Flow, under the
-      Sender                    ; lock; no flow id
-      Request } ]
+      Request }                 ; sender in lock
+]
 ```
 
 The simple form carries what its use needs and is what
@@ -435,10 +470,16 @@ last.
 **The waking rule and the queue.** Every topic has one
 metaflow, answering for the whole topic, even across
 several skills. Flow keeps its queue. By state: Awake,
-the request is delivered now. Asleep, an order, a
+the request is delivered now; a Launch of an awake
+metaflow is refused Awake.FlowId, naming its current
+flow (current best). Asleep, an order, a
 question, a psyche or psyches wakes it; a result or a
 notice waits in the queue and wakes nothing. Ended, the
-request returns to its sender. A waking request drains
+request returns to its sender. Wake of an awake
+metaflow is Queued, and the queue drains at its next
+Stop (current best). Refresh of an asleep metaflow is
+refused Asleep; Refresh or End while a lock is held is
+refused Held.Lock (current best). A waking request drains
 the queue: all waiting requests are delivered oldest
 first as one vector typed by variant, the waking
 request last, with the first prompt of the spawned
@@ -479,7 +520,16 @@ under way the metaflow is locked and a lock request is
 refused Locked; a held lock refuses Held. Message
 speaks in metaflows and need not know flows. Flow
 resolves Up from the sender's identified address and
-answers `Locked.Lock` carrying the resolved address.
+includes it in the returned lock. Up is the same topic,
+one layer above, within the sender's aspect; at Primary
+it is refused NoneAbove. The lock's span is the Lease
+of Configure.Nexus, in seconds, 60 by default. A lock
+ends by Deliver (one delivery per lock), Release, lapse,
+or a refusal at Deliver; Release after Deliver is
+refused Unknown.Lock, Release of a lapsed lock Lapsed,
+of an unknown one Unknown.Lock. OffRoute is refused at
+Lock; Deliver trusts its lock. Stop leaves the metaflow
+Asleep; only End ends it.
 Status: current best, not before the living.
 
 **Who is the caller.** Flow answers Identify.Process:
@@ -493,13 +543,13 @@ before the living).
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
 an aspect and across aspects at the same layer in a
-shared topic). Also, by Signal: Locked, Held, Lapsed, UnknownModule,
+shared topic). Also, by Signal: Locked, Held.Lock, Awake.FlowId, Asleep,
+Lapsed, Unknown.Lock, Unknown.FlowId, UnknownModule.Key,
 NoLayer, Unknown.Address, Ended.Address, OffRoute
 (Sender and recipient aspect, layer and topic do not
-match the routes), Unidentified.Process, and for a
-Configure Unknown topic, NoSource, HashMismatch,
-Conflict, and
-for a Bind Taken.
+match the routes), NoneAbove, Unidentified.Process, and
+for a Configure Unknown topic, NoSource, HashMismatch,
+Conflict, and for a Bind Taken or Unidentified.Process.
 
 **Context modules, background.** A module is one file
 of prompt text with a subaspect, a topic, a
@@ -618,13 +668,12 @@ still open here; its list has no N9, N10 or N12:
 - N8: whether queueing a busy awake flow and draining
   at the next Stop is right; and where a request lands
   in an awake flow (book 17, ruling 3).
-- N11: the lease length is in no Configure payload;
-  Lock carries Until and nothing sets its span.
 
 Answered in the design, current best: N1 and N2
 (Deliver.{ Lock Sender Request }), N4 declaration in
 the Library, N5 (Identify.Process, Process on Flow),
-N6 (refusals), N7 (Queued, Woken.FlowId), N13 (Bind).
+N6 (refusals), N7 (Queued, Woken.FlowId), N11
+(Configure.Nexus Lease), N13 (Bind).
 
 Said is the build's name for the type carrying his
 words; the Aspect variant Psyche and the Request
