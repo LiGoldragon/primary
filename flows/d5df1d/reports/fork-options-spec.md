@@ -33,8 +33,7 @@ header, the same way a plain value does. It prints and reads in datom as its
 inner value, because the derive is already in the set. Callers construct it as
 `LockPaths(vec![..])`. The vector methods are reached through `.0`. A sourced
 reference with arguments, `Record.external:Vector<String>`, is a container and
-emits `pub struct Record(pub external::Vector<String>);`. No `pub type` remains
-under 1a (inference).
+emits `pub struct Record(pub external::Vector<String>);`. Under 1a no pub type over a container remains; an alias over a declared type is Fork 2's question, kept by 2b and refused by 2a.
 
 ```
 Library
@@ -105,8 +104,8 @@ The field name `lock_path_vector` is **inference**, by the same rule that gives 
 - Layers: refusal (src/checking.rs, `TypeDeclaration::NewType` and the
   named-position path) and error.ethos. Generation loses its alias branch only
   if Fork 2 also removes it. Changed fixtures: orchestrate.ethos (`LockPaths`
-  and `Locks` go inline); tree-types.ethos (`Planted.Vector<Tree>`); 
-  print/flow-operation.ethos (`Capsule.{ Home.String Vector<String> }`).
+  and `Locks` go inline); tree-types.ethos (`Planted.Vector<Tree>`, the move of the Deep declaration); 
+  print/flow-operation.ethos (`Capsule.{ Home.String Vector<String> }`); alias-format.ethos.
 - Changed goldens: the same four .rs files as (a). All generated code allows
   `clippy::type_complexity` at the module head. Changed tests: the same as (a),
   plus `string_vector` in place of `login`. tests/print.rs
@@ -138,7 +137,7 @@ Library
 ```
 
 Refused: `Conceptual.{ [ 1 1 1 ] WrapsStructure }`. With `DuplicateName.Lock`
-removed, the refusal is `Conceptual.{ [ 1 1 3 ] DoubleWrap }` for `Job`. Names
+removed, the refusal is `Conceptual.{ [ 1 1 2 ] DoubleWrap }` for `Job`. Names
 from ethos-solution item 2 are the design's own; the paths read as observed.
 
 - Layer: refusal (src/checking.rs `NewType` arm; it looks up the held reference among the file's declarations) and error.ethos. Changed fixtures: orchestrate.ethos (line 14 `DuplicateName.Lock` deleted; the variant `LockRejection.[ DuplicateName.Lock .. ]` stays); tree-types.ethos (`Loop.Knot` deleted, Knot becomes `Knot.[ End Loop.Knot ]`); empty-signal.ethos (`Signal [] [] [] [ Name.String ]`).
