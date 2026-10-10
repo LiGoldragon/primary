@@ -290,3 +290,13 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — Fork 3 complete candidates (1d0733): braced set green, byte-equal fixtures, expectations differ only where the answer prints; represented candidate green on both. Names reset: Binding stays (Rust's own term for Representation = Vec<Digit>); Borne → AssociatedTrait. Gap (d) listed. Report flows/1d0733/reports/fork3-complete.md.
 
 ## 2026-10-10 — form report and solution report at the Fork 3-complete state; publisher dispatched.
+
+## 2026-10-10 — records published to main as 8e873a (from 9bd5c6, lock 16824, three paths, 8795 files).
+
+## 2026-10-10 — 1d0733: names applied (Binding, AssociatedTrait), both gaps listed, both variants green, patches reproduce on clean 07714b; reported to 445410.
+
+## 2026-10-10 — 445410 task via 1d0733: close the two Represented gaps; promote passing targets in ethos-test; Represented tests. Ruled: (1) role from the dependency's own ethos declarations (every trait is written in ethos), no import marker; Problem Expected.Type / Expected.Trait; (2) a second pinned check in ethos-test against the set's candidate tree, main unchanged; (3) Represented tests stay in the candidate; ethos-test lists the form unruled, no target.
+
+## 2026-10-10 — Represented gaps closed in both Fork 3 trees (1d0733): build.rs reads dependencies' ethos through Cargo; roles from declarations; Expected.Type / Expected.Trait; Form.Type added. Problem::Role no longer raised. Ruled: remove it. ethos-test e21e686: main 26 pass, 5 expected-failing; candidate check 31 pass, all five promoted. Report flows/1d0733/reports/represented-gaps.md.
+
+## 2026-10-10 — form report status at the gaps-closed state; unpublished until the next publish turn.
