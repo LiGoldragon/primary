@@ -188,3 +188,7 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — Field's supplement on item 5 (via Sol/1d0733): generation byte-identical twice, goldens byte-equal, four blobs formatted. (a) held: the eight on one revision is item 5's acceptance; the supplement is an inference that the formatter changed nothing, the rerun is the witness.
 
 ## 2026-10-10 — lock 15975 released; PrimaryPublish now 16030 (73ada7). Asked 73ada7 for a release line; publisher runs then.
+
+## 2026-10-10 — 73ada7: lock 16030 released; warns main tip 899d194 may hold a one-file tree (claim). Publisher held; witness subflow out; 445410 warned.
+
+## 2026-10-10 — Field 42265e direct (claim): item 5 eight checks on 07714b, published to ethos-zero main from b2fa8b, receipts under flow-evidence/42265e/overnight-source-sequence/. Fork 3 unruled; items 1/2/7 not landed. Set now rebases onto 07714b.
