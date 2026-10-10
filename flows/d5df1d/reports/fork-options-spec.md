@@ -138,7 +138,7 @@ Library
 ```
 
 Refused: `Conceptual.{ [ 1 1 1 ] WrapsStructure }`. With `DuplicateName.Lock`
-removed, the refusal is `Conceptual.{ [ 1 1 2 ] DoubleWrap }` for `Job`. Names
+removed, the refusal is `Conceptual.{ [ 1 1 3 ] DoubleWrap }` for `Job`. Names
 from ethos-solution item 2 are the design's own; the paths read as observed.
 
 - Layer: refusal (src/checking.rs `NewType` arm; it looks up the held reference among the file's declarations) and error.ethos. Changed fixtures: orchestrate.ethos (line 14 `DuplicateName.Lock` deleted; the variant `LockRejection.[ DuplicateName.Lock .. ]` stays); tree-types.ethos (`Loop.Knot` deleted, Knot becomes `Knot.[ End Loop.Knot ]`); empty-signal.ethos (`Signal [] [] [] [ Name.String ]`).
@@ -276,7 +276,7 @@ Library
 []
 ```
 
-- **1a × 2a.** `LockPaths` is a container new type over a declared new type. It is accepted under the reading that the double-wrap rule looks only at the held head, which is Vector. That reading is **inference**. `Paths.LockPaths` is refused with `Conceptual.{ [ 1 1 2 ] DoubleWrap }`. The same reading accepts the set's `OptionalSpiritGuardianProviderName.Option<SpiritGuardianProviderName>` and `Locks.Vector<Lock>`. In this pair no `pub type` remains anywhere, and the generation alias branch is deleted.
+- **1a × 2a.** `LockPaths` is a container new type over a declared new type. It is accepted under the reading that the double-wrap rule looks only at the held head, which is Vector. That reading is **inference**. `Paths.LockPaths` is refused with `Conceptual.{ [ 1 1 3 ] DoubleWrap }`. The same reading accepts the set's `OptionalSpiritGuardianProviderName.Option<SpiritGuardianProviderName>` and `Locks.Vector<Lock>`. In this pair no `pub type` remains anywhere, and the generation alias branch is deleted.
 - **1a × 2b.** `LockPaths` is a struct. `Paths.LockPaths` emits `pub type Paths = LockPaths;`.
 - **1b × 2a.** `LockPaths` is an alias. `Paths.LockPaths` names a declared alias and is refused. **Inference**: it is refused as `DoubleWrap`. Aliases remain only over containers.
 - **1b × 2b.** The baseline: `pub type Paths = LockPaths;`.

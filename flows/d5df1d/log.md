@@ -168,3 +168,7 @@ Report flows/1d0733/reports/fork-types-12.md, patches fork-types-12-<candidate>.
 ## 2026-10-10 — Primary checkout moved to main under this seat
 
 The working tree was switched to main at 04ad8e; this seat's lineage lives on branch recovery, last commit 9360a7. flows/d5df1d restored onto main from 9360a7 and committed locally. 1d0733 warned about its own records.
+
+## 2026-10-10 — fork-options-spec settled at the 299-line form with the one path fix ([ 1 1 3 ])
+
+A condensed 192-line rewrite had dropped the ethos examples and expected prints the dry runs need; the brief's line limit (under 260 for a 299-line file) licensed it. Restored from aeffbd and fixed in place.
