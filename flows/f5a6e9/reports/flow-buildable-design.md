@@ -278,25 +278,31 @@ Signal                          ; what Flow is asked
                                 ; current flow
       Asleep                    ; Refresh of a
                                 ; sleeper
-      Lapsed                    ; Release of a
-                                ; lapsed lock
-      Unknown.Lock              ; Deliver or Release
-                                ; under a lock not
-                                ; held
-      Unknown.FlowId            ; Report, Stop or
+      Lapsed                    ; granted, ran out
+      Unknown.[                 ; each inner variant
+                                ; carries its type
+         Address                ; no such metaflow;
+                                ; a Sender's address
+                                ; naming none; an Up
+                                ; to a layer with
+                                ; none
+         Lock                   ; never granted, or
+                                ; consumed by a
+                                ; delivery, release
+         FlowId                 ; Report, Stop or
                                 ; Observe.Agent
-      UnknownModule.Key         ; a module
+         Key ]                  ; a module
       NoLayer                   ; no model for it
-      Unknown.Address           ; no such metaflow
-      Ended.Address             ; returned to its
-                                ; sender
+      Ended.Address             ; End of an Ended
+                                ; metaflow: returned
+                                ; to its sender
       OffRoute                  ; at Lock: sender,
                                 ; recipient aspect,
                                 ; layer, topic off
                                 ; the vision-aspects
                                 ; routes
-      NoneAbove                 ; Up at Primary: the
-                                ; sender is at the
+      NoneAbove                 ; Up above Primary:
+                                ; sender at the
                                 ; top of its aspect
       Unidentified.Process ] ]  ; in no metaflow
 []
@@ -306,12 +312,17 @@ Identify and the Deliver responses and refusals above
 are current best, not before the living. Also current
 best: Launch of an awake metaflow is Refused.Awake.FlowId
 and Refresh of an asleep one Refused.Asleep; Refresh or
-End under a held lock is Refused.Held.Lock; Unknown.FlowId
+End under a held lock is Refused.Held.Lock. The unknown
+refusals are one Unknown.[ Address Lock FlowId Key ],
+each inner variant carrying its type. Unknown.FlowId
 answers Report, Stop and Observe.Agent of an unknown
 flow; Unknown.Lock answers Deliver or Release under a
-lock not held; Lapsed answers Release of a lapsed lock. Unknown module
-is renamed UnknownModule.Key so that Unknown.Address
-can be a variant of its own. Report, Observe.Agent, Stop
+lock never granted or already consumed by a delivery or
+a release; Lapsed answers Release of a granted lock
+that ran out. A Sender whose address names no metaflow,
+or an Up resolving to a layer with no metaflow, is
+Unknown.Address. End of an Ended metaflow is
+Refused.Ended.Address. Report, Observe.Agent, Stop
 and Metaflows, with Reported, Observed.Agent, Stopped
 and Listed, are current best: Report is the hook's
 request, Stop reaps a flow with no successor, and
@@ -372,20 +383,25 @@ Signal                          ; the meta socket
    Forgotten
    Bound.FlowId                 ; the flow reserved
    Refused.[
-      Unknown.Topic
       NoSource.Path
       HashMismatch
       Conflict                  ; Nexus setup
                                 ; payloads that
                                 ; disagree in one
                                 ; start
-      UnknownModule.Key         ; Forget of an
+      Unknown.Key               ; Forget of an
                                 ; unknown key
       Unidentified.Process      ; Bind of a dead or
                                 ; reused process
       Taken.Address ] ]         ; already awake
 []
 ```
+
+Configure.Nexus arrives first. Model and Module follow
+it in any order, both before any Launch; a Launch
+before them is refused NoLayer or Unknown.Key. A
+changed Model or Threshold for a layer already set is
+an update, answered Configured (current best).
 
 Bind is for debugging and for flows launched before
 Flow existed: it reserves a flow id, records the
@@ -521,14 +537,16 @@ refused Locked; a held lock refuses Held. Message
 speaks in metaflows and need not know flows. Flow
 resolves Up from the sender's identified address and
 includes it in the returned lock. Up is the same topic,
-one layer above, within the sender's aspect; at Primary
-it is refused NoneAbove. The lock's span is the Lease
+one layer above, within the sender's aspect; above
+Primary it is refused NoneAbove. A Sender whose address
+names no metaflow, or an Up resolving to a layer with no
+metaflow, is refused Unknown.Address. The lock's span is the Lease
 of Configure.Nexus, in seconds, 60 by default. A lock
 ends by Deliver (one delivery per lock), Release, lapse,
 or a refusal at Deliver; Release after Deliver is
-refused Unknown.Lock, Release of a lapsed lock Lapsed,
-of an unknown one Unknown.Lock. OffRoute is refused at
-Lock; Deliver trusts its lock. Stop leaves the metaflow
+refused Unknown.Lock, Release of a granted lock that ran
+out Lapsed, of one never granted Unknown.Lock.
+OffRoute is refused at Lock; Deliver trusts its lock. Stop leaves the metaflow
 Asleep; only End ends it.
 Status: current best, not before the living.
 
@@ -544,11 +562,11 @@ before the living).
 of the vision-aspects skill (who speaks to whom within
 an aspect and across aspects at the same layer in a
 shared topic). Also, by Signal: Locked, Held.Lock, Awake.FlowId, Asleep,
-Lapsed, Unknown.Lock, Unknown.FlowId, UnknownModule.Key,
-NoLayer, Unknown.Address, Ended.Address, OffRoute
+Lapsed, Unknown.[ Address Lock FlowId Key ],
+NoLayer, Ended.Address, OffRoute
 (Sender and recipient aspect, layer and topic do not
 match the routes), NoneAbove, Unidentified.Process, and
-for a Configure Unknown topic, NoSource, HashMismatch,
+for a Configure NoSource, HashMismatch,
 Conflict, and for a Bind Taken or Unidentified.Process.
 
 **Context modules, background.** A module is one file
@@ -674,11 +692,6 @@ Answered in the design, current best: N1 and N2
 the Library, N5 (Identify.Process, Process on Flow),
 N6 (refusals), N7 (Queued, Woken.FlowId), N11
 (Configure.Nexus Lease), N13 (Bind).
-
-Said is the build's name for the type carrying his
-words; the Aspect variant Psyche and the Request
-variant Psyche (carrying Said) clash by name, and the
-clash is reported to the living.
 
 FlowId.String is his word for now; a hash-based id is
 wanted later.
