@@ -356,8 +356,9 @@ Signal                          ; what Flow is asked
                                 ; its hash at its
                                 ; first compose
       Ended.Address             ; Wake, Lock,
-                                ; Refresh or End of
-                                ; an Ended metaflow
+                                ; Deliver, Refresh
+                                ; or End of an Ended
+                                ; metaflow
       OffRoute                  ; at Lock: sender,
                                 ; recipient aspect,
                                 ; layer, topic off
@@ -392,9 +393,9 @@ ran out; Unknown.Lock answers a lock never granted or
 already consumed. A Sender whose address names no
 metaflow, or an Up whose target names no metaflow, is
 Unknown.Address; NoneAbove is only for an Up above
-Primary. Wake, Lock, Refresh and End of an Ended
-metaflow are all refused Refused.Ended.Address
-(current best). Report,
+Primary. Wake, Lock, Deliver, Refresh and End
+of an Ended metaflow are all refused
+Refused.Ended.Address (current best). Report,
 Observe.Agent, Stop and Metaflows, with Reported,
 Observed.Agent, Stopped and Listed, are current best:
 Report is the hook's request, Stop reaps a flow with no
@@ -617,9 +618,10 @@ the request is delivered now; a Launch of an awake
 metaflow is refused Awake.FlowId, naming its current
 flow (current best). Asleep, an order, a
 question, a psyche or psyches wakes it; a result or a
-notice waits in the queue and wakes nothing. Ended, the
-request returns to its sender. Wake of an awake
-metaflow is Queued, and the queue drains at its next
+notice waits in the queue and wakes nothing. Ended,
+the request is refused Refused.Ended.Address.
+Wake of an awake metaflow is Queued, and the
+queue drains at its next
 Stop (current best). Refresh of an asleep metaflow is
 refused Asleep; Refresh or End while a lock is held is
 refused Held.Lock (current best). A waking request drains
@@ -672,7 +674,8 @@ Lock Request }, and Flow places it by the waking rule.
 What reaches a flow is a request, never a letter; Flow
 holds no messages beyond a queue of requests. While a
 refresh is under way the metaflow is locked and a lock
-request is refused Locked; a held lock refuses Held.
+request is refused Locked; a held lock refuses
+Held.Lock.
 Message speaks in metaflows and need not know flows.
 Flow resolves Up from the sender's identified address
 and includes it in the returned lock. Up is the same
@@ -758,9 +761,10 @@ NotConfigured, HashMismatch, Ended.Address, OffRoute
 match the routes), NoneAbove, NotMessage,
 Unidentified.Process, and for a Bind Taken.Address or
 Unidentified.Process. On the meta socket: NoSource,
-HashMismatch, Conflict, Unknown.Key and Store. A
-store failure on any query — Metaflows, Current,
-Lock, Deliver, Configuration and the rest — answers
+HashMismatch, Conflict, Unknown.Key and Store.
+A store failure on any query — Metaflows,
+Current, Lock, Deliver, Identify,
+Configuration and the rest — answers
 Refused.Store, never an empty vector.
 
 **Context modules, background.** A module is one file
