@@ -45,10 +45,7 @@ reason. Your record on hashes,
 flows/d4ae97/vision/datom.md, 2026-10-07, "Stored
 type and datom representation; shorthands; the flow
 id as three words", names the type in memory and
-the form in datom. The flow-id record,
-flows/d5df1d/vision/ethos.md, 2026-10-09, keeps
-FlowId a String for now with a comment naming the
-hash-based id as the need.
+the form in datom.
 
 Nothing here is in production. The Source nexus is
 a design in a flow; no branch builds it.
