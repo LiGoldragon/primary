@@ -15,7 +15,7 @@ Build every item in the order given. After each, run the flake checks and regene
 
 ## 1. A declaration `Name.Type` is a new type, not an alias
 
-Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md).
+Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md); both answers now have a complete candidate tree on 07714b, bare and braced, fixtures and goldens byte-equal between them, expectations differing only where the answer prints (flows/1d0733/reports/fork3-complete.md).
 
 What changes. Today `FlowId.String` emits `pub type FlowId = String;` (src/generation.rs, the `TypeDeclaration::Alias` arm, ~876-886). It emits, for a plain value, the tuple struct below, bearing the derive every struct and enum already bears (types book, Proposal 3: "Ethos Zero emits a new type as a Rust struct of one unnamed position, bearing the same derive as every struct and enum it emits."):
 
@@ -46,7 +46,7 @@ Acceptance tests (Prometheus, Nix):
 
 ## 2. Single-field structs and double wrapping are refused
 
-Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md).
+Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md); both answers now have a complete candidate tree on 07714b, bare and braced, fixtures and goldens byte-equal between them, expectations differing only where the answer prints (flows/1d0733/reports/fork3-complete.md).
 
 What the books say, quoted:
 - Invariants Proposal 1: "A struct holds two or more positions; a struct of one is refused. A type that holds one other type is written as its name, a dot and that type." Example: `Age.{ Integer }` refused, `Age.Integer` accepted.

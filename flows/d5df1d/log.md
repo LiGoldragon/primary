@@ -284,3 +284,9 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — special-representation candidate (1d0733): bare green with 8 new tests; braced impossible until the set has a braced variant. Ruled: (1) test (3) restated as witnessed (E0271 pin, E0277 at the impl); (2) emit the source name consistently as written, trait-as-type import a known gap, not built; (3) names: Binding → AssociatedType, Borne → Bearing.[ Derived Represented ]; (4) build the braced variant of the whole set so both Fork 3 answers are complete candidates. Report flows/1d0733/reports/ethos-represented.md.
 
 ## 2026-10-10 — reports/special-representation-form.md at the witnessed state (26 lines); unpublished until the next publish turn.
+
+## 2026-10-10 — records published to main as 9bd5c6 (from be5c2e, lock 16796, two paths, 8795 files).
+
+## 2026-10-10 — Fork 3 complete candidates (1d0733): braced set green, byte-equal fixtures, expectations differ only where the answer prints; represented candidate green on both. Names reset: Binding stays (Rust's own term for Representation = Vec<Digit>); Borne → AssociatedTrait. Gap (d) listed. Report flows/1d0733/reports/fork3-complete.md.
+
+## 2026-10-10 — form report and solution report at the Fork 3-complete state; publisher dispatched.
