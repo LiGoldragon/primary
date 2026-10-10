@@ -186,3 +186,5 @@
 - A rebuild backup, reports/flow-buildable-design.md.bak, landed in c29d10e31; the trusted-origin fold removes it from the lane and from main.
 - Published under lock 16651, released: 186dd7017 «f5a6e9: trusted origin: the Message binary, awake senders»; the .bak removed; lane paths only; local full clone. 9fed42 told.
 - flow-test via 9fed42: the executable comparison. Ruled: Flow resolves both sides to their canonical path (symlinks followed) and compares the results; the configured value is the resolved store path of the Message binary, and a configured value that resolves nowhere refuses NoSource.Path at Configure. Folded at the next touch.
+- Published under lock 16671, released: e876d77da «f5a6e9: the executable compared by canonical path»; only the lane's two files differ. 9fed42 told.
+- 445410 read e876d77da: four rulings missing from the design (NotMessage on a failed Bind comparison; NotConfigured for Bind under the Message address before the Nexus payload; Refused.Asleep and Ended.Address for a Sender at Lock; trust resting on the gate). One fold dispatched, blob checked by line before the push.

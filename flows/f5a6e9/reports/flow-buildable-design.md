@@ -344,10 +344,10 @@ Signal                          ; what Flow is asked
                                 ; the vision-aspects
                                 ; routes
       NoneAbove                 ; Up above Primary
-      NotMessage                ; Lock, Deliver or
-                                ; Release from a
-                                ; peer not the bound
-                                ; Message process
+      NotMessage                ; Bind, Lock,
+                                ; Deliver or Release
+                                ; from not-bound
+                                ; Message peer
       Unidentified.Process      ; Identify: in no
                                 ; metaflow; Bind: a
                                 ; dead or reused
@@ -460,14 +460,15 @@ before any Nexus payload, in any order. Configure.Nexus
 must arrive before any Launch, which otherwise is
 refused NotConfigured; a Launch before its Model or
 Module is refused NoLayer or Unknown.Key.
-Configure.Nexus is not needed for Lock, Deliver,
-Release or Identify. A Module arriving before
-Configure.Nexus is recorded unchecked; its hash is
-checked at its first compose into a launch, and a
-mismatch refuses that Launch with HashMismatch. A
-changed Model or Threshold for a layer already set is
-an update, answered Configured; Conflict is only for
-Nexus payloads that disagree within one start.
+Configure.Nexus is needed for Bind under the Message
+address, but not for Lock, Deliver, Release or
+Identify. A Module arriving before Configure.Nexus is
+recorded unchecked; its hash is checked at its first
+compose into a launch, and a mismatch refuses that
+Launch with HashMismatch. A changed Model or Threshold
+for a layer already set is an update, answered
+Configured; Conflict is only for Nexus payloads that
+disagree within one start.
 
 Written, one Module of psyche-skills:
 
@@ -600,16 +601,19 @@ and includes it in the returned lock. Up is the same
 topic, one layer above, within the sender's aspect;
 above Primary it is refused NoneAbove. A Sender, or an
 Up target, naming no metaflow is refused
-Unknown.Address. The lock's span is the Lease of the
-Nexus payload, in seconds; Flow runs with 60 before
-any Nexus payload. A lock ends by Deliver (one
+Unknown.Address. A Sender whose metaflow is Asleep is
+refused Refused.Asleep; one whose metaflow is Ended is
+refused Refused.Ended.Address. The lock's span is the
+Lease of the Nexus payload, in seconds; Flow runs with
+60 before any Nexus payload. A lock ends by Deliver (one
 delivery per lock), Release, lapse, or a refusal at
 Deliver. A granted lock that ran out is refused
 Lapsed; one never granted or already consumed is
 refused Unknown.Lock. OffRoute is refused at Lock;
-Deliver trusts its lock. Stop leaves the metaflow
-Asleep; only End ends it. Status: current best, not
-before the living.
+Deliver trusts its lock. Trust at Lock rests on the
+gate; Flow does not re-check the sender's process.
+Stop leaves the metaflow Asleep; only End ends it.
+Status: current best, not before the living.
 
 **The Message gate.** Flow reads the connecting peer's
 credentials from the kernel. Lock, Deliver and Release
