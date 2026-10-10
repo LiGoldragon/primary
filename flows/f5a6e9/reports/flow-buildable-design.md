@@ -41,15 +41,15 @@ Library                         ; Flow's
       Repository.String         ; text lives: the
       Hash.Blake3               ; containing source,
       Path.String }             ; hashed, relative
-   Psyche.{                     ; his words, relayed
+   Said.{                       ; his words, relayed
       Context.String            ; where it was said
       Verbatim.String }         ; the words whole
    Request.[                    ; reaches a flow
       Order.String              ; wakes
       Question.String           ; wakes
-      Psyche.Psyche             ; wakes; the variant
+      Psyche.Said               ; wakes; the variant
                                 ; carries the type
-      Psyches.Vector<Psyche>    ; wakes
+      Psyches.Vector<Said>      ; wakes
       Result.String             ; a flow's answer:
                                 ; delivered awake,
                                 ; waits asleep
@@ -88,7 +88,7 @@ Library                         ; Flow's
 ```
 
 The Library declares once the types both Signals and
-Memory use: Aspect, Address, Metaflow, Lock, Process
+Memory use: Said, Aspect, Address, Metaflow, Lock, Process
 and Sender. Memory and both Signals import them (status:
 current best, not before the living).
 
@@ -120,7 +120,7 @@ The Nexus holds the bytes and compares, hashes and
 orders them. Bytes<N> is an intrinsic name, N bytes,
 copied, ordered, hashed.
 
-A request is one layer of variants. A psyche carries
+A request is one layer of variants. A Said carries
 his words and their context, nothing of the relaying
 flow. Delivered as one vector, oldest first, the
 waking request last:
@@ -138,7 +138,6 @@ Memory                          ; Flow's
 [  flow_ethos:[ FlowId Topic Layer
                 Request Subaspect
                 Source Address
-                Metaflow Lock
                 Process ]
    signal_flow:[ Event ] ]
 [  Flow.{                       ; one per run
@@ -158,8 +157,11 @@ Memory                          ; Flow's
       Native.String }           ; the model's name
                                 ; as the harness
                                 ; knows it
-   Metaflow                     ; from the Library
-   Lock                         ; from the Library
+   Metaflow.flow_ethos:Metaflow ; ethos-zero's form
+                                ; for a record
+                                ; naming a Library
+                                ; type
+   Lock.flow_ethos:Lock         ; likewise
    Threshold.{                  ; one per layer
       Layer
       Handover.Integer
@@ -567,6 +569,11 @@ Answered in the design, current best: N1 and N2
 (Deliver.{ Lock Sender Request }), N4 declaration in
 the Library, N5 (Identify.Process, Process on Flow),
 N6 (refusals), N7 (Queued, Woken.FlowId), N13 (Bind).
+
+Said is the build's name for the type carrying his
+words; the Aspect variant Psyche and the Request
+variant Psyche (carrying Said) clash by name, and the
+clash is reported to the living.
 
 FlowId.String is his word for now; a hash-based id is
 wanted later.
