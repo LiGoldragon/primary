@@ -147,7 +147,10 @@ them: `Identify.Process`, `Lock.Address`, `Deliver.{ Lock Sender
 Request }`, `Release.Lock`. Flow answers `Identified.Address`,
 `Locked.Lock`, `Delivered`, `Queued`, `Woken.FlowId`, `Released`
 and the refusals `Locked`, `Held.Lock`, `Lapsed`, `Unknown.Address`,
-`Ended.Address`, `OffRoute` and `Unidentified.Process`. An Address is
+`Ended.Address`, `OffRoute` and `Unidentified.Process`. For a send up
+Flow also resolves `Up` (`ResolveUp.Process`, answered
+`ResolvedUp.Address` or `NoneAbove`), a request that f5a6e9's design
+does not yet carry (section 10, N14). An Address is
 written short: `{ Psyche flow Primary }`. Message's
 Operation names these as its effects, with the imported types as
 payloads.
@@ -171,7 +174,8 @@ Library
 Signal
 [ flow_ethos:[ Address Request Process Lock ]
   message_library:Configuration ]
-[ Send.{ Address
+[ Send.{ Recipient.[ Address   ; a named metaflow
+                       Up ]     ; the layer above the sender's
          Request }
   Configure.Configuration ]     ; only until MetaConfigured
 [ Delivered                     ; placed in the awake flow
@@ -182,6 +186,7 @@ Signal
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.Address            ; no such metaflow
      Ended.Address              ; returned to its sender
+     NoneAbove                  ; Up from the top layer
      OffRoute                   ; off the vision-aspects routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
@@ -191,14 +196,22 @@ Signal
 []
 ```
 
-- The simple form names the metaflow by its Address, never a flow id
-  [P] (book 15 proposal 4; `Send.{ Address Request }` is f5a6e9's
-  simple form). That a simple message never names a flow id rests on
+- The simple form names the recipient by `Recipient.[ Address Up ]`,
+  never a flow id [P] (book 15 proposal 4; f5a6e9's ruling, current
+  best, not before the living: `Send.{ Recipient.[ Address Up ]
+  Request }`). That a simple message never names a flow id rests on
   [V]: "it would be bad practice to try to send to a flow ID"
   (`flows/d4ae97/vision/datom.md`, 2026-10-07).
-- `Up` has no wire form: `Send` carries an Address and f5a6e9's
-  simple form has no recipient variant (see section 10, U1 and fork
-  F7). `NoneAbove` goes with it.
+- `Up` means the layer above within the sender's aspect [V] ("you
+  go up your own stack, not another aspect",
+  `flows/6aa08d/vision/fieldStack.md`, 2026-10-07). For tonight's
+  build Flow resolves it, because only Flow knows the sender's
+  address, from Identify; at the top layer Flow refuses with
+  `NoneAbove`, and Message answers `Refused.NoneAbove`. Who resolves
+  `Up` is the living's ruling on «Who works out where send up goes»
+  (fork F7); a ruling for Message moves the resolving into Message
+  and leaves this wire unchanged. `Deliver` stays Address-only,
+  because `Up` is resolved before delivery.
 - Refusals are vocabulary [R] (vision-nexus). Those Flow answers
   keep Flow's name and payload; `FlowUnreachable` and `AlreadyConfigured`
   are Message's own.
@@ -232,6 +245,7 @@ Operation
 [ flow_ethos:[ FlowId Address Request Lock Process Sender ]
   message_library:Configuration ]
 [ Identify.Process              ; ask Flow which metaflow runs it
+  ResolveUp.Process             ; ask Flow for the layer above
   Lock.Address                  ; ask Flow for the time-bound lock
   Deliver.{ Lock                ; hand Flow the request under it
             Sender
@@ -239,6 +253,7 @@ Operation
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
 [ Identified.Address
+  ResolvedUp.Address
   Locked.Lock
   Delivered
   Woken.FlowId
@@ -247,6 +262,7 @@ Operation
   Stored
   Failed.[
      Unidentified.Process
+     NoneAbove
      Unknown.Address
      Ended.Address
      OffRoute
@@ -388,13 +404,26 @@ Flow's Deliver answers `Queued` and `Woken.FlowId` as well as
 
 ### 7.4 Send up
 
-`Send` carries an Address, so a send up is a send whose Address the
-sender wrote: same Aspect, same Topic, Layer one above its own
+```
+1  CLI     Send.{ Up Order.«…» }
+2  Message Identify.4127                          ; Operation
+           → Identified.{ Mind nexus Secondary }  ; the sender S
+3  Message ResolveUp.4127                         ; Operation
+           → Flow ResolveUp.Process
+           → ResolvedUp.{ Mind nexus Primary }    ; M
+4  Message Lock.M, then Deliver.{ Lock S Request }, as in 7.1
+```
+
+`Up` is the layer above within the sender's aspect and topic
 ("you go up your own stack, not another aspect" [V],
 `flows/6aa08d/vision/fieldStack.md`, 2026-10-07; the same topic
-follows vision-aspects [R]). Message resolves nothing. If that
-metaflow does not exist, Flow answers `Unknown.Address` and Message
-answers `Refused.Unknown.Address`. See section 10, U1.
+follows vision-aspects [R]). For tonight's build Flow resolves it,
+because only Flow knows the sender's address from Identify [I]. At the
+top layer Flow answers `NoneAbove`, Message answers
+`Refused.NoneAbove`, and no lock is taken. `Deliver` carries the
+resolved Address, so it is unchanged. If the resolved metaflow does
+not exist, `Lock` answers `Unknown.Address` as in 7.5. See section 10,
+N14, and fork F7.
 
 ### 7.5 Refusal
 
@@ -404,6 +433,7 @@ Each refusal is a typed response. When a lock is held, Message sends
 | Where | Flow's answer | Message answers | Release? |
 |---|---|---|---|
 | Identify | Unidentified.Process | Refused.Unidentified.Process | no |
+| ResolveUp | NoneAbove | Refused.NoneAbove | no |
 | Lock | Unknown.Address | Refused.Unknown.Address | no |
 | Lock | Ended.Address | Refused.Ended.Address | no |
 | Lock | Refused.Held.Lock | Refused.Held.Lock | no |
@@ -476,20 +506,22 @@ pane move to the semi-sandbox below.
 | 5 | Field.{nexus Tertiary} → Psyche.{nexus Primary} | `Refused.OffRoute`; lock released |
 | 6 | Field.{nexus Secondary} → Mind.{nexus Secondary} | `Delivered` (same layer, same topic) |
 | 7 | Mind.{nexus Secondary} sends to `{ Mind nexus Primary }` | `Delivered` to Mind.{nexus Primary} |
-| 8 | `message` run from a shell in no flow's pane | `Refused.Unidentified.Process` |
-| 9 | Flow `Lock.M` taken directly, then a send to M | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` |
-| 10 | Flow stopped, then a send | `Refused.FlowUnreachable` |
-| 11 | Fresh store, `Configure` on the ordinary socket; then meta Configure; then ordinary Configure again | `Configured`, `Configured`, `Refused.AlreadyConfigured` |
-| 12 | Message restarted with no arguments | the send in test 1 succeeds with no new Configure |
-| 13 | An unreadable datom given to `message` | the CLI refuses; no connection appears in the Nexus trace |
+| 8 | `Up` from Mind.{nexus Secondary} | `Delivered` to Mind.{nexus Primary}; trace Identified → ResolvedUp → Locked → Delivered |
+| 9 | `Up` from Mind.{nexus Primary} | `Refused.NoneAbove`; no `Lock` call in the trace |
+| 10 | `message` run from a shell in no flow's pane | `Refused.Unidentified.Process` |
+| 11 | Flow `Lock.M` taken directly, then a send to M | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` |
+| 12 | Flow stopped, then a send | `Refused.FlowUnreachable` |
+| 13 | Fresh store, `Configure` on the ordinary socket; then meta Configure; then ordinary Configure again | `Configured`, `Configured`, `Refused.AlreadyConfigured` |
+| 14 | Message restarted with no arguments | the send in test 1 succeeds with no new Configure |
+| 15 | An unreadable datom given to `message` | the CLI refuses; no connection appears in the Nexus trace |
 
 **Semi-sandbox `packages/message-flow-claude.nix`**, run with
 `nix run .#message-flow-claude`, Haiku:
 
 | # | Drive | Expect |
 |---|---|---|
-| 14 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
-| 15 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
+| 16 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
+| 17 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
 
 ## 10. Needs against f5a6e9's Flow design
 
@@ -503,7 +535,7 @@ Where each change since eaab24fa rests, read in
 `flows/f5a6e9/log.md` (lines 147-149), `flows/f5a6e9/vision/` and
 `flows/73ada7/vision/`. None of the seven is recorded there as
 the living's ruling. The log words them "Ruled" and "four rulings
-given", given by 9fed42 (Psyche Flow Secondary, an Opus seat) on a
+given", given by f5a6e9 on a
 candidate; the design says of them "current best, not before the
 living". Where the living has spoken on the matter, it is named.
 
@@ -512,9 +544,9 @@ living". Where the living has spoken on the matter, it is named.
   that conveys his words, kept apart from the message type
   (`flows/73ada7/vision/messaging.md`, 2026-10-09, typed). That the
   request kind carries context and verbatim and that Psyches is a
-  vector is 9fed42's reading of eight records of this flow's package
+  vector is f5a6e9's reading of eight records of this flow's package
   (f5a6e9 log line 118) and book 17 [P], pending. The name `Said` is
-  the build's, ruled by 9fed42 (log line 148). The Aspect variant
+  the build's, ruled by f5a6e9 (log line 148). The Aspect variant
   `Psyche` and the Request variant `Psyche` clash by name; the design
   reports that to the living, and no answer was found.
 - **C2 `Address.{ Aspect Topic Layer }` replaces `Details`; every
@@ -525,15 +557,15 @@ living". Where the living has spoken on the matter, it is named.
   that each metaflow is a variant of psyche, mind or field with a
   struct of details (`flows/f5a6e9/notion/flow.md`, 2026-10-09, a
   notion). The type's name `Address`, the short form every query
-  carries, and the loss of `Details` are 9fed42's rulings (log line
+  carries, and the loss of `Details` are f5a6e9's rulings (log line
   147), pending the living's ruling 1 of «The Flow Nexus vision»,
   third edition. This is fork F5.
 - **C3 `Lock.{ Address Until }`.** The lock as a time-bound record
   rests on the living's "time-bound so that it doesn't lock forever"
   (`flows/f5a6e9/vision/flow.md:59`, 2026-10-07) [V]. Its fields,
-  `Address` and `Until.Integer` seconds, are 9fed42's ruling and
+  `Address` and `Until.Integer` seconds, are f5a6e9's ruling and
   f5a6e9's design.
-- **C4 `Sender.Address`.** 9fed42's ruling (log line 148). The living
+- **C4 `Sender.Address`.** f5a6e9's ruling (log line 148). The living
   has said only that routes bind sender and recipient by aspect and
   layer (speech across aspects, approved 2026-10-09, psyche-skills
   850fd27) [R]; that a Sender is an Address is not his word.
@@ -542,10 +574,10 @@ living". Where the living has spoken on the matter, it is named.
   themselves ground in "we need a registry to know which flow is
   active" (`flows/d4ae97/vision/flow.md`, 2026-10-07) [V].
 - **C6 `Deliver.{ Lock Sender Request }`.** Shape asked for by this
-  flow's N1 and N2 and given by f5a6e9 (log, eaab24fa); 9fed42's line
+  flow's N1 and N2 and given by f5a6e9 (log, eaab24fa); f5a6e9's line
   148 keeps it with no repeated Address. No word of the living.
-- **C7 `Send.{ Address Request }`.** "Bind and Send as chosen"
-  (log line 148), 9fed42's choice. Its ground is book 15 ruling 4
+- **C7 `Send.{ Recipient.[ Address Up ] Request }`.** "Bind and Send as chosen"
+  (log line 148), f5a6e9's choice. Its ground is book 15 ruling 4
   (simple and extended forms) [P], pending; the living's
   2026-10-03 "simple form, not short form" is cited in log line 106.
 
@@ -561,12 +593,17 @@ What remains is Flow's to rule, or the living's where marked.
   prompt, (b) a tool-call return, (c) other. This is fork F4.
 - **N11** The lease length is in no Configure payload; Lock carries
   `Until` and nothing sets its span.
-- **U1** `Up` has no wire form. The living said "If you say 'send up'
-  it means message higher layer" (`flows/b7ba00/vision/messaging.md:109`,
-  2026-09-26) [V]. `Send.{ Address Request }` carries no recipient
-  variant, so Message drops `Up` and `NoneAbove`; a sender writes the
-  Address one layer above its own. Whether `Up` returns, and who
-  resolves it, is fork F7.
+- **N14** `ResolveUp.Process`, answered `ResolvedUp.Address` or
+  `NoneAbove`, on Flow's edge. f5a6e9's ruling is `Send.{
+  Recipient.[ Address Up ] Request }`, with Flow resolving `Up` for
+  tonight's build (current best, not before the living). Flow's own
+  Signal is f5a6e9's to extend.
+- **U1** `Up` is the layer above within the sender's aspect. The
+  living said "If you say 'send up' it means message higher layer"
+  (`flows/b7ba00/vision/messaging.md:109`, 2026-09-26) [V] and "The
+  message logic has to figure out where ... or maybe the flow figures
+  it out. I don't know" (same file, 2026-09-26) [V]. Who resolves it
+  is fork F7.
 
 
 ## 11. What changes from what is deployed
@@ -637,9 +674,16 @@ witnessed here).
   with the kind deciding ("We don't even do the soft or hard ...
   wrong approach" [V], 2026-09-26). This design drops them. The
   distilled line's record date was not read.
-- **F7** `Up`: dropped here because `Send` carries an Address (section
-  10, U1). It returns as a Message resolver, or as a Flow-side
-  recipient form. The living said "I don't know" who resolves it.
+- **F7** Who works out where send up goes (the living's question
+  «Who works out where send up goes»). This design has Flow resolve
+  `Up`, because only Flow knows the sender's address from Identify
+  (f5a6e9's ruling, current best, not before the living). The living
+  said "I don't know" who resolves it. A ruling for Message moves the
+  resolving into Message, which has the sender's Address from
+  `Identify` and writes the layer above itself, without changing the
+  wire: `Send.{ Recipient.[ Address Up ] Request }` and the
+  Address-only `Deliver` stay as they are, and only `ResolveUp` leaves
+  Message's Operation.
 - **F8** Caller identity. Message reads the kernel peer (deployed,
   this design), or the CLI carries the identity in the message, as
   vision-nexus words it [R].

@@ -3,7 +3,8 @@
 Signal
 [ flow_ethos:[ Address Request Process Lock ]
   message_library:Configuration ]
-[ Send.{ Address
+[ Send.{ Recipient.[ Address    ; a named metaflow
+                       Up ]     ; the layer above the sender's
          Request }
   Configure.Configuration ]     ; only until MetaConfigured
 [ Delivered                     ; placed in the awake flow
@@ -14,6 +15,7 @@ Signal
      Unidentified.Process       ; the caller runs in no metaflow
      Unknown.Address            ; no such metaflow
      Ended.Address              ; returned to its sender
+     NoneAbove                  ; Up from the top layer
      OffRoute                   ; off the vision-aspects routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way

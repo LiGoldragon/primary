@@ -4,6 +4,7 @@ Operation
 [ flow_ethos:[ FlowId Address Request Lock Process Sender ]
   message_library:Configuration ]
 [ Identify.Process              ; ask Flow which metaflow runs it
+  ResolveUp.Process             ; ask Flow for the layer above
   Lock.Address                  ; ask Flow for the time-bound lock
   Deliver.{ Lock                ; hand Flow the request under it
             Sender
@@ -11,6 +12,7 @@ Operation
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
 [ Identified.Address
+  ResolvedUp.Address
   Locked.Lock
   Delivered
   Woken.FlowId
@@ -19,6 +21,7 @@ Operation
   Stored
   Failed.[
      Unidentified.Process
+     NoneAbove
      Unknown.Address
      Ended.Address
      OffRoute
