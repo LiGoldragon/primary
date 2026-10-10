@@ -1,5 +1,0 @@
-# Structured string type — "think of it as an annotated string"
-
-## 2026-08-14 — cross-reference: datom rulings 2026-08-13/14 govern string and Meaning progress
-
-*(2026-08-14 annotation, consistency audit: this file has no entries after 2026-08-12; the governing downstream rulings for the structured string live in datomSyntax.md and must be read alongside this file. datomSyntax.md 2026-08-13 postpones the Meaning type in datom for a working syntax (both parenthesis and curly-quote land as plain String with a comment, under bead primary-xqb.8.5). datomSyntax.md 2026-08-14 rules parentheses as the default string delimiter with balance-based interiors — balanced pairs are plain content, the string closes at the final unbalanced ), unbalanced interior parentheses are escaped — and reverses the same-day float about dropping the Meaning-as-parenthesis idea ("right on the money"; also bead primary-xqb.8.5). The verb-smell flag on the name Meaning (encodedFormIsTheCode.md 2026-08-13) is also noted on bead primary-xqb.8.5.)*

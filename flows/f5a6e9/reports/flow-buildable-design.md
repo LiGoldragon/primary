@@ -62,6 +62,9 @@ Library                         ; Flow's
       Aspect                    ; written short:
       Topic                     ; { Psyche flow
       Layer }                   ; Primary }
+   Recipient.[ Address Up ]     ; Up is the layer
+                                ; above the sender
+                                ; within its aspect
    Metaflow.{                   ; one per address
       Address
       State.[
@@ -216,7 +219,7 @@ Signal                          ; what Flow is asked
    Refresh.Address              ; the next link
    End.Address
    Current.Address
-   Lock.Address                 ; Message asks; time
+   Lock.Recipient                 ; Message asks; time
                                 ; bound
    Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
@@ -258,6 +261,9 @@ Signal                          ; what Flow is asked
                                 ; layer, topic off
                                 ; the vision-aspects
                                 ; routes
+      NoneAbove                 ; the sender is at
+                                ; the top of its
+                                ; aspect
       Unidentified.Process ] ]  ; in no metaflow
 []
 ```
@@ -428,8 +434,10 @@ flow is a request, never a letter; Flow holds no
 messages beyond a queue of requests. While a refresh is
 under way the metaflow is locked and a lock request is
 refused Locked; a held lock refuses Held. Message
-speaks in metaflows and need not know flows. Status:
-current best, not before the living.
+speaks in metaflows and need not know flows. Flow
+resolves Up from the sender's identified address and
+answers `Locked.Lock` carrying the resolved address.
+Status: current best, not before the living.
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the process's ancestors to the harness
@@ -551,7 +559,10 @@ Aspect, Address, Metaflow, Lock, Process and Sender
 declared once in the Library with Subaspect and
 Source; Process on the Flow record;
 the lock, Identify and Deliver queries, responses and
-refusals of the flow socket; Bind on the meta socket.
+refusals of the flow socket; Bind on the meta socket;
+who resolves Up is before the living in 73ada7's «Who
+works out where send up goes»; the build has Flow
+resolve it, current best.
 
 Message's needs (73ada7, message-design section 10),
 still open here; its list has no N9, N10 or N12:

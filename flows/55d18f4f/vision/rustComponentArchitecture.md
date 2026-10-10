@@ -1,1 +1,0 @@
-# Rust component architecture

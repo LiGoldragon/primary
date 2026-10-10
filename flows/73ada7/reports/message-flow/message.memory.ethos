@@ -1,7 +1,0 @@
-; What Message remembers: its configuration only
-
-Memory
-[ message_library:Configuration ]
-[ Standard.{                    ; the standard metadata tree
-     Configuration
-     MetaConfigured.Boolean } ]

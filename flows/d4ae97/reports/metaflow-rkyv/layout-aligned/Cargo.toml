@@ -1,9 +1,0 @@
-[package]
-name = "metaflow-rkyv-layout-aligned"
-version = "0.1.0"
-edition = "2021"
-publish = false
-
-[dependencies]
-# rkyv defaults: aligned, little endian, 32-bit relative pointers.
-rkyv = { version = "=0.8.18" }

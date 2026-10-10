@@ -1,4 +1,0 @@
-{:paths ["src" "classes"]
- :deps {org.clojure/clojure {:mvn/version "1.12.3"}
-        metosin/malli {:mvn/version "0.18.0"}
-        com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}}}

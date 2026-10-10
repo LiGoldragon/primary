@@ -1,3 +1,0 @@
-Get every [Claude], every psyche secondary, to work with the primary to get the latest version of how they see the solution to their topic. You'll take care of the body, the field, the work, and the deployment of everything they've been hammering on for days.
-
-Maximize Claude usage. Get Sonnet to check every hour for the usage that Claude has and to try to maximize usage. If nobody's working, wake everybody up and get them back to bringing the best version of the world that they can see from the [Claude]: either a better version, more deployed, or more tested (so that we use up all of Claude's usage by tomorrow morning).

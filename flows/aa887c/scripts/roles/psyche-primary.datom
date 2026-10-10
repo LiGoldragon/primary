@@ -1,8 +1,0 @@
-{ Voice.{ Psyche Primary }
-  [ { SystemPrompt [ { Spirit [ spirit ] }
-                     { Operation [ main-flow psyche-primary ] }
-                     { Vision [ vocabulary psyche ] } ] }
-    { FirstPrompt [ { Operation [ psyche-logging edit-coordination ] } ] }
-    { Loadable [ { Vision [ context-modules flow ethos nexus psyche-interraction ] }
-                 { Knowledge [ nexus flow ethos ] } ] } ]
-  { claude-fable-5-1 None } }
