@@ -720,8 +720,14 @@ or already consumed is refused Unknown.Lock. OffRoute
 is refused at Lock; Deliver trusts its lock. Trust at
 Lock rests on the gate; Flow does not re-check the
 sender's process. Stop leaves the metaflow Asleep;
-only End ends it. Status: current best, not before
-the living.
+only End ends it. At Deliver, Flow checks in this
+order — the gate (NotMessage), then the lock
+(Unknown.Lock, then Lapsed), and only a live lock
+reaches the recipient's state (Ended.Address, then
+NoLayer or Unknown.Key for a wake, then Delivered,
+Queued or Woken) — so a lapsed lock on an ended
+recipient answers Lapsed (current best). Status:
+current best, not before the living.
 
 **The Message gate.** Flow re-checks the peer's
 executable against MessageNexusBinary, both
