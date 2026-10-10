@@ -176,3 +176,5 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — 1d0733's records restored from branch recovery (73da46e); the 00:04:39 checkout moved the tree. This seat's directory was restored from the same branch at 9360a7 and is on main.
 
 ## 2026-10-10 — types Forks 1 and 2 rerun (1d0733): four candidates 8/8; five patches incl. 1c's datom-codec reach. Ruled: under 1a no pub type over a container remains, aliases over declared types are Fork 2's; Job.FlowId path corrected to [ 1 1 2 ]; 1c list gains alias-format and the Deep move.
+
+## 2026-10-10 — 445410 via 1d0733: Field's recovery on main at da9eda holds a conflicting fork-options-spec; this seat's 298-line corrected form governs; ordered published from an independent clone under the PrimaryPublish lock, compared first. Publish delegated.
