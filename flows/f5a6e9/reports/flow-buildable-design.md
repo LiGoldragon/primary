@@ -219,8 +219,10 @@ Memory                          ; Flow's
 
 Module, Model and Threshold hold what the meta socket's
 Configure sets. A Module is a Key and a Source (current
-best). The Library's Lock is stored one per metaflow
-while held. The Flow record's Process holds the calling
+best). Checked.Boolean is the Memory record's field
+alone, false until the first compose checks the hash.
+The Library's Lock is stored one per metaflow while
+held. The Flow record's Process holds the calling
 process's pid and start time, learned at spawn or at
 Bind (status: current best, not before the living).
 
@@ -430,10 +432,7 @@ Signal                          ; the meta socket
 [  Configure.[
       Module.{                  ; the registry: one
          Key                    ; per key
-         Source
-         Checked.Boolean }      ; false until its
-                                ; first compose
-                                ; checks the hash
+         Source }
       Model.{                   ; the layer's model
          Layer
          Harness.HarnessKind    ; how it is driven
@@ -491,7 +490,7 @@ Listed.[
 
 Configuration.{
    <nexus>
-   [ { Primary Claude «opus» } ]
+   [ { Primary Claude opus } ]
    [ { Primary 20 40 } ]
    [ { { Vision flow }
        { psyche-skills
@@ -628,6 +627,11 @@ answers Queued, and drains the queue at the next Stop
 the hook reports (status: current best, not before the
 living).
 
+**Stop and pane closure.** Stop, or a pane closed
+under a flow, moves that flow's id into the
+metaflow's Past (the last few kept, oldest first)
+and the metaflow becomes Asleep (current best).
+
 **The refresh.** Measurement: the hook reads the
 transcript at each Stop and reports ContextMeasured,
 the sum of the last assistant usage's three input
@@ -706,6 +710,11 @@ configured value that resolves to no file refuses the
 Nexus payload with NoSource.Path. Bind also serves
 debugging and flows launched before Flow existed
 (status: current best, not before the living).
+
+**Message process exit.** When Message's bound
+process exits, its metaflow becomes Asleep and the
+binding is dropped; a new Bind from the configured
+binary wakes it (current best).
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the caller's ancestors to a Flow record's
