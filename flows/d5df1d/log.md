@@ -186,3 +186,5 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — 0c85a3 (Mind Astra) direct: item 5 status as Field's packet; asks Fork 3 status. Answered: unruled, before the living through 445410; sequence unchanged.
 
 ## 2026-10-10 — Field's supplement on item 5 (via Sol/1d0733): generation byte-identical twice, goldens byte-equal, four blobs formatted. (a) held: the eight on one revision is item 5's acceptance; the supplement is an inference that the formatter changed nothing, the rerun is the witness.
+
+## 2026-10-10 — lock 15975 released; PrimaryPublish now 16030 (73ada7). Asked 73ada7 for a release line; publisher runs then.
