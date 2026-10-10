@@ -352,6 +352,11 @@ Signal                          ; what Flow is asked
                                 ; Forget, or from
                                 ; Launch if module
                                 ; in Launch is missing
+      NoLayer                    ; no Model for the
+                                ; layer; at Launch,
+                                ; and at Lock or
+                                ; Deliver for an
+                                ; asleep recipient
       NotConfigured             ; Launch before
                                 ; Configure.Nexus
       HashMismatch              ; a module recorded
@@ -694,9 +699,10 @@ address naming no metaflow is refused Unknown.Address;
 an Asleep recipient is granted; an Ended recipient is
 refused Refused.Ended.Address. When the recipient is
 Asleep, Lock checks the wake's preconditions before
-granting: a Model for the recipient's layer must
-exist, and the registry's modules for that address's
-topic must be present; a wake composes from whatever
+granting: a Model for the recipient's layer, the
+registry's modules for its topic composing whatever
+exists, an empty set included; a wake composes from
+whatever
 the registry holds for the recipient's topic, and none
 is a valid set, so a metaflow with no registered
 module wakes with no modules and no refusal names a
