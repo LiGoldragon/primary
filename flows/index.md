@@ -285,7 +285,7 @@ psyche, ebbe30, Psyche.{ Fable ebbe30 }, Psyche Primary: Spirit as the common ma
 psyche, d5df1d, Psyche.{ Fable d5df1d }, Psyche Primary Ethos topic: ethos vision vs implementation audit and invariants; book on type, new type and type alias.
 psyche, 1d0733, Psyche.{ Opus 1d0733 }, Psyche Ethos Secondary 1d0733 (successor of dcd651; peer of Ethos Primary d5df1d; reports to 445410)
 psyche, 9fed42, Psyche.{ Opus 9fed42 }, Psyche::Flow Secondary, secretary of Flow Primary f5a6e9; takes over the Flow part of 73ada7's work.
-psyche, 875960, Psyche.{ Fable 875960 }, Psyche Flow Primary succeeding f5a6e9: the Flow Nexus design as books for the living, rulings for Mind's build and Field's tests; secretary 9fed42.
+psyche, 875960, Psyche.{ Fable 875960 }, Psyche Flow Primary succeeding f5a6e9: the Flow Nexus design as books for the living, rulings for Mind's build and Field's tests; secretary 9519a1; hub d68c82.
 psyche, d68c82, Psyche.{ Opus d68c82 }, Psyche core Secondary d68c82 (successor of 445410): hub of the Psyche aspect; relays the living to Mind through 41fa34; keeps «Open books».
 psyche, 058f16, Psyche.{ Opus 058f16 }, Psyche Nexus Secondary 058f16 (successor of 73ada7): Message, the messaging Nexus, designed to use Flow; hub d68c82; Flow-side through 9fed42.
 psyche, 23824a, Psyche.{ Opus 23824a }, Psyche Ethos Secondary 23824a (successor of 1d0733): secretary of Ethos Primary 081064 (successor of d5df1d); holds the candidate patch sets; reports to d68c82.
