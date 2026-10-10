@@ -89,3 +89,11 @@
 2026-10-09 — Book 6 (F11) cut to one proposal: the draft's added sentence on the living's terminal as no sender rested on the drafter's inference and was dropped. It is held as a possible later book.
 
 2026-10-09 — Landing: book 6 «Who may send besides a voice» published, https://claude.ai/artifact/87aZt1cq6Uy1rhJuk4aXsq; sent to 445410.
+
+2026-10-09 — Landing: book 8 «How long Flow's lock lasts» (N11) published, https://claude.ai/artifact/WDiViWdyJaekjnrJRuZ2ni; sent to 445410.
+
+2026-10-09 — Landing: book 7 «How a metaflow is named on the wire» (N4) published, https://claude.ai/artifact/JyL9DpeoJ3XqutJcXfpFko; sent to 445410. Books 9 (F13, no record of sent messages) and 10 (F12, the Psyche-to-Field window) drafting.
+
+2026-10-09 — Landing: book 10 «When Field may answer Psyche» (F12) published, https://claude.ai/artifact/LKEK65nvAnTJNVnqs2cNGH; sent to 445410.
+
+2026-10-09 — Landing: book 9 «What Message remembers of what it sent» (F13) published, https://claude.ai/artifact/ExCJJRtNkqp8Cp9BFaFmbh; sent to 445410. The Message fork series is complete: ten books. Held back: the living's terminal as a sender.
