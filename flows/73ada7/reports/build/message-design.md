@@ -219,8 +219,8 @@ Signal
   Configured
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
-     Unknown.[ Address          ; no such metaflow
-               Lock ]           ; the lock is not held any more
+     Unknown.[ Address.Address  ; no such metaflow
+               Lock.Lock ]      ; the lock is not held any more
      Ended.Address              ; returned to its sender
      Asleep                     ; the sender's metaflow sleeps
      NoneAbove                  ; Up from the top layer
@@ -263,6 +263,24 @@ Signal
 - No caller field: Message reads the caller from the socket
   (section 6). The CLI's datom is therefore exactly the wire `Send`.
 - No priority: see fork F6.
+
+Written forms. A position that holds `Recipient` takes the variant
+head, `Address.{ … }` or `Up`. A refusal whose variant carries one
+type is followed directly by that type's form: `Ended.Address` and
+`Held.Lock` are written `Ended.{ … }` and `Held.{ … }`. `Unknown`
+holds an inner variant carrying its type, so its form keeps both
+heads. The tables in sections 6 to 9 name a refusal by its variant
+path, `Refused.Ended.Address`; its datom is the form below.
+
+```
+Send.{ Address.{ Mind flow Secondary } Question.«What is current?» }
+Send.{ Up Order.«Refresh the current flow.» }
+Refused.Unidentified.{ 42 100 }
+Refused.Unknown.Address.{ Mind flow Secondary }
+Refused.Unknown.Lock.{ { Mind flow Primary } { Mind flow Secondary } 12345 }
+Refused.Ended.{ Mind flow Primary }
+Refused.Held.{ { Mind flow Primary } { Mind flow Secondary } 12345 }
+```
 
 ### 4.3 Meta Signal — `meta-signal-message/ethos/signal.ethos`
 
@@ -308,7 +326,7 @@ Operation
      Taken.Address              ; a Bind of an address already awake
      NotMessage
      NoneAbove
-     Unknown.[ Address Lock ]
+     Unknown.[ Address.Address Lock.Lock ]
      Ended.Address
      OffRoute
      Held.Lock
@@ -348,13 +366,13 @@ The datom prints below are illustrative. The exact print is whatever
 datom-codec gives the generated types.
 
 ```
-message 'Send.{ { Mind nexus Secondary } Order.«Build the lock path.» }'
+message 'Send.{ Address.{ Mind nexus Secondary } Order.«Build the lock path.» }'
 Delivered
 
-message 'Send.{ { Mind nexus Primary } Result.«message-flow passes on 4f2a1c.» }'
+message 'Send.{ Address.{ Mind nexus Primary } Result.«message-flow passes on 4f2a1c.» }'
 Queued
 
-message 'Send.{ { Psyche core Primary } Psyches.[ { «on the queue» «…» } ] }'
+message 'Send.{ Address.{ Psyche core Primary } Psyches.[ { «on the queue» «…» } ] }'
 Refused.OffRoute
 
 message-meta 'Configure.{ …message.sock …message-meta.sock …flow.sock }'
@@ -445,10 +463,10 @@ to f5a6e9's design and are shown only as far as Message sees them.
 ### 7.1 Send, recipient awake
 
 ```
-1  CLI     Send.{ { Mind nexus Secondary } Order.«…» }   ; text → Query::Send
+1  CLI     Send.{ Address.{ Mind nexus Secondary } Order.«…» }   ; text → Query::Send
 2  Message Identify.{ 4127 88231904 }              ; Operation, Process.{ Pid Started }
            → Flow Identify.Process → Identified.{ Psyche nexus Secondary }
-3  Message Lock.{ S { Mind nexus Secondary } }              ; Operation, Sender and Recipient
+3  Message Lock.{ S Address.{ Mind nexus Secondary } }      ; Operation, Sender and Recipient
            → Flow Lock.{ Sender Recipient }                 ; trusts the gate for S; checks S Awake, the route; Memory: lock record, Until = now + lease
            → Locked.{ S { Mind nexus Secondary } U }        ; the Library Lock; U is Until
 4  Message Deliver.{ L Order.«…» }                          ; Operation, L the lock of step 3; not sent once now ≥ U
@@ -965,18 +983,22 @@ witnessed here).
 - **X5** One enum cannot hold two variants of one name: ethos-zero
   16.0.0 rejects `Unknown.Address` beside `Unknown.Lock` with
   `Duplicate.Unknown` (witnessed by Check). Message writes
-  `Unknown.[ Address Lock ]`, which prints `Refused.Unknown.Address`
-  and `Refused.Unknown.Lock`; Flow's own refusals must take the same
-  shape or name the two differently. Flow's to rule.
+  `Unknown.[ Address.Address Lock.Lock ]`, as signal-flow a991c1
+  writes its own `Unknown`, which prints
+  `Refused.Unknown.Address.{ … }` and `Refused.Unknown.Lock.{ … }`.
 - **X2** `Name.Type` generates a Rust alias. The living wants
   newtypes [V] (`flows/ebbe30/vision/ethos.md:39-55`). As a result
   `Topic`, `FlowId` and `Until` cannot carry their own checks or
   traits. This defect awaits e5a0bc's ruling.
-- **X3** Whether a bare declared type in an enum (`Psyche.Said`
-  carries the type; a bare `Psyche` would be a unit variant or a
-  carrier) is not stated in knowledge-ethos. f5a6e9 writes
-  `Psyche.Said` for the Request variant, so Message imports `Said`
-  only through `Request`.
+- **X3** A bare type name in an enum is generated two ways by
+  ethos-zero c2653dd, and knowledge-ethos states neither. A type
+  declared in the same file carries itself: flow-ethos a31733
+  `Recipient.[ Address Up ]` generates `Address(Address)`. An
+  imported type does not: signal-message c6839e
+  `Unknown.[ Address Lock ]` generates the unit variants `Address`
+  and `Lock`. `Name.Type` carries the type in both cases, so every
+  carrying variant in Message's files is written `Name.Type`
+  (`Psyche.Said`, `Address.Address`).
 - **X4** Flow's Library gives `Process.{ Pid.Integer Started.Integer }`,
   the kernel's start time of the pid. Message reads the pid from
   `SO_PEERCRED` and the start time from `/proc/<pid>/stat` field 22.

@@ -25,7 +25,7 @@ Operation
      Taken.Address              ; a Bind while the old process lives
      NotMessage
      NoneAbove
-     Unknown.[ Address Lock ]
+     Unknown.[ Address.Address Lock.Lock ]
      Ended.Address
      OffRoute
      Held.Lock

@@ -12,8 +12,8 @@ Signal
   Configured
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
-     Unknown.[ Address          ; no such metaflow
-               Lock ]           ; the lock is not held any more
+     Unknown.[ Address.Address  ; no such metaflow
+               Lock.Lock ]      ; the lock is not held any more
      Ended.Address              ; returned to its sender
      NoneAbove                  ; Up from the top layer of the sender
      OffRoute                   ; refused at Lock; off the routes
