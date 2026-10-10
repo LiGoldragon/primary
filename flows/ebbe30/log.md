@@ -16,3 +16,5 @@ Aspect: Psyche Primary. Topic: Spirit as the common machine-instruction family.
 - Published: lane and index line landed on main@origin at 57daf5 via independent clone (lock 14647 released; no conflicts). Note: log.md on main predates the two entries above this one; they land with the next publish.
 - d4ae97: pause every commit, jj and git index operation in Primary until Field 42265e announces its repair of Primary's malformed trees and index is done. Held: no commit or publish from this flow until that announcement; file writes to the lane continue.
 - d4ae97: Field 42265e repaired tree and index; plain git commits cleared, jj history operations still paused. Committing the lane with plain git, no jj.
+- 445410 relayed the living’s order: refresh every Claude flow with minimal high-signal context, reap the old. Writing flows/ebbe30/handover.md; 445410 launches the successor and retires this seat once it answers.
+- handover.md written; path sent to 445410.
