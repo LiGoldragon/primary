@@ -47,19 +47,23 @@ Library                         ; Flow's
    Request.[                    ; reaches a flow
       Order.String              ; wakes
       Question.String           ; wakes
-      Psyche                    ; wakes
+      Psyche.Psyche             ; wakes; the variant
+                                ; carries the type
       Psyches.Vector<Psyche>    ; wakes
       Result.String             ; a flow's answer:
                                 ; delivered awake,
                                 ; waits asleep
       Notice.String ]           ; wakes nothing
-   Metaflow.[                   ; the aspects are
-      Psyche.Details            ; the variants; the
-      Mind.Details              ; struct holds the
-      Field.Details ]           ; details
-   Details.{
-      Topic                     ; core: the heart of
-      Layer                     ; its aspect
+   Aspect.[                     ; whose psyche it
+      Psyche                    ; serves
+      Mind
+      Field ]
+   Address.{                    ; names a metaflow,
+      Aspect                    ; written short:
+      Topic                     ; { Psyche flow
+      Layer }                   ; Primary }
+   Metaflow.{                   ; one per address
+      Address
       State.[
          Awake.FlowId           ; its current flow
          Asleep                 ; a request wakes it
@@ -69,23 +73,23 @@ Library                         ; Flow's
       Queue.Vector<Request> }   ; waiting, oldest
                                 ; first
    Lock.{                       ; one per metaflow,
-      Metaflow                  ; while held
+      Address                   ; while held
       Until.Integer }           ; seconds since the
                                 ; epoch; lapses
-   Process.{                    ; the calling process
-      Pid.Integer
+   Process.{                    ; the calling
+      Pid.Integer               ; process
       Started.Integer }         ; the kernel's start
                                 ; time of that pid,
                                 ; so a reused pid is
                                 ; told apart
-   Sender.Metaflow ]            ; who sent a request
+   Sender.Address ]             ; who sent a request
 []
 []
 ```
 
 The Library declares once the types both Signals and
-Memory use: Metaflow, Details, Lock, Process and
-Sender. Memory and both Signals import them (status:
+Memory use: Aspect, Address, Metaflow, Lock, Process
+and Sender. Memory and both Signals import them (status:
 current best, not before the living).
 
 Build note. ethos-zero 16.0.0 cannot yet express
@@ -133,15 +137,16 @@ waking request last:
 Memory                          ; Flow's
 [  flow_ethos:[ FlowId Topic Layer
                 Request Subaspect
-                Source Metaflow
-                Details Lock
-                Process ] ]
+                Source Address
+                Metaflow Lock
+                Process ]
+   signal_flow:[ Event ] ]
 [  Flow.{                       ; one per run
       FlowId
       Session.String            ; the harness's id
       Process                   ; the calling
                                 ; process's pid and
-                                ; start time, learned
+                                ; start time learned
                                 ; at spawn or bind
       Events.Vector<Event> }    ; signal-flow's
    Module.{                     ; the registry: one
@@ -150,7 +155,11 @@ Memory                          ; Flow's
       Source }
    Model.{                      ; one per layer
       Layer
-      Model.String }
+      Native.String }           ; the model's name
+                                ; as the harness
+                                ; knows it
+   Metaflow                     ; from the Library
+   Lock                         ; from the Library
    Threshold.{                  ; one per layer
       Layer
       Handover.Integer
@@ -171,43 +180,41 @@ Window.Integer }, Stopped.
 Written, two metaflows:
 
 ```
-Psyche.{
-   core
-   Primary
+Metaflow.{
+   { Psyche core Primary }
    Awake.startInputVital
    [ zooWrongYouth ]
    [ ] }
 
-Mind.{
-   flowRefresh
-   Secondary
+Metaflow.{
+   { Mind flowRefresh Secondary }
    Asleep
    [ ]
    [ Notice.«branch merged» ] }
 ```
 
-A thread's title is the metaflow written short, then
+A thread's title is the address written short, then
 the flow's words, never the model:
-`Psyche.{ flow Primary startInputVital }`.
+`{ Psyche flow Primary } startInputVital`.
 
 ### Signal, the flow socket
 
 ```
 Signal                          ; what Flow is asked
-[  flow_ethos:[ Metaflow FlowId Request Lock
+[  flow_ethos:[ Address FlowId Request Lock
                 Sender Process ]
    curriculum:[ Name ] ]
 [  Launch.{                     ; a metaflow's first
-      Metaflow                  ; flow; the metaflow
+      Address                   ; flow; the address
       Modules.Vector<Name>      ; written short
       Brief.String }            ; a small paragraph
    Wake.{                       ; a sleeping
-      Metaflow                  ; metaflow's next
+      Address                   ; metaflow's next
       Request }                 ; the waking request
-   Refresh.Metaflow             ; the next link
-   End.Metaflow
-   Current.Metaflow
-   Lock.Metaflow                ; Message asks; time
+   Refresh.Address              ; the next link
+   End.Address
+   Current.Address
+   Lock.Address                 ; Message asks; time
                                 ; bound
    Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
@@ -216,7 +223,6 @@ Signal                          ; what Flow is asked
       Request }
    Release.Lock ]
 [  Launched.FlowId
-   Woken.FlowId
    Refreshed.{
       FlowId                    ; the successor
       FlowId }                  ; the predecessor
@@ -227,7 +233,7 @@ Signal                          ; what Flow is asked
       Ended
       Unknown ]
    Locked.Lock
-   Identified.Metaflow          ; the caller's
+   Identified.Address           ; the caller's
    Delivered                    ; placed in the
                                 ; awake flow
    Queued                       ; asleep, or awake
@@ -242,8 +248,8 @@ Signal                          ; what Flow is asked
       Lapsed                    ; the lock ran out
       UnknownModule.Name        ; a module
       NoLayer                   ; no model for it
-      Unknown.Metaflow          ; no such metaflow
-      Ended.Metaflow            ; returned to its
+      Unknown.Address           ; no such metaflow
+      Ended.Address             ; returned to its
                                 ; sender
       OffRoute                  ; sender and
                                 ; recipient aspect,
@@ -256,14 +262,14 @@ Signal                          ; what Flow is asked
 
 Identify and the Deliver responses and refusals above
 are current best, not before the living. Unknown module
-is renamed UnknownModule.Name so that Unknown.Metaflow
+is renamed UnknownModule.Name so that Unknown.Address
 can be a variant of its own.
 
 Written, a launch of this flow:
 
 ```
 Launch.{
-   Psyche.{ flow Primary }      ; written short
+   { Psyche flow Primary }      ; written short
    [ vision-flow
      knowledge-ethos ]
    «Design Flow's module registry.» }
@@ -274,7 +280,8 @@ Launch.{
 ```
 Signal                          ; the meta socket
 [  flow_ethos:[ Subaspect Topic Layer
-                Source ] ]
+                Source Address FlowId
+                Process ] ]
 [  Configure.[
       Module.{                  ; the registry
          Subaspect
@@ -282,7 +289,9 @@ Signal                          ; the meta socket
          Source }
       Model.{                   ; the layer's model
          Layer
-         Model.String }
+         Native.String }        ; the model's name
+                                ; as the harness
+                                ; knows it
       Threshold.{               ; percent of window
          Layer
          Handover.Integer       ; 20
@@ -291,7 +300,7 @@ Signal                          ; the meta socket
       Subaspect
       Topic }
    Bind.{                       ; a running process
-      Metaflow                  ; becomes this
+      Address                   ; becomes this
       Process } ]               ; metaflow's flow
 [  Configured
    Forgotten
@@ -300,7 +309,7 @@ Signal                          ; the meta socket
       Unknown.Topic
       NoSource.Path
       HashMismatch
-      Taken.Metaflow ] ]        ; already awake
+      Taken.Address ] ]         ; already awake
 []
 ```
 
@@ -337,7 +346,7 @@ omitted from either; shown here for the lock.
 
 ```
 [  Send.{                       ; simple: what a
-      Metaflow                  ; flow writes
+      Address                   ; flow writes
       Request }
    Deliver.{                    ; extended: Message
       Lock                      ; to Flow, under the
@@ -354,7 +363,7 @@ debugging and components. Lock is the Memory record.
 ## 2. Rules
 
 **How a flow starts.** A launch names a metaflow by
-aspect, topic and layer, the flow's own modules, and a
+its address, the flow's own modules, and a
 small-paragraph brief. Flow composes the system prompt
 and the first prompt from the module registry and the
 layer's model; a few module names call a whole context
@@ -424,15 +433,15 @@ current best, not before the living.
 it walks the process's ancestors to the harness
 process and compares both the pid and start time
 of a Flow record's Process, returning that flow's
-metaflow, else Unidentified.Process. The Sender of a
-Deliver is that metaflow (status: current best, not
+address, else Unidentified.Process. The Sender of a
+Deliver is that address (status: current best, not
 before the living).
 
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
 an aspect and across aspects at the same layer in a
 shared topic). Also, by Signal: Locked, Held, Lapsed, UnknownModule,
-NoLayer, Unknown.Metaflow, Ended.Metaflow, OffRoute
+NoLayer, Unknown.Address, Ended.Address, OffRoute
 (Sender and recipient aspect, layer and topic do not
 match the routes), Unidentified.Process, and for a
 Configure Unknown topic, NoSource, HashMismatch, and
@@ -528,10 +537,17 @@ everything below may still change:
 - Book 1, rulings 2 to 8 (Facet word, location, role
   placements): superseded in shape by Configure.
 
+Current best, pending his ruling 1 of the Flow Nexus
+vision, third edition: the Address form, one Aspect and
+Address type with the Metaflow record
+{ Address State Past Queue }, replacing the two
+shapes of the metaflow.
+
 Current best, not before the living: the Memory
-records Module, Model and Threshold; Metaflow, Details,
-Lock, Process and Sender declared once in the Library
-with Subaspect and Source; Process on the Flow record;
+records Module, Model, Threshold, Metaflow and Lock;
+Aspect, Address, Metaflow, Lock, Process and Sender
+declared once in the Library with Subaspect and
+Source; Process on the Flow record;
 the lock, Identify and Deliver queries, responses and
 refusals of the flow socket; Bind on the meta socket.
 
@@ -541,9 +557,6 @@ still open here; its list has no N9, N10 or N12:
 - N3: Lock and Deliver on the ordinary socket or on
   Flow's meta socket (Message's fork F2); this design
   keeps them on the ordinary socket.
-- N4: the short Metaflow of Launch (topic and layer)
-  and the Library's Metaflow with Details are one name
-  for two shapes; not yet separated.
 - N8: whether queueing a busy awake flow and draining
   at the next Stop is right; and where a request lands
   in an awake flow (book 17, ruling 3).
@@ -560,8 +573,7 @@ wanted later.
 
 From the handover, undecided:
 
-- One name for the Psyche, Mind and Field metaflows or
-  three variants; the type of the dense title string.
+- The type of the dense title string.
 - Whether an implementation kind survives as a topic
   of a Mind metaflow.
 - Removal of the machine line in vision-messaging
