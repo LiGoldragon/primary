@@ -1,0 +1,10 @@
+Library
+[ sources:Contributor
+  signal_source:Configuration ]
+[ Repository.String
+  MetaInput.[ Assemble.Vector<Repository>
+              Withdraw.Contributor
+              Configure.Configuration
+              Read ] ]
+[]
+[]

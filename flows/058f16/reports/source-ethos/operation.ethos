@@ -1,0 +1,32 @@
+Operation
+[ sources:[ SourceName Blake3 Fetcher Directory RelativePath Source Contributor Contribution ]
+  signal_source:[ Configuration Unfetched ] ]
+[ Look.SourceName
+  Stage.Directory
+  Materialize.{ Fetcher Staging.Directory }
+  Hash.Directory
+  Place.{ Staging Directory }
+  Discard.Staging
+  Replace.Vector<Contribution>
+  Remove.Contributor
+  Store.Configuration ]
+[ Found.Source
+  Staged.Staging
+  Materialized.Staging
+  Hashed.Blake3
+  Placed.Directory
+  Discarded
+  Replaced.Integer
+  Removed
+  Stored
+  Failed.Failure ]
+[ Failure.[ Unknown.SourceName
+            Unfetchable.{ Fetcher Unfetched }
+            Unsupported.RelativePath
+            Unreadable.Directory
+            Occupied.Directory
+            Unplaceable.Directory
+            Undiscarded.Staging
+            Conflicting.{ SourceName Vector<Contributor> }
+            Unregistered.Contributor
+            StoreRefused ] ]

@@ -1,0 +1,16 @@
+Library
+[]
+[ SourceName.String
+  Blake3.{ Integer Integer Integer Integer }
+  Remote.String
+  Revision.String
+  Host.String
+  Directory.String
+  RelativePath.String
+  Fetcher.[ Git.{ Remote Revision }
+            Local.{ Host Directory } ]
+  Source.{ SourceName Fetcher Blake3 }
+  Contributor.String
+  Contribution.{ Contributor Vector<Source> } ]
+[]
+[]

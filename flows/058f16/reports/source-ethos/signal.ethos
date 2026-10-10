@@ -1,0 +1,27 @@
+Signal
+[ sources:[ SourceName Blake3 Host Directory RelativePath Source ] ]
+[ Resolve.SourceName
+  Fetch.{ SourceName Directory }
+  Check.{ SourceName Directory }
+  Configure.Configuration ]
+[ Resolved.Source
+  Fetched.{ SourceName Blake3 Directory }
+  Checked.{ SourceName Blake3 }
+  Configured
+  Refused.{ Refusal Leftover.Option<Directory> } ]
+[ Configuration.{ Host Ordinary.SocketPath Meta.SocketPath }
+  SocketPath.String
+  Refusal.[ Unknown.SourceName
+            Mismatched.{ SourceName Expected.Blake3 Found.Blake3 }
+            Unfetchable.{ SourceName Unfetched }
+            Unsupported.{ SourceName RelativePath }
+            ElsewhereHost.Host
+            Unconfigured
+            Unreadable.Directory
+            Occupied.Directory
+            Unplaceable.Directory
+            AlreadyConfigured
+            StoreRefused ]
+  Unfetched.[ RemoteUnreachable
+              RevisionMissing
+              DirectoryMissing ] ]

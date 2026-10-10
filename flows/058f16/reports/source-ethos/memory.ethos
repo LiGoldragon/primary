@@ -1,0 +1,6 @@
+Memory
+[ sources:[ Contributor Source Directory ]
+  signal_source:Configuration ]
+[ Registered.{ Contributor Source }
+  Staged.Directory
+  Standard.{ Configuration MetaConfigured.Boolean } ]

@@ -1,0 +1,17 @@
+Signal
+[ sources:[ SourceName Contributor Contribution ]
+  signal_source:Configuration ]
+[ Assemble.Vector<Contribution>
+  Withdraw.Contributor
+  Configure.Configuration
+  Read ]
+[ Assembled.Integer
+  Withdrawn.Contributor
+  Configured
+  Current.Configuration
+  Refused.Refusal ]
+[ Refusal.[ Conflicting.{ SourceName Vector<Contributor> }
+            Duplicated.Contributor
+            Malformed.SourceName
+            Unregistered.Contributor
+            StoreRefused ] ]
