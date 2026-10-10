@@ -1,0 +1,6 @@
+# Receipt: lane publish 2026-10-10
+
+- Commit 57a5c1 (parent 954151) on origin main: flows/875960 whole; index line; archive moves 05c604/vision/archive-persona.md, aa887c/vision/archive-persona.md, 6fb948/vision/archive-personaServiceAndNexusImagery-20260923.md (persona sentences only); generated vision-persona SKILL.md under .agents, .claude, .opencode.
+- Lock 17859: Locked, Released. First attempt refused: 081064 held 17693.
+- Regenerator: packaged curriculum-deploy 0.9.0 refused with an arity error (8 vs 9); the debug build at /git/github.com/LiGoldragon/curriculum-deploy/target/debug (Oct 7) ran Generate with Curriculum, psyche-/mind-/field-skills/skills, the clone as workspace; Generated.{ 109 24 }.
+- Drift beyond vision-persona, reverted and not landed (36 paths, list in the publisher's scratchpad drift-other.txt): compensation-launch, compensation-messenger-clj, operation-relaying-the-living modified and vision-ethos deleted under .agents/.claude/.opencode; agent files under .claude/agents, .codex/agents, .pi/agents. Possible causes: the debug binary, uncommitted mind-skills edits (operation-book, operation-flashbook, operation-main-flow), uncommitted curriculum-deploy edits.
