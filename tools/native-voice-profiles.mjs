@@ -5,7 +5,7 @@ const rows = {
   'Mind.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium'},
   'Field.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium', source: 'qualified Field Astra profile and user role assignment'},
 
-  'Psyche.Secondary': {status: 'unresolved', reason: 'direct Claude Opus ruling and effort provenance required; launcher medium is only a source default'},
+  'Psyche.Secondary': {status: 'configured', harness: 'claude', model: 'claude-opus-5-5', effort: 'medium', source: 'living ruling 2026-10-10'},
   'Mind.Secondary': {status: 'pending', harness: 'codex', effort: 'medium', reason: 'Curriculum latest Sol correspondence is adoption-pending; exact installed model must be qualified'},
   'Field.Secondary': {status: 'unresolved', reason: 'no Field Secondary correspondence'},
 
