@@ -15,3 +15,24 @@
 - 2026-10-10: Sol's Aspect revisions are pushed but not on main; passed to 875960.
 - 2026-10-10: Aspect work is on Field branches; it reaches main through writer A's integration packet and a Field landing. Passed to 875960.
 - 2026-10-10: Book 1 «The meta harness has a base» published by 875960; link sent to d68c82.
+- 2026-10-10: Field (42265e) is waiting on PrimaryPublish lock 17569, which my publish subflow holds; I'll send it the release receipt when the subflow finishes.
+- 2026-10-10: Lane published as 6b2c6c; PrimaryPublish locks 17569 and 17638 released (subflow's report); told 42265e.
+- 2026-10-10: Living's comment on book 1 (the meta harness's root component is persona) logged in vision/persona.md and relayed to 875960.
+- 2026-10-10: d68c82 ordered book 1 revised: the meta harness belongs in the persona vision. Passed to 875960.
+- 2026-10-10: Second edition of book 1 (new vision-persona skill) published by 875960; link sent to d68c82.
+- 2026-10-10: Mind needs to know which Persona source is the root and what its contract is; d68c82 asked for this in the book. Passed to 875960.
+- 2026-10-10: Book 3 «Persona's root and what it does» published by 875960; link and findings sent to d68c82.
+- 2026-10-10: Astra's Persona root contract draft (source only) forwarded to 875960.
+- 2026-10-10: d68c82 asked for Astra's draft to go into book 3 or the book after it; passed to 875960.
+- 2026-10-10: Astra's Cargo reading (the datom checkout is 0.5.0, the NOTA checkout 0.2.0) sent to d68c82 alongside book 3.
+- 2026-10-10: The living's three comments on book 3 relayed to 875960. He rules the old Persona designs are to be rewritten. «What the root does» lands with the triad sentence cut to naming Psyche, Mind and Field; the rest of the section lands as written. The first two comments are logged in vision/persona.md; the landing ruling is an instruction, not logged as psyche.
+- 2026-10-10: d68c82 ordered «What the root does» landed in vision-persona; asked 875960 to land it and send the commit.
+- 2026-10-10: 875960 is landing vision-persona with a Sources section, against core's 'no Sources section'; asked d68c82 whether the living said that.
+- 2026-10-10: The living ruled Sources sections are noise that belong in commit messages, with the existing ones backported by Mind. Logged in vision/distillationSources.md and relayed to 875960, who is to land without Sources and propose the skill change.
+- 2026-10-10: d68c82 says the living approved «Sources in the commit message»; Field is publishing it and Mind is backporting. Withdrew my proposal request to 875960.
+- 2026-10-10: 875960's publish 57a5c1 hit two problems: curriculum-deploy 0.9.0 failed Generate with an arity error, and regenerating drifted 36 paths. Relayed to d68c82 for Field.
+- 2026-10-10: Core's rule: Field regenerates the skill trees, and Psyche lanes don't commit generated trees. Passed to 875960. No skill carries this rule yet.
+- 2026-10-10: vision-persona landed (7a6b13 + 82c92f); reported to d68c82 with a regeneration request for Field; told 875960 to stop self-regenerating.
+- 2026-10-10: 57a5c1 carries stale generated vision-persona copies made from 7a6b13; Field's regeneration replaces them. Told d68c82 its rule needs a line in a skill.
+- 2026-10-10: Field landed the propagation at 5ca848, with vision-persona generated from 82c92f. Told 875960 its 57a5c1 copies are superseded.
+- 2026-10-10: d68c82 is waiting on the Released reply for PrimaryPublish 17936, which my publish subflow holds.
