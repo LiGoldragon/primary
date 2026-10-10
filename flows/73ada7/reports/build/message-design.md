@@ -372,7 +372,8 @@ sent. The Nexus never sees text [R].
 1. Message reads the caller as Flow's Library
    `Process.{ Pid.Integer Started.Integer }`: the pid with the start
    time of `/proc/<pid>/stat` field 22. It reads them on the accepted
-   connection in this order [I] (designed, not yet witnessed; test 24):
+   connection in this order [I] (designed, not yet witnessed; test 24 witnesses only the `ESRCH`
+   path):
 
    1. `getsockopt(SO_PEERPIDFD)` gives a pidfd `F` of the socket's
       peer pid. That peer pid is the connecting process's thread-group
@@ -393,7 +394,8 @@ sent. The Nexus never sees text [R].
       permission [K6]. Astra's kernel qualification (source
       evidence, not a runtime witness) disagrees with this reading
       of `EPERM`: see [K6] and X4. The guard is designed, not
-      proven.
+      proven. Its resistance to pid reuse rests on the kernel-source
+      argument [K1]–[K6]; no reuse test witnesses it.
    5. `Process.{ N T }` goes to Flow in `Identify`, and Message closes
       `F`.
 
@@ -715,7 +717,7 @@ pane move to the semi-sandbox below.
 | 19 | `message-nexus` killed, then started again | Flow's trace shows `Bind` answered `Bound`; the send of test 1 succeeds |
 | 20 | A fresh store; a meta `Configure` that changes a socket path | `RestartRequired`; an ordinary `Configure` is then `Refused.AlreadyConfigured` (the marker is set); the seed before it was false |
 | 21 | A version-1 store of old Message at the store path | start refused naming the path and version 1; the file's checksum is unchanged (fork F14) |
-| 24 | Pid reuse. A developer build of `message-nexus` pauses between section 6 steps 2 and 3. A client connects and is killed and reaped during the pause; a process is then created with the same pid (`clone3` with `set_tid` in the test VM), and the pause ends | no `Identify` reaches Flow's trace; the trace names the reaped peer (`ESRCH` at step 4); the connection closes unanswered. Run with the pause instead before step 1: the same, failing at step 1 on 6.5–6.15 or step 4 from 6.16 |
+| 24 | Reaped peer. A developer build of `message-nexus` pauses between section 6 steps 2 and 3. A client connects and is killed and reaped during the pause, and the pause ends | no `Identify` reaches Flow's trace; the trace names the reaped peer (`ESRCH` at step 4); the connection closes unanswered and nothing reaches Flow. This witnesses the `ESRCH` path, not a pid reuse. Run with the pause instead before step 1: the same, failing at step 1 on 6.5–6.15 or step 4 from 6.16 |
 | 25 | The sender's metaflow has no Flow record at `Lock` (a Flow stand-in answers `Identify` with an Address Flow holds no record of) | `Refused.Unknown.Address` naming the sender; no lock record |
 | 26 | The sender's metaflow is Asleep in Flow while its stand-in shell still runs, then that shell sends | `Refused.Asleep`; no lock record |
 | 27 | The sender's metaflow is Ended in Flow while its stand-in shell still runs, then that shell sends | `Refused.Ended.Address` naming the sender; no lock record |
@@ -983,8 +985,10 @@ witnessed here).
   `/proc/<pid>/stat`, then `pidfd_send_signal(F, 0, NULL, 0)`. Only a
   process not yet reaped at that check yields `Process.{ N T }`, and
   the kernel recycles no pid before reaping [K3][K4]. Minimum kernel
-  Linux 6.5; this host runs 7.1.8. Designed, not proven: the proof is
-  test 24, which reuses a pid. Astra's kernel qualification (source
+  Linux 6.5; this host runs 7.1.8. Designed, not proven: pid-reuse
+  resistance rests on the kernel-source argument [K1]–[K6] and is not
+  witnessed by any reuse test; test 24 kills and reaps the peer between
+  connect and the guard and witnesses the `ESRCH` path only. Astra's kernel qualification (source
   evidence, not a runtime witness): a pidfd stops pid-reuse
   retargeting on Linux 6.5 and later; `ESRCH` means the peer was
   reaped; `EPERM` proves nothing and success does not prove the peer
