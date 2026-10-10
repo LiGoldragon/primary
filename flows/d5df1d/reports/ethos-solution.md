@@ -15,7 +15,7 @@ Build every item in the order given. After each, run the flake checks and regene
 
 ## 1. A declaration `Name.Type` is a new type, not an alias
 
-Status: built and green. Protos (1 file: ReaderBudget.Integer); datom-codec (2 files: a tuple newtype prints and parses as its inner value); ethos-zero (35 files, applies on b2fa8b); all suites and 8/8 checks passing. Evidence flows/1d0733/reports/item12-final.md with patches item12-final-<repo>.patch. Landing order protos, datom-codec, ethos-zero as one set. Gate: the living's ruling on types Fork 3 (bare or braced newtype), since the datom-codec change is the bare answer. Types book claim 5 becomes false when it lands; a newtype emits no payload struct.
+Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md).
 
 What changes. Today `FlowId.String` emits `pub type FlowId = String;` (src/generation.rs, the `TypeDeclaration::Alias` arm, ~876-886). It emits, for a plain value, the tuple struct below, bearing the derive every struct and enum already bears (types book, Proposal 3: "Ethos Zero emits a new type as a Rust struct of one unnamed position, bearing the same derive as every struct and enum it emits."):
 
@@ -46,7 +46,7 @@ Acceptance tests (Prometheus, Nix):
 
 ## 2. Single-field structs and double wrapping are refused
 
-Status: built and green. Protos (1 file: ReaderBudget.Integer); datom-codec (2 files: a tuple newtype prints and parses as its inner value); ethos-zero (35 files, applies on b2fa8b); all suites and 8/8 checks passing. Evidence flows/1d0733/reports/item12-final.md with patches item12-final-<repo>.patch. Landing order protos, datom-codec, ethos-zero as one set. Gate: the living's ruling on types Fork 3 (bare or braced newtype), since the datom-codec change is the bare answer. Types book claim 5 becomes false when it lands; a newtype emits no payload struct.
+Status: built and green rebased onto 07714b, all suites and 8/8 with scratch protos and datom-codec, evidence flows/1d0733/reports/item12-on-item5.md with patches item12-on-item5-<repo>.patch; landing order protos, datom-codec, ethos-zero; gate: the living's Fork 3 (types book), both answers built and witnessed with the special representation (flows/1d0733/reports/representation-fork3.md).
 
 What the books say, quoted:
 - Invariants Proposal 1: "A struct holds two or more positions; a struct of one is refused. A type that holds one other type is written as its name, a dot and that type." Example: `Age.{ Integer }` refused, `Age.Integer` accepted.
@@ -67,7 +67,7 @@ Acceptance tests:
 
 ## 3. The inline import `Topic.custom:Name`
 
-Status: landed in ethos-zero at b2fa8b (on 9ea7c8, parent c2653d). Topic.custom:Name pinned in type and struct positions. Topic:custom:Name refused with Expected.Reference.
+Status: landed at b2fa8b, included in 07714b.
 
 Already accepted today, in a types section and in a struct position (1d0733, flows/1d0733/reports/prometheus-witness-final.md; this seat's probe). No code change. Add the test that fixes it, in both positions:
 
@@ -99,7 +99,7 @@ a. A struct of one position refused; no double wrapping. Item 2.
 
 b. The print keeps every comment, at the element it was written on. Status: proposed, awaiting ruling: invariants book Proposal 3 ("The canonical print keeps every comment, at the element it was written on."). Today `File` has no field for comments and the print drops all of them (src/printing.rs delegates to protos `Textualizable`; tests/print.rs:135-150 strips `;` lines before comparing). Change: carry a comment on each section and declaration in `File`, conceive it in the reader, and print it back. Layer: conception and print. Test: read a file with comments beside elements, print it, assert every comment survives and sits at its element; the crate's own ethos-zero.ethos compared to its print without stripping `;` lines.
 
-c. Each element on a new indented line; a comment beside or above, lined up. Status: proposed, awaiting ruling: invariants book Proposal 4 (and the records flows/e5a0bc/vision/ethos.md, 2026-10-06 and 2026-10-07; flows/d4ae97/vision/ethos.md, 2026-10-06). Today the print hangs elements beneath the first, aligned (a layout the newer records contradict); `a_badly_hung_layout_is_realigned` in tests/print.rs asserts the old layout. Change: the print opens a delimiter, starts every element on its own line one level in, with the closer ending the last element's line; a vector of short items may share a line up to a width. Layer: print. Test: the invariants book's `Voice.{ ... }` block prints exactly as shown; the four fixtures/print/flow-*.ethos files print stable (print of print equals print). Do not build c before the ruling on its Proposal 4; its test list changes the print golden files.
+c. Each element on a new indented line; a comment beside or above, lined up. Status: the print layout is a ready patch (flows/1d0733/reports/fork-invariants-4.patch) pending invariants Proposal 4.
 
 d. A variant name is capitalised. Status: the design's own (grade: not enforced, audit item 19; vision-ethos and knowledge-datom say "In datom a head is always a variant, so it is capitalized"). Probe: `Low.[ lowvariant Other ]` generates `pub enum Low { lowvariant, Other }`. Change: `Variant::check` (src/checking.rs 1453-1477) refuses a lowercase first letter. Layer: refusal. Test: that probe is refused at the variant's path; `Low.[ Lowvariant Other ]` accepted.
 
@@ -107,9 +107,11 @@ e. Derive name. Invariants Proposal 6 (proposed, awaiting ruling) renames `Compo
 
 f. Everything else the audit grades "not enforced" waits on a ruling and is not in this order (see the last section): inline depth, who holds layout and comments, comment required on every layered line, kind-name qualifier form, authored underscore names, every trait written in ethos, memory upgrades.
 
+g. Mutex is hard to express in ethos today. Status: Mutex both options ready (fork-invariants-f3-a/b.patch) pending invariants Fork 3.
+
 ## 5. The `kind` to `trait` rename across the generator
 
-Status: for the vision text, ruled: flows/d5df1d/vision/ethos.md, 2026-10-09, comment on «The golden ethos», third edition, thread c5019f, "Trait: rename every place": "rename" (and flows/ebbe30/vision/ethos.md, 2026-10-09: "kind might be used to also mean traits"; "I guess we can use traits"). Landed in the vision at 5c1922, 52 places. For the generator's own names the audit says: "whether the section and error names should become trait is a ruling the living has not given" (audit 3c-6). The rename of the code is therefore the design's own, following the ruling; flag it to the living when the types book is answered.
+Status: landed in ethos-zero main at 07714b (parent a09bb8), package 17.0.0, eight checks on that revision, Field's receipts under flow-evidence/42265e/overnight-source-sequence/.
 
 What changes, per the audit's list: `KindDeclaration` to `TraitDeclaration`, `Form::Kind`, `Role::Kind`, `Problem::KindWanted` to `TraitWanted`, `KindBody`, the section named "kinds" to "traits" in the documented section order (the file's fourth-from-last bracket; position unchanged, so no grammar change), the comment `; kinds` in every fixture and in ethos-zero.ethos and error.ethos, the CLI no-argument output (it prints ethos-zero.ethos), README.md and UPGRADES.md, the `datom` feature text. Rename fixtures capability-kinds, processable-kinds, self-kinds, streamable-kind to `-traits` and update include_str! and freshness lists. The skill knowledge-ethos (mind-skills) is knowledge and is changed by its owner, not here.
 
@@ -121,7 +123,7 @@ Acceptance tests: grep of src/, tests/, fixtures/, README.md, UPGRADES.md, ethos
 
 ## 6. Flow as the current best example: the fixture the test suite builds
 
-Status: ruled. flows/ebbe30/vision/ethos.md, 2026-10-09 (comment A: "one of the best current examples of Ethos is Flow, and then they can load the Flow Ethos skill, which would have that code"); Ruling 1 approved, flows/d5df1d/vision/ethos.md, "Flow, a current best example", 2026-10-09: "good". The fixture's FlowId comment: ruled, flows/ebbe30/vision/ethos.md, 2026-10-09 (comment D: "Let's just leave it as a string for now, but let's put a comment there that says the string is very unideal, and we need a real ID based on the real hash"); the line is "Types book, Proposal 5" (proposed, awaiting ruling) for the skill text; for the fixture it follows the record.
+Status: in dry run on top of the set at 07714b, by 1d0733.
 
 What the suite builds today: fixtures/print/flow-library.ethos, flow-signal.ethos, flow-operation.ethos and flow-memory.ethos; generated into tests/generated/flow-*.rs; held fresh by `the_flow_nexus_modules_are_fresh` (tests/freshness.rs:62) and compiled and round-tripped, with and without the datom feature, by `the_flow_nexus_contract_compiles_and_crosses_the_wire_with_and_without_datom` (tests/flow_contract.rs:64).
 
@@ -149,7 +151,7 @@ Acceptance test: the four files read, generate, stay fresh, compile, and round-t
 
 ## 7. `core:Name` and a lowercase single-segment source
 
-Status: proposed, awaiting ruling for the meaning; today's behaviour is witnessed. Records: flows/445410/vision/flow.md and flows/1d0733/vision/ethos.md, 2026-10-09: "technically it should be uncapitalized core and ethos since theyre the core:Name type which is 'camelCaseExpression' type with runtime checks when creating a new one". The opening statement is flows/d5df1d/vision/ethos.md, 2026-10-09 (thread babade): a source that "starts with a capital letter ... is pulling directly from the core built-ins"; "if it starts with a small letter, then that means it's pulling in from the registry name ... the isos environment that's loaded". "isos" appears in no other record.
+Status: held until inline-import questions Q5, Q6, Q8 are answered.
 
 Witnessed today (reports/inline-import-research.md, section 2.5): `core:Name` generates `core::Name`; rustc answers `error[E0425]: cannot find type 'Name' in crate 'core'`. `Topic:Name` generates `pub name: Topic::Name`, which names no crate. `Name` in ethos-zero (src/lib.rs:56-84) is the generator's own validated Rust identifier and runs no case check: `Topic`, `core`, `fooBar` and `snake_case` pass. A camelCase check on it would refuse every PascalCase type name.
 
@@ -169,6 +171,7 @@ What the design does: nothing in the generator until Fork 3 is ruled. The implem
 
 Waits on the living's ruling (book, number):
 
+- Every option of types Forks 1 and 2 is a ready patch (flows/1d0733/reports/fork-types-12-<candidate>.patch, four candidates plus 1c's datom-codec reach), per flows/d5df1d/reports/fork-options-spec.md.
 - Types book: Proposal 1 (new type section, replacing the alias, in vision-ethos); Proposal 2 (what is refused, awaiting its turn); Proposal 3 (what Ethos Zero generates; the tuple rule on lines 435-436); Proposal 4 (other alias sites); Proposal 5 (flow id stays a string, marked). Fork 1 (a name over a container), Fork 2 (a name over a declared type), Fork 3 (how a new type reads in datom), Fork 4 (how the value inside is reached), Fork 5 (every semantic string a new type).
 - Ethos invariants: Proposal 1 (a struct of one position refused, asks its ruling now); 2 (no double wrapping); 3 (the print keeps every comment); 4 (each element on a new indented line); 5 (implementers report); 6 (the derive's real name). Fork 1 (how deep a type is declared inline), Fork 2 (who holds layout and comments), Fork 3 (a Mutex field in ethos).
 - The golden ethos, fourth edition: Ruling 3 (the ethos of ethos in vision-ethos), with choices 1 to 4: Value, a comment in the anatomy, the receiver names, and Name as `Name.String` or `core:Name`.

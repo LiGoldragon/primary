@@ -208,3 +208,27 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — 1d0733: its subflow at 00:04:37 ran git restore on flows/d5df1d/reports/fork-options-spec.md in the shared copy, git add -A and committed 325 files as 73da46e, then checked out main at 00:04:39, removing both directories. In its report to 445410. This seat's spec is settled since (298 lines, on disk); the audit section's "(d) checkout not issued by any subflow of this flow" stands, the issuer being 1d0733's subflow.
 
 ## 2026-10-10 — audit section written: reports/audit-section.md. Finding against this seat: commit aeffbd61e ("restore flow directory onto main from 9360a7") also carries a deletion of flows/73ada7/reports/build/message-design.md, outside flows/d5df1d; the command was git add flows/d5df1d then git commit, so the deletion was already staged in the shared index when the commit ran; who staged it is unknown. Sent to 1d0733 for the combined reply.
+
+## 2026-10-10 — flows/d5df1d published to origin main as 6c89d8, fast-forward from becbf2, three paths all under flows/d5df1d, tree 8776 over 8775; lock 16105 taken and released. 9fed42 and 1d0733 told.
+
+## 2026-10-10 — 445410 via 1d0733: hold any Primary publish until 9fed42's is done; 445410 will say when. Nothing of this seat is pending publication.
+
+## 2026-10-10 — 445410 via 1d0733: 9fed42 published; lock free; publishers one at a time, 1d0733 taking it now. This seat has only log lines unpublished; no publish needed now.
+
+## 2026-10-10 — 445410 task for both: rebase datom-codec 776cf4 (Represented) onto main after items 1-5; test a tuple-newtype Representation under both Fork 3 answers. Design points sent: no double wrapping in either answer; the represented text is the representation's text; round-trip both ways; FlowId as the worked example.
+
+## 2026-10-10 — Represented under both Fork 3 answers (1d0733): no doubled brace, text equals the representation's, round-trip both ways, wrong shapes refused; worked case printed braced { 1d0733 } / bare 1d0733, but as FlowHash(0x1d0733) integer. Asked for FlowId(String) as the living named it. Report flows/1d0733/reports/representation-fork3.md.
+
+## 2026-10-10 — worked case rerun as FlowId("1d0733") (1d0733): report ready beside Fork 3. Gap: item 6 (Flow fixtures, FlowId.String with the unideal comment) unbuilt. Ruled: 1d0733 dry-runs it on top of the set at 07714b as part of the set; the comment lives in the ethos source; emission into Rust only if ethos-zero carries comments today, else noted as resting on invariants Proposal 3.
+
+## 2026-10-10 — reports/ethos-solution.md refreshed to the current state (items 1–7, fork patches); unpublished with the log lines until the next publish turn.
+
+## 2026-10-10 — publish refused: PrimaryPublish 16200 held by f5a6e9. Asked f5a6e9 for a release line; publisher runs then.
+
+## 2026-10-10 — item 6 dry run (1d0733) green on the set at 07714b; comments not carried (protos drops them; rests on invariants Proposal 3); one fixture and one golden line changed. (3) judged: the two print tests pin the loss (comment present in source, absent in reprint, naming Proposal 3) rather than ignoring comments. Patch flows/1d0733/reports/item6-on-set-ethos-zero.patch.
+
+## 2026-10-10 — f5a6e9 released 16200 (a leftover of its wait loop); publisher re-dispatched.
+
+## 2026-10-10 — publish refused again: PrimaryPublish 16275 held by 73ada7. Asked 73ada7 for a release line.
+
+## 2026-10-10 — 73ada7 released (its restore on main at 5374e1); publisher re-dispatched; 73ada7's second publisher may queue after.
