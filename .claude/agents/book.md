@@ -523,8 +523,24 @@ shown as `<h1 class="book-title">`.
 The page is web, never raw Markdown. Write it as HTML body content with
 no CSS of its own, and end the body with
 `/home/li/primary/tools/book-code.html`, pasted unchanged; its header
-comment gives the markup. Markdown in the block (headings, emphasis,
-lists, tables, inline code) becomes the matching HTML.
+comment gives the markup. Markdown outside fenced blocks (headings,
+emphasis, lists, tables, inline code) becomes the matching HTML.
+
+Recognize complete backtick or tilde fences before interpreting Markdown.
+A fenced body is never parsed for headings, lists or emphasis. Real code
+and ASCII drawings follow their procedures below. Other fenced blocks,
+including `text`, `prose`, `markdown` and `md`, are literal file text:
+HTML-escape their contents and render them as prose in
+`<div class="textblock">`, inside the appropriate change panel. Keep every
+character, including `##`, and every space and line break. A line such as
+`## Spacing` stays those literal characters, never an HTML heading. Do not
+remove its markers, edit the source or put prose in `<pre>` to work around
+this. Headings outside fences still become headings.
+
+Before returning the rendered page, check this boundary in the actual
+HTML: outside-fence headings are heading elements; a literal text block's
+text is preserved and contains no heading element. Keep the existing phone
+font and code geometry; literal text inherits the prose font and wraps.
 
 - Each proposal section is an `<article class="proposal">` with a
   numbered header. The distillation section keeps its own heading. The file it targets, named in the section, is
