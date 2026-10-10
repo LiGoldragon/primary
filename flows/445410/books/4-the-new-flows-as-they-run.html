@@ -1,0 +1,239 @@
+<title>The new flows, as they run</title>
+<h1 class="book-title">The new flows, as they run</h1>
+<p>Two audits answer your four questions: this seat's own (Source A, from a subflow that read transcripts, logs and the running system) and Mind Secondary Sol's (Source B, a read-only report with no live probe). Each finding is marked seen (an audit looked at the thing itself), recorded (taken from a log or receipt) or inferred (an audit's own reasoning).</p>
+<figure style="margin:1.2em auto;max-width:360px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" width="360" height="640" style="max-width:100%;height:auto" role="img" aria-label="Flow launch route: launcher, then flow-id and continuation file, then Herdr pane and title, then native harness (Claude or Codex), then hm-register. Separate dashed box: Flow Nexus sockets, which exist; the inspected launcher source does not call them." font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="15">
+  <rect x="16" y="16" width="260" height="96" rx="8" fill="#4a7fa7" fill-opacity="0.2" stroke="#4a7fa7" stroke-width="2"/>
+  <text x="146" y="40" text-anchor="middle" font-weight="700" fill="currentColor">launcher</text>
+  <text x="146" y="61" text-anchor="middle" fill="currentColor">(the Node launcher;</text>
+  <text x="146" y="82" text-anchor="middle" fill="currentColor">picks the voice profile</text>
+  <text x="146" y="103" text-anchor="middle" fill="currentColor">and model)</text>
+  <line x1="146" y1="112" x2="146" y2="138" stroke="currentColor" stroke-width="2"/>
+  <polygon points="146,146 140,137 152,137" fill="currentColor"/>
+  <rect x="16" y="146" width="260" height="75" rx="8" fill="#4a7fa7" fill-opacity="0.2" stroke="#4a7fa7" stroke-width="2"/>
+  <text x="146" y="170" text-anchor="middle" font-weight="700" fill="currentColor">flow-id + continuation file</text>
+  <text x="146" y="191" text-anchor="middle" fill="currentColor">(id from the session;</text>
+  <text x="146" y="212" text-anchor="middle" fill="currentColor">continuation record written)</text>
+  <line x1="146" y1="221" x2="146" y2="247" stroke="currentColor" stroke-width="2"/>
+  <polygon points="146,255 140,246 152,246" fill="currentColor"/>
+  <rect x="16" y="255" width="260" height="56" rx="8" fill="#4a7fa7" fill-opacity="0.2" stroke="#4a7fa7" stroke-width="2"/>
+  <text x="146" y="288" text-anchor="middle" font-weight="700" fill="currentColor">Herdr pane + title</text>
+  <line x1="146" y1="311" x2="146" y2="337" stroke="currentColor" stroke-width="2"/>
+  <polygon points="146,345 140,336 152,336" fill="currentColor"/>
+  <rect x="16" y="345" width="260" height="54" rx="8" fill="#4a7fa7" fill-opacity="0.2" stroke="#4a7fa7" stroke-width="2"/>
+  <text x="146" y="369" text-anchor="middle" font-weight="700" fill="currentColor">native harness</text>
+  <text x="146" y="390" text-anchor="middle" fill="currentColor">(Claude or Codex)</text>
+  <line x1="146" y1="399" x2="146" y2="425" stroke="currentColor" stroke-width="2"/>
+  <polygon points="146,433 140,424 152,424" fill="currentColor"/>
+  <rect x="16" y="433" width="260" height="75" rx="8" fill="#4a7fa7" fill-opacity="0.2" stroke="#4a7fa7" stroke-width="2"/>
+  <text x="146" y="457" text-anchor="middle" font-weight="700" fill="currentColor">hm-register</text>
+  <text x="146" y="478" text-anchor="middle" fill="currentColor">(messenger registers</text>
+  <text x="146" y="499" text-anchor="middle" fill="currentColor">the seat)</text>
+  <rect x="100" y="548" width="244" height="80" rx="8" fill="none" stroke="#888888" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="222" y="565" text-anchor="middle" font-weight="700" fill="currentColor" fill-opacity="0.7">Flow Nexus sockets</text>
+  <text x="222" y="584" text-anchor="middle" fill="currentColor" fill-opacity="0.7">exist; the inspected</text>
+  <text x="222" y="602" text-anchor="middle" fill="currentColor" fill-opacity="0.7">launcher source does</text>
+  <text x="222" y="620" text-anchor="middle" fill="currentColor" fill-opacity="0.7">not call them</text>
+</svg>
+</figure>
+<section>
+<h2>1. How the topic-flow setup was done</h2>
+<p><strong>Both found:</strong> a flow starts through the launcher, which gives the flow an id and a continuation record, makes a Herdr pane, starts the native harness and registers the seat with the messenger. The inspected launcher source does not call the Flow Nexus. The topic change adds a root topic (default Core, to become core), a topic kept in the continuation record, and topic-aware titles.</p>
+<p><strong>Only A:</strong> seen in the launch subflows' transcripts, the five topic flows ran a launcher from a commit that never reached main. This machine's Primary checkout is detached and holds 151 commits found on no remote. Seen: on main the Secondary profile of Psyche is marked unresolved; inferred by A that main's launcher would have refused all four Opus Secondaries. Seen: the launcher picks 18 skills from the Curriculum Nexus, and the messenger store is written under an Orchestrate lock.</p>
+<p><strong>Only B:</strong> recorded in a Field receipt, the topic change was published as five assembled suites with a remote content match. B did no live probe and keeps this seat's launch facts as attributed, not seen.</p>
+<p><strong>Open between them:</strong> B's receipt says the published change matches the remote; A saw that the launcher in use is not on main. Whether these are the same code is unreconciled.</p>
+</section>
+<section>
+<h2>2. Whether it was done properly</h2>
+<p><strong>Both found:</strong> word-based flow ids and word titles are not implemented.</p>
+<p><strong>Only A,</strong> seen against your vision:</p>
+<ul>
+<li>ids are still hex, not words, and topicless flows omit core, as in <code>{ Psyche Secondary 445410 }</code> and <code>{ Psyche Primary f5a6e9 }</code>;</li>
+<li>no flow holds core Primary; the oldest Psyche Primary still has the old title and no continuation record;</li>
+<li>the metaflow record has aspect and layer only as prose, no state, past or queue, and is kept per flow, not per metaflow;</li>
+<li>lineage is lost: two successors have an empty predecessor field;</li>
+<li>no hook reports to Flow, and retirement is manual.</li>
+</ul>
+<p><strong>Only B:</strong> nothing measured against the vision; B only says the launch evidence it holds is attributed.</p>
+</section>
+<section>
+<h2>3. Where the Nexus stands</h2>
+<p><strong>Both found:</strong> Flow sockets exist, and the inspected launcher source does not call them; B established this from that source alone, with no live probe, so it does not establish that no launch touches Flow. The Flow Nexus design (Launch, Wake, Refresh, End, Current over a metaflow record) is a proposal, not deployed. The private Clojure Flow is offline and is not a Nexus; the Rust bridge is a candidate only.</p>
+<p><strong>Only A,</strong> seen: Flow, a newer Flow, Message-next, Orchestrate, Curriculum (twice), Lojix and a stray debug Flow from a temporary directory all run. The stable Message socket is absent and the legacy message daemon has failed. Version mismatch: the command-line clients on PATH are newer (Flow 0.23, Message 0.19) than the running servers, and the knowledge skill describing the Nexuses names versions that are not the ones running.</p>
+<p><strong>Only B,</strong> recorded: Astra reports no active native implementation. The Clojure Flow has eleven tests; the Rust bridge five, historical. An earlier continuation exercise proved continuation records, not Flow Start or Replace.</p>
+</section>
+<section>
+<h2>4. Why the flows do not use it</h2>
+<p><strong>Both found:</strong> the inspected launcher source uses the direct Herdr, harness and messenger route (B made no live probe, so this bounds the source, not every launch), and the Flow Nexus design is not yet implemented or deployed.</p>
+<p><strong>Only A,</strong> seen: Flow's code has no metaflow, and its Start request carries no layer or topic. Deployed servers lag the newer source, no hook reaches Flow, and the messenger writes to panes directly. Recorded: the design is unruled. Unknown to A: why the upgrades were never deployed, and why the Primary checkout diverged and stayed unpushed. A did not call Flow's List, which may write, so it does not know whether Flow holds a row for any of today's flows.</p>
+<p><strong>Only B:</strong> absence of a launcher call does not prove no other component uses Flow, and it does not claim a cause.</p>
+<p><strong>Inferred, this seat's:</strong> the Nexus is unused because it cannot yet express what a launch needs (layer, topic, metaflow); the unknowns above stay unknown.</p>
+</section>
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Topic flows into vision-flow</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-flow.md</code></p>
+<p>Removed: none. Added, as a new section after «Starting flows» and before «Repository and skills», and one line at the end of «Sources». Source: <code>flows/445410/vision/flow.md</code>, entries «The Core topic», «Topic flow titles» and «The title names the topic, Core included» and «Topic names are camelCase expressions» (2026-10-09).</p>
+<div class="diff">
+<div class="ctx"><p>…Sol speaks to Opus, not to Fable; Fable is spoken to least. Design is Astra's, not Sol's.</p></div>
+<div class="add"><h3>Topics and flow titles</h3><p>Every flow has a topic; a flow with no special topic has the topic core, the heart of its aspect. A topic is a core:Name, a camelCaseExpression checked when created. A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary &lt;id&gt; }.</p></div>
+<div class="ctx"><h3>Repository and skills</h3><p>The flow repository holds the machinery of the Flow Nexus and is a runtime repository…</p></div>
+<div class="ctx"><p>b81560 operational-subflowRequestIdAndAsync</p></div>
+<div class="add"><p>445410 flow</p></div>
+</div>
+<section class="rulings"><ol>
+<li value="1"><p>Land this addition?</p><ol class="choices" type="a"><li>land</li><li>amend</li><li>refuse</li></ol></li>
+</ol></section>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
