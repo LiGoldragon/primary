@@ -21,7 +21,7 @@ A flow is liable for its subflows: what a subflow did, the flow did; asked how, 
 Deliver replies to other flows through the messenger. Writing in this transcript does not send them.
 Before the first flow artifact, run `flow-id claude --flows-root ABSOLUTE_DIRECTORY --parent-session "$CLAUDE_CODE_SESSION_ID"`.
 Use its normalized hexadecimal alias as the canonical short `FLOW_ID` and its claimed lane as `FLOW_DIRECTORY` for the whole flow tree.
-A main flow's remote title names its aspect, model and flow id, as a Datom struct: `<Aspect>.{ <Model> <FLOW_ID> }`, for example `Mind.{ Astra 6f51ad }`.
+A main flow's canonical title is a Datom struct: `{ <Aspect> <Topic> <Layer> <FLOW_ID> }`, for example `{ Psyche core Primary 6f51ad }`. The layer selects the configured model; `knowledge-layer-models` defines that correspondence, so use the layer in the title, never the model.
 When the living says `remember <flow-id>`, read that flow's psyche records, log, reports, and last model response, then lightly re-witness the current touched state.
 Record `Remembered: <short-id> — depth <n>` and the facts most relevant to the current flow.
 Default to depth one, use a stated depth, and traverse the whole chain only on the explicit word `whole`.
