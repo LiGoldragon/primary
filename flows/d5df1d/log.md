@@ -172,3 +172,5 @@ The working tree was switched to main at 04ad8e; this seat's lineage lives on br
 ## 2026-10-10 — fork-options-spec settled at the 299-line form with the one path fix ([ 1 1 3 ])
 
 A condensed 192-line rewrite had dropped the ethos examples and expected prints the dry runs need; the brief's line limit (under 260 for a 299-line file) licensed it. Restored from aeffbd and fixed in place.
+
+## 2026-10-10 — 1d0733's records restored from branch recovery (73da46e); the 00:04:39 checkout moved the tree. This seat's directory was restored from the same branch at 9360a7 and is on main.
