@@ -1,0 +1,43 @@
+diff --git a/src/generation.rs b/src/generation.rs
+index 413c0e6..b1a60c7 100644
+--- a/src/generation.rs
++++ b/src/generation.rs
+@@ -48,6 +48,11 @@ impl Tokening for Name {
+ 
+ impl Tokening for Source {
+     fn tokens(&self) -> TokenStream {
++        // Source `core` is the ethos core library, which Rust names
++        // `ethos_core`: `core` is the Rust language's own core.
++        if self.as_ref() == "core" {
++            return quote! { ethos_core };
++        }
+         let path: syn::Path =
+             syn::parse_str(self.as_ref()).expect("a source was validated as a path");
+         quote! { #path }
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index 4f695a4..446e90b 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -569,3 +569,22 @@ fn a_concrete_type_in_an_input_is_refused_as_wanting_a_trait() {
+         Problem::TraitWanted("String".to_owned())
+     );
+ }
++
++#[test]
++fn the_core_source_emits_as_ethos_core() {
++    let file =
++        read("Library [ core:[ Name ] ] [ Topic.core:Name Holder.{ Label.core:Name Name } ] [] []");
++    let generated = match file.generate() {
++        Ok(generated) => generated,
++        Err(_) => panic!("a core source generates"),
++    };
++    for line in [
++        "pub type Topic = ethos_core::Name;",
++        "pub type Label = ethos_core::Name;",
++        "pub label: Label,",
++        "pub name: ethos_core::Name,",
++    ] {
++        assert!(generated.contains(line), "{line} missing from {generated}");
++    }
++    assert!(!generated.replace("ethos_core::", "").contains("core::"));
++}

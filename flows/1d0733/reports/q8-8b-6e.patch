@@ -1,0 +1,1239 @@
+diff --git a/README.md b/README.md
+index 8326b28..f3f79fb 100644
+--- a/README.md
++++ b/README.md
+@@ -179,14 +179,20 @@ structure; it does not textualize and parse the result again.
+ ## CLI
+ 
+ ```
+-ethos-zero 'Generate.{ /abs/file.ethos /abs/out-dir }'
++ethos-zero 'Generate./abs/assembly.datom'
+ # -> Generated.[ /abs/out-dir/file.rs ]
+-ethos-zero 'Check./abs/file.ethos'
++ethos-zero 'Check./abs/assembly.datom'
+ # -> Checked./abs/file.ethos
+ # -> Rejected.{ /abs/file.ethos { 4 19 } Conceptual.{ [ 1 1 0 1 1 ] Undeclared.Bogus } }
++# -> Rejected.{ /abs/file.ethos { 4 18 } Conceptual.{ [ 1 1 0 1 1 1 0 ] Source.custom } }
+ ```
+ 
+-`Check` validates the whole file and writes nothing. A rejection, from
++Each request names a datom assembly file, such as
++`{ /abs/file.ethos /abs/out-dir [ { flow signal_flow } ] }`: the ethos
++file, the one directory its module is written to (which `Check` does not
++use), and the registry, every source the file may name with the Rust
++path it compiles to, which the generated Rust writes in its place. An
++unreadable assembly file is `Unreadable`, as a source is. A source with no entry is refused at its head. `Check` validates the whole file and writes nothing. A rejection, from
+ either query, names the file, the line and column of the error (counted
+ from one), and the error; a rejected `Generate` creates no directory.
+ 
+diff --git a/checks/dependency-ethos.sh b/checks/dependency-ethos.sh
+index 8a7d30b..d54c87f 100644
+--- a/checks/dependency-ethos.sh
++++ b/checks/dependency-ethos.sh
+@@ -3,9 +3,11 @@
+ # or answers with anything but Generated.
+ set -eu
+ out_dir="$TMPDIR/generated"
++assembly="$TMPDIR/assembly.datom"
+ for declaration in $declarations; do
+   status=0
+-  reply="$("$package/bin/ethos-zero" "Generate.{ «$declaration» «$out_dir» }" 2>&1)" || status=$?
++  echo "{ «$declaration» «$out_dir» [ { crate crate } { std std } { protos protos } { datom_codec datom_codec } ] }" > "$assembly"
++  reply="$("$package/bin/ethos-zero" "Generate.«$assembly»" 2>&1)" || status=$?
+   case "$status:$reply" in
+     0:Generated.*) echo "$reply" ;;
+     *) echo "$declaration (exit $status): $reply" >&2; exit 1 ;;
+diff --git a/error.ethos b/error.ethos
+index 263d6ad..0aa4933 100644
+--- a/error.ethos
++++ b/error.ethos
+@@ -21,7 +21,8 @@ Library
+             TraitWanted.String
+             Intrinsic.String
+             Case.String
+-            Renamed.String ]
++            Renamed.String
++            Source.String ]
+   Form.[ File Section Import Name Declaration Variant Reference Constraint Trait Capability Constant Association ]
+   Location.{ Line Column }
+   Line.Integer
+diff --git a/ethos-zero.ethos b/ethos-zero.ethos
+index a72fc51..9a9cf25 100644
+--- a/ethos-zero.ethos
++++ b/ethos-zero.ethos
+@@ -1,5 +1,8 @@
+ ; The local Datom command contract, not a wire Signal.
+-; Generate reads an ethos file and writes its Rust module into a directory;
++; Each query names an assembly file: the ethos file, the one directory its
++; module is written to, and the registry, the sources the file may name and
++; the Rust path each compiles to; a source with no entry is refused.
++; Generate reads the ethos file and writes its Rust module into the directory;
+ ; Check reads and validates it whole, writing nothing. A rejection names the
+ ; file, the line and column of the error in it, and the error.
+ ; The files read are of four roots, each section in this order:
+@@ -11,7 +14,7 @@
+ Library
+ [ datom_codec:[ Error ]
+   ethos_zero:[ Problem Location ] ]
+-[ Query.[ Generate.Generation
++[ Query.[ Generate.String
+           Check.String ]
+   Response.[ Generated.Vector<String>
+              Checked.String
+@@ -20,7 +23,10 @@ Library
+              Unreadable.{ String String }
+              Rejected.{ String Location Generation_Error }
+              Unwritable.{ String String } ]
+-  Generation.{ String String }
++  Assembly.{ String String Registry }
++  Registry.Vector<Registered>
++  Registered.{ Name.String
++               Emitted.String }
+   Generation_Error.[ Structural.protos:Error
+                      Conceptual.{ Vector<Integer>
+                                   ethos_zero:Problem } ] ]
+diff --git a/src/checking.rs b/src/checking.rs
+index 342b84b..c34b1b3 100644
+--- a/src/checking.rs
++++ b/src/checking.rs
+@@ -14,8 +14,8 @@ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+     ArityProblem, AssociatedConstant, AssociatedType, Association, Capability, ConceptualErroring,
+     Constraint, Error, File, Identifiable, Identity, Import, Intrinsic, Memory, Name, Operation,
+-    Placing, Position, Problem, Reference, Resolution, Resolving, Role, Scope, Signal, Signature,
+-    TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    Placing, Position, Problem, Reference, Registering, Registry, Resolution, Resolving, Role,
++    Scope, Signal, Signature, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ /// A schema must remain small enough for complete whole-file checking to have
+@@ -688,6 +688,8 @@ impl<C: Checkable + Spanning> Checking for [C] {
+ 
+ impl Checkable for Import {
+     fn check(&self, scope: &Scope) -> Result<(), Error> {
++        let (Import::One(source, _) | Import::Many(source, _)) = self;
++        source.register(scope)?;
+         match self {
+             Import::One(_, imported) => imported.check(scope).place(1),
+             Import::Many(_, imported) => imported.check_children(scope).place(1),
+@@ -1042,6 +1044,24 @@ impl Checkable for Constraint {
+     }
+ }
+ 
++/// The trait whose capability refuses a source the registry does not name,
++/// at the source itself: the head of the import or of the sourced reference.
++trait Sourcing {
++    fn register(&self, scope: &Scope) -> Result<(), Error>;
++}
++
++impl Sourcing for crate::Source {
++    fn register(&self, scope: &Scope) -> Result<(), Error> {
++        match scope.registry.emission(self) {
++            Some(_) => Ok(()),
++            None => Err(Error::conceptual(
++                vec![0],
++                Problem::Source(self.as_ref().to_owned()),
++            )),
++        }
++    }
++}
++
+ /// The trait whose capability yields whether an intrinsic is a type or a trait.
+ trait Roled {
+     fn role(&self) -> Role;
+@@ -1094,6 +1114,9 @@ impl ReferringEach for [Reference] {
+ 
+ impl Referring for Reference {
+     fn refer(&self, scope: &Scope, role: Role) -> Result<(), Error> {
++        if let Some(source) = &self.source {
++            source.register(scope)?;
++        }
+         if self.source.is_some() && self.name.0 == "Self" {
+             return Err(Error::conceptual(
+                 vec![],
+@@ -1217,6 +1240,7 @@ impl Checkable for Position {
+             Position::Referenced(reference) => reference.check(scope),
+             Position::Declared(declaration) => declaration.check(&Scope {
+                 file: scope.file,
++                registry: scope.registry,
+                 identity: None,
+                 associated: &[],
+             }),
+@@ -1427,6 +1451,7 @@ impl Checkable for TypeDeclaration {
+         identity.check(scope).place(0)?;
+         let inner = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: Some(identity),
+             associated: scope.associated,
+         };
+@@ -1487,6 +1512,7 @@ impl Checkable for TraitDeclaration {
+         self.identity.check(scope).place(0)?;
+         let inner = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: Some(&self.identity),
+             associated: match &self.body {
+                 TraitBody::Simple(_) => &[],
+@@ -1617,9 +1643,10 @@ impl Checkable for Association {
+ }
+ 
+ impl crate::Validating for File {
+-    fn validate(&self) -> Result<(), Error> {
++    fn validate(&self, registry: &Registry) -> Result<(), Error> {
+         self.check(&Scope {
+             file: self,
++            registry,
+             identity: None,
+             associated: &[],
+         })
+diff --git a/src/error.rs b/src/error.rs
+index 28c252a..f66548c 100644
+--- a/src/error.rs
++++ b/src/error.rs
+@@ -47,6 +47,7 @@ pub enum Problem {
+     Intrinsic(String),
+     Case(String),
+     Renamed(String),
++    Source(String),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/src/ethos-zero.rs b/src/ethos-zero.rs
+index 2105f04..84a5c26 100644
+--- a/src/ethos-zero.rs
++++ b/src/ethos-zero.rs
+@@ -3,7 +3,7 @@
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+ pub enum Query {
+-    Generate(Generation),
++    Generate(String),
+     Check(String),
+ }
+ #[rustfmt::skip]
+@@ -43,9 +43,23 @@ pub enum Response {
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+ #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
+-pub struct Generation {
++pub struct Assembly {
+     pub first_string: String,
+     pub second_string: String,
++    pub registry: Registry,
++}
++#[rustfmt::skip]
++pub type Registry = std::vec::Vec<Registered>;
++#[rustfmt::skip]
++pub type Name = String;
++#[rustfmt::skip]
++pub type Emitted = String;
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Registered {
++    pub name: Name,
++    pub emitted: Emitted,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/src/generation.rs b/src/generation.rs
+index 413c0e6..db53d20 100644
+--- a/src/generation.rs
++++ b/src/generation.rs
+@@ -26,8 +26,8 @@ use crate::sectioning::{Hoisting, Referencing, ReferencingEach, Sectioning};
+ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+     AssociatedConstant, AssociatedType, Association, Capability, Constraint, File, Generating,
+-    Identity, Intrinsic, Name, Position, Receiver, Reference, Resolution, Resolving, Scope,
+-    Signature, Source, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    Identity, Intrinsic, Name, Position, Receiver, Reference, Registering, Registry, Resolution,
++    Resolving, Scope, Signature, Source, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -54,6 +54,22 @@ impl Tokening for Source {
+     }
+ }
+ 
++/// The trait whose capability yields the Rust path a source compiles to:
++/// the path its registry entry names, never the source's own name.
++trait Emitted {
++    fn emitted(&self, scope: &Scope) -> TokenStream;
++}
++
++impl Emitted for Source {
++    fn emitted(&self, scope: &Scope) -> TokenStream {
++        scope
++            .registry
++            .emission(self)
++            .expect("a checked source is registered")
++            .tokens()
++    }
++}
++
+ impl Tokening for Intrinsic {
+     fn tokens(&self) -> TokenStream {
+         match self {
+@@ -140,7 +156,7 @@ impl Emitting for Reference {
+         };
+         let name = self.name.tokens();
+         if let Some(source) = &self.source {
+-            let source = source.tokens();
++            let source = source.emitted(scope);
+             return quote! { #source :: #name #applied };
+         }
+         match scope.resolve(&self.name) {
+@@ -157,7 +173,7 @@ impl Emitting for Reference {
+                         return quote! { std::marker::Send #applied };
+                     }
+                 }
+-                let source = source.tokens();
++                let source = source.emitted(scope);
+                 let emitted = emitted.tokens();
+                 quote! { #source :: #emitted #applied }
+             }
+@@ -218,6 +234,7 @@ impl Parametrizing for Identity {
+         // The bounds name traits outside the identity they bound.
+         let outer = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: None,
+             associated: scope.associated,
+         };
+@@ -793,6 +810,7 @@ impl Structuring for [Position] {
+         let parameters = identity.parameters(scope);
+         let outer = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: None,
+             associated: &[],
+         };
+@@ -860,6 +878,7 @@ impl Emitting for TypeDeclaration {
+             TypeDeclaration::Struct(identity, positions) => {
+                 let inner = Scope {
+                     file: scope.file,
++                    registry: scope.registry,
+                     identity: Some(identity),
+                     associated: scope.associated,
+                 };
+@@ -868,6 +887,7 @@ impl Emitting for TypeDeclaration {
+             TypeDeclaration::Enum(identity, variants) => {
+                 let inner = Scope {
+                     file: scope.file,
++                    registry: scope.registry,
+                     identity: Some(identity),
+                     associated: scope.associated,
+                 };
+@@ -876,6 +896,7 @@ impl Emitting for TypeDeclaration {
+             TypeDeclaration::Alias(identity, aliased) => {
+                 let inner = Scope {
+                     file: scope.file,
++                    registry: scope.registry,
+                     identity: Some(identity),
+                     associated: scope.associated,
+                 };
+@@ -1062,6 +1083,7 @@ impl Emitting for TraitDeclaration {
+         } = self.contents();
+         let inner = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: Some(&self.identity),
+             associated: types,
+         };
+@@ -1097,6 +1119,7 @@ impl Emitting for Association {
+     fn emit(&self, scope: &Scope) -> TokenStream {
+         let inner = Scope {
+             file: scope.file,
++            registry: scope.registry,
+             identity: Some(&self.identity),
+             associated: scope.associated,
+         };
+@@ -1232,9 +1255,10 @@ impl DeriveCollapsing for String {
+ }
+ 
+ impl Generating for File {
+-    fn generate(&self) -> Result<String, crate::Error> {
++    fn generate(&self, registry: &Registry) -> Result<String, crate::Error> {
+         let scope = Scope {
+             file: self,
++            registry,
+             identity: None,
+             associated: &[],
+         };
+diff --git a/src/lib.rs b/src/lib.rs
+index a25b3a8..50c756b 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -140,6 +140,54 @@ impl AsRef<str> for Source {
+     }
+ }
+ 
++/// A registry entry: a source an ethos file may name, and the Rust path it
++/// compiles to, which generation writes in its place.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct Registered {
++    /// The source as ethos writes it: `flow`.
++    pub name: String,
++    /// The Rust path it compiles to: `signal_flow`.
++    pub emitted: String,
++}
++
++/// The sources an ethos file may name. A source with no entry, or whose
++/// entry's emission is not a Rust path, is refused at its head.
++#[derive(Clone, Debug, Default, PartialEq, Eq)]
++pub struct Registry {
++    /// The entries, looked up by source name.
++    pub entries: Vec<Registered>,
++}
++
++/// The trait whose capability yields the Rust path a source compiles to, if registered.
++pub trait Registering {
++    /// The emission of the source's entry, validated as a Rust path.
++    fn emission(&self, source: &Source) -> Option<Source>;
++}
++
++impl Registering for Registry {
++    fn emission(&self, source: &Source) -> Option<Source> {
++        for entry in &self.entries {
++            if entry.name == source.as_ref() {
++                return Source::try_from(entry.emitted.as_str()).ok();
++            }
++        }
++        None
++    }
++}
++
++impl<'a> FromIterator<(&'a str, &'a str)> for Registry {
++    fn from_iter<I: IntoIterator<Item = (&'a str, &'a str)>>(entries: I) -> Self {
++        let mut registry = Registry::default();
++        for (name, emitted) in entries {
++            registry.entries.push(Registered {
++                name: name.to_owned(),
++                emitted: emitted.to_owned(),
++            });
++        }
++        registry
++    }
++}
++
+ /// The unit of declaration: one file, one Rust module; an enum of its four roots.
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum File {
+@@ -478,6 +526,8 @@ pub enum Role {
+ pub struct Scope<'a> {
+     /// The file whose imports and declarations are in scope.
+     pub file: &'a File,
++    /// The sources the file may name, and what each compiles to.
++    pub registry: &'a Registry,
+     /// The enclosing identity, whose single-trait constraints name parameters.
+     pub identity: Option<&'a Identity>,
+     /// The enclosing trait's associated types.
+@@ -538,14 +588,15 @@ pub trait Resolving {
+ 
+ /// The trait whose capability checks a whole file and generates its Rust module.
+ pub trait Generating {
+-    /// The formatted Rust text, or the whole-file error that prevents generation.
+-    fn generate(&self) -> Result<String, Error>;
++    /// The formatted Rust text, or the whole-file error that prevents
++    /// generation; each source resolves through the registry.
++    fn generate(&self, registry: &Registry) -> Result<String, Error>;
+ }
+ 
+ /// The trait whose capability checks a whole file without generating it.
+ pub trait Validating {
+     /// The whole-file error that would prevent generation, if any.
+-    fn validate(&self) -> Result<(), Error>;
++    fn validate(&self, registry: &Registry) -> Result<(), Error>;
+ }
+ 
+ /// The trait whose capability situates an error in the source text it was raised from.
+@@ -759,10 +810,30 @@ mod signature;
+ mod behavior {
+     use super::{
+         Actualizing, Canonicalizable, Error, File, Generating, Identity, Library, Name, Potential,
+-        Problem, TypeDeclaration,
++        Problem, Registry, TypeDeclaration,
+     };
+     use protos::{Extent, Protosizable, Textualizable};
+ 
++    /// Every source the crate's own sources and fixtures name, each compiling to itself.
++    fn registry() -> Registry {
++        [
++            "super",
++            "crate",
++            "std",
++            "serde",
++            "flow",
++            "protos",
++            "datom_codec",
++            "ethos_zero",
++            "custom",
++            "external",
++            "x",
++        ]
++        .into_iter()
++        .map(|source| (source, source))
++        .collect()
++    }
++
+     #[test]
+     fn library_record_generates_named_datom_fields() {
+         let file = match Potential::<File>::from("Library [] [ Record.{ String Integer } ] [] []")
+@@ -771,7 +842,7 @@ mod behavior {
+             Ok(file) => file,
+             Err(_) => panic!("approved Library record reads"),
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(_) => panic!("approved Library record generates"),
+         };
+@@ -801,7 +872,7 @@ mod behavior {
+                 Ok(file) => file,
+                 Err(_) => panic!("{source} reads"),
+             };
+-            let rust = match file.generate() {
++            let rust = match file.generate(&registry()) {
+                 Ok(rust) => rust,
+                 Err(_) => panic!("{source} generates"),
+             };
+@@ -830,7 +901,7 @@ mod behavior {
+                 )
+             }
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(_) => panic!("approved payload examples generate"),
+         };
+@@ -852,7 +923,7 @@ mod behavior {
+                 panic!("approved traits read: {:?}", canonical.text.protosize())
+             }
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(_) => panic!("approved traits generate"),
+         };
+@@ -873,7 +944,7 @@ mod behavior {
+             Err(Error::Conceptual(_)) => panic!("CLI conceptual generation failure"),
+             Err(_) => panic!("CLI structural error"),
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(_) => panic!("CLI contract generates"),
+         };
+@@ -888,7 +959,7 @@ mod behavior {
+             Ok(file) => file,
+             Err(_) => panic!("error schema reads"),
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(Error::Conceptual(_)) => panic!("error schema conceptual generation failure"),
+             Err(Error::Structural(_)) => panic!("error schema structural generation failure"),
+@@ -919,7 +990,7 @@ mod behavior {
+                 Err(Error::Structural(_)) => panic!("{} is structurally invalid", path.display()),
+             };
+             let rust = file
+-                .generate()
++                .generate(&registry())
+                 .unwrap_or_else(|_| panic!("{} generates", path.display()));
+             let stem = path
+                 .file_stem()
+@@ -1025,8 +1096,10 @@ mod behavior {
+             traits: vec![],
+             associations: vec![],
+         });
++        let registry = registry();
+         let scope = Scope {
+             file: &file,
++            registry: &registry,
+             identity: None,
+             associated: &[],
+         };
+@@ -1040,7 +1113,7 @@ mod behavior {
+             Ok(file) => file,
+             Err(_) => panic!("nested collision source reads"),
+         };
+-        let rust = match file.generate() {
++        let rust = match file.generate(&registry()) {
+             Ok(rust) => rust,
+             Err(_) => panic!("nested collision source generates"),
+         };
+@@ -1184,7 +1257,7 @@ mod behavior {
+         for source in cases {
+             let potential = Potential::<File>::from(source);
+             let error = match potential.actualize() {
+-                Ok(file) => match file.generate() {
++                Ok(file) => match file.generate(&registry()) {
+                     Err(error) => error,
+                     Ok(_) => panic!("{source} must be refused"),
+                 },
+diff --git a/src/main.rs b/src/main.rs
+index 8eb7e67..793c509 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -15,7 +15,7 @@ use protos::{Compactable, Protosizable};
+ mod contract;
+ 
+ use contract::{
+-    Conceptual_Data as Generation_Conceptual_Data, Generation, Generation_Error, Query,
++    Assembly, Conceptual_Data as Generation_Conceptual_Data, Generation_Error, Query, Registered,
+     Rejected_Data, Response, Unreadable_Data, Unwritable_Data,
+ };
+ 
+@@ -45,6 +45,57 @@ trait Rejecting {
+     fn reject(&self, source: &EthosPotential<File>, error: ethos_zero::Error) -> Response;
+ }
+ 
++/// The trait whose capability reads a datom assembly file: the source, the target and the registry.
++trait Assembling {
++    fn assemble(&self) -> Result<Assembly, Response>;
++}
++/// The trait whose capability validates an assembly's source whole, writing nothing.
++trait Checking {
++    fn check(&self) -> Response;
++}
++
++impl Assembling for String {
++    fn assemble(&self) -> Result<Assembly, Response> {
++        let text = match std::fs::read_to_string(self) {
++            Ok(text) => text,
++            Err(error) => {
++                return Err(Response::Unreadable(Unreadable_Data {
++                    first_string: self.clone(),
++                    second_string: error.to_string(),
++                }));
++            }
++        };
++        let mut budget = Budget {
++            remaining: 4_096,
++            reader: protos::ReaderBudget { remaining: 4_096 },
++            depth: 0,
++            maximum_depth: 4_096,
++        };
++        match Potential::<Assembly>::from(text.as_str()).actualize(&mut budget) {
++            Ok(assembly) => Ok(assembly),
++            Err(error) => Err(Response::Unreadable(Unreadable_Data {
++                first_string: self.clone(),
++                second_string: error.datomize(Path::new()).protosize().compact(),
++            })),
++        }
++    }
++}
++
++/// The trait whose capability turns the assembly's entries into the reader's registry.
++trait Listing {
++    fn registry(&self) -> ethos_zero::Registry;
++}
++
++impl Listing for [Registered] {
++    fn registry(&self) -> ethos_zero::Registry {
++        let mut entries = Vec::with_capacity(self.len());
++        for entry in self {
++            entries.push((entry.name.as_str(), entry.emitted.as_str()));
++        }
++        entries.into_iter().collect()
++    }
++}
++
+ impl Texting for Response {
+     /// A reply is one line, so a caller matching it line by line still can.
+     fn text(&self) -> String {
+@@ -98,10 +149,11 @@ impl Rejecting for String {
+     }
+ }
+ 
+-impl Serving for Generation {
++impl Serving for Assembly {
+     fn serve(&mut self) -> Response {
+         let source = &self.first_string;
+         let directory = &self.second_string;
++        let registry = self.registry.registry();
+         let (potential, file) = match source.source() {
+             Ok(read) => read,
+             Err(response) => return response,
+@@ -111,7 +163,7 @@ impl Serving for Generation {
+             .unwrap_or_default()
+             .to_string_lossy();
+         let target = FilePath::new(directory).join(format!("{stem}.rs"));
+-        let generated = match file.generate() {
++        let generated = match file.generate(&registry) {
+             Ok(generated) => generated,
+             Err(error) => return source.reject(&potential, error),
+         };
+@@ -131,15 +183,17 @@ impl Serving for Generation {
+     }
+ }
+ 
+-impl Serving for String {
+-    fn serve(&mut self) -> Response {
+-        let (potential, file) = match self.source() {
++impl Checking for Assembly {
++    fn check(&self) -> Response {
++        let source = &self.first_string;
++        let registry = self.registry.registry();
++        let (potential, file) = match source.source() {
+             Ok(read) => read,
+             Err(response) => return response,
+         };
+-        match file.validate() {
+-            Ok(()) => Response::Checked(self.clone()),
+-            Err(error) => self.reject(&potential, error),
++        match file.validate(&registry) {
++            Ok(()) => Response::Checked(source.clone()),
++            Err(error) => source.reject(&potential, error),
+         }
+     }
+ }
+@@ -147,8 +201,14 @@ impl Serving for String {
+ impl Serving for Query {
+     fn serve(&mut self) -> Response {
+         match self {
+-            Self::Generate(generation) => generation.serve(),
+-            Self::Check(source) => source.serve(),
++            Self::Generate(path) => match path.assemble() {
++                Ok(mut assembly) => assembly.serve(),
++                Err(response) => response,
++            },
++            Self::Check(path) => match path.assemble() {
++                Ok(assembly) => assembly.check(),
++                Err(response) => response,
++            },
+         }
+     }
+ }
+diff --git a/tests/cli.rs b/tests/cli.rs
+index 38c643a..77c27c5 100644
+--- a/tests/cli.rs
++++ b/tests/cli.rs
+@@ -40,8 +40,38 @@ fn opaque(text: &str) -> String {
+     format!("«{text}»")
+ }
+ 
++/// Every source the fixtures name, each compiling to itself, as the assembly file holds it.
++const REGISTRY: &str = "[ { super super } { crate crate } { std std } { serde serde } { flow flow } { protos protos } { datom_codec datom_codec } { ethos_zero ethos_zero } { custom custom } { external external } ]";
++
++/// The trait whose capability writes an assembly file of a source, a target
++/// and a registry, and yields its path.
++trait Assembling {
++    fn assemble(&self, target: &str, registry: &str) -> String;
++}
++
++impl Assembling for str {
++    fn assemble(&self, target: &str, registry: &str) -> String {
++        let directory = format!(
++            "{}/assemblies-{}",
++            env!("CARGO_TARGET_TMPDIR"),
++            std::process::id()
++        );
++        std::fs::create_dir_all(&directory).unwrap();
++        // Each call writes its own file, so tests running at once never read one half-written.
++        static WRITTEN: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
++        let count = WRITTEN.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
++        let path = format!("{directory}/{count}.datom");
++        std::fs::write(
++            &path,
++            format!("{{ {} {} {registry} }}", opaque(self), opaque(target)),
++        )
++        .unwrap();
++        path
++    }
++}
++
+ fn generate(source: &str, directory: &str) -> String {
+-    format!("Generate.{{ {} {} }}", opaque(source), opaque(directory))
++    format!("Generate.{}", opaque(&source.assemble(directory, REGISTRY)))
+ }
+ 
+ #[test]
+@@ -58,7 +88,7 @@ fn no_argument_prints_the_crates_own_ethos_ending_with_a_newline() {
+         .collect();
+     assert_eq!(output, uncommented);
+     assert!(output.ends_with('\n'));
+-    assert!(output.contains("Generate.Generation"));
++    assert!(output.contains("Generate.String"));
+     assert!(output.contains("Check.String"));
+ }
+ 
+@@ -108,7 +138,7 @@ fn malformed_query_and_wrong_shape_are_reported_as_typed_errors() {
+         output.starts_with("Malformed.Error.{ Composition"),
+         "{output}"
+     );
+-    assert!(output.contains("Arity.{ 2 1 }"), "{output}");
++    assert!(output.contains("Form.{ String Struct }"), "{output}");
+ }
+ 
+ #[test]
+@@ -144,7 +174,7 @@ impl Writing for str {
+ }
+ 
+ fn check(source: &str) -> String {
+-    format!("Check.{}", opaque(source))
++    format!("Check.{}", opaque(&source.assemble("/unused", REGISTRY)))
+ }
+ 
+ #[test]
+@@ -326,3 +356,47 @@ fn the_four_flow_nexus_files_check() {
+         assert_eq!(output, format!("Checked.{source}\n"));
+     }
+ }
++
++#[test]
++fn the_registry_arrives_by_assembly_file() {
++    let directory = "registry".scratch();
++    let source = directory.write_source(
++        "launch",
++        "Library\n[]\n[ Launch.{ flow:Voice\n           Brief.custom:Text } ]\n[]\n[]\n",
++    );
++    let target = format!("{directory}/out");
++    let request = format!(
++        "Generate.{}",
++        opaque(&source.assemble(&target, "[ { flow flow } ]"))
++    );
++    let (success, output) = [request.as_str()].invoke();
++    assert!(!success);
++    assert_eq!(
++        output,
++        format!(
++            "Rejected.{{ {source} {{ 4 18 }} Conceptual.{{ [ 1 1 0 1 1 1 0 ] Source.custom }} }}\n"
++        )
++    );
++    assert!(!std::path::Path::new(&target).exists());
++
++    let fixed = directory.write_source("fixed", "Library\n[]\n[ Launch.{ flow:Voice } ]\n[]\n[]\n");
++    let request = format!(
++        "Generate.{}",
++        opaque(&fixed.assemble(&target, "[ { flow signal_flow } ]"))
++    );
++    let (success, output) = [request.as_str()].invoke();
++    assert!(success, "{output}");
++    assert_eq!(output, format!("Generated.[ {target}/fixed.rs ]\n"));
++    let written = std::fs::read_to_string(format!("{target}/fixed.rs")).unwrap();
++    assert!(
++        written.contains("pub voice: signal_flow::Voice"),
++        "{written}"
++    );
++
++    let (success, output) = ["Generate./nowhere/assembly.datom"].invoke();
++    assert!(!success);
++    assert!(
++        output.starts_with("Unreadable.{ /nowhere/assembly.datom "),
++        "{output}"
++    );
++}
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index 4f695a4..6ff603d 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -2,9 +2,29 @@
+ //! the constructs that consumers write; detailed parser failures live beside
+ //! the reader in `src/lib.rs`.
+ 
+-use ethos_zero::{Actualizing, Error, File, Form, Generating, Potential, Problem};
++use ethos_zero::{Actualizing, Error, File, Form, Generating, Potential, Problem, Registry};
+ use protos::{Protosizable, Textualizable};
+ 
++/// Every source these tests name, each compiling to itself.
++fn registry() -> Registry {
++    [
++        "super",
++        "crate",
++        "std",
++        "serde",
++        "flow",
++        "protos",
++        "datom_codec",
++        "ethos_zero",
++        "custom",
++        "external",
++        "x",
++    ]
++    .into_iter()
++    .map(|source| (source, source))
++    .collect()
++}
++
+ fn read(source: &str) -> File {
+     match Potential::<File>::from(source).actualize() {
+         Ok(file) => file,
+@@ -19,7 +39,7 @@ fn full_library_round_trips_and_generates_named_types_and_traits() {
+     let repeated = read(&file.protosize().textualize());
+     assert_eq!(file, repeated);
+ 
+-    let rust = match file.generate() {
++    let rust = match file.generate(&registry()) {
+         Ok(rust) => rust,
+         Err(_) => panic!("checked Library generates"),
+     };
+@@ -33,7 +53,7 @@ fn full_library_round_trips_and_generates_named_types_and_traits() {
+ #[test]
+ fn signal_generates_query_response_and_optional_datom_derives() {
+     let file = read(include_str!("../fixtures/orchestrate.ethos"));
+-    let rust = match file.generate() {
++    let rust = match file.generate(&registry()) {
+         Ok(rust) => rust,
+         Err(_) => panic!("checked Signal generates"),
+     };
+@@ -70,7 +90,7 @@ fn operation_generates_its_operation_and_outcome_enums_with_their_payloads() {
+         "Operation [] [ Start.{ Voice Brief } Stop.Voice Pause ] [ Started.Integer Failed.[ Busy Gone.String ] Done ] [ Voice.String Brief.String ]",
+     );
+     assert_eq!(file, read(&file.protosize().textualize()));
+-    let rust = match file.generate() {
++    let rust = match file.generate(&registry()) {
+         Ok(rust) => rust,
+         Err(_) => panic!("checked Operation generates"),
+     };
+@@ -90,12 +110,12 @@ fn operation_generates_its_operation_and_outcome_enums_with_their_payloads() {
+ fn an_operation_declaring_the_operation_or_outcome_type_is_refused() {
+     assert!(
+         read("Operation [] [ Go.Operation ] [ Gone ] [ Operation.{ String } ]")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+     assert!(
+         read("Operation [] [ Go ] [ Gone.Outcome ] [ Outcome.{ String } ]")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+ }
+@@ -106,7 +126,7 @@ fn a_named_position_declares_its_type_in_place() {
+         "Memory [] [ Flow.{ Integer Brief.String State.[ Running Ended ] Capsule.{ Home.String Login.Vector<String> } } ]",
+     );
+     assert_eq!(file, read(&file.protosize().textualize()));
+-    let rust = match file.generate() {
++    let rust = match file.generate(&registry()) {
+         Ok(rust) => rust,
+         Err(_) => panic!("a struct with named positions generates"),
+     };
+@@ -128,23 +148,24 @@ fn a_named_position_declares_its_type_in_place() {
+ fn a_named_position_shares_the_file_namespace() {
+     assert!(
+         read("Memory [] [ A.{ Brief.String } B.{ Brief.Integer } ]")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+     assert!(
+         read("Library [] [ Brief.String A.{ Brief.Integer } ] [] []")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+ }
+ 
+ #[test]
+ fn a_variant_payload_declares_named_positions_in_place() {
+-    let rust =
+-        match read("Signal [] [ Launch.{ Integer Brief.String } ] [ Launched ] []").generate() {
+-            Ok(rust) => rust,
+-            Err(_) => panic!("a payload with a named position generates"),
+-        };
++    let rust = match read("Signal [] [ Launch.{ Integer Brief.String } ] [ Launched ] []")
++        .generate(&registry())
++    {
++        Ok(rust) => rust,
++        Err(_) => panic!("a payload with a named position generates"),
++    };
+     assert!(rust.contains("pub type Brief = String;"), "{rust}");
+     assert!(rust.contains("pub brief: Brief"), "{rust}");
+ }
+@@ -161,10 +182,11 @@ fn retired_roots_are_not_accepted() {
+ 
+ #[test]
+ fn operation_free_signal_generates_only_its_declared_shared_data() {
+-    let generated = match read("Signal [] [] [] [ Shared.{ Name } Name.String ]").generate() {
+-        Ok(generated) => generated,
+-        Err(_) => panic!("operation-free Signal generates"),
+-    };
++    let generated =
++        match read("Signal [] [] [] [ Shared.{ Name } Name.String ]").generate(&registry()) {
++            Ok(generated) => generated,
++            Err(_) => panic!("operation-free Signal generates"),
++        };
+     assert!(generated.contains("pub struct Shared"));
+     assert!(!generated.contains("pub enum Query"));
+     assert!(!generated.contains("pub enum Response"));
+@@ -176,10 +198,10 @@ fn a_signal_declaring_the_query_type_is_refused() {
+     // { Lock(LockRequest), Release(LockId) }"), so `Query` is the name a
+     // Signal may not also declare.
+     let signal = read("Signal [] [ Ask.Query ] [ Told.Query ] [ Query.{ String } ]");
+-    assert!(signal.generate().is_err());
++    assert!(signal.generate(&registry()).is_err());
+     // `Request` is an ordinary name: nothing is generated under it.
+     let generated = match read("Signal [] [ Ask.Request ] [ Told.Request ] [ Request.{ String } ]")
+-        .generate()
++        .generate(&registry())
+     {
+         Ok(generated) => generated,
+         Err(_) => panic!("a Signal declaring Request generates"),
+@@ -192,7 +214,7 @@ fn a_signal_declaring_the_query_type_is_refused() {
+ fn a_signal_declaring_the_response_type_is_refused() {
+     assert!(
+         read("Signal [] [ Ask.Response ] [ Told.Response ] [ Response.{ String } ]")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+ }
+@@ -201,7 +223,7 @@ fn a_signal_declaring_the_response_type_is_refused() {
+ fn memory_generates_a_record_type_named_record() {
+     // Memory's second section is its record types and reserves no name;
+     // Memory generates no implied type of its own.
+-    let generated = match read("Memory [] [ Record.{ String Integer } ]").generate() {
++    let generated = match read("Memory [] [ Record.{ String Integer } ]").generate(&registry()) {
+         Ok(generated) => generated,
+         Err(_) => panic!("a Memory record named Record generates"),
+     };
+@@ -212,16 +234,17 @@ fn memory_generates_a_record_type_named_record() {
+ 
+ #[test]
+ fn memory_generates_every_declared_record_and_refuses_a_duplicate() {
+-    let generated =
+-        match read("Memory [] [ Entry.{ String } Record.{ Entry Vector<Entry> } ]").generate() {
+-            Ok(generated) => generated,
+-            Err(_) => panic!("a two-record Memory generates"),
+-        };
++    let generated = match read("Memory [] [ Entry.{ String } Record.{ Entry Vector<Entry> } ]")
++        .generate(&registry())
++    {
++        Ok(generated) => generated,
++        Err(_) => panic!("a two-record Memory generates"),
++    };
+     assert!(generated.contains("pub struct Entry"));
+     assert!(generated.contains("pub entry_vector: std::vec::Vec<Entry>"));
+     assert!(
+         read("Memory [] [ Entry.{ String } Entry.{ Integer } ]")
+-            .generate()
++            .generate(&registry())
+             .is_err()
+     );
+ }
+@@ -230,10 +253,11 @@ fn memory_generates_every_declared_record_and_refuses_a_duplicate() {
+ fn self_in_a_data_position_is_named_for_the_enclosing_type() {
+     // `Self` is an intrinsic (Vision/ethos.md) and `self` is not a name a
+     // field may bear, so the field is named for the type `Self` stands for.
+-    let generated = match read("Library [] [ Node.{ String Option<Self> } ] [] []").generate() {
+-        Ok(generated) => generated,
+-        Err(_) => panic!("Self in a data position generates"),
+-    };
++    let generated =
++        match read("Library [] [ Node.{ String Option<Self> } ] [] []").generate(&registry()) {
++            Ok(generated) => generated,
++            Err(_) => panic!("Self in a data position generates"),
++        };
+     assert!(generated.contains("pub node_option: std::option::Option<std::boxed::Box<Self>>"));
+ }
+ 
+@@ -243,7 +267,7 @@ fn a_sourced_generic_in_a_data_position_reads_and_reprints() {
+     // must take that shape back.
+     let file = read("Library [ external:[ Vector ] ] [ Record.{ external:Vector<String> } ] [] []");
+     assert_eq!(file, read(&file.protosize().textualize()));
+-    let generated = match file.generate() {
++    let generated = match file.generate(&registry()) {
+         Ok(generated) => generated,
+         Err(_) => panic!("a sourced generic position generates"),
+     };
+@@ -253,21 +277,21 @@ fn a_sourced_generic_in_a_data_position_reads_and_reprints() {
+ #[test]
+ fn inline_imports_use_the_lowercase_source_in_type_and_struct_positions() {
+     let type_declaration = read("Library [] [ Topic.custom:Name ] [] []");
+-    let generated = match type_declaration.generate() {
++    let generated = match type_declaration.generate(&registry()) {
+         Ok(generated) => generated,
+         Err(_) => panic!("a lowercase inline source in a type declaration generates"),
+     };
+     assert!(generated.contains("custom::Name"));
+ 
+     let struct_position = read("Library [] [ Holder.{ Topic.custom:Name String } ] [] []");
+-    let generated = match struct_position.generate() {
++    let generated = match struct_position.generate(&registry()) {
+         Ok(generated) => generated,
+         Err(_) => panic!("a lowercase inline source in a struct position generates"),
+     };
+     assert!(generated.contains("custom::Name"));
+ 
+     let memory_record = read("Memory [] [ Holder.{ Topic.custom:Name String } ]");
+-    let generated = match memory_record.generate() {
++    let generated = match memory_record.generate(&registry()) {
+         Ok(generated) => generated,
+         Err(_) => panic!("a lowercase inline source in a record field generates"),
+     };
+@@ -305,11 +329,11 @@ fn an_authored_name_capturing_a_derived_inline_name_is_refused() {
+     // authored X_Data would capture the short name. The authored name is
+     // the occurrence refused, at its declaration.
+     let probe = "Library [] [ P.[ X.{ String } ] Q.[ X.{ Integer } ] X_Data.String ] [] []";
+-    assert!(read(probe).generate().is_ok());
++    assert!(read(probe).generate(&registry()).is_ok());
+     let captured = "Library [] [ P.[ X.{ String } ] P_X_Data.String ] [] []";
+-    assert!(read(captured).generate().is_ok());
++    assert!(read(captured).generate(&registry()).is_ok());
+     let captured = "Library [] [ P.[ X.{ String } ] Q.[ X.{ Integer } ] P_X_Data.String ] [] []";
+-    match read(captured).generate() {
++    match read(captured).generate(&registry()) {
+         Err(Error::Conceptual(data)) => {
+             assert_eq!(data.problem, Problem::Duplicate("P_X_Data".to_owned()));
+             assert_eq!(data.integer_vector, vec![1, 1, 2, 0]);
+@@ -317,7 +341,7 @@ fn an_authored_name_capturing_a_derived_inline_name_is_refused() {
+         _ => panic!("an authored name capturing a derived one is refused"),
+     }
+     let captured = "Library [] [ P.[ X.{ String } ] X_Data.String ] [] []";
+-    match read(captured).generate() {
++    match read(captured).generate(&registry()) {
+         Err(Error::Conceptual(data)) => {
+             assert_eq!(data.problem, Problem::Duplicate("X_Data".to_owned()));
+             assert_eq!(data.integer_vector, vec![1, 1, 1, 0]);
+@@ -328,10 +352,11 @@ fn an_authored_name_capturing_a_derived_inline_name_is_refused() {
+ 
+ #[test]
+ fn signal_query_and_response_inline_payloads_are_unique_file_wide() {
+-    let generated = match read("Signal [] [ Ask.{ String } ] [ Ask.{ Integer } ] []").generate() {
+-        Ok(generated) => generated,
+-        Err(_) => panic!("Query and Response each declaring Ask in place generate"),
+-    };
++    let generated =
++        match read("Signal [] [ Ask.{ String } ] [ Ask.{ Integer } ] []").generate(&registry()) {
++            Ok(generated) => generated,
++            Err(_) => panic!("Query and Response each declaring Ask in place generate"),
++        };
+     assert!(generated.contains("pub struct Query_Ask_Data"));
+     assert!(generated.contains("pub struct Response_Ask_Data"));
+     syn::parse_file(&generated).expect("generated Rust parses");
+@@ -344,7 +369,7 @@ trait Refusing {
+ 
+ impl Refusing for str {
+     fn refusal(&self) -> (Vec<i64>, Problem) {
+-        match read(self).generate() {
++        match read(self).generate(&registry()) {
+             Err(Error::Conceptual(data)) => (data.integer_vector, data.problem),
+             Err(Error::Structural(_)) => panic!("{self} must be refused conceptually"),
+             Ok(_) => panic!("{self} must be refused"),
+@@ -418,7 +443,10 @@ fn a_type_with_no_finite_value_is_refused() {
+         "Library [] [ S.{ Result<Self String> } ] [] []",
+         "Library [] [ Never.[] Holder.{ Never } ] [] []",
+     ] {
+-        assert!(read(finite).generate().is_ok(), "{finite} generates");
++        assert!(
++            read(finite).generate(&registry()).is_ok(),
++            "{finite} generates"
++        );
+     }
+ }
+ 
+@@ -427,7 +455,7 @@ fn outer_option_and_result_are_written_fully_qualified() {
+     let generated = match read(
+         "Library [] [ Wrapped.{ Option<Integer> Result<String Integer> } Chain.{ Option<Chain> } ] [] []",
+     )
+-    .generate()
++    .generate(&registry())
+     {
+         Ok(generated) => generated,
+         Err(_) => panic!("outer containers generate"),
+@@ -486,7 +514,7 @@ trait Compact {
+ 
+ impl Compact for str {
+     fn compact(&self) -> String {
+-        match read(self).generate() {
++        match read(self).generate(&registry()) {
+             Ok(rust) => rust
+                 .chars()
+                 .filter(|glyph| !glyph.is_whitespace())
+@@ -569,3 +597,55 @@ fn a_concrete_type_in_an_input_is_refused_as_wanting_a_trait() {
+         Problem::TraitWanted("String".to_owned())
+     );
+ }
++
++#[test]
++fn an_unregistered_source_is_refused() {
++    let flow: Registry = [("flow", "flow")].into_iter().collect();
++    match read("Library [] [ Launch.{ flow:Voice Brief.custom:Text } ] [] []").generate(&flow) {
++        Err(Error::Conceptual(data)) => {
++            assert_eq!(data.integer_vector, vec![1, 1, 0, 1, 1, 1, 0]);
++            assert_eq!(data.problem, Problem::Source("custom".to_owned()));
++        }
++        other => panic!("an unregistered source is refused: {other:?}"),
++    }
++    let fixed = match read("Library [] [ Launch.{ flow:Voice } ] [] []").generate(&flow) {
++        Ok(rust) => rust,
++        Err(error) => panic!("a registered source generates: {error:?}"),
++    };
++    assert!(fixed.contains("pub voice: flow::Voice"), "{fixed}");
++    match read("Library [ core:[ Name ] ] [ Topic.Name ] [] []").generate(&flow) {
++        Err(Error::Conceptual(data)) => {
++            assert_eq!(data.integer_vector, vec![1, 0, 0, 0]);
++            assert_eq!(data.problem, Problem::Source("core".to_owned()));
++        }
++        other => panic!("an unregistered import source is refused: {other:?}"),
++    }
++}
++
++#[test]
++fn a_registered_source_emits_its_entry() {
++    let registry: Registry = [("core", "ethos_core"), ("flow", "signal_flow")]
++        .into_iter()
++        .collect();
++    let rust = match read(
++        "Library [ core:[ Name ] ] [ Topic.core:Name Holder.{ Label.core:Name Name } ] [] []",
++    )
++    .generate(&registry)
++    {
++        Ok(rust) => rust,
++        Err(error) => panic!("the core example generates: {error:?}"),
++    };
++    let expected = [
++        "#[rustfmt::skip]\npub type Topic = ethos_core::Name;\n",
++        "#[rustfmt::skip]\npub type Label = ethos_core::Name;\n",
++        "pub struct Holder {\n    pub label: Label,\n    pub name: ethos_core::Name,\n}\n",
++    ];
++    for line in expected {
++        assert!(rust.contains(line), "{line} in {rust}");
++    }
++    let launch = match read("Library [] [ Launch.{ flow:Voice } ] [] []").generate(&registry) {
++        Ok(rust) => rust,
++        Err(error) => panic!("the flow example generates: {error:?}"),
++    };
++    assert!(launch.contains("pub voice: signal_flow::Voice"), "{launch}");
++}
+diff --git a/tests/freshness.rs b/tests/freshness.rs
+index 4ab2576..d669fd3 100644
+--- a/tests/freshness.rs
++++ b/tests/freshness.rs
+@@ -4,7 +4,7 @@
+ //! ethos-zero.ethos, and tests/generated/<stem>.rs from every fixture,
+ //! the four Flow Nexus files in fixtures/print included.
+ 
+-use ethos_zero::{Actualizing, File, Generating, Potential};
++use ethos_zero::{Actualizing, File, Generating, Potential, Registry};
+ 
+ /// The trait whose capability asserts a committed generation is fresh.
+ trait Fresh {
+@@ -21,7 +21,23 @@ impl Fresh for str {
+             Err(_) => panic!("{self} does not read"),
+         };
+         assert_eq!(
+-            match file.generate() {
++            match file.generate(
++                &[
++                    "super",
++                    "crate",
++                    "std",
++                    "serde",
++                    "flow",
++                    "protos",
++                    "datom_codec",
++                    "ethos_zero",
++                    "custom",
++                    "external",
++                ]
++                .into_iter()
++                .map(|source| (source, source))
++                .collect::<Registry>()
++            ) {
+                 Ok(rust) => rust,
+                 Err(_) => panic!("checked source generates"),
+             },

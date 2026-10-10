@@ -1,0 +1,1116 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index ec2a30e..592d0f9 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -46,7 +46,7 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+ [[package]]
+ name = "datom-codec"
+ version = "0.32.2"
+-source = "git+https://github.com/LiGoldragon/datom-codec?rev=4dff16b4f7412febc3b71aac8b49680cd20988cb#4dff16b4f7412febc3b71aac8b49680cd20988cb"
++source = "git+file:///tmp/dc-f3?rev=776cf4b8913ed7c69be0a597afd261ab819914c9#776cf4b8913ed7c69be0a597afd261ab819914c9"
+ dependencies = [
+  "datom-codec-derive",
+  "protos",
+@@ -56,7 +56,7 @@ dependencies = [
+ [[package]]
+ name = "datom-codec-derive"
+ version = "0.32.0"
+-source = "git+https://github.com/LiGoldragon/datom-codec?rev=4dff16b4f7412febc3b71aac8b49680cd20988cb#4dff16b4f7412febc3b71aac8b49680cd20988cb"
++source = "git+file:///tmp/dc-f3?rev=776cf4b8913ed7c69be0a597afd261ab819914c9#776cf4b8913ed7c69be0a597afd261ab819914c9"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+diff --git a/Cargo.toml b/Cargo.toml
+index 51a4961..8df6b90 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -25,7 +25,7 @@ datom = []
+ 
+ [dependencies]
+ protos      = { git = "https://github.com/LiGoldragon/protos",  rev = "15b41da8f2579e73ead59bc0c2b97529b8ac32d3", features = ["rkyv"] }
+-datom-codec = { git = "https://github.com/LiGoldragon/datom-codec", rev = "4dff16b4f7412febc3b71aac8b49680cd20988cb", features = ["rkyv"] }
++datom-codec = { git = "file:///tmp/dc-f3", rev = "776cf4b8913ed7c69be0a597afd261ab819914c9", features = ["rkyv"] }
+ quote       = "1"
+ proc-macro2 = "1"
+ syn         = { version = "3", features = ["full"] }
+@@ -63,6 +63,10 @@ path = "tests/print.rs"
+ name = "cli"
+ path = "tests/cli.rs"
+ 
++[[test]]
++name = "represented"
++path = "tests/represented.rs"
++
+ [lints.rust]
+ unsafe_code = "forbid"
+ unused      = { level = "warn", priority = -1 }
+diff --git a/fixtures/represented-types.ethos b/fixtures/represented-types.ethos
+new file mode 100644
+index 0000000..1e1b9c4
+--- /dev/null
++++ b/fixtures/represented-types.ethos
+@@ -0,0 +1,9 @@
++; Types with a special representation: a ticket written as its digits, a digest as its hex string; the two conversions are hand-written beside the generated module
++Library
++[ datom:[ Represented ] ]
++[ Ticket.Integer
++  Digit.Integer
++  Digest.Integer ]
++[]
++[ Ticket.[ Represented.{ Representation.Vector<Digit> } ]
++  Digest.[ Represented.{ Representation.String } ] ]
+diff --git a/src/checking.rs b/src/checking.rs
+index 572233f..30444d1 100644
+--- a/src/checking.rs
++++ b/src/checking.rs
+@@ -12,10 +12,11 @@ use datom_codec::{Integer, Path};
+ use crate::sectioning::{Hoisting, Referencing, Sectioning};
+ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+-    ArityProblem, AssociatedConstant, AssociatedType, Association, Capability, ConceptualErroring,
+-    Constraint, Error, File, Identifiable, Identity, Import, Intrinsic, Memory, Name, Operation,
+-    Placing, Position, Problem, Reference, Resolution, Resolving, Role, Scope, Signal, Signature,
+-    TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    ArityProblem, AssociatedConstant, AssociatedTrait, AssociatedType, Association, Binding,
++    Capability, ConceptualErroring, Constraint, Error, File, Identifiable, Identity, Import,
++    Intrinsic, Memory, Name, Operation, Placing, Position, Problem, Reference, Resolution,
++    Resolving, Role, Scope, Signal, Signature, TraitBody, TraitDeclaration, TypeDeclaration,
++    Variant,
+ };
+ 
+ /// A schema must remain small enough for complete whole-file checking to have
+@@ -409,6 +410,23 @@ impl Spanning for AssociatedConstant {}
+ impl Spanning for Capability {}
+ impl Spanning for Association {}
+ 
++/// An associated trait with bindings is one headed node; without, it is its reference.
++impl Spanning for AssociatedTrait {
++    fn span(&self) -> Integer {
++        if self.bindings.is_empty() {
++            self.bound.span()
++        } else {
++            1
++        }
++    }
++}
++
++impl Spanning for Binding {
++    fn span(&self) -> Integer {
++        self.ty.span()
++    }
++}
++
+ /// The trait whose capabilities place an element's error in its list, and
+ /// carry a beside step through the node it names.
+ trait Siting {
+@@ -1635,7 +1653,77 @@ impl Checkable for Association {
+         }
+         self.identity.check(scope).place(0)?;
+         // The traits borne are named outside the identity that bears them.
+-        self.traits.refer_each(scope, Role::Trait, 0).place(1)
++        let mut at = 0;
++        for associated_trait in &self.traits {
++            associated_trait.check(scope).beside(at).place(1)?;
++            at += associated_trait.span();
++        }
++        Ok(())
++    }
++}
++
++/// An associated trait must name a trait: a name the file declares as a type, or
++/// an intrinsic type, is refused as no trait. Each binding names an
++/// associated type once, one the trait declares where the file declares the
++/// trait, and binds it to a type.
++impl Checkable for AssociatedTrait {
++    fn check(&self, scope: &Scope) -> Result<(), Error> {
++        let typed = match scope.resolve(&self.bound.name) {
++            Resolution::Type(_) => self.bound.source.is_none(),
++            Resolution::Intrinsic(intrinsic) => {
++                self.bound.source.is_none() && intrinsic.role() == Role::Type
++            }
++            _ => false,
++        };
++        // The name is the head of an associated trait with bindings, the element itself without.
++        let head = if self.bindings.is_empty() {
++            vec![]
++        } else {
++            vec![0]
++        };
++        if typed {
++            return Err(Error::conceptual(
++                head,
++                Problem::Expected(crate::Form::Trait),
++            ));
++        }
++        if self.bindings.is_empty() {
++            return self.bound.refer(scope, Role::Trait);
++        }
++        self.bound.refer(scope, Role::Trait).place(0)?;
++        let declared = scope.file.trait_declaration(&self.bound.name);
++        let mut at = 0;
++        for (index, binding) in self.bindings.iter().enumerate() {
++            if self.bindings[..index]
++                .iter()
++                .any(|earlier| earlier.name == binding.name)
++            {
++                return Err(Error::conceptual(
++                    vec![1, at, 0],
++                    Problem::Duplicate(binding.name.0.clone()),
++                ));
++            }
++            if let Some(declaration) = declared {
++                let associated = match &declaration.body {
++                    TraitBody::Complex { types, .. } => types.as_slice(),
++                    TraitBody::Simple(_) => &[],
++                };
++                if !associated.iter().any(|ty| ty.name == binding.name) {
++                    return Err(Error::conceptual(
++                        vec![1, at, 0],
++                        Problem::Undeclared(binding.name.0.clone()),
++                    ));
++                }
++            }
++            binding
++                .ty
++                .refer(scope, Role::Type)
++                .lifted(1)
++                .beside(at)
++                .place(1)?;
++            at += binding.span();
++        }
++        Ok(())
+     }
+ }
+ 
+diff --git a/src/conception.rs b/src/conception.rs
+index 12a3068..9f99dee 100644
+--- a/src/conception.rs
++++ b/src/conception.rs
+@@ -4,10 +4,11 @@ use datom_codec::Integer;
+ use protos::{Enclosure, Protos, Separator, Symbol};
+ 
+ use crate::{
+-    ArityProblem, AssociatedConstant, AssociatedType, Association, Capability, ConceptualErroring,
+-    Constraint, Error, Ethosizable, File, Form, Identifiable, Identity, Import, Imported, Library,
+-    Memory, Name, Named, Operation, Placing, Position, Problem, Receiver, Reference, Root, Signal,
+-    Signature, Source, Succeeding, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    ArityProblem, AssociatedConstant, AssociatedTrait, AssociatedType, Association, Binding,
++    Capability, ConceptualErroring, Constraint, Error, Ethosizable, File, Form, Identifiable,
++    Identity, Import, Imported, Library, Memory, Name, Named, Operation, Placing, Position,
++    Problem, Receiver, Reference, Root, Signal, Signature, Source, Succeeding, TraitBody,
++    TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ pub(crate) trait Conceiving<C> {
+@@ -682,3 +683,67 @@ impl Conceiving<Association> for Protos {
+         })
+     }
+ }
++/// An associated trait is a reference, or a name headed over a brace of the
++/// associated types it binds. The brace is read as bindings, never as a
++/// struct: an association declares no type.
++impl Conceiving<AssociatedTrait> for Protos {
++    fn conceive(&self) -> Result<AssociatedTrait, Error> {
++        if let Protos::Headed {
++            head,
++            constraints: None,
++            separator: Separator::Period,
++            body,
++            ..
++        } = self
++            && let Some(bindings) = body.children(Enclosure::Braced)
++        {
++            return Ok(AssociatedTrait {
++                bound: Reference {
++                    source: None,
++                    name: head.name().place(0)?,
++                    arguments: vec![],
++                },
++                bindings: bindings.bindings().place(1)?,
++            });
++        }
++        Ok(AssociatedTrait {
++            bound: self.conceive()?,
++            bindings: vec![],
++        })
++    }
++}
++/// The trait whose capability reads the bindings of an associated trait, each a
++/// name headed over the type it is bound to, with that type's angled
++/// arguments beside it.
++trait Bindings {
++    fn bindings(&self) -> Result<Vec<Binding>, Error>;
++}
++impl Bindings for [Protos] {
++    fn bindings(&self) -> Result<Vec<Binding>, Error> {
++        let mut values = Vec::new();
++        for (node, arguments, index) in self.constrained() {
++            let Protos::Headed {
++                head,
++                constraints: None,
++                separator: Separator::Period,
++                body,
++                ..
++            } = node
++            else {
++                return Err(Error::conceptual(
++                    vec![index as Integer],
++                    Problem::Expected(Form::Association),
++                ));
++            };
++            let mut ty: Reference = body.conceive().place(1).place(index as Integer)?;
++            if let Some(children) = arguments {
++                ty.arguments = children.references().place((index + 1) as Integer)?;
++            }
++            values.push(Binding {
++                name: head.name().place(0).place(index as Integer)?,
++                ty,
++            });
++        }
++        Ok(values)
++    }
++}
+diff --git a/src/generation.rs b/src/generation.rs
+index fbb5609..df19a06 100644
+--- a/src/generation.rs
++++ b/src/generation.rs
+@@ -25,9 +25,9 @@ use crate::checking::{Checkable, Declaring, Inlining};
+ use crate::sectioning::{Hoisting, Referencing, ReferencingEach, Sectioning};
+ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+-    AssociatedConstant, AssociatedType, Association, Capability, Constraint, File, Generating,
+-    Identifiable, Identity, Intrinsic, Name, Position, Receiver, Reference, Resolution, Resolving,
+-    Scope, Signature, Source, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    AssociatedConstant, AssociatedTrait, AssociatedType, Association, Capability, Constraint, File,
++    Generating, Identifiable, Identity, Intrinsic, Name, Position, Receiver, Reference, Resolution,
++    Resolving, Scope, Signature, Source, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ // ---------------------------------------------------------------------------
+@@ -753,7 +753,7 @@ trait Enumerating {
+ 
+ /// The trait whose capability yields what a declared type derives.
+ trait DatomDeriving {
+-    fn datom_derives(&self) -> TokenStream;
++    fn datom_derives(&self, scope: &Scope) -> TokenStream;
+ }
+ 
+ /// What every declared type derives, and what none does.
+@@ -774,16 +774,72 @@ trait DatomDeriving {
+ /// relying on it. Never `Default`: a default is a policy the consumer holds,
+ /// not a value the wire carries, and a manufactured zero satisfies the type
+ /// while violating the schema's invariants.
++///
++/// A type its file associates with datom-codec's `Represented` derives
++/// `Represented` in place of `Datomizable` and `Composing`: that derive
++/// supplies both through the type's representation, whose two conversions
++/// are hand-written beside the generated module. The derive is named by the
++/// source the file wrote, as the association's assertion names the trait:
++/// `datom:[ Represented ]` gives `derive(datom::Represented)`.
+ impl DatomDeriving for Identity {
+-    fn datom_derives(&self) -> TokenStream {
++    fn datom_derives(&self, scope: &Scope) -> TokenStream {
++        let datom = match scope.file.representation(&self.name) {
++            Some(associated_trait) => {
++                let derive = associated_trait.bound.emit(scope);
++                quote! { #[cfg_attr(feature = "datom", derive(#derive))] }
++            }
++            None => {
++                quote! { #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))] }
++            }
++        };
+         quote! {
+             #[rustfmt::skip]
+             #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+-            #[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++            #datom
+         }
+     }
+ }
+ 
++/// The trait whose capability finds the associated trait by which a file
++/// associates a declared type with datom-codec's `Represented`.
++trait Representing {
++    fn representation(&self, name: &Name) -> Option<&AssociatedTrait>;
++}
++
++impl Representing for File {
++    fn representation(&self, name: &Name) -> Option<&AssociatedTrait> {
++        let File::Library(library) = self else {
++            return None;
++        };
++        library
++            .associations
++            .iter()
++            .filter(|association| &association.identity.name == name)
++            .flat_map(|association| &association.traits)
++            .find(|associated_trait| associated_trait.datom_represented(self))
++    }
++}
++
++/// The trait whose capability tells whether an associated trait is datom-codec's
++/// `Represented`, imported or qualified from the source `datom` or
++/// `datom_codec`.
++trait DatomRepresenting {
++    fn datom_represented(&self, file: &File) -> bool;
++}
++
++impl DatomRepresenting for AssociatedTrait {
++    fn datom_represented(&self, file: &File) -> bool {
++        let (source, name) = match &self.bound.source {
++            Some(source) => (source.clone(), self.bound.name.clone()),
++            None => match file.resolve(&self.bound.name) {
++                Resolution::Imported(source, emitted) => (source, emitted),
++                _ => return false,
++            },
++        };
++        name.0 == "Represented" && matches!(source.as_ref(), "datom" | "datom_codec")
++    }
++}
++
+ /// The trait whose capability tells whether a reference names a plain value.
+ trait Plain {
+     fn plain(&self) -> bool;
+@@ -837,7 +893,7 @@ impl Structuring for [Position] {
+             recursive |= position.recursive(scope, owner);
+         }
+         let fields = references.field_names(owner);
+-        let derive = identity.datom_derives();
++        let derive = identity.datom_derives(scope);
+         let bounds = if recursive {
+             identity.recursion_bounds()
+         } else {
+@@ -856,7 +912,7 @@ impl Enumerating for [Variant] {
+     fn enumeration(&self, scope: &Scope, owner: &Name, identity: &Identity) -> TokenStream {
+         let name = identity.name.tokens();
+         let parameters = identity.parameters(scope);
+-        let derive = identity.datom_derives();
++        let derive = identity.datom_derives(scope);
+         let mut definitions = Vec::with_capacity(self.len());
+         let mut nested = Vec::new();
+         let mut recursive = false;
+@@ -908,7 +964,7 @@ impl Emitting for TypeDeclaration {
+                 let parameters = identity.parameters(&inner);
+                 let emitted = held.emit(&inner);
+                 if held.plain() {
+-                    let derive = identity.datom_derives();
++                    let derive = identity.datom_derives(&inner);
+                     quote! { #derive pub struct #name #parameters (pub #emitted); }
+                 } else {
+                     quote! { #[rustfmt::skip] pub type #name #parameters = #emitted; }
+@@ -1123,6 +1179,24 @@ impl Emitting for TraitDeclaration {
+ // Associations: compile-time assertions
+ // ---------------------------------------------------------------------------
+ 
++/// An associated trait's bound: the trait, and each associated type it binds
++/// pinned to its type, `datom::Represented<Representation = Vec<Digit>>`.
++impl Emitting for AssociatedTrait {
++    fn emit(&self, scope: &Scope) -> TokenStream {
++        let bound = self.bound.emit(scope);
++        if self.bindings.is_empty() {
++            return bound;
++        }
++        let mut bindings = Vec::with_capacity(self.bindings.len());
++        for binding in &self.bindings {
++            let name = binding.name.tokens();
++            let ty = binding.ty.emit(scope);
++            bindings.push(quote! { #name = #ty });
++        }
++        quote! { #bound < #( #bindings ),* > }
++    }
++}
++
+ impl Emitting for Association {
+     fn emit(&self, scope: &Scope) -> TokenStream {
+         let inner = Scope {
+@@ -1139,16 +1213,16 @@ impl Emitting for Association {
+         let arguments = self.identity.arguments(&inner);
+         let parameters = self.identity.parameters(&inner);
+         let mut assertions = Vec::with_capacity(self.traits.len());
+-        for trait_definition in &self.traits {
++        for associated_trait in &self.traits {
+             let assertion = Ident::new(
+                 &format!(
+                     "assert_{}_{}",
+                     self.identity.name.0.to_lowercase(),
+-                    trait_definition.lowered()
++                    associated_trait.bound.lowered()
+                 ),
+                 Span::call_site(),
+             );
+-            let bound = trait_definition.emit(scope);
++            let bound = associated_trait.emit(scope);
+             if self.identity.constraints.is_empty() {
+                 assertions.push(quote! {
+                     fn #assertion<T: #bound>() {}
+diff --git a/src/lib.rs b/src/lib.rs
+index b8b3502..ead2375 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -381,7 +381,28 @@ pub struct Association {
+     /// The type's identity.
+     pub identity: Identity,
+     /// The traits it bears.
+-    pub traits: Vec<Reference>,
++    pub traits: Vec<AssociatedTrait>,
++}
++
++/// One entry of a type's associations: a trait, whatever the trait, with
++/// the associated types of that trait it binds: `Summarizable`, or
++/// `Represented.{ Representation.Vector<Digit> }`.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct AssociatedTrait {
++    /// The trait.
++    pub bound: Reference,
++    /// The associated types bound, in order; empty when none is written.
++    pub bindings: Vec<Binding>,
++}
++
++/// An associated type of an associated trait, bound to a type:
++/// `Representation.Vector<Digit>`.
++#[derive(Clone, Debug, PartialEq, Eq)]
++pub struct Binding {
++    /// The associated type's name.
++    pub name: Name,
++    /// The type it is bound to.
++    pub ty: Reference,
+ }
+ 
+ // ---------------------------------------------------------------------------
+diff --git a/src/protosization.rs b/src/protosization.rs
+index f042e65..0503a92 100644
+--- a/src/protosization.rs
++++ b/src/protosization.rs
+@@ -3,9 +3,9 @@
+ use protos::{Canonicalizable, Enclosure, Extent, Protos, Protosizable, Separator, Symbol};
+ 
+ use crate::{
+-    AssociatedConstant, AssociatedType, Association, Capability, Constraint, File, Identity,
+-    Import, Imported, Library, Memory, Operation, Position, Receiver, Reference, Signal, Signature,
+-    TraitBody, TraitDeclaration, TypeDeclaration, Variant,
++    AssociatedConstant, AssociatedTrait, AssociatedType, Association, Capability, Constraint, File,
++    Identity, Import, Imported, Library, Memory, Operation, Position, Receiver, Reference, Signal,
++    Signature, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ pub(crate) trait Protosizing {
+@@ -356,10 +356,52 @@ impl Protosizing for Association {
+     fn protos(&self) -> Protos {
+         self.identity.heading(
+             Separator::Period,
+-            "".enclosed(Enclosure::Bracketed, self.traits.reference_nodes()),
++            "".enclosed(Enclosure::Bracketed, self.traits.associated_trait_nodes()),
+         )
+     }
+ }
++
++/// An associated trait without bindings is its reference's nodes; with them, its
++/// name headed over a brace of the bindings, each a name headed over its
++/// type with that type's arguments in the angled enclosure beside it:
++/// `Represented.{ Representation.Vector<Digit> }`.
++trait AssociatedTraitProtosizing {
++    fn associated_trait_nodes(&self) -> Vec<Protos>;
++}
++impl AssociatedTraitProtosizing for [AssociatedTrait] {
++    fn associated_trait_nodes(&self) -> Vec<Protos> {
++        let mut nodes = Vec::new();
++        for associated_trait in self {
++            if associated_trait.bindings.is_empty() {
++                nodes.extend(std::slice::from_ref(&associated_trait.bound).reference_nodes());
++                continue;
++            }
++            let mut bindings = Vec::new();
++            for binding in &associated_trait.bindings {
++                let body = match &binding.ty.source {
++                    Some(source) => source.as_ref().headed(
++                        None,
++                        Separator::Colon,
++                        binding.ty.name.as_ref().bare(),
++                    ),
++                    None => binding.ty.name.as_ref().bare(),
++                };
++                bindings.push(binding.name.as_ref().headed(None, Separator::Period, body));
++                if !binding.ty.arguments.is_empty() {
++                    bindings.push(
++                        "".enclosed(Enclosure::Angled, binding.ty.arguments.reference_nodes()),
++                    );
++                }
++            }
++            nodes.push(associated_trait.bound.name.as_ref().headed(
++                None,
++                Separator::Period,
++                "".enclosed(Enclosure::Braced, bindings),
++            ));
++        }
++        nodes
++    }
++}
+ impl Protosizing for Library {
+     fn protos(&self) -> Protos {
+         "".enclosed(
+diff --git a/tests/freshness.rs b/tests/freshness.rs
+index 4ab2576..0dc693b 100644
+--- a/tests/freshness.rs
++++ b/tests/freshness.rs
+@@ -52,7 +52,7 @@ fn every_fixture_module_is_fresh() {
+         }
+     }
+     fixtures.sort();
+-    assert_eq!(fixtures.len(), 18);
++    assert_eq!(fixtures.len(), 19);
+     for stem in fixtures {
+         format!("fixtures/{stem}.ethos").fresh(&format!("tests/generated/{stem}.rs"));
+     }
+diff --git a/tests/generated/represented-types.rs b/tests/generated/represented-types.rs
+new file mode 100644
+index 0000000..e726cdb
+--- /dev/null
++++ b/tests/generated/represented-types.rs
+@@ -0,0 +1,25 @@
++#![allow(dead_code, non_camel_case_types, non_snake_case)]
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom::Represented))]
++pub struct Ticket(pub i64);
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom_codec::Datomizable, datom_codec::Composing))]
++pub struct Digit(pub i64);
++#[rustfmt::skip]
++#[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
++#[cfg_attr(feature = "datom", derive(datom::Represented))]
++pub struct Digest(pub i64);
++#[rustfmt::skip]
++const _: () = {
++    fn assert_ticket_represented<
++        T: datom::Represented<Representation = std::vec::Vec<Digit>>,
++    >() {}
++    let _ = assert_ticket_represented::<Ticket>;
++};
++#[rustfmt::skip]
++const _: () = {
++    fn assert_digest_represented<T: datom::Represented<Representation = String>>() {}
++    let _ = assert_digest_represented::<Digest>;
++};
+diff --git a/tests/print.rs b/tests/print.rs
+index 449415d..f83848a 100644
+--- a/tests/print.rs
++++ b/tests/print.rs
+@@ -133,7 +133,7 @@ fn every_fixture_prints_to_a_text_that_reads_back_to_it_and_prints_the_same() {
+             sources.push(path.display().to_string());
+         }
+     }
+-    assert_eq!(sources.len(), 20);
++    assert_eq!(sources.len(), 21);
+     for path in sources {
+         let source = std::fs::read_to_string(&path).expect("fixture reads");
+         let file = match Potential::<File>::from(source).actualize() {
+diff --git a/tests/represented.rs b/tests/represented.rs
+new file mode 100644
+index 0000000..994da87
+--- /dev/null
++++ b/tests/represented.rs
+@@ -0,0 +1,503 @@
++//! Types with a special representation, declared in ethos.
++//!
++//! An association binds the associated type of the trait a type bears:
++//! `Ticket.[ Represented.{ Representation.Vector<Digit> } ]`. The generator
++//! derives datom-codec's `Represented` for the type in place of
++//! `Datomizable` and `Composing`, and asserts at compile time that the
++//! type's representation is the one bound. The two conversions are
++//! hand-written in the sibling module `representation` below; a hand-written
++//! impl naming another representation fails to compile.
++
++// The fixture imports `datom:[ Represented ]`; here `datom` is datom-codec.
++extern crate datom_codec as datom;
++
++use datom_codec::{
++    Actualizing as DatomActualizing, Budget, Composing, Datomizable, Error as DatomError, Path,
++    Potential as DatomPotential, Represented,
++};
++use ethos_zero::{Actualizing, Error, File, Form, Generating, Potential, Printable, Problem};
++use protos::{Protosizable, ReaderBudget, Textualizable};
++
++#[path = "generated/represented-types.rs"]
++mod represented_types;
++
++use represented_types::{Digest, Digit, Ticket};
++
++/// The conversions of each represented type, hand-written beside the
++/// generated module.
++mod representation {
++    use super::represented_types::{Digest, Digit, Ticket};
++    use datom_codec::{ErrorKind, Represented};
++
++    fn refused(expected: &str, value: String) -> ErrorKind {
++        ErrorKind::Value {
++            expected: expected.to_owned(),
++            value,
++        }
++    }
++
++    /// A ticket is written as its decimal digits, each a Digit from 0 to 9;
++    /// a negative ticket negates its first digit. No digits, a leading zero
++    /// on more than one digit, and a digit out of range are refused.
++    impl Represented for Ticket {
++        type Representation = Vec<Digit>;
++        fn represent(&self) -> Vec<Digit> {
++            let mut digits: Vec<Digit> = self
++                .0
++                .unsigned_abs()
++                .to_string()
++                .bytes()
++                .map(|digit| Digit(i64::from(digit - b'0')))
++                .collect();
++            if self.0 < 0 {
++                digits[0].0 = -digits[0].0;
++            }
++            digits
++        }
++        fn from_representation(digits: Vec<Digit>) -> Result<Self, ErrorKind> {
++            let mut spelled = String::new();
++            for (index, digit) in digits.iter().enumerate() {
++                match digit.0 {
++                    0..=9 => spelled.push(char::from(b'0' + digit.0 as u8)),
++                    -9..=-1 if index == 0 => {
++                        spelled.push('-');
++                        spelled.push(char::from(b'0' + (-digit.0) as u8));
++                    }
++                    _ => return Err(refused("Ticket", format!("{digits:?}"))),
++                }
++            }
++            let unsigned = spelled.trim_start_matches('-');
++            if unsigned.is_empty() || (unsigned.len() > 1 && unsigned.starts_with('0')) {
++                return Err(refused("Ticket", spelled));
++            }
++            spelled
++                .parse()
++                .map(Ticket)
++                .map_err(|_| refused("Ticket", spelled))
++        }
++    }
++
++    /// A digest is written as the sixteen lowercase hex digits of its bits.
++    impl Represented for Digest {
++        type Representation = String;
++        fn represent(&self) -> String {
++            format!("{:016x}", self.0 as u64)
++        }
++        fn from_representation(hex: String) -> Result<Self, ErrorKind> {
++            let lower = hex
++                .bytes()
++                .all(|digit| matches!(digit, b'0'..=b'9' | b'a'..=b'f'));
++            if hex.len() != 16 || !lower {
++                return Err(refused("Digest", hex));
++            }
++            u64::from_str_radix(&hex, 16)
++                .map(|bits| Digest(bits as i64))
++                .map_err(|_| refused("Digest", hex))
++        }
++    }
++}
++
++/// The form as designed, word for word.
++const DESIGNED: &str = "Library
++[ datom:[ Represented ] ]
++[ Ticket.Integer Digit.Integer ]
++[]
++[ Ticket.[ Represented.{ Representation.Vector<Digit> } ] ]";
++
++/// The text of `Ticket(42)`: its Vector of Digits, as this datom-codec
++/// prints a Digit, a new type over an Integer.
++const TICKET_TEXT: &str = "[ { 4 }\n  { 2 } ]";
++
++/// The text of `Digest(42)`: its String.
++const DIGEST_TEXT: &str = "000000000000002a";
++
++fn budget() -> Budget {
++    Budget {
++        remaining: 4_096,
++        reader: ReaderBudget { remaining: 4_096 },
++        depth: 0,
++        maximum_depth: 4_096,
++    }
++}
++
++fn text_of<T: Datomizable>(value: &T) -> String {
++    value.datomize(Path::new()).protosize().textualize()
++}
++
++fn read<T: Composing>(text: &str) -> Result<T, DatomError> {
++    DatomPotential::<T>::from(text).actualize(&mut budget())
++}
++
++fn file_of(source: &str) -> File {
++    match Potential::<File>::from(source).actualize() {
++        Ok(file) => file,
++        Err(error) => panic!("{source} does not read: {error:?}"),
++    }
++}
++
++fn refusal_of(source: &str) -> (Vec<i64>, Problem) {
++    match file_of(source).generate() {
++        Err(Error::Conceptual(data)) => (data.integer_vector, data.problem),
++        other => panic!("{source} is not refused conceptually: {other:?}"),
++    }
++}
++
++fn generated(source: &str) -> String {
++    match file_of(source).generate() {
++        Ok(rust) => rust,
++        Err(error) => panic!("{source} does not generate: {error:?}"),
++    }
++}
++
++/// The attribute lines of the generated item that declares `item`.
++fn attributes_of<'a>(rust: &'a str, item: &str) -> Vec<&'a str> {
++    let lines: Vec<&str> = rust.lines().collect();
++    let at = lines
++        .iter()
++        .position(|line| line.starts_with(item))
++        .unwrap_or_else(|| panic!("{item} is not generated"));
++    let mut attributes = Vec::new();
++    for line in lines[..at].iter().rev() {
++        if !line.starts_with("#[") {
++            break;
++        }
++        attributes.push(*line);
++    }
++    attributes
++}
++
++#[test]
++fn the_designed_form_is_accepted_and_reprints() {
++    let file = file_of(DESIGNED);
++    let rust = generated(DESIGNED);
++    assert!(rust.contains("pub struct Ticket(pub i64);"), "{rust}");
++    assert!(
++        rust.contains("T: datom::Represented<Representation = std::vec::Vec<Digit>>"),
++        "{rust}"
++    );
++    assert!(
++        rust.contains("let _ = assert_ticket_represented::<Ticket>;"),
++        "{rust}"
++    );
++    let printed = file.print();
++    assert_eq!(file_of(&printed), file, "{printed}");
++}
++
++#[test]
++fn bindings_after_a_name_that_is_no_trait_are_refused_as_no_trait() {
++    // A declared type.
++    let (path, problem) = refusal_of(
++        "Library [] [ Ticket.Integer Digit.Integer ] [] [ Ticket.[ Digit.{ Representation.String } ] ]",
++    );
++    assert_eq!(problem, Problem::Expected(Form::Trait));
++    assert_eq!(path, vec![1, 3, 0, 1, 0, 0]);
++    // A declared type named Represented, with an empty brace.
++    let (path, problem) = refusal_of(
++        "Library [] [ Represented.Integer Ticket.Integer ] [] [ Ticket.[ Represented.{ } ] ]",
++    );
++    assert_eq!(problem, Problem::Expected(Form::Trait));
++    assert_eq!(path, vec![1, 3, 0, 1, 0]);
++    // An intrinsic type.
++    let (path, problem) = refusal_of(
++        "Library [] [ Ticket.Integer ] [] [ Ticket.[ String.{ Representation.String } ] ]",
++    );
++    assert_eq!(problem, Problem::Expected(Form::Trait));
++    assert_eq!(path, vec![1, 3, 0, 1, 0, 0]);
++}
++
++#[test]
++fn a_binding_names_an_associated_type_of_a_declared_trait_once() {
++    let traits = "[ Shown.{ [] [ Shape ] [] [ show.[ Shape ] ] } ]";
++    let accepted =
++        format!("Library [] [ Ticket.Integer ] {traits} [ Ticket.[ Shown.{{ Shape.String }} ] ]");
++    let rust = generated(&accepted);
++    assert!(rust.contains("T: Shown<Shape = String>"), "{rust}");
++    let (path, problem) = refusal_of(&format!(
++        "Library [] [ Ticket.Integer ] {traits} [ Ticket.[ Shown.{{ Form.String }} ] ]"
++    ));
++    assert_eq!(problem, Problem::Undeclared("Form".to_owned()));
++    assert_eq!(path, vec![1, 3, 0, 1, 0, 1, 0, 0]);
++    let (path, problem) = refusal_of(&format!(
++        "Library [] [ Ticket.Integer ] {traits} [ Ticket.[ Shown.{{ Shape.String Shape.Integer }} ] ]"
++    ));
++    assert_eq!(problem, Problem::Duplicate("Shape".to_owned()));
++    assert_eq!(path, vec![1, 3, 0, 1, 0, 1, 1, 0]);
++}
++
++#[test]
++fn a_represented_type_derives_represented_in_place_of_the_datom_derives() {
++    let root = env!("CARGO_MANIFEST_DIR");
++    let rust =
++        std::fs::read_to_string(format!("{root}/tests/generated/represented-types.rs")).unwrap();
++    for item in ["pub struct Ticket(", "pub struct Digest("] {
++        let attributes = attributes_of(&rust, item).join("\n");
++        assert!(
++            attributes.contains("#[cfg_attr(feature = \"datom\", derive(datom::Represented))]"),
++            "{item}: {attributes}"
++        );
++        assert!(!attributes.contains("Datomizable"), "{item}: {attributes}");
++        assert!(!attributes.contains("Composing"), "{item}: {attributes}");
++    }
++    let digit = attributes_of(&rust, "pub struct Digit(").join("\n");
++    assert!(
++        digit.contains("derive(datom_codec::Datomizable, datom_codec::Composing)"),
++        "{digit}"
++    );
++    assert!(!digit.contains("Represented"), "{digit}");
++}
++
++#[test]
++fn the_derive_and_the_assertion_name_the_source_as_written() {
++    for source in ["datom", "datom_codec"] {
++        let rust = generated(&format!(
++            "Library [ {source}:[ Represented ] ] [ Ticket.Integer ] [] \
++             [ Ticket.[ Represented.{{ Representation.String }} ] ]"
++        ));
++        let attributes = attributes_of(&rust, "pub struct Ticket(").join("\n");
++        assert!(
++            attributes.contains(&format!(
++                "#[cfg_attr(feature = \"datom\", derive({source}::Represented))]"
++            )),
++            "{source}: {attributes}"
++        );
++        assert!(
++            rust.contains(&format!(
++                "T: {source}::Represented<Representation = String>"
++            )),
++            "{source}: {rust}"
++        );
++        let other = if source == "datom" {
++            "datom_codec::Represented"
++        } else {
++            "datom::Represented"
++        };
++        assert!(!rust.contains(other), "{source}: {rust}");
++    }
++}
++
++#[test]
++fn a_ticket_is_written_as_its_digits_and_read_back() {
++    assert_eq!(text_of(&Ticket(42)), TICKET_TEXT);
++    assert_eq!(text_of(&Ticket(42)), text_of(&Ticket(42).represent()));
++    assert_eq!(
++        Ticket(42).datomize(Path::new()),
++        vec![Digit(4), Digit(2)].datomize(Path::new())
++    );
++    assert_eq!(read::<Ticket>(TICKET_TEXT).unwrap(), Ticket(42));
++    for ticket in [0, 7, 42, -42, i64::MAX, i64::MIN] {
++        let text = text_of(&Ticket(ticket));
++        assert_eq!(read::<Ticket>(&text).unwrap(), Ticket(ticket), "{text}");
++    }
++    for refused in [
++        vec![],
++        vec![Digit(0), Digit(4)],
++        vec![Digit(12)],
++        vec![Digit(4), Digit(-2)],
++    ] {
++        let text = text_of(&refused);
++        assert!(read::<Ticket>(&text).is_err(), "{text} is read as a ticket");
++    }
++}
++
++#[test]
++fn a_digest_is_written_as_its_hex_string_and_read_back() {
++    assert_eq!(text_of(&Digest(42)), DIGEST_TEXT);
++    assert_eq!(
++        Digest(42).datomize(Path::new()),
++        "000000000000002a".to_owned().datomize(Path::new())
++    );
++    assert_eq!(read::<Digest>(DIGEST_TEXT).unwrap(), Digest(42));
++    for digest in [0, 42, -1, i64::MAX, i64::MIN] {
++        let text = text_of(&Digest(digest));
++        assert_eq!(read::<Digest>(&text).unwrap(), Digest(digest), "{text}");
++    }
++    for refused in [
++        "2a",
++        "000000000000002A",
++        "00000000000000zz",
++        "0000000000000002a",
++    ] {
++        let text = text_of(&refused.to_owned());
++        assert!(read::<Digest>(&text).is_err(), "{text} is read as a digest");
++    }
++}
++
++// ---------------------------------------------------------------------------
++// Compile-time: the generated assertion against hand-written impls
++// ---------------------------------------------------------------------------
++
++/// What a crate of a generated module and a hand-written sibling came to.
++struct Compiled {
++    success: bool,
++    stderr: String,
++}
++
++/// Compile a library crate of the module generated from `source` and a
++/// sibling module holding `beside`, against the datom-codec and rkyv this
++/// test was built with, the `datom` feature on.
++fn compile(name: &str, source: &str, beside: &str) -> Compiled {
++    let deps = std::env::current_exe()
++        .unwrap()
++        .parent()
++        .unwrap()
++        .to_path_buf();
++    let dir = std::env::temp_dir().join(format!("ethos-represented-{name}-{}", std::process::id()));
++    std::fs::create_dir_all(&dir).unwrap();
++    std::fs::write(dir.join("generated.rs"), generated(source)).unwrap();
++    std::fs::write(
++        dir.join("lib.rs"),
++        format!(
++            "extern crate datom_codec;\n\
++             extern crate datom_codec as datom;\n\
++             extern crate rkyv;\n\
++             pub struct Opaque;\n\
++             #[path = \"generated.rs\"]\n\
++             pub mod generated;\n\
++             pub mod representation {{\n\
++             use super::generated::*;\n\
++             use datom_codec::{{ErrorKind, Represented}};\n\
++             {beside}\n\
++             }}\n"
++        ),
++    )
++    .unwrap();
++    let rustc = std::env::var("RUSTC").unwrap_or_else(|_| "rustc".to_owned());
++    let output = std::process::Command::new(rustc)
++        .arg("--edition=2024")
++        .arg("--crate-type=lib")
++        .arg("--crate-name=represented_probe")
++        .arg("--cfg")
++        .arg("feature=\"datom\"")
++        .arg("--emit=metadata")
++        .arg("-L")
++        .arg(format!("dependency={}", deps.display()))
++        .arg("--extern")
++        .arg(format!(
++            "datom_codec={}",
++            rlib(&deps, "datom_codec").display()
++        ))
++        .arg("--extern")
++        .arg(format!("rkyv={}", rlib(&deps, "rkyv").display()))
++        .arg("--out-dir")
++        .arg(&dir)
++        .arg(dir.join("lib.rs"))
++        .output()
++        .unwrap();
++    let _ = std::fs::remove_dir_all(&dir);
++    Compiled {
++        success: output.status.success(),
++        stderr: String::from_utf8_lossy(&output.stderr).into_owned(),
++    }
++}
++
++/// The newest rlib of the crate `name` among this test's dependencies: a
++/// check build leaves metadata-only candidates of the same crate beside it.
++fn rlib(deps: &std::path::Path, name: &str) -> std::path::PathBuf {
++    let prefix = format!("lib{name}-");
++    let mut found: Vec<(std::time::SystemTime, std::path::PathBuf)> = Vec::new();
++    for entry in std::fs::read_dir(deps).unwrap() {
++        let path = entry.unwrap().path();
++        let file = path.file_name().unwrap().to_string_lossy().into_owned();
++        if file.starts_with(&prefix) && file.ends_with(".rlib") {
++            found.push((path.metadata().unwrap().modified().unwrap(), path));
++        }
++    }
++    found.sort();
++    match found.pop() {
++        Some((_, path)) => path,
++        None => panic!("no rlib of {name} in {}", deps.display()),
++    }
++}
++
++/// A Ticket impl whose representation is `$representation`, converting
++/// through `$represent` and refusing every representation read.
++fn ticket_impl(representation: &str, represent: &str) -> String {
++    format!(
++        "impl Represented for Ticket {{\n\
++         type Representation = {representation};\n\
++         fn represent(&self) -> {representation} {{ {represent} }}\n\
++         fn from_representation(_: {representation}) -> Result<Self, ErrorKind> {{\n\
++         Err(ErrorKind::Value {{ expected: \"Ticket\".to_owned(), value: String::new() }})\n\
++         }}\n\
++         }}"
++    )
++}
++
++#[test]
++fn a_hand_written_impl_with_another_representation_fails_to_compile() {
++    let right = compile(
++        "right",
++        DESIGNED,
++        &ticket_impl("Vec<Digit>", "vec![Digit(self.0)]"),
++    );
++    assert!(
++        right.success,
++        "the bound representation compiles:\n{}",
++        right.stderr
++    );
++    let wrong = compile(
++        "wrong",
++        DESIGNED,
++        &ticket_impl("String", "self.0.to_string()"),
++    );
++    assert!(!wrong.success, "another representation compiles");
++    assert!(wrong.stderr.contains("E0271"), "{}", wrong.stderr);
++    assert!(
++        wrong.stderr.contains("assert_ticket_represented"),
++        "{}",
++        wrong.stderr
++    );
++}
++
++/// The generated assertion pins the Representation: an impl naming another
++/// Representation fails it with E0271. rustc enforces the trait's bounds at
++/// the impl: an impl whose Representation is outside them fails there with
++/// E0277, even where it is the Representation the assertion pins.
++#[test]
++fn the_assertion_pins_the_representation_and_rustc_enforces_the_bounds_at_the_impl() {
++    // `Opaque` is neither Datomizable nor Composing.
++    let source = "Library
++[ datom:[ Represented ] super:[ Opaque ] ]
++[ Ticket.Integer ]
++[]
++[ Ticket.[ Represented.{ Representation.Opaque } ] ]";
++    let rust = generated(source);
++    assert!(
++        rust.contains("T: datom::Represented<Representation = super::Opaque>"),
++        "{rust}"
++    );
++    // Another Representation fails the pin.
++    let another = compile(
++        "another",
++        source,
++        &ticket_impl("String", "self.0.to_string()"),
++    );
++    assert!(!another.success, "another representation compiles");
++    assert!(another.stderr.contains("E0271"), "{}", another.stderr);
++    assert!(
++        another.stderr.contains("assert_ticket_represented"),
++        "{}",
++        another.stderr
++    );
++    assert!(!another.stderr.contains("E0277"), "{}", another.stderr);
++    // The pinned Representation, outside the bounds, fails at the impl.
++    let outside = compile(
++        "outside",
++        source,
++        &ticket_impl("super::Opaque", "super::Opaque"),
++    );
++    assert!(!outside.success, "an impl outside the bounds compiles");
++    assert!(outside.stderr.contains("E0277"), "{}", outside.stderr);
++    assert!(
++        outside.stderr.contains("Opaque: Composing")
++            && outside.stderr.contains("Opaque: Datomizable"),
++        "{}",
++        outside.stderr
++    );
++    assert!(
++        outside.stderr.contains("Represented::Representation"),
++        "{}",
++        outside.stderr
++    );
++    assert!(!outside.stderr.contains("E0271"), "{}", outside.stderr);
++}

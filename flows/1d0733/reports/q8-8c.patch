@@ -1,0 +1,98 @@
+diff --git a/error.ethos b/error.ethos
+index 263d6ad..0aa4933 100644
+--- a/error.ethos
++++ b/error.ethos
+@@ -21,7 +21,8 @@ Library
+             TraitWanted.String
+             Intrinsic.String
+             Case.String
+-            Renamed.String ]
++            Renamed.String
++            Source.String ]
+   Form.[ File Section Import Name Declaration Variant Reference Constraint Trait Capability Constant Association ]
+   Location.{ Line Column }
+   Line.Integer
+diff --git a/src/conception.rs b/src/conception.rs
+index 7c3ac8f..9d2b51e 100644
+--- a/src/conception.rs
++++ b/src/conception.rs
+@@ -405,6 +405,10 @@ impl Conceiving<Import> for Protos {
+         else {
+             return Err(Error::conceptual(vec![], Problem::Expected(Form::Import)));
+         };
++        // Source `core` is refused: it would emit Rust's own `core`.
++        if head.0 == "core" {
++            return Err(Error::conceptual(vec![0], Problem::Source(head.0.clone())));
++        }
+         let source = Source::try_from(head.0.as_str())
+             .map_err(|text| Error::conceptual(vec![0], Problem::Name(text)))?;
+         if let Some(children) = body.children(Enclosure::Bracketed) {
+@@ -428,6 +432,10 @@ impl Conceiving<Reference> for Protos {
+                 body,
+                 ..
+             } => {
++                // Source `core` is refused: it would emit Rust's own `core`.
++                if head.0 == "core" {
++                    return Err(Error::conceptual(vec![0], Problem::Source(head.0.clone())));
++                }
+                 let mut r: Reference = body.conceive().place(1)?;
+                 if r.source.is_some() {
+                     return Err(Error::conceptual(
+diff --git a/src/error.rs b/src/error.rs
+index 28c252a..f66548c 100644
+--- a/src/error.rs
++++ b/src/error.rs
+@@ -47,6 +47,7 @@ pub enum Problem {
+     Intrinsic(String),
+     Case(String),
+     Renamed(String),
++    Source(String),
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index 4f695a4..b1f9e0f 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -569,3 +569,41 @@ fn a_concrete_type_in_an_input_is_refused_as_wanting_a_trait() {
+         Problem::TraitWanted("String".to_owned())
+     );
+ }
++
++#[test]
++fn a_core_source_is_refused() {
++    for (source, path) in [
++        (
++            "Library [ core:[ Name ] ] [ Topic.core:Name Holder.{ Label.core:Name Name } ] [] []",
++            vec![1, 0, 0, 0],
++        ),
++        ("Library [] [ Topic.core:Name ] [] []", vec![1, 1, 0, 1, 0]),
++        (
++            "Library [] [ Holder.{ Label.core:Name } ] [] []",
++            vec![1, 1, 0, 1, 0, 1, 0],
++        ),
++    ] {
++        match Potential::<File>::from(source).actualize() {
++            Err(Error::Conceptual(data)) => {
++                assert_eq!(data.problem, Problem::Source("core".to_owned()), "{source}");
++                assert_eq!(data.integer_vector, path, "{source}");
++            }
++            Err(Error::Structural(_)) => panic!("{source} is a conceptual refusal"),
++            Ok(_) => panic!("{source} must be refused"),
++        }
++    }
++}
++
++#[test]
++fn other_sources_keep_their_emission_beside_the_core_refusal() {
++    let file = read(
++        "Library [] [ Topic.protos:Name Other.custom:Name Holder.{ std:Mutex<String> } ] [] []",
++    );
++    let generated = match file.generate() {
++        Ok(generated) => generated,
++        Err(_) => panic!("non-core sources generate"),
++    };
++    for text in ["protos::Name", "custom::Name", "std::Mutex<String>"] {
++        assert!(generated.contains(text), "{text} missing from {generated}");
++    }
++}

@@ -142,3 +142,32 @@
 - Rendered HTML path sent to 445410.
 - Book «The alias examples» forwarded; all four tension books before the living.
 - d5df1d published f78e40; forwarded.
+- Published own dir as 23509e (12 paths, 8793>=8782, lock 16642 released); receipt to 445410.
+- 445410 task: Ethos side of special representation; asked d5df1d for declaration form; dispatching design read.
+- Design has no ethos form for special representation; facts sent to d5df1d; awaiting form.
+- d5df1d gave special-representation ethos form (associations Name.[ Represented.{ Representation.T } ]); build dispatched.
+- No-skeleton choice put to 445410; build continues.
+- 445410 accepted no-skeleton form; told d5df1d.
+- Represented candidate: bare green; braced blocked by bare-dependent set; 3 points to d5df1d.
+- d5df1d rulings on represented (E0271/E0277, consistent source name, AssociatedType/Bearing, braced set). Braced set + represented on both dispatched.
+- Fork 3 complete candidates green both; naming (c) blocked, back to d5df1d.
+- Represented complete on both Fork 3 answers; reported to 445410 and d5df1d.
+- 445410 task: close Represented gaps; promote ethos-test targets; Represented tests. Design questions to d5df1d (role knowledge, ethos-test branch, rule 3 conflict).
+- d5df1d rulings (roles from dependency ethos; Expected.Type/Trait; second pinned ethos-test check; Represented unruled). Gap patches and ethos-test check dispatched.
+- Represented gaps closed both trees; Role removal question and ethos-test e21e686 sent to d5df1d.
+- Reported gaps and ethos-test e21e686 to 445410; candidate branches noted.
+- 445410: keep the 3 candidate branches in ethos-zero until set lands, then remove; no further branches to shared repos. Standing for briefs.
+- Role removed both trees; gap patches final; reported.
+- 445410 ordered item 7 build + ethos-test target; conflicts with d5df1d hold and rule 3; asked both.
+- 445410: item 7 not built; build Q5/Q6/Q8 options; spec and book location asked of d5df1d.
+- d5df1d position crossed; following 445410 (Q5/6/8 options, not item 7).
+- No book asks Q5/6/8; d5df1d writing spec (base bare 07714b) and a new book; told 445410.
+- Q5/6/8 spec received; 5 candidates dispatched; core-key fact sent to 445410.
+- «Sources and the registry» published; forwarded.
+- Q8 8a, 8c green, predictions matched; sent to d5df1d.
+- 8b x3 green; 4 spec mismatches, 2 choices to d5df1d.
+- All forks of Sources-and-registry candidates complete; reported to 445410.
+- Living order: refresh all Claude flows; handovers for 1d0733 and d5df1d requested.
+- Handover written (handover.md, reports/handover-hashes.md); path sent to 445410.
+- d5df1d handover path forwarded to 445410.
+- d5df1d handover on main 0ea283; my handover publish dispatched.

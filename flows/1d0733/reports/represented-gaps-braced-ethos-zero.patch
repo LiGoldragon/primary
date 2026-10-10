@@ -1,0 +1,658 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 592d0f9..29eb1c7 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -80,6 +80,7 @@ dependencies = [
+  "quote",
+  "rkyv",
+  "serde",
++ "serde_json",
+  "syn 3.0.5",
+ ]
+ 
+@@ -123,6 +124,12 @@ dependencies = [
+  "hashbrown",
+ ]
+ 
++[[package]]
++name = "itoa"
++version = "1.0.18"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
++
+ [[package]]
+ name = "js-sys"
+ version = "0.3.105"
+@@ -134,6 +141,12 @@ dependencies = [
+  "wasm-bindgen",
+ ]
+ 
++[[package]]
++name = "memchr"
++version = "2.8.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
++
+ [[package]]
+ name = "munge"
+ version = "0.4.7"
+@@ -305,6 +318,19 @@ dependencies = [
+  "syn 3.0.5",
+ ]
+ 
++[[package]]
++name = "serde_json"
++version = "1.0.151"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14"
++dependencies = [
++ "itoa",
++ "memchr",
++ "serde",
++ "serde_core",
++ "zmij",
++]
++
+ [[package]]
+ name = "simdutf8"
+ version = "0.1.5"
+@@ -414,3 +440,9 @@ checksum = "81941cd78d0c92026c33e5e01312845a4cb1e9af3407f9134b100dd03144103e"
+ dependencies = [
+  "unicode-ident",
+ ]
++
++[[package]]
++name = "zmij"
++version = "1.0.23"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
+diff --git a/Cargo.toml b/Cargo.toml
+index 8df6b90..f69b4a2 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -10,6 +10,7 @@ publish      = false
+ autobins     = false
+ autoexamples = false
+ autotests    = false
++build        = "build.rs"
+ 
+ [lib]
+ name = "ethos_zero"
+@@ -32,6 +33,9 @@ syn         = { version = "3", features = ["full"] }
+ prettyplease = "0.3"
+ rkyv = { version = "0.8", default-features = false, features = ["std", "bytecheck", "little_endian", "pointer_width_32", "unaligned"] }
+ 
++[build-dependencies]
++serde_json = "1"
++
+ [dev-dependencies]
+ serde = "1"
+ 
+diff --git a/build.rs b/build.rs
+new file mode 100644
+index 0000000..f4ebd66
+--- /dev/null
++++ b/build.rs
+@@ -0,0 +1,100 @@
++//! The dependencies' own ethos declarations, embedded so that conception
++//! learns the role of every name a dependency declares: each `.ethos` file at
++//! the root of a direct dependency, found through `cargo metadata`, under the
++//! name the dependency's crate is written by. A consumer also writes
++//! datom-codec as `datom`.
++
++use std::fmt::Write as _;
++
++const ALIASES: &[(&str, &str)] = &[("datom", "datom_codec")];
++
++fn main() {
++    let manifest_directory = std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR");
++    let cargo = std::env::var("CARGO").expect("CARGO");
++    let target = std::env::var("TARGET").expect("TARGET");
++    let output = std::process::Command::new(cargo)
++        .args(["metadata", "--format-version", "1", "--offline"])
++        .args(["--filter-platform", &target, "--manifest-path"])
++        .arg(format!("{manifest_directory}/Cargo.toml"))
++        .output()
++        .expect("cargo metadata runs");
++    assert!(
++        output.status.success(),
++        "cargo metadata: {}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    let metadata: serde_json::Value =
++        serde_json::from_slice(&output.stdout).expect("cargo metadata is JSON");
++    let root = metadata["resolve"]["root"]
++        .as_str()
++        .expect("a root package");
++    let nodes = metadata["resolve"]["nodes"]
++        .as_array()
++        .expect("resolve nodes");
++    let node = nodes
++        .iter()
++        .find(|node| node["id"] == root)
++        .expect("the root node");
++    let packages = metadata["packages"].as_array().expect("packages");
++    let mut dependencies = Vec::new();
++    for dependency in node["deps"].as_array().expect("root dependencies") {
++        let normal = dependency["dep_kinds"]
++            .as_array()
++            .expect("dependency kinds")
++            .iter()
++            .any(|kind| kind["kind"].is_null());
++        if !normal {
++            continue;
++        }
++        let name = dependency["name"].as_str().expect("dependency name");
++        let package = packages
++            .iter()
++            .find(|package| package["id"] == dependency["pkg"])
++            .expect("the dependency's package");
++        let manifest = std::path::Path::new(
++            package["manifest_path"]
++                .as_str()
++                .expect("the dependency's manifest"),
++        );
++        let directory = manifest.parent().expect("the dependency's directory");
++        let mut declarations = Vec::new();
++        for entry in std::fs::read_dir(directory).expect("the dependency's directory reads") {
++            let path = entry.expect("a directory entry").path();
++            if path.extension().and_then(|extension| extension.to_str()) == Some("ethos") {
++                declarations.push(path);
++            }
++        }
++        if declarations.is_empty() {
++            continue;
++        }
++        declarations.sort();
++        dependencies.push((name.to_owned(), declarations));
++    }
++    dependencies.sort();
++    let mut source = String::from("&[\n");
++    for (name, declarations) in &dependencies {
++        let mut sources = vec![name.clone()];
++        for (alias, aliased) in ALIASES {
++            if aliased == name {
++                sources.push((*alias).to_owned());
++            }
++        }
++        for written in &sources {
++            write!(
++                source,
++                "    Dependency {{ source: {written:?}, declarations: &["
++            )
++            .expect("writes");
++            for path in declarations {
++                println!("cargo::rerun-if-changed={}", path.display());
++                write!(source, " include_str!({:?}),", path.display().to_string()).expect("writes");
++            }
++            source.push_str(" ] },\n");
++        }
++    }
++    source.push_str("]\n");
++    println!("cargo::rerun-if-changed=Cargo.lock");
++    println!("cargo::rerun-if-changed=build.rs");
++    let out = std::env::var("OUT_DIR").expect("OUT_DIR");
++    std::fs::write(format!("{out}/dependencies.rs"), source).expect("dependencies.rs writes");
++}
+diff --git a/error.ethos b/error.ethos
+index b439066..de87f7d 100644
+--- a/error.ethos
++++ b/error.ethos
+@@ -17,13 +17,12 @@ Library
+             Yield
+             Empty
+             Depth
+-            Role.String
+             TraitWanted.String
+             Intrinsic.String
+             Case.String
+             Renamed.String
+             SinglePosition ]
+-  Form.[ File Section Import Name Declaration Variant Reference Constraint Trait Capability Constant Association ]
++  Form.[ File Section Import Name Declaration Variant Reference Constraint Trait Capability Constant Association Type ]
+   Location.{ Line Column }
+   Line.Integer
+   Column.Integer ]
+diff --git a/src/checking.rs b/src/checking.rs
+index 30444d1..250daa9 100644
+--- a/src/checking.rs
++++ b/src/checking.rs
+@@ -9,6 +9,7 @@
+ 
+ use datom_codec::{Integer, Path};
+ 
++use crate::conception::{Dependencies, Knowing};
+ use crate::sectioning::{Hoisting, Referencing, Sectioning};
+ use crate::signature::{Place, Stance, Standing};
+ use crate::{
+@@ -48,6 +49,46 @@ impl Resolving for Import {
+     }
+ }
+ 
++/// The trait whose capability yields the role conception learned for an
++/// imported name from its source's own declarations.
++pub(crate) trait Learned {
++    /// The learned role of the name as imported, if its source declares it.
++    fn learned(&self, name: &Name) -> Option<Role>;
++}
++
++impl Learned for [Import] {
++    fn learned(&self, name: &Name) -> Option<Role> {
++        for import in self {
++            let imported = match import {
++                Import::One(_, imported) => std::slice::from_ref(imported),
++                Import::Many(_, imported) => imported.as_slice(),
++            };
++            for each in imported {
++                if &each.name == name {
++                    return each.role;
++                }
++            }
++        }
++        None
++    }
++}
++
++/// The trait whose capability yields the problem of a reference standing
++/// where this role is wanted: a trait where a type is wanted is
++/// `Expected.Type`, a type where a trait is wanted `Expected.Trait`.
++trait Wanting {
++    fn wanted(&self) -> Problem;
++}
++
++impl Wanting for Role {
++    fn wanted(&self) -> Problem {
++        match self {
++            Role::Type => Problem::Expected(crate::Form::Type),
++            Role::Trait => Problem::Expected(crate::Form::Trait),
++        }
++    }
++}
++
+ impl Resolving for [Import] {
+     fn resolve(&self, name: &Name) -> Resolution {
+         for import in self {
+@@ -1128,10 +1169,7 @@ impl Referring for Reference {
+             && let Some(intrinsic) = Intrinsic::identify(&self.name.0)
+         {
+             if intrinsic.role() != role {
+-                return Err(Error::conceptual(
+-                    vec![],
+-                    Problem::Role(self.name.0.clone()),
+-                ));
++                return Err(Error::conceptual(vec![], role.wanted()));
+             }
+             if intrinsic.arity() != self.arguments.len() {
+                 return Err(Error::conceptual(
+@@ -1143,6 +1181,14 @@ impl Referring for Reference {
+                 ));
+             }
+         }
++        // Any other source's own declarations give the role of a name they
++        // declare.
++        if let Some(source) = &self.source
++            && let Some(declared) = Dependencies::known().role(source, &self.name)
++            && declared != role
++        {
++            return Err(Error::conceptual(vec![], role.wanted()));
++        }
+         // A sourced reference carries the foreign name in the headed body's
+         // structural child at index one.
+         if self.source.is_none() {
+@@ -1193,16 +1239,19 @@ impl Referring for Reference {
+                             role: intrinsic.role(),
+                             arity: Some(intrinsic.arity()),
+                         },
+-                        None => ReferenceRequirement { role, arity: None },
++                        None => ReferenceRequirement {
++                            role: scope.file.imports().learned(&self.name).unwrap_or(role),
++                            arity: None,
++                        },
+                     }
+                 }
+-                Resolution::Imported(_, _) => ReferenceRequirement { role, arity: None },
++                Resolution::Imported(_, _) => ReferenceRequirement {
++                    role: scope.file.imports().learned(&self.name).unwrap_or(role),
++                    arity: None,
++                },
+             };
+             if requirement.role != role {
+-                return Err(Error::conceptual(
+-                    vec![],
+-                    Problem::Role(self.name.0.clone()),
+-                ));
++                return Err(Error::conceptual(vec![], role.wanted()));
+             }
+             if let Some(expected) = requirement.arity
+                 && expected != self.arguments.len()
+diff --git a/src/conception.rs b/src/conception.rs
+index 9f99dee..15ba979 100644
+--- a/src/conception.rs
++++ b/src/conception.rs
+@@ -1,14 +1,16 @@
+ //! Conception: structural Protos to Ethos concepts.
+ 
+ use datom_codec::Integer;
+-use protos::{Enclosure, Protos, Separator, Symbol};
++use std::sync::OnceLock;
++
++use protos::{Enclosure, Protos, Protosizable, Separator, Symbol};
+ 
+ use crate::{
+     ArityProblem, AssociatedConstant, AssociatedTrait, AssociatedType, Association, Binding,
+-    Capability, ConceptualErroring, Constraint, Error, Ethosizable, File, Form, Identifiable,
+-    Identity, Import, Imported, Library, Memory, Name, Named, Operation, Placing, Position,
+-    Problem, Receiver, Reference, Root, Signal, Signature, Source, Succeeding, TraitBody,
+-    TraitDeclaration, TypeDeclaration, Variant,
++    Canonicalizable, Capability, ConceptualErroring, Constraint, Error, Ethosizable, File, Form,
++    Identifiable, Identity, Import, Imported, Library, Memory, Name, Named, Operation, Placing,
++    Position, Problem, Receiver, Reference, Resolution, Resolving, Role, Root, Signal, Signature,
++    Source, Succeeding, TraitBody, TraitDeclaration, TypeDeclaration, Variant,
+ };
+ 
+ pub(crate) trait Conceiving<C> {
+@@ -17,7 +19,101 @@ pub(crate) trait Conceiving<C> {
+ impl Ethosizable<File> for Protos {
+     type Error = Error;
+     fn ethosize(&self) -> Result<File, Self::Error> {
+-        self.conceive()
++        let mut file: File = self.conceive()?;
++        file.learn(Dependencies::known());
++        Ok(file)
++    }
++}
++
++/// A dependency that publishes ethos declarations: the source it is written
++/// under, and the text of each of its declaration files, embedded by the
++/// build script from the dependency Cargo built against.
++pub(crate) struct Dependency {
++    source: &'static str,
++    declarations: &'static [&'static str],
++}
++
++/// Every dependency that publishes ethos declarations, each declaration read
++/// as a file: the authority on the role of a name it declares.
++pub(crate) struct Dependencies(Vec<(&'static str, File)>);
++
++/// The trait whose capability yields the dependencies, read once.
++pub(crate) trait Knowing {
++    /// The dependencies' declarations, read on first use.
++    fn known() -> &'static Self;
++    /// The role a source's own declarations give a name: a type its types
++    /// section declares, or a trait its traits section declares. A name the
++    /// source imports, or does not declare, has none.
++    fn role(&self, source: &Source, name: &Name) -> Option<Role>;
++}
++
++impl Knowing for Dependencies {
++    fn known() -> &'static Self {
++        static DEPENDENCIES: &[Dependency] = include!(concat!(env!("OUT_DIR"), "/dependencies.rs"));
++        static KNOWN: OnceLock<Dependencies> = OnceLock::new();
++        KNOWN.get_or_init(|| {
++            let mut files = Vec::new();
++            for dependency in DEPENDENCIES {
++                for declaration in dependency.declarations {
++                    // A declaration is read to its concept and no further:
++                    // the roles of its own imports are not learned, and its
++                    // validity is the dependency-ethos check's to witness.
++                    let Ok(canonical) = declaration.to_string().canonicalize() else {
++                        continue;
++                    };
++                    let Ok(protos) = canonical.text.protosize() else {
++                        continue;
++                    };
++                    if let Ok(file) = <Protos as Conceiving<File>>::conceive(&protos) {
++                        files.push((dependency.source, file));
++                    }
++                }
++            }
++            Dependencies(files)
++        })
++    }
++
++    fn role(&self, source: &Source, name: &Name) -> Option<Role> {
++        for (written, file) in &self.0 {
++            if *written != source.as_ref() {
++                continue;
++            }
++            match file.resolve(name) {
++                Resolution::Type(_) => return Some(Role::Type),
++                Resolution::Trait(_) => return Some(Role::Trait),
++                _ => {}
++            }
++        }
++        None
++    }
++}
++
++/// The trait whose capability learns the role of every imported name from
++/// its source's own declarations.
++trait Learning {
++    fn learn(&mut self, dependencies: &Dependencies);
++}
++
++impl Learning for File {
++    fn learn(&mut self, dependencies: &Dependencies) {
++        let imports = match self {
++            File::Library(library) => &mut library.imports,
++            File::Signal(signal) => &mut signal.imports,
++            File::Operation(operation) => &mut operation.imports,
++            File::Memory(memory) => &mut memory.imports,
++        };
++        for import in imports {
++            match import {
++                Import::One(source, imported) => {
++                    imported.role = dependencies.role(source, &imported.emitted);
++                }
++                Import::Many(source, imported) => {
++                    for each in imported {
++                        each.role = dependencies.role(source, &each.emitted);
++                    }
++                }
++            }
++        }
+     }
+ }
+ trait Children {
+@@ -385,6 +481,7 @@ impl Conceiving<Imported> for Protos {
+                 return Ok(Imported {
+                     name: head.name().place(0)?,
+                     emitted: text.as_str().name().place(1)?,
++                    role: None,
+                 });
+             }
+             _ => return Err(Error::conceptual(vec![], Problem::Expected(Form::Import))),
+@@ -392,6 +489,7 @@ impl Conceiving<Imported> for Protos {
+         Ok(Imported {
+             name: name.clone(),
+             emitted: name,
++            role: None,
+         })
+     }
+ }
+diff --git a/src/error.rs b/src/error.rs
+index 9807f30..802558a 100644
+--- a/src/error.rs
++++ b/src/error.rs
+@@ -42,7 +42,6 @@ pub enum Problem {
+     Yield,
+     Empty,
+     Depth,
+-    Role(String),
+     TraitWanted(String),
+     Intrinsic(String),
+     Case(String),
+@@ -65,6 +64,7 @@ pub enum Form {
+     Capability,
+     Constant,
+     Association,
++    Type,
+ }
+ #[rustfmt::skip]
+ #[derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+diff --git a/src/lib.rs b/src/lib.rs
+index ead2375..df631ba 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -233,6 +233,10 @@ pub struct Imported {
+     pub name: Name,
+     /// The name the source gives it, which the generated Rust writes.
+     pub emitted: Name,
++    /// The role the source's own ethos declarations give the emitted name,
++    /// learned in conception: none when the source declares no such name,
++    /// or publishes no declarations.
++    pub role: Option<Role>,
+ }
+ 
+ /// A reference to a type or a trait by name: an optional inline source, the name, and its arguments.
+diff --git a/src/signature.rs b/src/signature.rs
+index d373791..f79d0ab 100644
+--- a/src/signature.rs
++++ b/src/signature.rs
+@@ -8,10 +8,15 @@
+ //! already binds, or a concrete type, which an input refuses. A yield may
+ //! name a concrete type; a declared trait there is a parameter too.
+ //!
+-//! An imported name says nothing of its role: in an input it is taken as a
+-//! trait, in a yield as a type.
++//! A name another source declares stands as its role there: a type as a
++//! concrete type, a trait as a trait. A foreign name its source does not
++//! declare says nothing of its role: in an input it is taken as a trait, in
++//! a yield as a type.
+ 
+-use crate::{Identifiable, Intrinsic, Name, Reference, Resolution, Resolving, Scope};
++use crate::checking::Learned;
++use crate::conception::{Dependencies, Knowing};
++use crate::sectioning::Sectioning;
++use crate::{Identifiable, Intrinsic, Name, Reference, Resolution, Resolving, Role, Scope};
+ 
+ /// Where a reference in a capability's signature stands.
+ #[derive(Clone, Debug, PartialEq, Eq)]
+@@ -75,8 +80,12 @@ impl Standing for Reference {
+                 Some(intrinsic) if source.as_ref() == "protos" && intrinsic.concrete() => {
+                     Stance::Concrete
+                 }
+-                _ if place == Place::Input => self.binding(scope),
+-                _ => Stance::Kept,
++                _ => match Dependencies::known().role(source, &self.name) {
++                    Some(Role::Type) => Stance::Concrete,
++                    Some(Role::Trait) => self.binding(scope),
++                    None if place == Place::Input => self.binding(scope),
++                    None => Stance::Kept,
++                },
+             };
+         }
+         match scope.resolve(&self.name) {
+@@ -88,8 +97,12 @@ impl Standing for Reference {
+                 Some(intrinsic) if source.as_ref() == "protos" && intrinsic.concrete() => {
+                     Stance::Concrete
+                 }
+-                _ if place == Place::Input => self.binding(scope),
+-                _ => Stance::Kept,
++                _ => match scope.file.imports().learned(&self.name) {
++                    Some(Role::Type) => Stance::Concrete,
++                    Some(Role::Trait) => self.binding(scope),
++                    None if place == Place::Input => self.binding(scope),
++                    None => Stance::Kept,
++                },
+             },
+             Resolution::Intrinsic(_)
+             | Resolution::Parameter(_)
+diff --git a/tests/represented.rs b/tests/represented.rs
+index 994da87..f19e3fe 100644
+--- a/tests/represented.rs
++++ b/tests/represented.rs
+@@ -15,7 +15,9 @@ use datom_codec::{
+     Actualizing as DatomActualizing, Budget, Composing, Datomizable, Error as DatomError, Path,
+     Potential as DatomPotential, Represented,
+ };
+-use ethos_zero::{Actualizing, Error, File, Form, Generating, Potential, Printable, Problem};
++use ethos_zero::{
++    Actualizing, Error, File, Form, Generating, Import, Potential, Printable, Problem, Role,
++};
+ use protos::{Protosizable, ReaderBudget, Textualizable};
+ 
+ #[path = "generated/represented-types.rs"]
+@@ -205,6 +207,82 @@ fn bindings_after_a_name_that_is_no_trait_are_refused_as_no_trait() {
+     assert_eq!(path, vec![1, 3, 0, 1, 0, 0]);
+ }
+ 
++/// The roles conception learned for a file's imports, in order.
++fn learned_roles(source: &str) -> Vec<(String, Option<Role>)> {
++    let File::Library(library) = file_of(source) else {
++        panic!("{source} is no library");
++    };
++    let mut roles = Vec::new();
++    for import in library.imports {
++        let imported = match import {
++            Import::One(_, imported) => vec![imported],
++            Import::Many(_, imported) => imported,
++        };
++        for each in imported {
++            roles.push((each.name.as_ref().to_owned(), each.role));
++        }
++    }
++    roles
++}
++
++#[test]
++fn an_import_learns_its_role_from_the_dependency_declarations() {
++    let roles = learned_roles(
++        "Library [ datom:[ Represented Path Error ] datom_codec:Composing \
++         protos:[ Extent Textualizable ] crate:Represented ] [] [] []",
++    );
++    assert_eq!(
++        roles,
++        vec![
++            ("Represented".to_owned(), Some(Role::Trait)),
++            ("Path".to_owned(), Some(Role::Type)),
++            ("Error".to_owned(), None),
++            ("Composing".to_owned(), Some(Role::Trait)),
++            ("Extent".to_owned(), Some(Role::Type)),
++            ("Textualizable".to_owned(), Some(Role::Trait)),
++            ("Represented".to_owned(), None),
++        ]
++    );
++}
++
++#[test]
++fn a_trait_imported_into_a_type_position_is_refused_as_no_type() {
++    let (path, problem) =
++        refusal_of("Library [ datom:[ Represented ] ] [ Ticket.Represented ] [] []");
++    assert_eq!(problem, Problem::Expected(Form::Type));
++    assert_eq!(path, vec![1, 1, 0, 1]);
++    let (path, problem) =
++        refusal_of("Library [ datom:[ Represented ] ] [ Tickets.Vector<Represented> ] [] []");
++    assert_eq!(problem, Problem::Expected(Form::Type));
++    // The argument stands in the angled enclosure beside the declaration.
++    assert_eq!(path, vec![1, 1, 1, 0]);
++}
++
++#[test]
++fn a_trait_in_a_field_position_is_refused_as_no_type() {
++    let (path, problem) =
++        refusal_of("Library [ datom:[ Represented ] ] [ Holder.{ Represented Integer } ] [] []");
++    assert_eq!(problem, Problem::Expected(Form::Type));
++    assert_eq!(path, vec![1, 1, 0, 1, 0]);
++    // Written with its source in place.
++    let (path, problem) = refusal_of("Library [] [ Holder.{ Integer datom:Represented } ] [] []");
++    assert_eq!(problem, Problem::Expected(Form::Type));
++    assert_eq!(path, vec![1, 1, 0, 1, 1]);
++    // A trait the file declares.
++    let (path, problem) =
++        refusal_of("Library [] [ Holder.{ Shown Integer } ] [ Shown.[ show.[ String ] ] ] []");
++    assert_eq!(problem, Problem::Expected(Form::Type));
++    assert_eq!(path, vec![1, 1, 0, 1, 0]);
++}
++
++#[test]
++fn a_type_imported_where_a_trait_is_wanted_is_refused_as_no_trait() {
++    let (path, problem) =
++        refusal_of("Library [ datom:[ Path ] ] [ Ticket.Integer ] [] [ Ticket.[ Path ] ]");
++    assert_eq!(problem, Problem::Expected(Form::Trait));
++    assert_eq!(path, vec![1, 3, 0, 1, 0]);
++}
++
+ #[test]
+ fn a_binding_names_an_associated_type_of_a_declared_trait_once() {
+     let traits = "[ Shown.{ [] [ Shape ] [] [ show.[ Shape ] ] } ]";

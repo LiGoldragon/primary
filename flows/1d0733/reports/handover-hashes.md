@@ -1,0 +1,38 @@
+ethos-zero main 07714b0171802787bea1eefe4caa2d826d9c4030
+datom-codec main 4dff16b4f7412febc3b71aac8b49680cd20988cb
+protos main 15b41da8f2579e73ead59bc0c2b97529b8ac32d3
+ethos-test main e21e686b821e12daae08094a60df5e679c8e0b0c
+psyche-skills main 850fd27228cb7c4a5fb71f7409109d4a437578be
+ethos-zero candidate/held-set-bare a3f6068ecef547fd2a1e884677d8164d3456792c
+ethos-zero candidate/held-set-datom-codec 3e86f813b2e67e0b56956fbdcb68c1da12e91e88
+ethos-zero candidate/held-set-protos aa97df7ff0b79172e2d09613674c936bb4c85067
+datom-codec 445410 776cf4b8913ed7c69be0a597afd261ab819914c9
+psyche-skills main:vision/ethos.md e53e23bf16811c8772a77771a995c45c933ec2ca
+primary origin/main d9703b5210299bab596cc5d85ae4a84bc4ee32bc
+primary latest touching flows/1d0733 23509e1b05ac0e2c3e8da16bbad70ed61e5e4efd
+item12-on-item5-protos.patch c88a70cd3931f1e4e246c30a30873745eed2776e
+item12-on-item5-datom-codec.patch 6058f947854e7de46a231665621cd4c6a9f7255a
+item12-on-item5-ethos-zero.patch a9b3950b0fd5fe46770a81dfc40d61bb9bb19597
+item6-on-set-ethos-zero.patch d126e4978a239c1a93ed7f6ec6d96e2dc948d9b9
+braced-set-ethos-zero.patch 9a148cae54ddc1b357032155b54fa98f67e03abd
+braced-set-protos.patch c88a70cd3931f1e4e246c30a30873745eed2776e
+fork3-bare-represented-datom-codec.patch d2fce42034c2ac9ee39d2d4faa3e48be24edb238
+fork3-bare-represented-ethos-zero.patch 735a7ba55a579736026e4e5583cad83a66e9af13
+fork3-braced-represented-ethos-zero.patch f82bc6d8ae66f51d9b215224fb65fc60d3dc5e27
+represented-gaps-bare-ethos-zero.patch a5c41f774837958a05fae81975e3c9a2e4482ac5
+represented-gaps-braced-ethos-zero.patch dbdffcb9d462691aa59ca6a55e50eb1e777d8061
+fork-types-12-1a.patch f54080972321cf9f2ad04cdc5d75b1c92594f2e3
+fork-types-12-1a+2a.patch 0e9c477b4799c17637aaa29330f4dc8cef4b1030
+fork-types-12-1c.patch f1b227acf1c5b49b636bddbfa2e322bc1c28cca9
+fork-types-12-1c+2a.patch e1292ee29d0f52376e913569bdc8b88c900d4509
+fork-types-12-1c-datom-codec.patch 2cbc001529b1cfd6e9d4c6990f5df164021627f4
+fork-invariants-4.patch e7a9099cd49b6444be729683b17f0ac4f0b8a137
+fork-invariants-f3-a.patch 472ad09e06de6b752581d677363c155da7172bc8
+fork-invariants-f3-b.patch 989936519817894051a026ee2b0986412803aa5a
+q8-8a.patch 0abf3022f997bed5474cdc23533c2d6420fa65c1
+q8-8b-6d.patch dc5eb8186dc95872259ba0588b74b1250dd10bfb
+q8-8b-6e.patch c26bfbb1c79ba3b9c8a5649058ed03d8212df1b8
+q8-8b-6f.patch 09263f6076acf28585a8bf7660ec3a03f169db91
+q8-8c.patch 08b99fda8a3aec31cd42cd1b5531fd636d1b37f8
+representation-fork3-bare.patch 006b957b5d46fadc25f160168a4bdfadfe3df628
+representation-fork3-braced.patch 821d364258a905997fd144b688696ee8003048a3
