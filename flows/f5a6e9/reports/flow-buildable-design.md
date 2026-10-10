@@ -349,15 +349,9 @@ Signal                          ; what Flow is asked
                                 ; Observe.Agent
          Key ]                  ; module missing
                                 ; from registry or
-                                ; forgotten since
-                                ; (Lock or Deliver
-                                ; when recipient
-                                ; Asleep)
-      NoLayer                   ; no model for the
-                                ; recipient's layer
-                                ; (Lock or Deliver
-                                ; when recipient
-                                ; Asleep)
+                                ; Forget, or from
+                                ; Launch if module
+                                ; in Launch is missing
       NotConfigured             ; Launch before
                                 ; Configure.Nexus
       HashMismatch              ; a module recorded
@@ -706,9 +700,7 @@ topic must be present; a wake composes from whatever
 the registry holds for the recipient's topic, and none
 is a valid set, so a metaflow with no registered
 module wakes with no modules and no refusal names a
-missing one. If not, Lock or Deliver refuses NoLayer
-or Unknown.Key, where Unknown.Key names only a module
-the wake would compose that has been forgotten since.
+missing one. If not, Lock or Deliver refuses NoLayer.
 If the configuration changes between Lock and Deliver,
 Deliver answers the same refusal, never Queued. The
 lock's span is the Lease of the Nexus payload, in
@@ -724,7 +716,7 @@ only End ends it. At Deliver, Flow checks in this
 order — the gate (NotMessage), then the lock
 (Unknown.Lock, then Lapsed), and only a live lock
 reaches the recipient's state (Ended.Address, then
-NoLayer or Unknown.Key for a wake, then Delivered,
+NoLayer for a wake, then Delivered,
 Queued or Woken) — so a lapsed lock on an ended
 recipient answers Lapsed (current best). Status:
 current best, not before the living.
