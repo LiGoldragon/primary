@@ -28,7 +28,12 @@ The book asks: "**Fork 1. A name over a container.** `SyntaxError.Vector<FilePat
 
 ### Fork 1 (a): "a new type over the vector, `struct SyntaxError(Vec<FilePath>)`"
 
-A name over `Vector<T>` or `Option<T>` emits a tuple struct with the standard header, the same way a plain value does. It prints and reads in datom as its inner value, because the derive is already in the set. Callers construct it as `LockPaths(vec![..])`. The vector methods are reached through `.0`.
+A name over `Vector<T>` or `Option<T>` emits a tuple struct with the standard
+header, the same way a plain value does. It prints and reads in datom as its
+inner value, because the derive is already in the set. Callers construct it as
+`LockPaths(vec![..])`. The vector methods are reached through `.0`. A sourced
+reference with arguments, `Record.external:Vector<String>`, is a container and
+emits `pub struct Record(pub external::Vector<String>);`. Under 1a no pub type over a container remains; an alias over a declared type is Fork 2's question, kept by 2b and refused by 2a.
 
 ```
 Library
@@ -65,9 +70,15 @@ Datom: `[ a b ]`, unchanged.
 
 ### Fork 1 (c): "refused; the vector is written inline where it is used"
 
-A types-section declaration (or a named struct position) whose held type is a Vector or Option is refused at its path. Every use writes the container inline, and the field is named after its type.
+A types-section declaration (or a named struct position) whose held type is a
+Vector or Option is refused at its path. Every use writes the container inline,
+and the field is named after its type.
 
-The block of 1 (a) is refused: `Conceptual.{ [ 1 1 1 ] WrapsContainer }`, Problem `WrapsContainer` with no Form. The name is **inference**, chosen to stand beside item 2's `WrapsStructure`; the path follows `SinglePosition`'s.
+The block of 1 (a) is refused: `Conceptual.{ [ 1 1 1 ] WrapsContainer }`.
+`Opt.Option<String>` is refused at `[ 1 1 0 ]`. Problem `WrapsContainer` with
+no Form; the name is **inference**, chosen beside item 2's `WrapsStructure`.
+Fork 1 (c) reaches datom-codec's own ethos: `Path.Vector<Integer>` is refused
+as `WrapsContainer`; choosing 1c changes datom-codec.
 
 Accepted rewrite and its Rust:
 
@@ -90,9 +101,19 @@ pub struct Lock {
 
 The field name `lock_path_vector` is **inference**, by the same rule that gives today's `string_option_vector`.
 
-- Layers: refusal (src/checking.rs, `TypeDeclaration::NewType` and the named-position path) and error.ethos (the new Problem). Generation loses its alias branch only if Fork 2 also removes it. Changed fixtures: orchestrate.ethos (`LockPaths` and `Locks` go inline; `Locks.Locks` becomes `Locks.Vector<Lock>`); tree-types.ethos (`Planted.Vector<Tree>`; **inference**: `Deep` moves into a `Wrapped` position); print/flow-operation.ethos (`Capsule.{ Home.String Vector<String> }`); alias-format.ethos (keeps `Short` and the two plain types).
-- Changed goldens: the same four .rs files as (a). Changed tests: the same as (a), plus `string_vector` in place of `login`. tests/print.rs `a_reference_with_arguments_prints_as_it_was_written` holds `Locks.Vector<Lock>`; it changes only if `actualize` runs the checks, which the dry run observes.
-- Byte-equal: all other fixtures and goldens. Acceptance: `a_name_over_a_container_is_refused`. Both blocks above, plus `Opt.Option<String>`, are refused at `[ 1 1 0 ]`.
+- Layers: refusal (src/checking.rs, `TypeDeclaration::NewType` and the
+  named-position path) and error.ethos. Generation loses its alias branch only
+  if Fork 2 also removes it. Changed fixtures: orchestrate.ethos (`LockPaths`
+  and `Locks` go inline); tree-types.ethos (`Planted.Vector<Tree>`, the move of the Deep declaration); 
+  print/flow-operation.ethos (`Capsule.{ Home.String Vector<String> }`); alias-format.ethos.
+- Changed goldens: the same four .rs files as (a). All generated code allows
+  `clippy::type_complexity` at the module head. Changed tests: the same as (a),
+  plus `string_vector` in place of `login`. tests/print.rs
+  `a_reference_with_arguments_prints_as_it_was_written` holds
+  `Locks.Vector<Lock>`.
+- Byte-equal: all other fixtures and goldens. Acceptance:
+  `a_name_over_a_container_is_refused`. The block above and `Opt.Option<String>`
+  are refused.
 
 ## Types Fork 2: a name over a declared type
 
@@ -100,7 +121,9 @@ The book asks: "**Fork 2. A name over a declared type.** `DuplicateName.Lock` in
 
 ### Fork 2 (a): "Ethos Zero refuses it as an error"
 
-A declaration whose held type names a type declared in the file is refused at its path. This brings in the refusals of item 2 and invariants Proposal 2: over a struct or enum, `WrapsStructure`; over a new type, `DoubleWrap`.
+A declaration whose held type names a type declared in the file is refused at
+its path. This brings in the refusals of item 2 and invariants Proposal 2:
+over a struct or enum, `WrapsStructure`; over a new type, `DoubleWrap`.
 
 ```
 Library
@@ -113,7 +136,9 @@ Library
 []
 ```
 
-Refused: `Conceptual.{ [ 1 1 1 ] WrapsStructure }`. With `DuplicateName.Lock` removed, the refusal is `Conceptual.{ [ 1 1 2 ] DoubleWrap }` for `Job`. The names come from ethos-solution item 2 and are the design's own; the paths are **inference**, by analogy with `SinglePosition`.
+Refused: `Conceptual.{ [ 1 1 1 ] WrapsStructure }`. With `DuplicateName.Lock`
+removed, the refusal is `Conceptual.{ [ 1 1 2 ] DoubleWrap }` for `Job`. Names
+from ethos-solution item 2 are the design's own; the paths read as observed.
 
 - Layer: refusal (src/checking.rs `NewType` arm; it looks up the held reference among the file's declarations) and error.ethos. Changed fixtures: orchestrate.ethos (line 14 `DuplicateName.Lock` deleted; the variant `LockRejection.[ DuplicateName.Lock .. ]` stays); tree-types.ethos (`Loop.Knot` deleted, Knot becomes `Knot.[ End Loop.Knot ]`); empty-signal.ethos (`Signal [] [] [] [ Name.String ]`).
 - Changed goldens: orchestrate.rs (loses `pub type DuplicateName = Lock;`), tree-types.rs, empty-signal.rs. Expected in tree-types.rs: `Loop(#[rkyv(omit_bounds)] std::boxed::Box<Knot>)` and no `pub type Loop`. This is **inference**: the box closes the by-value cycle. Changed tests: tests/ethos.rs line 163 becomes a refusal test, and the finiteness source `Holder.Never` becomes refused. tests/generated.rs lines 226-234 use `Name` in place of `Shared`. The dry run lists any other test source that names a declared type.
@@ -127,11 +152,20 @@ Refused: `Conceptual.{ [ 1 1 1 ] WrapsStructure }`. With `DuplicateName.Lock` re
 
 ## Invariants Proposal 4: each element on a new indented line
 
-This is a proposal, not a fork; its rulings are "land, amend, or refuse". Only "land" can be dry-run. "Refuse" is the set unchanged.
+This is a proposal, not a fork; its rulings are "land, amend, or refuse". Only
+"land" can be dry-run. "Refuse" is the set unchanged.
 
 ### Proposal 4, land
 
-Every structure with an element that has a next layer opens its delimiter and ends the line there. Each element starts on its own line, indented two columns beneath the line that opened it, and the closer ends the last element's line. The root head and the sections stay at column 0, as src/printing.rs places them.
+A form breaks when it holds variants, or more than two positions, or a form
+that itself breaks. A broken form opens on its own line, puts each element on
+its own line, and closes after its last element.
+
+Every structure with an element that has a next layer opens its delimiter and
+ends the line there. Each element starts on its own line, indented two columns
+beneath the line that opened it, and the closer ends the last element's line.
+The root head and the sections stay at column 0, as src/printing.rs places
+them.
 
 ```
 Library [] [ Voice.{ Aspect.[ Psyche Mind Field ]
@@ -154,9 +188,14 @@ Library
 []
 ```
 
-Three points are **inference**, read from the book's Voice block: the types section breaks though it holds one element; an enum's leaves each take their own line; angle arguments stay tight, as today.
+Three points are **inference**, read from the book's Voice block: the types
+section breaks though it holds one element; an enum's leaves each take their
+own line; angle arguments stay tight, as today.
 
-Datom print: unchanged. The layout must not land in protos's shared `Textualizable`. If it did, datom text such as `{ 3 19 }` (datom-codec `tests/composition.rs`) would break. So it is built in ethos-zero src/printing.rs, which today hands each section to protos. This placement is **inference**. It also strains vision-ethos's sentence "Ethos follows the canonical protos print".
+Datom print: unchanged. The layout must not land in protos's shared
+`Textualizable`. If it did, datom text such as `{ 3 19 }` would break. Built
+in ethos-zero src/printing.rs, which hands each section to protos. This
+placement is **inference**.
 
 - Layer: print (ethos-zero only; protos and datom-codec are byte-equal). Changed goldens: fixtures/print/flow-library, flow-signal, flow-operation and flow-memory (.ethos), rewritten to the new layout. ethos-zero.ethos and error.ethos are rewritten too, because `the_crates_own_ethos_is_written_in_the_canonical_print` compares them. tests/print.rs literals change in `a_one_line_layout_expands_to_the_canonical_print`, `leaves_stay_on_one_line_and_angles_stay_tight`, `a_capability_hangs_its_inputs_and_yield`, `a_badly_hung_layout_is_realigned` and `a_reference_with_arguments_prints_as_it_was_written`. Byte-equal: fixtures/*.ethos (they are only round-tripped, never compared to the print) and every tests/generated/*.rs. Acceptance: `each_element_starts_on_a_new_indented_line`. The one-line source prints exactly as above. Print of print equals print for all 20 sources in `every_fixture_prints_...`.
 
@@ -166,7 +205,15 @@ The book asks: "### Fork 3: a Mutex field in ethos ... Options: (a) ethos expres
 
 ### Fork 3 (a): "imports of more than one segment, and a declaration that carries fewer derives"
 
-The import half can be dry-run. **Inference**: the syntax is a chain of colon heads, `std:sync:Mutex`. The protos lexer already parses it, since probe c1 reached `[ 1 0 0 1 ]`, and `Source::try_from` already accepts `std::sync`. So conception folds the chain into one Source, and grammar is unchanged.
+The import half can be dry-run. **Inference**: the syntax is a chain of colon
+heads, `std:sync:Mutex`. The protos lexer already parses it, since probe c1
+reached `[ 1 0 0 1 ]`, and `Source::try_from` already accepts `std::sync`. So
+conception folds the chain into one Source, and grammar is unchanged. The
+printer (protosization) is part of (a) so the path round-trips.
+
+The Mutex case is an inline test, not a fixture. The generated Rust does not
+compile: 11 rustc errors, no E0425, because a Mutex carries no datom traits.
+Fork 3 (a) is import-only.
 
 ```
 Library
@@ -185,10 +232,12 @@ pub struct Nexus {
 }
 ```
 
-The field name is **inference**, by the probe's `string_mutex`. With the full header the code does not compile; that is probe V2's error set and is expected. The derive half has no form in the book (see Not an option here). If the declaration were marked, its expected header would be `#[derive(Debug)]` alone, with no datom kinds; this too is **inference**.
+The field name is **inference**, by the probe's `string_mutex`. The derive half
+has no form in the book (see Not an option here).
 
-- Layer: conception (`Conceiving<Import>`, the chain fold). Changed goldens: none; this adds a fixture. Byte-equal: all.
-- Acceptance: `a_multi_segment_import_reaches_its_path`. The block above generates `std::sync::Mutex<std::vec::Vec<Flow>>`, and rustc on it reports E0277/E0369 and no E0425.
+- Layer: conception (`Conceiving<Import>`, the chain fold). Byte-equal: all.
+- Acceptance: `a_multi_segment_import_reaches_its_path`. The block generates
+  `std::sync::Mutex<std::vec::Vec<Flow>>`.
 
 ### Fork 3 (b): "shared mutable state stays outside ethos, in hand-written Rust, and implementers report each case under Proposal 5"
 
@@ -226,7 +275,7 @@ Library
 []
 ```
 
-- **1a × 2a.** `LockPaths` is a container new type over a declared new type. It is accepted under the reading that the double-wrap rule looks only at the held head, which is Vector. That reading is **inference**. `Paths.LockPaths` is refused with `Conceptual.{ [ 1 1 2 ] DoubleWrap }`. The same reading accepts the set's `OptionalSpiritGuardianProviderName.Option<SpiritGuardianProviderName>` and `Locks.Vector<Lock>`. In this pair no `pub type` remains anywhere, and the generation alias branch is deleted.
+- **1a × 2a.** `LockPaths` is a container new type over a declared new type. It is accepted under the reading that the double-wrap rule looks only at the held head, which is Vector. That reading is **inference**. `Paths.LockPaths` is refused with `Conceptual.{ [ 1 1 3 ] DoubleWrap }`. The same reading accepts the set's `OptionalSpiritGuardianProviderName.Option<SpiritGuardianProviderName>` and `Locks.Vector<Lock>`. In this pair no `pub type` remains anywhere, and the generation alias branch is deleted.
 - **1a × 2b.** `LockPaths` is a struct. `Paths.LockPaths` emits `pub type Paths = LockPaths;`.
 - **1b × 2a.** `LockPaths` is an alias. `Paths.LockPaths` names a declared alias and is refused. **Inference**: it is refused as `DoubleWrap`. Aliases remain only over containers.
 - **1b × 2b.** The baseline: `pub type Paths = LockPaths;`.

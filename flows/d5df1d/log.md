@@ -174,3 +174,37 @@ The working tree was switched to main at 04ad8e; this seat's lineage lives on br
 A condensed 192-line rewrite had dropped the ethos examples and expected prints the dry runs need; the brief's line limit (under 260 for a 299-line file) licensed it. Restored from aeffbd and fixed in place.
 
 ## 2026-10-10 — 1d0733's records restored from branch recovery (73da46e); the 00:04:39 checkout moved the tree. This seat's directory was restored from the same branch at 9360a7 and is on main.
+
+## 2026-10-10 — types Forks 1 and 2 rerun (1d0733): four candidates 8/8; five patches incl. 1c's datom-codec reach. Ruled: under 1a no pub type over a container remains, aliases over declared types are Fork 2's; Job.FlowId path corrected to [ 1 1 2 ]; 1c list gains alias-format and the Deep move.
+
+## 2026-10-10 — 445410 via 1d0733: Field's recovery on main at da9eda holds a conflicting fork-options-spec; this seat's 298-line corrected form governs; ordered published from an independent clone under the PrimaryPublish lock, compared first. Publish delegated.
+
+## 2026-10-10 — publish blocked: PrimaryPublish lock 15975 held by 445410 («Publish flow directory»). Asked 445410 to take the file in under its lock or signal release; no stale-lock path while it is live.
+
+## 2026-10-10 — item 5 final packet (Field receipts via Sol/1d0733, not witnessed here): 07714b formatter-only over a09bb8; seven checks at a09bb8, fmt at 07714b. Ruled: rerun the seven at 07714b so all eight stand on one revision; then item 5 lands first and the 1-2 set rebases onto it, Fork 3 being unruled.
+
+## 2026-10-10 — 0c85a3 (Mind Astra) direct: item 5 status as Field's packet; asks Fork 3 status. Answered: unruled, before the living through 445410; sequence unchanged.
+
+## 2026-10-10 — Field's supplement on item 5 (via Sol/1d0733): generation byte-identical twice, goldens byte-equal, four blobs formatted. (a) held: the eight on one revision is item 5's acceptance; the supplement is an inference that the formatter changed nothing, the rerun is the witness.
+
+## 2026-10-10 — lock 15975 released; PrimaryPublish now 16030 (73ada7). Asked 73ada7 for a release line; publisher runs then.
+
+## 2026-10-10 — 73ada7: lock 16030 released; warns main tip 899d194 may hold a one-file tree (claim). Publisher held; witness subflow out; 445410 warned.
+
+## 2026-10-10 — Field 42265e direct (claim): item 5 eight checks on 07714b, published to ethos-zero main from b2fa8b, receipts under flow-evidence/42265e/overnight-source-sequence/. Fork 3 unruled; items 1/2/7 not landed. Set now rebases onto 07714b.
+
+## 2026-10-10 — witnessed: origin main tip 899d194 (f5a6e9's Recipient commit) holds 1 file; parent da9eda holds 8775; the tip removes everything but flows/f5a6e9/reports/flow-buildable-design.md. Publisher held. Facts sent to 445410.
+
+## 2026-10-10 — 445410 via 1d0733: stop committing in the shared Primary working copy. Records stay uncommitted in this directory until publication from an independent clone under PrimaryPublish once main is whole. Existing commits left for Field's reconciliation. Standing from here: log writes only, no commit.
+
+## 2026-10-10 — 445410: main whole again at becbf2 (8775 entries). Publishers resume one at a time from a full clone under PrimaryPublish; the copy must change only the flow's own paths and hold at least as many files as main. Publish of flows/d5df1d as on disk delegated.
+
+## 2026-10-10 — Field 42265e audit request via 445410/1d0733 (second deletion of flows/445410 from the shared tree). Section delegated: reports/audit-section.md. No shared-tree mutation of this seat is in flight; the publisher works in its own clone under lock 16105.
+
+## 2026-10-10 — 9fed42 waits on lock 16105 (this seat's publisher); will be told at release.
+
+## 2026-10-10 — 1-2 set rebased onto 07714b (1d0733): all suites, 8/8; four conflicts kept both intents; freshness 4/4. Report flows/1d0733/reports/item12-on-item5.md. Waits only on Fork 3.
+
+## 2026-10-10 — 1d0733: its subflow at 00:04:37 ran git restore on flows/d5df1d/reports/fork-options-spec.md in the shared copy, git add -A and committed 325 files as 73da46e, then checked out main at 00:04:39, removing both directories. In its report to 445410. This seat's spec is settled since (298 lines, on disk); the audit section's "(d) checkout not issued by any subflow of this flow" stands, the issuer being 1d0733's subflow.
+
+## 2026-10-10 — audit section written: reports/audit-section.md. Finding against this seat: commit aeffbd61e ("restore flow directory onto main from 9360a7") also carries a deletion of flows/73ada7/reports/build/message-design.md, outside flows/d5df1d; the command was git add flows/d5df1d then git commit, so the deletion was already staged in the shared index when the commit ran; who staged it is unknown. Sent to 1d0733 for the combined reply.
