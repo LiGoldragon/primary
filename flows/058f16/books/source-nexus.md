@@ -7,9 +7,8 @@ The Source nexus serves the sources of every
 component. A component names a source; the Source
 nexus knows where its bytes are and what their
 Blake3 hash must be, and refuses bytes that do not
-match. Nothing of this exists yet, in production or
-in a development branch: it is a design, and this
-book asks for the words it is to be built against.
+match. Nothing of this exists yet, in production
+or in a development branch: it is a design.
 
 ```
  a component: Ethos, Curriculum, a flow
@@ -40,44 +39,6 @@ book asks for the words it is to be built against.
  +------------------------------------+
 ```
 
-The types every user of sources shares sit in one
-library. In ethos, a `Library` declares types; `.`
-after a name gives its type, `.{ }` makes a struct
-of the positions inside, `.[ ]` an enum of the
-variants inside:
-
-```
-Library
-[]
-[ SourceName.String
-  Blake3.{ Integer Integer
-           Integer Integer }
-  Fetcher.[ Git.{ Remote Revision }
-            Local.{ Host Directory } ]
-  Source.{ SourceName Fetcher Blake3 }
-  Contribution.{ Contributor
-                 Vector<Source> } ]
-[]
-[]
-```
-
-`SourceName` is the name a component holds.
-`Fetcher` says where the bytes come from. `Source`
-is one registry entry. `Contribution` is what one
-repository's datom file holds. `Blake3` is four
-64-bit integers only because ethos has no byte type
-yet; that is the question of the book «Bytes in
-ethos». Whether `SourceName` becomes a checked name
-built of words is the question of «Word-built
-names»; here it is plain text.
-
-Where this meets «The Ethos Nexus»: the Ethos
-registry keeps a name and a path inside a source,
-keyed by the same `SourceName`; the hash and the
-fetcher stay in the Source nexus. That book's
-question on where the hash lives is the same line
-seen from the Ethos side.
-
 ## Distillation
 
 ### D1. The Source nexus, a new skill vision-source
@@ -87,12 +48,12 @@ new file, shown whole. It distils the comments of
 2026-10-10 on «Sources and the registry»
 (flows/058f16/vision/source.md). The design's
 answers to the questions below land in it as D2 to
-D7.
+D8.
 
 Added, the whole file:
 
 +---
-+description: The Source nexus — its registry of sources, their hashes, fetchers and shared library — is being designed or judged against what the living wants.
++description: The Source nexus, its registry of sources, their hashes and fetchers, and the shared sources library.
 +dependencies: [vision-nexus]
 +---
 +
@@ -241,7 +202,12 @@ library`.
 The design keeps one entry per name: one fetcher
 and one hash. «The Ethos Nexus» reads the same
 comments as placing Git revisions in a registry of
-their own, the Git equivalence registry.
+their own, the Git equivalence registry. Either
+way, the Ethos registry keeps only a name and a
+path inside a source, keyed by the same source
+name; the hash and the fetcher stay in the Source
+nexus. The hash field is four Integers until
+«Bytes in ethos» is ruled.
 
 Target: `psyche-skills/skills/vision-source.md`.
 Place: the end of the section `## The registry`.
@@ -319,4 +285,47 @@ Below, unchanged: the heading `## A registry
 name`.
 
 **Ruling.** 1 or 2.
+
+### D8. The shared library's types
+
+The types every user of sources shares, in ethos.
+A `Library` declares types; `.` after a name gives
+its type, `.{ }` makes a struct of the positions
+inside, `.[ ]` an enum of the variants inside.
+`SourceName` is the name a component holds;
+`Fetcher` says where the bytes come from; `Source`
+is one registry entry; `Contribution` is what one
+repository's datom file holds. `SourceName` is
+plain text here; whether it becomes a checked name
+built of words is the question of «Word-built
+names». The `Blake3` field is four Integers until
+«Bytes in ethos» is ruled.
+
+Target: `psyche-skills/skills/vision-source.md`.
+Place: after D7's line, same section `## A shared
+sources library`.
+
+Added, the line and the block below it:
+
++The shared sources library declares these types:
+
+```ethos
+Library
+[]
+[ SourceName.String
+  Blake3.{ Integer Integer
+           Integer Integer }
+  Fetcher.[ Git.{ Remote Revision }
+            Local.{ Host Directory } ]
+  Source.{ SourceName Fetcher Blake3 }
+  Contribution.{ Contributor
+                 Vector<Source> } ]
+[]
+[]
+```
+
+Below, unchanged: the heading `## A registry
+name`.
+
+**Ruling.** D8 as written, or amend by type.
 <!-- to-the-living:end -->
