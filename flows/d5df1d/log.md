@@ -232,3 +232,39 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — publish refused again: PrimaryPublish 16275 held by 73ada7. Asked 73ada7 for a release line.
 
 ## 2026-10-10 — 73ada7 released (its restore on main at 5374e1); publisher re-dispatched; 73ada7's second publisher may queue after.
+
+## 2026-10-10 — item 6 rerun (1d0733) green with the pinned loss. Ruled: flow-library's reprint compares byte-equal against the source with the comment line removed, so the comparison keeps its strength.
+
+## 2026-10-10 — records published to main as e38f57 (from 5374e1, lock 16280, two paths, 8777 files). 1d0733 told for 445410.
+
+## 2026-10-10 — set final (1d0733): item12-on-item5-{protos,datom-codec,ethos-zero}.patch then item6-on-set-ethos-zero.patch, all green on Prometheus; waits on Fork 3.
+
+## 2026-10-10 — 445410 task via 1d0733: ethos-test, an acceptance suite of vision/ethos.md statements and ruled forks against ethos-zero 07714b. Rules sent: a target only where a statement names an observable of ethos-zero; meaning statements are listed as no-observable, not expected-failing; nothing proposed-unruled (types Forks 1–4, invariants 3, 4, Fork 3, special representation, Sources list) becomes a target; map to be judged on arrival.
+
+## 2026-10-10 — ethos-test STATEMENTS.md ready (1d0733), with a "differs, no target" category: (a) duplicate kind heads by constraint; (b) protos:String vs intrinsic; (c) push!{ [ String ] } refused TraitWanted; (d) pub type LockId = Integer example. Subflow sent to return the map and the four statements' texts for judgement.
+
+## 2026-10-10 — ethos-test map judged (subflow read of STATEMENTS.md 0f79c4 against vision/ethos.md 850fd2). Rulings sent: (a) a tension inside the vision, to the living as a fork; (b) a Mind defect, expected-failing; (c) stale example, one-line proposal, refusal is the generator's reading; (d) the types book's proposals, differs until ruled; plus category, observable, stronger/weaker and omission corrections, and the no-tuple vs FlowId(pub String) tension for the living beside Fork 4. Full table to reports/ethos-test-judgement.md.
+
+## 2026-10-10 — reports/ethos-test-judgement.md written (109 lines), unpublished until the next publish turn. Held for the next types edition, after his ruling: the two-traits-by-constraint fork, the no-tuple vs FlowId(pub String) tension beside Fork 4, the Self example, the alias examples.
+
+## 2026-10-10 — ethos-test pushed 785d5d, green (25 pass + fixture, 6 expected-failing, 9 differs, 21 no-observable, 18 unruled). New tension: line 188 (protos:String appears as protos::String) vs line 175 (import and intrinsic mean the same). Ruling (b) revised: a tension inside the vision, not a Mind defect; target moves from expected-failing to differs; proposal held for the next edition: 175 is the rule, 188's example changes to a non-intrinsic name.
+
+## 2026-10-10 — 445410 via 1d0733: four books, one tension each, one proposal each; line 188 rides with the push! example. 445410 routed protos:String to Mind as a defect; told 1d0733 that routing is premature while 175 vs 188 is before the living. Four book subflows dispatched.
+
+## 2026-10-10 — «Two heads, one name» published: https://claude.ai/artifact/DMEAiqM1GCoCnjhfSGKLQZ (books/two-heads.md). Note: under reading (2) line 106 ("by its name and its constraints") reads against the amendment; not raised in the book; held for the edition after his ruling.
+
+## 2026-10-10 — «No tuple, and FlowId» published: https://claude.ai/artifact/U664wc6k8XWbQvUopmdCLQ (books/no-tuple.md). Rendering defect: a file line "## Spacing" inside a text block rendered as a heading; source correct; not republished. Renderer defect for the book-agent owner.
+
+## 2026-10-10 — «Two stale examples» published: https://claude.ai/artifact/DJtpvWov6qxE7LvhcLzxnY (books/stale-examples.md). The source was repaired after publication (a text block had run across the Removed/Added labels); the page is being verified before the link goes to 1d0733.
+
+## 2026-10-10 — «Two stale examples» page verified (both diffs, figure drawn, distillation, ruling); link sent to 1d0733.
+
+## 2026-10-10 — «The alias examples» published: https://claude.ai/artifact/NZ8GTdxDEnvkEU54kVdLTM (books/alias-examples.md), eight lines. Decision: the three FilePath = String lines (265, 290, 306) join the same proposal; LockName/FlowId lines are the types book's Proposal 4; vector aliases wait on its Fork 1. Republishing at the same URL (no comments); link to 1d0733 after.
+
+## 2026-10-10 — rendered HTML path of «No tuple, and FlowId» sent to 1d0733 for Field (scratchpad/no-tuple.html; ## Spacing as h3).
+
+## 2026-10-10 — «The alias examples» final (version 4, eleven lines, ruling reads eleven); link sent to 1d0733. All four tension books before the living.
+
+## 2026-10-10 — publish refused: PrimaryPublish 16588 held by f5a6e9. Asked f5a6e9 for a release line.
+
+## 2026-10-10 — f5a6e9 released 16588; publisher re-dispatched.
