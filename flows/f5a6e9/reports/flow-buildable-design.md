@@ -163,6 +163,8 @@ Memory                          ; Flow's
                                 ; start time learned
                                 ; at spawn or bind
       Events.Vector<Event> }    ; signal-flow's
+                                ; type at the
+                                ; revision Flow pins
    Module.{                     ; the registry: one
       Subaspect                 ; per subaspect and
       Topic                     ; topic
@@ -191,8 +193,12 @@ spawn or at Bind (status: current best, not before
 the living).
 
 Event is imported from signal-flow: Started,
+                                ; type at the
+                                ; revision Flow pins
 ToolUsed.String, ContextMeasured.{ Tokens.Integer
 Window.Integer }, Stopped. In this build signal-flow
+                                ; type at the
+                                ; revision Flow pins
 gains ContextMeasured.{ Tokens.Integer Window.Integer }
 (current best).
 
@@ -310,11 +316,6 @@ Signal                          ; what Flow is asked
       NoneAbove                 ; Up above Primary:
                                 ; sender at the
                                 ; top of its aspect
-      NotMessage                ; Lock, Deliver or
-                                ; Release from a
-                                ; peer not the
-                                ; Message Nexus's
-                                ; process
       Unidentified.Process ] ]  ; in no metaflow
 []
 ```
@@ -565,14 +566,7 @@ ends by Deliver (one delivery per lock), Release, lapse,
 or a refusal at Deliver; Release after Deliver is
 refused Unknown.Lock, Release of a granted lock that ran
 out Lapsed, of one never granted Unknown.Lock.
-OffRoute is refused at Lock; Deliver trusts its lock.
-Lock, Deliver and Release are accepted only from
-the Message Nexus's own process, which Message
-registers at its start with Bind.{ Address
-Process } under its own address and Flow holds
-(current best). Flow reads the peer's
-credentials from the kernel on the ordinary
-socket (current best). Stop leaves the metaflow
+OffRoute is refused at Lock; Deliver trusts its lock. Stop leaves the metaflow
 Asleep; only End ends it.
 Status: current best, not before the living.
 
@@ -580,10 +574,9 @@ Status: current best, not before the living.
 it walks the process's ancestors to the harness
 process and compares both the pid and start time
 of a Flow record's Process, returning that flow's
-address, else Unidentified.Process. No environment
-variable is read. The Sender of a Deliver is that
-address (status: current best, not before the
-living).
+address, else Unidentified.Process. The Sender of a
+Deliver is that address (status: current best, not
+before the living).
 
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
@@ -592,8 +585,8 @@ shared topic). Also, by Signal: Locked, Held.Lock, Awake.FlowId, Asleep,
 Lapsed, Unknown.[ Address Lock FlowId Key ],
 NoLayer, Ended.Address, OffRoute
 (Sender and recipient aspect, layer and topic do not
-match the routes), NoneAbove, NotMessage, Unidentified.Process,
-and for a Configure NoSource, HashMismatch,
+match the routes), NoneAbove, Unidentified.Process, and
+for a Configure NoSource, HashMismatch,
 Conflict, and for a Bind Taken or Unidentified.Process.
 
 **Context modules, background.** A module is one file
@@ -715,7 +708,7 @@ still open here; its list has no N9, N10 or N12:
   in an awake flow (book 17, ruling 3).
 
 Answered in the design, current best: N1 and N2
-(Deliver.{ Lock Request }), N4 declaration in
+(Deliver.{ Lock Sender Request }), N4 declaration in
 the Library, N5 (Identify.Process, Process on Flow),
 N6 (refusals), N7 (Queued, Woken.FlowId), N11
 (Configure.Nexus Lease), N13 (Bind).
