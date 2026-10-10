@@ -810,6 +810,17 @@ vision-aspects routes. Today Flow has no Memory root,
 no metaflow record, no lock, no module registry, and
 reads no context size.
 
+**Current best** (deployment and migration): the
+new Flow reads nothing of the old store and
+migrates nothing; its Memory starts empty and is
+filled by Configure payloads on the meta socket
+and by flows that Bind or are Launched. The
+deploy sets the old store file aside unchanged
+and rotates stable and Next; the old Nexus
+serves its sessions until they end or are
+refreshed into the new one. No migration code
+lives in the Nexus.
+
 ## 4. Open rulings
 
 The books record rulings as asked; whether the living
