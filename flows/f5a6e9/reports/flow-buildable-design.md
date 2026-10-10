@@ -17,8 +17,8 @@ canonical vertical three-space form.
 Library                         ; Flow's
 [  meta_signal_flow:[           ; at the revision
       CodexEndpoint             ; Flow pins
-      HarnessProfile            ; (88f37592), as
-      FlowAspect ] ]            ; the meta socket
+      HarnessProfile ] ]        ; (88f37592), as
+                                ; the meta socket
 [  FlowId.String                ; unideal now: a
                                 ; real id built on
                                 ; the hash bits that
@@ -114,7 +114,7 @@ Library                         ; Flow's
       StableCodex.CodexEndpoint
       NextCodex.CodexEndpoint
       HarnessProfiles.Vector<HarnessProfile>
-      MetaAspects.Vector<FlowAspect>
+      MetaAspects.Vector<Aspect>
       MessageNexusPath.String   ; Message's
                                 ; ordinary socket
       MessageNexusBinary.String  ; store path of
@@ -449,15 +449,16 @@ Signal                          ; the meta socket
    meta_signal_flow:[           ; meta-signal-flow
       CodexEndpoint             ; at the revision
       HarnessKind               ; Flow pins
-      HarnessProfile            ; (88f37592);
-      FlowAspect ] ]            ;
-                                ; FlowAspect and the
-                                ; Library's Aspect
-                                ; name the same
-                                ; three; the
-                                ; duplicate goes
-                                ; when the Library
-                                ; lands in code
+      HarnessProfile ] ]        ; (88f37592);
+                                ; Aspect is the
+                                ; Library's,
+                                ; declared once;
+                                ; every record of
+                                ; the three names,
+                                ; in Flow,
+                                ; signal-flow and
+                                ; meta-signal-flow,
+                                ; carries Aspect
 [  Configure.[
       Module.{                  ; the registry: one
          Key                    ; per key
@@ -924,7 +925,9 @@ records Module.{ Key Source }, Model, Threshold,
 Metaflow and Lock; Aspect, Address, Metaflow, Lock,
 Process, Sender, Key, Start and Nexus declared once in
 the Library with Subaspect and Source; Process on the
-Flow record; the Start argument; the Nexus payload and
+Flow record; one Aspect name, the Library's, where
+signal-flow and meta-signal-flow say FlowAspect; the
+Start argument; the Nexus payload and
 the Configuration query with its order; the lock,
 Bind, Identify and Deliver queries, responses and
 refusals of the flow socket; the Message gate; who
