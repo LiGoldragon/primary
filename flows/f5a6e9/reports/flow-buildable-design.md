@@ -632,6 +632,11 @@ under a flow, moves that flow's id into the
 metaflow's Past (the last few kept, oldest first)
 and the metaflow becomes Asleep (current best).
 
+**End.** End moves the current flow's id into Past
+and empties the queue, so an ended metaflow reads
+Ended with that id in Past and an empty queue
+(current best).
+
 **The refresh.** Measurement: the hook reads the
 transcript at each Stop and reports ContextMeasured,
 the sum of the last assistant usage's three input
@@ -711,10 +716,17 @@ Nexus payload with NoSource.Path. Bind also serves
 debugging and flows launched before Flow existed
 (status: current best, not before the living).
 
-**Message process exit.** When Message's bound
-process exits, its metaflow becomes Asleep and the
-binding is dropped; a new Bind from the configured
-binary wakes it (current best).
+**Message process exit.** When a bound process
+exits, its flow id moves into the metaflow's Past
+(the last few kept, oldest first), as for Stop
+(current best).
+
+**Dead process detection.** Flow does not poll for
+a dead bound process: it notices it when a query
+touches that metaflow (Metaflows, Current, Lock,
+Bind, Deliver), re-checking the pid and start
+time then, and at the hook's Stopped for a
+harness flow (current best).
 
 **Who is the caller.** Flow answers Identify.Process:
 it walks the caller's ancestors to a Flow record's
