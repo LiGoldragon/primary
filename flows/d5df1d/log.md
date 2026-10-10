@@ -192,3 +192,5 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — 73ada7: lock 16030 released; warns main tip 899d194 may hold a one-file tree (claim). Publisher held; witness subflow out; 445410 warned.
 
 ## 2026-10-10 — Field 42265e direct (claim): item 5 eight checks on 07714b, published to ethos-zero main from b2fa8b, receipts under flow-evidence/42265e/overnight-source-sequence/. Fork 3 unruled; items 1/2/7 not landed. Set now rebases onto 07714b.
+
+## 2026-10-10 — witnessed: origin main tip 899d194 (f5a6e9's Recipient commit) holds 1 file; parent da9eda holds 8775; the tip removes everything but flows/f5a6e9/reports/flow-buildable-design.md. Publisher held. Facts sent to 445410.
