@@ -508,3 +508,37 @@ and publish a corrected new edition. Requested390px light/dark checks with
 separate document/block overflow measurements,1920px sanity, code-text match,
 screenshots and edition URL. No duplicate publisher/book task, new source
 writer or Flow runtime action was requested.
+
+## 2026-10-07 — Immediate compensation skill order
+
+Secretaryd4ae97 relayed the living's instruction to create a machine-authored
+compensation skill and deploy immediately through curriculum-deploy so every
+flow loads it. The exact initial body is:
+
+1. Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; a book carries no narrative, status or survey.
+2. Every line inside a book's code block is at most 52 characters; prose proposed for a file is wrapped to that width before publishing.
+
+The secretary will send additional recurring insistences for the same skill;
+this does not delay the two-line deployment. Preserved the living's supplied
+raw compensation/distillation words in vision/skills.md and vision/books.md.
+Delegated authoring, exact write-set coordination, commit/push, curriculum-deploy
+and standing-load verification to the existing implementation worker. No new
+source worker, approval gate, generated-tree hand edit, or shared Primary JJ
+mutation is authorized. Explicit deployment applies to the compensation;
+ongoing Flow/Messenger implementation remains under existing ownership.
+
+The worker must distinguish generated future-context inclusion from actual
+injection into already-running contexts. Informed42265e of the bounded change
+and potential generated-output publication; no Flow runtime action requested.
+
+## 2026-10-07 — Recurring-compensation scope expanded
+
+The secretary requested review, application, and deployment of the 47 proposals in `flows/d4ae97/reports/recurring-insistences.md`, with the ten listed contradictions reconciled except the independent-clone rule in `compensation-primary-commit`, which remains untouched pending the living's ruling. The existing compensation worker retains sole implementation ownership; a read-only review covered all 47 entries. Existing source and generated checks pass for the initial book compensation, but no dependency expansion into actual launch or role prompts has been witnessed. The common standing-load integration remains required. The old initial two-path publication request was retired; Field 42265e awaits the final complete owned scope and checks. Preserve the 27 foreign Curriculum additions and all shared checkout state.
+
+### Compensation source review and implementation handoff
+
+The worker produced Curriculum candidate `af6d4ec3` on `c98fc439`. Independent source review confirmed the 15-path scope and preservation of the two original book rules and held clone rule. It found missing launch visibility details, remaining succession terminology, a Codex presentation-receipt requirement, combined-topic presentation, and current-direction reconciliation. The worker applied follow-ups. The generated role composer now accepts the declared standing selection and passed its tests, but the shared generated artifact and native launcher consumption were still unfinished. The worker stopped all edits and handed the exact source state and same-flow locks 14301/14312 to `standing_loader_finish`, a fresh implementation context; there is one writer. Final projection, immutable checks, independent acceptance, and bounded publication remain required.
+
+### Standing-load candidate accepted for bounded source publication
+
+The completed candidate emits one standing selection from Curriculum and composes its ten selected bodies into all 24 generated role prompts. Independent review confirmed each body occurs once and that the three native launchers consume the shared selection while retaining main-flow first and aspect additions. Candidate generator check returned `Checked.{ 105 24 }`; generator and launcher tests passed. A suspected stale Page workflow was retracted after checking the requirement: only wording naming the book artifact and the explicit Opus/High chooser change; storage/API workflow remains. Requested Field 42265e publish only the frozen manifest's 17 Curriculum and seven curriculum-deploy source paths, qualifying remote parents and hashes. Primary publication is deferred until the actual durable source revisions are pinned and its normal immutable check passes. No running-context reload is inferred.

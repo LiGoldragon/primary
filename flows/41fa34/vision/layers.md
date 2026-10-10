@@ -22,3 +22,19 @@ Context: relayed by Field db38f8 after the living learned a Quaternary Field flo
 > For the Claude stack, we are going to use Sonnet at low effort, and for the Codex stack, we are going to use Luna at low effort (quaternary layer). Make sure that this is passed along, and the right skills are edited and deployed.
 
 -- psyche, relayed by db38f8; input method unspecified.
+
+## Primary and Secondary and the levels
+
+Context: the living assigns Primary design and implementation through its own subflows, and Secondary tracking and secretary work.
+
+> Astra is primary and designs and implements because he uses his own subflows with his own design directly. He doesn't need to use Sol to implement new designs. Sol is good for keeping track of everything that Primary is working on and acting as a secretary. You're going to have to talk to a secretary because you're secondary. I want that hard-enforced. ... They have to either go horizontally, [one] level up, or any level down and across, right? This is why the level under essentially acts as a secretary for any other level under it so that the higher levels don't get disturbed by what happens at the bottom.
+
+-- psyche, 2026-10-07; relayed by d4ae97, input method unspecified.
+
+## Claude Quaternary
+
+Context: “that” refers to Haiku 5.5 in the living's preceding words. The installation and launch order is tracked in the flow log.
+
+> we need to start using that on the quaternary now. ... This primary-to-quaternary division is sort of universal in any type of metaflow or flow.
+
+-- psyche, 2026-10-08; relayed by d4ae97, input method unspecified.

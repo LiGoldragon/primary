@@ -276,6 +276,12 @@ psyche, 8475a9, Psyche.{ Fable 8475a9 }, Psyche Primary designer succeeding bad8
 mind, f768df, Mind Astra — successor to dea0ba; layer and voice design with Psyche Fable.
 psyche, d4ae97, Psyche.{ Opus d4ae97 }, Psyche Opus seat succeeding aa887c: secretary to Psyche Fable 8475a9; messages in and out, builds and tests through Opus subflows.
 psyche, e5a0bc, Psyche.{ Fable e5a0bc }, Psyche Primary designer succeeding 8475a9: Flow and Message with the metaflow at the centre; the code book; the datom expansion rulings and the ethos syntax changes.
+field, 6aa08d, { Field Quaternary 6aa08d }, Field Quaternary Codex Luna low: census and source-grounded index of flows active or materially touched from 2026-10-04 through 2026-10-07; handoff to Secondary for deepening.
+psyche, b27767, Psyche.{ Fable b27767 }, Psyche Primary designer succeeding e5a0bc: Flow alone — the four roots, the Memory registry of context modules, the lock, the refresh, cut and made today.
 psyche, f5a6e9, Psyche.{ Fable f5a6e9 }, Psyche Primary designer succeeding b27767: Flow Nexus with context modules at its heart; then the metaflow revised, then stored type and datom form.
 mind, 0c85a3, Mind.{ Astra 0c85a3 }, Mind Primary successor of f768df; Curriculum repository separation, Nexus registry, skill regeneration and transitive launch dependencies.
+mind, 4ddfe1, Mind.{ Luna 4ddfe1 }, Mind Quaternary Codex Luna low: qualify the native route and execute Mind Primary refresh while preserving the handoff and pending work.
 psyche, ebbe30, Psyche.{ Fable ebbe30 }, Psyche Primary: Spirit as the common machine-instruction family; coordinate basic vision distillation with Secondary d4ae97; propose reviewed wording, no cosmological claim adopted as fact.
+psyche, d5df1d, Psyche.{ Fable d5df1d }, Psyche Primary Ethos topic: ethos vision vs implementation audit and invariants; book on type, new type and type alias.
+psyche, 1d0733, Psyche.{ Opus 1d0733 }, Psyche Ethos Secondary 1d0733 (successor of dcd651; peer of Ethos Primary d5df1d; reports to 445410)
+psyche, 9fed42, Psyche.{ Opus 9fed42 }, Psyche::Flow Secondary, secretary of Flow Primary f5a6e9; takes over the Flow part of 73ada7's work.

@@ -20,3 +20,10 @@ Context: reading «Spirit edit incident», at the line that any flow may create 
 > That message actually has, given the particular state of that flow, the effect of changing the result. Different messages will have different flow-waking effects. When the message that does have the waking effect at that particular state in that flow comes in, it will also trigger checking the queue for that flow, so that the whole queue is checked in order, from the first received to the last. The message that just got in and triggered the queue will come in at the end of the prompt and it'll be a vector of all these objects, which are typed by variant name, obviously. We're designing Ethos here but even if we're talking about the closure sort of prototype version ...
 
 -- psyche, STT, 2026-10-08. The last sentence is unfinished.
+
+## Message uses Flow; message is called message
+Context: ordering topic flows for Ethos design and Nexus design, which will talk to each other.
+
+> Nexus/a little bit of messaging in terms of remaining aware of the fact that we want messaging to use Flow. I mean, message should be called message.
+
+-- psyche, STT, 2026-10-09.

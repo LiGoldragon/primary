@@ -235,3 +235,35 @@ Independent deploy review found trailing-form data loss and missing transaction 
 ## Word-id anatomy distillation correction — 2026-10-09
 
 41fa34 confirmed that the first published anatomy had no revised source and lacked the distillation section required by vision-book. A separate second edition was delegated to deploy, with independent source review by projection_review. The published first edition remains unchanged. Review identified the existing vision-flow word-id sentence as the narrow source target. An initial draft widened the ledger/archive role into addressing a flow; correction requested preservation of the existing role and a proposal limited to the first-33-bit relationship. Dictionary, spelling and anatomy remain proposals; publication is not approval or implementation.
+
+## First Flow Nexus increment and declarative runtime scope — 2026-10-09
+
+41fa34 relayed new-round authorization for one bounded Flow Nexus/CLI increment. Read-only projection_review found that Current alone cannot report the proposed metaflow: existing durable records describe runs and launch attempts, and the unused Voice association is not populated by launches. Selected the existing pre-harness launch reservation as the identity boundary: explicit aspect/layer/topic in the attempt, followed by a read-only lookup over actual bindings and supported raw phases/lifecycle, with ambiguity explicit and replacement predecessor retained until successor release. Sole implementation assignment went to deploy, beginning with exact checkout/ownership/write-set qualification; no runtime action authorized by that assignment. Existing dirty Cargo.toml/store.rs and signal manifest/lock mismatch remain preserved.
+
+Separately, the superseding allocation from445410 through41fa34 assigns Field the sole runtime audit, Mind the confirmed declarative ports, and Field deployment to Zeus and Prometheus. No parallel host inventory was started here. The raw deployment-accounting record was frozen as one-path candidate da1730; publication handoff returned Held.{ 42265e Blocked attempt-693e7190-859 }. Nothing was typed and no retry was made;41fa34 was notified for route coordination. This receipt is not evidence that Field's runtime audit stopped.
+
+## Canonical title ruling — 2026-10-09
+
+41fa34 relayed445410's authoritative title handoff: `{ <Aspect> <Topic> <Layer> <flow id> }`, including Core and without `::`. This supersedes the earlier attributed `Psyche::` title-blocker claim; word identifiers remain a separate proposed tool. Assigned existing launch_evidence worker the bounded canonical-title source/fixture fix, disjoint from deploy's Flow launch-journal scope. No runtime retitle or identity mutation. Requested41fa34 append the correction to its owned audit/checklist without rewriting old logs. Prometheus-only immutable Nix validation and sole Field publication remain required; Field's current Action Required state is still the handoff blocker.
+
+## Topic-name correction — 2026-10-09
+
+41fa34 relayed the living's correction: topics use uncapitalized core and ethos, the core:Name camelCaseExpression type with runtime checks at creation. Its audit amendment also records flow. Braced title shape and Aspect/Layer spelling remain; prior PascalCase direction no longer governs upcoming topic validation. Sent the correction to launch_evidence and deploy, and assigned projection_review read-only qualification of the actual Name/checker source. No grammar, persisted conversion, normalization or implemented validation is claimed before that evidence.
+
+## Source qualification corrections and new scopes — 2026-10-09
+
+Deploy qualified canonical Flow as clean ac6ab6 matching remote; earlier dirty28a78d evidence belongs to the separate nested Primary checkout. Canonical signal-flow ethos/generated paths overlap lock13949; supported owner coordination is required before edits. Existing dirt remains untouched.
+
+Field's runtime audit identified Dolt's missing declared SQL-server lifecycle; assigned projection_review source qualification for that confirmed persistent gap only. Private deleted debug Flow is Field's retained test fixture and USB observer is temporary evidence, so neither is adopted. Zeus HTTP drafts server and Prometheus MPD mismatch still require owner/lifecycle diagnosis; mutable application data is preserved.
+
+41fa34 relayed the exact source-path order psyche-skills/vision/ethos.md. Assigned launch_evidence the source-layout/consumer migration inventory, with no blanket repository rename or historical-book rewrite. 9fed42's request for final Flow-book paths was relayed through41fa34; no unlanded new path was reported as current.
+
+Both source qualifiers found no authored core:Name/camelCaseExpression implementation or callable checker. Requested the missing creation-time contract through41fa34; lower-camel examples and braced title shape remain settled. Title worker changed no source and released lock15322 when scope changed. No local heavy execution or runtime mutations occurred.
+
+## Bounded launch-status round — 2026-10-09
+
+Further read-only source qualification found LaunchStatus already exposes pending durable attempts. The selected first Flow increment is therefore a coherent extension of that existing response to retain attempt/phase/binding after settlement, together with the recorded outcome and current recorded FlowNode or explicit absence. This replaces the first-round implementation scope; the aspect/layer/topic Current design remains deferred on the unfinished Core Name contract. Deploy remains sole Flow/Signal writer. No new query, registry, topic inference or private source migration. Ethos owns the new contract; generated code and checks require immutable remote Nix execution through Field, with no local fallback.
+
+Retraining qualification found field-skills3cc3a59 changes only compensation-messenger-clj and compensation-launch. The normal projection round must update both across five surfaces and24 standing role packets. The Claude two-path candidate removes READY-only instructions, but two source reviews found literal first-response ordering unresolved by the final-brief instruction alone; launch_evidence retains the source correction. No runtime compliance or test success claimed.
+
+The startup raw record is frozen as d83577. Its handoff to41fa34 was uncertain; read-only typed-ledger evidence retains attempt0101b4 as Uncertain. No retry or delivery success claimed. The uncertainty was relayed separately to41fa34.

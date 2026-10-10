@@ -1,0 +1,8 @@
+; Flow's time-bound lock on a metaflow, which Message asks for and holds while delivering
+
+Library
+[ address:Metaflow ]                           ; imports
+[ Deadline.Integer                             ; types: the time the lock lapses
+  Lock.{ Metaflow Deadline } ]                 ;   the lock, on a metaflow, until the deadline
+[]                                             ; kinds
+[]                                             ; associations

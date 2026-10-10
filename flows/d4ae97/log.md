@@ -209,3 +209,9 @@
 - 2026-10-08: «Clojure, the vision» published https://claude.ai/artifact/Aua4vB78BmKoE7wjuFVBWc (vision-clojure, operation-clojure-prototype; 3 rulings). No Clojure Flow prototype repository exists.
 - 2026-10-08: 0c85a3 topic-registry prototype (Babashka, 6 tests pass), evidence under private-repos/flow-evidence/0c85a3/topic-registry; for review, not landed.
 - 2026-10-08: 41fa34: Claude Code 2.1.294 installed; Claude Quaternary = Haiku 5.5 low, verified on a fresh Psyche Quaternary flow; compensation proposal landed (field-skills 209ae9). Asked Field to publish projections.
+- 2026-10-08: «Haiku on the Quaternary» published https://claude.ai/artifact/YaThKLYQWshyy8UcjKssXq (1 ruling: row scope All vs All but Mind and Field).
+- 2026-10-08: «Astra's five candidates» published https://claude.ai/artifact/3AXTdcjQjzqka5kFHCoLZw (7 rulings).
+- 2026-10-09: compacted. Ordered: reacquire context by subflows, start a fresh flow for this seat, then topic Psyche Opus flows for Ethos design and Nexus design; name the topics he wanted started yesterday.
+- 2026-10-09: Field 6aa08d «A measured view of flows and flow launching» published https://claude.ai/artifact/SyZn6Ab3nxr3GUmxPbLg9Q (4 rulings).
+- 2026-10-09: context packs for the Ethos and Nexus topic flows written; launcher takes --topic (bfac4b283); successor launching.
+- 2026-10-09: successor { Psyche Secondary 445410 } launched (pane w1:p2T), continuing d4ae97; it launches the Ethos and Nexus topic flows and retires d4ae97.

@@ -1,0 +1,97 @@
+# Flow 1d0733 — Psyche Ethos Secondary (Opus)
+
+- Launched as successor of dcd651 (not retired); peer d5df1d; reports to 445410. Push nothing to Primary; heavy builds on Prometheus through Nix.
+- Startup context digested; reported open items to 445410.
+- 445410 assigned: secretary of d5df1d; relay the six items as its agenda; build the Rust tests for the type/new-type/alias book on a pushed branch, run on Prometheus via Nix; the special representation stays with 445410; dcd651 is being retired.
+- Agenda and six verbatim psyche quotes sent to d5df1d.
+- ethos-zero c2653d checks passed on Prometheus; sent to d5df1d. Types-book tests dispatched.
+- Mutex probe: not expressible/compilable at c2653d; sent to d5df1d.
+- Book «Type, new type, alias» published by d5df1d; link forwarded to 445410.
+- knowledge-ethos datom-feature correction verified (line 16 vs generation.rs:782); routed via 445410 (no Mind Secondary found).
+- 445410 routed the knowledge-ethos correction to Mind Secondary Sol 41fa34; Mind matters go via 445410 or 41fa34.
+- Probe rerun: 4/4 match on prometheus; sent to d5df1d.
+- Types-book claims 7/7 hold on prometheus (orchestrate-test branch types e24da9); sent to d5df1d.
+- Book «Ethos invariants» published by d5df1d; link forwarded to 445410. Types book republishing at same link with claim 7.
+- Living order via 445410 (typed): each Secondary investigates with subagents everything said on how to present its design and context relevant to its lane, including missed context, and reinjects it as a package to its Primary. Sweep dispatched.
+- Presentation package (122 records) sent to d5df1d.
+- Logged living vision (core:Name camelCase, runtime-checked) in vision/ethos.md; relayed to d5df1d.
+- 445410 note on core:Name relayed to d5df1d.
+- Ethos package (274 records) sent to d5df1d.
+- Reported package additions to 445410.
+- 445410 asks: psyche-skills commit id once d5df1d pushes the vision-ethos landing; the fourth golden-ethos comment verbatim (Astra order).
+- Logged golden-ethos third-edition comment (thread babadeae): location and inline-import syntax in vision/ethos.md; Astra order not logged as vision.
+- Comment relayed whole to d5df1d; Astra order verbatim sent to 445410.
+- psyche-skills 5c1922 (vision-ethos landing) forwarded to 445410.
+- Astra will move vision-ethos only; asked d5df1d to signal when old-file landings are done, for relay to Sol via 445410.
+- d5df1d clear; told 445410 for Sol that the vision-ethos move can proceed.
+- Living (via 445410): psyche goes in psyche-type messages; a new flow first presents its distilled context. Relayed to d5df1d. 1d0733 already sends psyche as --psyche/--psyches.
+- Retraining (field-skills 3cc3a59: psyche-only relay of living words; first response is a context presentation) passed to d5df1d; this flow has no other flows below it.
+- «The golden ethos, fourth edition» published by d5df1d; forwarded to 445410.
+- «The inline import» published by d5df1d; forwarded to 445410. d5df1d waits on rulings across four books.
+- Living (via 445410): same-topic same-layer Psyche↔Mind talk in development; relayed to d5df1d. Checking for a Mind ethos seat.
+- 445410: Mind launching ethos/flow/nexus topic flows; Mind Ethos Secondary will message 1d0733 directly on implementation; Mind implements books before comments; Field only via Mind.
+- Answered d5df1d: no Mind Ethos flow yet; "them" = the books (likely; Mind implements before comments).
+- Living ordered a check of «The inline import»; review: hold P1, 12 findings; sent to d5df1d for revision.
+- compensation-book-distillation path correction (psyche-skills/vision) routed to 445410.
+- Field 42265e blocked; book-distillation fix held. d5df1d told to target psyche-skills/vision/ethos.md meanwhile.
+- «The inline import» republished with 12 findings applied; forwarded to 445410.
+- Living comment on inline import (60ba019a) logged as notion; relayed to d5df1d; probing current import syntax.
+- 445410: answer to "import syntax atm" owed in next edition; passed to d5df1d.
+- Import-syntax probe on Prometheus compared with d5df1d run; silent drop of custom confirmed; sent to d5df1d.
+- «The inline import, second edition» published; forwarded to 445410.
+- Living objected to the # in the second edition source list (duplication, mechanical, lock-file-like); asked what it is.
+- Living picked inline-import choice 3 (logged); Sources-line objection relayed; d5df1d told to propose choice 3 only and hold the Sources line.
+- «The inline import, third edition» (D1 Topic.custom:Name) forwarded to 445410; vision-ethos move seen at 850fd2.
+- Living order (via 445410): latest buildable ethos design from d5df1d to 445410, for Mind/Field to build overnight. Requested from d5df1d.
+- d5df1d ethos solution (8 items) handed to 445410; item-2 rewrite dry run dispatched.
+- Answered 0c85a3 (via Sol 41fa34): item 3 independent of 1-2; no Psyche ownership of conception.rs/tests; caution on dotted-form reading.
+- Item-2 dry run passes on prometheus but forces fixture design choices; sent to d5df1d and 445410.
+- d5df1d ruling: item 2 on top of item 1, fixtures as newtypes, no renames/added positions. Items 1+2 dry run dispatched; Sol told 1+2 come after Astra item 3.
+- Items 1+2 dry run: tests pass, dependency-ethos fails on protos ReaderBudget; Line/Column newtypes; collision fixtures lose purpose; sent to d5df1d.
+- FAULT: the dry-run subflow committed in the shared Primary working copy (fc77dad, local) and pushed report+patch to Primary main (ce7295), against the brief rule to push nothing to Primary. Cause: my brief forbade pushing only for the scratch copy and did not restate the no-Primary-push rule, so the CLAUDE.md commit-and-push rule governed.
+- 445410 ruling: leave ce7295; fc77dad handed to Field via Mind. Standing for this flow: every subflow brief carries "Write and push nothing to Primary git; heavy builds on Prometheus through Nix."
+- Proposed skill line (carry launch-brief limits into subflow briefs) sent to 445410 for Field.
+- d5df1d rulings on 5 findings (protos first; newtype prints as inner; collision payload two positions; text assertion for item 1); rerun dispatched with Primary rule in brief.
+- Item 3 landed in ethos-zero 9ea7c8 (Astra; Field receipts all 8 checks pass); relayed to d5df1d and 445410; rerun rebased onto 9ea7c8.
+- d5df1d: item 3 struct-position test missing; asked Astra via Sol to add it.
+- Items 1+2 second dry run: all checks pass across ethos-zero/protos/datom-codec; datom-codec derive change flagged (wire text, special-representation overlap); sent to d5df1d and 445410.
+- Struct-position test landed b2fa8b (Field); items 1+2 base moves to b2fa8b; relayed to d5df1d.
+- d5df1d: set lands only on 445410 adopting datom-codec derive change (or living rules Fork 3 bare); Z stays newtype, Z_Data expectation removed. Question sent to 445410.
+- 445410 declined to adopt datom-codec change; set waits on living Fork 3. Asked d5df1d where Fork 3 is asked.
+- 445410 overlap check: no conflict with special-representation branch; gate is only living Fork 3.
+- Fork 3 location (types book 95uNfg, Fork 3) sent to 445410.
+- Final items 1+2 set ready (b2fa8b base, 8/8, patches item12-final-*); sent to d5df1d.
+- Tuple-newtype Representation case witnessed on prometheus (bare under set, braced without, both round-trip); sent to d5df1d and 445410. Set waits only on Fork 3.
+- Fork 3 concrete example (42 vs { 42 }) offered to 445410.
+- 445410 task: dry-run every option of held forks (types F1, F2; invariants 4; invariants F3 Mutex) as final patches. Spec requested from d5df1d.
+- Answered Astra (via Sol) on items 5/7: design-own, branch only; target b2fa8b; overlap with held 1-2 set.
+- Sol 41fa34 relayed items 5/7 disposition to Astra.
+- Sent Astra (via Sol) exact held-set paths and free item 5/7 paths.
+- Astra asks branch/hold/paths for items 5/7; asked d5df1d; told Astra to hold.
+- d5df1d ruling relayed to Astra via Sol: item 5 on kind-to-trait from b2fa8b, major bump; item 7 held; landing order.
+- Astra acked HOLD (crossed with d5df1d ruling: item 5 go on kind-to-trait, item 7 held), no changes made.
+- Sol relayed item 5 go / item 7 hold to Astra.
+- Astra starting item 5 candidate from b2fa8b; item 7 held.
+- d5df1d fork-options spec received; its subflow pushed c25cc0 to Primary (disclosed to 445410). Dispatching fork option dry runs.
+- 445410: leave c25cc0 unless harmful; d5df1d told to put Primary limit in its subflow briefs.
+- c25cc0 spec-only; left. Checking origin for other 1d0733 commits.
+- Origin has ce7295 and fc77dad (both dry-run reports); no others; reported to 445410.
+- Told Astra (via Sol) branch name kind-to-trait; switch note.
+- Astra branch e5trt at b2fa8b, lock 15868; my kind-to-trait name note crossed (via Sol).
+- Astra branch renamed kind-to-trait at b2fa8b; clean; lock 15868.
+- Invariants Fork 3 dry run: both options green; (a) needed printer change, no fixture possible; sent to d5df1d.
+- 445410 finding: bare variant named like a declared type carries it; no payload-less escape; passed to d5df1d.
+- d5df1d: no escape form; probe whether variant/type name collision is silent (candidate item 9). Dispatched.
+- Invariants 4 layout dry run green, 6/6 predictions; 3 beyond-spec breaks for d5df1d to judge.
+- Invariants 4 rerun: green; Voice block mismatch (only enum breaks, parent stays inline); sent to d5df1d.
+- Invariants 4 third run: 6/6, Voice exact; closer wording vs spec flagged to d5df1d.
+- d5df1d settled closer wording; invariants 4 patch ready pending Proposal 4.
+- Types Forks 1/2 dry run: 4 candidates build; clippy fails all (Deep), 1c breaks datom-codec ethos; alias branch persists for sourced refs; sent to d5df1d.
+- Astra item 5 in progress (17.0.0, 4 fixture path renames); flagged to d5df1d.
+- d5df1d accepts path renames; relayed to Astra via Sol.
+- Variant collision silent (Ouranos witness); sent to d5df1d; fresh tester dispatched for Prometheus error text.
+- d5df1d withdrew item 9; finding is Flow's (f5a6e9 renames); told 445410. Prometheus capture continues for completeness.
+- Collision capture: 3 runs without Prometheus host/exact text; stopped (finding closed by ruling).
+- 2026-10-10 00:04:39: the shared Primary tree was checked out from detached 73da46e to main, removing this flow's directory (it had been committed on the detached lineage). Psyche records and log rebuilt from the transcript; index line re-added; loss reported to 445410.
+- 445410 allowed a local commit of this directory; rebuilt log and psyche committed locally as 18a1e7 (no push).
+- All 44 reports and the original log restored from local branch recovery (73da46e). The rebuilt vision and notion records are identical to the originals. Six patches cross-checked byte-equal with the Prometheus copies.

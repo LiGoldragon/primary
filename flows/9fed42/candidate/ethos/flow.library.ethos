@@ -1,0 +1,77 @@
+; Flow's Library. Design: flows/f5a6e9/reports/
+; flow-buildable-design.md at e17a62ca, section 1.
+Library                         ; Flow's
+[]
+[  FlowId.String                ; unideal now: a
+                                ; real id built on
+                                ; the hash bits that
+                                ; identify a flow
+   Topic.String                 ; designed Topic:Name,
+                                ; the inline import of
+                                ; a core built-in;
+                                ; camelCase, checked
+                                ; where text enters
+   Blake3.String                ; designed
+                                ; Blake3.Bytes<32>,
+                                ; Encodable: 64 hex
+                                ; characters here
+   Layer.[                      ; decides the model
+      Primary
+      Secondary
+      Tertiary
+      Quaternary ]
+   Subaspect.[                  ; a module's kind
+      Vision
+      Intent
+      Knowledge
+      Operation
+      Trial
+      Compensation ]
+   Source.{                     ; where a module's
+      Repository.String         ; text lives: the
+      Hash.Blake3               ; containing source,
+      Path.String }             ; hashed, relative
+   Said.{                       ; his words, relayed
+      Context.String            ; where it was said
+      Verbatim.String }         ; the words whole
+   Request.[                    ; reaches a flow
+      Order.String              ; wakes
+      Question.String           ; wakes
+      Psyche.Said               ; wakes; the variant
+                                ; carries the type
+      Psyches.Vector<Said>      ; wakes
+      Result.String             ; a flow's answer:
+                                ; delivered awake,
+                                ; waits asleep
+      Notice.String ]           ; wakes nothing
+   Aspect.[                     ; whose psyche it
+      Psyche                    ; serves
+      Mind
+      Field ]
+   Address.{                    ; names a metaflow,
+      Aspect                    ; written short:
+      Topic                     ; { Psyche flow
+      Layer }                   ; Primary }
+   Metaflow.{                   ; one per address
+      Address
+      State.[
+         Awake.FlowId           ; its current flow
+         Asleep                 ; a request wakes it
+         Ended ]
+      Past.Vector<FlowId>       ; the last few only,
+                                ; oldest first
+      Queue.Vector<Request> }   ; waiting, oldest
+                                ; first
+   Lock.{                       ; one per metaflow,
+      Address                   ; while held
+      Until.Integer }           ; seconds since the
+                                ; epoch; lapses
+   Process.{                    ; the calling
+      Pid.Integer               ; process
+      Started.Integer }         ; the kernel's start
+                                ; time of that pid,
+                                ; so a reused pid is
+                                ; told apart
+   Sender.Address ]             ; who sent a request
+[]
+[]

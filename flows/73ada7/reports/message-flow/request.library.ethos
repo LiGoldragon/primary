@@ -1,0 +1,11 @@
+; What reaches a flow: a typed request, one layer of variants over a string
+; (proposal, pending ruling: «The queue and the waking rule», proposal 1)
+
+Library
+[]                                             ; imports
+[ Request.[ Order.String                       ; types: from the living or the psyche: wakes
+            Question.String                    ;   wakes
+            Result.String                      ;   a flow's answer: delivered awake, waits asleep
+            Notice.String ] ]                  ;   a merge, thanks: never wakes
+[]                                             ; kinds
+[]                                             ; associations

@@ -40,9 +40,9 @@ That surface is provider-documented, but the published-artifact/source equivalen
 
 ## 3. First consumer: guide or decision point?
 
-### Proposal C — keep the fork monitor's reaping behavior as a guide until its owner chooses a decision
+### Proposal C — keep the Field monitor's reaping behavior as a guide until its owner chooses a decision
 
-The proposed first consumer has been described as a fork-monitor/reaping guide. Neither a guide nor a retired-response path has been selected, and there is no default reaping policy.
+The proposed first consumer has been described as a Field monitor/reaping guide. No fork-specific consumer has been established. Neither a guide nor a retired-response path has been selected, and there is no default reaping policy.
 
 A guide can show evidence and leave the action to its owner. A decision point would require a defined state contract, typed question, confidence threshold, fallback, audit record, and a clear person or component accountable for the result.
 
@@ -54,15 +54,17 @@ A guide can show evidence and leave the action to its owner. A decision point wo
 | --- | --- | --- |
 | Client | `fuzzy-jev` 0.6.0 artifact was audited; `typesafe-system-one` 0.1.1 source only | Reuse which dependency, or keep the custom alpha adapter held? |
 | Policy | Jev returns typed probabilities, not prose | Which question, threshold, fallback, and cost ceiling are acceptable? |
-| Consumer | Fork-monitor/reaping guide and retired-response are unselected | Where does a response act, and who owns the result? |
+| Consumer | Field monitor/reaping guide and retired-response are unselected | Where does a response act, and who owns the result? |
 
 ## Reading a typed decision without making it policy
 
 ```json
 {
   "model": "typesafe/jev-1.13",
-  "state": { "candidate": "…only owner-approved fields…" },
-  "questions": { "fit": { "type": "choice", "criteria": { "accept": null, "review": null } } }
+  "state": { "statement": "1 equals 1" },
+  "questions": {
+    "is_true": { "type": "noul", "instructions": "Is the statement true?" }
+  }
 }
 ```
 

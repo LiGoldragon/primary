@@ -1,0 +1,21 @@
+diff --git a/tests/ethos.rs b/tests/ethos.rs
+index e3b9256..ec301b4 100644
+--- a/tests/ethos.rs
++++ b/tests/ethos.rs
+@@ -599,3 +599,16 @@ fn a_new_type_over_a_plain_value_is_a_struct_of_one_unnamed_position() {
+     assert!(!generated.contains("pub type"));
+     syn::parse_file(&generated).expect("generated Rust parses");
+ }
++
++#[test]
++fn a_multi_segment_import_is_refused() {
++    let source = "Library [ std::sync:Mutex ] [ Holder.{ Mutex<String> Integer } ] [] []";
++    match Potential::<File>::from(source).actualize() {
++        Err(Error::Conceptual(data)) => {
++            assert_eq!(data.problem, Problem::Expected(Form::Import));
++            assert_eq!(data.integer_vector, vec![1, 0, 0]);
++        }
++        Err(Error::Structural(_)) => panic!("{source} is a conceptual refusal"),
++        Ok(_) => panic!("{source} must be refused"),
++    }
++}

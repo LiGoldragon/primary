@@ -1,0 +1,10 @@
+; What Flow remembers for Message
+
+Memory
+[ address:[ FlowId Process Metaflow ] lock:Deadline ] ; imports
+[ Current.{ Metaflow                           ; record types: the registry, a metaflow's current flow
+            FlowId }
+  Running.{ FlowId                             ;   the process a flow runs as
+            Process }
+  HeldLock.{ Metaflow                          ;   a lock Flow holds until it lapses
+             Deadline } ]

@@ -97,3 +97,17 @@
 2026-10-09 — Landing: book 10 «When Field may answer Psyche» (F12) published, https://claude.ai/artifact/LKEK65nvAnTJNVnqs2cNGH; sent to 445410.
 
 2026-10-09 — Landing: book 9 «What Message remembers of what it sent» (F13) published, https://claude.ai/artifact/ExCJJRtNkqp8Cp9BFaFmbh; sent to 445410. The Message fork series is complete: ten books. Held back: the living's terminal as a sender.
+
+2026-10-09 — Landing: this flow's design, books 1–10, vision records and log are on main (5f9d90, f57987).
+
+2026-10-09 — 445410, under the usage order (33% of the week's allowance left, reset at 07:00): stand up message-test on Prometheus, with acceptance tests running the real Message against Flow eaab24fa, written to each fork's first option; nothing pushed in Primary; hand the candidate to 445410 for Mind. Dispatched.
+
+2026-10-09 — 9fed42: Flow's design at e17a62ca carries seven new rulings touching Message (Said, Address replacing Details, Lock/Sender/refusals on Address, Send). Whether they are the living's rulings is unverified. Realignment dispatched; the message-test subflow is told to write its tests against e17a62ca.
+
+2026-10-10 — message-test stood up (github LiGoldragon/message-test 78b94a): 14 acceptance tests all fail in setup because the deployed Message binds message-owner.sock, not the design's message-meta.sock; tests 15–16 are blocked on Prometheus having no Claude login (no credential moved). Correction sent: on F6 follow the design (no priority tiers), not a Soft head. The cause: this flow's brief said "first option of each fork" while the design's F6 lists the tiers first and follows the second.
+
+2026-10-10 — Landing: Message design realigned with Flow e17a62ca (bae554), all five Ethos files Checked. None of the seven changes is the living's ruling; they are 9fed42's. Flow's Send drops Up, which pre-empts book 4: raised with 9fed42. The message-test subflow was told to align with bae554.
+
+2026-10-10 — 9fed42: the seven changes are f5a6e9's rulings as Flow Primary, relayed by 9fed42, not before the living; the Psyche name clash is answered by renaming to Said (two enums may share a variant name) and has gone to the living through 445410 as an Ethos finding; f5a6e9 is asked whether Send carries an Up recipient. The Message design's attribution to 9fed42 needs correcting to f5a6e9.
+
+2026-10-10 — f5a6e9's ruling (current best) via 9fed42: Up stays on the wire as Send.{ Recipient.[ Address Up ] Request }; Flow resolves it for tonight's build; NoneAbove at the top; the living's ruling on book 4 may move resolving to Message. Design and tests told to follow.

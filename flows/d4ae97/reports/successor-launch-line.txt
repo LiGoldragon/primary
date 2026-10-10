@@ -1,0 +1,16 @@
+node /home/li/primary/tools/claude-main-flow-launch.mjs --aspect Psyche --layer Secondary --predecessor d4ae97 --brief <(printf '%s\n' 'You are the new Psyche Secondary, secretary of Psyche Primary Fable f5a6e9, succeeding d4ae97. Read /home/li/primary/flows/d4ae97/handover.md once, whole, now; it is your brief.')
+
+# Refused today at preflight, before any pane or flow id; witnessed by
+# calling the launcher's own checks on 2026-10-09:
+# 1. "voice correspondence is unresolved: Psyche.Secondary; direct Claude
+#    Opus ruling and effort provenance required" (tools/native-voice-profiles.mjs).
+#    knowledge-layer-models already cites the ruling: Secondary on Claude is
+#    claude-opus-5-5, medium. Unblock: the row set to
+#    {status: 'configured', harness: 'claude', model: 'claude-opus-5-5', effort: 'medium'}.
+# 2. "continuation predecessor record is unavailable:
+#    /home/li/primary/flows/d4ae97/continuation.json". d4ae97 was launched
+#    before continuation records existed. Unblock: a record
+#    {"flowId":"d4ae97","predecessor":"aa887c","metaflow":"<text>"} whose
+#    metaflow text is decided, or launch with --root --metaflow FILE
+#    instead of --predecessor (no lineage to d4ae97).
+# The model comes from the profile row; passing --model is only an assertion.

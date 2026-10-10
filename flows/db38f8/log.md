@@ -108,3 +108,7 @@ d66c26 relayed: living says FieldSonnet should not exist; paused new publication
 aa887c standing bad807 request declined: paused, no watching
 41fa34 log request held: paused
 8475a9 lane request held: paused
+e5a0bc lane request held: paused
+Living: comments on Rust types/Ethos/book comment alignment; logged vision/ethosAndBookComments.md; passed verbatim to e5a0bc and bad807
+Living 2026-10-07: asked to extract his comments on the Flow and Metaflow book and send to Fable (middle stratum) with his jigsaw/too-much-at-once words; logged vision/booksAndProposals.md; subflow locating comments
+Passed to f5a6e9 verbatim: nine comments on Flow and the metaflow + three general paragraphs
