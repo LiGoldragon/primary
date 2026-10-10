@@ -99,8 +99,8 @@ Library                         ; Flow's
    Sender.Address
    Start.{                      ; the one datom
       OrdinarySocketPath.String ; argument of the
-      MetaSocketPath.String }   ; Nexus's start
-                                ; command
+      MetaSocketPath.String     ; Nexus's start
+      StorePath.String }        ; command
    Nexus.{                      ; the Nexus's own
       SourceRoot.String         ; setup payload
       StableCodex.CodexEndpoint
@@ -126,10 +126,18 @@ Signals import them (status: current best, not before
 the living).
 
 Flow's two listening sockets, the ordinary socket and
-the meta socket, come from its start command,
-`flow-nexus 'Start.{ … }'`, whose one datom argument is
-Start. No environment variable and no config file
-names them (current best).
+the meta socket, and the store path come from its start
+command, `flow-nexus 'Start.{ … }'`, whose one datom
+argument is Start. No environment variable and no
+derived default names the store path. At Start, a
+missing store file is created; one Flow recognises as
+its own (its Memory schema, with the schema's version
+written in the file at creation) is opened and
+continued from; anything else at StorePath, an old
+0.14 store included, refuses to start, the refusal a
+datom on standard output, Refused.Store.{ Path.String
+Reason.String }, with a non-zero exit so the unit
+records it (current best).
 
 The Nexus payload's type is declared once, here, as
 Nexus. It carries no socket path. MessageNexusPath is
@@ -807,17 +815,17 @@ new Flow reads nothing of the old store and
 migrates nothing; its Memory starts empty and is
 filled by Configure payloads on the meta socket
 and by flows that Bind or are Launched. The
-deploy discards the old store; nothing is kept,
-set aside or migrated, and no upgrade-from
-exists for this version; and rotates stable and
-Next; the old Nexus serves its sessions until
-they end or are refreshed into the new one. No
-migration code lives in the Nexus. This rests on
-the living's 2026-09-24 condition that Flow was
-not yet live, unconfirmed since Flow 0.14.0
-went live; his answer on «What the new Message
-does with the old store» decides Flow and
-Message together.
+deploy names a new path for the new Flow's store,
+so the old file is neither read, reused nor
+deleted while the living's answer on the old store
+is pending; and rotates stable and Next; the old
+Nexus serves its sessions until they end or are
+refreshed into the new one. No migration code
+lives in the Nexus. This rests on the living's
+2026-09-24 condition that Flow was not yet live,
+unconfirmed since Flow 0.14.0 went live; his
+answer on «What the new Message does with the old
+store» decides Flow and Message together.
 
 ## 4. Open rulings
 
