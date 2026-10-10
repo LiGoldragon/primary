@@ -300,3 +300,13 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — Represented gaps closed in both Fork 3 trees (1d0733): build.rs reads dependencies' ethos through Cargo; roles from declarations; Expected.Type / Expected.Trait; Form.Type added. Problem::Role no longer raised. Ruled: remove it. ethos-test e21e686: main 26 pass, 5 expected-failing; candidate check 31 pass, all five promoted. Report flows/1d0733/reports/represented-gaps.md.
 
 ## 2026-10-10 — form report status at the gaps-closed state; unpublished until the next publish turn.
+
+## 2026-10-10 — records published to main as 5498fe (from ea2dca, lock 16925, two paths, 8795 files).
+
+## 2026-10-10 — Problem::Role removed in both trees (1d0733), green, patches final; 445410 puts the 31/0 result beside Fork 3 for the living.
+
+## 2026-10-10 — 445410 orders item 7 (refuse source core) as a lands-nothing candidate with an ethos-test target. Position sent: a candidate that lands nothing is a fork-option dry run, the hold does not cover it; its check lives in the candidate; ethos-test lists it unruled, no target, until Q5, Q6, Q8 are answered.
+
+## 2026-10-10 — 445410: hold on item 7 stands (Q5, Q6, Q8 unanswered); instead build each option of Q5, Q6, Q8 as a lands-nothing candidate on 07714b, no ethos-test target. Spec delegated: reports/inline-import-questions-spec.md. No published book asks Q5, Q6, Q8 (held since the first edition); a new book will, after the spec.
+
+## 2026-10-10 — reports/inline-import-questions-spec.md written (192 lines). Finding: Q5 and Q6 a–c are registry design, not dry-runnable in ethos-zero; buildable: 6d–6f (how the registry reaches ethos-zero) and Q8 (8a ethos_core, 8b registry path, 8c refuse core, 8d unchanged). 8c refuses the living's own registry key Topic.core:Name, so item 7 as a refusal contradicts his vision. Book decided: «Sources and the registry», one proposal with Q8 as the fork, Q5 and Q6 asked as the registry's anatomy.
