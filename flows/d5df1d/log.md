@@ -314,3 +314,11 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — records published to main as b592de (from b76182, lock 17110, two paths, 8796 files).
 
 ## 2026-10-10 — «Sources and the registry» published: https://claude.ai/artifact/RX6W2WyacPbRaubsz5qgbp (books/sources-registry.md). D1 lands after the inline-import statement once «The inline import, third edition» D1 lands. Q5 asks one letter per group (key target; hash coverage; hash kind) or h. Link sent to 1d0733. Not watched by this session (watch limit); comments reach me through 1d0733.
+
+## 2026-10-10 — records published to main as 519fa8 (from a5b2c2, lock 17118, two paths, 8797 files).
+
+## 2026-10-10 — Q8 candidates 8a and 8c green on bare 07714b (1d0733), predictions matched; 8c refuses the living's own key Topic.core:Name. Report flows/1d0733/reports/q8-ac.md. 8b with 6d/6e/6f still running.
+
+## 2026-10-10 — 8b with 6d/6e/6f green on bare 07714b (1d0733); four spec mismatches accepted; two run choices judged: the missing-entry refusal belongs to checking (the registry is request input, not text), and Check carries the registry as Generate does. Report flows/1d0733/reports/q8-b6.md. Spec update delegated.
+
+## 2026-10-10 — inline-import-questions-spec.md at the witnessed state (202 lines); publisher dispatched.

@@ -146,12 +146,21 @@ pub struct Holder {
 ```
 
 - Layer: generation (both arms of src/generation.rs:142-163: the inline source and `Resolution::Imported`). Byte-equal: every fixture and golden. Acceptance: `the_core_source_emits_as_ethos_core`, comparing the text above. The Rust does not compile: no crate `ethos_core` exists (review finding 11). Order and field names are **inference**.
+- **Witnessed**: 8a passes all checks on bare 07714b, predictions matched.
 
 ### 8b. The registry entry names the emission
 
 Each entry carries the Rust path its source compiles to; generation writes that path, never the source name. Entry, this spec's own: `Registered.{ Name.String Emitted.String }`. With `core` registered as `ethos_core` the example emits exactly 8a's text; with `flow` registered as `signal_flow`, `Launch.{ flow:Voice }` emits `pub voice: signal_flow::Voice` (the research's collision 4). An unregistered source is refused as in 6d-6f.
 
-- Layer: generation (the source tokens come from the entry), plus everything 6d, 6e or 6f changes. Cannot be built without one of them. Byte-equal: every fixture and golden when each test registry maps a source to itself. Acceptance: `a_registered_source_emits_its_entry`, comparing 8a's text and the `signal_flow` line.
+- Layer: generation (the source tokens come from the entry), plus everything 6d, 6e or 6f changes. Cannot be built without one of them.
+- Changed: ethos-zero.ethos, error.ethos, src/error.rs, src/lib.rs, src/checking.rs, src/generation.rs, src/main.rs, src/bin/ethos-zero.rs, and checks/dependency-ethos.sh.
+- checks/dependency-ethos.sh sends the request in the new form; the old request is refused as Malformed.
+- Test registries register source x, or lib.rs test fails with `Source("x")`.
+- Malformed-request reply: Arity.{ 3 1 } under 6d and 6f; Form.{ String Struct } under 6e.
+- A source with no registry entry is refused in checking, not conception. Check carries the registry through the same channel as Generate.
+- Byte-equal: every fixture and golden when each test registry maps a source to itself.
+- Acceptance: `a_registered_source_emits_its_entry`, comparing 8a's text and the `signal_flow` line.
+- **Witnessed**: 8b+6d, 8b+6e, and 8b+6f each pass 108 cargo tests, fmt and 8/8 flake checks on bare 07714b. The example is refused at [ 1 1 0 1 1 1 0 ] Source.custom. A registered core emits ethos_core::Name; flow mapped to signal_flow emits signal_flow::Voice. Fixtures and goldens byte-equal (flows/1d0733/reports/q8-b6.md).
 
 ### 8c. Refuse source `core` (item 7)
 
@@ -160,6 +169,7 @@ A source whose text is `core`, in an import or inline, is refused at its head. O
 Expected for the example: `Conceptual.{ [ 1 0 0 0 ] Source.core }`, the import read first (**inference**: sections are conceived in order). With the imports section empty and `Name` written `core:Name`: `Conceptual.{ [ 1 1 0 1 0 ] Source.core }`. In a struct position alone, `Library [] [ Holder.{ Label.core:Name } ] [] []`: `Conceptual.{ [ 1 1 0 1 0 1 0 ] Source.core }`. Problem `Source`, no Form.
 
 - Layer: refusal, raised in conception at the two `Source` sites (conception.rs:408, :439) so the path is the head's; error.ethos gains `Source.String`, src/error.rs regenerated (`the_error_module_is_fresh`). Byte-equal: every fixture and golden. Changed: error.ethos, src/error.rs, src/conception.rs. Acceptance: `a_core_source_is_refused` (the three forms above) and, from item 7, `Topic.protos:Name`, `Topic.custom:Name` and `std:Mutex` unchanged.
+- **Witnessed**: 8c passes all checks on bare 07714b, predictions matched. It refuses the key Topic.core:Name at 5:23 with Source.core (flows/1d0733/reports/q8-ac.md).
 
 ### 8d. Unchanged
 
