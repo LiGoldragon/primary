@@ -1,0 +1,20 @@
+; Ethos's own Library: what its roots share
+
+Library
+[ source_ethos:[ SourceName     ; Source's names
+                 RelativePath ] ]
+[ Configuration.{               ; startup config
+     Ordinary.String            ; socket paths
+     Meta.String
+     Source.String }            ; the Source edge
+  EthosName.String              ; a lowercase name
+  RustPath.String               ; what is written
+  Entry.{ EthosName             ; one ethos source:
+          RelativePath          ; its library file
+          RustPath }            ; and its Rust path
+  Part.{ SourceName             ; one repository's
+         Vector<Entry> }        ; ethos sources
+  Module.{ SourceName           ; an ethos file by
+           RelativePath } ]     ; source and path
+[]                              ; traits
+[]                              ; associations

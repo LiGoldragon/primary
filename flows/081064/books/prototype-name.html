@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The prototype name</title>
+</head>
+<body>
+<h1 class="book-title">The prototype name</h1>
+
+<section>
+<h2>How names are cased</h2>
+<p>Datom and ethos are both Protos languages. A name in either is one of two kinds. A defined object (a type or a trait) and a variant are PascalCase. Any other name, which is not a type or a trait, is camelCase and uncapitalized. That second kind gets a type of its own, the prototype name. It behaves like a string, but each one is checked as it is created: it must be uncapitalized and made of words. In a datom string position, a plain string may still start with a capital, since that position holds a string, not a name.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 512" width="100%" role="img" aria-label="Diagram. Box 1: a defined object, a type or a trait, is a variant, PascalCase, Registered, Checked. Box 2: every other name, not a type and not a trait, is camelCase, such as protosParser or core. An arrow labelled is held as leads down to box 3: the prototype name, like a string, uncapitalized and made of words, checked whenever one is created. Box 4, separate with no arrow: a string position in datom may start with a capital, such as ProtosParser, and stays a string." font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="16">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="10" y="10" width="340" height="94" rx="10" fill="#e6f0ff" stroke="#4a5a50" stroke-width="1.5"/>
+  <text x="180" y="38" text-anchor="middle" fill="#1d2420" style="white-space:pre">a defined object: a type, a trait</text>
+  <text x="180" y="62" text-anchor="middle" fill="#1d2420" style="white-space:pre">a variant</text>
+  <text x="180" y="86" text-anchor="middle" fill="#1d2420" style="white-space:pre">PascalCase   Registered   Checked</text>
+  <rect x="10" y="128" width="340" height="92" rx="10" fill="#fdeee6" stroke="#4a5a50" stroke-width="1.5"/>
+  <text x="180" y="156" text-anchor="middle" fill="#1d2420" style="white-space:pre">every other name</text>
+  <text x="180" y="180" text-anchor="middle" fill="#1d2420" style="white-space:pre">not a type, not a trait</text>
+  <text x="180" y="204" text-anchor="middle" fill="#1d2420" style="white-space:pre">camelCase    protosParser   core</text>
+  <line x1="180" y1="220" x2="180" y2="264" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="196" y="248" fill="currentColor" style="white-space:pre">is held as</text>
+  <rect x="10" y="266" width="340" height="116" rx="10" fill="#e8f6ea" stroke="#4a5a50" stroke-width="1.5"/>
+  <text x="180" y="294" text-anchor="middle" fill="#1d2420" style="white-space:pre">the prototype name</text>
+  <text x="180" y="318" text-anchor="middle" fill="#1d2420" style="white-space:pre">like a string</text>
+  <text x="180" y="342" text-anchor="middle" fill="#1d2420" style="white-space:pre">uncapitalized, made of words</text>
+  <text x="180" y="366" text-anchor="middle" fill="#1d2420" style="white-space:pre">checked whenever one is created</text>
+  <rect x="10" y="410" width="340" height="92" rx="10" fill="#f3e9f8" stroke="#4a5a50" stroke-width="1.5"/>
+  <text x="180" y="438" text-anchor="middle" fill="#1d2420" style="white-space:pre">a string position in datom</text>
+  <text x="180" y="462" text-anchor="middle" fill="#1d2420" style="white-space:pre">may start with a capital</text>
+  <text x="180" y="486" text-anchor="middle" fill="#1d2420" style="white-space:pre">ProtosParser  stays a string</text>
+</svg>
+
+<p>Flow already follows this rule for one name. vision-flow says a topic is a core:Name, a camelCaseExpression checked when it is created, and writes titles as { Psyche core Secondary &lt;id&gt; }. None of the ethos or Rust sources read has a prototype-name type yet. So the rule is not in production, and no development branch carries it.</p>
+
+<h3>The code</h3>
+<p>Ethos used here. <code>Library</code> is the root of a file of shared types. Its four sections are imports, types, traits and associations. In the types section, <code>Name.String</code> declares a name over the intrinsic <code>String</code>. A bracket declares an enum, whose variants are PascalCase. A brace declares a struct of positions. A trait is a bearer of capabilities. A capability written <code>create:</code> takes no self. Its brace holds an input bracket and a yield bracket. <code>Result&lt;Self Refusal&gt;</code> yields either the new value or the reason it was refused. An association says a type bears a trait.</p>
+<p>Wrong: the name is only a string, so nothing is checked and any text gets in.</p>
+<pre><code class="language-ethos">; ethos
+Library
+; imports: none
+[]
+; types: a name that is only a string
+[ PrototypeName.String
+  Reply.[ Registered.{ PrototypeName String }
+          Pending ] ]
+; traits: none, so nothing is checked
+[]
+; associations: none
+[]</code></pre>
+<pre><code class="language-datom">; datom, in a position expecting Reply
+; all three are accepted, though only the
+; first is a prototype name
+Registered.{ protosParser ProtosParser }
+Registered.{ ProtosParser ProtosParser }
+Registered.{ prtzx_9 ProtosParser }</code></pre>
+<p>Right: a prototype name can only come from a creation that checks it. A capitalized candidate or one that is not made of words is refused.</p>
+<pre><code class="language-ethos">; ethos
+Library
+; imports: none
+[]
+; types: the name, held as a string; why a
+; candidate is refused; a reply holding a name
+[ PrototypeName.String
+  Refusal.[ Capitalized
+            NotWords ]
+  Reply.[ Registered.{ PrototypeName String }
+          Pending ] ]
+; traits: a name is made from a string, or
+; refused
+[ Checked.[ create:{ [ String ]
+                     [ Result&lt;Self Refusal&gt; ] } ] ]
+; associations: the name bears the check
+[ PrototypeName.[ Checked ] ]</code></pre>
+<pre><code class="language-datom">; datom, in a position expecting Reply
+; head Registered: a variant, PascalCase
+; first position: a prototype name, camelCase
+; second position: a String; its capital is fine
+Registered.{ protosParser ProtosParser }
+; refused: Capitalized
+Registered.{ ProtosParser ProtosParser }
+; refused: NotWords
+Registered.{ prtzx_9 ProtosParser }</code></pre>
+<p>In the current generator the right form is refused. A capability's input position takes a trait, not a concrete type, and the refusal names TraitWanted at <code>[ String ]</code>. The form is kept as written because it is the form the rule wants. The Finding below gives the two forms the generator does accept.</p>
+<p>There is an open point in the right form. As vision-ethos stands, <code>PrototypeName.String</code> in the types section reads as an alias, and an alias is not a new type. With an alias, the association would really be on String. The right form needs PrototypeName to be a type of its own. A raw record asks for that: flows/d4ae97/vision/ethos.md, 2026-10-06, "Newtypes, not type aliases". It has not been distilled yet.</p>
+
+<h3>Terms</h3>
+<p>camelCaseExpression is not a flow's coinage. It appears in the living's typed record of 2026-10-09 (flows/445410/vision/flow.md). The flow coined these names: the type spelling <code>PrototypeName</code>, and the example names <code>Refusal</code>, <code>Capitalized</code>, <code>NotWords</code>, <code>Checked</code>, <code>Reply</code>, <code>Registered</code>, and the section heading Names. "Prototype name" is his own term. Two questions: is "prototype name" the name he keeps, and is it the same type as core:Name?</p>
+</section>
+
+<section>
+<h2>Finding: a capability cannot take a concrete type</h2>
+<p>A capability input is the bracket that opens a capability's brace. It lists what the caller hands in, and in ethos each entry there is a kind, a trait, or Self. A concrete type such as <code>String</code> in that position is a kind not yet named, and the current generator refuses it. So ethos cannot today say "create a prototype name from a String, by name". This is reported as a finding, not worked around.</p>
+<p><code>PrototypeName.String</code> also generates an alias, not a new type: Rust sees <code>String</code>.</p>
+<p>Form (a) takes Self.</p>
+<pre><code class="language-ethos">; ethos, traits section
+[ Checked.[ create:{ [ Self ]
+                     [ Result&lt;Self Refusal&gt; ] } ] ]</code></pre>
+<pre><code class="language-rust">pub trait Checked: Sized {
+    fn create(input: Self)
+        -&gt; Result&lt;Self, Refusal&gt;;
+}</code></pre>
+<p>Form (a) gives up the name of the input. With PrototypeName an alias, Self is String in fact, but the signature says Self, so the alias hides what is taken.</p>
+<p>Form (b) declares a trait and takes it.</p>
+<pre><code class="language-ethos">; ethos, traits section
+[ StringKind.[ ]
+  Checked.[ create:{ [ StringKind ]
+                     [ Result&lt;Self Refusal&gt; ] } ] ]</code></pre>
+<pre><code class="language-rust">pub trait StringKind {}
+pub trait Checked: Sized {
+    fn create&lt;N: StringKind&gt;(input: N)
+        -&gt; Result&lt;Self, Refusal&gt;;
+}</code></pre>
+<p>Form (b) gives up String itself. The check runs on any bearer of StringKind, not on String.</p>
+<p>No accepted form takes a concrete String by name.</p>
+</section>
+
+<section>
+<h2>Proposal: where the casing rule lands</h2>
+<p>This distils flows/081064/vision/ethos.md, 2026-10-10, "uncapitalized names in Protos languages: the prototype name". It also draws on flows/445410/vision/flow.md, 2026-10-09, "Topic names are camelCase expressions", which agrees with it.</p>
+<p>The statement says datom and ethos, and calls them Protos languages. So it can land in two shapes.</p>
+</section>
+
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Choice 1: one shared rule in vision-protos</h2></header>
+<p>The statement becomes a new section of vision-protos. vision-ethos and vision-datom each get one line that points to it. In vision-protos, "What Protos knows" already shows capitalization as part of textual structure. The same section also says protos does not know what anything is, and a prototype name is a type.</p>
+<p class="target"><code>psyche-skills/skills/vision-protos.md</code></p>
+<p>Between the end of "## Structure" and "## String, escape, error".</p>
+<div class="diff">
+<div class="ctx"><p>Above, as it stands:</p>
+<p>real protos delimiter. The key-value map, which the guillemets once delimited, is dropped entirely from protos and its dialects.</p></div>
+<div class="add"><p>Added:</p>
+<h3>Names</h3>
+<p>In the Protos languages, datom and ethos among them, a defined object, a type or a trait, and a variant are named in PascalCase; every other name is camelCase, uncapitalized, and is a prototype name: a type like a string, an uncapitalized identifier composed of words, checked whenever one is created. A string position in datom takes a string that starts with a capital; it stays a string.</p>
+<pre><code class="language-ethos">; ethos
+Library
+; imports: none
+[]
+; types: the name, held as a string; why a
+; candidate is refused; a reply holding a name
+[ PrototypeName.String
+  Refusal.[ Capitalized
+            NotWords ]
+  Reply.[ Registered.{ PrototypeName String }
+          Pending ] ]
+; traits: a name is made from a string, or
+; refused
+[ Checked.[ create:{ [ String ]   ; &lt;- question 3
+                     [ Result&lt;Self Refusal&gt; ] } ] ]
+; associations: the name bears the check
+[ PrototypeName.[ Checked ] ]</code></pre>
+<pre><code class="language-datom">; datom, in a position expecting Reply
+Registered.{ protosParser ProtosParser }</code></pre></div>
+<div class="ctx"><p>Below, as it stands:</p>
+<p><strong>## String, escape, error</strong></p></div>
+</div>
+<p class="target"><code>psyche-skills/skills/vision-protos.md</code></p>
+<p>At the end of "## Sources".</p>
+<div class="diff">
+<div class="ctx"><p>564f55 datom<br>564f55 signal</p></div>
+<div class="add"><p>081064 ethos<br>445410 flow</p></div>
+</div>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>At the end of "## Naming".</p>
+<div class="diff">
+<div class="ctx"><p>and ethos code are switched between so often; once ethos is the authored language that debt is removed.</p></div>
+<div class="add"><p>Name casing is stated in vision-protos, Names.</p></div>
+<div class="ctx"><p><strong>## Identity</strong></p></div>
+</div>
+<p class="target"><code>psyche-skills/skills/vision-datom.md</code></p>
+<p>At the end of "## Strings", after its example block.</p>
+<div class="diff">
+<div class="ctx"><p>cannot be mistyped for it, and point, so the ends are visible at any size.</p>
+<pre><code>Ada     TheBuildPassedOnTheThirdTry     «12 Rue de la Paix»</code></pre></div>
+<div class="add"><p>Name casing is stated in vision-protos, Names.</p></div>
+<div class="ctx"><p><strong>## Syntax</strong></p></div>
+</div>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">2</span><h2>Choice 2: the rule lands in each language</h2></header>
+<p>The statement lands in vision-ethos and in vision-datom, each time with that language's code. vision-protos does not change.</p>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>At the end of "## Naming".</p>
+<div class="diff">
+<div class="ctx"><p>and ethos code are switched between so often; once ethos is the authored language that debt is removed.</p></div>
+<div class="add"><p>A defined object, a type or a trait, and a variant are named in PascalCase; every other name is camelCase, uncapitalized, and is a prototype name: a type like a string, an uncapitalized identifier composed of words, checked whenever one is created.</p>
+<pre><code class="language-ethos">Library
+; imports: none
+[]
+; types: the name, held as a string; why a
+; candidate is refused; a reply holding a name
+[ PrototypeName.String
+  Refusal.[ Capitalized
+            NotWords ]
+  Reply.[ Registered.{ PrototypeName String }
+          Pending ] ]
+; traits: a name is made from a string, or
+; refused
+[ Checked.[ create:{ [ String ]   ; &lt;- question 3
+                     [ Result&lt;Self Refusal&gt; ] } ] ]
+; associations: the name bears the check
+[ PrototypeName.[ Checked ] ]</code></pre></div>
+<div class="ctx"><p><strong>## Identity</strong></p></div>
+</div>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>At the end of "## Sources".</p>
+<div class="diff">
+<div class="ctx"><p>e51411 ethos<br>88475f ethos<br>d5df1d ethos</p></div>
+<div class="add"><p>081064 ethos<br>445410 flow</p></div>
+</div>
+<p class="target"><code>psyche-skills/skills/vision-datom.md</code></p>
+<p>At the end of "## Strings", after its example block.</p>
+<div class="diff">
+<div class="ctx"><p>cannot be mistyped for it, and point, so the ends are visible at any size.</p>
+<pre><code>Ada     TheBuildPassedOnTheThirdTry     «12 Rue de la Paix»</code></pre></div>
+<div class="add"><p>A head is a variant, PascalCase; every other name is camelCase, uncapitalized, and is a prototype name: a type like a string, an uncapitalized identifier composed of words, checked whenever one is created. A string position takes a string that starts with a capital; it stays a string.</p>
+<pre><code class="language-datom">; Reply: an enum of
+;   Registered.{ PrototypeName String }, Pending
+Registered.{ protosParser ProtosParser }</code></pre></div>
+<div class="ctx"><p><strong>## Syntax</strong></p></div>
+</div>
+<p class="target"><code>psyche-skills/skills/vision-datom.md</code></p>
+<p>At the end of "## Sources".</p>
+<div class="diff">
+<div class="ctx"><p>542442 datom<br>f38926 meaningLanguage</p></div>
+<div class="add"><p>081064 ethos<br>445410 flow</p></div>
+</div>
+</article>
+
+<article class="proposal">
+<header><h2>Distillation</h2></header>
+<p>Proposed skill lines, per choice:</p>
+<h3>Choice 1</h3>
+<ul>
+<li><code>psyche-skills/skills/vision-protos.md</code>: new section "## Names" (the statement, the ethos declaration, the datom line), placed before "## String, escape, error"; Sources gets <code>081064 ethos</code> and <code>445410 flow</code>.</li>
+<li><code>psyche-skills/vision/ethos.md</code>: one line at the end of "## Naming": Name casing is stated in vision-protos, Names.</li>
+<li><code>psyche-skills/skills/vision-datom.md</code>: the same line at the end of "## Strings".</li>
+</ul>
+<h3>Choice 2</h3>
+<ul>
+<li><code>psyche-skills/vision/ethos.md</code>: the statement and the ethos declaration at the end of "## Naming"; Sources gets <code>081064 ethos</code> and <code>445410 flow</code>.</li>
+<li><code>psyche-skills/skills/vision-datom.md</code>: the statement and the datom example at the end of "## Strings"; Sources gets <code>081064 ethos</code> and <code>445410 flow</code>.</li>
+</ul>
+<p>Sources:</p>
+<p>081064 ethos<br>445410 flow</p>
+</article>
+
+<section class="rulings">
+<h2>Ruling</h2>
+<ol>
+<li><p>Choice 1: the shared rule in vision-protos, with one pointer line each in vision-ethos and vision-datom.</p></li>
+<li><p>Choice 2: the rule in vision-ethos and in vision-datom separately.</p></li>
+<li><p>May an ethos capability input name a concrete type? Then the right form stands as the vision. Or is the prototype name's check written over Self (form a), or over a trait (form b)? The line <code>[ String ]</code> marked <code>&lt;- question 3</code> in the proposal blocks is the line this decides; the marker is the book's and does not land.</p></li>
+</ol>
+<p>Also: is "prototype name" the name you keep, and is the prototype name the type core:Name?</p>
+</section>
+
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+; What Ethos remembers: its configuration and
+; the full registry, one part per repository
+
+Memory
+[ ethos_library:[ Configuration Part ] ]
+[ Standard.{                    ; the standard tree
+     Configuration
+     MetaConfigured.Boolean }
+  Registry.Vector<Part> ]       ; the full registry

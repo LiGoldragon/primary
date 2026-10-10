@@ -1,0 +1,21 @@
+; What Ethos says, on its meta socket: the
+; configuration and the registry's parts
+
+Signal
+[ ethos_library:[ Configuration ; shared types
+                  EthosName
+                  Part ]
+  source_ethos:SourceName ]     ; a repository
+[ Configure.Configuration
+  Load.Part                     ; replaces that
+                                ; repository's part
+  Unload.SourceName ]           ; its part leaves
+[ Configured
+  RestartRequired               ; a socket changed
+  Loaded
+  Unloaded
+  Refused.[                     ; typed refusals
+     Duplicate.EthosName        ; held by a part
+     Absent.SourceName          ; no part to remove
+     StoreRefused ] ]
+[]                              ; types

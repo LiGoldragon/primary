@@ -1,0 +1,500 @@
+<title>The Ethos Nexus</title>
+<h1 class="book-title">The Ethos Nexus</h1>
+<section>
+<h2>Ethos today, and the Nexus it becomes</h2>
+<p>Ethos today is Ethos Zero: a generator run by request. It opens no socket and keeps no store, so it is not a Nexus (vision-ethos, sections "Zero" and "Generation"). Every request brings the whole of what it needs; nothing is remembered between requests.</p>
+<p>A Nexus has three parts, each its own ethos file: Signal is what it says, Operation what it does, Memory what it remembers (vision-nexus, "Three parts and one path"). The Message Nexus, as drafted, is the pattern this book follows: five ethos files, one root each. A Library holds what the parts share; one Signal file serves the ordinary socket and one the meta socket; then Operation and Memory.</p>
+<p>The Ethos Nexus drawn here keeps a registry. Each repository carries its own datom part naming the ethos sources it holds. The parts are loaded on the meta socket and together make the registry. A lowercase source name in an ethos file resolves through it. The file's content comes from the Source nexus, which also keeps the hashes.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 460" width="100%" style="max-width:360px;height:auto" role="img" aria-label="Repository datom parts load into the Ethos Memory registry, which Ethos Signal reads and which fetches from the Source nexus" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="14" fill="currentColor">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1c5f8a"/></marker>
+</defs>
+<g fill="none" stroke="#1c5f8a" stroke-width="1.5">
+<rect x="8" y="8" width="104" height="56" rx="4"/>
+<rect x="128" y="8" width="104" height="56" rx="4"/>
+<rect x="248" y="8" width="104" height="56" rx="4"/>
+<rect x="8" y="136" width="344" height="84" rx="4"/>
+<rect x="8" y="250" width="344" height="62" rx="4"/>
+<rect x="8" y="370" width="344" height="80" rx="4"/>
+<path d="M60 64 V86 M180 64 V86 M300 64 V86 M60 86 H300"/>
+<path d="M180 86 V134" marker-end="url(#ah)"/>
+<path d="M180 220 V248" marker-end="url(#ah)"/>
+<path d="M180 312 V368" marker-end="url(#ah)"/>
+</g>
+<text x="60" y="30" text-anchor="middle">repository</text>
+<text x="60" y="50" text-anchor="middle">datom part</text>
+<text x="180" y="30" text-anchor="middle">repository</text>
+<text x="180" y="50" text-anchor="middle">datom part</text>
+<text x="300" y="30" text-anchor="middle">repository</text>
+<text x="300" y="50" text-anchor="middle">datom part</text>
+<text x="192" y="104">meta signal</text>
+<text x="192" y="122">Load.Part, one per repo</text>
+<text x="20" y="160" font-weight="600">Ethos Memory: the registry</text>
+<text x="20" y="182">name -&gt; source, relative path</text>
+<text x="20" y="204">one part per repository</text>
+<text x="192" y="240">read by</text>
+<text x="20" y="274" font-weight="600">Ethos Signal, ordinary socket</text>
+<text x="20" y="296">Resolve</text>
+<text x="110" y="296">Generate</text>
+<text x="220" y="296">Check</text>
+<text x="192" y="334">Fetch: source name</text>
+<text x="192" y="352">+ relative path</text>
+<text x="20" y="394" font-weight="600">Source nexus</text>
+<text x="20" y="416">gives the file's content</text>
+<text x="20" y="436">keeps the hashes</text>
+</svg>
+<p>Nothing of this is in production: no Ethos Nexus exists, and the five files below are a draft in this flow. All five are accepted by the current generator.</p>
+<p>The records this rests on: flows/081064/vision/ethos.md, 2026-10-10 (the registry's anatomy and the Ethos Nexus with signal, memory and operation; a Nexus called sources; one source nexus for all components; the shared sources library); flows/d5df1d/vision/ethos.md, 2026-10-09 20:07 (the registry keyed by subaspect and topic, holding the containing source with its blake3 and relative path; its payloads on the meta signal); flows/73ada7/vision/nexus.md, 2026-10-09 20:41 (configuration loaded atomically from datom payloads living in separate repositories, sent on the meta socket). This last record is what the 2026-10-10 words name as the atomically updatable approach; that reading is the flow's.</p>
+</section>
+<section>
+<h2>The proposal: the Ethos Nexus, in vision-ethos</h2>
+<p>The proposal adds one section, "The Ethos Nexus", to psyche-skills/vision/ethos.md, after "Generation". Its lines are in the Distillation section, D1. Here is the code they describe.</p>
+<h3>The ethos it uses</h3>
+<ul>
+<li>Roots. <code>Library</code> holds what the parts share. Its sections are imports, types, traits, associations. <code>Signal</code> holds queries and responses, and becomes <code>enum Query</code> and <code>enum Response</code>. <code>Operation</code> holds operations and outcomes, one operation for every effect. <code>Memory</code> holds the record types the Nexus keeps. Every root's first section is its imports.</li>
+<li>Imports. <code>source_ethos:[ SourceName RelativePath ]</code> takes two names from one library. Here <code>source_ethos</code> is the shared sources library and <code>ethos_library</code> is Ethos's own Library file.</li>
+<li><code>Name.Type</code> declares a name over a type. <code>EthosName.String</code> is a lowercase name held as a string. In a variant, <code>Load.Part</code> is the query Load carrying a Part. The current generator turns every bare <code>Name.Type</code> (<code>EthosName.String</code>, <code>RustPath.String</code>, <code>Registry.Vector&lt;Part&gt;</code> and the rest) into a type alias, not a new type. That is the known generator defect whose ruling is Fork 3 of the open types book.</li>
+<li>A brace, <code>Name.{ … }</code>, is a struct: positions in order, each field named after its type. A struct variant such as <code>Generate.{ Module Target.String }</code> generates a <code>Generate_Data</code> struct.</li>
+<li>A bracket where types are declared, <code>Name.[ … ]</code>, is an enum. <code>Refused.[ … ]</code> is a closed list of refusals, so errors are words, never strings.</li>
+<li><code>Vector&lt;Entry&gt;</code> is a list of entries.</li>
+<li>A position may declare its type in place: <code>Ordinary.String</code> inside a brace declares the alias <code>Ordinary</code> and the field that holds it.</li>
+</ul>
+<h3>Library: what the parts share</h3>
+<pre><code class="language-ethos">; Ethos&#x27;s own Library: what its roots share
+
+Library
+[ source_ethos:[ SourceName     ; Source&#x27;s names
+                 RelativePath ] ]
+[ Configuration.{               ; startup config
+     Ordinary.String            ; socket paths
+     Meta.String
+     Source.String }            ; the Source edge
+  EthosName.String              ; a lowercase name
+  RustPath.String               ; what is written
+  Entry.{ EthosName             ; one ethos source:
+          RelativePath          ; its library file
+          RustPath }            ; and its Rust path
+  Part.{ SourceName             ; one repository&#x27;s
+         Vector&lt;Entry&gt; }        ; ethos sources
+  Module.{ SourceName           ; an ethos file by
+           RelativePath } ]     ; source and path
+[]                              ; traits
+[]                              ; associations</code></pre>
+<p>An <code>Entry</code> is one ethos source: its name, the file it lives in, and the Rust path the generator writes for it. A <code>Part</code> is one repository's entries under that repository's source name. A <code>Module</code> is what Ethos asks the Source nexus for: one file in one source.</p>
+<h3>Memory: what Ethos remembers</h3>
+<pre><code class="language-ethos">; What Ethos remembers: its configuration and
+; the full registry, one part per repository
+
+Memory
+[ ethos_library:[ Configuration Part ] ]
+[ Standard.{                    ; the standard tree
+     Configuration
+     MetaConfigured.Boolean }
+  Registry.Vector&lt;Part&gt; ]       ; the full registry</code></pre>
+<p>The registry is the parts, one per repository. <code>Standard</code> is the metadata tree every Nexus keeps, as in the Message pattern.</p>
+<h3>Meta Signal: the registry is changed here</h3>
+<pre><code class="language-ethos">; What Ethos says, on its meta socket: the
+; configuration and the registry&#x27;s parts
+
+Signal
+[ ethos_library:[ Configuration ; shared types
+                  EthosName
+                  Part ]
+  source_ethos:SourceName ]     ; a repository
+[ Configure.Configuration
+  Load.Part                     ; replaces that
+                                ; repository&#x27;s part
+  Unload.SourceName ]           ; its part leaves
+[ Configured
+  RestartRequired               ; a socket changed
+  Loaded
+  Unloaded
+  Refused.[                     ; typed refusals
+     Duplicate.EthosName        ; held by a part
+     Absent.SourceName          ; no part to remove
+     StoreRefused ] ]
+[]                              ; types</code></pre>
+<p><code>Load.Part</code> puts in one repository's part, or replaces the part it already has. <code>Unload</code> takes a repository's part out. If a name is already held by another repository's part, Load is refused with <code>Duplicate</code>.</p>
+<h3>Signal: what Ethos says to its ordinary peers</h3>
+<pre><code class="language-ethos">; What Ethos says, on its ordinary socket
+
+Signal
+[ ethos_library:[ Configuration ; shared types
+                  EthosName
+                  RustPath
+                  Module ]
+  source_ethos:SourceRefusal    ; Source&#x27;s refusals
+  ethos_zero:[ Error            ; the reader&#x27;s
+               Location ] ]     ; vocabulary
+[ Resolve.EthosName             ; a name to its path
+  Generate.{ Module             ; write its Rust
+             Target.String }    ; into this folder
+  Check.Module                  ; read it whole
+  Configure.Configuration ]     ; until configured
+[ Resolved.RustPath
+  Generated.Vector&lt;String&gt;      ; the files written
+  Checked
+  Configured
+  Refused.[                     ; typed refusals
+     Unknown.EthosName          ; no registry entry
+     Unfetched.SourceRefusal    ; Source said no
+     SourceUnreachable
+     Rejected.{ Module          ; the file is wrong
+                Location
+                Error }
+     Unwritable.Target
+     AlreadyConfigured ] ]
+[]                              ; types</code></pre>
+<p><code>Resolve</code> turns a lowercase name into the Rust path the generator writes. <code>Generate</code> and <code>Check</code> are Ethos Zero's two requests, given a <code>Module</code> where Ethos Zero takes a file path.</p>
+<h3>Operation: what Ethos does</h3>
+<pre><code class="language-ethos">; What Ethos does: one operation for every effect
+
+Operation
+[ ethos_library:[ Configuration ; shared types
+                  Part
+                  Module ]
+  source_ethos:[ SourceName     ; Source&#x27;s names
+                 SourceRefusal ] ]
+[ Fetch.Module                  ; ask Source for it
+  Write.{ Path.String           ; write one module
+          Rust.String }         ; of generated Rust
+  Store.Configuration           ; write Memory
+  Register.Part                 ; replace a part
+  Unregister.SourceName ]       ; remove a part
+[ Fetched.String                ; the file&#x27;s text
+  Wrote.Path
+  Stored
+  Registered
+  Unregistered
+  Failed.[                      ; typed failures
+     Unfetched.SourceRefusal
+     SourceUnreachable
+     Unwritable.Path
+     StoreRefused ] ]
+[]                              ; types</code></pre>
+<p><code>Fetch</code> is the one edge to the Source nexus. The Source nexus checks the content against the hash it keeps; Ethos holds no hash and no revision.</p>
+<p>The three names taken from <code>source_ethos</code> (<code>SourceName</code>, <code>RelativePath</code>, <code>SourceRefusal</code>) are the flow's guess, until the shared sources library is drafted. The current generator emits them unresolved, and they stay untested until that library exists. The flow's guess is also that Ethos has no edge to Flow: resolving and generating depend on no caller.</p>
+<h3>Wrong and right: where the hash lives</h3>
+<p>Wrong: the entry copies what Source keeps. A hash and a Git revision sit in Ethos and in Source. Each commit to a repository then changes both registries, and the two can disagree.</p>
+<div class="diff"><div class="del"><pre><code class="language-ethos">; wrong: Ethos keeps what Source keeps
+Library
+[ source_ethos:[ SourceName      ; Source&#x27;s names
+                 RelativePath ] ]
+[ EthosName.String               ; types
+  RustPath.String
+  Entry.{ EthosName              ; one ethos source:
+          RelativePath           ; its library file
+          Blake3.String          ; Source&#x27;s hash
+          Revision.String        ; Source&#x27;s revision
+          RustPath }             ; its Rust path
+  Part.{ SourceName              ; one repository&#x27;s
+         Vector&lt;Entry&gt; } ]       ; ethos sources
+[]                               ; traits
+[]                               ; associations</code></pre></div></div>
+<p>Right: Ethos keeps names and paths. The hash and the revision stay in the Source nexus, the one place that fixes the sources aspect.</p>
+<div class="diff"><div class="add"><pre><code class="language-ethos">; right: Ethos keeps names; Source the rest
+Library
+[ source_ethos:[ SourceName      ; Source&#x27;s names
+                 RelativePath ] ]
+[ EthosName.String               ; types
+  RustPath.String
+  Entry.{ EthosName              ; one ethos source:
+          RelativePath           ; its library file
+          RustPath }             ; its Rust path
+  Part.{ SourceName              ; one repository&#x27;s
+         Vector&lt;Entry&gt; } ]       ; ethos sources
+[]                               ; traits
+[]                               ; associations</code></pre></div></div>
+<p>Question 1 asks whether the hash, though not the revision, comes back into the entry. If you rule that it does, the <code>Blake3</code> line moves from wrong to right. The revision stays wrong either way: the 2026-10-10 record puts Git revisions in Source's own Git-equivalence registry.</p>
+</section>
+<section><h2>Questions for your ruling</h2></section>
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Where the hash lives</h2></header>
+<p>The 2026-10-09 record (flows/d5df1d/vision/ethos.md, 20:07) puts the containing source's blake3 in the registry entry, beside the relative path. The 2026-10-10 records (flows/081064/vision/ethos.md, "a Nexus called sources" and "a shared sources library") put every hash in the Source nexus, with only that content-addressing registry needing updates. The draft follows the later words. Whether they correct the earlier ones is for you to say.</p>
+<p>Example: one field is added to the Message Nexus's signal file.</p>
+<ul>
+<li>The later words, as drafted: Source takes a new snapshot, and its hash for that repository changes. The ethos registry does not change. The next <code>Fetch</code> returns the new text, checked by Source.</li>
+<li>Variant H, the hash in the entry: the repository's part must carry the new hash, so every content commit means a new <code>Load.Part</code>. The flow's inference: a part that lives inside its repository cannot hold the hash of the snapshot that contains it. So under H the part would be written outside the repository, or the hash would cover one file instead of the source.</li>
+</ul>
+<p>Variant H, as lines:</p>
+<pre data-diff><code class="language-ethos">ethos.library.ethos
+-                RelativePath ] ]
++                RelativePath
++                Blake3 ] ]
+-          RustPath }
++          RustPath
++          Blake3 }
+ethos.operation.ethos
+- Fetch.Module
++ Fetch.{ Module Blake3 }</code></pre>
+<section class="rulings"><ol><li value="1"><p>Rule: the later words stand (no hash in Ethos), or H.</p></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">2</span><h2>What the generator writes for <code>core</code></h2></header>
+<p>The registry line you approved on 2026-10-10 waits on this fork (see D2). Example: an ethos file declares <code>Id.core:Identifier</code>, a type from <code>core</code>. Under a the generator writes the name fully qualified from the crate Configuration holds for <code>core</code>; under b it writes the path <code>core</code>'s own entry names; under c it refuses the file. In this anatomy the three options become:</p>
+<p><strong>a.</strong> <code>core</code> is a crate of its own. Its fixed path is held in Configuration, and a part that registers <code>core</code> is refused.</p>
+<pre data-diff><code class="language-ethos">ethos.library.ethos
+-      Source.String }
++      Source.String
++      Core.RustPath }
+ethos.meta.signal.ethos
+-      StoreRefused ] ]
++      StoreRefused
++      CoreReserved ] ]</code></pre>
+<p><strong>b.</strong> <code>core</code> is an ordinary registry entry. The core library repository's part names the path it emits, as every other part does. No ethos line changes: the files above are already option b. The difference is only in data. A sketch of the core repository's Load, written by the flow and not read by any reader:</p>
+<pre><code class="language-ethos">Load.{ ethosCore
+       [ { core
+           core.library.ethos
+           ethos_core } ] }</code></pre>
+<p><strong>c.</strong> <code>core</code> is reserved and refused. No part may register it, <code>Resolve</code> answers <code>Unknown</code>, and Generate and Check refuse it in Ethos Zero's own vocabulary, outside these files. The flow notes a consequence: c refuses your own example key <code>Topic.core:Name</code>.</p>
+<pre data-diff><code class="language-ethos">ethos.meta.signal.ethos
+-      StoreRefused ] ]
++      StoreRefused
++      CoreReserved ] ]</code></pre>
+<p>The flow's reading: under a and c, D1's line on resolution covers every source except <code>core</code>. D2 names the exception.</p>
+<section class="rulings"><ol><li value="2"><p>Rule: a, b or c.</p></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">3</span><h2>A repository's part is replaced whole</h2></header>
+<p>The draft never edits entries one at a time. <code>Load.Part</code> replaces the repository's whole part, and <code>Unload</code> removes it. The flow takes this from the atomic configuration loading of 2026-10-09 20:41.</p>
+<p>Example: the flow repository renames its library <code>flow</code> to <code>flowSignal</code>. The CLI reads the repository's datom file again and sends one <code>Load.Part</code> holding every entry of that repository. Ethos swaps the old part for the new one in one step. Nothing reads a half-renamed registry. If another repository's part already holds <code>flowSignal</code>, the whole Load is refused with <code>Duplicate</code>, and the old part stays.</p>
+<p>The amendment would be to edit entries. A sketch, the flow's:</p>
+<pre data-diff><code class="language-ethos">ethos.meta.signal.ethos
+-  Load.Part
++  Load.Part
++  Add.{ SourceName Entry }
++  Remove.EthosName
++  Rename.{ EthosName EthosName }</code></pre>
+<p>With that, a rename is one message. The flow's inference: a repository's datom file and the registry can then drift apart.</p>
+<section class="rulings"><ol><li value="3"><p>Rule: confirm whole-part replacement, or amend.</p></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">4</span><h2>The names the flow coined</h2></header>
+<p>None of these names is in your words; the flow chose each one. Example of the names at work: the CLI sends <code>Load.Part</code> on the meta socket for the flow repository; a peer sends <code>Resolve.flowSignal</code> and <code>Resolved.RustPath</code> answers; Ethos asks <code>Fetch.Module</code> of the Source nexus for the file.</p>
+<ul>
+<li><code>Part</code>: one repository's share of the registry.</li>
+<li><code>Entry</code>: one ethos source in a part.</li>
+<li><code>EthosName</code>: the lowercase name an entry carries. When the prototype name type exists, it will hold this name; <code>String</code> stands in until then.</li>
+<li><code>RustPath</code>: the path the generator writes for a name.</li>
+<li><code>Resolve</code>: a name to its Rust path, on the ordinary socket.</li>
+<li><code>Load</code> and <code>Unload</code>: a part in or out, on the meta socket.</li>
+<li><code>Fetch</code>: Ethos asking the Source nexus for a file. The 2026-10-10 record (flows/058f16/vision/source.md) names a source request and its answer; <code>Get</code> or <code>Source</code> would follow it more closely.</li>
+</ul>
+<p>The flow also coined <code>Module</code>, <code>Register</code>, <code>Unregister</code>, <code>Write</code> and <code>Store</code>. They follow the same ruling unless you name them.</p>
+<section class="rulings"><ol><li value="4"><p>Rule: keep, or give a new name for each.</p></li></ol></section>
+</article>
+<section><h2>Distillation</h2></section>
+<article class="proposal">
+<header><span class="pnum">D1</span><h2>The Ethos Nexus, a new section of vision-ethos</h2></header>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>Target: psyche-skills/vision/ethos.md, the vision-ethos skill. Place: after the "Generation" section, before "## Sources".</p>
+<p>Removed: none.</p>
+<p>Above, unchanged:</p>
+<div class="diff"><div class="ctx">
+<h3>Generation</h3>
+<p>By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.</p>
+<pre><code class="language-bash">ethos-zero &#x27;Generate.{ /abs/orchestrate.ethos /abs/out }&#x27;</code></pre>
+</div></div>
+<p>Added:</p>
+<div class="diff"><div class="add">
+<h3>The Ethos Nexus</h3>
+<p>The Ethos Nexus has three parts, Signal, Memory and Operation, each written in ethos.</p>
+<p>Its Memory is a registry of ethos names. Each repository carries one datom part naming its ethos sources; each part is loaded whole on the meta signal, and the parts together make the registry. The registry changes whenever a source is added, removed or renamed.</p>
+<p>A lowercase source name resolves through the registry to the path the generator writes.</p>
+<p>The content of an ethos file is fetched by name from the Source nexus, which keeps the hashes.</p>
+</div></div>
+<p>Below, unchanged:</p>
+<div class="diff"><div class="ctx">
+<h3>Sources</h3>
+<p>01a02a34 ethos</p>
+</div></div>
+<p>If question 1 rules H, the last paragraph is replaced by:</p>
+<div class="diff">
+<div class="del"><p>The content of an ethos file is fetched by name from the Source nexus, which keeps the hashes.</p></div>
+<div class="add"><p>Each registry entry holds the blake3 of its containing source; the content of an ethos file is fetched by name from the Source nexus.</p></div>
+</div>
+<p>If question 3 amends, "each part is loaded whole on the meta signal" reads "parts and their entries are changed on the meta signal".</p>
+</article>
+<article class="proposal">
+<header><span class="pnum">D2</span><h2>The registry line, with the fork filled</h2></header>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>Target: psyche-skills/vision/ethos.md, the Imports section. Place: after the inline-import paragraph, before "## What a declaration turns into". This is the line approved on 2026-10-10, with ⟨the fork⟩ filled by question 2's ruling.</p>
+<p>Removed: none.</p>
+<p>Above, unchanged:</p>
+<div class="diff"><div class="ctx"><p>A type may be declared over a type from a source in place, with no entry in the imports section: <code>Topic.custom:Name</code> declares <code>Topic</code> over the type <code>Name</code> from the source <code>custom</code>. The source is known twice: its first letter is lowercase, and a colon follows it.</p></div></div>
+<p>Added, with one of the three fillings:</p>
+<div class="diff"><div class="add"><p>A lowercase source names an entry of the registry. What the generator writes for a name from <code>core</code> is ⟨the fork⟩.</p></div></div>
+<ol type="a">
+<li>the name fully qualified from the one crate the Nexus is configured with for <code>core</code></li>
+<li>the path that <code>core</code>'s registry entry names, as for every other source</li>
+<li>nothing: <code>core</code> is not a source, and a name from it is refused</li>
+</ol>
+<p>Below, unchanged:</p>
+<div class="diff"><div class="ctx"><h3>What a declaration turns into</h3></div></div>
+</article>
+<article class="proposal">
+<header><span class="pnum">D3</span><h2>Sources</h2></header>
+<p class="target"><code>psyche-skills/vision/ethos.md</code></p>
+<p>Target: psyche-skills/vision/ethos.md, the Sources section, appended after its last line.</p>
+<p>Above, unchanged:</p>
+<div class="diff"><div class="ctx"><p>88475f ethos<br>d5df1d ethos</p></div></div>
+<p>Removed: none.</p>
+<p>Added:</p>
+<div class="diff"><div class="add"><p>081064 ethos<br>73ada7 nexus</p></div></div>
+</article>
+<section class="rulings"><h2>Ruling</h2><p><strong>Ruling.</strong> 1: the later words, or H. 2: a, b or c. 3: confirm, or amend. 4: keep, or rename, name by name. D1, D2 and D3 land with those answers. Or amend any line.</p></section>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
+

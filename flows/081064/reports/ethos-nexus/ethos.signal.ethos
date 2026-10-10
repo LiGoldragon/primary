@@ -1,0 +1,29 @@
+; What Ethos says, on its ordinary socket
+
+Signal
+[ ethos_library:[ Configuration ; shared types
+                  EthosName
+                  RustPath
+                  Module ]
+  source_ethos:SourceRefusal    ; Source's refusals
+  ethos_zero:[ Error            ; the reader's
+               Location ] ]     ; vocabulary
+[ Resolve.EthosName             ; a name to its path
+  Generate.{ Module             ; write its Rust
+             Target.String }    ; into this folder
+  Check.Module                  ; read it whole
+  Configure.Configuration ]     ; until configured
+[ Resolved.RustPath
+  Generated.Vector<String>      ; the files written
+  Checked
+  Configured
+  Refused.[                     ; typed refusals
+     Unknown.EthosName          ; no registry entry
+     Unfetched.SourceRefusal    ; Source said no
+     SourceUnreachable
+     Rejected.{ Module          ; the file is wrong
+                Location
+                Error }
+     Unwritable.Target
+     AlreadyConfigured ] ]
+[]                              ; types

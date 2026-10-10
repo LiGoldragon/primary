@@ -1,0 +1,25 @@
+; What Ethos does: one operation for every effect
+
+Operation
+[ ethos_library:[ Configuration ; shared types
+                  Part
+                  Module ]
+  source_ethos:[ SourceName     ; Source's names
+                 SourceRefusal ] ]
+[ Fetch.Module                  ; ask Source for it
+  Write.{ Path.String           ; write one module
+          Rust.String }         ; of generated Rust
+  Store.Configuration           ; write Memory
+  Register.Part                 ; replace a part
+  Unregister.SourceName ]       ; remove a part
+[ Fetched.String                ; the file's text
+  Wrote.Path
+  Stored
+  Registered
+  Unregistered
+  Failed.[                      ; typed failures
+     Unfetched.SourceRefusal
+     SourceUnreachable
+     Unwritable.Path
+     StoreRefused ] ]
+[]                              ; types
