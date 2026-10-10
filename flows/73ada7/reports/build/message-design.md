@@ -20,7 +20,7 @@ Markers on each point:
 
 ## 1. What Message does
 
-A flow writes one datom naming a metaflow, or `Up`, and a request.
+A flow writes one datom naming a metaflow by its Address and a request.
 Message learns which metaflow the caller runs in, asks Flow for the
 lock on the recipient metaflow, and hands Flow the request under that
 lock. Flow then places the request by the waking rule: delivered now
@@ -45,8 +45,9 @@ messages, no queue and no message ids.
   (vision-flow, psyche-skills 850fd27). The routes themselves are in
   vision-aspects [R].
 - A request is a typed value, never a letter [V] (f5a6e9 record
-  above). Its kinds are Order, Question, Psyche, Psyches, Result and
-  Notice [P] (book 17; f5a6e9's design Library).
+  above). Its kinds are Order, Question, Psyche.Said, Psyches.Vector<Said>,
+  Result and Notice [P] (book 17; f5a6e9's design Library). `Said.{ Context
+  Verbatim }` is the type carrying the living's words; see section 10.
 - "We shouldn't get the message ID." [V]
   (`flows/b7ba00/vision/messaging.md:29`, 2026-09-26).
 
@@ -122,7 +123,7 @@ Every generated type derives rkyv. Its datom forms sit behind the
   This is kept from what is deployed.
 - Meta admission [I]: only a process that runs in no flow (the
   owner) is admitted. The deployed MetaAspects list is dropped,
-  because f5a6e9's Library has no Aspect type to name it, and no
+  although f5a6e9's Library now has `Aspect`, because no
   record asks for Psyche flows to configure Message.
 
 ## 4. Ethos
@@ -131,9 +132,10 @@ Message's five files are in
 `/home/li/primary/flows/73ada7/reports/message-flow/`. Each passes
 `ethos-zero Check` (ethos-zero 16.0.0), checked alone with its
 imports unresolved. Message declares no shared type: it imports them
-from Flow's Library, `flow_ethos`, as f5a6e9's revised design
-declares them (that design at main eaab24fa): `FlowId`, `Request`
-(with `Psyche`), `Metaflow`, `Lock`, `Process` and `Sender`.
+from Flow's Library, `flow_ethos`, as f5a6e9's design at main e17a62ca
+declares them: `FlowId`, `Request` (with `Psyche.Said` and
+`Psyches.Vector<Said>`), `Said`, `Address.{ Aspect Topic Layer }`,
+`Lock.{ Address Until }`, `Process` and `Sender.Address`.
 `Topic` and `Blake3` are Flow's. Until ethos-zero reads them, the
 build carries `Topic.String` (designed: `Topic:Name`, the Ethos
 topic's inline import) and `Blake3.String`, 64 hex characters
@@ -141,11 +143,12 @@ topic's inline import) and `Blake3.String`, 64 hex characters
 directly.
 
 Flow's requests are on the Flow edge exactly as its Signal gives
-them: `Identify.Process`, `Lock.Metaflow`, `Deliver.{ Lock Sender
-Request }`, `Release.Lock`. Flow answers `Identified.Metaflow`,
+them: `Identify.Process`, `Lock.Address`, `Deliver.{ Lock Sender
+Request }`, `Release.Lock`. Flow answers `Identified.Address`,
 `Locked.Lock`, `Delivered`, `Queued`, `Woken.FlowId`, `Released`
-and the refusals `Locked`, `Held.Lock`, `Lapsed`, `Unknown.Metaflow`,
-`Ended.Metaflow`, `OffRoute` and `Unidentified.Process`. Message's
+and the refusals `Locked`, `Held.Lock`, `Lapsed`, `Unknown.Address`,
+`Ended.Address`, `OffRoute` and `Unidentified.Process`. An Address is
+written short: `{ Psyche flow Primary }`. Message's
 Operation names these as its effects, with the imported types as
 payloads.
 
@@ -166,11 +169,9 @@ Library
 
 ```
 Signal
-[ flow_ethos:[ Metaflow Request Process Lock ]
+[ flow_ethos:[ Address Request Process Lock ]
   message_library:Configuration ]
-[ Send.{ Recipient.[
-            To.Metaflow
-            Up ]                ; the layer above, same aspect and topic
+[ Send.{ Address
          Request }
   Configure.Configuration ]     ; only until MetaConfigured
 [ Delivered                     ; placed in the awake flow
@@ -179,9 +180,8 @@ Signal
   Configured
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
-     NoneAbove                  ; Up from a Primary
-     Unknown.Metaflow           ; no such metaflow
-     Ended.Metaflow             ; returned to its sender
+     Unknown.Address            ; no such metaflow
+     Ended.Address              ; returned to its sender
      OffRoute                   ; off the vision-aspects routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
@@ -191,17 +191,17 @@ Signal
 []
 ```
 
-- The simple form names the metaflow, never a flow id [P] (book 15
-  proposal 4). That a simple message never names a flow id rests on
+- The simple form names the metaflow by its Address, never a flow id
+  [P] (book 15 proposal 4; `Send.{ Address Request }` is f5a6e9's
+  simple form). That a simple message never names a flow id rests on
   [V]: "it would be bad practice to try to send to a flow ID"
   (`flows/d4ae97/vision/datom.md`, 2026-10-07).
-- `Up` [V]: "If you say 'send up' it means message higher layer"
-  (`flows/b7ba00/vision/messaging.md:109`, 2026-09-26). The living
-  left the resolver open ("or maybe the flow figures it out. I don't
-  know"); see fork F7.
+- `Up` has no wire form: `Send` carries an Address and f5a6e9's
+  simple form has no recipient variant (see section 10, U1 and fork
+  F7). `NoneAbove` goes with it.
 - Refusals are vocabulary [R] (vision-nexus). Those Flow answers
-  keep Flow's name and payload; `NoneAbove`, `FlowUnreachable` and
-  `AlreadyConfigured` are Message's own.
+  keep Flow's name and payload; `FlowUnreachable` and `AlreadyConfigured`
+  are Message's own.
 - `Woken` drops the flow id, because Message speaks in metaflows [V].
 - `Ended` returns the request to its sender [P] (book 11 proposal 3;
   f5a6e9's design §2).
@@ -229,16 +229,16 @@ privileged send. The raw pane send is a Flow meta operation [V]
 
 ```
 Operation
-[ flow_ethos:[ FlowId Metaflow Request Lock Process Sender ]
+[ flow_ethos:[ FlowId Address Request Lock Process Sender ]
   message_library:Configuration ]
 [ Identify.Process              ; ask Flow which metaflow runs it
-  Lock.Metaflow                 ; ask Flow for the time-bound lock
+  Lock.Address                  ; ask Flow for the time-bound lock
   Deliver.{ Lock                ; hand Flow the request under it
             Sender
             Request }
   Release.Lock                  ; give the lock back after a failure
   Store.Configuration ]         ; write Memory
-[ Identified.Metaflow
+[ Identified.Address
   Locked.Lock
   Delivered
   Woken.FlowId
@@ -247,8 +247,8 @@ Operation
   Stored
   Failed.[
      Unidentified.Process
-     Unknown.Metaflow
-     Ended.Metaflow
+     Unknown.Address
+     Ended.Address
      OffRoute
      Held.Lock
      Locked
@@ -258,10 +258,7 @@ Operation
 []
 ```
 
-Every effect has an operation [R] (vision-nexus). Resolving `Up` is a
-computation on the sender's metaflow, not an effect, so it has no
-operation [I].
-
+Every effect has an operation [R] (vision-nexus). 
 ### 4.5 Memory — `message/crates/message-nexus/ethos/memory.ethos`
 
 ```
@@ -290,13 +287,13 @@ The datom prints below are illustrative. The exact print is whatever
 datom-codec gives the generated types.
 
 ```
-message 'Send.{ To.Mind.{ nexus Secondary } Order.«Build the lock path.» }'
+message 'Send.{ { Mind nexus Secondary } Order.«Build the lock path.» }'
 Delivered
 
-message 'Send.{ Up Result.«message-flow passes on 4f2a1c.» }'
+message 'Send.{ { Mind nexus Primary } Result.«message-flow passes on 4f2a1c.» }'
 Queued
 
-message 'Send.{ To.Psyche.{ core Primary } Psyches.[ { «on the queue» «…» } ] }'
+message 'Send.{ { Psyche core Primary } Psyches.[ { «on the queue» «…» } ] }'
 Refused.OffRoute
 
 message-meta 'Configure.{ …message.sock …message-meta.sock …flow.sock }'
@@ -313,16 +310,16 @@ sent. The Nexus never sees text [R].
 
 1. Message reads the peer's pid with `SO_PEERCRED` on the accepted
    connection, kept from what is deployed. That pid is the
-   `Process`, which Flow's Library gives as `Process.Integer`, the
-   process as the system numbers it. The start time of
-   `/proc/<pid>/stat` field 22 has no place in it (see finding X4).
+   `Process.{ Pid.Integer Started.Integer }` of Flow's Library: the pid
+   with the start time of `/proc/<pid>/stat` field 22, so a reused pid
+   is told apart (see finding X4).
 2. Operation `Identify.Process` goes to Flow as `Identify.Process`.
    Flow walks the process's ancestors for its harness pane
-   and returns the metaflow whose current flow owns that pane:
-   `Identified.Metaflow`, or `Unidentified`. Today Flow walks
+   and returns the Address of the metaflow whose current flow owns that
+   pane: `Identified.Address`, or `Unidentified`. Today Flow walks
    `/proc/<pid>/environ` for `HERDR_PANE_ID`, up to 64 ancestors; this
    design keeps that mechanism inside Flow.
-3. The metaflow becomes the `Sender` of the delivery.
+3. That Address becomes the `Sender` of the delivery (`Sender.Address`).
 
 A flow that is no metaflow,
 such as a side job or the living's own terminal, gets `Unidentified`
@@ -331,7 +328,7 @@ identity, while the kernel read is stronger; see fork F8.
 
 ## 7. Paths, signal → operation → memory
 
-`M` is the recipient metaflow and `S` the sender's metaflow. Every
+`M` is the recipient's Address and `S` the sender's (the `Sender`). Every
 step that talks to Flow is a Message Operation whose effect is a
 Signal on the Flow edge. Flow's own operation and memory steps belong
 to f5a6e9's design and are shown only as far as Message sees them.
@@ -339,12 +336,12 @@ to f5a6e9's design and are shown only as far as Message sees them.
 ### 7.1 Send, recipient awake
 
 ```
-1  CLI     Send.{ To.Mind.{ nexus Secondary } Order.«…» }   ; text → Query::Send
+1  CLI     Send.{ { Mind nexus Secondary } Order.«…» }   ; text → Query::Send
 2  Message Identify.4127                          ; Operation
-           → Flow Identify.Process → Identified.Psyche.{ nexus Secondary }
-3  Message Lock.Mind.{ nexus Secondary }                    ; Operation
-           → Flow Lock.Metaflow                             ; Flow Memory: Lock record, Until = now + lease
-           → Locked.{ Mind.{ nexus Secondary } 1760050000 }
+           → Flow Identify.Process → Identified.{ Psyche nexus Secondary }
+3  Message Lock.{ Mind nexus Secondary }                    ; Operation
+           → Flow Lock.Address                              ; Flow Memory: Lock record, Until = now + lease
+           → Locked.{ { Mind nexus Secondary } 1760050000 }
 4  Message Deliver.{ Lock S Order.«…» }                     ; Operation
            → Flow Deliver.{ Lock Sender Request }           ; Flow checks the route, the lock, the state
            ; Awake: Flow places the request in the current flow's pane,
@@ -358,7 +355,7 @@ Message Memory is untouched; its configuration is read at start.
 What reaches the pane [I]: the sender and the requests, as one datom.
 
 ```
-{ Psyche.{ nexus Secondary } [ Order.«…» ] }
+{ { Psyche nexus Secondary } [ Order.«…» ] }
 ```
 
 Whether this lands at the end of the prompt or as a tool-call return
@@ -380,7 +377,7 @@ The steps are as in 7.1, up to step 4. Flow applies the waking rule
 - **Result or Notice:** Flow appends the request to the metaflow's
   `Queue`, removes the lock, and answers `Queued`. The CLI prints
   `Queued`.
-- **Order, Question, Psyche or Psyches:** Flow runs its wake. It
+- **Order, Question, Psyche.Said or Psyches.Vector<Said>:** Flow runs its wake. It
   launches the next flow with the drained queue, oldest first, and
   this request last, in the first prompt. It answers `Woken.FlowId`.
   Message answers `Woken` and drops the id, because Message speaks in
@@ -391,20 +388,13 @@ Flow's Deliver answers `Queued` and `Woken.FlowId` as well as
 
 ### 7.4 Send up
 
-```
-1  CLI     Send.{ Up Result.«…» }
-2  Message Identify → S = Mind.{ nexus Secondary }
-3  Message resolves Up → M = Mind.{ nexus Primary }       ; same variant, same topic, layer − 1
-           ; from a Primary: Refused.NoneAbove, no Flow call
-4… as 7.1 from step 3
-```
-
-Up moves within one's own aspect: "you go up your own stack, not
-another aspect" [V] (`flows/6aa08d/vision/fieldStack.md`,
-2026-10-07). Keeping the same topic follows vision-aspects [R] ("a
-topic Secondary packages what it observes for its own Primary"). If
-that metaflow does not exist, Flow answers that it is unknown, and
-Message answers `Refused.Unknown.Metaflow`.
+`Send` carries an Address, so a send up is a send whose Address the
+sender wrote: same Aspect, same Topic, Layer one above its own
+("you go up your own stack, not another aspect" [V],
+`flows/6aa08d/vision/fieldStack.md`, 2026-10-07; the same topic
+follows vision-aspects [R]). Message resolves nothing. If that
+metaflow does not exist, Flow answers `Unknown.Address` and Message
+answers `Refused.Unknown.Address`. See section 10, U1.
 
 ### 7.5 Refusal
 
@@ -414,9 +404,8 @@ Each refusal is a typed response. When a lock is held, Message sends
 | Where | Flow's answer | Message answers | Release? |
 |---|---|---|---|
 | Identify | Unidentified.Process | Refused.Unidentified.Process | no |
-| Up from Primary | — | Refused.NoneAbove | no |
-| Lock | Unknown.Metaflow | Refused.Unknown.Metaflow | no |
-| Lock | Ended.Metaflow | Refused.Ended.Metaflow | no |
+| Lock | Unknown.Address | Refused.Unknown.Address | no |
+| Lock | Ended.Address | Refused.Ended.Address | no |
 | Lock | Refused.Held.Lock | Refused.Held.Lock | no |
 | Lock | Refused.Locked | Refused.Locked | no |
 | Deliver | OffRoute | Refused.OffRoute | yes |
@@ -474,7 +463,7 @@ on NixBuilder against pushed revisions.
 **Pure check `checks/message-flow.nix`** (`pkgs.testers.runNixOSTest`,
 one machine, both Nexuses as user services, a real Herdr session).
 Its stand-in harnesses are plain shells, bound to metaflows through
-Flow's meta socket (`Bind.{ Metaflow Process }`). Whether Herdr runs headless inside the
+Flow's meta socket (`Bind.{ Address Process }`). Whether Herdr runs headless inside the
 test VM is unwitnessed. If it does not, these scenarios that read a
 pane move to the semi-sandbox below.
 
@@ -482,48 +471,102 @@ pane move to the semi-sandbox below.
 |---|---|---|
 | 1 | Psyche.{nexus Secondary} sends Order to awake Mind.{nexus Secondary} | `Delivered`; trace Identified → Locked → Delivered → lock removed; the pane shows the sender datom and the request |
 | 2 | Notice to an asleep metaflow | `Queued`; Flow `Current` shows Asleep; the queue holds one request |
-| 3 | Send to a metaflow that does not exist | `Refused.Unknown.Metaflow`; no lock record |
-| 4 | Send to an Ended metaflow | `Refused.Ended.Metaflow` |
+| 3 | Send to a metaflow that does not exist | `Refused.Unknown.Address`; no lock record |
+| 4 | Send to an Ended metaflow | `Refused.Ended.Address` |
 | 5 | Field.{nexus Tertiary} → Psyche.{nexus Primary} | `Refused.OffRoute`; lock released |
 | 6 | Field.{nexus Secondary} → Mind.{nexus Secondary} | `Delivered` (same layer, same topic) |
-| 7 | Up from Mind.{nexus Secondary} | delivered to Mind.{nexus Primary} |
-| 8 | Up from a Primary | `Refused.NoneAbove`; no Flow call in the trace |
-| 9 | `message` run from a shell in no flow's pane | `Refused.Unidentified.Process` |
-| 10 | Flow `Lock.M` taken directly, then a send to M | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` |
-| 11 | Flow stopped, then a send | `Refused.FlowUnreachable` |
-| 12 | Fresh store, `Configure` on the ordinary socket; then meta Configure; then ordinary Configure again | `Configured`, `Configured`, `Refused.AlreadyConfigured` |
-| 13 | Message restarted with no arguments | the send in test 1 succeeds with no new Configure |
-| 14 | An unreadable datom given to `message` | the CLI refuses; no connection appears in the Nexus trace |
+| 7 | Mind.{nexus Secondary} sends to `{ Mind nexus Primary }` | `Delivered` to Mind.{nexus Primary} |
+| 8 | `message` run from a shell in no flow's pane | `Refused.Unidentified.Process` |
+| 9 | Flow `Lock.M` taken directly, then a send to M | `Refused.Held.Lock`; after the lease ends, the same send is `Delivered` |
+| 10 | Flow stopped, then a send | `Refused.FlowUnreachable` |
+| 11 | Fresh store, `Configure` on the ordinary socket; then meta Configure; then ordinary Configure again | `Configured`, `Configured`, `Refused.AlreadyConfigured` |
+| 12 | Message restarted with no arguments | the send in test 1 succeeds with no new Configure |
+| 13 | An unreadable datom given to `message` | the CLI refuses; no connection appears in the Nexus trace |
 
 **Semi-sandbox `packages/message-flow-claude.nix`**, run with
 `nix run .#message-flow-claude`, Haiku:
 
 | # | Drive | Expect |
 |---|---|---|
-| 15 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
-| 16 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
+| 14 | Notice, then Order, to an asleep metaflow | `Queued`, then `Woken`; the woken flow's first prompt ends with `[ Notice.«…» Order.«…» ]`, the Order last |
+| 15 | Order to an awake, working Claude flow | placed by Flow's rule (N8, fork F4); the recipient's transcript holds it once |
 
 ## 10. Needs against f5a6e9's Flow design
 
-f5a6e9's revision at main eaab24fa answers N1, N2, N5, N6, N7 and
-N13, and part of N8: a busy awake flow queues. N4 is answered as to
-where the shared types are declared: in Flow's Library. What
-remains is Flow's to rule, or the living's where marked.
+f5a6e9's design at main e17a62ca answers N1, N2, N5, N6, N7 and N13,
+and part of N8: a busy awake flow queues. N4 is answered: the shared
+types are declared once in Flow's Library, and the two shapes of the
+metaflow are replaced by `Address.{ Aspect Topic Layer }` and the
+record `Metaflow.{ Address State Past Queue }`.
+
+Where each change since eaab24fa rests, read in
+`flows/f5a6e9/log.md` (lines 147-149), `flows/f5a6e9/vision/` and
+`flows/73ada7/vision/`. None of the seven is recorded there as
+the living's ruling. The log words them "Ruled" and "four rulings
+given", given by 9fed42 (Psyche Flow Secondary, an Opus seat) on a
+candidate; the design says of them "current best, not before the
+living". Where the living has spoken on the matter, it is named.
+
+- **C1 `Said.{ Context Verbatim }`, `Psyche.Said`, `Psyches.Vector<Said>`.**
+  The living's own words ground the content: a psyche-type message
+  that conveys his words, kept apart from the message type
+  (`flows/73ada7/vision/messaging.md`, 2026-10-09, typed). That the
+  request kind carries context and verbatim and that Psyches is a
+  vector is 9fed42's reading of eight records of this flow's package
+  (f5a6e9 log line 118) and book 17 [P], pending. The name `Said` is
+  the build's, ruled by 9fed42 (log line 148). The Aspect variant
+  `Psyche` and the Request variant `Psyche` clash by name; the design
+  reports that to the living, and no answer was found.
+- **C2 `Address.{ Aspect Topic Layer }` replaces `Details`; every
+  query takes Address.** The living said the metaflow is a struct
+  whose first field is the aspect, with topic, and that the topic is a
+  dense string (`flows/d4ae97/vision/flow.md:181`, 2026-10-08, relayed
+  in `flows/f5a6e9/vision/flow.md`). The living also thought aloud
+  that each metaflow is a variant of psyche, mind or field with a
+  struct of details (`flows/f5a6e9/notion/flow.md`, 2026-10-09, a
+  notion). The type's name `Address`, the short form every query
+  carries, and the loss of `Details` are 9fed42's rulings (log line
+  147), pending the living's ruling 1 of «The Flow Nexus vision»,
+  third edition. This is fork F5.
+- **C3 `Lock.{ Address Until }`.** The lock as a time-bound record
+  rests on the living's "time-bound so that it doesn't lock forever"
+  (`flows/f5a6e9/vision/flow.md:59`, 2026-10-07) [V]. Its fields,
+  `Address` and `Until.Integer` seconds, are 9fed42's ruling and
+  f5a6e9's design.
+- **C4 `Sender.Address`.** 9fed42's ruling (log line 148). The living
+  has said only that routes bind sender and recipient by aspect and
+  layer (speech across aspects, approved 2026-10-09, psyche-skills
+  850fd27) [R]; that a Sender is an Address is not his word.
+- **C5 `Identified`, `Taken`, `Unknown` and `Ended` carry Address.**
+  Consequence of C2, same ruling (log line 148). The refusals
+  themselves ground in "we need a registry to know which flow is
+  active" (`flows/d4ae97/vision/flow.md`, 2026-10-07) [V].
+- **C6 `Deliver.{ Lock Sender Request }`.** Shape asked for by this
+  flow's N1 and N2 and given by f5a6e9 (log, eaab24fa); 9fed42's line
+  148 keeps it with no repeated Address. No word of the living.
+- **C7 `Send.{ Address Request }`.** "Bind and Send as chosen"
+  (log line 148), 9fed42's choice. Its ground is book 15 ruling 4
+  (simple and extended forms) [P], pending; the living's
+  2026-10-03 "simple form, not short form" is cited in log line 106.
+
+What remains is Flow's to rule, or the living's where marked.
 
 - **N3** Lock and Deliver sit on Flow's ordinary socket. The living's
   raw word puts the features Message needs on Flow's meta socket
   ("we're not going to want to allow anything to just write into
   panes", `flows/88475f/vision/message.md`, 2026-09-25), and so does
   what is deployed. This is fork F2.
-- **N4** The Library's `Metaflow` carries Details (State, Past,
-  Queue), while Launch's short `Metaflow` (topic and layer) is
-  another shape under the same name. Message sends the short form.
-  The two are not yet separated.
 - **N8** Where a request lands in an awake flow: ruling 3 of
   «The Flow Nexus vision», third edition (book 17), (a) end of the
   prompt, (b) a tool-call return, (c) other. This is fork F4.
 - **N11** The lease length is in no Configure payload; Lock carries
   `Until` and nothing sets its span.
+- **U1** `Up` has no wire form. The living said "If you say 'send up'
+  it means message higher layer" (`flows/b7ba00/vision/messaging.md:109`,
+  2026-09-26) [V]. `Send.{ Address Request }` carries no recipient
+  variant, so Message drops `Up` and `NoneAbove`; a sender writes the
+  Address one layer above its own. Whether `Up` returns, and who
+  resolves it, is fork F7.
 
 
 ## 11. What changes from what is deployed
@@ -544,11 +587,11 @@ witnessed here).
   Transported, Presented, Uncertain, Read, Withdrawn, Refused),
   parks, Withdraw, Acknowledge, QueryReceipts, Observe, meta Send as
   Owner, and Redeliver. All of it is removed. Message keeps caller
-  identity, Up, the lock exchange and its configuration.
+  identity, the lock exchange and its configuration.
 - **Priority.** `Priority.[ HardAbrupt MiddleAbrupt Soft ]` goes. The
   request kind and the waking rule decide instead (fork F6).
 - **Recipients.** These were flow ids, with fan-out to several. They
-  become one metaflow, or `Up`.
+  become one Address.
 - **Flow edge.** Today Message calls Flow meta `ResolvePeer`, `Vet`
   and `Deliver` (a letter with a MessageId) and watches
   `Observe.Agent`. It now calls `Identify`, `Lock`, `Deliver` and
@@ -587,15 +630,16 @@ witnessed here).
 - **F4** Where a request lands in an awake flow: the end of the
   prompt, or a tool-call return (book 17 ruling 3 [P]; see also
   `flows/6cc91b/vision/interflowMessaging.md` [V]).
-- **F5** Metaflow as aspect variants holding topic and layer (book 17
-  [P], notion [N]), or as the struct `{ Aspect Topic Layer }` [V]
-  (2026-10-08).
+- **F5** `Address` as the struct `{ Aspect Topic Layer }` (this
+  design, f5a6e9's e17a62ca, [V] 2026-10-08), or the metaflow as aspect
+  variants each holding topic and layer (book 17 [P], notion [N]).
 - **F6** Priority tiers. vision-messaging's `Priority` [R], or none,
   with the kind deciding ("We don't even do the soft or hard ...
   wrong approach" [V], 2026-09-26). This design drops them. The
   distilled line's record date was not read.
-- **F7** Who resolves `Up`: Message (this design) or Flow. The living
-  said "I don't know".
+- **F7** `Up`: dropped here because `Send` carries an Address (section
+  10, U1). It returns as a Message resolver, or as a Flow-side
+  recipient form. The living said "I don't know" who resolves it.
 - **F8** Caller identity. Message reads the kernel peer (deployed,
   this design), or the CLI carries the identity in the message, as
   vision-nexus words it [R].
@@ -625,11 +669,14 @@ witnessed here).
   newtypes [V] (`flows/ebbe30/vision/ethos.md:39-55`). As a result
   `Topic`, `FlowId` and `Until` cannot carry their own checks or
   traits. This defect awaits e5a0bc's ruling.
-- **X3** Whether a bare declared type in an enum (`Psyche` inside
-  `Request`) is a variant carrying that type or a unit variant is
-  not stated in knowledge-ethos.
-- **X4** Flow's `Process.Integer` is the pid alone, so the start
-  time that guards against pid reuse has nowhere to travel.
+- **X3** Whether a bare declared type in an enum (`Psyche.Said`
+  carries the type; a bare `Psyche` would be a unit variant or a
+  carrier) is not stated in knowledge-ethos. f5a6e9 writes
+  `Psyche.Said` for the Request variant, so Message imports `Said`
+  only through `Request`.
+- **X4** Flow's Library gives `Process.{ Pid.Integer Started.Integer }`,
+  the kernel's start time of the pid. Message reads both from
+  `SO_PEERCRED` and `/proc/<pid>/stat` field 22.
 
 ## Sources
 

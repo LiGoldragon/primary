@@ -1,11 +1,9 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ flow_ethos:[ Metaflow Request Process Lock ]
+[ flow_ethos:[ Address Request Process Lock ]
   message_library:Configuration ]
-[ Send.{ Recipient.[
-            To.Metaflow
-            Up ]                ; the layer above, same aspect and topic
+[ Send.{ Address
          Request }
   Configure.Configuration ]     ; only until MetaConfigured
 [ Delivered                     ; placed in the awake flow
@@ -14,9 +12,8 @@ Signal
   Configured
   Refused.[
      Unidentified.Process       ; the caller runs in no metaflow
-     NoneAbove                  ; Up from a Primary
-     Unknown.Metaflow           ; no such metaflow
-     Ended.Metaflow             ; returned to its sender
+     Unknown.Address            ; no such metaflow
+     Ended.Address              ; returned to its sender
      OffRoute                   ; off the vision-aspects routes
      Held.Lock                  ; another lock holds the metaflow
      Locked                     ; a refresh is under way
