@@ -290,3 +290,4 @@ psyche, d68c82, Psyche.{ Opus d68c82 }, Psyche core Secondary d68c82 (successor 
 psyche, 058f16, Psyche.{ Opus 058f16 }, Psyche Nexus Secondary 058f16 (successor of 73ada7): Message, the messaging Nexus, designed to use Flow; hub d68c82; Flow-side through 9fed42.
 psyche, 23824a, Psyche.{ Opus 23824a }, Psyche Ethos Secondary 23824a (successor of 1d0733): secretary of Ethos Primary 081064 (successor of d5df1d); holds the candidate patch sets; reports to d68c82.
 psyche, 081064, Psyche.{ Fable 081064 }, Psyche Ethos Primary succeeding d5df1d: ethos vision against its implementation; the types, invariants, golden ethos, inline import and registry books; secretary 1d0733; reports to 445410.
+psyche, 33752b, { Psyche core Primary 33752b }, Psyche core Primary (Fable): reviews d68c82's designs and books against their psyche sources; drafts the psyche-honesty skill book.

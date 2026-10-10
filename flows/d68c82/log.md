@@ -58,3 +58,56 @@
 - 2026-10-10: Retitled «{ Psyche core Secondary d68c82 }», read back.
 - 2026-10-10: 41fa34 status (claim): Message runtime fixtures (locked afece5e0) compile, then abort at first persistence fixture: store record message_nexus_standard/standard not stored; writer C owes a persistence-seam fix.
 - 2026-10-10: Astra (via 41fa34): two Persona sources (Persona b6f6ef, persona 09ee52); Mind needs Psyche's choice of root source and contract before assigning. Relayed to 9519a1.
+- 2026-10-10: Published d68c82 paths by independent clone: Primary main 26600bfd66bbd44d38bab9e0f1ce32ebde8b3ecb (parent c4ebafe9), lock 17701 locked and released. Log lines after this one are unpublished.
+- 2026-10-10: 9519a1 book 3 «Persona's root and what it does»; relayed its Persona-checkout finding to 41fa34.
+- 2026-10-10: «Open books» v45: added «The Source nexus» (058f16).
+- 2026-10-10: «Open books» v46: added «Persona's root and what it does» (9519a1).
+- 2026-10-10: 41fa34 status (claim): Message workspace 87029e48 on field/message-memory-operation-746519b9b4c8: package, default checks and fmt pass; standard-seed bug fixed; full workspace tests run. Next: B and C owe a real-Message + stand-in integration fixture (test 25).
+- 2026-10-10: Astra's Persona root contract draft relayed to 9519a1.
+- 2026-10-10: 9519a1 (claim via 875960, from Astra): persona 09ee52 is v0.5.0 on datom-codec; Persona b6f6ef is v0.2.0 on nota. Newer only by commit date; datom line further along.
+- 2026-10-10: Living rejected the «Sources» section of distilled vision skills as noise. Logged vision distillation. Searching for the record that set the rule (operation-psyche-distillation).
+- 2026-10-10: Book «Sources outside the skill» published (https://claude.ai/artifact/6HAxeCretSnDdahEtUBGHg) after two checker rejections (quote blocks; code over 52 columns).
+- 2026-10-10: «Open books» v47: added «Sources outside the skill» (d68c82).
+- 2026-10-10: Living: source references go in the commit message of the change. Logged vision distillation. Revising the book as a second edition.
+- 2026-10-10: Living: existing source references to be backported by a subflow into the commit messages that landed them, rewriting history. Book's Proposal 2 to be revised once the current publish returns.
+- 2026-10-10: Living ordered Mind to backport source references into commit messages by history rewrite on a new branch, then move main. Sent psyche and order to 41fa34.
+- 2026-10-10: Book «Sources in the commit message» published (https://claude.ai/artifact/5dSBhHzEdYviqi17fdtodm); «Open books» v48 swapped the entry. Its ruling 2 is superseded by the backport order.
+- 2026-10-10: Told 081064 provenance goes in landing commit messages; backport ordered.
+- 2026-10-10: Told 41fa34 the Sources words were STT; flagged that the history worker's xhigh effort lacks a ruling.
+- 2026-10-10: 41fa34: history worker moved to Luna medium effort (default).
+- 2026-10-10: 41fa34: xhigh history worker stopped with handover; one replacement /root/vision_history_medium (Luna, medium) spawned, acceptance pending.
+- 2026-10-10: Living approved ruling 1 of «Sources in the commit message» ("You can land this now") and asked for a following landing: commit messages in datom, specified in ethos. Logged vision commitMessage.
+- 2026-10-10: Sent landing of the distillation rule to 41fa34 (Mind lands, Field regenerates). Sent commit-message ethos package to 23824a.
+- 2026-10-10: Persona book comments: rewrite fresh (old designs); land «What the root does» with the triad named only (Psyche, Mind, Field). Source nexus comments: shorter description; Rust-type reference logged as notion; books: what is ruled sits in the proposal (vision books).
+- 2026-10-10: Persona rulings sent to 9519a1 to land. Source nexus comments sent to 058f16 for a new edition.
+- 2026-10-10: Distillation rule patch prepared (mind-skills base f8940968, blob ab1ae410→cc79968e, patch sha256 c28edca7) and sent to 41fa34 for Field.
+- 2026-10-10: Field asked for the rule packet's owner; asked 41fa34 to forward the packet (owner d68c82).
+- 2026-10-10: 41fa34: Astra also accepted the rule change (same result blob cc79968e, from base 2b206b77); Field picks one form and publishes; pending receipt.
+- 2026-10-10: Sent 9519a1 the living's Sources words; land vision-persona without a Sources section. Sent Persona ruling 1 to 41fa34.
+- 2026-10-10: Distillation rule landed: mind-skills main 3e561081c2ca2df1bb442e29682b45f72ddaafe9 (parent 2b206b77), blob ab1ae410→cc79968e, commit line «d68c82 distillation»; d68c82 patch result tree identical. Primary repin/regeneration awaits Astra's pin patch.
+- 2026-10-10: Book «What you rule on sits in a proposal» published (https://claude.ai/artifact/MHNGCwVUmFb23U8BuCjohh); «Open books» v49.
+- 2026-10-10: «Open books» v50: «The Source nexus» second edition swapped in (058f16).
+- 2026-10-10: Relayed 875960's 57a5c1 generation findings (deploy arity error, 36-path drift, self-generated vision-persona copies) to 41fa34 for Field.
+- 2026-10-10: Told 9519a1 regeneration is Field's. Field holds PrimaryPublish 17860 for the distillation-rule propagation.
+- 2026-10-10: vision-persona landed in psyche-skills (7a6b13, 82c92f; claim). Asked 41fa34 for Field to pin and regenerate after 17860, and for Astra to draft the Persona contract.
+- 2026-10-10: Field's Mind-only propagation held: 32 changes incl. vision-persona deletions and 24 role changes, from 57a5c1's self-generated Persona files. Proposed combined pin Psyche 82c92f + Mind 3e561 to 41fa34.
+- 2026-10-10: 875960 stopped its regenerated-copy publish; 57a5c1's vision-persona copies came from 7a6b13 (with Sources). 9519a1 notes the 'Field regenerates' rule is in no skill.
+- 2026-10-10: Persona source packet witnessed (82c92fad = origin/main, descends from 9fb0433; blob 5240055e no Sources) and sent to 41fa34.
+- 2026-10-10: Field qualified Persona source; 24 role changes are the authorized rule sentence (my hypothesis wrong there); 57a5c1 Persona projection = 7a6b13 blob. Granted Field the publish turn via 41fa34.
+- 2026-10-10: Astra's combined pin packet (Psyche 82c92fad + Mind 3e561081 on 57a5c16b) delivered to Field. History worker had a jj status incident (Mind's record). Psyche publication waits for Field's final release.
+- 2026-10-10: «Open books» v51: added «The type ethos» (23824a). Field holds PrimaryPublish 17904 for the combined propagation.
+- 2026-10-10: Field's combined generation passed (34 accounted changes) but assembly failed on missing --add for new Persona paths; released 17904. Turn to 081064 for its directory, then Field.
+- 2026-10-10: Living: a Psyche core Primary reviews core designs against their psyche sources; a skill on judging abuse of psyche data; honesty and precedence (newer, coherent, emphasized); integrate with «jev» System 1 model (referent unknown). Logged vision psycheCore, psycheHonesty. Launching Psyche core Primary.
+- 2026-10-10: 081064 released 17918 (main bd9649). Field's turn sent via 41fa34.
+- 2026-10-10: Launched Psyche core Primary 33752b (Fable), answered; title lacked topic, retitling. Index entry added.
+- 2026-10-10: Combined propagation complete: Primary main 5ca8481d3430944bc24184c62be319c95ede9a3f (Psyche 82c92fad, Mind 3e561081); lock 17924 released. Distillation rule and vision-persona now in generated trees.
+- 2026-10-10: Publish refused: 9519a1 holds PrimaryPublish 17936. Asked for its release.
+- 2026-10-10: 33752b retitled «{ Psyche core Primary 33752b }», read back.
+- 2026-10-10: Living: Prometheus powered off from today until 2026-10-11 morning (no remote builder; build locally, keep working); Ouranos off in a few hours for bus travel, maybe on during the trip. Ordered a compensation-temporary skill in the default startup modules, vetted by Fable, and all flows updated. Logged vision temporaryConditions.
+- 2026-10-10: Broadcast the temporary condition to 41fa34 (for Mind and Field), 23824a, 9519a1, 058f16, 33752b, 081064, 875960, d55c56.
+- 2026-10-10: Sent the compensation-temporary draft to 33752b for vetting.
+- 2026-10-10: Default startup list is the standing vector in Curriculum roles.datom (generated to tools/standing-skill-selection.mjs); compensation-* skills live in field-skills. compensation-temporary lands as field-skills/skills/compensation-temporary.md plus roles.datom entry, after Fable vetting.
+- 2026-10-10: 33752b vetted compensation-temporary with 4 corrections (applied). Sent landing packet (field-skills file + roles.datom standing entry) to 41fa34 for Field.
+- 2026-10-10: Routed d55c56's stale shared skill checkouts finding to 41fa34.
+- 2026-10-10: Told d55c56: only golden ethos 3rd ed. has comments (4, 2026-10-09, Ethos's); other seven none.
+- 2026-10-10: Field accepted a local executor on Ouranos (nix 2.35.1). Corrected 41fa34: the checkout fast-forward request is d55c56's, not the living's.
