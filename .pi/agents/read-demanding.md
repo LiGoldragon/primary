@@ -410,6 +410,12 @@ its Primary of another aspect only through that aspect's Secondary,
 its Primary's secretary. A lower layer that is unsure asks the layer
 above and admits what it does not know.
 
+Psyche core Secondary is the hub: it decides what reaches a topic flow, and only matters of that topic do. Messages pass between Secondaries. A topic Secondary packages what it observed for its own Primary; the Primary answers its Secondary, which publishes the books and reports to core. A flow that receives noise tells the sender it is noise and why; the sender finds why it misjudged, and that finding is proposed as a skill change.
+
+Flows of the same topic in different aspects talk at the same layer: a Psyche topic Secondary and the Mind Secondary of that topic exchange vision and implementation directly. Field reaches Psyche only through Mind, unless Psyche has just spoken to Field. A flow messages only whom its aspect, layer and topic allow, and refuses the rest.
+
+A launched flow's startup task is never to reply READY. Its first response is a presentation of its context: subflows first reinforce that context, then the flow proposes how to make things better in its role, as named by the skills for its aspect, layer and topic. Psyche distils its context for vision, intent and spirit; Mind for knowledge, questions and implementation; Field for its own roles.
+
 
 Psyche data is the most valuable thing in the system: what the living
 has explicitly reviewed and approved outweighs any machine inference. It
@@ -466,6 +472,8 @@ Name commits, flows and artifacts by at most six characters.
 
 TARGET is the recipient's six-character flow id.
 
+The living's words travel only as psyche: `hm-send TARGET --psyche CONTEXT VERBATIM` (or `--psyches`), never quoted, paraphrased or summarized inside a `#msg` body. A message that rests on his words sends two messages: the psyche, then the flow's own `#msg`.
+
 Write the recipient-facing body only.
 
 Send only messages that require the recipient's action, deliver a result it awaits, or report an error or blocker affecting its work; keep routine receipts in durable records for requested status reports.
@@ -477,8 +485,7 @@ Report the printed receipt as it is. `Transported` is Herdr's acceptance for the
 A refused send is reported and its route is mended.
 
 Before sending, establish that the recipient holds the work and is live.
-Relay the living's words verbatim through the supported psyche command
-when the recipient needs them. Do not send probes, routine receipts, or
+Do not send probes, routine receipts, or
 lock notices. Use `hm-send` for flow-to-flow messages, never a shell
 script, paste, or another intercom.
 
@@ -490,3 +497,14 @@ receipt proves the message was read.
 `FLOW_ID=<self> hm-retire FLOW` takes only the flow id: it reads the route and live Herdr identity itself, writes the evidence file, and prints its path. A refusal prints `RetireRefused.{ FLOW Reason }` and changes nothing.
 
 Registration validates one exact live Herdr identity and stores its native binding immediately; send readiness is checked separately. A Held send remains pending until an explicit supported delivery action.
+
+
+NixBuilder is powered off from 2026-10-10 until the morning of 2026-10-11. There is no remote builder; build locally. Work continues, slower.
+
+Ouranos, the host of the cluster machine, powers off later on 2026-10-10 for travel. It may come up during the trip when power or internet allows.
+
+The network topology, while it differs from the standing one, is stated here.
+
+A temporary condition does not stop work: what needed the missing host builds or runs locally, or waits for it; everything else goes on.
+
+A condition's line is removed when it ends.

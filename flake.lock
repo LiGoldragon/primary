@@ -3,17 +3,17 @@
     "curriculum": {
       "flake": false,
       "locked": {
-        "lastModified": 1791607593,
-        "narHash": "sha256-LsyGlUERtPuzH53lwmt+n3KcSaP74IwTlH/1SYbkUHI=",
+        "lastModified": 1791661982,
+        "narHash": "sha256-KC/oDwakQt8oQker2iipiBAuNsU0M/QOJ9M3kI0w7vA=",
         "owner": "LiGoldragon",
         "repo": "Curriculum",
-        "rev": "c86bc953e391cf178e3fc49dbc8f73498ba10839",
+        "rev": "b35e299430af1fceb25e05a0759eb8b36c5cfd27",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "Curriculum",
-        "rev": "c86bc953e391cf178e3fc49dbc8f73498ba10839",
+        "rev": "b35e299430af1fceb25e05a0759eb8b36c5cfd27",
         "type": "github"
       }
     },
@@ -71,17 +71,17 @@
     "field-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791577032,
-        "narHash": "sha256-X44+3tx0Rk6DfR4r2wBWfDyR4MRrFIqZRcul8SYnOO0=",
+        "lastModified": 1791660034,
+        "narHash": "sha256-nUke/yVdWc12/l+qo+7lO2odvlRMcZUPnt9VX7FUVEc=",
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "d7225ae236a1697cb47c99c5c666a025d932f80a",
+        "rev": "0f571928dc3d866e50628f8261fb4bd8ef93ed1c",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "d7225ae236a1697cb47c99c5c666a025d932f80a",
+        "rev": "0f571928dc3d866e50628f8261fb4bd8ef93ed1c",
         "type": "github"
       }
     },

@@ -11,6 +11,8 @@ Name commits, flows and artifacts by at most six characters.
 
 TARGET is the recipient's six-character flow id.
 
+The living's words travel only as psyche: `hm-send TARGET --psyche CONTEXT VERBATIM` (or `--psyches`), never quoted, paraphrased or summarized inside a `#msg` body. A message that rests on his words sends two messages: the psyche, then the flow's own `#msg`.
+
 Write the recipient-facing body only.
 
 Send only messages that require the recipient's action, deliver a result it awaits, or report an error or blocker affecting its work; keep routine receipts in durable records for requested status reports.
@@ -22,8 +24,7 @@ Report the printed receipt as it is. `Transported` is Herdr's acceptance for the
 A refused send is reported and its route is mended.
 
 Before sending, establish that the recipient holds the work and is live.
-Relay the living's words verbatim through the supported psyche command
-when the recipient needs them. Do not send probes, routine receipts, or
+Do not send probes, routine receipts, or
 lock notices. Use `hm-send` for flow-to-flow messages, never a shell
 script, paste, or another intercom.
 

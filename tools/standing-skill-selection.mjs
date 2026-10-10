@@ -10,4 +10,5 @@ export const STANDING_SKILLS = Object.freeze([
   "compensation-design",
   "compensation-default-effort",
   "compensation-messenger-clj",
+  "compensation-temporary",
 ]);
