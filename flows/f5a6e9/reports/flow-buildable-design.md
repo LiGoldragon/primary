@@ -41,6 +41,9 @@ Library                         ; Flow's
       Repository.String         ; text lives: the
       Hash.Blake3               ; containing source,
       Path.String }             ; hashed, relative
+   Key.{                        ; a module's
+      Subaspect                 ; registry key
+      Topic }                   ; (current best)
    Said.{                       ; his words, relayed
       Context.String            ; where it was said
       Verbatim.String }         ; the words whole
@@ -180,7 +183,9 @@ the living).
 
 Event is imported from signal-flow: Started,
 ToolUsed.String, ContextMeasured.{ Tokens.Integer
-Window.Integer }, Stopped.
+Window.Integer }, Stopped. In this build signal-flow
+gains ContextMeasured.{ Tokens.Integer Window.Integer }
+(current best).
 
 Written, two metaflows:
 
@@ -207,11 +212,11 @@ the flow's words, never the model:
 ```
 Signal                          ; what Flow is asked
 [  flow_ethos:[ Address FlowId Request Lock
-                Sender Process ]
-   curriculum:[ Name ] ]
+                Sender Process Key Metaflow ]
+   signal_flow:[ Event ] ]
 [  Launch.{                     ; a metaflow's first
       Address                   ; flow; the address
-      Modules.Vector<Name>      ; written short
+      Modules.Vector<Key>       ; written short
       Brief.String }            ; a small paragraph
    Wake.{                       ; a sleeping
       Address                   ; metaflow's next
@@ -219,14 +224,22 @@ Signal                          ; what Flow is asked
    Refresh.Address              ; the next link
    End.Address
    Current.Address
-   Lock.Recipient                 ; Message asks; time
+   Lock.Recipient               ; Message asks; time
                                 ; bound
    Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
       Lock
       Sender                    ; for the route
       Request }
-   Release.Lock ]
+   Release.Lock
+   Report.{                     ; the hook's request
+      FlowId
+      Event }
+   Observe.Agent.FlowId         ; carries Herdr's
+                                ; agent state
+   Stop.FlowId                  ; reap, no
+                                ; successor
+   Metaflows ]                  ; list them all
 [  Launched.FlowId
    Refreshed.{
       FlowId                    ; the successor
@@ -247,11 +260,15 @@ Signal                          ; what Flow is asked
                                 ; queue drained with
                                 ; the first prompt
    Released
+   Reported
+   Observed.Agent.String        ; agent state
+   Stopped
+   Listed.Vector<Metaflow>
    Refused.[
       Locked                    ; refresh under way
       Held.Lock                 ; already locked
       Lapsed                    ; the lock ran out
-      UnknownModule.Name        ; a module
+      UnknownModule.Key         ; a module
       NoLayer                   ; no model for it
       Unknown.Address           ; no such metaflow
       Ended.Address             ; returned to its
@@ -270,8 +287,14 @@ Signal                          ; what Flow is asked
 
 Identify and the Deliver responses and refusals above
 are current best, not before the living. Unknown module
-is renamed UnknownModule.Name so that Unknown.Address
-can be a variant of its own.
+is renamed UnknownModule.Key so that Unknown.Address
+can be a variant of its own. Report, Observe.Agent, Stop
+and Metaflows, with Reported, Observed.Agent, Stopped
+and Listed, are current best: Report is the hook's
+request, Stop reaps a flow with no successor, and
+Observe.Agent.FlowId and Observed.Agent.String are named
+here because the Flow 0.25.0 payload is unknown to this
+design; Observed carries Herdr's agent state as today.
 
 Written, a launch of this flow:
 
@@ -289,7 +312,7 @@ Launch.{
 Signal                          ; the meta socket
 [  flow_ethos:[ Subaspect Topic Layer
                 Source Address FlowId
-                Process Path ] ]
+                Process Path Aspect ] ]
 [  Configure.[
       Module.{                  ; the registry
          Subaspect
@@ -303,7 +326,16 @@ Signal                          ; the meta socket
       Threshold.{               ; percent of window
          Layer
          Handover.Integer       ; 20
-         Refresh.Integer } ]    ; 40
+         Refresh.Integer }      ; 40
+      Nexus.{                   ; the Nexus's own
+         OrdinarySocketPath.String
+         MetaSocketPath.String
+         SourceRoot.String
+         StableCodex.String
+         NextCodex.String
+         HarnessProfiles.Vector<String>
+         MetaAspects.Vector<Aspect>
+         MessageNexusPath.String } ]
    Forget.{                     ; a module leaves
       Subaspect
       Topic }
@@ -317,6 +349,9 @@ Signal                          ; the meta socket
       Unknown.Topic
       NoSource.Path
       HashMismatch
+      Conflict                  ; a repeat that
+                                ; disagrees with one
+                                ; held
       Taken.Address ] ]         ; already awake
 []
 ```
@@ -342,7 +377,10 @@ Configuration lives in datom files in the repositories
 that own it, one file per concern. The CLI sends them
 in succession over the meta socket; nothing is expanded
 across files. Each payload lands whole or is refused
-whole. A module is found by subaspect and topic; its
+whole. Payloads go in succession, each whole, and
+flow-meta's composing of fragments ends. A repeated
+payload that agrees with one already held is accepted;
+one that disagrees is refused Conflict (current best). A module is found by subaspect and topic; its
 file's place is Curriculum's to know, checked against
 the hash on a read or a write. The Nexus composes from
 the registry and reads no path a caller writes.
@@ -369,6 +407,11 @@ extended form carries every parameter and serves
 debugging and components. Lock is the Memory record.
 
 ## 2. Rules
+
+LaunchStatus is replaced by Current and the Flow
+record's Events. Observe.Launch, QueueTurnEnd, Restart
+and ResolveRecipient are removed on purpose.
+ResolveCaller is Identify (current best).
 
 **How a flow starts.** A launch names a metaflow by
 its address, the flow's own modules, and a
@@ -454,7 +497,8 @@ shared topic). Also, by Signal: Locked, Held, Lapsed, UnknownModule,
 NoLayer, Unknown.Address, Ended.Address, OffRoute
 (Sender and recipient aspect, layer and topic do not
 match the routes), Unidentified.Process, and for a
-Configure Unknown topic, NoSource, HashMismatch, and
+Configure Unknown topic, NoSource, HashMismatch,
+Conflict, and
 for a Bind Taken.
 
 **Context modules, background.** A module is one file
@@ -475,7 +519,8 @@ shapes of book 1 are not in the ethos above.
 ## 3. Today and to build
 
 **In production today** (book 14, witnessed
-2026-10-07 to 09): the Flow repository is 0.24.0, six
+2026-10-07 to 09): the Flow repository is 0.25.0
+(962ad12), six
 crates, most in flow-nexus. It composes the system
 prompt and first prompt from caller-supplied paths,
 has Replace, an events store on disk, and hooks that
