@@ -615,15 +615,16 @@ gate; Flow does not re-check the sender's process.
 Stop leaves the metaflow Asleep; only End ends it.
 Status: current best, not before the living.
 
-**The Message gate.** Flow reads the connecting peer's
-credentials from the kernel. Lock, Deliver and Release
-are accepted only when the connecting process's pid and
-start time equal the bound Message process's exactly,
-with no ancestor walk; otherwise they are refused
-NotMessage. Message binds its process at its start with
-Bind.{ Address Process } under { Field message Primary
-}, a Nexus being Field's body (status: current best,
-not before the living).
+**The Message gate.** Flow re-checks the peer's
+executable against MessageNexusBinary, both
+resolved to canonical paths, on every Lock,
+Deliver and Release, beside the pid and start
+time; a mismatch refuses NotMessage and drops
+the binding, so Message must Bind again.
+Message binds its process at its start with
+Bind.{ Address Process } under { Field message
+Primary }, a Nexus being Field's body (status:
+current best, not before the living).
 
 **Bind.** A running process becomes a metaflow's flow
 by Bind on the ordinary socket: it reserves a flow id,
