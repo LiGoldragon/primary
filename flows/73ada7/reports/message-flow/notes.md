@@ -8,7 +8,7 @@ Records were read as quoted in `F/d4ae97/reports/topic-nexus/context.md`;
 Files, each one root, each checked by ethos-zero 16.0.0
 (`/git/github.com/LiGoldragon/ethos-zero/target/debug/ethos-zero`) as `Checked`:
 
-- Message: `message.library.ethos`, `message.signal.ethos`, `message.meta.signal.ethos`, `message.operation.ethos`, `message.memory.ethos`. The shared types (FlowId, Request, Address, Lock, Process, Sender) are Flow's Library, f5a6e9's design at main e17a62ca, and are imported as `flow_ethos`; Flow's own files are f5a6e9's.
+- Message: `message.library.ethos`, `message.signal.ethos`, `message.meta.signal.ethos`, `message.operation.ethos`, `message.memory.ethos`. The shared types (FlowId, Request, Address, Recipient, Lock, Process, Sender) are Flow's Library, f5a6e9's design at main e17a62ca, and are imported as `flow_ethos`; Flow's own files are f5a6e9's.
 
 A file imports another by its library's name (`address:`, `lock:`, `request:`). Three drafts rest on books that await the living's rulings, each marked "proposal, pending ruling":
 
@@ -22,7 +22,7 @@ One-field newtypes are written `Name.Type` (`FlowId.String`, `Process.Integer`, 
 
 Message Signal (`message.signal.ethos`)
 
-- `Send.{ Recipient.[ Address Up ] Request }`: "message, not flow-send. use the message nexus!" (F`da1e3f/vision/operational-flowVsMessage.md`, 2026-09-17); the process as above.
+- `Send.{ Recipient Request }`, `Recipient.[ Address Up ]` being Flow's: "message, not flow-send. use the message nexus!" (F`da1e3f/vision/operational-flowVsMessage.md`, 2026-09-17); the process as above.
 - `Delivered`: "the Flow would say successful or not" (F`1b8ac0/vision/messaging.md`, 2026-09-21).
 - `Queued`: "every topic has its own flow; messages queue, and only a waking message wakes it" (F`d4ae97/vision/messenger.md`, 2026-10-08). Which message wakes is left out (open).
 - `Refused.Unidentified`: caller identity as above. `Unknown`: "we need a registry to know which flow is active" (F`d4ae97/vision/flow.md`, 2026-10-07). `Held`: the lock "will be useful in order to know whether the messages can or cannot reach a certain flow" (F`e5a0bc/vision/flow.md`, 2026-10-07). `OffRoute`: "he cannot message from tertiary to primary or from tertiary to secondary of another aspect ... horizontally, [one] level up, or any level down and across" and "I want that hard-enforced" (F`d4ae97/vision/flow.md`, 2026-10-07).
@@ -53,6 +53,6 @@ Left out as notion or open: the metaflow's predecessor ("maybe its predecessor",
 11. Each kind a new type. "It's a new type and it carries all the data." (F`b7ba00/vision/messaging.md`, 2026-09-26) pulls toward one enum of kinds each wrapping a payload. Written as `Request.[ Order.String ... ]`: one variant layer over a string.
 12. One file, many roots. ethos-zero reads one root per file, and two Signals or two Operations in one module would each generate `Query`/`Response` or `Operation`/`Outcome`. vision-ethos: "The unit is File: one file, one Rust module." Written as one file per root.
 13. Time-bound lock without a time type. "which should be time-bound so that it doesn't lock forever" (F`f5a6e9/vision/flow.md`, 2026-10-07) needs a time; no record names a unit or clock, so `Deadline.Integer` has none.
-14. Who resolves send up. "The message logic has to figure out where ... or maybe the flow figures it out. I don't know" (F`b7ba00/vision/messaging.md`, 2026-09-26). f5a6e9's ruling, current best and not before the living: `Send.{ Recipient.[ Address Up ] Request }`, with Flow resolving `Up` for tonight's build because only Flow knows the sender's address from Identify. `Up` is the layer above within the sender's aspect; Flow refuses `NoneAbove` at the top layer. `Deliver` stays Address-only. The living's ruling on «Who works out where send up goes» may move the resolving to Message without changing the wire.
+14. Who resolves send up. "The message logic has to figure out where ... or maybe the flow figures it out. I don't know" (F`b7ba00/vision/messaging.md`, 2026-09-26). f5a6e9's ruling, current best and not before the living: `Send.{ Recipient.[ Address Up ] Request }`, with Flow's lock `Lock.Recipient`: Flow resolves `Up` on the lock itself, from the sender it identifies by process, and answers `Locked.Lock` carrying the resolved Address, or refuses `NoneAbove` at the top layer. There is no `ResolveUp` query; the lock is one round trip. `Up` is the layer above within the sender's aspect. `Deliver` stays Address-only. The living's ruling on «Who works out where send up goes» may move the resolving to Message without changing the wire.
 15. Level enforced or not. "I want that hard-enforced" against "the messaging program is imperfect and it cannot actually enforce this" (F`d4ae97/vision/flow.md`, 2026-10-07). Written as the refusal `OffRoute`.
 16. A lock referenced by value. "every reference names its target by that name" (PS`vision-nexus.md`) pulls `Deliver` toward a lock name; `Deliver` carries the `Lock` itself.

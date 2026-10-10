@@ -1,10 +1,9 @@
 ; What Message says, on its ordinary socket
 
 Signal
-[ flow_ethos:[ Address Request Process Lock ]
+[ flow_ethos:[ Address Recipient Request Process Lock ]
   message_library:Configuration ]
-[ Send.{ Recipient.[ Address    ; a named metaflow
-                       Up ]     ; the layer above the sender's
+[ Send.{ Recipient              ; Address, or Up: the layer above
          Request }
   Configure.Configuration ]     ; only until MetaConfigured
 [ Delivered                     ; placed in the awake flow
