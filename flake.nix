@@ -19,7 +19,7 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/c86bc953e391cf178e3fc49dbc8f73498ba10839";
+      url = "github:LiGoldragon/Curriculum/11af069f44c173f276431761416aa58ddde6a1d6";
       flake = false;
     };
     psyche-skills = {
@@ -31,7 +31,7 @@
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/d7225ae236a1697cb47c99c5c666a025d932f80a";
+      url = "github:LiGoldragon/field-skills/0f571928dc3d866e50628f8261fb4bd8ef93ed1c";
       flake = false;
     };
     flow = {
