@@ -210,7 +210,7 @@ Memory                          ; Flow's
                                 ; type
    Lock.flow_ethos:Lock         ; likewise
    Nexus.flow_ethos:Nexus       ; the Nexus payload
-                                ; stored, one at most
+                                ; stored once
    Threshold.{                  ; one per layer
       Layer
       Handover.Integer
@@ -362,8 +362,10 @@ Signal                          ; what Flow is asked
                                 ; metaflow; Bind: a
                                 ; dead or reused
                                 ; process
-      Taken.Address ] ]         ; Bind: the old
+      Taken.Address              ; Bind: the old
                                 ; process lives
+      Store.String ]             ; the store failed;
+                                ; its own error text
 []
 ```
 
@@ -461,7 +463,10 @@ Signal                          ; the meta socket
       Conflict                  ; Nexus payloads
                                 ; that disagree in
                                 ; one start
-      Unknown.Key ] ]           ; Forget of an
+      Unknown.Key                ; Forget of an
+                                ; unknown key
+      Store.String ]             ; the store failed;
+                                ; its own error text
                                 ; unknown key
 []
 ```
@@ -496,6 +501,9 @@ Configuration.{
 
 Unconfigured
 ```
+
+Model and Threshold values are illustrative above.
+HarnessKind's variants are meta-signal-flow's.
 
 Unconfigured prints bare.
 
@@ -718,7 +726,10 @@ NotConfigured, HashMismatch, Ended.Address, OffRoute
 match the routes), NoneAbove, NotMessage,
 Unidentified.Process, and for a Bind Taken.Address or
 Unidentified.Process. On the meta socket: NoSource,
-HashMismatch, Conflict and Unknown.Key.
+HashMismatch, Conflict, Unknown.Key and Store. A
+store failure on any query — Metaflows, Current,
+Lock, Deliver, Configuration and the rest — answers
+Refused.Store, never an empty vector.
 
 **Context modules, background.** A module is one file
 of prompt text with a subaspect, a topic, a
