@@ -52,10 +52,49 @@ Library                         ; Flow's
       Result.String             ; a flow's answer:
                                 ; delivered awake,
                                 ; waits asleep
-      Notice.String ] ]         ; wakes nothing
+      Notice.String ]           ; wakes nothing
+   Metaflow.[                   ; the aspects are
+      Psyche.Details            ; the variants; the
+      Mind.Details              ; struct holds the
+      Field.Details ]           ; details
+   Details.{
+      Topic                     ; core: the heart of
+      Layer                     ; its aspect
+      State.[
+         Awake.FlowId           ; its current flow
+         Asleep                 ; a request wakes it
+         Ended ]
+      Past.Vector<FlowId>       ; the last few only,
+                                ; oldest first
+      Queue.Vector<Request> }   ; waiting, oldest
+                                ; first
+   Lock.{                       ; one per metaflow,
+      Metaflow                  ; while held
+      Until.Integer }           ; seconds since the
+                                ; epoch; lapses
+   Process.Integer              ; the calling
+                                ; process, as the
+                                ; system numbers it
+   Sender.Metaflow ]            ; who sent a request
 []
 []
 ```
+
+The Library declares once the types both Signals and
+Memory use: Metaflow, Details, Lock, Process and
+Sender. Memory and both Signals import them (status:
+current best, not before the living).
+
+Build note. ethos-zero 16.0.0 cannot yet express
+`Topic:Name` (the inline import, the Ethos topic's)
+nor `Bytes<32>` (the intrinsic proposed in «Stored
+type and datom form», second edition). Until ethos
+can, the build carries `Topic.String`, checked as a
+camelCase expression where text enters, and
+`Blake3.String` as 64 hex characters, each with a
+comment naming the designed type. The design stays
+as written above (status: current best, not before
+the living).
 
 Encodable, the trait behind Blake3 (vision-datom):
 
@@ -91,25 +130,15 @@ waking request last:
 Memory                          ; Flow's
 [  flow_ethos:[ FlowId Topic Layer
                 Request Subaspect
-                Source ] ]
-[  Metaflow.[                   ; the aspects are
-      Psyche.Details            ; the variants; the
-      Mind.Details              ; struct holds the
-      Field.Details ]           ; details
-   Details.{
-      Topic                     ; core: the heart of
-      Layer                     ; its aspect
-      State.[
-         Awake.FlowId           ; its current flow
-         Asleep                 ; a request wakes it
-         Ended ]
-      Past.Vector<FlowId>       ; the last few only,
-                                ; oldest first
-      Queue.Vector<Request> }   ; waiting, oldest
-                                ; first
-   Flow.{                       ; one per run
+                Source Metaflow
+                Details Lock
+                Process ] ]
+[  Flow.{                       ; one per run
       FlowId
       Session.String            ; the harness's id
+      Process                   ; the process it
+                                ; runs as: learned
+                                ; at spawn or bind
       Events.Vector<Event> }    ; signal-flow's
    Module.{                     ; the registry: one
       Subaspect                 ; per subaspect and
@@ -121,16 +150,14 @@ Memory                          ; Flow's
    Threshold.{                  ; one per layer
       Layer
       Handover.Integer
-      Refresh.Integer }
-   Lock.{                       ; one per metaflow,
-      Metaflow                  ; while held
-      Until.Integer } ]         ; seconds since the
-                                ; epoch; lapses
+      Refresh.Integer } ]
 ```
 
-Module, Model, Threshold and Lock hold what the meta
-socket's Configure sets and what the lock asks (status:
-current best, not before the living).
+Module, Model and Threshold hold what the meta socket's
+Configure sets. The Library's Lock is stored one per
+metaflow while held. The Flow record's Process is the
+process the flow runs as, learned at spawn or at Bind
+(status: current best, not before the living).
 
 Event is imported from signal-flow: Started,
 ToolUsed.String, ContextMeasured.{ Tokens.Integer
@@ -162,7 +189,8 @@ the flow's words, never the model:
 
 ```
 Signal                          ; what Flow is asked
-[  flow_ethos:[ Metaflow FlowId Request Lock ]
+[  flow_ethos:[ Metaflow FlowId Request Lock
+                Sender Process ]
    curriculum:[ Name ] ]
 [  Launch.{                     ; a metaflow's first
       Metaflow                  ; flow; the metaflow
@@ -176,8 +204,10 @@ Signal                          ; what Flow is asked
    Current.Metaflow
    Lock.Metaflow                ; Message asks; time
                                 ; bound
+   Identify.Process             ; who is the caller
    Deliver.{                    ; under the lock
       Lock
+      Sender                    ; for the route
       Request }
    Release.Lock ]
 [  Launched.FlowId
@@ -192,16 +222,37 @@ Signal                          ; what Flow is asked
       Ended
       Unknown ]
    Locked.Lock
-   Delivered
+   Identified.Metaflow          ; the caller's
+   Delivered                    ; placed in the
+                                ; awake flow
+   Queued                       ; asleep, or awake
+                                ; and busy: waits
+   Woken.FlowId                 ; asleep: woken; the
+                                ; queue drained with
+                                ; the first prompt
    Released
    Refused.[
       Locked                    ; refresh under way
       Held.Lock                 ; already locked
       Lapsed                    ; the lock ran out
-      Unknown.Name              ; a module
-      NoLayer ] ]               ; no model for it
+      UnknownModule.Name        ; a module
+      NoLayer                   ; no model for it
+      Unknown.Metaflow          ; no such metaflow
+      Ended.Metaflow            ; returned to its
+                                ; sender
+      OffRoute                  ; sender and
+                                ; recipient aspect,
+                                ; layer, topic off
+                                ; the vision-aspects
+                                ; routes
+      Unidentified.Process ] ]  ; in no metaflow
 []
 ```
+
+Identify and the Deliver responses and refusals above
+are current best, not before the living. Unknown module
+is renamed UnknownModule.Name so that Unknown.Metaflow
+can be a variant of its own.
 
 Written, a launch of this flow:
 
@@ -233,15 +284,26 @@ Signal                          ; the meta socket
          Refresh.Integer } ]    ; 40
    Forget.{                     ; a module leaves
       Subaspect
-      Topic } ]
+      Topic }
+   Bind.{                       ; a running process
+      Metaflow                  ; becomes this
+      Process } ]               ; metaflow's flow
 [  Configured
    Forgotten
+   Bound.FlowId                 ; the flow reserved
    Refused.[
       Unknown.Topic
       NoSource.Path
-      HashMismatch ] ]
+      HashMismatch
+      Taken.Metaflow ] ]        ; already awake
 []
 ```
+
+Bind is for debugging and for flows launched before
+Flow existed: it reserves a flow id, records the
+process as the Flow record's Process, and sets the
+metaflow awake (status: current best, not before the
+living).
 
 Written, one payload file of psyche-skills:
 
@@ -274,7 +336,7 @@ omitted from either; shown here for the lock.
       Request }
    Deliver.{                    ; extended: Message
       Lock                      ; to Flow, under the
-      FlowId                    ; lock
+      Sender                    ; lock; no flow id
       Request } ]
 ```
 
@@ -318,6 +380,11 @@ request last, with the first prompt of the spawned
 flow. A metaflow satisfied with its topic sleeps until
 a request changes what it must do. Where a request
 lands in an already awake flow is open (section 4).
+When the awake flow cannot take it now (it is working,
+or its composer is occupied), Flow queues the request,
+answers Queued, and drains the queue at the next Stop
+the hook reports (status: current best, not before the
+living).
 
 **The refresh.** Measurement: the hook reads the
 transcript at each Stop and reports ContextMeasured,
@@ -348,12 +415,22 @@ refused Locked; a held lock refuses Held. Message
 speaks in metaflows and need not know flows. Status:
 current best, not before the living.
 
+**Who is the caller.** Flow answers Identify.Process:
+it walks the process's ancestors to the harness
+process of a Flow record's Process and returns that
+flow's metaflow, else Unidentified.Process. The
+Sender of a Deliver is that metaflow (status: current
+best, not before the living).
+
 **What Flow refuses.** A request that leaves the routes
 of the vision-aspects skill (who speaks to whom within
 an aspect and across aspects at the same layer in a
-shared topic). Also, by Signal: Locked, Held, Lapsed, Unknown module,
-NoLayer, and for a Configure Unknown topic, NoSource,
-HashMismatch.
+shared topic). Also, by Signal: Locked, Held, Lapsed, UnknownModule,
+NoLayer, Unknown.Metaflow, Ended.Metaflow, OffRoute
+(Sender and recipient aspect, layer and topic do not
+match the routes), Unidentified.Process, and for a
+Configure Unknown topic, NoSource, HashMismatch, and
+for a Bind Taken.
 
 **Context modules, background.** A module is one file
 of prompt text with a subaspect, a topic, a
@@ -446,9 +523,31 @@ everything below may still change:
   placements): superseded in shape by Configure.
 
 Current best, not before the living: the Memory
-records Module, Model, Threshold and Lock; Subaspect and
-Source declared once in the Library; the lock queries
-and responses of the flow socket.
+records Module, Model and Threshold; Metaflow, Details,
+Lock, Process and Sender declared once in the Library
+with Subaspect and Source; Process on the Flow record;
+the lock, Identify and Deliver queries, responses and
+refusals of the flow socket; Bind on the meta socket.
+
+Message's needs (73ada7, message-design section 10),
+still open here; its list has no N9, N10 or N12:
+
+- N3: Lock and Deliver on the ordinary socket or on
+  Flow's meta socket (Message's fork F2); this design
+  keeps them on the ordinary socket.
+- N4: the short Metaflow of Launch (topic and layer)
+  and the Library's Metaflow with Details are one name
+  for two shapes; not yet separated.
+- N8: whether queueing a busy awake flow and draining
+  at the next Stop is right; and where a request lands
+  in an awake flow (book 17, ruling 3).
+- N11: the lease length is in no Configure payload;
+  Lock carries Until and nothing sets its span.
+
+Answered in the design, current best: N1 and N2
+(Deliver.{ Lock Sender Request }), N4 declaration in
+the Library, N5 (Identify.Process, Process on Flow),
+N6 (refusals), N7 (Queued, Woken.FlowId), N13 (Bind).
 
 FlowId.String is his word for now; a hash-based id is
 wanted later.
