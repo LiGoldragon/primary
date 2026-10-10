@@ -24,3 +24,5 @@
 - 2026-10-10: Mind (41fa34) reviewed the Source nexus design: "a buildable outline, not a complete contract". The gaps are listed in its review artifact. F3 bridge: four i64 values as the exact bit pattern in 8-byte little-endian chunks; long term, a fixed 32-byte Ethos value. Whether the reviewed snapshot matches the blob at 113d56 is unconfirmed.
 - 2026-10-10: 23824a: «Bytes in ethos» is published (https://claude.ai/artifact/6MpszqJQQawDcSSWymSY3B), to be cited for F3; passed to the book subflow.
 - 2026-10-10: Design revised against Mind's review. The reviewed blob matches 113d56. Ethos drafts are kept in reports/source-ethos/ (generated output not kept). The book «The Source nexus» is drafted and passes the book check: D1 proposes a new vision-source skill, and D2–D7 are forks.
+- 2026-10-10: Flow tree published to main (c7d97b9cce2c906bd40a701943beda114393fd5e); lock 17717 released.
+- 2026-10-10: Published the book «The Source nexus» (https://claude.ai/artifact/JdvPT3naG5WvYpGwotdeGK) and sent the link to d68c82.
