@@ -774,23 +774,15 @@ ethos above.
 ## 3. Today and to build
 
 **In production today** (book 14, witnessed
-2026-10-07 to 09): the Flow repository is 0.25.0
-(962ad12), six
-crates, most in flow-nexus. It composes the system
-prompt and first prompt from caller-supplied paths,
-has Replace, an events store on disk, and hooks that
-report Started, ToolUsed and Stopped. Main flows are
-launched by the Primary scripts: the Claude launcher
-passes a system prompt file and a first prompt opening
-with six slash skills; the Codex launcher reads
-.agents/skills SKILL.md files into the first prompt;
-both take --topic, Core by default, with continuation
-inheritance. The flow id is six hex characters of the
-harness session id. Authored skills live in
-psyche-skills, mind-skills and field-skills. Messages
-go through messenger-clj, which routes from its own
-store and types into Herdr panes. The bottom layer of
-each aspect runs the refresh.
+2026-10-07 to 09): Flow 0.25.0 at 962ad12 is
+the source; the deployed binaries are 0.14.0
+on stable and 0.17.4 on Next (from
+CriomOS-home's pins and the units); their
+store is a sema file of hand-written rkyv
+tables (flows, state, configuration, routes,
+launch attempts and outcomes, replacements,
+roles, events) holding no Metaflow, Lock or
+Memory record.
 
 **To build** (none in production): the Library, Memory
 and both Signals above; the Start argument of the start
@@ -815,11 +807,17 @@ new Flow reads nothing of the old store and
 migrates nothing; its Memory starts empty and is
 filled by Configure payloads on the meta socket
 and by flows that Bind or are Launched. The
-deploy sets the old store file aside unchanged
-and rotates stable and Next; the old Nexus
-serves its sessions until they end or are
-refreshed into the new one. No migration code
-lives in the Nexus.
+deploy discards the old store; nothing is kept,
+set aside or migrated, and no upgrade-from
+exists for this version; and rotates stable and
+Next; the old Nexus serves its sessions until
+they end or are refreshed into the new one. No
+migration code lives in the Nexus. This rests on
+the living's 2026-09-24 condition that Flow was
+not yet live, unconfirmed since Flow 0.14.0
+went live; his answer on «What the new Message
+does with the old store» decides Flow and
+Message together.
 
 ## 4. Open rulings
 
