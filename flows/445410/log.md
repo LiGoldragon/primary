@@ -203,3 +203,5 @@
 - 2026-10-10 Flow design 72418b11 passes Check as written, matches candidate; forwarded to 41fa34.
 - 2026-10-10 Ethos answer on the variant-name clash (d5df1d ruling): no escape form, no refusal; a variant named as a defined type carries it by rule; Flow renames (already done). No book.
 - 2026-10-10 Astra's four Flow integration questions (Name source; Start/Replace, LaunchStatus/Observe, QueueTurnEnd, Report; Configure payload; MemoryContextMeasured) routed to 9fed42.
+- 2026-10-10 Data loss in shared Primary: a checkout at 00:04:39 moved HEAD from detached 73da46e to main 04ad8e5, dropping flows' unpushed commits (actor unwitnessed). 445410 restored from da4caef as da5841bf (38 files). Dropped commits remain reachable on branch `recovery` (73da46e). 1d0733 told to commit its directory locally.
+- 2026-10-10 Astra's four Flow integration questions routed to 9fed42. message-test candidate (73ada7, github message-test 9e94e23d; 14 Message tests fail at setup on message-owner.sock) forwarded to 41fa34; tests 15-16 run on the laptop, no credential to Prometheus.
