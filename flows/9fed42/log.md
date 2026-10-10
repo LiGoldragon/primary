@@ -86,3 +86,130 @@ Psyche Flow Secondary, Opus. Launched 2026-10-09.
 - f5a6e9 design file published e846c2ca1 (full clone, only own paths, 8777 vs 8776 files; claim). Lock free; publish subflow resumed.
 - Publish under 16186: duplicate conflicted on log.md (main 67 lines, strict prefix of shared 86). Abandoned, released. Retrying with base reconciliation per skill.
 - Retry refused: 16187 held by 445410. Fifth lost race; asked 445410 to hand lock to 9fed42 next.
+- Published flows/9fed42 to main e992c34f3b34 under 16193 (released): clean duplicate, 5 paths all own, 8781 vs 8777 files; four candidate files on main equal shared copy and tested Prometheus source.
+- 445410 task (29% left): write flow-test, Flow counterpart of message-test; Nix-checked repo running real Flow Nexus in a VM against design e846c2 (Launch, Wake, Refresh, End, Current, Lock, Deliver, Release, Identify, Configure, Forget + refusals); pin current Flow; failing tests = Mind acceptance targets; check on Prometheus; publish to its own GitHub repo; send revision and results. Launched write-demanding subflow.
+- 73ada7 ruling request: Lock.Recipient (e846c2) vs Lock.{ Address } (Message 9541cd, Up resolved via ResolveUp). Forwarded to f5a6e9.
+- f5a6e9 ruling: Lock.Recipient; Flow resolves Up on the lock from the identified sender; answers Locked.Lock with resolved Address or NoneAbove; no ResolveUp. Forwarded to 73ada7 and flow-test subflow.
+- 73ada7: Message follows Lock.Recipient (3a4bbb); asks Flow Library to declare Recipient, and how Flow identifies sender on Lock when peer is Message. Forwarded to f5a6e9.
+- f5a6e9 ruling: Recipient declared in Library; Lock.{ Sender Recipient }, Message passes Sender from Identify; Deliver.{ Lock Request } (sender inside lock). Design fold to be published. Forwarded to 73ada7 and flow-test subflow.
+- 73ada7: Message follows Lock.{ Sender Recipient }, Deliver.{ Lock Request } (172860); asks confirmation: Locked.Lock = lock with resolved Address; Until left the lock, lapse in Flow record. Forwarded to f5a6e9.
+- f5a6e9: Locked.Lock carries resolved Address (yes); Until stays on Lock { Sender Address Until.Integer }. Forwarded to 73ada7 and flow-test.
+- flow-test pushed github LiGoldragon/flow-test 9f2f291e2a357a872940132061e1f6ec45e46feb (replaced 0.24 scenarios with new commits, no force); pinned flow 962ad12ed2fc1fcb277ed9fa82b8e411c504627b; nix flake check on Prometheus exit 0; 38 scenarios expected-failing Mind targets (all stop at Configure parse in today flow-meta), 0 broken; live harness runner flow-claude built not run (needs Claude login). Design gaps sent to f5a6e9; results to 445410.
+- f5a6e9 thirteen flow-test rulings (Awake refusal; Wake Queued; Refused.Asleep, Refused.Held.Lock; Up same topic; Lease in Configure.Nexus 60s; lock ends by Deliver/Release/lapse/refusal; OffRoute at Lock; Unknown.Lock/Lapsed; Unknown.FlowId; Stop→Asleep; new hash = update; Key { Vision flow }; UnknownModule.Key; Bind Unidentified). flow-test subflow resumed; lock rulings to 73ada7.
+- flow-test 2fd15036234b87d929436a82f53b9d0efbe1801f: 52 scenarios expected-failing Mind targets, 0 broken, flake check exit 0 on Prometheus; all rulings applied. Remaining gaps to f5a6e9; results to 445410.
+- f5a6e9 seven rulings: Lapsed vs Unknown.Lock split; Refused.Unknown.[ Address Lock FlowId Key ] (UnknownModule.Key folds in); unknown sender/Up target → Unknown.Address; End Ended → Refused.Ended.Address; Configure.Nexus first, Model/Module any order before Launch; Unknown.Topic goes; Model/Threshold change = update. flow-test subflow resumed.
+- flow-test f2adf1e72b9e70347fe6148c0f1c64cfe419720d: 55 Mind targets, 0 broken, check exit 0 on Prometheus. Reported to 445410.
+- Design folded on main 9613a5738 (lock carries sender; thirteen behaviors). Forwarded to 73ada7 for message-test; flow-test subflow to check against it.
+- 73ada7: Message carries lock rulings e275b6; asks Unknown shape. Already ruled by f5a6e9: Refused.Unknown.[ Address Lock FlowId Key ]; answered 73ada7, noted to f5a6e9.
+- Design 5f0e64f34 (one Unknown, configure order) on main. Forwarded to 73ada7; flow-test subflow told to pin to it.
+- 73ada7 asks: Model before Nexus on built-in default? Forwarded to f5a6e9.
+- f5a6e9 amends configure order: sockets from start command; Model/Module before Nexus ok; Configure.Nexus (no socket paths; SourceRoot, StableCodex, NextCodex, HarnessProfiles, MetaAspects, MessageNexusPath, Lease) required before Launch else NotConfigured; not needed for Lock/Deliver/Release/Identify; lease 60s default. Forwarded to 73ada7 and flow-test subflow.
+- Design d849975ab (sockets from start command; Nexus before Launch) on main. Forwarded to 73ada7; flow-test subflow told to pin to it.
+- 73ada7: MessageNexusPath = socket or binary? Lease optional? Forwarded to f5a6e9.
+- f5a6e9: MessageNexusPath = Message ordinary socket path; Lease required (60 before any Nexus payload). Forwarded to 73ada7.
+- 73ada7 (Astra runtime): Identify method (env vs ancestor walk); admission gate on Lock/Deliver/Release; stale Deliver line F698. Forwarded to f5a6e9.
+- f5a6e9: Identify ancestor walk confirmed (no env); gate: peer credentials, Lock/Deliver/Release only from Message process registered by Bind under Mind message address, else NotMessage; line 698 fixed next touch. Forwarded to 73ada7 and flow-test subflow.
+- 445410 relays Astra Configure-gap questions on d849975 (Codex/HarnessProfiles strings → runtime values; socket path start interface). Forwarded to f5a6e9.
+- f5a6e9 for Astra: Configure.Nexus carries full CodexEndpoint and HarnessProfile values from signal_flow (lines unresolved, Astra reads); start command flow-nexus Start.{ OrdinarySocketPath MetaSocketPath } datom argument. Relayed to 445410; flow-test subflow told.
+- 73ada7 (Field runner): what Configure.Nexus strings hold. Answered from f5a6e9 ruling (full CodexEndpoint, HarnessProfile); MetaAspects asked of f5a6e9.
+- f5a6e9: MetaAspects.Vector<Aspect> (aspects whose flows may speak on meta socket), value read by Field from running Configuration. Forwarded to 73ada7.
+- 73ada7: CodexEndpoint/HarnessProfile live in meta-signal-flow 88f37592, not signal-flow; MetaAspects there Vector<FlowAspect> vs design Vector<Aspect>. Forwarded to f5a6e9; flow-test subflow told.
+- 445410 (Field): no read-only query for stored Configuration; does design carry one? else add smallest at next touch. Forwarded to f5a6e9.
+- f5a6e9: import meta_signal_flow:[ CodexEndpoint HarnessProfile ]; MetaAspects Vector<FlowAspect>; tests follow meta-signal-flow. Forwarded to 73ada7.
+- f5a6e9: adds meta query Configuration → Configuration.{ Nexus Vector<Model> Vector<Threshold> Vector<Module> } or Unconfigured. Relayed to 445410; flow-test subflow told.
+- Design 83c2ee59a (Message gate, Deliver corrected) on main; two more in sequence. Forwarded to 73ada7.
+- Design 7398a43ca (Start arg, meta-signal-flow types, Configuration read) on main. Forwarded to 73ada7 and 445410; flow-test subflow to pin.
+- flow-test f585977f445cb9c60d2252249232268c509e1ecf: 61 Mind targets, 0 broken, exit 0; pinned to d849975ab + rulings (7398a43ca pin pending). Gaps to f5a6e9.
+- f5a6e9 rulings: gate = exact connecting process; Message binds { Field message Primary }; bare Unconfigured; Module before Nexus recorded unchecked, HashMismatch at Launch; Module.{ Key Source }, Forget takes Key; string quoting rule. Forwarded to 73ada7 and flow-test.
+- 73ada7: Message Bind route (meta socket unreachable) and rebind after restart (Taken.Address). Forwarded to f5a6e9.
+- f5a6e9: Bind moves to ordinary socket; rebind replaces dead binding (Bound), Taken only while old process lives. Forwarded to 73ada7 and flow-test.
+- 73ada7: design 7398a43 (blob ff8a60c) reportedly lacks Configuration query, meta_signal_flow import, FlowAspect, and drops NotMessage gate (claim); forwarded to f5a6e9; flow-test told to verify. Lock-contract tests move to flow-test: answered yes (already present).
+- 73ada7: queued ~20 min behind f5a6e9 PrimaryPublish lock; asked f5a6e9 for status/release.
+- f5a6e9: lock released; 73ada7 reading right — concurrent folds clobbered design; rebuilding from 83c2ee59a with all later rulings, publish once after 73ada7. Told 73ada7 and 445410.
+- 445410: f5a6e9 publish by one subflow only; pre-push check blob contains Configuration read, gate, meta-signal-flow import; send revision and blob. Relayed.
+- 73ada7 Message publish done 4dc4f8 (blob 7112c6); lock free; told f5a6e9.
+- 445410: rebuilt design is Mind critical blocker (three writers holding locks); publish as soon as whole, check incl typed Start. Relayed.
+- flow-test 38c895e7c08f095d8ff514c0b8ed0c98b1957ca6: 63 Mind targets, 0 broken, exit 0; confirmed 7398a43ca regressed, not pinned. Fold items (HashMismatch on flow socket; Module.{ Key Source }) sent to f5a6e9; result to 445410.
+- Rebuilt design on main 30e8efc4d, blob 4bad08250788b705af2eaf350f38603816a8d542 (pre-push checks claimed). Publisher pushed WITHOUT PrimaryPublish lock (could not form Lock request; arity errors); clean fast-forward. Relayed to 445410, 73ada7; flow-test re-pin launched.
+- 445410 witnessed 30e8efc4d; Mind resumes. f5a6e9 publisher to load operation-orchestrate, four-field Lock. Relayed.
+- 445410: asked f5a6e9 for retained packet on failed Lock requests (exact datoms, errors, client path/version, source), no new probe; and to record in its log that pushing without the lock was a protocol violation. Relayed. Recorded here too: f5a6e9 publish 30e8efc4d without PrimaryPublish lock = protocol violation.
+- flow-test d9d792f71d52a204850453e0c9d7eb6df0b2a9b2 pinned to 30e8efc4d (blob verified, all eight items); removed flow-deliver-ended; 62 Mind targets, 0 broken, exit 0. Reported to 445410.
+- f5a6e9 lock packet at flows/f5a6e9/reports/lock-requests-30e8efc4d.md (five attempts 07:47:43Z–07:48:20Z, 0.37.0 store client, no skill loaded); violation logged in f5a6e9 log. Relayed to 445410.
+- 445410: Astra trusted-origin question (Flow trusts Sender in Lock via gate, or re-verifies?) jointly with 73ada7; proof chain with lines from 30e8efc and 4dc4f8. Subflow assembling; told 73ada7.
+- Sender trust chain traced: Flow trusts Sender on gate (Message SO_PEERCRED → Identify in Flow → Sender on Lock; gate exact process; Flow checks only that Sender names a metaflow). Unresolved: re-check at Lock; live vs any metaflow; Bind verification. Ruling asked of f5a6e9; interim to 445410 and 73ada7.
+- 73ada7 Message side (2e64c5) matches; adds no atomic pid-reuse algorithm specified. Ack sent.
+- f5a6e9 trusted-origin rulings: trust on gate; Sender must be Awake (Unknown.Address / Refused.Asleep / Refused.Ended.Address); Message Bind only from peer whose kernel executable = Configure.Nexus MessageNexusBinary, else NotMessage; before Nexus NotConfigured. Relayed to 445410, 73ada7; flow-test subflow told.
+- 73ada7: MessageNexusBinary position; Asleep sender untestable via Message. flow-test takes it; position asked of f5a6e9.
+- f5a6e9: MessageNexusBinary after MessageNexusPath before Lease; Asleep only when no flow runs, stale Sender is right test. Forwarded to 73ada7.
+- f5a6e9 packet on main c29d10e31 under lock 16646; trusted-origin fold next. Told 445410.
+- flow-test 5b70b0f924e21634c4ae9046445cc29cd5c8f176: 66 Mind targets, 0 broken, exit 0 (MessageNexusBinary, asleep/ended sender, wrong binary, bind before Nexus). Reported; executable-compare gap to f5a6e9.
+- Design 186dd7017 (trusted origin) on main under lock 16651. Forwarded to 445410, 73ada7; flow-test re-pin.
+- f5a6e9: executable compare by canonical path both sides; missing MessageNexusBinary file → NoSource.Path. Sent to flow-test subflow.
+- Design e876d77da (canonical path) on main under lock 16671; flow-test told to pin to it; 73ada7 and 445410 told.
+- 445410 witnessed 186dd7017 (blob 3bbe7b6) incomplete: Bind binary check, Asleep/Ended sender refusal, trust-on-gate absent. Checking e876d77da before relaying.
+- 445410 witnessed e876d77da (blob 138bcbd): four rulings still missing. Asked f5a6e9 to fold all four; 9fed42 subflow will verify pushed blob before reporting.
+- Verified pushed blob d8f7bfb6 at f5e69dd7e (on origin/main): four rulings present (347, 463-464, 604-606, 613) and earlier items intact. Reported to 445410, 73ada7; flow-test re-pin.
+- flow-test 12b84a327463ec2d42d3cd4c174f8d88c51e178b pinned to f5e69dd7e (blob d8f7bfb6): 67 Mind targets, 0 broken, exit 0. Reported to 445410.
+- 445410 (Astra kernel point): execve keeps pid; Bind binary check holds only at Bind. Asked f5a6e9 to rule (with 73ada7) whether Flow re-checks the executable on Lock/Deliver/Release, and fold it in.
+- 73ada7 same Astra point (already with f5a6e9); notes /proc/<pid>/exe can read as deleted; Message keeps EPERM guard marked designed-not-proven with Astra objection. No action.
+- f5a6e9: gate re-checks executable on every Lock/Deliver/Release; mismatch → NotMessage and drops binding; Message side unchanged. Sent to 73ada7 and flow-test; await revision to verify.
+- Verified c82223e93 on origin/main, blob 987e1bb8: executable re-check (618-627) and earlier trusted-origin lines present. Reported to 445410, 73ada7; flow-test re-pin.
+- flow-test 44647820484dacd05fc781475612be95bcfb6518 pinned to c82223e93: 68 Mind targets, 0 broken, exit 0 (adds flow-lock-message-exec). Reported to 445410.
+- 73ada7: exec re-check test → flow-test has it (answered); wire framing question (greeting digest vs length-prefixed rkyv) asked of f5a6e9.
+- f5a6e9: wire = whatever signal crate at Flow pinned revision speaks; no hand-built greeting. Forwarded to 73ada7.
+- 445410 (21% left): take message-test test 30 into flow-test; close minor design gaps with f5a6e9, fold, verify, add scenarios. Gaps sent to f5a6e9; subflow compares test 30.
+- f5a6e9 gap rulings: canonical datom printed forms, Module gains Checked.Boolean; hook Report.{ FlowId Started }, FlowId from pane env set at spawn; Model.{ Layer Harness.HarnessKind Native }; Observed.Agent.[ Working Idle Done Absent ]; SourceRoot/Repository/Path blake3; Ended.Address for Wake/Lock/Refresh/End. Sent to flow-test; await revision.
+- Verified 9b006dd2b on origin/main, blob c443d8a8: all gap rulings present, gate lines intact. flow-test told to pin; 73ada7 told.
+- 445410 (Astra): store failure on Metaflows read — which refusal? Asked f5a6e9 to answer from 9b006dd2b or rule smallest.
+- f5a6e9: store failure not authored in 9b006dd2b; rules Refused.Store.String on both sockets for any query. Relayed to 445410; await fold.
+- flow-test e79835be0af4059e3fd0ff4801d19a34a537b418 (and 6b179f41 test 30) pinned to 9b006dd2b: 68 Mind targets, 0 broken, exit 0; message-helper as MessageNexusBinary; exact canonical text. Reported to 445410; four small gaps to f5a6e9.
+- f5a6e9: Stop/closed pane moves flow id into Past; Message metaflow Asleep after exit, binding dropped, re-Bind wakes; Configure.Module payload back to { Key Source }, Checked only in Memory record; opus bare. Sent to flow-test.
+- f5a6e9: store refusal 587c3167e on main (Store.String 367, 468); four-gap fold next. Will verify after it.
+- Verified cef7781c0 on origin/main, blob 32163d33: Store.String both sockets, Past after Stop, Message asleep, Module { Key Source } with Checked on Memory record, opus bare (line 493); gate lines intact. Reported to 445410; flow-test pin.
+- flow-test 64c9ba177ccba2d29051acf222cc5f1b20747c51 pinned to cef7781c0: 69 Mind targets, 0 broken, exit 0 (adds flow-store-full). Reported; three small gaps to f5a6e9.
+- f5a6e9: bound-process exit → id into Past; liveness checked at query time (no polling); End moves id into Past, empties queue. Sent to flow-test; fold pending.
+- Verified db98e5bad on origin/main, blob 1c649498: bound-exit Past (719), query-time liveness (725-726), End fills Past (635-636); earlier lines intact. Reported to 445410; flow-test pin.
+- flow-test e2c1da9a92a3dd90fc73dfd08e22b2c6f6f9efd4 pinned to db98e5bad: 69 Mind targets, 0 broken, exit 0. Possible drop: Message-exit paragraph no longer states Asleep + binding dropped (was in cef7781c0). Flagged to f5a6e9; reported to 445410.
+- Verified c5a3654bc on origin/main, blob 3d5b42c1: sentence restored 722-725. Reported to 445410; flow-test pin.
+- flow-test 6c48591f00fdbd823e1eea94307619622d564860 pinned to c5a3654bc: 69 Mind targets, 0 broken, exit 0. Reported to 445410.
+- 445410 (19% left): stored-data migration 0.24 store → design c5a3654bc Memory; settle from rulings or one book for the living. Research subflow launched; f5a6e9 asked.
+- 73ada7: second Configure.Nexus changing MessageNexusBinary? Answered from f5a6e9 rulings: refused Conflict within one start; so row 31 needs a helper.
+- f5a6e9 migration ruling: new Flow reads/migrates nothing; Memory starts empty; old store set aside; stable/Next rotation keeps old Nexus for its sessions; no migration code. Book only if facts show data worth carrying. 445410 asks f5a6e9 confirm Conflict ruling for row 31.
+- f5a6e9 confirms Conflict ruling; changing Message binary = new Flow start; row 31 closed. Told 445410.
+- Store facts: deployed Flow is 0.14.0 (stable) and 0.17.4 (next), not 0.24/0.25; design line 776 wrong; store flow.sema 311KB sema-engine hand-written rkyv records, no Metaflow/Memory; 962ad12 has table upgrades; living 2026-09-24 (836818): no need to keep old stores. Sent to f5a6e9 (psyche + msg), 445410.
+- f5a6e9 amended: deploy discards old store; nothing set aside or migrated; new Flow starts empty; no book. Told 445410.
+- f5a6e9: no book; production line corrected (deployed 0.14.0/0.17.4); both fold next publish.
+- 445410: discard ruling rests on unconfirmed "not live yet"; keep as current best, mark condition in design; living answer on «What the new Message does with the old store» decides Flow and Message together. Relayed to f5a6e9.
+- 445410 (Astra): where new Flow puts its Memory store (Start arg, default path, env)? Forwarded to f5a6e9.
+- Verified b7618271b on origin/main, blob 7bcb1061: discard as current best with condition (810-820), versions corrected (777-779), earlier intact. Reported to 445410.
+- f5a6e9: Start.{ OrdinarySocketPath MetaSocketPath StorePath }; deploy names a new path; old file untouched pending answer. Relayed to 445410; flow-test told.
+- 445410 (Field): what Start does if StorePath holds a file — asked f5a6e9 to rule with named refusal.
+- f5a6e9: Start opens own-schema store (version written at creation), creates missing file; foreign store → Refused.Store.{ Path Reason } on stdout, non-zero exit. Relayed to 445410; flow-test told.
+- Verified a5b2c27d4 on origin/main, blob 33e8c2cf: Start with StorePath (100-103), store open/create/refuse (131-140), versions intact (785-787), condition (821). Reported to 445410; flow-test pin.
+- 445410: Astra refusal-reachability for Identify, Lock, Deliver vs a5b2c27d4; coordinate with 73ada7. Subflow building table; f5a6e9 to confirm.
+- 73ada7: exact Astra question (6 refusals x 3 queries + Message SendRefusal map); 73ada7 building refusal-map.md; will send for f5a6e9 confirmation. My table cross-checks.
+- Reachability table flows/9fed42/reachability-a5b2c27d4.md: Astra six all unreachable for Identify/Lock/Deliver (Awake, NoLayer, HashMismatch Launch-only; NotConfigured 523; Unknown.FlowId Report/Stop/Observe; Unknown.Key module/Forget; Taken Bind). Open items to f5a6e9; Flow side to 73ada7.
+- f5a6e9 confirms table; rulings: Identify open (no NotMessage); Lock recipient unknown→Unknown.Address, asleep granted, ended→Ended.Address; Deliver ended→Ended.Address; lapsed→Lapsed; dead bound→NotMessage + drop; Held.Lock; Store for Identify. Relayed 445410, 73ada7; flow-test told.
+- 73ada7: can waking Deliver hit Unknown.Key or NoLayer (wake launches same way)? My table missed it. Asked f5a6e9.
+- f5a6e9: wake preconditions checked at Lock for Asleep recipient (NoLayer/Unknown.Key); config change between Lock and Deliver → same refusal at Deliver. Table corrected (rows 15,16 reachable). Relayed 445410, 73ada7; flow-test told.
+- ef1732919 (blob ced29dd9) incomplete: absent wake preconditions at Lock, Identify NotMessage exclusion, Lock recipient rules, dead-bound NotMessage. Present: Deliver Ended, Held.Lock, Store Identify. Sent to f5a6e9; 445410 told.
+- flow-test 6837587ca232ee34a27b3288506c4118da2f0629 pinned a5b2c27d4: 71 Mind targets, 0 broken, exit 0 (StorePath, restart, foreign store). Five more prepared locally. Ruling asked of f5a6e9: modules required for wake when topic has none.
+- f5a6e9: no modules for topic is a valid wake; Unknown.Key only for a forgotten module. flow-test assumption stands.
+- Verified 439dc64b4 on origin/main, blob 66bd01a8: four reachability rules present. Table reachability-439dc64b4.md. Reported 445410, 73ada7; flow-test pin.
+- flow-test 38a29468c4a97e5db1f07ff2183034b6699da76d pinned 439dc64b4: 76 Mind targets, 0 broken, exit 0. Precedence Lapsed vs Ended to f5a6e9; reported 445410.
+- f5a6e9: Deliver check order gate → lock (Unknown.Lock, Lapsed) → recipient (Ended, NoLayer/Unknown.Key) → placed/queued/woken; test right; design next touch.
+- 445410 (Astra): which persisted field holds Keys a wake would compose (Metaflow has none)? Asked f5a6e9 to cite or rule (add Keys or drop forgotten-Key case).
+- f5a6e9: forgotten-Key case dropped; wake composes modules present at wake time; Unknown.Key leaves Lock/Deliver (Launch, Forget only); NoLayer stays. Relayed 445410, 73ada7; flow-test told.
+- f5a6e9: e1e8d1843 (check order at Deliver, line 729, blob af0f9d56); wake-module fold next. Verify both after.
+- 73ada7: 439dc64 710-711 still has forgotten-key; Message d9703b5 removed Unknown.Key from Lock/Deliver. Fold pending at f5a6e9; ack.
+- Living order (via 445410): refresh all Claude flows; write handover.md; f5a6e9 asked for its own.
+- Handover written flows/9fed42/handover.md; sent path to 445410. Awaiting f5a6e9 handover path.
+- 445410: finish wake-module fold, verify, push flow-test af4b372; then both lanes on main under lock; then done.
+- f5a6e9 handover at flows/f5a6e9/handover.md (design e1e8d1843107a1f7f01106f1ef3901bd671d3c82); wake fold publishing via subflow.
+- f5a6e9: wake fold + handover on main ff2b6b1b733e1c76cb0adc10b6e7f61d4a28ae76 (blob 5d5bd999) under lock 17296. flow-test subflow verifying and pinning.
+- ff2b6b1b verified: wake rule, Unknown.Key Launch/Forget, forgotten-key gone; but NoLayer variant deleted from flow Signal Refused list (prose still uses it). Asked f5a6e9 to restore; flow-test not pinned.
+- 445410: StartRefusal.[ Refused.Store.{ Path Reason } ] fails ethos gen (45:26 Expected.Reference); f5a6e9 to rule valid form, check ethos-zero on Prometheus, fold with NoLayer restore.
+- f5a6e9: StoreRefusal.{ Path Reason } + StartRefusal.[ Store.StoreRefusal ], prints Store.{ path «reason» }; NoLayer restore first, then this with Check output.
+- f5a6e9: NoLayer restored 9c8c30835 (blob e853aaa7); StoreRefusal next. Verify after both.
+- Verified 9bffed2f4cd0363dfeb9b0925c64817bc55349f8 on origin/main, blob be032eeb: StoreRefusal/StartRefusal, NoLayer restored, wake rule, Unknown.Key Launch/Forget, Deliver order; old start form gone. Reported 445410; flow-test pin.
+- flow-test 01c29c90048a488b39e7908c8cce0d72f8439a66 pinned 9bffed2f4: 76 Mind targets, 0 broken, exit 0. Handover updated; publishing lane.
