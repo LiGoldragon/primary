@@ -310,3 +310,7 @@ A condensed 192-line rewrite had dropped the ethos examples and expected prints 
 ## 2026-10-10 — 445410: hold on item 7 stands (Q5, Q6, Q8 unanswered); instead build each option of Q5, Q6, Q8 as a lands-nothing candidate on 07714b, no ethos-test target. Spec delegated: reports/inline-import-questions-spec.md. No published book asks Q5, Q6, Q8 (held since the first edition); a new book will, after the spec.
 
 ## 2026-10-10 — reports/inline-import-questions-spec.md written (192 lines). Finding: Q5 and Q6 a–c are registry design, not dry-runnable in ethos-zero; buildable: 6d–6f (how the registry reaches ethos-zero) and Q8 (8a ethos_core, 8b registry path, 8c refuse core, 8d unchanged). 8c refuses the living's own registry key Topic.core:Name, so item 7 as a refusal contradicts his vision. Book decided: «Sources and the registry», one proposal with Q8 as the fork, Q5 and Q6 asked as the registry's anatomy.
+
+## 2026-10-10 — records published to main as b592de (from b76182, lock 17110, two paths, 8796 files).
+
+## 2026-10-10 — «Sources and the registry» published: https://claude.ai/artifact/RX6W2WyacPbRaubsz5qgbp (books/sources-registry.md). D1 lands after the inline-import statement once «The inline import, third edition» D1 lands. Q5 asks one letter per group (key target; hash coverage; hash kind) or h. Link sent to 1d0733. Not watched by this session (watch limit); comments reach me through 1d0733.
