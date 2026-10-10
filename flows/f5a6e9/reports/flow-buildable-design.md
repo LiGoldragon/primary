@@ -109,6 +109,9 @@ Library                         ; Flow's
       MetaAspects.Vector<FlowAspect>
       MessageNexusPath.String   ; Message's
                                 ; ordinary socket
+      MessageNexusBinary.String  ; store path of
+                                ; the Message
+                                ; Nexus binary
       Lease.Integer } ]         ; seconds; 60
                                 ; before any Nexus
                                 ; payload

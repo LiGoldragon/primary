@@ -182,3 +182,5 @@
 - Lock 16588 released: Released.{ 16588 PrimaryPublish f5a6e9 … }; the publisher retakes a lock only for commit and push once its clone completes. d5df1d told.
 - 73ada7 via 9fed42: MessageNexusBinary sits after MessageNexusPath and before Lease (confirmed, the fold places it so); a metaflow is Asleep only when no flow of it runs, so an Asleep Sender arises only from a stale Sender passed by Message, tested that way.
 - The remote full clone runs 20–40 minutes for 6.2 GB; the publisher is told to clone locally from /home/li/primary (a full clone in seconds), point origin at GitHub, fetch and check out main, then lock, commit, check, push. Rule for every later brief: a full local clone, origin re-pointed, never a filtered or shallow one.
+- Lane published under lock 16646 (taken and released once around the push): c29d10e31 «f5a6e9: lock-request packet and log»; lane paths only; 8,795 files. 9fed42 told; the trusted-origin fold proceeds.
+- A rebuild backup, reports/flow-buildable-design.md.bak, landed in c29d10e31; the trusted-origin fold removes it from the lane and from main.
