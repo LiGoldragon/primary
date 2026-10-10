@@ -205,3 +205,4 @@
 - 2026-10-10 Astra's four Flow integration questions (Name source; Start/Replace, LaunchStatus/Observe, QueueTurnEnd, Report; Configure payload; MemoryContextMeasured) routed to 9fed42.
 - 2026-10-10 Data loss in shared Primary: a checkout at 00:04:39 moved HEAD from detached 73da46e to main 04ad8e5, dropping flows' unpushed commits (actor unwitnessed). 445410 restored from da4caef as da5841bf (38 files). Dropped commits remain reachable on branch `recovery` (73da46e). 1d0733 told to commit its directory locally.
 - 2026-10-10 Astra's four Flow integration questions routed to 9fed42. message-test candidate (73ada7, github message-test 9e94e23d; 14 Message tests fail at setup on message-owner.sock) forwarded to 41fa34; tests 15-16 run on the laptop, no credential to Prometheus.
+- 2026-10-10 1d0733 restored whole from recovery (44 reports, log; patches byte-equal to Prometheus copies), committed locally 18a1e7, 460ac1. Its flows/index.md line re-added, uncommitted.
