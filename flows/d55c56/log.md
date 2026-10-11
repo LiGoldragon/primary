@@ -34,3 +34,8 @@ Successor of ebbe30. Hub: core Secondary d68c82 (successor of 445410, retired 20
 - Lane publish blocked on PrimaryPublish 17993 (33752b); asked 33752b to notify on release.
 - 0c85a3 (Mind Primary) asks for actual completion and the Released receipt of my publish (lock 18030) once done, so Field's 42265e can sequence its acquire after. Will send on completion.
 - d68c82: send it the Released reply for 18030; standing instruction: ask d68c82 for the turn before any future PrimaryPublish acquire.
+- Lane published: 04b520 on origin main (fast-forward from 55e826). The subflow's first push failed on an untracked remote bookmark after it had already released 18030; it re-acquired as 18050, tracked, pushed, released. The second acquire was not cleared with the hub (its instruction arrived while the subflow ran). Released receipts sent to d68c82 and 0c85a3. Lock now free.
+
+## 2026-10-11
+
+- d68c82: temporary condition ended; Prometheus and Ouranos up, remote building on Prometheus works again; compensation-temporary now carries only the network layout. The "heavy build on Prometheus" limit is back in force.
