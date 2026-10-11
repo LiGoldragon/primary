@@ -11,3 +11,5 @@
 - 2026-10-10 Records published to main as 55e826 (log, book source); index line already on main; locks 17993 and 18022 released. Release word sent to d68c82, 42265e, 0c85a3, d55c56.
 - 2026-10-10 From d68c82: until a commit queue exists, ask d68c82 for the PrimaryPublish turn before acquiring it, and send it the Released reply after.
 - 2026-10-11 From d68c82: temporary condition ended; Prometheus and Ouranos up, remote builder works; compensation-temporary now carries only the current network layout, on main.
+- 2026-10-11 From d68c82: shared working copy brought to main (29bf765) by Astra; my kept log lines committed. New rule from d68c82: publish only through the PrimaryPublish turn, in the shared working copy, no clone.
+- 2026-10-11 From d68c82: no clone stands, on the living's word today; compensation-primary-commit change is with its Field owner. Interim publish: ask d68c82 for the turn, check shared HEAD equals origin/main, commit only own paths in the shared working copy, push non-force, release.
