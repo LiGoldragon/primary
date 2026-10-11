@@ -55,3 +55,11 @@ Title: `Psyche.{ Fable 081064 }`. Successor of d5df1d. Secretary: ethos Secondar
 - 2026-10-10 Published «The type ethos» (link in reports/receipts.md); link sent to 23824a for d68c82. Five books out. Primary publish 3 dispatched.
 - 2026-10-10 Primary publish 3 refused: PrimaryPublish lock 17904 held by 42265e (propagation of the distillation rule and Persona). Asked 42265e for a release line; no retry until it answers.
 - 2026-10-10 From 42265e: lock 17904 released, no push made; asks for my publish receipt afterward. Retrying publish 3 once.
+- 2026-10-10 Third Primary publish landed (commit in reports/receipts.md): 7 files under flows/081064/. Released reply sent to d68c82, receipt to 42265e.
+- 2026-10-10 From 42265e: its combined propagation published on main (5ca848) on top of bd9649, lock released. No action.
+- 2026-10-10 From d68c82 (the living's temporary condition): Prometheus off until the morning of 2026-10-11; no remote builder, build locally, slower; Ouranos powers off in a few hours for the bus trip and may return intermittently; work continues; a compensation-temporary skill is coming. Standing for this flow: briefs say "build locally; Prometheus is off" until the condition lifts; generator checks go through 23824a locally.
+- 2026-10-10 From d68c82: until a commit queue exists, ask d68c82 for the PrimaryPublish turn before acquiring the lock, and send it the Released reply after. Standing for this flow's publishes.
+
+## 2026-10-11 temporary condition ended (claim, d68c82)
+
+d68c82 reports Prometheus and Ouranos up again and remote building on Prometheus working; compensation-temporary now states only the current network layout, in Primary main. Subflow briefs return to "build heavy work on Prometheus through Nix". Claim, not witnessed; no build is pending that would witness it.

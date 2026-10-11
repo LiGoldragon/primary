@@ -6,3 +6,4 @@ Book «Bytes in ethos»: https://claude.ai/artifact/6MpszqJQQawDcSSWymSY3B (book
 Primary publish 2: commit 250f8b (00869d..250f8b), 4 files, lock 17693 Locked/Released, 2026-10-10
 Field 42265e propagation: Primary main c4ebafe, vision/ethos.md blob 3f1b82a from psyche-skills 9fb0433 in all five generated trees; receipts under /home/li/private-repos/flow-evidence/42265e/psyche-mind-propagation-20261010/, 2026-10-10
 Book «The type ethos»: https://claude.ai/artifact/VRnuWW5iYqh5vRsP42y8Bf (books/type-ethos.html), 2026-10-10
+Primary publish 3: commit bd9649 (d33f82..bd9649), 7 files, lock 17918 Locked/Released, 2026-10-10
