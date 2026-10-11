@@ -1,0 +1,244 @@
+<title>The lock queue</title>
+<h1 class="book-title">The lock queue</h1>
+<section>
+<p>Status: all four proposals are unlanded. The Orchestrate in production has no queue; the queue is a proposal by Astra (0c85a3), not yet in any development branch.</p>
+<p>Orchestrate today answers a Lock request at once. A request whose name or paths conflict with a held Lock is refused; any other is granted with the next ID. Release is by that ID, and the flow named in the Lock is a label, not an authority. Held Locks and the next ID survive a restart. There is no waiting line, so flows that want the same paths keep retrying, and the fastest retry wins: Astra reports one flow losing the Primary publish lock five times running.</p>
+<p>Astra proposes a typed queue: Enqueue, ObserveQueue and Cancel, a durable ID sequence, and a Release that hands the freed Lock to the head of the queue in the same step, so no fresh request can take it first. Three things are open: the order of the queue, who may cancel, and what ends a Lock whose holder never releases.</p>
+</section>
+<figure style="margin:0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 520" width="100%" style="height:auto;display:block;max-width:360px;margin:0 auto" role="img" aria-label="One Lock passing down the queue. Flow A holds Lock 7 on the books folder. Release 7. Orchestrate, same step: grant the head of the queue. Flow B, was waiting, now holds Lock 8. Flow C keeps waiting; a new request from Flow D queues behind C, it cannot take the Lock first."><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:currentColor"/></marker></defs><text x="180" y="34" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="600" style="fill:currentColor">one Lock passing down the queue</text><rect x="20" y="56" width="320" height="64" rx="8" style="fill:var(--chip);stroke:var(--line)" stroke-width="1.5"/><text text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" style="fill:currentColor"><tspan x="180" y="83">Flow A holds Lock 7</tspan><tspan x="180" y="103">on the books folder</tspan></text><line x1="180" y1="120" x2="180" y2="156" stroke-width="2" style="stroke:currentColor" marker-end="url(#arr)"/><text x="196" y="144" font-family="system-ui, sans-serif" font-size="15" style="fill:currentColor">Release 7</text><rect x="20" y="160" width="320" height="64" rx="8" style="fill:var(--add-bg);stroke:var(--accent)" stroke-width="2"/><text text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" style="fill:currentColor"><tspan x="180" y="187">Orchestrate: same step:</tspan><tspan x="180" y="207">grant the head of the queue</tspan></text><line x1="180" y1="224" x2="180" y2="258" stroke-width="2" style="stroke:currentColor" marker-end="url(#arr)"/><rect x="20" y="264" width="320" height="64" rx="8" style="fill:var(--chip);stroke:var(--line)" stroke-width="1.5"/><text text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" style="fill:currentColor"><tspan x="180" y="291">Flow B (was waiting)</tspan><tspan x="180" y="311">now holds Lock 8</tspan></text><line x1="180" y1="328" x2="180" y2="362" stroke-width="2" style="stroke:currentColor" marker-end="url(#arr)"/><rect x="20" y="368" width="320" height="124" rx="8" style="fill:var(--chip);stroke:var(--line)" stroke-width="1.5"/><text text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" style="fill:currentColor"><tspan x="180" y="395">Flow C keeps waiting</tspan><tspan x="180" y="415">(a new request from Flow D</tspan><tspan x="180" y="435">queues behind C, it cannot</tspan><tspan x="180" y="455">take the Lock first)</tspan></text></svg>
+</figure>
+<section>
+<p>The file all four proposals land in is short; it stands today, whole:</p>
+<div class="diff"><div class="ctx">
+<p><code>description:</code> Orchestrate itself — its deployment, its meta binary, or the scope of its skill — is being designed or judged.</p>
+<p><code>dependencies:</code> [operation-orchestrate]</p>
+<h3>Deployment</h3>
+<p>Orchestrate is deployed unconditionally, in the home, for every user. Its meta binary is part of it; a deployment without meta-orchestrate is wrong.</p>
+<h3>The skill</h3>
+<p>The orchestrate skill covers ordinary operations only; meta operations are outside it.</p>
+<h3>Sources</h3>
+<p>01a03d6e orchestrateDeployment<br>01a03d6e orchestrateSkill</p>
+</div></div>
+</section>
+
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Distillation: a conflicting Lock request waits in a queue</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-orchestrate.md</code></p>
+<p>Removed: none.</p>
+<p>Added, as a new section after «The skill» and before «Sources»:</p>
+<div class="diff"><div class="add">
+<h3>The lock queue</h3>
+<p>A Lock request that conflicts with a held Lock waits in Orchestrate's queue instead of being refused. Releasing a Lock grants it to the next waiting request in the same step; no later request takes it first.</p>
+</div></div>
+<p>Added to «Sources»:</p>
+<div class="diff"><div class="add"><p>9993b5 mergeQueue</p></div></div>
+<p>Source: flows/9993b5/vision/mergeQueue.md (2026-09-17). That record asks for a queue of reserved spots for merging; reading it as a queue for Orchestrate's Locks is this flow's inference.</p>
+<section class="rulings"><ol><li value="1"><p>Ruling: land as shown, or hold until the merge queue and the Lock queue are ruled one thing or two.</p></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">2</span><h2>Distillation: the queue is ordered per conflicting paths</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-orchestrate.md</code></p>
+<p>Removed: none.</p>
+<p>Added, at the end of «The lock queue»:</p>
+<div class="diff"><div class="add">
+<p>Requests wait in order of arrival only behind requests whose name or paths they conflict with; a request that conflicts with nothing held is granted at once, whatever else waits.</p>
+</div></div>
+<p>Added to «Sources»:</p>
+<div class="diff"><div class="add"><p>9993b5 orchestrateLocking</p></div></div>
+<p>Source: flows/9993b5/vision/orchestrateLocking.md (2026-09-17), where Orchestrate locks files rather than the whole repository. No record speaks of the queue's order; carrying that record over to the queue is this flow's inference.</p>
+<section class="rulings"><ol><li value="2"><p>Ruling, the order of the queue:</p>
+<ol class="choices" type="a"><li>per conflicting paths, as shown;</li><li>one strict line for all requests, so a request on unrelated paths waits behind every earlier one;</li><li>another order (say which).</li></ol></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">3</span><h2>Distillation: who withdraws a request or a Lock</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-orchestrate.md</code></p>
+<p>Removed: none.</p>
+<p>Added, as a new section after «The lock queue»:</p>
+<div class="diff"><div class="add">
+<h3>Withdrawing</h3>
+<p>A waiting request is cancelled, and a held Lock released, by the flow that made it. Another flow may withdraw it only when that flow is idle with no live subflow, or stale; a live holder is messaged instead. An idle flow's Locks and requests are forfeited.</p>
+</div></div>
+<p>Added to «Sources»:</p>
+<div class="diff"><div class="add"><p>01a03d6e locks</p></div></div>
+<p>Source: flows/01a03d6e/vision/locks.md (2026-08-26), on releasing before idle, forced removal by another flow, and forfeiture of an idle flow's Locks; the same rule for stale holders already stands in mind-skills/skills/operation-stale-lock.md. Extending it to waiting requests is this flow's inference. Today Orchestrate cannot tell who is asking: the flow in a Lock is only a label, so this rule needs the caller's identity checked by Orchestrate.</p>
+<section class="rulings"><ol><li value="3"><p>Ruling, who may withdraw:</p>
+<ol class="choices" type="a"><li>the requesting flow, and any flow once that flow is idle or stale, as shown;</li><li>the requesting flow, and otherwise only through meta-orchestrate;</li><li>any flow holding the ID, as Release works today.</li></ol></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">4</span><h2>Distillation: a Lock is held for a time</h2></header>
+<p class="target"><code>psyche-skills/skills/vision-orchestrate.md</code></p>
+<p>Removed: none.</p>
+<p>Added, as a new section after «Withdrawing»:</p>
+<div class="diff"><div class="add">
+<h3>A Lock is held for a time</h3>
+<p>A Lock is granted for a set time. Before it runs out, Orchestrate asks the holder whether it needs more, and the holder may extend it; this is why a holder must be reachable. A Lock whose time runs out is released, the queue moves on, and the expired Lock stays observable so what happened can be investigated.</p>
+</div></div>
+<p>Added to «Sources»:</p>
+<div class="diff"><div class="add"><p>108ab0 operational-timeBasedMergeSlots<br>9993b5 mergeQueue<br>01a03eda observe</p></div></div>
+<p>Source: flows/108ab0/vision/operational-timeBasedMergeSlots.md (2026-09-17), where an unfinished reserved spot is let go and the holder is asked whether it needs more time; flows/9993b5/vision/mergeQueue.md (2026-09-17), where a spot that times out is investigated before deciding what to do; flows/01a03eda/vision/observe.md (2026-08-26), which names expired Locks as something to observe. The two 2026-09-17 records differ on whether a timed-out spot is released or held for investigation; the lines above release it and keep it observable, which is this flow's reading of both.</p>
+<section class="rulings"><ol><li value="4"><p>Ruling, what ends a Lock that is never released:</p>
+<ol class="choices" type="a"><li>a time limit with extension on ask; on expiry release it and keep it observable, as shown;</li><li>a time limit; on expiry hold it, mark it expired, and remove it only through meta-orchestrate after investigation;</li><li>no time limit; only forfeiture when the holder is idle or stale, as in proposal 3.</li></ol></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><h2>Distillation</h2></header>
+<p>The four proposals above all land in psyche-skills/skills/vision-orchestrate.md: 1, the lock queue; 2, its order; 3, who withdraws; 4, the Lock's time. Each carries its added lines and Sources lines; none removes a line.</p>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

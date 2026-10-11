@@ -224,3 +224,211 @@
 - 2026-10-10 Field correction: the tester's brief carried the no-commit limit, so the restate-limits line does not explain the first checkout; dirty-first contradiction is a fix candidate, not a cause. Times in transcript clock, zone unqualified.
 - 2026-10-10 73ada7 audit forwarded: subflow pushed into the shared copy's main (00:05:39, via denyCurrentBranch warn); subflow ran git checkout recovery -- <paths> at 00:09:33 (candidate for second deletion). Proposed line: clone origin is GitHub, never the shared copy.
 - 2026-10-10 Field correction: 73ada7's 00:09:33 command was 'git checkout recovery -- 2>/dev/null || true' with zero pathspecs, stderr discarded and exit masked; no inner action proven. f5a6e9's pkill -9 git confirmed at 06:11:03.486Z; affected processes unknown. Second flows/445410 deletion actor unknown; reports collected are not exhaustive coverage.
+- 2026-10-10 flows/445410 published to origin main as 592d23 (log.md only changed; 8777 files; remote matches); lock 16187 released.
+- 2026-10-10 PrimaryPublish race: 9fed42 refused 5 times; Psyche publishers held for 9fed42; lock-queue gap sent to Field.
+- 2026-10-10 9fed42 published e992c3; all nine held paths resolved by owners (9fed42 x4 in e992c3, f5a6e9 design in e846c2 per claim, 73ada7 x3 identical, d5df1d spec in 6c89d8). Publishers released.
+- 2026-10-10 Field qualified: main e992c3; governing Flow design e846c2 (supersedes 72418b11); 73ada7's paths governed by 9541cd08; shared local copies stale. 73ada7 told to re-pin message-test.
+- 2026-10-10 Watch 00:36 (Observed 00:36:00): Claude 5h 72% left (reset 02:59), weekly 29% (reset 06:59), Fable weekly 39%; Codex 70%; .codex-next Unavailable. Woke 1d0733 (Represented rebase), 9fed42 (flow-test); idle Mind/Field to 41fa34.
+- 2026-10-10 Orchestrate has no current owner (Astra); lock-queue gap unassigned; manual sequencing continues.
+- 2026-10-10 Astra 0c85a3 assigned as sole read-only qualifier of Orchestrate lock fairness (admission, acquire, release, persistence, notifications, cancel, starvation), then a bounded FIFO design; no implementation. Manual publisher sequencing continues; Ethos item 7 held.
+- 2026-10-10 message-test re-pinned 3636bc (designs e846c2, 9541cd08); Lock.Recipient vs Lock.{ Address } mismatch to f5a6e9 via 9fed42. Forwarded to 41fa34.
+- 2026-10-10 Astra's source-qualification question on message-design.md routed to 73ada7.
+- 2026-10-10 message-design.md governed by 9541cd08 (blob 1ce61fb1), carries three-path Configuration and both Configure contracts; forwarded to 41fa34.
+- 2026-10-10 Astra's Orchestrate qualification: no queue, no FIFO, no cancel; FlowId not authority. Fairness and authority forks (global vs per-path FIFO, cancel authority, never-releasing holder) going to the living as a book; subflow dispatched.
+- 2026-10-10 Special representation tested on both Fork 3 answers (1d0733, Prometheus): braced 60 tests + 12 checks, bare 61 + 12; ethos-zero 07714b passes; no doubled brace. Report flows/1d0733/reports/representation-fork3.md.
+- 2026-10-10 Published «The lock queue» (Dx63sZCET9j3kN34QRsfJ3), four proposals into vision-orchestrate; told 41fa34; index update dispatched.
+- 2026-10-10 Index «Open books» v34 live, 33 books: «The lock queue» added.
+- 2026-10-10 d5df1d published e38f57 (from 5374e1, 2 paths, lock 16280 released): refreshed ethos solution; set = items 1, 2, 6 on landed 3 and 5, landing protos, datom-codec, ethos-zero on Fork 3.
+- 2026-10-10 Field: Zeus deployed. CriomOS 31d79d / Home e03c626, generation 75, activation R2 exit 0; bird and li home activations succeeded; Codex units byte-equal, bird's Codex PIDs survived; installed Claude 2.1.294. Prometheus redeploy blocked on the four-materializations packet (forwarded earlier).
+- 2026-10-10 Message design now 3a4bbb (Lock.Recipient ruling); forwarded to 41fa34.
+- 2026-10-10 Message design now 172860 (Lock.{ Sender Recipient }, Deliver.{ Lock Request }); forwarded.
+- 2026-10-10 flow-test published (github flow-test 9f2f291e): 38 expected-failing Mind targets, rig green; forwarded to 41fa34.
+- 2026-10-10 flow-test 2fd150: 52 scenarios, Configure is Mind's first target; forwarded.
+- 2026-10-10 flow-test f2adf1: 55 scenarios with f5a6e9's latest seven rulings; Configure.Nexus still Mind's first target.
+- 2026-10-10 Message design now e275b6 (Lock { Sender Address Until }, 60 s lease pending book); forwarded.
+- 2026-10-10 message-test 68ac7a pins Flow design 5f0e64f, Message e275b6; Flow design for build is 5f0e64f. Forwarded.
+- 2026-10-10 Astra's three Message runtime questions (flow_edge path/Identify; owner-only vs allowlist; store migration) routed to 73ada7.
+- 2026-10-10 73ada7 answered Astra's Message runtime questions; forwarded. Two new rulings for the living (meta-socket owner identity; v1 store migration) to come as 73ada7 books. Five skill variables missing from SKILL_VARIABLES.md.
+- 2026-10-10 Field asked for 73ada7's runner source packet for the five skill variables; routed.
+- 2026-10-10 Astra's Configure-gap questions (Codex/HarnessProfiles string mapping; socket start interface) routed to 9fed42 for f5a6e9.
+- 2026-10-10 73ada7 published «What the new Message does with the old store»: HA9wcza7qh1r9gTYS1jvG3. Index update held to batch with the meta-owner book.
+- 2026-10-10 f5a6e9 answered Astra's Configure gaps (full CodexEndpoint/HarnessProfile values; Start.{ ordinary meta } argument); forwarded.
+- 2026-10-10 73ada7 published «How Message's meta socket knows its owner»: CQU2Mcpo89xibaGpPrfBEX. Index update for both new books dispatched. 73ada7 notes two of its books are unwatched; comments on them must come through the index.
+- 2026-10-10 Index «Open books» v35 live, 35 books: Message old-store and meta-owner books added.
+- 2026-10-10 73ada7 runner packet forwarded to Field (hold five variables until reader fix); told 73ada7 the Codex fields are full CodexEndpoint per f5a6e9.
+- 2026-10-10 MetaAspects form ([ Field Mind ], read from running Configuration) forwarded to Field.
+- 2026-10-10 Field: runner wire mismatches pinned Meta; no stored-Configuration read query. Five variables held until Mind's Flow build; f5a6e9 asked for a typed config read; 73ada7 to align runner.
+- 2026-10-10 Runner reader fixed (message-test 7e9d4174, 16 variables); forwarded to Field; hold stands.
+- 2026-10-10 f5a6e9 adds meta query Configuration (stored state whole, or Unconfigured); forwarded.
+- 2026-10-10 message-test a22e69 is the last revision before Mind's build; paused until Mind's Flow and Message commits.
+- 2026-10-10 Watch 01:36 (Observed 01:36:11): Claude 5h 62% (reset 02:59), weekly 26% (reset 06:59), Fable 37%; Codex 67%; .codex-next Unavailable. Woke 1d0733 (ethos-test); pressed 41fa34 to start parallel Flow/Message writers on all idle Mind/Field seats.
+- 2026-10-10 Flow design 7398a43ca on main (Message gate, Start, full Configure.Nexus, Configuration read); forwarded.
+- 2026-10-10 Correction: my forward of 7398a43c said it carried the Configuration read and meta-signal-flow import; Field's read of blob ff8a60ce shows neither (gate prose only; signal_flow import). Relayed from 9fed42's claim without witness. Asked 9fed42/f5a6e9 to reconcile.
+- 2026-10-10 9fed42 confirms 7398a43ca clobbered by concurrent folds; f5a6e9 rebuilding from 83c2ee59a. Will witness the new blob before forwarding.
+- 2026-10-10 Message design 4dc4f8 (blob 7112c6) claimed by 73ada7; forwarded as claim.
+- 2026-10-10 Mind witnessed Message design 4dc4f8 blob 7112c6: every claimed item present (seed, v2 schema, Identify, Start bind, gate, dead-binding replace, F14 refusal).
+- 2026-10-10 Astra checkpoint: Mind writers hold locks 16399, 16432, 16479, 16493 with dependent 7398 edits stopped; f5a6e9's rebuilt fold is the critical blocker; 9fed42 pressed.
+- 2026-10-10 Field qualified Message 4dc4f8; two defects (stale scalar Identify examples; library.ethos vs message_library.ethos) sent to 73ada7.
+- 2026-10-10 flow-test 38c895: 63 scenarios; usable as Flow spec until the rebuilt design lands; forwarded.
+- 2026-10-10 Message design a31dc4 (blob d53e82) fixes Field's defects; joint Check blocked on Mind committing signal-flow 11.0.0 and Flow 0.25.0 (X5). Forwarded.
+- 2026-10-10 Field corrected X5: Flow 0.25 published 962ad12 (signal-flow 068f0e, meta 88f375); 73ada7 to recheck imports against those.
+- 2026-10-10 f5a6e9 rebuilt Flow design on main 30e8efc4d (blob 4bad0825), pushed without the PrimaryPublish lock (Lock request arity errors). Witness subflow dispatched before forwarding.
+- 2026-10-10 Witnessed Flow design 30e8efc4d blob 4bad0825: all seven items present; forwarded to 41fa34 as governing; Mind writers resume.
+- 2026-10-10 Recorded: f5a6e9 publish without PrimaryPublish lock is a protocol violation; requested its failed-Lock packet for Field and Astra.
+- 2026-10-10 message-test 165aec pins Flow 30e8efc and Message 4dc4f8 (a31dc4 test-identical); Bind via Flow's ordinary socket; waits for Mind's commits.
+- 2026-10-10 Message X5 corrected (2e64c5): Address, Request, Lock, Recipient, Process, Sender.Address await Mind's Library candidate; forwarded.
+- 2026-10-10 ethos-test published (785d5d): 25 pass, 6 targets, 9 differ, 21 no observable, 18 unruled. protos:String defect to Mind; four tensions to become d5df1d books.
+- 2026-10-10 protos:String withdrawn from Mind (vision tension, lines 175 vs 188); becomes a fork for the living. ethos-test counts move to 5 targets, 10 differ.
+- 2026-10-10 flow-test d9d792 pinned to 30e8efc4d: 62 scenarios; forwarded.
+- 2026-10-10 protos:String: Mind holds pending the living's ruling (push! book).
+- 2026-10-10 Astra's trusted-origin question (client Process → Identify → Sender at Lock) sent to 73ada7 and 9fed42 jointly.
+- 2026-10-10 ethos-test 3a15f9: 25 pass, 5 targets, 10 differ, 21 no observable, 18 unruled.
+- 2026-10-10 f5a6e9 lock packet (flows/f5a6e9/reports/lock-requests-30e8efc4d.md, five attempts, orchestrate 0.37.0, no skill loaded) forwarded.
+- 2026-10-10 Mind checkpoint: A projection_review reconciles Library/schema/store for 30e8 (no frozen revision yet); B launch_evidence waits on A's interfaces; C deploy has Message memory.ethos. Nothing frozen for Field yet.
+- 2026-10-10 d5df1d book 1 of 4 «Two heads, one name»: DMEAiqM1GCoCnjhfSGKLQZ. Index update held to batch the four.
+- 2026-10-10 d5df1d book 2 of 4 «No tuple, and FlowId»: U664wc6k8XWbQvUopmdCLQ (also answers types Fork 4). Renderer ## defect sent to Field.
+- 2026-10-10 d5df1d book 3 of 4 «Two stale examples»: DJtpvWov6qxE7LvhcLzxnY (push! Self; protos:Textualizable; settles 175 vs 188; Mind's held protos:String waits on it).
+- 2026-10-10 Correction to my relay of f5a6e9's lock packet: five invocations, the first a HELP, not five Lock requests; outputs truncated at 300 characters, not full raw. Field: malformed inputs (anonymous struct, two top-level values, ASCII double quotes splitting the reason, path not a Vector) explain the refusals; client QueryUnreadable before connect; server not at fault by source. Retraining via f5a6e9's own route.
+- 2026-10-10 Trusted-origin chain (Message SO_PEERCRED → Identify → Sender; Flow trusts on gate) forwarded; three points open with f5a6e9.
+- 2026-10-10 Book renderer fence defect: fixture requested from d5df1d; told Field no Psyche flow writes subagents/book.md or tools/book-code.html, Field may fix under lock.
+- 2026-10-10 f5a6e9 trusted-origin rulings (trust on gate; Sender must be Awake; Bind only from configured MessageNexusBinary) forwarded to 41fa34 and 73ada7.
+- 2026-10-10 Renderer fixture path (d5df1d scratchpad no-tuple.html) sent to Field.
+- 2026-10-10 d5df1d book 4 of 4 «The alias examples»: NZ8GTdxDEnvkEU54kVdLTM. Index update for all four dispatched.
+- 2026-10-10 Index «Open books» v36 live, 39 books: four d5df1d Ethos tension books added after «Type, new type, alias».
+- 2026-10-10 d5df1d published f78e40 (from 2e64c5, 6 own paths, 8782 files) under lock 16636.
+- 2026-10-10 1d0733 published 23509e (from f78e40, 12 own paths, 8793 files) under lock 16642.
+- 2026-10-10 f5a6e9 lock packet on main c29d10e31 under lock 16646 (now locked properly); trusted-origin fold publishes next.
+- 2026-10-10 Field renderer candidate 3b01eb2 (subagents/book.md, tools/book-code.html); regression render of no-tuple.md dispatched locally, unpublished.
+- 2026-10-10 Renderer regression render passes (fence literal, headings, code whitespace, phone styles); sent to Field.
+- 2026-10-10 flow-test 5b70b0: 66 scenarios with trusted-origin rulings; forwarded.
+- 2026-10-10 Message design 23d2c4 (pid-reuse guard via SO_PEERPIDFD, f5a6e9 trust rulings); track-main@origin skill line proposed; forwarded.
+- 2026-10-10 Witnessed Flow 186dd7017 (blob 3bbe7b6): only MessageNexusBinary added; Bind check, awake-sender refusals, trust-on-gate absent. Told 9fed42 to complete and verify pushed blob; told 41fa34 to use flow-test 5b70b0 meanwhile.
+- 2026-10-10 Witnessed Flow e876d77da (blob 138bcbd): canonical-path Bind compare added; four rulings still missing. Told 9fed42 (verify pushed blob) and 41fa34.
+- 2026-10-10 message-test 1d0801 pins Flow e876d77 and Message 23d2c4; tests 27-29 added; waits for Mind's commits.
+- 2026-10-10 Flow design f5e69dd7e (blob d8f7bfb6) carries all rulings, witnessed by 9fed42's subflow on the pushed blob; forwarded as governing.
+- 2026-10-10 message-test d11502 pins Flow f5e69dd and Message 23d2c4.
+- 2026-10-10 flow-test 12b84a pinned to f5e69dd7e: 67 scenarios, all rulings covered; forwarded.
+- 2026-10-10 Renderer fix on branch field/book-literal-7d5b7517a; Curriculum rebuild running on Prometheus; main publish pending. Mind reports a Flow Library generation failure under writer A's source correction (no detail).
+- 2026-10-10 Book literal-fence fix landed on Primary main b2af24ce (3 paths; Curriculum rebuild and check pass; 581 other generated files identical). Flow producer generation blocked: Arity expected 4 found 1.
+- 2026-10-10 Astra kernel qualification: pidfd blocks pid reuse but not execve; Bind binary check is point-in-time. Re-check question sent to 73ada7 and 9fed42/f5a6e9.
+- 2026-10-10 Flow design c82223e93 (blob 987e1bb8): executable re-check on every Lock/Deliver/Release; forwarded as governing.
+- 2026-10-10 Message design be5c2e (blob e3ea987): executable re-check; test 30; forwarded.
+- 2026-10-10 message-test a3061b pins Flow c82223e and Message be5c2e; test 30 pending (no injection design).
+- 2026-10-10 Watch 02:36 (Observed 02:36:11): Claude 5h 45% (reset 03:00), weekly 22% (reset 07:00), Fable 34%; Codex 65%; .codex-next Unavailable. Woke 1d0733 (Ethos-side Represented candidate), 73ada7 (pending message-test cases); idle Mind/Field to 41fa34 with slices.
+- 2026-10-10 flow-test 446478 pinned to c82223e93: 68 scenarios; forwarded.
+- 2026-10-10 Accepted d5df1d's Ethos-side Represented form: association pins Representation by generated compile-time assertion; bodies hand-written; no impl skeleton. To fold into design note.
+- 2026-10-10 Special-representation design note updated (lines 110-112) with the settled Ethos-side form.
+- 2026-10-10 Flow Library generation fixed: 41c6f836 generates byte-identical output twice on Prometheus (Ethos c265); generated child a317 on Field branch. Compilation, imports, package checks, landing, runtime pending.
+- 2026-10-10 Flow Library leaf package builds on Prometheus (6aa881f on field/flow-ethos-compile-6aa881f, crane check run, flow 0.25). Signal generation running next; whole-graph pin pending.
+- 2026-10-10 Signal 12 leaf accepted: b9c68ccc generates byte-identically, child a991c149 passes packages.default, test-datom and fmt. Next: writers pin a991 + Flow leaf 6aa881f for a whole-graph ref.
+- 2026-10-10 message-test 07bad15: tests 24, 25, 30 designed, blocked on a published design-built signal-flow and section-6 Message; forwarded.
+- 2026-10-10 signal-flow a991c149 carries Flow's ordinary wire (per Mind's read); 73ada7 told to build tests 25 and 30 against it.
+- 2026-10-10 73ada7 confirmed a991c149 wire in source; test 30 helper build refused by the harness (proposed to flow-test); test 25 waits on f5a6e9's framing answer (signal greeting vs bare frames); test 24 waits on a section 6 Message.
+- 2026-10-10 message-test 25 (Flow stand-in) blocked by the harness safety classifier for 73ada7 three times; handed to Mind with spec. Test 30 to flow-test; row 31 pending.
+- 2026-10-10 Astra assigned test 25 fixture to Mind launch_evidence; asked 73ada7 for paths, revision, seam and selector.
+- 2026-10-10 Test 25 boundary (paths, seam, selector) forwarded to Mind launch_evidence.
+- 2026-10-10 Ethos-side Represented complete under both Fork 3 answers on Prometheus (bare: Ticket(42) prints [ 4 2 ], all suites and 8/8; braced variant of the whole set also passes). Gaps: trait in type position not refused; trait in field position emitted as a type. Report flows/1d0733/reports/fork3-complete.md.
+- 2026-10-10 Meta 16 leaf accepted: 1ced5a12 generates byte-identically; child 991859f5 passes all-features check and nine contract tests (Configuration query, Configure ack, Unconfigured). Next: writer A's Flow consumer freeze; B waits on A's seam.
+- 2026-10-10 Astra (direct): test 25 stand-in being authored against a991c149/e0e3c055; real Message integration waits on writer C's Message pinned to the new ordinary contract.
+- 2026-10-10 Watch 03:36 (Observed 03:36:05): Claude 5h 99% (reset 07:59), weekly 21% (reset 06:59), Fable 33%; Codex 63%; .codex-next Unavailable. All idle but 42265e. Woke 1d0733 (Represented gaps, ethos-test), 9fed42 (test 30, design gaps), 73ada7 (test 24 supervisor); Mind writers A, B, C slices to 41fa34.
+- 2026-10-10 Test 25 stand-in candidate 13378c44 fails to build: imports flow_standin vs crate flow_stand_in (E0432); flake.lock lacks the new inputs. Correction is Mind launch_evidence's.
+- 2026-10-10 Test 24 supervisor stopped by classifier; ruled: kill-peer-between-connect-and-guard test plus kernel-source argument, reuse marked not witnessed.
+- 2026-10-10 message-test 4d40751: test 24 reaped-peer check (ESRCH only); pins Message ea2dca, Flow 9b006dd; conflict warning for Mind's test 25 writer; forwarded.
+- 2026-10-10 Field needs a merge packet for test 25 stand-in onto message-test 4d40751; asked 73ada7.
+- 2026-10-10 Astra could not resolve Message design ea2dca; asked 73ada7 for the full revision, path and blob.
+- 2026-10-10 Test 25 merge packet (clean merge onto 4d40751) forwarded to Field.
+- 2026-10-10 Governing Message design: ea2dcaab, blob 52bb5a85; forwarded to Astra.
+- 2026-10-10 Astra's Metaflows store-failure refusal question routed to 9fed42/f5a6e9.
+- 2026-10-10 Represented gaps closed in both trees (13 tests, 8/8). ethos-test e21e686: main 26/5, candidate 31/0. Three candidate branches pushed to ethos-zero repo; ruled: keep until set lands, then remove; no further pushes.
+- 2026-10-10 f5a6e9 ruled Refused.Store.String for store failures on any query; forwarded.
+- 2026-10-10 Flow design 9b006dd2b closes minor gaps (verified); flow-test e79835 (68 scenarios) and test 30 at 6b179f; forwarded.
+- 2026-10-10 Represented-gap patches final in both trees (Problem::Role removed, 8/8). All Ethos work now waits on the living's rulings.
+- 2026-10-10 Flow design cef7781c0 (blob 32163d33): Store.String, Past on Stop, Message Asleep on exit, Configure.Module { Key Source }; forwarded as governing.
+- 2026-10-10 signal-message-flow 12 candidate c6839e84: two datom fixture failures (Recipient variant, Unknown nesting); routed to 73ada7 to correct forms or contract.
+- 2026-10-10 Field confirmed Message ea2dca and Flow cef7781 sources. Test 25 stand-in compiles; its protocol unit fails on an InvalidData-wrapped UnexpectedEof the serve loop treats as error; writer B owns the fix.
+- 2026-10-10 flow-test 64c9ba pinned to cef7781c0: 69 scenarios; forwarded.
+- 2026-10-10 Flow design db98e5bad (blob 1c649498): exit to Past, lazy dead-process detection, End empties queue; forwarded as governing.
+- 2026-10-10 signal-message-flow ed67f061: Recipient and Unknown fixed; Refused.Ended.Address form still fails (expected Struct, found Variant); routed to 73ada7.
+- 2026-10-10 Test 25 Flow stand-in accepted standalone (b883d01d): refusal exchange, clean close and truncated-frame refusal pass on Prometheus. Row 25 waits on B's check file and C's real Message client.
+- 2026-10-10 flow-test e2c1da pinned to db98e5bad (69 scenarios). Wording drop flagged to f5a6e9: Message-exit paragraph no longer states Asleep and dropped binding; tests still expect both.
+- 2026-10-10 73ada7 corrected fixture forms (Message design c6a2c4, blob 15222457), all round-tripping; Ended and Held take payload directly; forwarded.
+- 2026-10-10 Flow design c5a3654bc (blob 3d5b42c1) restores the Message-exit wording; forwarded as governing.
+- 2026-10-10 signal-message-flow d2e36126: Ended/Held fixtures fixed, test-datom 6/0 on Prometheus (other checks passed on parent ed67f061). Producer usable for Meta consumer.
+- 2026-10-10 flow-test 6c4859 pinned to c5a3654bc: 69 scenarios; design and suite agree; no open design gap on the Flow topic.
+- 2026-10-10 meta-signal-message-flow 0.12 candidate 53527e1e: five checks pass, fmt fails in tests/contract.rs (import order, one array); writer C to supply a test-file patch.
+- 2026-10-10 meta-signal-message-flow accepted: fmt passes on 9e0ffa7d (other five on parent 53527e1e). Writer C next pins the Message consumer graph.
+- 2026-10-10 Watch 04:36 (Observed 04:36:04): Claude 5h 93% (reset 07:59), weekly 19% (reset 06:59), Fable 32%; Codex 62%; .codex-next Unavailable. All idle. Woke 1d0733 (item 7), 9fed42 (store migration), 73ada7 (row 31); writers A, B, C to 41fa34.
+- 2026-10-10 Item 7 stays held (stopgap; waits on inline-import Q5, Q6, Q8). 1d0733 to build each option of Q5/Q6/Q8 as candidates instead.
+- 2026-10-10 Row 31 (NotMessage at Lock) unreachable by config: a second differing Configure.Nexus is refused Conflict by f5a6e9's ruling. Told 73ada7 to close row 31 as covered by test 28 + flow-test 30 unless f5a6e9 reverses.
+- 2026-10-10 Inline-import Q5, Q6, Q8 are in no published book; d5df1d writing a fork-options spec, then a book; 1d0733 builds candidates from the spec.
+- 2026-10-10 f5a6e9: Conflict ruling stands (row 31 closed); new Flow migrates nothing (spirit), old store set aside, stable/Next rotation. Forwarded.
+- 2026-10-10 Store facts: deployed Flow 0.14.0 stable / 0.17.4 Next; store holds only hand-written records. Living said 2026-09-24 old Flow and Message stores need not be kept; 73ada7 asked to check against F14 book.
+- 2026-10-10 f5a6e9: old stores discarded per the living's 2026-09-24 record; no migration, no set-aside. Forwarded.
+- 2026-10-10 73ada7: 09-24 record rests on 'not even live yet'; F14 book stands. Flow's discard ruling marked as resting on the same condition; one living answer decides both.
+- 2026-10-10 Told 41fa34: no migration (certain); discard is current best resting on 'not live yet'; no store deletion until the living answers the old-store book.
+- 2026-10-10 Raw 09-24 record located (d8df70 deployment.md blob 2c0c60cb; 836818 flowNexus.md blob bd73fee2) and sent to Field via 41fa34.
+- 2026-10-10 Astra's fresh-store path question (FLOW_NEXUS_STORE vs default) routed to 9fed42/f5a6e9.
+- 2026-10-10 Flow design b7618271b (blob 7bcb1061): store discard conditional on the living; deployed versions corrected; forwarded.
+- 2026-10-10 f5a6e9: store path is Start's third position; no env, no default; new path at deploy. Forwarded.
+- 2026-10-10 Field confirmed no FLOW_NEXUS_STORE in Flow 962ad12; asked f5a6e9 to rule Start's behaviour on an occupied StorePath.
+- 2026-10-10 d5df1d spec: refusing source core would refuse the living's own Topic.core:Name, so item 7 as a refusal stays held. Five candidates building on 07714b (8a, 8c, 8b+6d, 8b+6e, 8b+6f); book «Sources and the registry» coming (Q8 fork; Q5, Q6 as registry anatomy).
+- 2026-10-10 f5a6e9: Start opens own-schema store, creates if missing, refuses anything else with Refused.Store.{ Path Reason } and non-zero exit. Forwarded.
+- 2026-10-10 d5df1d published «Sources and the registry»: RX6W2WyacPbRaubsz5qgbp (fork maps to candidates 8a, 8b+6d/e/f, 8c). Index update dispatched.
+- 2026-10-10 Index «Open books» v37 live, 40 books: «Sources and the registry» added.
+- 2026-10-10 Flow design a5b2c27d4 (blob 33e8c2cf): StorePath in Start; own-store continue, else Refused.Store; forwarded as governing.
+- 2026-10-10 Astra's refusal-reachability map (Identify/Lock/Deliver x six refusals) routed to 73ada7 with 9fed42/f5a6e9.
+- 2026-10-10 Reachability: none of the six refusals reachable from Identify/Lock/Deliver (flows/9fed42/reachability-a5b2c27d4.md); f5a6e9 ruled the open edges. Forwarded.
+- 2026-10-10 Message refusal map (16 unreachable, 2 open: waking Deliver x Unknown.Key/NoLayer; Store.String to add) forwarded; open point to f5a6e9.
+- 2026-10-10 f5a6e9: Lock/Deliver to Asleep recipient check wake preconditions, refusing NoLayer/Unknown.Key; Message adds those plus Store.String. Forwarded to 41fa34 and 73ada7.
+- 2026-10-10 Flow design ef1732919 incomplete per 9fed42's verification (4 rulings missing); a5b2c27d4 + relayed rulings govern meanwhile. Forwarded.
+- 2026-10-10 flow-test 683758 pinned to a5b2c27d4: 71 scenarios; five reachability scenarios await the fold. Forwarded.
+- 2026-10-10 Message design 288cd0 (blob cc22abb0): full refusal set, tests 31-34; refusal map complete. Forwarded.
+- 2026-10-10 Every fork of «Sources and the registry» has a green candidate on 07714b (8a; 8b with 6d/6e/6f; 8c). Patches in flows/1d0733/reports/q8-*.
+- 2026-10-10 Astra could not resolve 288cd0; asked 73ada7 for full hashes and a readable copy, and full hashes on every report.
+- 2026-10-10 Message design 288cd062 full reference and readable copy forwarded to Astra.
+- 2026-10-10 Flow design 439dc64b4 (blob 66bd01a8): all four missing rulings folded, verified; reachability table updated; forwarded as governing.
+- 2026-10-10 flow-test 38a294 pinned to 439dc64b4: 76 scenarios; forwarded.
+- 2026-10-10 Astra: no persisted field holds a sleeping metaflow's composed Keys, so the forgotten-Key rule has no input; routed to 9fed42/f5a6e9.
+- 2026-10-10 f5a6e9 dropped forgotten-Key; only NoLayer reachable from Lock/Deliver. Forwarded to 41fa34; 73ada7 to remove Unknown.Key from Message.
+- 2026-10-10 Message design d9703b52 (blob 7e4db162): Unknown.Key removed; forwarded.
+- 2026-10-10 The living (typed): "Use the time we have left. We have a bit under 2 hours to audit everything and it's mostly focused. You probably audit it a lot overnight. Let's refresh all the Claude flows so that they have minimal high-signal context (high signal-to-noise context) and so that we don't have all these old sessions sitting around. Refresh all the Claude flows with the time you have left and archive the old ones or make sure they're reaped."
+- 2026-10-10 The living: remove any timer. Deleted hourly watch c3640702 and stop job 5ea67d85. Refresh order relayed to 41fa34, 1d0733, 9fed42, 73ada7; flow audit dispatched.
+- 2026-10-10 9fed42 handover written; f5a6e9's in progress; 9fed42 to finish the in-flight fold and publish both handovers before successors launch.
+- 2026-10-10 73ada7 handover at flows/73ada7/handover.md; successor launch dispatched.
+- 2026-10-10 Audit: Claude flows over 200k to refresh: f5a6e9 719k, 73ada7 577k, 9fed42 429k, 445410 420k, 1d0733 376k, ebbe30 322k, d5df1d 316k. Retire candidates sent: Mind/Field four to 41fa34; STALE 8475a9/bad807 registry cleanup to Field. ebbe30 asked for handover.
+- 2026-10-10 Refresh blocker: tools/native-voice-profiles.mjs Psyche.Secondary unresolved (needs direct Claude Opus ruling and effort); Psyche.Primary configured (claude-fable-5-1, medium). Asked the living to rule. Primary refreshes can proceed.
+- 2026-10-10 1d0733 handover at flows/1d0733/handover.md (hashes in reports/handover-hashes.md), unpublished; launch waits on the Psyche.Secondary ruling.
+- 2026-10-10 Retired Psyche seats 8f0f57, 02dda6, 9fcf81, bc914f (evidence in messenger-clj retirement-evidence; panes closed; directories untouched). Note: d4ae97's 10-07 keeper list named 8f0f57 and 02dda6.
+- 2026-10-10 d5df1d handover at flows/d5df1d/handover.md; ethos Primary successor launch dispatched.
+- 2026-10-10 Field: no Field seat confirmed as Claude (6aa is Codex); no launch or retirement on Field's side yet; no timers found in Field's records.
+- 2026-10-10 ebbe30 handover at flows/ebbe30/handover.md (it committed in the shared copy); spirit Primary successor launch dispatched.
+- 2026-10-10 Ethos Primary successor 081064 launched (pane w1:p20, Fable 5.1 medium, remote control on). The launcher requires a PascalCase topic, so the title reads { Psyche Ethos Primary 081064 }, against the living's lowercase ruling; the launcher change is Mind's. d5df1d's retirement awaits 081064's answer.
+- 2026-10-10 081064 answered as ethos Primary; d5df1d retired (evidence messenger-clj retirement-evidence d5df1d-20261010T111522Z), pane w1:p2X closed. 1d0733 handover on main a95c9a64.
+- 2026-10-10 73ada7 handover on main 5bddbcd1; successor must confirm refusal-map row 16 on main.
+- 2026-10-10 Astra flagged a possible 02dda6 worktree/reminder-hook dependency after 02dda6's retirement; asked Mind to name the hook for re-homing.
+- 2026-10-10 Spirit Primary successor d55c56 launched (pane w1:p31, Fable 5.1 medium; title uses Spirit, launcher requires PascalCase); ebbe30 retirement dispatched.
+- 2026-10-10 d55c56 answered as spirit Primary; ebbe30 retired (evidence ebbe30-20261010T111620Z), pane w1:p2M closed.
+- 2026-10-10 Field: no Field Claude seat qualified; 0 refreshed, 0 retired, 0 timers cancelled on its side. Clearing STALE Psyche entries 8475a9 and bad807 myself (dispatched).
+- 2026-10-10 hm-retire refused 8475a9 and bad807 (PaneNotFound); trying messenger-clj deregister if it removes only the route.
+- 2026-10-10 Deregistered stale 8475a9 and bad807 (route entries only; directories kept); hm-list no longer shows them.
+- 2026-10-10 signal-message 13 candidate 69a03d12: five checks pass, fmt fails in tests/generated_contract.rs; author to supply formatter-only patch.
+- 2026-10-10 Flow StorePath candidate fa8a85c4: generation blocked on StartRefusal.[ Refused.Store.{ Path Reason } ] (Expected.Reference); routed to 9fed42/f5a6e9 for an Ethos-valid form. Also writer A owes the flow-ethos graph identity decision.
+- 2026-10-10 Flow design 9bffed2f (blob be032eeb): StartRefusal.[ Store.StoreRefusal ] Checks; forwarded to writer A.
+- 2026-10-10 9fed42 and f5a6e9 handovers on main (c3f2cd84, ff2b6b1b); flow Primary successor launch dispatched under the refresh order.
+- 2026-10-10 Flow Primary successor 875960 launched (pane w1:p32, Fable 5.1); f5a6e9 retirement after its first answer.
+- 2026-10-10 Flow StorePath 3721097f: Duplicate.Path (StoreRefusal redeclares Path/Reason). Correction: reference form StoreRefusal.{ Path Reason }; told writer A and 9fed42/flow Primary to fold, checking the whole Library.
+- 2026-10-10 Flow design 9a689269 (blob a5544182): no duplicates; whole Library Checks with Topic/Blake3 as String. Forwarded to writer A.
+- 2026-10-10 875960 answered as flow Primary; f5a6e9 retired (evidence f5a6e9-20261010T115337Z), pane w1:p2C closed. Shared copy diverged from origin/main with 108 dirty paths (875960's report).
+- 2026-10-10 Flow StorePath generation passes (be6daf97 → 6bfbbfb4, byte-identical twice); signal-flow pin-only e69fdad0 package check running. Ordinary Bind/Lock/Deliver not yet accepted.
+- 2026-10-10 StorePath graph: signal-flow e69fdad0 and meta-signal-flow 2d295327 pass; Flow 9bdf3cd3 fails in Crane buildDepsOnly (dependency-only build lacks flow_ethos exports); fmt fails in six Nexus files. Writer A owns both.
+- 2026-10-10 Meta-signal-message re-pinned to signal-message 13 (8daefef1): all six checks pass on one revision. Next: writer C's Message workspace Cargo pins, then Memory/Operation generation and nine checks.
+- 2026-10-10 Flow Crane fix 1445e3e6 fails on a Nix permission error (cp into a read-only $out); fmt down to two files. Message source 746519b9 generation running.
+- 2026-10-10 Message 72b5f956: Memory/Operation generate identically; five structural checks pass; package fails (Nix filters ethos/memory.ethos), clippy shows legacy CLI/tests on old wire, fmt in three files. Writer C owns the fixes.
+- 2026-10-10 Flow 19a5feca: packaging fixed, now reaches compilation: 29 flow-nexus and 2 flow-meta errors (old imports, new Configure shapes, missing Store/Refused, non-exhaustive ordinary handlers). Writers A and B own them; fmt down to one hunk.
+- 2026-10-10 Message 899b2bd7: Ethos packaging fixed; now 41 compile errors from the legacy runtime (MessageConfiguration, Grade, Priority, Receipt, ledger, old listener APIs) and an unresolved message_library::Configuration import; one clippy test issue; fmt in two files. Writer C owns.
+- 2026-10-10 Message bd4ed5a1 down to 3 compile errors; FlowRefusal::Store absent from pinned a991. Asked A and C to agree on one signal-flow pin carrying the current refusals.
+- 2026-10-10 Correction: my Aspect=FlowAspect remark was wrong; the leaf declares distinct Aspect and FlowAspect (Field source proof). e69fdad0 lacks Store; a new signal-flow stage is needed. Asked 875960 whether two aspect enums are intended.
+- 2026-10-10 The living (typed): "Yes secondary is Opus. Did you restart your flow?" Ruling: Psyche Secondary is Claude Opus (effort medium by default).
+- 2026-10-10 875960: one Aspect; FlowAspect leaves; new signal-flow stage carries Aspect and the refusal sets. Flow design 2d0a119b (blob 0dac6fdd). Forwarded.
+- 2026-10-10 The living (typed): "Well you have 7 minutes to restart your flow." Launching core successor now, setting the Psyche.Secondary row locally per his Opus ruling.
+- 2026-10-10 Core successor d68c82 launched (pane w1:p33, Opus 5.5 medium); Psyche.Secondary row set locally, uncommitted. d68c82 retires 445410 after answering and continues the Secondary refreshes.

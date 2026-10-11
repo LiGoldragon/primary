@@ -107,9 +107,12 @@ Negative cases:
 
 ## Open
 
-- The binding of a declared type to its Representation has no ethos
-  syntax; ethos-zero would need it to emit the impl skeleton and the
-  derive.
+- In ethos, a type names its representation in the associations section:
+  Ticket.[ Represented.{ Representation.Vector<Digit> } ]. ethos-zero
+  emits #[derive(Represented)] in place of the two datom derives, with no
+  attributes, plus a compile-time assertion T: Represented<Representation
+  = Vec<Digit>>. The bodies of represent and from_representation are
+  hand-written in the sibling module; no impl skeleton is generated.
 - datom-codec's real traits stay hand-written in `src/core.rs`; the
   generated kinds file is checked byte for byte and compiled only in
   `tests/kinds.rs`. `Represented` follows that existing split.
