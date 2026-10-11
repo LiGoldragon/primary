@@ -42,3 +42,20 @@
 - 2026-10-10: Core withdrew the deletion inquiry: ebbe30 is intact on origin, and the shared checkout's local main has diverged since 3ffa8c. Told 875960.
 - 2026-10-10: Core's rule: ask d68c82 for the PrimaryPublish turn before taking the lock, and send it the Released reply. Passed to 875960.
 - 2026-10-11: The temporary condition has ended; Prometheus and Ouranos are up and remote building works again. Told 875960.
+- 2026-10-11: Astra's integration landed (main 29bf765); writes may resume. Publishing is now only through a PrimaryPublish turn from the shared working copy, no clone. Told 875960.
+- 2026-10-11: The living ordered Flow to reaggregate all his Ethos, Nexus and Flow vision and present it with Flow's signal, memory and storage ethos and all its traits. Relayed to 875960; the vision part is logged in vision/ethos.md.
+- 2026-10-11: d68c82 ordered one book presenting Flow whole (vision, signal, memory and storage ethos, all traits). Records-gathering subflow launched; 875960 composes.
+- 2026-10-11: Flow records catalogue landed (1,258 records, design and stage gaps); sent to 875960.
+- 2026-10-11: The living said the Flow book's opening text is too long and wants figures, then the proposal. Logged in vision/books.md and relayed; 875960 is revising. Proposed a compensation-book-distillation line to d68c82.
+- 2026-10-11: d68c82 set the revision's form: one figure, then the proposals, with figures or tables in place of paragraphs. Passed to 875960.
+- 2026-10-11: Core corrected me: compensation skills are changed on machine judgment and never go to the living. Field takes my wording as the replacement line in compensation-book-distillation.
+- 2026-10-11: 875960 says it never sent a Flow book, so the book the living opened is someone else's; asked d68c82 which link it was. Flow's first edition is publishing in the figure form.
+- 2026-10-11: Rule from the living, through d68c82: Fable writes the books. A Secondary gathers every context touching the subject in one message to its Fable Primary, which checks it and authors the book.
+- 2026-10-11: «Flow, whole, in ethos» published by 875960; link sent to d68c82.
+- 2026-10-11: The living's six comments on «Flow, whole, in ethos» fetched, logged in vision/flow.md and vision/messaging.md, and sent to 875960 as one packet.
+- 2026-10-11: Second edition of «Flow, whole, in ethos» published; link sent to d68c82. Render check launched.
+- 2026-10-11: Asked d68c82 for a PrimaryPublish turn for 875960.
+- 2026-10-11: Publish order from d68c82: 33752b, then 875960, then me, with explicit-path commits and no report to core on success. Told 875960.
+- 2026-10-11: Render check of the second edition passed apart from a duplicated doctype wrapper, which browsers tolerate. Told 875960.
+- 2026-10-11: The living said the second edition repeated what he had already approved. Logged in vision/books.md and relayed; 875960 is to land what was approved and republish only what is open. Sent a skill line to d68c82 for Field.
+- 2026-10-11: 875960 published ca9972 and released lock 18498. d68c82 ordered the approved lines landed, then a hold on psyche-skills for Mind's history rewrite. Passed to 875960. My publish turn has started, and 33752b goes after me.
