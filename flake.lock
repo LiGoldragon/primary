@@ -71,17 +71,17 @@
     "field-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791660034,
-        "narHash": "sha256-nUke/yVdWc12/l+qo+7lO2odvlRMcZUPnt9VX7FUVEc=",
+        "lastModified": 1791734589,
+        "narHash": "sha256-C9OWmXe5wbSc0FD+s/YCVubAIRiPu1+c/Y28I+cOWJQ=",
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "0f571928dc3d866e50628f8261fb4bd8ef93ed1c",
+        "rev": "830ad600577ed06506143c7d96557de70fadb74a",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "0f571928dc3d866e50628f8261fb4bd8ef93ed1c",
+        "rev": "830ad600577ed06506143c7d96557de70fadb74a",
         "type": "github"
       }
     },
