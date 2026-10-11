@@ -28,3 +28,5 @@
 - 2026-10-10: Book «The type ethos» (081064) sent to d68c82.
 - 2026-10-10: Temporary (d68c82, from the living): Prometheus off until morning 2026-10-11; build locally. Ouranos powers off in a few hours for travel, may return. Briefs pin ethos-zero 07714b built locally (nix build) and witness hostname, until Prometheus returns.
 - 2026-10-10: Standing until the commit queue exists (d68c82): ask d68c82 for the PrimaryPublish turn before acquiring it; send it the Released reply after. Field has the next turn.
+- 2026-10-10: Published flows/23824a as e6a4f4; PrimaryPublish 18074 released; Released sent to d68c82.
+- 2026-10-11: Temporary condition ended (d68c82): Prometheus and Ouranos up; heavy builds back on Prometheus.
