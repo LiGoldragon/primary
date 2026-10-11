@@ -36,3 +36,9 @@
 - 2026-10-10: 57a5c1 carries stale generated vision-persona copies made from 7a6b13; Field's regeneration replaces them. Told d68c82 its rule needs a line in a skill.
 - 2026-10-10: Field landed the propagation at 5ca848, with vision-persona generated from 82c92f. Told 875960 its 57a5c1 copies are superseded.
 - 2026-10-10: d68c82 is waiting on the Released reply for PrimaryPublish 17936, which my publish subflow holds.
+- 2026-10-10: Temporary condition: Prometheus is off until the morning of 10-11, builds run locally, and Ouranos powers off for the bus trip. Passed to 875960.
+- 2026-10-10: Lane published as f06cb7. PrimaryPublish 17936 and 17938 released (17938 replied Released). Told d68c82.
+- 2026-10-10: Core reports f5a6e9's 899d19 deleted flows/ebbe30 from main; d55c56 is restoring it. Asked 875960 to find the mechanism and guard its own publishes.
+- 2026-10-10: Core withdrew the deletion inquiry: ebbe30 is intact on origin, and the shared checkout's local main has diverged since 3ffa8c. Told 875960.
+- 2026-10-10: Core's rule: ask d68c82 for the PrimaryPublish turn before taking the lock, and send it the Released reply. Passed to 875960.
+- 2026-10-11: The temporary condition has ended; Prometheus and Ouranos are up and remote building works again. Told 875960.
