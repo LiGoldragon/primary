@@ -57,6 +57,7 @@ A `vision-` or `intent-` skill is gold: the living's approved words, changed onl
 A `knowledge-` skill states what is deployed and true today, written by flows from what they have read and verified.
 An `operation-` skill is deployed when the living describes what he wants a skill to do or to change; the primary Mind seat reviews and interprets it, and no glance from the living is needed.
 A `compensation-` skill is written by flows; it compensates for what the system does not yet do, so that the system runs.
+A compensation skill is changed by the seats on their own judgment; it is never put to the living for review or approval.
 A `trial-` skill is written by flows: it is being tried for how useful it can become as a compensation skill.
 Compensation and trial skills are machine-authored without the living in the loop, refined as they are used and reviewed, and upgraded into operation, knowledge, vision or intent skills.
 A new trial skill is tried first by subflows: the flow that writes it launches subflows that load it on real tasks, reads what they did, and refines the skill before any main flow loads it.

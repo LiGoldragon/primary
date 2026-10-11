@@ -12,14 +12,13 @@ A book does not restate the living's words. A proposal may cite the
 record it distils by path and date.
 Books carry distillation proposals. Concise machine results and concrete
 blockers may be sent outside a book.
-Every distillation is written into a skill: a proposal names its
-authored source under psyche-skills/skills, mind-skills/skills, or
-field-skills/skills.
+A book distils psyche only: its proposals land in vision-, intent- or spirit skills. Compensation and knowledge skills are written by machines and proven by tests; they never go into a book.
+A proposal to destroy or archive a record renders unmistakably apart from a landing: its own colour and a Destroy or Archive mark on the record it removes.
 
 Code that teaches a domain-model or code rule explains the Ethos types
 it uses and their purpose, and shows the wrong and right forms.
 
-A book opens with the context its proposals rest on, conceptual and as visual as possible: how things are, what is wrong or out of line with vision, what is highlighted; the one operational fact it states is whether a thing is in production or in a development branch, and what that development is about. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches
+A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches
 a book; the authored file targeted by a proposal stays named.
 
 A diagram in a book's source is ASCII, laid out vertically and no wider than 52 characters so a phone shows it; the published book never shows the ASCII, but a figure drawn from it by a Sonnet or Haiku subflow that keeps every box, label and arrow of the source and adds nothing the source does not say; its colour and layout may carry the surrounding meaning.

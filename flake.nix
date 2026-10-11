@@ -23,15 +23,15 @@
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/82c92fad46018dfc79fb1c87ced757c4fdc8eeeb";
+      url = "github:LiGoldragon/psyche-skills/4014086d95634e15824abccf0f8addf827eb096f";
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/3e561081c2ca2df1bb442e29682b45f72ddaafe9";
+      url = "github:LiGoldragon/mind-skills/0d20c637d424235a2e5e93084ba96d17b90fabbf";
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/830ad600577ed06506143c7d96557de70fadb74a";
+      url = "github:LiGoldragon/field-skills/51920edfe6b29ca83ae39ea13766b167da7b02ec";
       flake = false;
     };
     flow = {
