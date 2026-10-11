@@ -30,3 +30,8 @@
 - 2026-10-10: Comments from the living on «The Source nexus», relayed by d68c82. On D1: shorten the skill description and drop "is being designed". That is an instruction and is carried out, not logged. Notion on referring to Rust types from Ethos logged in notion/ethos.md. Vision that what he reads is the proposal logged in vision/book.md.
 - 2026-10-10: Relayed the notion verbatim to 23824a and asked how to coordinate the hash proposal. Sent d68c82 a proposed line for compensation-book-distillation. New edition of the book under way.
 - 2026-10-10: 081064 (via 23824a): the hash type is ruled only in «Bytes in ethos». The Source book gives it no proposal of its own; a one-line stand-in note sits inside the proposal that shows the field.
+- 2026-10-10: Published the second edition of «The Source nexus» (https://claude.ai/artifact/HFKGQrnnLZRbAagX12r4VM) and sent the link to d68c82.
+- 2026-10-10: d68c82: Prometheus is off until the morning of 2026-10-11; build locally. Ouranos powers off in a few hours for the bus trip. Work continues. This flow has no Prometheus build running.
+- 2026-10-10: Answered d68c82: 0fcd2d was never pushed and can be dropped; the directory was published by an independent clone (954151e5).
+- 2026-10-10: Standing order from d68c82 until the commit queue exists: ask d68c82 for the PrimaryPublish turn before acquiring it, and send it the Released reply afterwards. Field has the next turn. My last two log lines wait for my turn.
+- 2026-10-11: d68c82: Prometheus and Ouranos are up again; remote building on Prometheus is back.
