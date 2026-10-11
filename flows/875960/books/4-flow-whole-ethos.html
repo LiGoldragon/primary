@@ -1,0 +1,625 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Flow, whole, in ethos</title></head><body>
+<h1 class="book-title">Flow, whole, in ethos</h1>
+<h2>Where things are</h2>
+<p>Your order of 2026-10-11: Flow whole, every type and every trait in ethos. Drawn from 1,258 of your records, checked word by word.</p>
+<figure style="margin:0"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 360 832" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" fill="#0f172a">
+<title>Nexus as the vision has it, the current design in development, Field's signal-flow branch, and what storage means</title>
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1e3a8a"/></marker>
+</defs>
+<rect x="0" y="0" width="360" height="832" rx="8" fill="#f8fafc"/>
+
+<text x="20" y="22" font-size="13" font-style="italic">Your order: Flow whole, every type</text>
+<text x="20" y="40" font-size="13" font-style="italic">and every trait in ethos.</text>
+
+<text x="20" y="68" font-size="15" font-weight="700">a Nexus, as your vision has it</text>
+<rect x="8" y="76" width="344" height="248" rx="8" fill="#eff6ff" stroke="#1e40af" stroke-width="1.5"/>
+<rect x="20" y="88" width="320" height="40" rx="6" fill="#bfdbfe" stroke="#1e40af"/>
+<text x="180" y="113" font-size="14" text-anchor="middle">Library: what the parts share</text>
+
+<path d="M60 128 V168" fill="none" stroke="#1e3a8a" stroke-width="1.5" marker-end="url(#ah)"/>
+<path d="M180 128 V168" fill="none" stroke="#1e3a8a" stroke-width="1.5" marker-end="url(#ah)"/>
+<path d="M300 128 V168" fill="none" stroke="#1e3a8a" stroke-width="1.5" marker-end="url(#ah)"/>
+
+<rect x="12" y="168" width="96" height="56" rx="6" fill="#dbeafe" stroke="#1e40af"/>
+<text x="60" y="192" font-size="14" text-anchor="middle">Signal</text>
+<text x="60" y="211" font-size="14" text-anchor="middle">says</text>
+<rect x="132" y="168" width="96" height="56" rx="6" fill="#dbeafe" stroke="#1e40af"/>
+<text x="180" y="192" font-size="14" text-anchor="middle">Operation</text>
+<text x="180" y="211" font-size="14" text-anchor="middle">does</text>
+<rect x="252" y="168" width="96" height="56" rx="6" fill="#dbeafe" stroke="#1e40af"/>
+<text x="300" y="192" font-size="14" text-anchor="middle">Memory</text>
+<text x="300" y="211" font-size="14" text-anchor="middle">remembers</text>
+
+<path d="M60 224 V258 H168 V224" fill="none" stroke="#1e3a8a" stroke-width="1.5" marker-end="url(#ah)"/>
+<path d="M300 224 V258 H192 V224" fill="none" stroke="#1e3a8a" stroke-width="1.5" marker-end="url(#ah)"/>
+<text x="114" y="252" font-size="13" text-anchor="middle">query</text>
+<text x="114" y="276" font-size="13" text-anchor="middle">response</text>
+<text x="246" y="252" font-size="13" text-anchor="middle">change</text>
+<text x="246" y="276" font-size="13" text-anchor="middle">ok / failed</text>
+<text x="20" y="302" font-size="13" font-style="italic">every method in a trait</text>
+
+<text x="20" y="352" font-size="15" font-weight="700">the current design (in development)</text>
+<rect x="12" y="362" width="336" height="100" rx="8" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+<text x="24" y="386" font-size="14">Library · Signal · Signal · Memory</text>
+<text x="24" y="406" font-size="14">no Operation; one trait, in prose</text>
+<text x="24" y="426" font-size="14">starts from a datom of paths</text>
+<text x="336" y="426" font-size="15" font-weight="700" fill="#b91c1c" text-anchor="end">x</text>
+<text x="24" y="446" font-size="14">refuses with the store's text</text>
+<text x="336" y="446" font-size="15" font-weight="700" fill="#b91c1c" text-anchor="end">x</text>
+<text x="20" y="484" font-size="13"><tspan fill="#b91c1c" font-weight="700">x</tspan> = against the Nexus vision</text>
+
+<text x="20" y="520" font-size="15" font-weight="700">Field's signal-flow branch</text>
+<rect x="12" y="530" width="336" height="84" rx="8" fill="#ece9f7" stroke="#6d5fa3" stroke-width="1.5"/>
+<text x="24" y="554" font-size="14">Operation, no Memory</text>
+<text x="24" y="574" font-size="14">letters · message ids · priority</text>
+<text x="24" y="594" font-size="14">tiers · PowerLevel: all rejected</text>
+
+<text x="20" y="648" font-size="15" font-weight="700">"storage", in your words</text>
+<rect x="12" y="656" width="336" height="160" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+<text x="24" y="678" font-size="13">2026-10-02: not fond of the word;</text>
+<text x="98" y="696" font-size="13">memory it is; its kind =</text>
+<text x="98" y="714" font-size="13">change ok/failed + upgrade-from</text>
+<text x="24" y="738" font-size="13">2026-10-11: "the storage ethos" beside</text>
+<text x="98" y="756" font-size="13">"the memory ethos"</text>
+<text x="61" y="780" font-size="13">-&gt; read here as the trait</text>
+<text x="79" y="798" font-size="13">Rememberable; ruling 7</text>
+</svg></figure>
+<h2>Distillation</h2>
+<article class="proposal">
+<header><span class="pnum">1</span><h2>vision-flow, the vision whole</h2></header><p class="target"><code>psyche-skills/skills/vision-flow.md</code></p>
+<div class="diff">
+<div class="ctx"><p>Section «What it does», its three paragraphs as they stand, kept; replaced after them is nothing.</p></div>
+<div class="add"><p>Added, after the Capsule paragraph:</p><p>Flow manages metaflows. A metaflow is one address, { Aspect Topic Layer }, that continues through several flows one after another; the flow is its current run, and what is addressed is always the metaflow, never a flow. A voice is a permanent metaflow: it sleeps and is woken, and never ends. A job is a metaflow that ends when its mission is done; a message sent to it after that returns to its sender with notice that it has ended.</p><p>A flow's id is a hash, held by the Nexus as bytes and written as three camelCase words. The Nexus reserves it before the flow starts and the flow reads it in its prompt.</p><p>A request reaching a metaflow is one of a closed set of types, each with its waking effect: an order, a question, the living's words, a result, a notice. A metaflow asleep is woken by a waking request and receives its whole queue, oldest first, in the first prompt. Flow holds the lock on a metaflow: the lock is granted to a sender for a bounded time and lapses by itself.</p></div>
+<div class="ctx"><p>Section «Starting flows», first paragraph kept.</p></div>
+<div class="del"><p>Its second paragraph, removed:</p><p>A voice is an aspect carrying a rank, <code>Psyche.Primary</code>: Psyche, Mind, Field by Primary, Secondary, Tertiary, nine voices. The model behind a voice is configuration, declared once in Flow and changed only over its meta wire; not every model is exposed to every voice. Voices are addressed by name; a flow id is for the ledger and the archive, and is written in words. A side flow is a job, not a voice: focused, not long-lived, gone when its mission is done; a message sent to it after that returns to its sender with notice that the flow has ended.</p></div>
+<div class="add"><p>Added in its place:</p><p>A layer is Primary, Secondary, Tertiary or Quaternary, in every aspect; the layer decides the model, declared once in Flow as configuration and changed only over its meta socket. A launch names the metaflow, the context modules composed into its prompts, and a brief of a small paragraph; the Nexus composes the prompt from its module registry, checking each module's hash against its source, and reads no path a caller writes.</p></div>
+<div class="ctx"><p>Section «A replaced session is reaped by the refresh itself», kept.</p></div>
+<div class="add"><p>Added after it:</p><p>A flow is refreshed when its context passes the layer's threshold: it is told, writes its handover, and is replaced as it goes idle; while the refresh runs the metaflow is locked, and the predecessor is reaped in the same event. Every harness event reaches Flow through its hooks calling the Flow CLI, which identifies the calling process and never trusts a claimed id.</p></div>
+</div>
+<section class="rulings"><ol><li value="1"><p>the paragraphs as written, or amended by paragraph.</p></li><li value="2"><p>four layers in every aspect, Quaternary included, as your records of October say, or three, as the standing line says.</p></li><li value="3"><p>the title of a thread.</p><ol class="choices" type="a"><li>the address written short, then the flow's three words: <code>{ Psyche flow Primary } startInputVital</code></li><li>aspect, model and id, as vision-model-roles has it</li><li>other</li></ol></li></ol></section>
+</article>
+<article class="proposal">
+<header><span class="pnum">2</span><h2>vision-flow-ethos, Flow in ethos</h2></header><p class="target"><code>psyche-skills/skills/vision-flow-ethos.md</code></p>
+<p>New, the file vision-ethos points to. Shown whole; one root per ethos file in Flow's repository.</p>
+<div class="diff">
+<div class="add"><p>Library, types:</p><pre><code class="language-ethos">Library                      ; Flow's shared types
+[  core:Name ]               ; a camelCase word
+[  Hash.Bytes&lt;32&gt;            ; blake3; Encodable
+   FlowId.Hash               ; one run; written
+                             ; as three words
+   Topic.core:Name           ; a topic's name
+   Aspect.[                  ; whose psyche
+      Psyche
+      Mind
+      Field ]
+   Layer.[                   ; decides the model
+      Primary
+      Secondary
+      Tertiary
+      Quaternary ]
+   Address.{                 ; names a metaflow
+      Aspect
+      Topic
+      Layer }
+   Role.[                    ; what a metaflow is
+      Voice                  ; permanent
+      Job.String ]           ; ends with its
+                             ; mission
+   Instant.Integer           ; seconds since the
+                             ; epoch
+   Process.{                 ; a calling process
+      Pid.Integer
+      Started.Instant }      ; so a reused pid is
+                             ; told apart
+   Said.{                    ; the living's words
+      Context.String
+      Verbatim.String }
+   Request.[                 ; reaches a metaflow
+      Order.String           ; wakes
+      Question.String        ; wakes
+      Psyche.Said            ; wakes
+      Psyches.Vector&lt;Said&gt;   ; wakes
+      Result.String          ; waits asleep
+      Notice.String ]        ; wakes nothing
+   Recipient.[               ; where a request
+      Address                ; goes
+      Up ]                   ; one layer above
+                             ; the sender
+   Sender.Address
+   Lock.{                    ; one per metaflow
+      Sender
+      Address                ; resolved
+      Until.Instant }        ; lapses
+   Subaspect.[               ; a module's kind
+      Vision
+      Intent
+      Knowledge
+      Operation
+      Trial
+      Compensation ]
+   Key.{                     ; a module's key
+      Subaspect
+      Topic }
+   Source.{                  ; where its text is
+      Repository.String
+      Hash
+      Path.String }
+   Module.{                  ; the registry entry
+      Key
+      Source }
+   Model.{                   ; one per layer
+      Layer
+      Harness.HarnessKind
+      Native.String }
+   Threshold.{               ; percent of window
+      Layer
+      Handover.Integer
+      Refresh.Integer }
+   Event.[                   ; what a hook reports
+      Started
+      ToolUsed.String
+      ContextMeasured.{
+         Tokens.Integer
+         Window.Integer }
+      Stopped ]
+   Metaflow.{                ; one per address
+      Address
+      Role
+      State.[
+         Awake.FlowId
+         Asleep
+         Ended ]
+      Past.Vector&lt;FlowId&gt;
+      Queue.Vector&lt;Request&gt; }
+   Flow.{                    ; one per run
+      FlowId
+      Session.String
+      Process
+      Events.Vector&lt;Event&gt; }
+   Refusal.[                 ; every no, typed
+      Unknown.[
+         Address
+         Lock
+         FlowId
+         Key ]
+      Awake.FlowId
+      Asleep
+      Ended.Address
+      Held.Lock
+      Locked
+      Lapsed
+      NoLayer
+      NotConfigured
+      HashMismatch
+      OffRoute
+      NoneAbove
+      NotMessage
+      Unidentified.Process
+      Taken.Address
+      Store.[
+         NotOwn
+         Unopenable
+         Unwritable ] ] ]</code></pre></div>
+<div class="add"><p>Library, traits (<code>.</code> self, <code>!</code> mutable self, <code>:</code> no self):</p><pre><code class="language-ethos">[  Encodable.[               ; one bare run in
+      encode.[ String ]      ; datom; bytes in
+      decode:{               ; memory
+         [ String ]
+         [ Result&lt;Self
+                  Refusal&gt; ] } ]
+   Rememberable.{            ; the memory kind
+      [ ]
+      [ Previous ]           ; the former form
+      [ VERSION.Integer ]
+      [ change!{             ; a standard change,
+           [ Self ]          ; succeeded or
+           [ Result&lt;Self     ; failed
+                    Refusal&gt; ] }
+        upgrade:{            ; from the former
+           [ Previous ]      ; version: the very
+           [ Self ] } ] }    ; edit the type had
+   Identifiable.[            ; who calls
+      identify.{
+         [ Process ]
+         [ Option&lt;Address&gt; ] }
+      bind!{
+         [ Address Process ]
+         [ Result&lt;FlowId
+                  Refusal&gt; ] } ]
+   Lockable.[                ; the lock on a
+      grant!{                ; metaflow
+         [ Sender Recipient ]
+         [ Result&lt;Lock
+                  Refusal&gt; ] }
+      release!{
+         [ Lock ]
+         [ Result&lt;Self
+                  Refusal&gt; ] }
+      lapse![ Vector&lt;Lock&gt; ] ]
+   Wakeable.[                ; sleeping and
+      wake!{                 ; waking
+         [ Request ]
+         [ Result&lt;FlowId
+                  Refusal&gt; ] }
+      queue!{
+         [ Request ]
+         [ Self ] }
+      drain![ Vector&lt;Request&gt; ]
+      sleep![ Self ] ]
+   Lineal.[                  ; one run after
+      launch!{               ; another
+         [ Vector&lt;Key&gt; String ]
+         [ Result&lt;FlowId
+                  Refusal&gt; ] }
+      refresh!{
+         [ ]
+         [ Result&lt;FlowId
+                  Refusal&gt; ] }
+      reap!{
+         [ FlowId ]
+         [ Result&lt;Self
+                  Refusal&gt; ] }
+      end![ Self ] ]
+   Composable.[              ; modules into a
+      compose.{              ; prompt
+         [ Vector&lt;Module&gt; ]
+         [ Result&lt;String
+                  Refusal&gt; ] }
+      check.{
+         [ Source ]
+         [ Result&lt;Hash
+                  Refusal&gt; ] } ]
+   Observable.[              ; state by
+      report!{               ; subscription,
+         [ Event ]           ; never by polling
+         [ Self ] }
+      subscribe.[ Vector&lt;Metaflow&gt; ] ]
+   Configurable.[            ; over the meta
+      configure!{            ; socket only
+         [ Module ]
+         [ Result&lt;Self
+                  Refusal&gt; ] }
+      forget!{
+         [ Key ]
+         [ Result&lt;Self
+                  Refusal&gt; ] } ] ]</code></pre></div>
+<div class="add"><p>Library, associations:</p><pre><code class="language-ethos">[  Hash.[ Encodable ]
+   FlowId.[ Encodable ]
+   Process.[ Identifiable ]
+   Metaflow.[ Lockable
+              Wakeable
+              Lineal
+              Rememberable ]
+   Flow.[ Observable
+          Rememberable ]
+   Module.[ Composable
+            Rememberable ]
+   Model.[ Rememberable ]
+   Threshold.[ Rememberable ]
+   Lock.[ Rememberable ]
+   Nexus.[ Configurable
+           Rememberable ] ]</code></pre></div>
+<div class="add"><p>Signal, ordinary socket:</p><pre><code class="language-ethos">Signal                       ; the ordinary socket
+[  flow_ethos:[ Address FlowId
+                Request Lock
+                Sender Recipient
+                Process Key
+                Metaflow Event
+                Refusal ] ]
+[  Launch.{                  ; queries
+      Address
+      Modules.Vector&lt;Key&gt;
+      Brief.String }
+   Wake.{
+      Address
+      Request }
+   Refresh.Address
+   End.Address
+   Current.Address
+   Bind.{
+      Address
+      Process }
+   Lock.{                    ; Message asks
+      Sender
+      Recipient }
+   Identify.Process
+   Deliver.{                 ; under the lock
+      Lock
+      Request }
+   Release.Lock
+   Report.{                  ; the hook's
+      FlowId
+      Event }
+   Stop.FlowId
+   Metaflows ]
+[  Launched.FlowId           ; responses
+   Woken.FlowId
+   Queued
+   Refreshed.{
+      FlowId                 ; successor
+      FlowId }               ; predecessor
+   Ended
+   Current.[
+      Awake.FlowId
+      Asleep
+      Ended ]
+   Bound.FlowId
+   Locked.Lock
+   Identified.Address
+   Delivered
+   Released
+   Reported
+   Stopped
+   Listed.Vector&lt;Metaflow&gt;
+   Refused.Refusal ]
+[]                           ; types: none of its
+                             ; own</code></pre></div>
+<div class="add"><p>Signal, meta socket:</p><pre><code class="language-ethos">Signal                       ; the meta socket
+[  flow_ethos:[ Module Model
+                Threshold Key
+                Refusal ]
+   meta_signal_flow:[
+      CodexEndpoint
+      HarnessKind
+      HarnessProfile ] ]
+[  Configure.[               ; queries
+      Module
+      Model
+      Threshold
+      Nexus ]
+   Forget.Key
+   Configuration ]
+[  Configured                ; responses
+   Forgotten
+   Configuration.{
+      Nexus
+      Models.Vector&lt;Model&gt;
+      Thresholds.Vector&lt;Threshold&gt;
+      Modules.Vector&lt;Module&gt; }
+   Unconfigured
+   Refused.Refusal ]
+[  Nexus.{                   ; the Nexus's own
+      SourceRoot.String      ; setup
+      StableCodex.CodexEndpoint
+      NextCodex.CodexEndpoint
+      HarnessProfiles.Vector&lt;HarnessProfile&gt;
+      MetaAspects.Vector&lt;Aspect&gt;
+      MessageSocket.String
+      Lease.Integer } ]      ; the lock's seconds</code></pre></div>
+<div class="add"><p>Operation, one per effect:</p><pre><code class="language-ethos">Operation                    ; what Flow does
+[  flow_ethos:[ Address FlowId
+                Request Lock
+                Sender Recipient
+                Process Key
+                Module Event
+                Metaflow Flow
+                Refusal ] ]
+[  Spawn.{                   ; operations
+      Metaflow
+      Modules.Vector&lt;Module&gt;
+      Brief.String }
+   Rouse.{                   ; wake a sleeper
+      Metaflow
+      Request }
+   Enqueue.{
+      Metaflow
+      Request }
+   Succeed.Metaflow          ; refresh: a
+                             ; successor
+   Retire.Metaflow           ; end
+   Attach.{                  ; bind a process
+      Metaflow
+      Process }
+   Grant.{
+      Sender
+      Recipient }
+   Place.{                   ; deliver, awake
+      Lock
+      Request }
+   Free.Lock                 ; release
+   Note.{                    ; record an event
+      FlowId
+      Event }
+   Reap.FlowId
+   Register.Module           ; configure
+   Unregister.Key ]
+[  Spawned.FlowId            ; outcomes
+   Roused.FlowId
+   Enqueued
+   Succeeded.{
+      FlowId
+      FlowId }
+   Retired
+   Attached.FlowId
+   Granted.Lock
+   Placed
+   Freed
+   Noted
+   Reaped
+   Registered
+   Unregistered
+   Failed.Refusal ]
+[]                           ; types: none of its
+                             ; own</code></pre></div>
+<div class="add"><p>Memory:</p><pre><code class="language-ethos">Memory                       ; what Flow remembers
+[  flow_ethos:[ Metaflow Flow
+                Lock Module
+                Model Threshold ]
+   meta_signal_flow:[ Nexus ] ]
+[  Metaflow                  ; records: one per
+   Flow                      ; address; one per
+   Lock                      ; run; one per held
+   Module                    ; lock; the registry;
+   Model                     ; one per layer;
+   Threshold                 ; one per layer;
+   Nexus                     ; stored once
+   Configured.Boolean ]      ; whether the meta
+                             ; Configure was ever
+                             ; done</code></pre></div>
+</div>
+<h3>Rulings</h3>
+<section class="rulings"><ol><li value="4"><p>Flow starts with no arguments, its socket paths and store path a constant in the executable, and its configuration in its own store, as the Nexus vision says; the design's Start datom of three paths goes.</p><ol class="choices" type="a"><li>as here</li><li>keep the Start datom</li><li>other</li></ol></li><li value="5"><p>every refusal is a variant, the store's included; the design's <code>Store.String</code> carrying the store's own error text goes.</p><ol class="choices" type="a"><li>as here</li><li>other</li></ol></li><li value="6"><p>the flow id is <code>FlowId.Hash</code> over <code>Hash.Bytes&lt;32&gt;</code>, Encodable, written as three camelCase words; <code>Bytes&lt;32&gt;</code> is the intrinsic of «Stored type and datom form», and ethos-zero cannot yet express it nor a new type that is not an alias, so the build carries a string until it can.</p><ol class="choices" type="a"><li>as here</li><li>a string stays the design</li><li>other</li></ol></li><li value="7"><p>storage.</p><ol class="choices" type="a"><li>storage is Rememberable, the kind every Memory record bears, with its version and its upgrade from the former form, and there is no fifth root</li><li>a Storage root of its own, declaring how Memory persists</li><li>your words</li></ol></li><li value="8"><p>Bind, the attaching of an already running process to a metaflow.</p><ol class="choices" type="a"><li>on the ordinary socket, as here and in the design</li><li>on the meta socket, as your record of 2026-09-24 reads</li><li>other</li></ol></li><li value="9"><p>Up.</p><ol class="choices" type="a"><li>one layer above the sender in its aspect, refused above Primary, as here</li><li>the next running rung in that direction, Low reaching High when Medium is not running, as vision-model-roles has it</li><li>other</li></ol></li><li value="10"><p>the Operation names: Spawn, Rouse, Enqueue, Succeed, Retire, Attach, Grant, Place, Free, Note, Reap, Register, Unregister.</p><ol class="choices" type="a"><li>as here</li><li>the same verbs as the queries, Launch, Wake, Refresh, End, Bind, Lock, Deliver, Release, Report, Stop, Configure, Forget, the operation telling itself from the query by its root</li><li>other</li></ol></li></ol></section>
+<p>Your records against the design, beyond the rulings:</p>
+<table><thead><tr><th>your record</th><th>date</th><th>the design</th></tr></thead><tbody><tr><td>a flow's role: voice or job</td><td>2026-10-05, 10-07</td><td>no role — enters above as Role</td></tr><tr><td>a flow that is not a metaflow</td><td>2026-10-07</td><td>every flow in one — enters as Role.Job</td></tr><tr><td>refresh floor 15–20 %; restart on a change of direction</td><td>undated</td><td>thresholds only</td></tr><tr><td>the bottom of each aspect runs the refresh</td><td>2026-10-07</td><td>no model decides a step</td></tr><tr><td>a small model checks a launch</td><td>undated</td><td>no model decides a step</td></tr><tr><td>messages reach both flows until the old logs out</td><td>undated</td><td>the lock refuses them</td></tr><tr><td>predecessor woken when its successor fails</td><td>undated</td><td>no such path</td></tr><tr><td>module text fed into memory</td><td>2026-10-07</td><td>a hashed source</td></tr><tr><td>Flow's memory lives in Mind</td><td>2026-09-17</td><td>its own store</td></tr></tbody></table>
+<p>Field's branch against this ethos (the Secondary's reading):</p>
+<table><thead><tr><th>the branch has</th><th>here</th></tr></thead><tbody><tr><td>letters, message ids, priority tiers, Sender.[ Flow Owner ], PowerLevel</td><td>gone</td></tr><tr><td>Restart, ResolveRecipient, QueueTurnEnd, LaunchStatus, Observe.Launch</td><td>gone</td></tr><tr><td>no Launch, Wake, Refresh</td><td>present</td></tr></tbody></table>
+<p>Not yet expressible in ethos-zero, for the Ethos seat: a new type that is not an alias; <code>Bytes&lt;32&gt;</code>; <code>core:Name</code>; a trait outside a Library. The build carries strings there; the ethos stays as written.</p>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
+
+</body></html>
