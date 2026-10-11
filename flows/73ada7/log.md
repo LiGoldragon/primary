@@ -369,3 +369,7 @@
 2026-10-10 — Landing: Message design d9703b5 (blob 7e4db16, copy reports/message-design-d9703b.md): Unknown.Key removed; NoLayer kept. My brief named map row 16 where the Unknown.Key row is 15; the subflow corrected it, and row 16 (Deliver × NoLayer) is still to be marked reachable. 9fed42 told of Flow 439dc64's stale lines 710–711.
 
 2026-10-10 — 445410 relays the living's order to refresh every Claude flow. Handover written (handover.md). This flow has no Primary of its own.
+
+2026-10-10 — Landing: handover published, 5bddbcd1d6a15d27d7ff76b42f62aa72a149cb04. That publish took refusal-map.md from the shared copy, which lacks the row-16 fix still in flight; the successor must confirm row 16 on main.
+
+2026-10-10 — Row 16 reachable confirmed on GitHub in 5bddbcd (by subflow reading); nothing of this flow in flight. 445410 told.
