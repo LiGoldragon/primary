@@ -3,11 +3,7 @@ description: "A temporary condition holds: a host, builder, service or network r
 dependencies: []
 ---
 
-NixBuilder is powered off from 2026-10-10 until the morning of 2026-10-11. There is no remote builder; build locally. Work continues, slower.
-
-Ouranos, the host of the cluster machine, powers off later on 2026-10-10 for travel. It may come up during the trip when power or internet allows.
-
-The network topology, while it differs from the standing one, is stated here.
+Prometheus is connected to the internet router, which is not ours, and both laptops, Ouranos and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN.
 
 A temporary condition does not stop work: what needed the missing host builds or runs locally, or waits for it; everything else goes on.
 
