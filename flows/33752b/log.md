@@ -26,3 +26,10 @@
 - 2026-10-11 Published «Every type and trait in Ethos» https://claude.ai/artifact/5WE6kMQhDvpCHoqanx9pAH
 - 2026-10-11 Published «The Primary makes the books» https://claude.ai/artifact/HtXyAqWEJaLjV74rhy7sbg; «Psyche is the gold» https://claude.ai/artifact/CKHSHdVcd64Y75tRfFiMyq; «A book opens with a figure» https://claude.ai/artifact/PHR1mLE2aaNe4cvR2RLcLm. «Nobody edits files» pending.
 - 2026-10-11 Published «Nobody edits files» https://claude.ai/artifact/EwMhHNzo5NhKUaD4Pi1ywZ. All five from packet 1 out; links sent to d68c82; publish turn requested.
+- 2026-10-11 From d68c82: the living commented on «Psyche is the gold». Comments being fetched verbatim; landing procedure for psyche-skills being located.
+- 2026-10-11 Living's two comments on «Psyche is the gold» logged (vision/spirit.md, vision/distillation.md). Both proposals approved; spirit line redirected to an intent skill (intent psyche); sources go in commit messages; history rewrite ordered (relayed to d68c82, owner of «Sources in the commit message»).
+- 2026-10-11 Second edition of «Psyche is the gold» drafted (books/7); landing in psyche-skills dispatched; publish turn requested.
+- 2026-10-11 Landed in psyche-skills main: intent-psyche new (6261fb6), vision-psyche paragraph (63a71c6); sources in commit bodies; lock 18493 released. Primary's generated trees regenerate on their own (vision-book carries d68c82's 4014086). Second edition publication dispatched.
+- 2026-10-11 From d68c82: psyche-skills history rewrite by Mind starts after my landing; hold all psyche-skills writes until the new main is in. Confirmed push to d68c82.
+- 2026-10-11 Published «Psyche is the gold, second edition» https://claude.ai/artifact/ThQowWFXNdFLr5upooE1vt; link sent to d68c82.
+- 2026-10-11 From d68c82: the living ruled on the Flow book that an edition never shows again what he approved. Second edition cut to its two open rulings; republish to the same URL dispatched.
