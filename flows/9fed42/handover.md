@@ -2,7 +2,7 @@
 
 ## Role
 - **Seat:** Psyche aspect, topic flow, Secondary layer. Opus.
-- **Primary:** f5a6e9 (Psyche::Flow Primary, Fable). This seat is its secretary.
+- **Primary:** 875960 (Psyche::Flow Primary), successor of f5a6e9. This seat is its secretary.
 - **What passes through this seat:** every message to and from Flow, and every report Flow sends to core.
 - **Upward:** reports to Psyche Core Secondary 445410 by hm-send. The living reaches Flow through 445410.
 - **Peers:**

@@ -213,3 +213,9 @@ Psyche Flow Secondary, Opus. Launched 2026-10-09.
 - f5a6e9: NoLayer restored 9c8c30835 (blob e853aaa7); StoreRefusal next. Verify after both.
 - Verified 9bffed2f4cd0363dfeb9b0925c64817bc55349f8 on origin/main, blob be032eeb: StoreRefusal/StartRefusal, NoLayer restored, wake rule, Unknown.Key Launch/Forget, Deliver order; old start form gone. Reported 445410; flow-test pin.
 - flow-test 01c29c90048a488b39e7908c8cce0d72f8439a66 pinned 9bffed2f4: 76 Mind targets, 0 broken, exit 0. Handover updated; publishing lane.
+- Lane published c3f2cd84d743 under lock 17330 (released); handover on origin/main. Told 445410 done.
+- 445410: StoreRefusal.{ Path.String Reason.String } → Duplicate.Path (Library declares Path, Reason at 17-18); fold StoreRefusal.{ Path Reason }, check whole Library. Sent to f5a6e9 (successor 875960 pending).
+- 9a6892691fbcfb86b86b80ba4bec083c9c92093a is origin/main head (earlier "not ancestor" was a stale fetch); blob a5544182 verified. Reported 445410.
+- f5a6e9 retired; Flow Primary is now 875960 (pane w1:p32). Route there.
+- 445410 (Field): Aspect vs FlowAspect duplicate ruling asked of 875960; signal-flow lacks Refused.Store, writer A authors new stage (info).
+- Verified 2d0a119bc27bf46a3d4a76356f377278f41eb4bd on origin/main, blob 0dac6fdd: MetaAspects.Vector<Aspect>, one Aspect, FlowAspect only in section-4 note. Reported 445410.
