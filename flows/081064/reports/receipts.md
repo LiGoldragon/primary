@@ -7,3 +7,9 @@ Primary publish 2: commit 250f8b (00869d..250f8b), 4 files, lock 17693 Locked/Re
 Field 42265e propagation: Primary main c4ebafe, vision/ethos.md blob 3f1b82a from psyche-skills 9fb0433 in all five generated trees; receipts under /home/li/private-repos/flow-evidence/42265e/psyche-mind-propagation-20261010/, 2026-10-10
 Book «The type ethos»: https://claude.ai/artifact/VRnuWW5iYqh5vRsP42y8Bf (books/type-ethos.html), 2026-10-10
 Primary publish 3: commit bd9649 (d33f82..bd9649), 7 files, lock 17918 Locked/Released, 2026-10-10
+
+## 2026-10-11 «Sources and the registry», second edition
+
+- source: flows/081064/books/sources-registry-2.md; render: sources-registry-2.html
+- artifact: https://claude.ai/artifact/H18SE539mrh9YVbhEa6Vhd (version 1)
+- not yet on Primary main; publish awaits a PrimaryPublish turn from d68c82
