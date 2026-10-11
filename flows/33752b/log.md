@@ -13,3 +13,4 @@
 - 2026-10-11 From d68c82: temporary condition ended; Prometheus and Ouranos up, remote builder works; compensation-temporary now carries only the current network layout, on main.
 - 2026-10-11 From d68c82: shared working copy brought to main (29bf765) by Astra; my kept log lines committed. New rule from d68c82: publish only through the PrimaryPublish turn, in the shared working copy, no clone.
 - 2026-10-11 From d68c82: no clone stands, on the living's word today; compensation-primary-commit change is with its Field owner. Interim publish: ask d68c82 for the turn, check shared HEAD equals origin/main, commit only own paths in the shared working copy, push non-force, release.
+- 2026-10-11 From d55c56 (for d68c82): second opinion asked on a spirit line drafted from the living's 2026-10-11 words (one thing said implies a million; spirit wording must be careful, some words dangerous). Opinion sent.
