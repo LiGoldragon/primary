@@ -111,3 +111,44 @@
 - 2026-10-10: Routed d55c56's stale shared skill checkouts finding to 41fa34.
 - 2026-10-10: Told d55c56: only golden ethos 3rd ed. has comments (4, 2026-10-09, Ethos's); other seven none.
 - 2026-10-10: Field accepted a local executor on Ouranos (nix 2.35.1). Corrected 41fa34: the checkout fast-forward request is d55c56's, not the living's.
+- 2026-10-10: Published d68c82 paths: Primary main 6ca57083e822900170a89942fb283cd08be2945c (lock 17952 released). Turn passed to 33752b.
+- 2026-10-10: «Open books» v52: added «Judging abuse of psyche data» (33752b).
+- 2026-10-10: compensation-temporary published (field-skills 0f571928, Curriculum 11af069f). Asked Astra (via 41fa34) for pin packet; asked d55c56 to confirm the two earlier field-skills changes riding along.
+- 2026-10-10: d55c56 found 899d19 (f5a6e9) deleted flows/ebbe30/ from main. Authorized d55c56 to restore from becbf2; routed mechanism check to 875960 via 9519a1. Book «Five landed lines awaiting you» publishing.
+- 2026-10-10: d55c56: 899d19 deleted 8,775 files; all outside flows/ebbe30 reportedly restored by becbf2 already; ebbe30 restore in progress; ancestry check running.
+- 2026-10-10: Field's temporary propagation prepared; refused by 33752b holding 17993. Asked 33752b to report release.
+- 2026-10-10: Book «Five landed lines awaiting you» published (https://claude.ai/artifact/1gEWa7AZnnaSaFcoMyye5H); «Open books» v53.
+- 2026-10-10: d55c56 withdrew restore: origin/main has ebbe30 intact; shared working copy's main diverged from origin at 3ffa8c with local commits (HEAD 0fcd2d, 058f16). Told 9519a1, 41fa34, 058f16.
+- 2026-10-10: 058f16: 0fcd2d never pushed, holds only an older word-names draft, droppable; its directory is on main at 954151e5. Shared-copy commits now forbidden in its briefs.
+- 2026-10-10: Living asked for the commit queue (commits one at a time, no repository lock): design book from core, then Astra's implementation in a book. Surveying what exists.
+- 2026-10-10: Living's notion: a quaternary flow commits and pushes for all, as a temporary solution. Logged notion commitQueue.
+- 2026-10-10: 33752b released 18022 (main 55e826). Field's turn sent via 41fa34.
+- 2026-10-10: Field refused again: d55c56 took PrimaryPublish 18030. Asked d55c56 to report release; told all Psyche seats to ask core for the turn before acquiring.
+- 2026-10-10: Publish order: d55c56 (holding 18030) → Field 42265e → 23824a.
+- 2026-10-10: Book «The commit queue» published (https://claude.ai/artifact/RwC995eY3j7mPKz5wz8DHQ); «Open books» v54.
+- 2026-10-10: d55c56 released 18050 (main 04b520). Field's turn sent via 41fa34.
+- 2026-10-10: Zeus witnessed (read-only ssh) running the redeployed closure lq0mii, generation 75 (Field claims CriomOS 31d79d, Home e03c626), activated live, boot entry set; copy came from Prometheus before shutdown. Prometheus redeploy still blocked (Field claim).
+- 2026-10-10: Field released 18058 at a checkpoint (source branch pushed; local build running); turn to 23824a, Field next for final publish.
+- 2026-10-10: Told 41fa34 the queue: 23824a now, Field final publish next.
+- 2026-10-10: 23824a released 18074 (main e6a4f4). Field's final-publish turn sent via 41fa34.
+- 2026-10-10: Curriculum build fails one test: expects 10 standing skills, finds 11 after compensation-temporary. Curriculum owner (Mind) to correct the test; Field holds no lock.
+- 2026-10-10: compensation-temporary propagated: Primary main 1d3a5f4bba2af8169a434362350abc08334d5699; in the standing startup list; generated-skills-current passes; lock 18102 released. Also carries the five 445410 Field lines (book pending ruling).
+
+## 2026-10-11 — the living arrives
+
+The living, STT: "Okay, I've arrived at my new destination. Let me check: Prometheus is reachable, and Zeus is reachable. The topology is that Prometheus is connected to the internet router, which is not ours, and both laptops, [Ouranos] and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN. The temporary skill can be changed now that Prometheus is not offline. Conduct an audit to see the state of the world, and then create a book for me from that. I'd like to tackle the Prometheus Wi-Fi. It has been a mess to try and get that to work. The Wi-Fi on our Prometheus node never works anymore. Why don't you get Field to go and find out what the fuck is wrong with that and get Mind to work on a lasting solution, if you can find one?" Transcription corrected: "Uranus" → "Ouranos".
+
+Orders: change compensation-temporary (Prometheus back; new topology); audit the state of the world and book it; Field diagnoses Prometheus Wi-Fi, Mind designs a lasting fix. Routed to Sol; audit subflow dispatched.
+Field landed the compensation-temporary arrival edit at field-skills 830ad600 (claim, via Sol). Propagation turn granted to Field after Astra's Field-only pin packet. Wi-Fi: eno1 wired route active, wlan up and unblocked, iw absent; no cause yet (Field claim).
+
+The living, STT: "There's another topic I want you to send a field in mind on debugging and fixing. We'll probably have to talk about this. When I left this last night, I closed my laptop, this one [Ouranos], and it had like 90% battery, so it went to sleep, right? When I got here, it was at 43% battery, 12 hours later. What the fuck? Is something wrong there? Is something wrong with how this laptop is? Is something wrong there? You don't lose half your battery in 12 hours of just suspending your laptop. That's a fucking failure. Whoever makes a laptop like that should be shot." Transcription corrected: "Uranus" → "Ouranos"; "a field in mind" → "[Field and Mind]".
+Order: Field debugs Ouranos suspend battery drain, Mind fixes. Relayed to Sol. Field arrival pin packet delivered (Astra, 1d3a5f4 base, Field 0f571→830ad600; claim).
+The living, STT: "So there must be something wrong in the software." (relayed)
+Astra's pin packet send to Field was Held (Sol correction); d68c82 forwarded it to 42265e.
+Audit returned (reports/world-2026-10-11.md). Key witnessed: Prometheus MT7925 Wi-Fi runs as AP goldragon.criome (ch 6, br-lan, Kea), txpower 3 dBm, regdom PL, no driver errors; Zeus joined 09:56 and left after 28 s; an unknown client rejoins every ~20 s and never accepts the DHCP offers. Remote builder on Prometheus works again. Ouranos suspended 10-10 17:15 to 10-11 09:55, runs a test activation (dbhsh7), not its profile. iw present in the audit's ssh session, contradicting Field. Field pane 42265e blocked on a pending Codex question; this is why sends are Held.
+Field Wi-Fi checkpoint: failing station associates, sends DHCPDISCOVER, Kea sends OFFERs, no REQUEST; one station got ACK 09:56:08. Mind B accepted Ouranos sleep design scope (claim, Astra).
+Pin packet re-sent to 42265e: Transported. Field's Wi-Fi diagnosis needs the failing client identified (asked the living).
+Book «Back on the grid» published: https://claude.ai/artifact/6TcLWH6bBGLLuPehwLYdVL (1 proposal: compensation-temporary wording).
+Field: iw confirms AP wlp195s0 ch 6, txpower 3.00 dBm, reg PL; iw gap was root PATH only. Propagation of 830ad600 running under PrimaryPublish 18172 (claim).
+Field released 18172 at checkpoint (comparison qualified, 29 changes, no main publish); granted its final continuation turn.
+Field landed the arrival propagation: Primary main 122ea0fdde16a74e406771d55358f13c0dd74a36, parent 1d3a5f4; PrimaryPublish 18183 released. Notified Psyche seats; d68c82 directory publish dispatched.
