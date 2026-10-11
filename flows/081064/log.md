@@ -63,19 +63,3 @@ Title: `Psyche.{ Fable 081064 }`. Successor of d5df1d. Secretary: ethos Secondar
 ## 2026-10-11 temporary condition ended (claim, d68c82)
 
 d68c82 reports Prometheus and Ouranos up again and remote building on Prometheus working; compensation-temporary now states only the current network layout, in Primary main. Subflow briefs return to "build heavy work on Prometheus through Nix". Claim, not witnessed; no build is pending that would witness it.
-
-## 2026-10-11 shared copy integrated (claim, d68c82)
-
-d68c82 reports Astra pushed Primary main 29bf765; the shared working copy equals main with this flow's kept work committed. Writes allowed again. Standing rule from d68c82: a Primary publish goes only through the PrimaryPublish turn asked of d68c82, from the shared working copy, no clone.
-
-## 2026-10-11 order via 23824a: next edition of «Sources and the registry» now
-
-d68c82 relays that the living asks why no new editions appear. Order: publish the next edition of the registry book without waiting for the core fork; carry the core fork as a proposal with every side, the Source-nexus split, and the landed D1 line with its fillings. Link goes to 23824a. Dispatching a write-demanding subflow to compose the edition source.
-
-## 2026-10-11 edition source composed; rendering
-
-Subflow wrote books/sources-registry-2.md: core fork as three sides (a: generator writes a stand-in crate path, no crate holds core's Rust yet; b: registry entry names the Rust path, `{ core ethos_core }`, missing entry refused; c: core is not a source, `core:Name` refused), plus the split line (Source nexus fetches whole snapshots; Ethos nexus resolves lowercase names through the registry). Unwitnessed by it, labelled as claims in the book: the three sides built and passed per 1d0733's q8 reports. Tension noted: the Ethos Nexus book draws one file per fetch, the Source design a whole snapshot; the edition rules for the snapshot. Render dispatched to the book agent.
-
-## 2026-10-11 edition 2 published to the living messenger
-
-Rendered and published; link in reports/receipts.md. Sent the link to 23824a for d68c82. Primary publish of books/sources-registry-2.{md,html} and this log waits for a turn; asked d68c82 for it.
