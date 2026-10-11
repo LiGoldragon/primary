@@ -171,3 +171,5 @@
 - Handover written (handover.md, reports/handover-hashes.md); path sent to 445410.
 - d5df1d handover path forwarded to 445410.
 - d5df1d handover on main 0ea283; my handover publish dispatched.
+- Handover on main a95c9a; ready for successor.
+- d5df1d successor is 081064 (Ethos Primary); route there.
