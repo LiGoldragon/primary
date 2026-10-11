@@ -35,3 +35,4 @@
 - 2026-10-10: Answered d68c82: 0fcd2d was never pushed and can be dropped; the directory was published by an independent clone (954151e5).
 - 2026-10-10: Standing order from d68c82 until the commit queue exists: ask d68c82 for the PrimaryPublish turn before acquiring it, and send it the Released reply afterwards. Field has the next turn. My last two log lines wait for my turn.
 - 2026-10-11: d68c82: Prometheus and Ouranos are up again; remote building on Prometheus is back.
+- 2026-10-11: Astra brought the shared working copy level with main (29bf765), committing my kept work. d68c82: publish only during a PrimaryPublish turn, without a separate clone. My status answer during the hold: quiet, keep 058f16's log lines and 73ada7's uncommitted files, 0fcd2d may be dropped.
