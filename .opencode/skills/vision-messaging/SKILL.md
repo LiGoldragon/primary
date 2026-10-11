@@ -32,12 +32,3 @@ another, and a submission is never a read receipt.
 ## Only messages that act, deliver, or block
 
 Send only messages that require the recipient's action, deliver a result it awaits, or report an error or blocker affecting its work; keep routine receipts in durable records for requested status reports.
-
-## Sources
-
-108ab0 operational-messageAsDatomInPrompt
-108ab0 operational-messagePriorityTiers
-108ab0 operational-abruptPerHarness
-108ab0 operational-herderMuxKeypress
-1ac573 operational-modelRoles
-d66c26 messaging

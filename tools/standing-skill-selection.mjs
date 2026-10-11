@@ -11,4 +11,5 @@ export const STANDING_SKILLS = Object.freeze([
   "compensation-default-effort",
   "compensation-messenger-clj",
   "compensation-temporary",
+  "intent-psyche",
 ]);

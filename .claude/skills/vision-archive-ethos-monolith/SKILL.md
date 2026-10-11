@@ -51,9 +51,3 @@ database migration operations along with the editing operation.
 
 Ethos serves new work in place of legacy schema once the monolith is
 ready to use; readiness is witnessed.
-
-## Sources
-
-vision-raw threeStacks
-vision-raw rustComponentArchitecture
-aa4c7747 ethosMonolith

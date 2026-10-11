@@ -19,7 +19,3 @@ Remembering a flow includes reading that flow's last model response.
 
 The log's record of a remembering carries a short description of what
 from the remembered flow was found most relevant to the current one.
-
-## Sources
-
-b675f3d9 remembering

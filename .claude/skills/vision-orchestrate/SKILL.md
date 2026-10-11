@@ -13,8 +13,3 @@ meta-orchestrate is wrong.
 
 The orchestrate skill covers ordinary operations only; meta
 operations are outside it.
-
-## Sources
-
-01a03d6e orchestrateDeployment
-01a03d6e orchestrateSkill

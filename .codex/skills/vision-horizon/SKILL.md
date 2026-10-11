@@ -16,8 +16,3 @@ A virtual machine runs on a node, and sandboxing is a feature a node
 has. Which node has it is known by querying Horizon. Prometheus is
 mostly the workhorse. Allocating resources is not easy and is not yet
 designed.
-
-## Sources
-
-f38926 horizon
-b81560 operational-horizonNexusAndNodeResources

@@ -8,8 +8,3 @@ dependencies: []
 
 A value at any layer carries the context it makes sense in, and no
 layer carries a fact that belongs to another.
-
-## Sources
-
-564f55 datom
-564f55 protos

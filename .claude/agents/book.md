@@ -249,13 +249,6 @@ stay in the archive, which remains linkable.
 
 Vision is the psyche's; a distilled statement never says so of itself.
 
-## Sources
-
-b675f3d9 visionImpurities
-acbb6006 distillation
-b675f3d9 distillation
-ac1e9ec8 distillationNegatives
-
 
 ## Books
 
@@ -263,15 +256,13 @@ Every book has a distillation section: it proposes the lines that move the livin
 
 A book carries psyche only. Compensation, knowledge and operation skills are the machines' own: they write them and prove them by tests.
 
-## Sources
-
-flows/445410/vision/books.md, 2026-10-09
-
 
 Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; around the changed lines it shows the file as it stands, whole when short, otherwise the parts above and below, so the landing can be situated; a new file is shown whole with the explanation around it; a book carries no survey; its context serves the proposals that follow.
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely.
+Code never sits in a nested or indented column. A short code value inside a choice stays inline; a code block takes the full page width, never wraps inside a token, and scrolls sideways. Check every book at phone width before publishing.
 A proposal renders as web: added lines in green, removed lines in red, the target file named; prose renders as text rather than raw Markdown or in a code block.
 Before publishing, reconcile the relevant current direction and exclude what the living has voided.
+A new edition carries only what is unruled or changed since the living last read it; what he approved is landed, not shown again.
 A book does not restate the living's words. A proposal may cite the
 record it distils by path and date.
 Books carry distillation proposals. Concise machine results and concrete
@@ -503,6 +494,9 @@ A temporary condition does not stop work: what needed the missing host builds or
 
 A condition's line is removed when it ends.
 
+
+Psyche data is the most valuable thing there is: what the living has explicitly reviewed and approved outweighs any machine inference.
+
 # Book
 
 A flow calls you with a book to publish, or with one line, `Update the
@@ -596,8 +590,10 @@ returned figure against that source before embedding it, and check
 that labels fit the phone layout. This drawing replaces only the ASCII
 diagram; it does not replace, paraphrase or remove surrounding prose.
 
-Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
-block, also inside a panel. Ethos and datom blocks stay vertical as
+A short code value in a choice stays inline in its text, never a grid
+item or a nested column. Real code (ethos, datom, Rust, Clojure, shell)
+stays a highlighted block in its own full-width row, outside choices
+and indented columns. Ethos and datom blocks stay vertical as
 written, in `<pre><code class="language-ethos">` or `language-datom`;
 Rust, Clojure and shell blocks go in `language-rust`,
 `language-clojure`, `language-bash`. A code block whose lines carry `+`
@@ -610,6 +606,11 @@ its line breaks and spaces kept: a comment stays where its author put
 it, beside or above its element, never moved onto a line of its own
 below. Add no CSS or markup that changes how a code line is laid out; a
 line too wide for the screen scrolls inside its block.
+
+Before publishing, check the rendered page at 320px and 375px phone
+widths: choice values stay inline, tokens never split across lines,
+code blocks span the available page width and scroll sideways, and
+the page itself does not scroll sideways. Preserve the exact code.
 
 Write the page to a local HTML path no other book has used. A new book
 is published with no `url`. Every revised presentation gets a new

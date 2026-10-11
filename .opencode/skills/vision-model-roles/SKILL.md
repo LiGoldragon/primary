@@ -105,14 +105,3 @@ eligible cell yields an explicit undeliverable result. Resolve the binding
 immediately before each attempt. A fallback has succeeded only when the exact
 recipient accepts it; an ambiguous attempt remains attached to that recipient
 and is reconciled instead of being resent to another rung.
-
-## Sources
-
-f55ec8 modelRoles
-f55ec8 layers
-1ac573 operational-modelRoles
-1ac573 operational-olderOpusIs46
-1ac573 operational-defaultModelPsycheMediumClaude
-1ac573 operational-modelDeclaredInOnePlace
-4a2502 operational-delegationTierRules
-b05237 operational-fieldEnergyLevels

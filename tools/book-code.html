@@ -16,7 +16,7 @@
        </ol></section>
      Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
      Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
-     Code: <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
      A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
      that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
      scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
@@ -58,7 +58,7 @@ p,ul,ol{margin:0}
 .textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
 :where(article,section,div,li)>*+*{margin-top:.7em}
 a{color:var(--accent)}
-:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:normal;word-break:normal}
 table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
 th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
 th{color:var(--muted);font-weight:600;letter-spacing:.03em}
@@ -100,8 +100,8 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
 .rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
 .choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
-.choices>li{counter-increment:choice;display:grid;grid-template-columns:1.8rem 1fr;gap:8px;align-items:baseline;margin:0}
-.choices>li::before{content:counter(choice,lower-alpha);font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
 
 /* Code: never wraps; wide lines scroll inside their block. */
 pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}

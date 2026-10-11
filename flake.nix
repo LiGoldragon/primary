@@ -19,11 +19,11 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/b35e299430af1fceb25e05a0759eb8b36c5cfd27";
+      url = "github:LiGoldragon/Curriculum/c390e1e3354b889b0c182d6cb21ef7c39e263103";
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/4014086d95634e15824abccf0f8addf827eb096f";
+      url = "github:LiGoldragon/psyche-skills/d0d194c8d1bef78874c8aad842d70047978c4bac";
       flake = false;
     };
     mind-skills = {
@@ -31,7 +31,7 @@
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/51920edfe6b29ca83ae39ea13766b167da7b02ec";
+      url = "github:LiGoldragon/field-skills/1debcd29215f419b306eccd36c27ec405469e43b";
       flake = false;
     };
     flow = {
@@ -247,6 +247,13 @@
                 ${runtime}/bin/curriculum CheckSkills
                 touch "$out"
               '';
+          bookPhoneCode = pkgs.runCommand "primary-book-phone-code" {
+            nativeBuildInputs = [ pkgs.nodejs pkgs.chromium pkgs.coreutils ];
+          } ''
+            export CHROMIUM="${pkgs.chromium}/bin/chromium"
+            export FONTCONFIG_FILE="${pkgs.makeFontsConf { fontDirectories = [ pkgs.dejavu_fonts ]; }}"
+            timeout 100s node ${self}/tools/book-phone-code.test.mjs ${self}/tools/book-code.html > "$out"
+          '';
           bookPublicationFixtures = pkgs.runCommand "primary-book-publication-fixtures" {
             nativeBuildInputs = [ pkgs.nodejs ];
           } ''
@@ -332,6 +339,7 @@
         {
           generated-skills-current = generatedSkillsCurrent;
           book-publication-fixtures = bookPublicationFixtures;
+          book-phone-code = bookPhoneCode;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;

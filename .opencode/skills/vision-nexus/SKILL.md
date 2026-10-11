@@ -196,24 +196,3 @@ Succeeded                                             ; 4 Memory's answer to Ope
 Started.7                                             ; 5 Outcome
 Launched.7                                            ; 6 Response, from Signal's answer, back to the CLI
 ```
-
-## Sources
-
-e06e4c07 nexus
-01a03d6e nexus
-acbb6006 nexus
-98fbfa47 metaCliIsComponentDashMeta
-012fbf07 threeStacks
-15b67974 actorLibrary
-564f55 nexus
-01a05487 nexus
-db97561c nexus
-fd301d9a nexusTraits
-f426777b nexusTraits
-f426777b ethosSourceFiles
-b675f3d9 ethosMonolith
-fe34eb nexus
-aa887c nexus
-aa887c ethos
-bad807 nexus
-bad807 ethos

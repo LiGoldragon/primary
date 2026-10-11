@@ -11,8 +11,3 @@ routinely.
 ## A view takes room
 
 A high-level view takes room and breaks everything down in-line.
-
-## Sources
-
-vision-raw highLevelView
-b675f3d9 highLevelView

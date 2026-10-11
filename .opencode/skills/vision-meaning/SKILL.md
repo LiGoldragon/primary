@@ -82,15 +82,3 @@ number of words holding one idea or one statement. A reader who meets
 a block whose spec it does not have treats that block as an opaque
 string, and the basic structure is made stable first while the inside
 keeps changing.
-
-## Sources
-
-f38926 meaningLanguage
-b81560 operational-asyncSubflowsAndMeaningLanguage
-b81560 operational-meaningLanguageLogographic
-b81560 operational-meaningLanguageAnnotationLayers
-b81560 operational-meaningContentAddressedAnnotation
-b81560 operational-meaningGarbageCollectionAndOntology
-b81560 operational-vaisheshikaRuledAndSyntaxQuestion
-b81560 operational-meaningDualSanskritEnglishNames
-5851f4 ashtadhyayiKnowledgeBase

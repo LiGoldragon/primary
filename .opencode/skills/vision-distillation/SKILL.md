@@ -43,10 +43,3 @@ stay in the archive, which remains linkable.
 ## A statement never attributes itself to the psyche
 
 Vision is the psyche's; a distilled statement never says so of itself.
-
-## Sources
-
-b675f3d9 visionImpurities
-acbb6006 distillation
-b675f3d9 distillation
-ac1e9ec8 distillationNegatives

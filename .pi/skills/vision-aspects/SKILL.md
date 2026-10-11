@@ -10,8 +10,3 @@ Flows of the same topic talk at the same layer across aspects: Psyche sees and M
 ## Psyche core keeps track of the psyche, through the Secondaries
 
 Psyche core keeps track of all the psyche within Psyche; a topic Secondary packages what it observes for its own Primary, which answers its Secondary, which reports to core.
-
-## Sources
-
-445410 flow
-445410 messaging

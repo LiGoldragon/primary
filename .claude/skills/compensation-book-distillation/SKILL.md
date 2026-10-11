@@ -5,8 +5,10 @@ dependencies: [vision-book]
 
 Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; around the changed lines it shows the file as it stands, whole when short, otherwise the parts above and below, so the landing can be situated; a new file is shown whole with the explanation around it; a book carries no survey; its context serves the proposals that follow.
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely.
+Code never sits in a nested or indented column. A short code value inside a choice stays inline; a code block takes the full page width, never wraps inside a token, and scrolls sideways. Check every book at phone width before publishing.
 A proposal renders as web: added lines in green, removed lines in red, the target file named; prose renders as text rather than raw Markdown or in a code block.
 Before publishing, reconcile the relevant current direction and exclude what the living has voided.
+A new edition carries only what is unruled or changed since the living last read it; what he approved is landed, not shown again.
 A book does not restate the living's words. A proposal may cite the
 record it distils by path and date.
 Books carry distillation proposals. Concise machine results and concrete

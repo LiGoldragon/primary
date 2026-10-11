@@ -91,8 +91,10 @@ returned figure against that source before embedding it, and check
 that labels fit the phone layout. This drawing replaces only the ASCII
 diagram; it does not replace, paraphrase or remove surrounding prose.
 
-Real code (ethos, datom, Rust, Clojure, shell) stays a highlighted code
-block, also inside a panel. Ethos and datom blocks stay vertical as
+A short code value in a choice stays inline in its text, never a grid
+item or a nested column. Real code (ethos, datom, Rust, Clojure, shell)
+stays a highlighted block in its own full-width row, outside choices
+and indented columns. Ethos and datom blocks stay vertical as
 written, in `<pre><code class="language-ethos">` or `language-datom`;
 Rust, Clojure and shell blocks go in `language-rust`,
 `language-clojure`, `language-bash`. A code block whose lines carry `+`
@@ -105,6 +107,11 @@ its line breaks and spaces kept: a comment stays where its author put
 it, beside or above its element, never moved onto a line of its own
 below. Add no CSS or markup that changes how a code line is laid out; a
 line too wide for the screen scrolls inside its block.
+
+Before publishing, check the rendered page at 320px and 375px phone
+widths: choice values stay inline, tokens never split across lines,
+code blocks span the available page width and scroll sideways, and
+the page itself does not scroll sideways. Preserve the exact code.
 
 Write the page to a local HTML path no other book has used. A new book
 is published with no `url`. Every revised presentation gets a new

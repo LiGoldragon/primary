@@ -12,9 +12,3 @@ running on. Another host is used only when the living names it.
 
 Zeus is a stable node, and stable nodes are not where testing
 happens.
-
-## Sources
-
-f38926 operational-openCodeRemoteAccess
-b81560 operational-pocSandboxVmFirst
-b81560 operational-pocSandboxIntent

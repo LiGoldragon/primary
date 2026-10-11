@@ -5,6 +5,8 @@ dependencies: [knowledge-psyche]
 
 Psyche contains Spirit, Intent, Vision, and Notion, in descending authority.
 
+Everything the living says he wants is distilled: psyche data is what the work mines for, and nothing is built rich without it.
+
 Psyche reaches through its hierarchy to Orchestrate coordinates. Unprefixed
 vision is Psyche's most reliable, accepted gold. These statements are approved
 by the living in the native desktop record at
