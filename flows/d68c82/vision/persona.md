@@ -8,14 +8,6 @@ Context: comment on «The meta harness has a base», proposal 1 (the base, in vi
 
 -- psyche, STT. Transcription corrected: "CreoleOS" → "CriomOS".
 
-## The old Persona designs are rewritten
-
-Context: comment on «Persona's root and what it does», at the figure of the existing Persona design.
-
-> Yeah obviously these designs are old so we basically need to rewrite it. There might not be anything, or not much, worth saving there.
-
--- psyche, STT.
-
 ## Which part of the triad Persona spawns is not Persona's vision
 
 Context: same book, «What the root does».
