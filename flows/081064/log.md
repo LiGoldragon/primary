@@ -63,3 +63,35 @@ Title: `Psyche.{ Fable 081064 }`. Successor of d5df1d. Secretary: ethos Secondar
 ## 2026-10-11 temporary condition ended (claim, d68c82)
 
 d68c82 reports Prometheus and Ouranos up again and remote building on Prometheus working; compensation-temporary now states only the current network layout, in Primary main. Subflow briefs return to "build heavy work on Prometheus through Nix". Claim, not witnessed; no build is pending that would witness it.
+
+## 2026-10-11 shared copy integrated (claim, d68c82)
+
+d68c82 reports Astra pushed Primary main 29bf765; the shared working copy equals main with this flow's kept work committed. Writes allowed again. Standing rule from d68c82: a Primary publish goes only through the PrimaryPublish turn asked of d68c82, from the shared working copy, no clone.
+
+## 2026-10-11 order via 23824a: next edition of «Sources and the registry» now
+
+d68c82 relays that the living asks why no new editions appear. Order: publish the next edition of the registry book without waiting for the core fork; carry the core fork as a proposal with every side, the Source-nexus split, and the landed D1 line with its fillings. Link goes to 23824a. Dispatching a write-demanding subflow to compose the edition source.
+
+## 2026-10-11 edition source composed; rendering
+
+Subflow wrote books/sources-registry-2.md: core fork as three sides (a: generator writes a stand-in crate path, no crate holds core's Rust yet; b: registry entry names the Rust path, `{ core ethos_core }`, missing entry refused; c: core is not a source, `core:Name` refused), plus the split line (Source nexus fetches whole snapshots; Ethos nexus resolves lowercase names through the registry). Unwitnessed by it, labelled as claims in the book: the three sides built and passed per 1d0733's q8 reports. Tension noted: the Ethos Nexus book draws one file per fetch, the Source design a whole snapshot; the edition rules for the snapshot. Render dispatched to the book agent.
+
+## 2026-10-11 edition 2 published to the living messenger
+
+Rendered and published; link in reports/receipts.md. Sent the link to 23824a for d68c82. Primary publish of books/sources-registry-2.{md,html} and this log waits for a turn; asked d68c82 for it.
+
+## 2026-10-11 edition 2 on Primary main (4909f4, lock 18411, witnessed by subflow)
+
+Pushed 642d5b → 4909f4; four files under flows/081064 only; tree 8991 → 8993; lock Released. The subflow built the commit with a temporary index and commit-tree, moving main by update-ref, without jj; jj records the move on its next snapshot. Noted: compensation-primary-commit still says independent clone; d68c82's rule says no clone. Released reply sent to d68c82.
+
+## 2026-10-11 standing order via d68c82: Fable authors every book
+
+Relayed (machine prose, not his words): essentially every book is authored by this flow unless nearly trivial. The Secondary sends one packet of every context it found; this flow checks it with its own subflow for omissions, then authors the book. Scope also covers Psyche core books and, until Nexus has a Primary, Nexus books from 058f16. The id 33752b appears in the relay without a referent known here; unknown whether it names a flow or a record.
+
+## 2026-10-11 correction from d68c82: scope is Ethos books only
+
+33752b is the Psyche core Primary, a flow; it authors Psyche core books and Nexus books. This flow authors Ethos books, from 23824a's packets. The previous entry's wider scope is withdrawn.
+
+## 2026-10-11 fault: edition 2 files deleted from main by ef1d3b; restoring
+
+33752b reports its log commit ef1d3b carried deletions of books/sources-registry-2.* (claim; d68c82 confirms cause). Cause, mine: the 4909f4 publish used a temporary index and update-ref, leaving the shared index at the parent, so git showed the new files as staged deletions and a plain commit took them. Told 33752b nothing is owed. d68c82 granted the turn; restoring under PrimaryPublish with git add and git commit -- <paths>. Standing rule from d68c82: commit in the shared copy with explicit paths, never through a temporary index.
