@@ -95,3 +95,5 @@ Aspect: Psyche Primary. Topic: Spirit as the common machine-instruction family.
 - 445410 relayed two psyche entries: psyche-type messages for the living’s words (retraining round via skill edit); a new flow’s first last response is a presentation of its context. Logged vision/messaging.md, vision/flow-startup.md. Asking 445410 who lands the two skill lines.
 - 445410 landed both lines (field-skills 3cc3a59): living words travel only as --psyche beside the #msg; a launched flow’s first response is a presentation of its context, never READY. Passed on to the Psyche::Ethos seat.
 - 445410: nothing for me to land; the launcher’s "Reply exactly READY" (claude-main-flow-launch.mjs:46) goes to Mind through Sol — on the checklist under launch logic.
+- 445410 relayed the living’s order: refresh every Claude flow with minimal high-signal context, reap the old. Writing flows/ebbe30/handover.md; 445410 launches the successor and retires this seat once it answers.
+- handover.md written; path sent to 445410.
