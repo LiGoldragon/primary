@@ -17,7 +17,7 @@ def identity(model="claude-haiku-4-5-20251001", effort="low"):
 
 with tempfile.TemporaryDirectory() as temp:
     root = pathlib.Path(temp)
-    for skill in ("operation-main-flow", "spirit", "operation-psyche-interraction"):
+    for skill in ("operation-main-flow", "spirit-core", "operation-psyche-interraction"):
         directory = root / ".claude/skills" / skill
         directory.mkdir(parents=True)
         (directory / "SKILL.md").write_text(f"{skill} exact body\n")
@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory() as temp:
         "role": "Psyche Low",
         "titlePlan": {"aspect": "Psyche", "power": "Low", "model": "Haiku 4.5",
                       "afterOwnVerifiedFlowId": True, "template": "Psyche Haiku 4.5 <FLOW_ID>"},
-        "skills": ["operation-main-flow", "spirit", "operation-psyche-interraction"],
+        "skills": ["operation-main-flow", "spirit-core", "operation-psyche-interraction"],
         "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}],
         "sourceAudit": {"reviewedAt": "2026-09-21T00:00:00Z", "newestApplicableVision": ["Vision/source.md"]},
     }
@@ -84,6 +84,17 @@ with tempfile.TemporaryDirectory() as temp:
             for row in rows:
                 handle.write(json.dumps(row) + "\n")
 
+    native_job = root / "native-job"
+    native_job.mkdir()
+    MODULE.claude_job_dir = lambda native: native_job
+    composed = native_job / "main-flow-system-prompt.md"
+    composed.write_text("Main flow.\n\n# spirit-core\n\nspirit-core exact body\n")
+    for name in ["vision-design", "intent-psyche-interaction"]:
+        directory = root / ".claude/skills" / name
+        directory.mkdir()
+        (directory / "SKILL.md").write_text(f"{name} body")
+        with composed.open("a") as handle:
+            handle.write(f"\n# {name}\n\n{name} body\n")
     receipt = MODULE.refresh(manifest, root, 1, sender)
     assert calls == [prompt]
     assert receipt["generation"]["first_user_prompt"]["accepted_user_prompts"] == 1
@@ -94,7 +105,7 @@ with tempfile.TemporaryDirectory() as temp:
     assert "operation-psyche-interraction" in MODULE.startup_skills(manifest, root)
 
     # Main-flow mode: a main seat carries the replacing system prompt, any other seat the stock one.
-    prompt_file = TOOL.parent / "main-flow-mode" / "system-prompt.md"
+    prompt_file = composed
     assert receipt["main_flow_mode"] == {"prompt_file": str(prompt_file),
                                          "sha256": hashlib.sha256(prompt_file.read_bytes()).hexdigest()}
     main_argv = MODULE.native_argv(manifest, receipt["main_flow_mode"], name=True)
@@ -102,7 +113,7 @@ with tempfile.TemporaryDirectory() as temp:
                               "--name", "Psyche Haiku 4.5 (claim pending)", "--remote-control",
                               "--dangerously-skip-permissions"]
     assert main_argv[11:13] == ["--system-prompt-file", str(prompt_file)]
-    assert main_argv[13] == "--settings" and main_argv[14].endswith(f"/.claude/jobs/native-{session}/main-flow-settings.json")
+    assert main_argv[13] == "--settings" and main_argv[14] == str(native_job / "main-flow-settings.json")
     assert "--system-prompt-file" not in MODULE.native_argv(manifest, None, name=True)
     job = root / "job"
     job.mkdir()

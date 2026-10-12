@@ -8,7 +8,7 @@ dependencies: [knowledge-psyche]
 Log psyche in the flow's own `vision/<topic>.md`: what the psyche envisions, in the psyche's words. Never a ruling or an instruction.
 A statement enters a vision- skill only as a distillation the living
 has explicitly approved. Intent and spirit enter only on the
-living's explicit word. Never edit the spirit skill without explicit psyche approval of exact wording.
+living's explicit word. Never edit the spirit-core skill without explicit psyche approval of exact wording.
 
 The word "brainstorm" or "notion" from the psyche marks what follows as Notion: log it verbatim in `notion/<topic>.md`, the bottom layer; it rules nothing until the psyche raises it.
 Thinking out loud, bouncing ideas, and any words the psyche frames as exploration rather than pronouncement are Notion, the same as brainstorm.

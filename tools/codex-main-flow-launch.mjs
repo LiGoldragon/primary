@@ -19,6 +19,7 @@ import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, continuationForLaunch, requireTopic, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
@@ -30,7 +31,7 @@ export const ASPECT_SKILLS = {
   Mind: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
   Field: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
 };
-export const BIRTH_SKILLS = aspect => [...new Set(['operation-main-flow', ...STANDING_SKILLS, ...ASPECT_SKILLS[aspect]])];
+export const BIRTH_SKILLS = aspect => [...new Set(['operation-main-flow', ...STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit'), ...ASPECT_SKILLS[aspect]])];
 
 // Registration binds the exact native thread to the exact Herdr pane.  It does
 // not need a separate readiness or idleness assertion.
@@ -73,6 +74,7 @@ export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
 
 export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect)}) {
+  if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-'))) throw new Error('spirit modules belong only in the main system prompt');
   const blocks = skillNames.map(name => {
     const text = read(name);
     if (!text || !text.trim()) throw new Error(`skill input missing or empty: ${name}`);
@@ -91,10 +93,11 @@ export function claimFlow(flowsRoot, threadId) {
 }
 
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
-export function codexHarnessCommand(client, o, promptFile) {
+export function codexHarnessCommand(client, o, promptFile, systemPromptFile) {
+  if (!systemPromptFile || !path.isAbsolute(systemPromptFile)) throw new Error('composed main-flow system prompt file required');
   const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];
   // Preserve Herdr's destination pane/socket while dropping parent seat identity.
-  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
+  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
 }
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -121,14 +124,17 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
     const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
     done(`composed ${Buffer.byteLength(prompt)} bytes from the workspace into ${promptFile}`);
 
-    step = 'pane';
     const client = clientForModel(o.model);
+    const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, o), {flag: 'wx', mode: 0o600});
+
+    step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
     const ws = [pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel)];
     const label = o.layer ? `${o.aspect} ${o.layer}` : `${o.aspect} ${requireModelTitle(o.model)}`;
@@ -141,7 +147,7 @@ async function launch(o) {
 
     step = 'harness';
     const before = new Set(rolloutFiles(sessions));
-    const command = codexHarnessCommand(client, o, promptFile);
+    const command = codexHarnessCommand(client, o, promptFile, systemPromptFile);
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
     const rollout = await poll('the native rollout', 120, () => {
       const fresh = rolloutFiles(sessions).filter(f => !before.has(f) && rows(f)[0]?.payload?.cwd === o.workspace);
@@ -194,7 +200,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
     process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
   } else await launch(o);
 }

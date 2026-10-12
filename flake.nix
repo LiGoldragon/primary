@@ -19,15 +19,15 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/d6029431faeef01a1b5aec7296641b9db5ccc8d0";
+      url = "github:LiGoldragon/Curriculum/679564be9ee30e3833dc2946201d68e223b7587b";
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/d0d194c8d1bef78874c8aad842d70047978c4bac";
+      url = "github:LiGoldragon/psyche-skills/5a18f9cd968582fd990716442ea8a686d140231a";
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/0d20c637d424235a2e5e93084ba96d17b90fabbf";
+      url = "github:LiGoldragon/mind-skills/b7a9939a5d59ebb090227bd81cc1838b756f0165";
       flake = false;
     };
     field-skills = {
@@ -291,9 +291,10 @@
           claudeNativeSeatFixtures =
             pkgs.runCommand "primary-claude-native-seat-fixtures"
               {
-                nativeBuildInputs = [ pkgs.python3 ];
+                nativeBuildInputs = [ pkgs.python3 pkgs.nodejs ];
               }
               ''
+                node ${self}/tools/main-flow-mode/spirit-system-prompt.test.mjs
                 python3 ${self}/tools/claude-native-seat-refresh.test.py
                 touch "$out"
               '';

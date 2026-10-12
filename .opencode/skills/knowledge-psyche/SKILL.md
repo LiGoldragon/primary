@@ -30,7 +30,7 @@ the living psyche is always called the living psyche, or the living.
 
 Descending authority:
 
-- **Spirit** — philosophy. Almost never changes. Load the spirit skill.
+- **Spirit** — philosophy. Almost never changes. Load the spirit-core skill.
 - **Intent** — declared goals and guiding rules. Broader and fewer
   than Vision. When work does not align with known Intent, escalate
   before continuing.
@@ -48,7 +48,7 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 ## Where psyche lives
 
-- The spirit skill — spirit's current home; entry files will
+- The spirit-core skill — spirit's current home; entry files will
   carry it.
 - The vision-<topic> skill — distilled vision: self-standing
   statements, each reviewed by the living before it stands.

@@ -30,13 +30,31 @@ MAIN_FLOW_PROMPT = ROOT / "tools" / "main-flow-mode" / "system-prompt.md"
 MAIN_FLOW_SETTINGS = "main-flow-settings.json"
 
 
-def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT):
+def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None, workspace=ROOT, aspect=None, layer=None):
     """The replacing system prompt a main seat launches with; None for any other seat."""
     if not main_seat:
         return None
     file = pathlib.Path(prompt_file)
+    if file == MAIN_FLOW_PROMPT:
+        if not session_id:
+            raise ValueError("main-flow mode requires its exact native session")
+        file = claude_job_dir(session_id) / "main-flow-system-prompt.md"
     if not file.is_file() or not file.read_text().strip():
         raise ValueError(f"main-flow system prompt file missing or empty: {file}")
+    skills = pathlib.Path(workspace) / ".claude" / "skills"
+    names = sorted(path.name for path in skills.iterdir()
+                   if path.is_dir() and path.name.startswith("spirit-"))
+    if "spirit-core" not in names or (skills / "spirit").exists():
+        raise ValueError("regenerated spirit-core modules required")
+    if aspect == "Psyche" or layer == "Primary":
+        names.append("vision-design")
+    if aspect == "Psyche":
+        names.append("intent-psyche-interaction")
+    text = file.read_text()
+    for name in names:
+        body = re.sub(r"^---\r?\n[\s\S]*?\r?\n---\r?\n", "", (skills / name / "SKILL.md").read_text()).strip()
+        if not body or f"# {name}\n\n{body}" not in text:
+            raise ValueError(f"main-flow system prompt lacks {name}")
     return {"prompt_file": str(file.resolve()), "sha256": sha256(file)}
 
 
@@ -58,7 +76,7 @@ def native_argv(manifest, mode, name=False):
 
 
 def job_dir_holds_only_launch_state(job_dir, mode):
-    allowed = {MAIN_FLOW_SETTINGS} if mode else set()
+    allowed = {MAIN_FLOW_SETTINGS, "main-flow-system-prompt.md"} if mode else set()
     return {entry.name for entry in job_dir.iterdir()} <= allowed
 
 
@@ -157,6 +175,8 @@ def expanded_skill(name, cwd):
 def startup_skills(manifest, cwd):
     names = []
     for name in manifest["skills"]:
+        if name.startswith("spirit-") or name == "spirit":
+            continue
         body = (cwd / ".claude" / "skills" / name / "SKILL.md").read_text()
         if name in ("operation-main-flow", "operation-psyche-interraction") or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
             names.append(name)
@@ -467,9 +487,9 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
         # Spirit can invoke another skill internally.  The cursor is bound to
         # exact top-level command records; nested expansions are not evidence
         # that the corresponding top-level manifest command already ran.
-        if (not manifest["skills"] or manifest["skills"][0] != "spirit" or
-                observation.get("nativeSkillCommands") != ["<command-message>spirit</command-message>\n<command-name>/spirit</command-name>"] or
-                not skill_receipt(entries, "spirit", cwd) or
+        if (not manifest["skills"] or manifest["skills"][0] != "spirit-core" or
+                observation.get("nativeSkillCommands") != ["<command-message>spirit-core</command-message>\n<command-name>/spirit-core</command-name>"] or
+                not skill_receipt(entries, "spirit-core", cwd) or
                 commands != observation["nativeSkillCommands"]):
             raise RuntimeError("partial bootstrap skill cursor differs")
         identity = observed_identity(entries)
@@ -799,7 +819,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
             controller_attestation_file=None, controller_attestation_sha256=None,
             main_seat=True, main_flow_prompt=MAIN_FLOW_PROMPT):
-    mode = main_flow_mode(main_seat, main_flow_prompt)
+    mode = main_flow_mode(main_seat, main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"))
     receipt = plan(manifest, cwd, mode)
     if continue_partial:
         raise RuntimeError("a launcher cannot resume or resend an ambiguous first prompt")
@@ -998,7 +1018,7 @@ def main():
                          continue_partial=args.continue_partial,
                          partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None,
                          main_seat=args.main_seat, main_flow_prompt=args.main_flow_prompt) if args.refresh else \
-            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt))
+            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer")))
         if args.bootstrap_running_empty or args.continue_partial:
             persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))

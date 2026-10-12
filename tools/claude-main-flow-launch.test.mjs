@@ -68,8 +68,9 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 // Composition: native Claude loads no more than six selected skills per prompt;
 // main-flow leads, and the one launch brief is sent only after those prompts.
 assert.equal(BIRTH_SKILLS[0], 'operation-main-flow');
-for (const name of STANDING_SKILLS) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+for (const name of STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit')) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.equal(MAX_SKILLS_PER_PROMPT, 6);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['operation-main-flow', 'spirit-core']}), /only in the main system prompt/);
 const names = ['operation-main-flow', ...Array.from({length: 12}, (_, i) => `skill-${i + 1}`)];
 const composition = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true, skillNames: names});
 assert.deepEqual(composition.skillPrompts.map(prompt => [...prompt.matchAll(/\/([A-Za-z0-9_-]+)/g)].map(m => m[1])), [names.slice(0, 6), names.slice(6, 12), names.slice(12)]);
@@ -79,7 +80,7 @@ assert.equal(composition.prompt, 'Say ready.\n');
 assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior # Startup skills\n\nStartup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.\n');
 assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
 assert.throws(() => composeSkillPrompt({skillNames: Array(7).fill('x'), exists: () => true}), /between one and 6/);
-assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit']}), /operation-main-flow must lead/);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit-core']}), /operation-main-flow must lead/);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'knowledge-vocabulary'}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({brief: ' ', exists: () => true}), /brief is empty/);
 
@@ -111,7 +112,7 @@ const skillRows = [...skillFiles].map(([name, content], index) => ({
 const loaded = readLoadedSkillBlocks(skillRows, injectedWorkspace);
 assert.deepEqual(loaded.map(block => block.name), [...skillFiles.keys()]);
 assert.equal(validateLoadedSkillBlocks(loaded, [...skillFiles.keys()], skillReader), 2);
-assert.throws(() => validateLoadedSkillBlocks(loaded, ['operation-main-flow', 'spirit'], skillReader), /expected spirit, got compensation-behavior/);
+assert.throws(() => validateLoadedSkillBlocks(loaded, ['operation-main-flow', 'spirit-core'], skillReader), /expected spirit-core, got compensation-behavior/);
 assert.throws(() => validateLoadedSkillBlocks([loaded[0], loaded[0]], ['operation-main-flow', 'compensation-behavior'], skillReader), /loaded a skill more than once/);
 assert.throws(() => validateLoadedSkillBlocks([{...loaded[0], body: 'altered'}], ['operation-main-flow'], skillReader), /body differs/);
 const finalPrompt = {type: 'user', promptId: 'launch', message: {role: 'user', content: 'Say ready.'}};
@@ -128,22 +129,25 @@ const home = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-home
 const workspace = path.join(home, 'ws');
 fs.mkdirSync(path.join(workspace, 'tools', 'main-flow-mode'), {recursive: true});
 fs.writeFileSync(path.join(workspace, 'tools', 'main-flow-mode', 'system-prompt.md'), 'You are the main flow.\n');
+fs.mkdirSync(path.join(workspace, '.claude/skills/spirit-core'), {recursive: true});
+fs.writeFileSync(path.join(workspace, '.claude/skills/spirit-core/SKILL.md'), 'Core spirit.\n');
 const mode = mainFlowMode(workspace, 'sess-1', home);
-assert.equal(mode.promptFile, path.join(workspace, 'tools/main-flow-mode/system-prompt.md'));
+assert.equal(mode.sourcePromptFile, path.join(workspace, 'tools/main-flow-mode/system-prompt.md'));
+assert.equal(mode.promptFile, path.join(home, '.claude/jobs/native-sess-1/main-flow-system-prompt.md'));
 assert.equal(mode.settingsFile, path.join(home, '.claude/jobs/native-sess-1/main-flow-settings.json'));
 const hook = mode.settings.hooks.UserPromptSubmit[0].hooks[0];
 assert.equal(hook.command, `python3 '${workspace}/tools/main-flow-mode/reminder-hook.py' --prompt-file '${workspace}/tools/main-flow-mode/system-prompt.md' --state-dir '${home}/.claude/jobs/native-sess-1/main-flow-reminder' --every 20`);
 writeMainFlowMode(mode);
 assert.deepEqual(JSON.parse(fs.readFileSync(mode.settingsFile, 'utf8')), mode.settings);
 assert.throws(() => writeMainFlowMode(mode), /EEXIST/);
-fs.writeFileSync(mode.promptFile, ' \n');
+fs.writeFileSync(mode.sourcePromptFile, ' \n');
 assert.throws(() => writeMainFlowMode(mainFlowMode(workspace, 'sess-2', home)), /system prompt missing or empty/);
 
 // A given system prompt replaces the fixed file for the seat and its reminder hook.
 const custom = path.join(home, 'assembled.md');
 fs.writeFileSync(custom, 'Assembled from modules.\n');
 const cmode = mainFlowMode(workspace, 'sess-3', home, custom);
-assert.equal(cmode.promptFile, custom);
+assert.equal(cmode.sourcePromptFile, custom);
 assert.equal(cmode.settingsFile, path.join(home, '.claude/jobs/native-sess-3/main-flow-settings.json'));
 assert.equal(cmode.settings.hooks.UserPromptSubmit[0].hooks[0].command, `python3 '${workspace}/tools/main-flow-mode/reminder-hook.py' --prompt-file '${custom}' --state-dir '${home}/.claude/jobs/native-sess-3/main-flow-reminder' --every 20`);
 writeMainFlowMode(cmode);

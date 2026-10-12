@@ -1,5 +1,5 @@
 ---
-name: spirit
+name: spirit-core
 description: Every task.
 dependencies: [compensation-behavior, compensation-correction, knowledge-vocabulary, compensation-book-distillation]
 ---

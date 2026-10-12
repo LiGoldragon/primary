@@ -19,7 +19,7 @@
    skill body was loaded exactly once. Remote control is on.
    CLAUDE_CODE_CHILD_SESSION and
    CLAUDE_JOB_DIR are unset for the seat.  As every main seat, it starts with
-   the main-flow text as its system prompt (--system-prompt-file) and with the
+   the main-flow core and selected system modules as its system prompt (--system-prompt-file) and with the
    settings whose hook adds the main-flow reminder to the living's prompts
    (--settings), both from tools/main-flow-mode in the workspace; the settings
    are written to the session's job directory under ~/.claude/jobs.
@@ -34,6 +34,7 @@ import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, continuationForLaunch, requireTopic, writeContinuationRecord, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
+import {composeSpiritSystemPrompt, mainSystemModules} from './main-flow-mode/spirit-system-prompt.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 
 // Roots are expanded by Curriculum at launch; prompt composition keeps
@@ -41,7 +42,7 @@ import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 // Claude expands at most six skill commands from one prompt.
 export const MAX_SKILLS_PER_PROMPT = 6;
 const STARTUP_INSTRUCTION = 'Startup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.';
-export const BIRTH_SKILLS = [...new Set(['operation-main-flow', ...STANDING_SKILLS, 'knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'])];
+export const BIRTH_SKILLS = [...new Set(['operation-main-flow', ...STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit'), 'knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'])];
 // Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
 // no Mind seat, at any layer, is launched on Claude.
 export const ASPECTS = ['Psyche', 'Field'];
@@ -133,6 +134,7 @@ export function composeFirstPrompt({brief, exists, skillNames = BIRTH_SKILLS}) {
   if (skillNames[0] !== 'operation-main-flow') throw new Error('operation-main-flow must lead the resolved skill closure');
   for (const name of skillNames) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
   if (!brief.trim()) throw new Error('launch brief is empty');
+  if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-'))) throw new Error('spirit modules belong only in the main system prompt');
   const skillPrompts = [];
   for (let offset = 0; offset < skillNames.length; offset += MAX_SKILLS_PER_PROMPT) {
     skillPrompts.push(composeSkillPrompt({skillNames: skillNames.slice(offset, offset + MAX_SKILLS_PER_PROMPT), exists}));
@@ -145,19 +147,21 @@ export function composeFirstPrompt({brief, exists, skillNames = BIRTH_SKILLS}) {
 // The main-flow mode a main seat starts in: the replacing system prompt, and the
 // settings whose UserPromptSubmit hook re-adds the main-flow core.  The hook's
 // count lives in the job directory; CLAUDE_JOB_DIR is unset, so it is named.
-export function mainFlowMode(workspace, sessionId, home = os.homedir(), systemPromptFile = undefined) {
+export function mainFlowMode(workspace, sessionId, home = os.homedir(), systemPromptFile = undefined, seat = {}) {
   const modeDir = path.join(workspace, 'tools', 'main-flow-mode');
   const promptFile = systemPromptFile ?? path.join(modeDir, 'system-prompt.md');
   const jobDir = path.join(home, '.claude', 'jobs', `native-${sessionId}`);
   const hook = ['python3', sh(path.join(modeDir, 'reminder-hook.py')), '--prompt-file', sh(promptFile),
     '--state-dir', sh(path.join(jobDir, 'main-flow-reminder')), '--every', '20'].join(' ');
   const settings = {hooks: {UserPromptSubmit: [{hooks: [{type: 'command', command: hook, timeout: 10}]}]}};
-  return {promptFile, settingsFile: path.join(jobDir, 'main-flow-settings.json'), settings};
+  return {seat, sourcePromptFile: promptFile, workspace, promptFile: path.join(jobDir, 'main-flow-system-prompt.md'), settingsFile: path.join(jobDir, 'main-flow-settings.json'), settings};
 }
 
 export function writeMainFlowMode(mode) {
-  if (!fs.statSync(mode.promptFile).isFile() || !fs.readFileSync(mode.promptFile, 'utf8').trim()) throw new Error(`main-flow system prompt missing or empty: ${mode.promptFile}`);
+  if (!fs.statSync(mode.sourcePromptFile).isFile() || !fs.readFileSync(mode.sourcePromptFile, 'utf8').trim()) throw new Error(`main-flow system prompt missing or empty: ${mode.promptFile}`);
   fs.mkdirSync(path.dirname(mode.settingsFile), {recursive: true, mode: 0o700});
+  const prompt = composeSpiritSystemPrompt(fs.readFileSync(mode.sourcePromptFile, 'utf8'), mainSystemModules(mode.workspace, '.claude', mode.seat));
+  fs.writeFileSync(mode.promptFile, prompt, {flag: 'wx', mode: 0o600});
   fs.writeFileSync(mode.settingsFile, `${JSON.stringify(mode.settings, null, 2)}\n`, {flag: 'wx', mode: 0o600});
 }
 
@@ -248,7 +252,9 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS));
+    const systemBase = o.systemPromptFile ?? path.join(o.workspace, 'tools/main-flow-mode/system-prompt.md');
+    composeSpiritSystemPrompt(fs.readFileSync(systemBase, 'utf8'), mainSystemModules(o.workspace, '.claude', o));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
     const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
     const firstSkillPrompt = composition.skillPrompts[0];
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-')), 'first-skill-prompt.md');
@@ -274,7 +280,7 @@ async function launch(o) {
     step = 'harness';
     const transcript = transcriptPath(o.workspace, sessionId);
     if (fs.existsSync(transcript)) throw new Error(`transcript already exists: ${transcript}`);
-    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile);
+    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile, o);
     writeMainFlowMode(mode);
     const unset = UNSET_ENV.map(v => `-u ${v}`).join(' ');
     const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
@@ -357,7 +363,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
     const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
     process.stdout.write(`${composition.skillPrompts.map((prompt, i) => `# Skill batch ${i + 1}\n${prompt}`).join('\n')}\n# Launch brief\n${composition.prompt}`);
   } else await launch(o);

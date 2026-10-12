@@ -3,6 +3,7 @@ name: read-trivial
 description: 'The answer is in one known place. You are fetching it, not finding it.'
 model: 'claude-haiku-4-5'
 effort: medium
+tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP
 ---
 
 Do not edit files, commit, or push. Fetching, cloning, and tool queries are fine.
@@ -116,7 +117,7 @@ the living psyche is always called the living psyche, or the living.
 
 Descending authority:
 
-- **Spirit** — philosophy. Almost never changes. Load the spirit skill.
+- **Spirit** — philosophy. Almost never changes. Load the spirit-core skill.
 - **Intent** — declared goals and guiding rules. Broader and fewer
   than Vision. When work does not align with known Intent, escalate
   before continuing.
@@ -134,7 +135,7 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 ## Where psyche lives
 
-- The spirit skill — spirit's current home; entry files will
+- The spirit-core skill — spirit's current home; entry files will
   carry it.
 - The vision-<topic> skill — distilled vision: self-standing
   statements, each reviewed by the living before it stands.
@@ -255,6 +256,10 @@ Vision is the psyche's; a distilled statement never says so of itself.
 ## Books
 
 Every book has a distillation section: it proposes the lines that move the living's words into vision, intent and spirit skills. A book without one proposes nothing to move forward.
+
+The first edition of a book is mostly questions.
+
+The book is the center of development: it is the evolution of an idea, and the list of unknowns lives in it.
 
 A book carries psyche only. Compensation, knowledge and operation skills are the machines' own: they write them and prove them by tests.
 
