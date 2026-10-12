@@ -56,3 +56,6 @@
 - 2026-10-12 Published «His words travel as psyche, second edition» https://claude.ai/artifact/9ptY8tfojsAAoakxsrzwgr; links to d68c82; publish dispatched.
 - 2026-10-12 Corrected editions, check report and log on main as 0c8521; lock released.
 - 2026-10-12 CLAUDE.md now: only a main flow commits and pushes Primary under its turn; subflows never stage, commit or push. From here my publishes are my own commands under the turn.
+- 2026-10-12 Human-side research in reports/research-unknowns-human.md. FAULT again: that subflow (briefed before the no-commit rule) committed to main (5b56696) and swept my dirty log.md into a 'found in tree' commit (69fb1eb). Jigsaw book being written.
+- 2026-10-12 «The missing pieces» written (books/15); publication dispatched.
+- 2026-10-12 Published «The missing pieces» https://claude.ai/artifact/RaZ2QDgtEXohUGW6EovvCD; link to d68c82; own publish after Field's release.
