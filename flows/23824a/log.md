@@ -30,3 +30,16 @@
 - 2026-10-10: Standing until the commit queue exists (d68c82): ask d68c82 for the PrimaryPublish turn before acquiring it; send it the Released reply after. Field has the next turn.
 - 2026-10-10: Published flows/23824a as e6a4f4; PrimaryPublish 18074 released; Released sent to d68c82.
 - 2026-10-11: Temporary condition ended (d68c82): Prometheus and Ouranos up; heavy builds back on Prometheus.
+- 2026-10-11: Shared copy integrated at main 29bf765 (Astra), kept work committed. Writes resumed. Publish only through the PrimaryPublish turn, no clone (supersedes the handover clone rule).
+- 2026-10-11: d68c82: living asks for new editions; registry edition to publish now with fork as proposal. Relayed to 081064.
+- 2026-10-11: «Sources and the registry» 2nd edition (081064) sent to d68c82.
+- 2026-10-11: Standing (d68c82, from the living): Fable makes every non-trivial book. A Secondary writes no books; its subflow gathers all context on the subject (records across flows, current skill text, open books, later contradictions) and sends it in one message to the Fable Primary (081064), which checks it and authors.
+- 2026-10-11: psyche-skills history rewritten (no Sources sections; references in commit messages). New main d0d194; old main at backup/pre-sources-rewrite-20261011. My 9fb043 (inline D1) is on the old history; briefs touching psyche-skills fetch the new main first.
+- 2026-10-11: D1 on new psyche-skills main as 97874fb; its "d5df1d ethos" reference lost in the rewrite; told d68c82 and 081064.
+- 2026-10-11: Retracted: d68c82 witnessed "d5df1d ethos" in 97874fb message; my subflow misread. Correction sent to 081064.
+- 2026-10-12: Notion logged (delimiters): new delimiter for vectors, and for comments-as-code; vector first. Relayed to 081064; context packet dispatched.
+- 2026-10-12: Delimiter context packet (reports/delimiter-packet.md) sent whole to 081064.
+- 2026-10-12: «A delimiter for vectors» 1st ed (081064) sent to d68c82.
+- 2026-10-12: d68c82: vector book proposals must target psyche-skills/skills/vision-ethos.md; relayed to 081064.
+- 2026-10-12: 081064 witnessed vision/ethos.md is the authored vision-ethos source (no skills/vision-ethos.md at 5a18f9c); target kept; told d68c82.
+- 2026-10-12: d68c82 withdrew the target correction; book unchanged.
