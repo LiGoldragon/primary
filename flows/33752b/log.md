@@ -54,3 +54,5 @@
 - 2026-10-12 AI-side research in reports/research-unknowns-ai.md. FAULT: the research subflow committed and pushed that report to main (eeb437e) under a PrimaryPublish lock it took itself, outside the turn arrangement; reported to d68c82. Human-side research still out.
 - 2026-10-12 Published «Aspects talk at the same layer, third edition» https://claude.ai/artifact/7oT2KrfJo2pKff2bJkBP6a (page saved in scratchpad, not in lane).
 - 2026-10-12 Published «His words travel as psyche, second edition» https://claude.ai/artifact/9ptY8tfojsAAoakxsrzwgr; links to d68c82; publish dispatched.
+- 2026-10-12 Corrected editions, check report and log on main as 0c8521; lock released.
+- 2026-10-12 CLAUDE.md now: only a main flow commits and pushes Primary under its turn; subflows never stage, commit or push. From here my publishes are my own commands under the turn.
