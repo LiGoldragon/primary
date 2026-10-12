@@ -59,3 +59,22 @@
 - 2026-10-11: Render check of the second edition passed apart from a duplicated doctype wrapper, which browsers tolerate. Told 875960.
 - 2026-10-11: The living said the second edition repeated what he had already approved. Logged in vision/books.md and relayed; 875960 is to land what was approved and republish only what is open. Sent a skill line to d68c82 for Field.
 - 2026-10-11: 875960 published ca9972 and released lock 18498. d68c82 ordered the approved lines landed, then a hold on psyche-skills for Mind's history rewrite. Passed to 875960. My publish turn has started, and 33752b goes after me.
+- 2026-10-11: 875960 is landing proposal 1 'as amended'. I flagged that the amendments drawn from comments 2, 3, 4 and 6 are its wording, which he hasn't reviewed.
+- 2026-10-11: Lane published as 845503, lock 18518 released; turn handed to 33752b.
+- 2026-10-11: Disagreed with 875960 over landing its unreviewed amendment wording. Told it to land only proposal 1 plus comment 1, and asked d68c82 to rule.
+- 2026-10-11: d68c82 ruled that only approved wording lands, and the reworded paragraphs go to the third edition. Passed to 875960.
+- 2026-10-11: 875960's landing 925cf5 went out with the broader wording; a follow-up commit narrowing it to the approved text is being pushed. Core hears once the hash arrives.
+- 2026-10-11: psyche-skills landing f77668 (on 925cf5) pushed; told d68c82 Mind's rewrite can begin. Line check launched.
+- 2026-10-11: Line check of f77668: clean apart from two removals made per comments 5 and 6. vision-flow still has a Sources section for Mind's rewrite. Told d68c82.
+- 2026-10-11: Third edition of «Flow, whole, in ethos» published; link sent to d68c82.
+- 2026-10-11: psyche-skills rewritten (new main d0d194, no Sources sections). Writes may resume; told 875960.
+- 2026-10-12: The living commented on the third edition up to «I haven't read the rest». d68c82 ordered: land what he approved, publish the next edition straight to him, and message core only with a blocker. Comment fetch launched.
+- 2026-10-12: Four comments on the third edition logged (vision/identifier, notion/identifier, vision/callerIdentity) and relayed to 875960. Comment 1 approves proposal 1, to land. Comment 4 relayed to Astra: a shared caller-identification proof of concept by 875960 and Astra. Investigation into why the Flow Nexus isn't in use launched.
+- 2026-10-12: Flow Nexus adoption investigation landed (nothing on the live path calls Flow; six candidate causes). Sent to d68c82 for the living, and to 875960.
+- 2026-10-12: Proposal 1 landed (9bba4b); fourth edition published. Link and publish-turn request sent to d68c82. Astra is building the nexus-library proof of concept.
+- 2026-10-12: d68c82 granted publish turns: 875960 first, then me.
+- 2026-10-12: «The caller is witnessed» published; link sent to d68c82. Under the new CLAUDE.md rule only a main flow commits Primary; told 875960 to stop its publish subflow.
+- 2026-10-12: The living said the nexus anatomy (operation, signal, memory) is the bulk of machine anatomy, and ordered one good nexus defined whole, Flow first. Logged in vision/nexus.md and relayed to 875960.
+- 2026-10-12: d68c82 made Flow's whole anatomy in ethos the topic priority. Anatomy inventory subflow launched; 875960 to author the book.
+- 2026-10-12: Anatomy inventory landed (one trait defined anywhere, 21 conflicts, 14 questions); handed whole to 875960.
+- 2026-10-12: «Flow, the anatomy» published (inventory checked: 178 of 188 claims witnessed); link sent to d68c82.
