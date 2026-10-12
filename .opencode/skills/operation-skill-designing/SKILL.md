@@ -14,7 +14,7 @@ An instruction states the desired shape completely and positively; needing a gua
 
 Search `Reference skill collections` for prior art on the situation before writing.
 
-A changed skill is committed and pushed at once; the generated skill trees are then regenerated from it and committed, so every flow receives it.
+A changed authored skill is committed and pushed at once in its source repository. Regenerate the skill trees normally from the published source; when those outputs are in Primary, only the standing Primary committer commits and pushes their qualified owned paths. Never edit the generated trees directly.
 
 A description names the situation that should make an agent load the skill,
 in the words of the task at hand. State a trigger, not a topic.

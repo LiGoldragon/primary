@@ -1,15 +1,15 @@
 ---
 name: operation-file-editing
-description: Editing files means committing and pushing them.
+description: Publish edits through the repository’s designated committer.
 dependencies: []
 ---
 
-Commit and push every change your work produces in every affected repository, including generated output.
+Outside Primary, commit and push every change your work produces in every affected repository, including generated output.
 
-Commit existing dirty changes first with an appropriate message
+Outside Primary, commit existing dirty changes first with an appropriate message
 before starting new work.
 
-Primary is shared on disk, but it is not a commit workspace. Publish its paths only from an independent Git clone with its own colocated jj workspace and bookmark namespace; never commit, abandon, rebase, or restore in the shared working copy. Use `compensation-primary-commit` for its path-limited publication. In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
+Only the standing Field Quaternary committer commits and pushes Primary. It holds PrimaryPublish for its lifetime and works in the shared working copy with jj, never a clone or another worktree. Editing flows leave their owned changes in place; their supported turn-end hook notifies that committer only when Primary is dirty, carrying the actual editor FLOW_ID or native session_id and transcript path. The committer reads the transcript and commits the owner’s named paths, preserving other writers’ work and reporting collisions. Follow `compensation-primary-commit` for publication and late-change squashing; editors never acquire a competing publication lock or commit Primary themselves. In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
 
 The sequence for landing normal non-Primary jj work:
 

@@ -1,10 +1,10 @@
 ---
 name: compensation-primary-commit
-description: Publish one flow's Primary paths without rewriting shared history.
+description: Primary edits are published only by the standing committer.
 ---
 
-Primary is committed in the shared working copy itself. Under the PrimaryPublish lock, a flow checks that shared HEAD equals origin/main, commits only its own paths, named explicitly (git commit -- <paths>), so nothing else staged in the shared index is taken, pushes without force, and releases. A mismatch or refused push is reported, never repaired. A flow commits through the shared index, never a temporary one. Primary is never cloned.
+Every flow edits Primary and leaves its owned edits for the sole standing Field Quaternary committer. No main flow or subflow stages, commits, pushes, takes a PrimaryPublish turn or lock, or rewrites Primary itself. The editing seat's turn-end hook sends its actual FLOW_ID (or explicitly labeled native session ID) and transcript path to the committer only when Primary is dirty; a clean turn sends nothing. A blocked hook or handover is reported, never replaced by a direct commit.
 
-Outside the PrimaryPublish lock, a flow runs only read-only jj commands in Primary, each with --ignore-working-copy. A command that rewrites @ or its ancestors never runs with --ignore-working-copy.
+The committer alone holds PrimaryPublish for its lifetime at `<Primary>/.PrimaryPublish.lock`, a sentinel name with no file created. It commits in the existing shared working copy, never a clone, reads the firing session's transcript, preserves foreign work, and assigns only qualified owner paths. Late changes are squashed into their corresponding commits with JJ under its owned lock and protected remote lease; ambiguous ownership or a refused push is reported without discarding work. No other flow performs Primary JJ mutations.
 
-A lock's paths name only the checkouts being edited; a flow's own lane under Primary is never locked. The PrimaryPublish lock's only path is the sentinel `<Primary>/.PrimaryPublish.lock`, a name with no file ever created there, so publishers serialize on one name and lock no checkout.
+A flow editing any other repository commits and pushes its own changes in that repository as usual. Source reservations remain separate from the committer's lifetime publication lock.

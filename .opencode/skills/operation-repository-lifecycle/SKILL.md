@@ -11,5 +11,5 @@ Treat public visibility as default unless privacy or safety conflicts.
 Do not publish private material or change private visibility without approval.
 Keep portable dependencies on pushed public refs.
 Close out only after relevant validation exists.
-Commit and push edited work.
+Outside Primary, commit and push edited work. In Primary, leave owned edits for the sole standing committer through the supported turn-end hook; only that committer commits and pushes.
 Preserve peer changes and report remaining blockers.
