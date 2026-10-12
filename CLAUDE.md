@@ -17,9 +17,11 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 
 ## Committing
 
-Primary is always committed: commit and push what you edited before
-going idle. Dirty changes found in the tree are committed first, as
-their own commit.
+Only a main flow commits and pushes Primary, under its acquired PrimaryPublish turn.
+A subflow leaves its owned edits for its main flow and returns the exact paths and
+validation; it does not stage, commit or push Primary. The main flow checks shared
+HEAD equals origin/main, commits only its explicit owned paths and pushes non-force.
+A mismatch is reported, never repaired; foreign dirty changes are preserved.
 
 ## Psyche
 

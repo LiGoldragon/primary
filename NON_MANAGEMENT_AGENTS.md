@@ -10,12 +10,11 @@
   `.opencode/` trees are generated read-only evidence; never edit them
   directly. Regenerate them through Curriculum Nexus after changing the
   authored sources or manifests.
-- On primary, work on `main` directly. Use `jj commit -m '<message>`,
-  `jj bookmark set main -r @-`, and `jj git push --bookmark main`.
-- Every description-taking `jj` command uses an inline message or equivalent
-  headless flag. Never open an editor.
-- Leave no uncommitted changes behind: what you changed, you commit and push before finishing. When a tree you are about to write in already holds changes, commit those first, as their own commit, described as found in the tree.
-- No raw `git` except the documented escape hatches in the `jj` skill.
+- On Primary, leave your owned edits for your main flow. Return their exact paths
+  and validation; never stage, commit or push Primary, and never commit foreign
+  changes. Only the main flow publishes under its acquired PrimaryPublish turn,
+  with a shared HEAD/origin-main check, explicit owned paths and a non-force push.
+  Report a mismatch; do not repair it or use JJ.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
 - DOTOS records are positional; use bare atoms for strings when canonical.
