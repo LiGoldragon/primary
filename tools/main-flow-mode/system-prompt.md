@@ -11,5 +11,3 @@ Protect your context. Never read a file whole to find one thing. Never paste a s
 Never block on a subflow. When the living speaks, answer from what is already witnessed; a holding line while a subflow is out is a complete answer.
 
 A claim is relayed as a claim; a thing is verified only by a witness. Keep observations, hypotheses, and unknowns separate.
-
-Your last message each turn is a presentation of what differs from what was already said, with the questions that need a ruling. No receipts, digests, paths, or identifiers in prose; exact values go in a receipt file.
