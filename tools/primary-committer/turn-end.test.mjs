@@ -47,3 +47,65 @@ test('actual clean/dirty repository: notification only, identity, self suppressi
   assert.equal(fs.readFileSync(path.join(primary, 'owned.txt'), 'utf8'), 'uncommitted owner bytes\n');
   assert.equal(spawnSync('git', ['-C', primary, 'rev-parse', '--verify', 'HEAD']).status, 128);
 });
+
+
+test('Primary-own clean boundary ignores nested dirt but detects owned paths, modes and changed gitlinks', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'committer-own-path-proof-'));
+  const primary = path.join(root, 'primary');
+  const nested = path.join(primary, 'flow');
+  fs.mkdirSync(nested, {recursive: true});
+  const git = (cwd, ...args) => {
+    const result = spawnSync('git', ['-C', cwd, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', ...args], {encoding: 'utf8'});
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  };
+  git(nested, 'init');
+  fs.writeFileSync(path.join(nested, 'source.txt'), 'original nested bytes\n');
+  git(nested, 'add', 'source.txt');
+  git(nested, 'commit', '-m', 'nested fixture');
+  const originalLink = git(nested, 'rev-parse', 'HEAD').trim();
+  git(primary, 'init');
+  git(primary, 'config', 'core.filemode', 'true');
+  fs.writeFileSync(path.join(primary, 'owned.txt'), 'original Primary bytes\n');
+  git(primary, 'add', 'owned.txt');
+  git(primary, 'update-index', '--add', '--cacheinfo', `160000,${originalLink},flow`);
+  git(primary, 'commit', '-m', 'Primary fixture');
+  const transcript = path.join(root, 'editor.jsonl');
+  fs.writeFileSync(transcript, '{}\n');
+  let sends = 0;
+  const run = (program, args, options) => {
+    if (program === 'hm-send') { sends++; return 'Transported.{ bbbbbb done }'; }
+    const result = spawnSync(program, args, {encoding: 'utf8', ...options});
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  };
+  const invoke = () => notifyTurnEnd({primary, committer: 'bbbbbb', event: {hook_event_name: 'Stop', session_id: 'editor', transcript_path: transcript}, env: {...process.env, FLOW_ID: 'aaaaaa'}, run});
+  fs.writeFileSync(path.join(nested, 'source.txt'), 'preserved nested edit\n');
+  fs.writeFileSync(path.join(nested, 'untracked.txt'), 'preserved nested untracked\n');
+  assert.notEqual(git(primary, 'status', '--porcelain=v1'), '');
+  assert.equal(invoke().status, 'clean');
+  assert.equal(sends, 0);
+  fs.writeFileSync(path.join(primary, 'new.txt'), 'new owned bytes\n');
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'add', 'new.txt');
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'commit', '-m', 'new owned path');
+  fs.appendFileSync(path.join(primary, 'owned.txt'), 'edited\n');
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'add', 'owned.txt');
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'commit', '-m', 'owned edit');
+  fs.chmodSync(path.join(primary, 'owned.txt'), 0o755);
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'add', 'owned.txt');
+  git(primary, 'commit', '-m', 'owned mode');
+  assert.equal(invoke().status, 'clean');
+  git(nested, 'add', 'source.txt');
+  git(nested, 'commit', '-m', 'new nested revision');
+  assert.notEqual(git(nested, 'rev-parse', 'HEAD').trim(), originalLink);
+  assert.equal(invoke().status, 'notified');
+  git(primary, 'add', 'flow');
+  assert.equal(invoke().status, 'notified');
+  assert.equal(fs.readFileSync(path.join(nested, 'source.txt'), 'utf8'), 'preserved nested edit\n');
+  assert.equal(fs.readFileSync(path.join(nested, 'untracked.txt'), 'utf8'), 'preserved nested untracked\n');
+});

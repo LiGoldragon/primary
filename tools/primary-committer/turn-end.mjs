@@ -20,7 +20,8 @@ export function notifyTurnEnd({primary, committer, event, env = process.env, run
   const gitEnv = {...env, GIT_OPTIONAL_LOCKS: '0'};
   const actualRoot = run('git', ['-C', root, 'rev-parse', '--show-toplevel'], {env: gitEnv}).trim();
   if (fs.realpathSync(actualRoot) !== root) throw new Error('Primary must name the repository root');
-  const dirty = run('git', ['-C', root, 'status', '--porcelain=v1', '-z', '--untracked-files=normal'], {env: gitEnv});
+  // Primary owns gitlink revisions, not uncommitted bytes inside nested repositories.
+  const dirty = run('git', ['-C', root, 'status', '--porcelain=v1', '-z', '--untracked-files=normal', '--ignore-submodules=dirty'], {env: gitEnv});
   if (!dirty) return {status: 'clean', notified: false};
   if (flow && !/^[a-f0-9]{6,64}$/.test(flow)) throw new Error('FLOW_ID is malformed');
   if (typeof event.session_id !== 'string' || !event.session_id || /[\x00-\x1f]/.test(event.session_id))
