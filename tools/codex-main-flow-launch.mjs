@@ -136,7 +136,7 @@ async function launch(o) {
 
     const client = clientForModel(o.model);
     const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
-    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, metaflow: continuation.metaflow, startupSkills}), {flag: 'wx', mode: 0o600});
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills}), {flag: 'wx', mode: 0o600});
 
     step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
@@ -192,7 +192,7 @@ async function launch(o) {
     done(`${name} on ${paneId}, agent session ${threadId}`);
 
     step = 'register';
-    done(execFileSync('hm-register', [flowId, name, '--session', o.herdrSession, '--native-thread', threadId], {encoding: 'utf8', timeout: 60000}).trim());
+    done(execFileSync('hm-register', [flowId, name, '--session', o.herdrSession, '--native-thread', threadId, '--aspect', o.aspect, '--topic', continuation.topic, '--layer', o.layer], {encoding: 'utf8', timeout: 60000}).trim());
     releaseDependency();
   } catch (error) {
     releaseDependency();

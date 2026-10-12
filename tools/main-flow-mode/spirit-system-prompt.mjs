@@ -16,7 +16,7 @@ export function spiritModules(workspace, surface = '.agents') {
   });
 }
 
-export function mainSystemModules(workspace, surface, {aspect, layer, metaflow, startupSkills = []}) {
+export function mainSystemModules(workspace, surface, {aspect, layer, topic = 'Core', metaflow, startupSkills = []}) {
   const modules = spiritModules(workspace, surface);
   const names = [];
   if (aspect === 'Psyche' || layer === 'Primary') names.push('vision-design');
@@ -27,6 +27,15 @@ export function mainSystemModules(workspace, surface, {aspect, layer, metaflow, 
     const body = fs.readFileSync(file, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
     if (!body) throw new Error(`empty main system module: ${name}`);
     modules.push({name, body});
+  }
+  const role = `${aspect.toLowerCase()}-${topic.toLowerCase()}-${layer.toLowerCase()}`;
+  const roleFile = path.join(workspace, 'tools', 'main-seat-roles', `${role}.md`);
+  if (fs.existsSync(roleFile)) {
+    const body = fs.readFileSync(roleFile, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
+    if (!body) throw new Error(`empty main-seat role: ${role}`);
+    modules.push({name: `main-seat-role-${role}`, body});
+  } else if (aspect === 'Psyche' && topic === 'Core' && layer === 'Tertiary') {
+    throw new Error('generated Psyche Core Tertiary role is missing');
   }
   return modules;
 }

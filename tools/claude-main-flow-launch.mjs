@@ -267,7 +267,7 @@ async function launch(o) {
 
     step = 'prompt';
     const startupSkills = resolveSkillDependencies(BIRTH_SKILLS);
-    const systemSeat = {...o, metaflow: continuation.metaflow, startupSkills};
+    const systemSeat = {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills};
     const systemBase = o.systemPromptFile ?? path.join(o.workspace, 'tools/main-flow-mode/system-prompt.md');
     composeSpiritSystemPrompt(fs.readFileSync(systemBase, 'utf8'), mainSystemModules(o.workspace, '.claude', systemSeat));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
@@ -366,7 +366,7 @@ async function launch(o) {
     done(`${name} on ${paneId}, agent session ${sessionId}`);
 
     step = 'register';
-    done(execFileSync('hm-register', [flowId, name, '--session', o.herdrSession, '--native-thread', sessionId], {encoding: 'utf8', timeout: 60000}).trim());
+    done(execFileSync('hm-register', [flowId, name, '--session', o.herdrSession, '--native-thread', sessionId, '--aspect', o.aspect, '--topic', continuation.topic, '--layer', o.layer], {encoding: 'utf8', timeout: 60000}).trim());
     releaseDependency();
   } catch (error) {
     releaseDependency();

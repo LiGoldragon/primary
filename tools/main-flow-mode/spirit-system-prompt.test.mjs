@@ -30,7 +30,15 @@ try {
     fs.mkdirSync(path.join(skills, name));
     fs.writeFileSync(path.join(skills, name, 'SKILL.md'), `${name} body`);
   }
-  assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design', 'intent-psyche-interaction']);
+  assert.throws(() => mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}), /Core Tertiary role is missing/);
+  const roleDirectory = path.join(root, 'tools/main-seat-roles'); fs.mkdirSync(roleDirectory, {recursive: true});
+  fs.writeFileSync(path.join(roleDirectory, 'psyche-core-tertiary.md'), '---\nname: psyche-core-tertiary\n---\nRead all comments and record delivery receipts in the relay ledger.');
+  const roleNames = ['spirit-core', 'spirit-future', 'vision-design', 'intent-psyche-interaction', 'main-seat-role-psyche-core-tertiary'];
+  assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}).map(module => module.name), roleNames);
+  const rolePrompt = composeSpiritSystemPrompt('Base.', mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}));
+  assert.equal(rolePrompt.split('Read all comments').length - 1, 1);
+  assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', topic: 'Flow'}).some(module => module.name.startsWith('main-seat-role-')));
+  assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Secondary'}).some(module => module.name.startsWith('main-seat-role-')));
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Field', layer: 'Primary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary'}).map(module => module.name), ['spirit-core', 'spirit-future']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary', metaflow: 'Owned continuation context'}).map(module => module.name), ['spirit-core', 'spirit-future', 'intent-psyche-interaction']);
