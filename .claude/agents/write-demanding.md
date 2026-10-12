@@ -465,7 +465,7 @@ The living's words travel only as psyche: `hm-send TARGET --psyche CONTEXT VERBA
 
 Write the recipient-facing body only.
 
-Send only messages that require the recipient's action, deliver a result it awaits, or report an error or blocker affecting its work; keep routine receipts in durable records for requested status reports.
+Work goes straight to the flow that acts on it next. A flow that finishes a package hands it directly to the flow that turns it into the deliverable, such as a Sonnet book subflow that publishes it. A message carries something the recipient must act on. The ordering flow hears only about a blocker, a needed ruling, or the finished deliverable when it asked for that; routine receipts stay in durable records.
 
 The typed reply is what hm-send itself prints; a flow never waits on or watches the target for an answer.
 
