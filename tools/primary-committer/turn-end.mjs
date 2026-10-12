@@ -13,16 +13,20 @@ function command(program, args, options = {}) {
 
 export function notifyTurnEnd({primary, committer, event, env = process.env, run = command}) {
   const flow = env.FLOW_ID;
-  if (!/^[a-f0-9]{6,64}$/.test(committer ?? '')) throw new Error('the standing committer FLOW_ID is required');
-  if (flow === committer) return {status: 'self', notified: false};
-  if (event?.hook_event_name !== 'Stop') throw new Error('this adapter requires an actual Stop event');
   const root = fs.realpathSync(primary);
+  // A restored sole publisher can have a new identity while editor settings stay loaded.
+  // Read the owned routing value on each invocation, not from a harness snapshot.
+  const recipientFile = path.join(root, 'tools', 'primary-committer', 'recipient.json');
+  if (fs.existsSync(recipientFile)) committer = JSON.parse(fs.readFileSync(recipientFile, 'utf8')).flow_id;
+  if (!/^[a-f0-9]{6,64}$/.test(committer ?? '')) throw new Error('the standing committer FLOW_ID is required');
+  if (flow === committer) return {status: 'self', notified: false, recipient: committer};
+  if (event?.hook_event_name !== 'Stop') throw new Error('this adapter requires an actual Stop event');
   const gitEnv = {...env, GIT_OPTIONAL_LOCKS: '0'};
   const actualRoot = run('git', ['-C', root, 'rev-parse', '--show-toplevel'], {env: gitEnv}).trim();
   if (fs.realpathSync(actualRoot) !== root) throw new Error('Primary must name the repository root');
   // Primary owns gitlink revisions, not uncommitted bytes inside nested repositories.
   const dirty = run('git', ['-C', root, 'status', '--porcelain=v1', '-z', '--untracked-files=normal', '--ignore-submodules=dirty'], {env: gitEnv});
-  if (!dirty) return {status: 'clean', notified: false};
+  if (!dirty) return {status: 'clean', notified: false, recipient: committer};
   if (flow && !/^[a-f0-9]{6,64}$/.test(flow)) throw new Error('FLOW_ID is malformed');
   if (typeof event.session_id !== 'string' || !event.session_id || /[\x00-\x1f]/.test(event.session_id))
     throw new Error('dirty turn has no valid native session_id');
@@ -36,7 +40,7 @@ export function notifyTurnEnd({primary, committer, event, env = process.env, run
   ].join('\n');
   const receipt = run('hm-send', [committer, '--stdin'], {env, input: message, timeout: 15000});
   if (!/^Transported\./.test(receipt.trim())) throw new Error(`committer message was not transported: ${receipt.trim()}`);
-  return {status: 'notified', notified: true, receipt: receipt.trim()};
+  return {status: 'notified', notified: true, recipient: committer, receipt: receipt.trim()};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

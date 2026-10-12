@@ -109,3 +109,38 @@ test('Primary-own clean boundary ignores nested dirt but detects owned paths, mo
   assert.equal(fs.readFileSync(path.join(nested, 'source.txt'), 'utf8'), 'preserved nested edit\n');
   assert.equal(fs.readFileSync(path.join(nested, 'untracked.txt'), 'utf8'), 'preserved nested untracked\n');
 });
+
+
+test('restored recipient overrides stale launcher target without settings reload or retired send', () => {
+  const primary = fs.mkdtempSync(path.join(os.tmpdir(), 'committer-recipient-proof-'));
+  assert.equal(spawnSync('git', ['init', primary]).status, 0);
+  const directory = path.join(primary, 'tools', 'primary-committer');
+  fs.mkdirSync(directory, {recursive: true});
+  const recipient = path.join(directory, 'recipient.json');
+  fs.writeFileSync(recipient, JSON.stringify({flow_id: '127d95'}));
+  const transcript = path.join(primary, 'editor.jsonl');
+  fs.writeFileSync(transcript, '{}\n');
+  const sent = [];
+  const run = (program, args, options) => {
+    if (program === 'hm-send') { sent.push(args[0]); return `Transported.{ ${args[0]} done }`; }
+    const result = spawnSync(program, args, {encoding: 'utf8', ...options});
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  };
+  const invoke = flow => notifyTurnEnd({primary, committer: '8b084b', event: {hook_event_name: 'Stop', session_id: 'actual-fixture-session', transcript_path: transcript}, env: {...process.env, FLOW_ID: flow}, run});
+  assert.equal(invoke('6f115e').recipient, '127d95');
+  assert.deepEqual(sent, ['127d95']);
+  assert.equal(invoke('127d95').status, 'self');
+  assert.deepEqual(sent, ['127d95']);
+  fs.writeFileSync(recipient, '{bad json');
+  assert.throws(() => invoke('6f115e'));
+  fs.writeFileSync(recipient, JSON.stringify({flow_id: 'invalid recipient'}));
+  assert.throws(() => invoke('6f115e'), /standing committer/);
+  assert.deepEqual(sent, ['127d95']);
+  fs.writeFileSync(recipient, JSON.stringify({flow_id: 'abcdef'}));
+  assert.equal(invoke('6f115e').recipient, 'abcdef');
+  assert.deepEqual(sent, ['127d95', 'abcdef']);
+  fs.unlinkSync(recipient);
+  assert.equal(invoke('6f115e').recipient, '8b084b');
+  assert.deepEqual(sent, ['127d95', 'abcdef', '8b084b']);
+});
