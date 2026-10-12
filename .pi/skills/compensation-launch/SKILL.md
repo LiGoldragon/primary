@@ -12,6 +12,8 @@ commands to the appropriate subflow. A successor replaces its
 predecessor once the successor has answered; do not reuse or message a
 retired flow.
 
+A flow that hands work to a Primary, or to any flow above it, first gathers through its own subflows everything that work needs: the living's words whole, his comments on the books, the records and the files. It sends all of it in one message. It never sends a pointer or an instruction to go and fetch.
+
 Before reporting a launch as ready, verify its named Herdr session,
 colour, title, remote control, and its remote listing.
 A flow at or above 30% of its observed context window, or 200,000

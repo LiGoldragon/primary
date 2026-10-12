@@ -287,6 +287,10 @@ Before rendering, check that the source has a nonempty distillation
 section, with its proposed skill lines and target files. A renderer
 returns a missing section to the author; it never invents it.
 
+A proposed statement's words come from the living's records alone, read whole with their exceptions and later statements on the same subject. A skill line in the author's brief shows where a statement lands, never what it says; the brief marks machine-skill text as the machine's. A count or date claim about the records is made only when the author has witnessed it.
+
+A question to the living is intelligible on its own: it states in full the thing it asks about, so he can reason through it without guessing what the author inferred. Where a thing goes is asked only beside the thing itself, as a proposal; a question of placement without the proposal is not asked.
+
 
 The purpose of a thinking machine is to extend a psyche.
 
@@ -385,6 +389,8 @@ The main flow delegates code, scripts, visual work, builds, and cloud
 commands to the appropriate subflow. A successor replaces its
 predecessor once the successor has answered; do not reuse or message a
 retired flow.
+
+A flow that hands work to a Primary, or to any flow above it, first gathers through its own subflows everything that work needs: the living's words whole, his comments on the books, the records and the files. It sends all of it in one message. It never sends a pointer or an instruction to go and fetch.
 
 Before reporting a launch as ready, verify its named Herdr session,
 colour, title, remote control, and its remote listing.

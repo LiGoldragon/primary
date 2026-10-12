@@ -27,3 +27,7 @@ A diagram in a book's source is ASCII, laid out vertically and no wider than 52 
 Before rendering, check that the source has a nonempty distillation
 section, with its proposed skill lines and target files. A renderer
 returns a missing section to the author; it never invents it.
+
+A proposed statement's words come from the living's records alone, read whole with their exceptions and later statements on the same subject. A skill line in the author's brief shows where a statement lands, never what it says; the brief marks machine-skill text as the machine's. A count or date claim about the records is made only when the author has witnessed it.
+
+A question to the living is intelligible on its own: it states in full the thing it asks about, so he can reason through it without guessing what the author inferred. Where a thing goes is asked only beside the thing itself, as a proposal; a question of placement without the proposal is not asked.
