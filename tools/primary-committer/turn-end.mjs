@@ -13,8 +13,6 @@ function command(program, args, options = {}) {
 
 export function notifyTurnEnd({primary, committer, event, env = process.env, run = command}) {
   const flow = env.FLOW_ID;
-  if (!flow) throw new Error('FLOW_ID is missing from the harness environment');
-  if (!/^[a-f0-9]{6,64}$/.test(flow)) throw new Error('FLOW_ID is malformed');
   if (!/^[a-f0-9]{6,64}$/.test(committer ?? '')) throw new Error('the standing committer FLOW_ID is required');
   if (flow === committer) return {status: 'self', notified: false};
   if (event?.hook_event_name !== 'Stop') throw new Error('this adapter requires an actual Stop event');
@@ -24,13 +22,15 @@ export function notifyTurnEnd({primary, committer, event, env = process.env, run
   if (fs.realpathSync(actualRoot) !== root) throw new Error('Primary must name the repository root');
   const dirty = run('git', ['-C', root, 'status', '--porcelain=v1', '-z', '--untracked-files=normal'], {env: gitEnv});
   if (!dirty) return {status: 'clean', notified: false};
+  if (flow && !/^[a-f0-9]{6,64}$/.test(flow)) throw new Error('FLOW_ID is malformed');
   if (typeof event.session_id !== 'string' || !event.session_id || /[\x00-\x1f]/.test(event.session_id))
     throw new Error('dirty turn has no valid native session_id');
   if (!path.isAbsolute(event.transcript_path ?? '') || !fs.statSync(event.transcript_path).isFile())
     throw new Error('dirty turn has no readable native transcript path');
   const message = [
     'Primary turn ended with dirty work. Read this firing session transcript, identify the owner’s paths, and commit through your sole in-place JJ route.',
-    JSON.stringify({flow_id: flow, session_id: event.session_id, transcript_path: event.transcript_path, primary: root}),
+    JSON.stringify({flow_id: flow || null, identity_kind: flow ? 'claimed_flow' : 'native_session', session_id: event.session_id, transcript_path: event.transcript_path, primary: root}),
+    ...(flow ? [] : ['Only the actual native session identity is supplied. Resolve an existing flow claim from its transcript or use its demonstrated edited paths; never derive a Flow ID or invent lane ownership.']),
     'Other writers may still be editing. Report a shared-path collision; do not include their paths. Do not wake a second committer.',
   ].join('\n');
   const receipt = run('hm-send', [committer, '--stdin'], {env, input: message, timeout: 15000});

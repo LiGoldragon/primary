@@ -26,6 +26,7 @@ test('actual clean/dirty repository: notification only, identity, self suppressi
   };
   const invoke = override => notifyTurnEnd({primary, committer: 'bbbbbb', event, env, run, ...override});
   assert.equal(invoke().status, 'clean');
+  assert.equal(invoke({env: {...env, FLOW_ID: ''}}).status, 'clean');
   assert.equal(sent.length, 0);
   fs.writeFileSync(path.join(primary, 'owned.txt'), 'uncommitted owner bytes\n');
   assert.equal(invoke().status, 'notified');
@@ -34,7 +35,12 @@ test('actual clean/dirty repository: notification only, identity, self suppressi
   assert.ok(sent[0].input.includes(transcript));
   assert.equal(invoke({env: {...env, FLOW_ID: 'bbbbbb'}}).status, 'self');
   assert.equal(sent.length, 1);
-  assert.throws(() => invoke({env: {...env, FLOW_ID: ''}}), /FLOW_ID is missing/);
+  assert.equal(invoke({env: {...env, FLOW_ID: ''}}).status, 'notified');
+  assert.match(sent[1].input, /"flow_id":null,"identity_kind":"native_session"/);
+  assert.match(sent[1].input, /"session_id":"actual-fixture-session"/);
+  assert.equal(sent[1].env.FLOW_ID, '');
+  assert.throws(() => invoke({env: {...env, FLOW_ID: 'not-a-claim'}}), /FLOW_ID is malformed/);
+  assert.throws(() => invoke({env: {...env, FLOW_ID: ''}, event: {...event, session_id: ''}}), /session_id/);
   assert.throws(() => invoke({event: {...event, transcript_path: null}}), /transcript/);
   transport = 'Held.{ fixture }';
   assert.throws(() => invoke(), /not transported/);
