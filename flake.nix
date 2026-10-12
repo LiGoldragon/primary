@@ -19,7 +19,7 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/c390e1e3354b889b0c182d6cb21ef7c39e263103";
+      url = "github:LiGoldragon/Curriculum/d6029431faeef01a1b5aec7296641b9db5ccc8d0";
       flake = false;
     };
     psyche-skills = {
