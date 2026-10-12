@@ -33,3 +33,14 @@
 - 2026-10-11 From d68c82: psyche-skills history rewrite by Mind starts after my landing; hold all psyche-skills writes until the new main is in. Confirmed push to d68c82.
 - 2026-10-11 Published «Psyche is the gold, second edition» https://claude.ai/artifact/ThQowWFXNdFLr5upooE1vt; link sent to d68c82.
 - 2026-10-11 From d68c82: the living ruled on the Flow book that an edition never shows again what he approved. Second edition cut to its two open rulings; republish to the same URL dispatched.
+- 2026-10-11 Second edition republished to the same URL without the landed lines.
+- 2026-10-11 Records published to main as 402005 (vision/spirit.md, vision/distillation.md, book 7 source, log); lock released. Book 7 page, rewritten after the commit, goes with the next publish.
+- 2026-10-11 From d68c82: psyche-skills history rewritten, no Sources sections, references in commit messages; new main d0d194; writes resume from the new main only.
+- 2026-10-12 Living (via d68c82, #psyches): audit the most-emphasized undistilled psyche; package for Fable; Fable edits old books or makes new ones, two or three at most; half an hour later, puzzled that no books exist. Own audit subflow dispatched; d68c82 asked for its package.
+- 2026-10-12 Packet 2 from d68c82 (reports/fable-packet-undistilled-2026-10-12.md): A main flow delegates to tailor-made subflows (new book); B his words travel as psyche, fewer messages (new book); C the Primary is spoken to least (new edition of 445410's «Aspects talk at the same layer»). Audit subflow retasked to omission check; brief subflow dispatched.
+- 2026-10-12 Omission check on packet 2 returned: A misses the August vision-raw/358f143a management records and edf227 flowRole 2026-10-03; B misses the 09-18 typed-vs-psyche records and 93ba9f messagingInterface; C misses b860be layerVocabulary 09-26 and 445410 'layers not models' 10-09; packet never looked at mind-/field-skills (operation-main-flow, compensation-messenger-clj, compensation-launch, trial-contact-discipline). Brief still out.
+- 2026-10-12 Three books from packet 2 written (8 main flow delegates; 9 words travel as psyche; 10 aspects same layer 2nd ed.); publication dispatched.
+- 2026-10-12 Published «The main flow delegates» https://claude.ai/artifact/E5RZEtBG1oa44tNBcXB6RA
+- 2026-10-12 Published «His words travel as psyche» https://claude.ai/artifact/2WenLgFe8oBSoJ635hKGqD
+- 2026-10-12 Published «Aspects talk at the same layer, second edition» https://claude.ai/artifact/T6uNXaA9p9Z9oRiRJiAafb. Links to d68c82; publish dispatched.
+- 2026-10-12 Publish blocked: PrimaryPublish 18632 held by 42265e; asked it to say when free.
