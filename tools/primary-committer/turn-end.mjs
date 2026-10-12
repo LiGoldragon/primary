@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+// A completed turn notifies the one committer. This hook never publishes.
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+
+function command(program, args, options = {}) {
+  const result = spawnSync(program, args, {encoding: 'utf8', ...options});
+  if (result.error || result.status !== 0) throw new Error(`${program} failed: ${result.error?.message ?? result.stderr?.trim() ?? result.status}`);
+  return result.stdout;
+}
+
+export function notifyTurnEnd({primary, committer, event, env = process.env, run = command}) {
+  const flow = env.FLOW_ID;
+  if (!flow) throw new Error('FLOW_ID is missing from the harness environment');
+  if (!/^[a-f0-9]{6,64}$/.test(flow)) throw new Error('FLOW_ID is malformed');
+  if (!/^[a-f0-9]{6,64}$/.test(committer ?? '')) throw new Error('the standing committer FLOW_ID is required');
+  if (flow === committer) return {status: 'self', notified: false};
+  if (event?.hook_event_name !== 'Stop') throw new Error('this adapter requires an actual Stop event');
+  const root = fs.realpathSync(primary);
+  const gitEnv = {...env, GIT_OPTIONAL_LOCKS: '0'};
+  const actualRoot = run('git', ['-C', root, 'rev-parse', '--show-toplevel'], {env: gitEnv}).trim();
+  if (fs.realpathSync(actualRoot) !== root) throw new Error('Primary must name the repository root');
+  const dirty = run('git', ['-C', root, 'status', '--porcelain=v1', '-z', '--untracked-files=normal'], {env: gitEnv});
+  if (!dirty) return {status: 'clean', notified: false};
+  if (typeof event.session_id !== 'string' || !event.session_id || /[\x00-\x1f]/.test(event.session_id))
+    throw new Error('dirty turn has no valid native session_id');
+  if (!path.isAbsolute(event.transcript_path ?? '') || !fs.statSync(event.transcript_path).isFile())
+    throw new Error('dirty turn has no readable native transcript path');
+  const message = [
+    'Primary turn ended with dirty work. Read this firing session transcript, identify the owner’s paths, and commit through your sole in-place JJ route.',
+    JSON.stringify({flow_id: flow, session_id: event.session_id, transcript_path: event.transcript_path, primary: root}),
+    'Other writers may still be editing. Report a shared-path collision; do not include their paths. Do not wake a second committer.',
+  ].join('\n');
+  const receipt = run('hm-send', [committer, '--stdin'], {env, input: message, timeout: 15000});
+  if (!/^Transported\./.test(receipt.trim())) throw new Error(`committer message was not transported: ${receipt.trim()}`);
+  return {status: 'notified', notified: true, receipt: receipt.trim()};
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    const args = process.argv.slice(2);
+    if (args.length !== 4 || args[0] !== '--primary' || args[2] !== '--committer')
+      throw new Error('usage: turn-end.mjs --primary ABSOLUTE_PRIMARY --committer FLOW_ID');
+    const event = JSON.parse(fs.readFileSync(0, 'utf8'));
+    console.log(JSON.stringify(notifyTurnEnd({primary: args[1], committer: args[3], event})));
+  } catch (error) {
+    console.error(`primary committer hook: ${error.message}`);
+    process.exitCode = 1;
+  }
+}

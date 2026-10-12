@@ -147,14 +147,25 @@ export function composeFirstPrompt({brief, exists, skillNames = BIRTH_SKILLS}) {
 // The main-flow mode a main seat starts in: the replacing system prompt, and the
 // settings whose UserPromptSubmit hook re-adds the main-flow core.  The hook's
 // count lives in the job directory; CLAUDE_JOB_DIR is unset, so it is named.
-export function mainFlowMode(workspace, sessionId, home = os.homedir(), systemPromptFile = undefined, seat = {}) {
+export function mainFlowMode(workspace, sessionId, home = os.homedir(), systemPromptFile = undefined, seat = {}, committer = undefined) {
   const modeDir = path.join(workspace, 'tools', 'main-flow-mode');
   const promptFile = systemPromptFile ?? path.join(modeDir, 'system-prompt.md');
   const jobDir = path.join(home, '.claude', 'jobs', `native-${sessionId}`);
   const hook = ['python3', sh(path.join(modeDir, 'reminder-hook.py')), '--prompt-file', sh(promptFile),
     '--state-dir', sh(path.join(jobDir, 'main-flow-reminder')), '--every', '20'].join(' ');
   const settings = {hooks: {UserPromptSubmit: [{hooks: [{type: 'command', command: hook, timeout: 10}]}]}};
+  // Field supplies the actual standing seat only after the approved cutover.
+  if (committer !== undefined) {
+    if (!/^[a-f0-9]{6,64}$/.test(committer)) throw new Error('invalid standing committer FLOW_ID');
+    const notify = [sh(process.execPath), sh(path.join(workspace, 'tools', 'primary-committer', 'turn-end.mjs')), '--primary', sh(workspace), '--committer', sh(committer)].join(' ');
+    settings.hooks.Stop = [{hooks: [{type: 'command', command: notify, timeout: 20}]}];
+  }
   return {seat, sourcePromptFile: promptFile, workspace, promptFile: path.join(jobDir, 'main-flow-system-prompt.md'), settingsFile: path.join(jobDir, 'main-flow-settings.json'), settings};
+}
+
+export function claudeFlowEnvironment(flowId) {
+  if (!/^[a-f0-9]{6,64}$/.test(flowId ?? '')) throw new Error('actual claimed FLOW_ID required before harness exec');
+  return `${UNSET_ENV.map(v => `-u ${v}`).join(' ')} FLOW_ID=${sh(flowId)}`;
 }
 
 export function writeMainFlowMode(mode) {
@@ -281,10 +292,9 @@ async function launch(o) {
     step = 'harness';
     const transcript = transcriptPath(o.workspace, sessionId);
     if (fs.existsSync(transcript)) throw new Error(`transcript already exists: ${transcript}`);
-    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile, systemSeat);
+    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile, systemSeat, process.env.PRIMARY_COMMITTER_FLOW_ID);
     writeMainFlowMode(mode);
-    const unset = UNSET_ENV.map(v => `-u ${v}`).join(' ');
-    const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
+    const command = `cd ${sh(o.workspace)} && exec env ${claudeFlowEnvironment(flowId)} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
     execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
     await poll('the native transcript', 120, () => fs.existsSync(transcript));
     done(`claude session ${sessionId}, transcript ${transcript}; system prompt ${mode.promptFile}, settings ${mode.settingsFile}`);

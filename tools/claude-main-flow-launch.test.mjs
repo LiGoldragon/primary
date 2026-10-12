@@ -7,6 +7,21 @@ import path from 'node:path';
 import {BIRTH_SKILLS, LAYERS, MAX_SKILLS_PER_PROMPT, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
+import {claudeFlowEnvironment} from './claude-main-flow-launch.mjs';
+
+// The claimed native flow replaces inherited identity before the harness and
+// its subprocesses run. The committer target is installed only at cutover.
+const identityCommand = `exec env ${claudeFlowEnvironment('abcdef')} ${JSON.stringify(process.execPath)} -e 'process.stdout.write(process.env.FLOW_ID)'`;
+const identityChild = spawnSync('/bin/sh', ['-c', identityCommand], {encoding: 'utf8', env: {...process.env, FLOW_ID: '123456'}});
+assert.equal(identityChild.status, 0, identityChild.stderr);
+assert.equal(identityChild.stdout, 'abcdef');
+assert.throws(() => claudeFlowEnvironment(''), /actual claimed FLOW_ID/);
+const hookedMode = mainFlowMode('/fixture/primary', 'session', '/fixture/home', undefined, {}, 'bbbbbb');
+assert.equal(hookedMode.settings.hooks.Stop.length, 1);
+assert.ok(hookedMode.settings.hooks.Stop[0].hooks[0].command.includes("--committer 'bbbbbb'"));
+assert.equal(hookedMode.settings.hooks.UserPromptSubmit.length, 1);
+assert.equal(mainFlowMode('/fixture/primary', 'session', '/fixture/home').settings.hooks.Stop, undefined);
+assert.throws(() => mainFlowMode('/fixture/primary', 'session', '/fixture/home', undefined, {}, 'bad'), /invalid standing committer/);
 
 // Arguments: refused before anything is touched.
 assert.throws(() => parseArgs([]), /--brief is required/);
