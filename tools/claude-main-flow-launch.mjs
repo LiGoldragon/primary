@@ -252,9 +252,10 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
+    const systemSeat = {...o, metaflow: continuation.metaflow};
     const systemBase = o.systemPromptFile ?? path.join(o.workspace, 'tools/main-flow-mode/system-prompt.md');
-    composeSpiritSystemPrompt(fs.readFileSync(systemBase, 'utf8'), mainSystemModules(o.workspace, '.claude', o));
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
+    composeSpiritSystemPrompt(fs.readFileSync(systemBase, 'utf8'), mainSystemModules(o.workspace, '.claude', systemSeat));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
     const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
     const firstSkillPrompt = composition.skillPrompts[0];
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-')), 'first-skill-prompt.md');
@@ -280,7 +281,7 @@ async function launch(o) {
     step = 'harness';
     const transcript = transcriptPath(o.workspace, sessionId);
     if (fs.existsSync(transcript)) throw new Error(`transcript already exists: ${transcript}`);
-    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile, o);
+    const mode = mainFlowMode(o.workspace, sessionId, os.homedir(), o.systemPromptFile, systemSeat);
     writeMainFlowMode(mode);
     const unset = UNSET_ENV.map(v => `-u ${v}`).join(' ');
     const command = `cd ${sh(o.workspace)} && exec env ${unset} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;
@@ -363,7 +364,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
     const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
     process.stdout.write(`${composition.skillPrompts.map((prompt, i) => `# Skill batch ${i + 1}\n${prompt}`).join('\n')}\n# Launch brief\n${composition.prompt}`);
   } else await launch(o);

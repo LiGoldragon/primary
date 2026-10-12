@@ -124,7 +124,7 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
     const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
@@ -132,7 +132,7 @@ async function launch(o) {
 
     const client = clientForModel(o.model);
     const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
-    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, o), {flag: 'wx', mode: 0o600});
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, metaflow: continuation.metaflow}), {flag: 'wx', mode: 0o600});
 
     step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
@@ -200,7 +200,7 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && o.aspect === 'Psyche')));
+    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
     process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
   } else await launch(o);
 }

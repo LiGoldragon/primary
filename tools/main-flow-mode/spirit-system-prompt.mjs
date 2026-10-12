@@ -16,11 +16,11 @@ export function spiritModules(workspace, surface = '.agents') {
   });
 }
 
-export function mainSystemModules(workspace, surface, {aspect, layer}) {
+export function mainSystemModules(workspace, surface, {aspect, layer, metaflow}) {
   const modules = spiritModules(workspace, surface);
   const names = [];
   if (aspect === 'Psyche' || layer === 'Primary') names.push('vision-design');
-  if (aspect === 'Psyche') names.push('intent-psyche-interaction');
+  if (aspect === 'Psyche' || metaflow) names.push('intent-psyche-interaction');
   for (const name of names) {
     const file = path.join(workspace, surface, 'skills', name, 'SKILL.md');
     const body = fs.readFileSync(file, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();

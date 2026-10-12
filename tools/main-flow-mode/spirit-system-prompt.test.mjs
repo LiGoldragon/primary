@@ -33,6 +33,7 @@ try {
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design', 'intent-psyche-interaction']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Field', layer: 'Primary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary'}).map(module => module.name), ['spirit-core', 'spirit-future']);
+  assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary', metaflow: 'Owned continuation context'}).map(module => module.name), ['spirit-core', 'spirit-future', 'intent-psyche-interaction']);
   fs.mkdirSync(path.join(skills, 'spirit'));
   assert.throws(() => spiritModules(root), /legacy spirit/);
 } finally { fs.rmSync(root, {recursive: true, force: true}); }

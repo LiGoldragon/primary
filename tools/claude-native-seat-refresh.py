@@ -30,7 +30,7 @@ MAIN_FLOW_PROMPT = ROOT / "tools" / "main-flow-mode" / "system-prompt.md"
 MAIN_FLOW_SETTINGS = "main-flow-settings.json"
 
 
-def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None, workspace=ROOT, aspect=None, layer=None):
+def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None, workspace=ROOT, aspect=None, layer=None, metaflow=None):
     """The replacing system prompt a main seat launches with; None for any other seat."""
     if not main_seat:
         return None
@@ -48,7 +48,7 @@ def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None
         raise ValueError("regenerated spirit-core modules required")
     if aspect == "Psyche" or layer == "Primary":
         names.append("vision-design")
-    if aspect == "Psyche":
+    if aspect == "Psyche" or metaflow:
         names.append("intent-psyche-interaction")
     text = file.read_text()
     for name in names:
@@ -819,7 +819,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
             controller_attestation_file=None, controller_attestation_sha256=None,
             main_seat=True, main_flow_prompt=MAIN_FLOW_PROMPT):
-    mode = main_flow_mode(main_seat, main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"))
+    mode = main_flow_mode(main_seat, main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"), manifest.get("metaflow"))
     receipt = plan(manifest, cwd, mode)
     if continue_partial:
         raise RuntimeError("a launcher cannot resume or resend an ambiguous first prompt")
@@ -1018,7 +1018,7 @@ def main():
                          continue_partial=args.continue_partial,
                          partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None,
                          main_seat=args.main_seat, main_flow_prompt=args.main_flow_prompt) if args.refresh else \
-            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer")))
+            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"), manifest.get("metaflow")))
         if args.bootstrap_running_empty or args.continue_partial:
             persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))
