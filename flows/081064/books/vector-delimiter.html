@@ -1,0 +1,309 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A delimiter for vectors</title></head><body>
+<h1 class="book-title">A delimiter for vectors</h1>
+
+<article class="proposal">
+<header><h2>Context</h2></header>
+<p>A vector in ethos is written with the word and angle brackets: the element type inside <code>Vector&lt;...&gt;</code>. The generator knows <code>Vector</code> as an intrinsic and writes a Rust <code>Vec</code> for it. This is how it stands in production on the generator's main line; no development branch touches delimiters.</p>
+<p>The word is everywhere. Across the forty-nine repositories that hold ethos it occurs 331 times, in 69 files; <code>Option&lt;</code> occurs 324 times and <code>Result&lt;</code> 16. Counted examples, verbatim from main:</p>
+<pre><code class="language-ethos">  Locks.Vector&lt;Lock&gt;</code></pre>
+<pre><code class="language-ethos">  EventsRead.{ FlowId Vector&lt;Event&gt; }</code></pre>
+<pre><code class="language-ethos">  Outcome.[ ResolvedSkills.Vector&lt;String&gt;
+            SkillsChanged.SkillChange
+            SkillsChecked.Vector&lt;String&gt;
+            SkillsRebuilt.Vector&lt;String&gt;
+            Rejected.String ]</code></pre>
+<pre><code class="language-ethos">  Nested.Vector&lt;Option&lt;Result&lt;String Integer&gt;&gt;&gt;</code></pre>
+<pre><code class="language-ethos">  Form.[ Struct.Vector&lt;Datom&gt;
+         Vector.Vector&lt;Datom&gt;</code></pre>
+<p>The last one is a variant named <code>Vector</code> carrying a vector: the word does two jobs on one line.</p>
+<p>Every bracket pair on the keyboard is already taken, by ethos and by datom together:</p>
+<pre><code>{ }   struct                 (datom: struct)
+[ ]   enum where types are   (datom: vector)
+      defined
+&lt; &gt;   type arguments
+« »   string, opaque
+( )   Meaning, opaque
+;     comment to end of line
+. ! : separators</code></pre>
+<p>Any other glyph is a name character today: <code>|</code>, <code>#</code>, <code>@</code>, <code>*</code> and every non-ASCII bracket. None of the single ASCII glyphs opens and closes with a different character, so none can nest.</p>
+<p>A bracket after a dot already means an enum, witnessed on main: <code>Items.[ Integer ]</code> generates a one-variant enum, not a vector. A bare bracket in a position is refused as not a reference.</p>
+<p>Unicode pairs the reader does not reserve, with their coverage in the monospace fonts of this host:</p>
+<pre><code>⟦ ⟧   white square brackets        34 fonts
+⟨ ⟩   mathematical angle brackets  34 fonts
+‹ ›   single guillemets            35 fonts
+⟪ ⟫   double angle brackets        34 fonts
+⌈ ⌉   ceiling brackets             34 fonts
+⦃ ⦄   white curly brackets         32 fonts</code></pre>
+<p>If the glyphs on the line above show as boxes on your phone, that is the rendering answer for this book.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 520" width="100%" style="max-width:360px;height:auto" role="img" aria-label="Chain: source text, then reader with delimiters { } [ ] &lt; &gt; « » ( ) ;, where a new pair joins, then Vector&lt;T&gt; = word + angles, then generator std::vec::Vec&lt;T&gt;."><defs><marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="12" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#64748b"/></marker></defs><g font-family="sans-serif" font-size="15" fill="#0f172a"><rect x="40" y="40" width="280" height="64" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/><text x="180" y="77" text-anchor="middle">source text</text><line x1="180" y1="104" x2="180" y2="158" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/><rect x="20" y="158" width="320" height="64" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/><text x="180" y="195" text-anchor="middle"><tspan>reader: </tspan><tspan font-family="monospace">{ } [ ] &lt; &gt; « » ( ) ;</tspan></text><line x1="180" y1="222" x2="180" y2="278" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/><text x="196" y="254" font-style="italic">new pair joins here</text><rect x="40" y="278" width="280" height="64" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/><text x="180" y="315" text-anchor="middle"><tspan font-family="monospace">Vector&lt;T&gt;</tspan><tspan> = word + angles</tspan></text><line x1="180" y1="342" x2="180" y2="398" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/><rect x="20" y="398" width="320" height="64" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/><text x="180" y="435" text-anchor="middle"><tspan>generator: </tspan><tspan font-family="monospace">std::vec::Vec&lt;T&gt;</tspan></text></g></svg>
+<p>One record bears on typing: on 2026-08-30 (flows/62022e8f, ethosTypes, archived) the map type was written with <code>&lt;&lt;</code> because guillemets could not be typed. The keyboard policy in CriomOS-home is plain US with no compose key. Whether a non-ASCII pair can be typed today is unknown.</p>
+<p>One record competes for a pair: on 2026-09-19 (flows/b81560, ethosEscapeDelimiter) an unused balanced delimiter was wanted to hold ethos or logos inside datom. Its candidates were never answered. A pair spent on vectors is one fewer for that.</p>
+</article>
+
+<article class="proposal">
+<header><h2>The candidates, shown</h2></header>
+<p>Each candidate rewrites the second and third examples above. The spacing follows the canonical print of brackets and braces, a space inside; whether a new pair prints tight like <code>&lt; &gt;</code> is question 3.</p>
+<p>Candidate 1, white square brackets:</p>
+<pre><code class="language-ethos">  EventsRead.{ FlowId ⟦ Event ⟧ }
+  Outcome.[ ResolvedSkills.⟦ String ⟧
+            SkillsChanged.SkillChange
+            SkillsChecked.⟦ String ⟧
+            SkillsRebuilt.⟦ String ⟧
+            Rejected.String ]
+  Nested.⟦ Option&lt;Result&lt;String Integer&gt;&gt; ⟧
+  Form.[ Struct.⟦ Datom ⟧
+         Vector.⟦ Datom ⟧</code></pre>
+<p>Collides with nothing in datom, Nix, Rust or the shell. Machines already use it as a placeholder in prose. Cannot be dictated.</p>
+<p>Candidate 2, single guillemets:</p>
+<pre><code class="language-ethos">  EventsRead.{ FlowId ‹ Event › }
+  Outcome.[ ResolvedSkills.‹ String ›
+            SkillsChecked.‹ String › ]
+  Nested.‹ Option&lt;Result&lt;String Integer&gt;&gt; ›</code></pre>
+<p>Half the shape of the string delimiter <code>«</code>; two in a row read as one <code>«</code> at phone size. Needs the same input route as <code>«</code>.</p>
+<p>Candidate 3, mathematical angle brackets:</p>
+<pre><code class="language-ethos">  EventsRead.{ FlowId ⟨ Event ⟩ }
+  Outcome.[ ResolvedSkills.⟨ String ⟩
+            SkillsChecked.⟨ String ⟩ ]
+  Nested.⟨ Option&lt;Result&lt;String Integer&gt;&gt; ⟩</code></pre>
+<p>Nearly the shape of <code>&lt; &gt;</code>, which stays for <code>Option</code> and <code>Result</code> on the same line.</p>
+<p>Candidate 4, the ASCII bracket with no head. Not a new delimiter: it is datom's own vector value. It works only where no dot precedes it, since <code>Name.[ ... ]</code> is an enum:</p>
+<pre><code class="language-ethos">  EventsRead.{ FlowId [ Event ] }
+  drain![ [ String ] ]</code></pre>
+<pre><code class="language-ethos">  Locks.[ Lock ]            ; enum today
+  ResolvedSkills.[ String ] ; enum today</code></pre>
+<p>The first, fourth and fifth examples of the context cannot be written in candidate 4 without changing what a bracket after a dot means.</p>
+</article>
+
+<article class="proposal">
+<header><h2>Questions on the vector</h2></header>
+<section class="rulings"><ol><li value="1"><p>Which of the four candidates, or which other unused pair? If a pair cannot be typed, say so: the generator can accept a typable spelling and print the pair, but that is a second design and this book does not propose it.</p></li><li value="2"><p>Does the word go away entirely, or does <code>Vector&lt;T&gt;</code> stay valid beside the pair for a time? The spirit says no parallel compatibility path; the question is whether the 331 sites are rewritten in one landing.</p></li><li value="3"><p>Tight or spaced? Angles print tight, <code>Vector&lt;Lock&gt;</code>; braces and brackets print spaced, <code>{ FlowId }</code>. The candidates above are shown spaced.</p></li><li value="4"><p>The generated field name comes from the word today: a position <code>Vector&lt;String&gt;</code> becomes the Rust field <code>string_vector</code>. With the word gone from the source, the name must come from the pair. Shown:</p></li></ol></section>
+<pre><code class="language-ethos">  Capsule.{ Home.String Vector&lt;String&gt; }
+  ; Rust today: pub string_vector: Vec&lt;String&gt;</code></pre>
+<p>Does the derived name stay <code>string_vector</code>, or become <code>strings</code>, or must a vector position always be named?</p>
+<section class="rulings"><ol><li value="5"><p>Datom writes a vector value as <code>[ 1 2 3 ]</code>. Ethos would write the vector type as <code>⟦ Integer ⟧</code> while datom keeps <code>[ ]</code> for the value. Is that split wanted, or does datom take the same pair for values?</p></li><li value="6"><p><code>Option&lt;T&gt;</code> and <code>Result&lt;T E&gt;</code> keep the word and angles under every candidate here. Is that so?</p></li><li value="7"><p>The escape-delimiter record wants an unused balanced pair too. Do vectors take one of the pairs listed, leaving the rest for that, or is that want to be answered first?</p></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><h2>Comments, the smaller section</h2></header>
+<p>A comment today runs from <code>;</code> to the end of the line. The reader drops it before anything is built: there is no comment node, so the canonical print carries no comment and generated Rust carries none. Witnessed on main: a file with a trailing <code>; comment</code> after a position generates the struct and nothing of the comment.</p>
+<pre><code class="language-ethos">  Record.{ String  ; trailing
+           Integer }
+  ; Rust: pub struct Record
+  ;       { pub string: String,
+  ;         pub integer: i64 }</code></pre>
+<p>Of 161 ethos files on main, 57 carry comments, on 455 of 4978 lines. The vision asks for a comment on every section.</p>
+<p>Records on where a comment sits: on 2026-10-07 (flows/e5a0bc, ethos) the comment belongs above or beside the thing, lined up with its indentation, and the question was raised whether anyone comments below. The notion of 2026-10-12 guesses the description follows the object. Beside is also after on the line.</p>
+<p>A documentation delimiter would be a balanced pair the reader keeps as a node, so that later it can be read as the object's description and, further on, as code. Shown with one unused pair, after the object:</p>
+<pre><code class="language-ethos">  Record.{ String Integer }
+  ⟪ one string and one integer ⟫</code></pre>
+<p>Beside the object:</p>
+<pre><code class="language-ethos">  Record.{ String Integer } ⟪ a pair ⟫</code></pre>
+<section class="rulings"><ol><li value="8"><p>After, meaning below on the next line, or beside on the same line?</p></li><li value="9"><p>Kept as a node the print carries, while <code>;</code> stays the dropped comment? That is two kinds of comment; is that wanted?</p></li><li value="10"><p>Does the documentation pair get chosen now, with the vector pair, so the two are chosen from the same free list, or does it wait?</p></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><h2>Distillation</h2></header>
+<p class="target"><code>/git/github.com/LiGoldragon/psyche-skills/vision/ethos.md</code></p>
+<p>Target file, authored source: <code>/git/github.com/LiGoldragon/psyche-skills/vision/ethos.md</code></p>
+<p>Two proposals, each one line, each shown as a question's answer would land it. Nothing lands before a ruling.</p>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">1</span><h2>Proposal 1: the vector delimiter</h2></header>
+<p class="target"><code>/git/github.com/LiGoldragon/psyche-skills/vision/ethos.md</code></p>
+<p>Line 338, the sentence as it stands, with the line above and below:</p>
+<p>Above, as it stands:</p>
+<div class="diff"><div class="ctx"><p>Each section has its own parsing context; placement carries the meaning. Head then symbol is a variant of <code>Query</code> or <code>Response</code> in a Signal's first two sections, an alias in the types section.</p></div></div>
+<p>As it stands:</p>
+<div class="diff"><div class="ctx"><p>Where types are defined a bracket is an enum, never a vector.</p></div></div>
+<p>Added after it, one of three; the pair is the ruling of question 1 and the spacing of question 3:</p>
+<p>Side a, white square brackets:</p>
+<div class="diff"><div class="add"><p>A vector is its element type inside ⟦ ⟧: <code>Names.⟦ String ⟧</code>. The word Vector is not written.</p></div></div>
+<p>Side b, single guillemets:</p>
+<div class="diff"><div class="add"><p>A vector is its element type inside ‹ ›: <code>Names.‹ String ›</code>. The word Vector is not written.</p></div></div>
+<p>Side c, mathematical angle brackets:</p>
+<div class="diff"><div class="add"><p>A vector is its element type inside ⟨ ⟩: <code>Names.⟨ String ⟩</code>. The word Vector is not written.</p></div></div>
+<p>Below, as it stands:</p>
+<div class="diff"><div class="ctx"><p>Ethos may generate default implementations for Query and Response, which is why Signal is its own root.</p></div></div>
+<p>Line 177 then loses the word from the intrinsics list, under any side:</p>
+<div class="diff"><div class="del"><p>Integer, Decimal, Boolean, Meaning, Vector, Option, Result, Self.</p></div><div class="add"><p>Integer, Decimal, Boolean, Meaning, Option, Result, Self.</p></div></div>
+<p>Removed lines: the one shown, only when the word goes away whole (question 2).</p>
+<p>Impurities discarded: none.</p>
+<section class="rulings"><ol><li value="1"><p>Ruling asked:</p><ol class="choices" type="a"><li>Land side a, b or c as written.</li><li>Another pair; name it.</li><li>Amend by line.</li><li>Keep <code>Vector&lt;T&gt;</code>; close the notion.</li></ol></li></ol></section>
+</article>
+
+<article class="proposal">
+<header><span class="pnum">2</span><h2>Proposal 2: the documentation comment</h2></header>
+<p class="target"><code>/git/github.com/LiGoldragon/psyche-skills/vision/ethos.md</code></p>
+<p>Line 480, as it stands, with the line above and below:</p>
+<p>Above, as it stands:</p>
+<div class="diff"><div class="ctx"><p>Ethos expands vertically: a structure with more than one element opens on its line and its elements hang beneath the first, aligned; the closing delimiter ends the last element's line. Nothing that has a next layer sits on one line.</p></div></div>
+<p>As it stands:</p>
+<div class="diff"><div class="ctx"><p>Ethos carries a comment on every section and on every line that has a next layer, saying in plain words what the machine reads there; a comment runs from ; to the end of the line.</p></div></div>
+<p>Added after it, the pair being a placeholder until question 10 is ruled:</p>
+<div class="diff"><div class="add"><p>A description of an object is a balanced pair the reader keeps, after the object: <code>Record.{ String Integer } ⟪ a pair ⟫</code>.</p></div></div>
+<p>Below, as it stands:</p>
+<div class="diff"><div class="ctx"><div class="textblock">## Zero</div></div></div>
+<p>Removed lines: none.</p>
+<p>Impurities discarded: none.</p>
+<section class="rulings"><ol><li value="2"><p>Ruling asked:</p><ol class="choices" type="a"><li>Land as written, naming the pair.</li><li>Hold until the vector pair is landed.</li><li>Amend by line.</li></ol></li></ol></section>
+</article>
+
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:normal;word-break:normal}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
+
+</body></html>

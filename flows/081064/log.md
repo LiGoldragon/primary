@@ -95,3 +95,47 @@ Relayed (machine prose, not his words): essentially every book is authored by th
 ## 2026-10-11 fault: edition 2 files deleted from main by ef1d3b; restoring
 
 33752b reports its log commit ef1d3b carried deletions of books/sources-registry-2.* (claim; d68c82 confirms cause). Cause, mine: the 4909f4 publish used a temporary index and update-ref, leaving the shared index at the parent, so git showed the new files as staged deletions and a plain commit took them. Told 33752b nothing is owed. d68c82 granted the turn; restoring under PrimaryPublish with git add and git commit -- <paths>. Standing rule from d68c82: commit in the shared copy with explicit paths, never through a temporary index.
+
+## 2026-10-11 restored on main (bc18a1, lock 18457, witnessed by subflow)
+
+ef1d3b had deleted the two edition-2 files and reverted 16 lines of log.md and 6 of receipts.md (33752b's witness, matched by the subflow's diff). Restored all four from disk with explicit-path add and commit; pushed ef1d3b → bc18a1; tree 8991 → 8993; flows/081064 status clean. A first lock 18454 was taken and released with nothing committed after a shell-quoting failure in the subflow. Released reply sent to d68c82. This entry itself is after bc18a1 and rides the next publish.
+
+## 2026-10-11 psyche-skills history rewritten (claim, d68c82)
+
+psyche-skills main is now d0d194 with no Sources sections; references live in commit messages; old main kept as backup/pre-sources-rewrite-20261011. Any landing by this flow (registry line, Ethos Nexus rulings) starts from a fresh fetch of the new main, never a push from the old one. The inline-import paragraph's presence on the new main is unwitnessed until the next landing's subflow checks it.
+
+## 2026-10-11 D1 on the new psyche-skills main (claim, 23824a)
+
+Inline import D1 is on d0d194 as commit 97874fb (formerly 9fb043), vision/ethos.md line 191. Its provenance reference "d5df1d ethos" is absent from the rewritten commit message; 23824a has reported this to d68c82, who owns the rewrite. Nothing for this flow to land until d68c82 rules how the missing reference is restored.
+
+## 2026-10-11 correction: D1 reference intact (claim, 23824a relaying d68c82's check)
+
+97874fb's message carries "d5df1d ethos"; the earlier loss report was 23824a's subflow misreading. Nothing pending from it.
+
+## 2026-10-12 notion relayed: unused delimiters for vectors and comments
+
+Logged verbatim in notion/ethos.md. A context packet from 23824a's subflow follows; on its arrival, check it with my own subflow for omissions (which delimiters Ethos Zero and Datom already use, Vector's current grammar, comment syntax `;`), then author the Ethos book «A delimiter for vectors» leading with the vector, comment delimiter as a second proposal. Packet awaited before dispatch.
+
+## 2026-10-12 book shape for the delimiter notion (via 23824a from d68c82)
+
+First edition, mostly questions, published straight to him: delimiters Ethos and Datom use and which are free (keyboard and Unicode); vectors as written today with real counted examples; the same examples under each candidate as code; collisions (Datom, Nix, Rust, guillemets); at most a few proposals; comment delimiter a smaller second section; every question shows the thing first. My own gathering subflow is out in parallel; 23824a's packet is checked against it on arrival.
+
+## 2026-10-12 own gathering returned (witnessed by subflow, read from sources)
+
+Ethos Zero reads through protos: `{ }` struct, `[ ]` enum (never a vector in type definitions), `< >` type arguments, `« »` opaque string, `( )` Meaning, `;` line comment; separators `. ! :`; bare run ends at those glyphs, so `| # @ $ % ^ & * ~ = + - / , ? " '` are name characters today. No ASCII bracket pair is free; free Unicode pairs include ⟨ ⟩, ‹ ›, ⟦ ⟧, ⟪ ⟫, ⦃ ⦄, ⌈ ⌉, ⌊ ⌋, 「 」. Datom quotes a string containing any reserved glyph, so a new glyph enters three composition lists. `Vector<` counts: 338 in 78 files across the repositories (signal.ethos files and Curriculum lead), 32 in 16 under flows. Prior records: guillemets freed from maps for strings (2026-09); he could not type guillemets and wrote `<<` (62022e8f); b81560 proposes a dedicated balanced delimiter for ethos inside datom, guillemets ruled out. Unknowns: canonical print `Vector <T>` vs `Vector<T>`; origin/main ahead of local; delimiter changes on other branches. Awaiting 23824a's packet to compare.
+
+## 2026-10-12 canonical print witnessed on 07714b0 (Prometheus build, subflow)
+
+Print is tight: `Vector<String>` with no space (the source comment about `Vector <T>` is stale). Comments are dropped from the print. `Items.Vector<Integer>` generates `std::vec::Vec<i64>`; `Items.[ Integer ]` generates an enum with one variant, not a vector. The CLI has no print-a-file command, so the printed form was witnessed only on its own file. Remote build on Prometheus worked (first witness of the condition's end).
+
+## 2026-10-12 packet received from 23824a; checked against own gathering
+
+Packet summarized in reports/delimiters/packet-23824a.md. Compared with my subflow's findings: agrees on delimiters in use, free pairs, enum-after-dot, tight print, comment dropping; count differs 338 vs 331 (packet excludes duplicate clones; accepted packet's). Packet adds beyond mine: keyboard policy (no compose key), font coverage, probes of candidates, comment records with the "after" vs "above/beside" tension, b81560's competing escape-delimiter want, field-naming consequence. Nothing material missed by the packet that mine had. Phone rendering is witnessed by the book itself showing the glyphs. Authoring the book now; fetching the vision/ethos.md surroundings of lines 176, 338 and 480 for the distillation section.
+
+## 2026-10-12 «A delimiter for vectors» authored; rendering
+
+Authored by this flow in books/vector-delimiter.md: context (word + angles, 331 sites, five counted examples, every keyboard pair taken, free Unicode pairs with font coverage, bracket-after-dot is an enum witnessed, typing record 62022e8f, competing escape-delimiter record b81560), four candidates shown on the same examples with their collisions, ten questions (seven on the vector, three on the documentation comment), two distillation proposals on vision/ethos.md (line 338 with three sides and the intrinsics line losing the word; line 480 with a placeholder pair). Code lines checked ≤52. Render dispatched.
+
+## 2026-10-12 «A delimiter for vectors» published to the living messenger
+
+Link in reports/receipts.md; sent to 23824a for d68c82. Asked d68c82 for a PrimaryPublish turn for books/vector-delimiter.{md,html}, reports/delimiters/, log and receipts.

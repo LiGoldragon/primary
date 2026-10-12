@@ -1,0 +1,17 @@
+# Context packet from 23824a, 2026-10-12 (received whole; its marks W-read/W-run/C/I are the sender's)
+
+Kept as received evidence for the book «A delimiter for vectors». Facts drawn from it are the sender's witness unless this flow's own subflows matched them (noted in log.md).
+
+Summary of its contents:
+- Sources: protos 15b41da, datom-codec 4dff16b, ethos-zero 07714b0 (17.0.0), tree-sitter-ethos ee84bbf, psyche-skills 28ae42e, mind-skills 0d20c63, CriomOS-home e03c626b.
+- Delimiters in use: { } [ ] < > « » ( ) ; separators . ! : ; backslash escapes inside opaque. All other glyphs, ASCII and Unicode, are name characters. Lists to touch for a new glyph: protos Enclosure/Glyphing, node() dispatch, four terminator lists, three datom-codec composition lists, tree-sitter symbol regex, ethos-zero reading.
+- Free: no ASCII bracket pair; ASCII singles ` ~ @ # $ % ^ & * - _ = + | ' " , / ? (unbalanced; @ is a datom reference path per 8475a9 2026-10-05; # objected to in 1d0733). Unicode pairs with mono-font coverage on this host: ⟦ ⟧ ⟨ ⟩ ‹ › ⟪ ⟫ ⌈ ⌉ (yes), ⦃ ⦄ (no), 「 」 (none).
+- Keyboard: plain us, no compose key (CriomOS-home policy). Record 62022e8f: he wrote << because he could not type guillemets.
+- Probes on 17.0.0: ⟦ ⟧, ‹ ›, |…|, * all read as malformed names; headless [ ] in a reference position → Expected.Reference; `Names.[ String ]` → enum.
+- Vectors today: only `Vector<T>`; 331 occurrences / 276 lines / 69 files / 49 repositories (signal-mind 47, signal-criome 28, Curriculum 27, signal-aggregator 24, horizon-rs 19, ethos-zero 19, …); 160 after a dot, 170 as position/yield; Option< 324, Result< 16; no vector of an inline type. Flows: 32 in 16 files.
+- Examples E1–E8 (orchestrate.ethos:19 Locks.Vector<Lock>; meta-signal-flow signal.ethos:76 EventsRead.{ FlowId Vector<Event> }; horizon.ethos:64 Installation; curriculum.ethos:18-22 Outcome enum; ethos-test flow-operation.ethos:8-9 Capsule; capability-traits.ethos:8 drain![ Vector<String> ]; alias-format.ethos:6 Nested.Vector<Option<Result<String Integer>>>; datom-codec.ethos:14-15 Form.[ Struct.Vector<Datom> Vector.Vector<Datom> ]).
+- Candidates rewritten: C1 ⟦ ⟧, C2 ‹ ›, C3 ⟨ ⟩, C4 headless [ ] (works only in headless positions; after a dot already an enum).
+- Collisions: ‹ › confusable with «; ⟨ ⟩ confusable with < >; ⟦ ⟧ and ⟨ ⟩ already machine placeholders; none collide with Nix/Rust/shell; none dictable. Field naming derives from the word (`string_vector`). Datom vector value is [ ]; ethos type-section [ ] is enum.
+- Comments: `;` to end of line, dropped in protos space(), no node, never printed; 57 of 161 files carry comments, 455 of 4978 lines. Records: 2026-10-03 wants far more comments; 2026-10-06/07 alignment with the object, comment above or beside not below; 91ea9f no Sonnet comments. Tension: notion says "after" the object. No earlier record on documentation via comments.
+- Records: b81560 2026-09-19 wants an unused balanced delimiter for ethos/logos inside datom (unanswered "what are the candidates"); 04db2fd2 confirms Vector<T> syntax; ba906ae2 bracket in types is enum; 995a164e implied delimit-less vector; 91ea9f vertical layout and closing delimiter; 5abf3be8 dot opens a delimiter. No prior book on the subject.
+- Unknowns: his input route for non-ASCII; phone/messenger rendering; spaced or tight; field name without the word; datom adopting the same; "after" = beside or below.

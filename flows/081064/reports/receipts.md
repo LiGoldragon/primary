@@ -13,3 +13,9 @@ Primary publish 3: commit bd9649 (d33f82..bd9649), 7 files, lock 17918 Locked/Re
 - source: flows/081064/books/sources-registry-2.md; render: sources-registry-2.html
 - artifact: https://claude.ai/artifact/H18SE539mrh9YVbhEa6Vhd (version 1)
 - not yet on Primary main; publish awaits a PrimaryPublish turn from d68c82
+
+## 2026-10-12 «A delimiter for vectors», first edition
+
+- source: flows/081064/books/vector-delimiter.md; render: vector-delimiter.html; packet: reports/delimiters/packet-23824a.md
+- artifact: https://claude.ai/artifact/KrhRmHG3HGEwrbevc1vMbk (version 1)
+- not yet on Primary main; publish awaits a PrimaryPublish turn from d68c82
