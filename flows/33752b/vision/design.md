@@ -47,3 +47,27 @@ Context: comment on the proposed spirit line «Before a design, the unknowns are
 > We should put this into intent design, if only because not all the flows will need to load to design. Or if we do try to get them to understand design, they might actually end up, I don't know, maybe causing more harm than good. I'm not sure. Maybe not. Maybe it's good for all flows to read this but I can't really ask you because we don't, huh? If anything the people that are doing what I'm doing are going to be the ones finding out what the answer to that question is so we can't really answer that.
 
 -- psyche, typed, 2026-10-12, comment on the book. The same comment continues in vision/spirit.md.
+
+## A flow is given its mode when it starts
+
+Context: comment on «The missing pieces, second edition», Question 4, how a flow knows whether it is in design or prototype mode.
+
+> How does Flow know its role? Well it's given its role when it started obviously.
+
+-- psyche, typed, 2026-10-12, comment on the book.
+
+## No one knows ahead that the pieces are enough: approved, for the psyche modules and all primaries
+
+Context: comment on the proposed vision-design section «No one knows ahead that the pieces are enough».
+
+> This is great. Let's land that and make this a part of the psyche modules and all of the primaries.
+
+-- psyche, typed, 2026-10-12, comment on the book.
+
+## The golden system is the anatomy of the Nexus: operation, signal, memory
+
+Context: in chat, after the second edition, on where the golden system is.
+
+> I think that what I'm making with the Nexus system (the three different parts: the operation, the signal, and the memory, and then how each of these is divided) is essentially the bulk of the machine anatomy: what are the pieces that we need to define in the system? It was something that was instinctively going towards already. As such we could sort of flesh that out more. I think what we really need to do is create one good nexus that has all of its types and all of its traits well defined and then the flow nexus is the most needed essentially. Let's do that.
+
+-- psyche, STT, 2026-10-12, relayed by d68c82.

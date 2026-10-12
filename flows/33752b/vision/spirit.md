@@ -19,3 +19,11 @@ Context: the same comment on «The missing pieces», continued from vision/desig
 > I don't think that spirit is right. Like I said there's no spirit, just spirit. Either this is spirit spirit or spirit core. We need to change the name of that because spirit is a prefix. For now all the spirit modules will be loaded by default in all the main flows' system prompt so let's do the rename and the loading by default.
 
 -- psyche, typed, 2026-10-12, comment on the book.
+
+## All spirit modules go in the system prompt, not the user prompt
+
+Context: comment on «The missing pieces, second edition», Question 5, which showed spirit-core loading through the startup skills of a main flow.
+
+> No, all the spirit modules need to go in the system prompt not the user prompt.
+
+-- psyche, typed, 2026-10-12, comment on the book.

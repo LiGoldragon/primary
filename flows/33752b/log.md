@@ -68,3 +68,9 @@
 - 2026-10-12 Ideal-system research in reports/research-ideal-system.md (not committed by the subflow). Second edition of «The missing pieces» being written.
 - 2026-10-12 «The missing pieces, second edition» written (books/16); publication dispatched; publish turn requested.
 - 2026-10-12 Published «The missing pieces, second edition» https://claude.ai/artifact/VdiUHkpXL9haU2KXHMWBX8; link to d68c82; own publish.
+- 2026-10-12 Own publish: second edition, four psyche records, ideal-system research and log on main as a58901 (seven files, explicit paths); lock 18795 released.
+- 2026-10-12 Living's comments on the second edition logged (design.md, spirit.md, books.md, questions.md). Approved: vision-design section 'No one knows ahead' (into psyche modules and all primaries), vision-book center-of-development line, intent-psyche-interaction intelligible-question section (system prompt of all psyche flows). Ruled: mode given at start; spirit modules in the system prompt, not the user prompt; the golden system is the Nexus anatomy (operation, signal, memory), one good nexus first, Flow. Small third edition ordered.
+- 2026-10-12 «The missing pieces, third edition» written (books/17), minimal; publication dispatched.
+- 2026-10-12 Landed in psyche-skills main 5a18f9c: vision-design new (69d9c8b), vision-book center-of-development (0a6a8a3), intent-psyche-interaction intelligible question (5a18f9c); lock 18816 released.
+- 2026-10-12 Published «The missing pieces, third edition» https://claude.ai/artifact/A2L1ESLoDgvrKbctmq86HX; link to d68c82; own publish.
+- 2026-10-12 Publish of the third edition blocked: PrimaryPublish 18829 held by 081064; asked for its release word.
