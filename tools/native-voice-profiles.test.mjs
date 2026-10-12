@@ -22,15 +22,18 @@ assert.deepStrictEqual(selectVoiceProfile({aspect: 'Mind', layer: 'Primary'}), {
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', harness: 'claude'}), /harness differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', model: 'gpt-6-luna'}), /model differs/);
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Primary', effort: 'low'}), /effort differs/);
-assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: 'Secondary'}), /correspondence is pending/);
+for (const aspect of ['Mind', 'Field']) {
+  assert.equal(selectVoiceProfile({aspect, layer: 'Secondary'}).model, 'gpt-6.1-sol');
+  assert.equal(selectVoiceProfile({aspect, layer: 'Secondary'}).effort, 'medium');
+}
 assert.throws(() => selectVoiceProfile({aspect: 'Mind', layer: undefined}), /aspect and layer are required/);
 assert.deepStrictEqual(selectVoiceProfile({aspect: 'Psyche', layer: 'Quaternary'}), {
-  status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low',
+  status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'medium',
   source: 'living correspondence',
 });
 for (const aspect of ['Psyche', 'Mind', 'Field']) {
   assert.deepStrictEqual(selectStackProfile({aspect, layer: 'Quaternary', stack: 'Claude'}), {
-    status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low',
+    status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'medium',
     source: 'living correspondence',
   });
   assert.ok(Object.isFrozen(STACK_PROFILES[`${aspect}.Quaternary.Claude`]));

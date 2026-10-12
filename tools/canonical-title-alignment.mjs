@@ -117,8 +117,8 @@ async function live(flow, expected = null) {
 export function desired(flow, role) {
   if (!FLOW.test(flow)) throw new Error('Flow must be an exact six-character ID');
   if (role?.flow_id !== flow || !['Psyche', 'Mind', 'Field'].includes(role?.aspect) ||
-      !['High', 'Medium', 'Low', 'Ultra Low'].includes(role?.power) || typeof role?.model_id !== 'string') {
-    throw new Error('Explicit canonical aspect, power, exact model ID, and matching seat Flow ID required');
+      !['Primary', 'Secondary', 'Tertiary', 'Quaternary'].includes(role?.layer) || typeof role?.model_id !== 'string') {
+    throw new Error('Explicit canonical aspect, layer, exact model ID, and matching seat Flow ID required');
   }
   const title = `${role.aspect} ${requireModelTitle(role.model_id)} ${flow}`;
   return { title, agentName: `flow-${flow}`, paneLabel: title, tabLabel: title };

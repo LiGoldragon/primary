@@ -69,8 +69,8 @@ own system prompts because they need different prompts.
 ## Subflows are created from the questions and requests a flow ends with
 
 Creating a subflow is a routing job: whether there is already a flow
-that should simply get this message or this question. A special field
-flow running on ultra-low power checks every question and every
+that should simply get this message or this question. A Field
+Quaternary flow checks every question and every
 request a flow ends with, and, according to the ending flow's
 authority, spawns subflows given those questions and requests to
 answer or fulfill.

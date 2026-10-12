@@ -16,5 +16,5 @@ assert.throws(() => parseArgs(['--voice', 'Field.Primary', '--brief', '/tmp/fiel
 assert.throws(() => parseArgs(['--voice', 'Field.Primary', '--brief', '/tmp/field.md', '--predecessor', 'abcdef', '--topic', 'Ethos']), /--topic is only valid with --root/);
 assert.throws(() => parseArgs(['--voice', 'Field.Primary', '--brief', '/tmp/field.md']), /usage/);
 assert.throws(() => parseArgs(['--voice', 'Field.Primary']), /usage/);
-assert.throws(() => dispatchCommand(parseArgs(['--voice', 'Mind.Secondary', '--brief', '/tmp/mind.md', '--predecessor', 'abcdef'])), /correspondence is pending/);
+assert.match(dispatchCommand(parseArgs(['--voice', 'Mind.Secondary', '--brief', '/tmp/mind.md', '--predecessor', 'abcdef'])).args[0], /codex-main-flow-launch/);
 console.log('native-voice-launch tests passed');

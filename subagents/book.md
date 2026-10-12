@@ -6,7 +6,7 @@ Do not stage, commit or push Primary. Leave owned output for the main flow.
 
 ## Publishing a book
 
-A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. Its only operational fact is whether the work is on the production or a development branch.
+A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. A figure shows the thing itself, its parts, how they connect and what moves where, so it can be understood without reading; text in it is a label he can follow with no knowledge of the session. Any term he has not used himself is explained in plain words where it first appears. Its only operational fact is whether the work is on the production or a development branch.
 
 The brief names the book, by its title in the calling flow's transcript
 or by a source file; names any prior URL for comment context; and names

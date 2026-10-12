@@ -27,8 +27,8 @@ with tempfile.TemporaryDirectory() as temp:
     session = "01234567-0000-4000-8000-000000000000"
     manifest = {
         "session_id": session, "model": "claude-haiku-4-5-20251001", "effort": "low",
-        "role": "Psyche Low",
-        "titlePlan": {"aspect": "Psyche", "power": "Low", "model": "Haiku 4.5",
+        "role": "Psyche Tertiary",
+        "titlePlan": {"aspect": "Psyche", "layer": "Tertiary", "model": "Haiku 4.5",
                       "afterOwnVerifiedFlowId": True, "template": "Psyche Haiku 4.5 <FLOW_ID>"},
         "skills": ["operation-main-flow", "spirit-core", "operation-psyche-interraction"],
         "sources": [{"path": "Vision/source.md", "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}],

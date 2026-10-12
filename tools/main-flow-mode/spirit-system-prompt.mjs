@@ -16,12 +16,13 @@ export function spiritModules(workspace, surface = '.agents') {
   });
 }
 
-export function mainSystemModules(workspace, surface, {aspect, layer, metaflow}) {
+export function mainSystemModules(workspace, surface, {aspect, layer, metaflow, startupSkills = []}) {
   const modules = spiritModules(workspace, surface);
   const names = [];
   if (aspect === 'Psyche' || layer === 'Primary') names.push('vision-design');
   if (aspect === 'Psyche' || metaflow) names.push('intent-psyche-interaction');
-  for (const name of names) {
+  names.push(...startupSkills.filter(name => name.startsWith('intent-')));
+  for (const name of new Set(names)) {
     const file = path.join(workspace, surface, 'skills', name, 'SKILL.md');
     const body = fs.readFileSync(file, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
     if (!body) throw new Error(`empty main system module: ${name}`);

@@ -125,7 +125,7 @@ class Scenarios(EarlyScenarios):
         self.sandbox.save()
         digest = hashlib.sha256(brief.read_bytes()).hexdigest()
         request = token(f'{paths.run_id}-{harness}-start')
-        datom = (f'Start.{{ {{ {request} [ {{ {brief} {digest} }} ] [ ] Field Low '
+        datom = (f'Start.{{ {{ {request} [ {{ {brief} {digest} }} ] [ ] Field Tertiary '
                  f'{"Claude" if harness == "claude" else "Codex"} {model} {effort} None [ ] '
                  f'{self.sandbox.session} {bundle} «Your brief is in the source below; '
                  f'begin it only when told to continue.» }} '

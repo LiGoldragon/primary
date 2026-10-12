@@ -19,19 +19,19 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/679564be9ee30e3833dc2946201d68e223b7587b";
+      url = "github:LiGoldragon/Curriculum/8a82f5a66077accfe506df9805629a684bb26d56";
       flake = false;
     };
     psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/5a18f9cd968582fd990716442ea8a686d140231a";
+      url = "github:LiGoldragon/psyche-skills/29119ab969df09975f077dd5d5a87c6d5a715f50";
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/2d86e367d3155983f8ec5823c1ec7e5f745fd1ea";
+      url = "github:LiGoldragon/mind-skills/41b814e6a6666ed6d63978f6dde750ac3d8b1405";
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/0b3cfacf3aa28fc024c4fff68adc58e6e7023b10";
+      url = "github:LiGoldragon/field-skills/37b0fb5de2230182675ae2b34e5150ab40b02dca";
       flake = false;
     };
     flow = {

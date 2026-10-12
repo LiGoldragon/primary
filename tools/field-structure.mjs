@@ -1,15 +1,15 @@
 /* Twelve-cell Field/Mind/Psyche grid projection. Diagnosis only. */
 const aspects = ['Field', 'Mind', 'Psyche'];
-const tiers = ['high', 'medium', 'low', 'ultra_low'];
+const layers = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 
-function expectedCell(roster, aspect, tier) {
-  const declaration = roster.aspects[aspect][tier];
-  const profile = roster.expected_profiles?.[aspect]?.[tier] ?? null;
-  return {cell:`${aspect}/${tier}`, aspect, tier, declaration, profile};
+function expectedCell(roster, aspect, layer) {
+  const declaration = roster.aspects[aspect][layer];
+  const profile = roster.expected_profiles?.[aspect]?.[layer] ?? null;
+  return {cell:`${aspect}/${layer}`, aspect, layer, declaration, profile};
 }
 
 export function structuralReport(snapshot, roster, nowMs = Date.now()) {
-  const expected = aspects.flatMap(aspect => tiers.map(tier => expectedCell(roster, aspect, tier)));
+  const expected = aspects.flatMap(aspect => layers.map(layer => expectedCell(roster, aspect, layer)));
   const distinct = new Map();
   for (const row of snapshot.rows.filter(row => row.binding_state !== 'stale' && row.pane_id)) {
     const key = `${row.herdr_session ?? snapshot.session}\0${row.pane_id}\0${row.terminal_id}`;
@@ -23,7 +23,7 @@ export function structuralReport(snapshot, roster, nowMs = Date.now()) {
 
   for (const item of expected) {
     const declared = item.declaration;
-    const base = {cell:item.cell, aspect:item.aspect, tier:item.tier,
+    const base = {cell:item.cell, aspect:item.aspect, layer:item.layer,
       declared_role:declared?.role ?? item.profile?.role ?? null,
       declared_model:declared?.model ?? item.profile?.model ?? null,
       declared_effort:declared?.effort ?? item.profile?.effort ?? null,
@@ -84,7 +84,7 @@ export function structuralReport(snapshot, roster, nowMs = Date.now()) {
     : unknown_cells.length ? 'Inconclusive' : 'Conforming';
   return {version:1, kind:'StructuralReport', snapshot_at:snapshot.observed_at,
     snapshot_complete:snapshot.complete, snapshot_age_seconds:ageSeconds,
-    policy_revision:roster.revision ?? null, scope:{session:snapshot.session ?? null, aspects, tiers},
+    policy_revision:roster.revision ?? null, scope:{session:snapshot.session ?? null, aspects, layers},
     expected_cells:expected.map(x => x.cell), cells, gaps, unknown_cells, ghosts,
     harness_findings, assignment_findings,
     findings:{observed_panes:panes.length, expected_panes:12, uniquely_mapped_cells:matchedPanes.size,

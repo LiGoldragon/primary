@@ -15,5 +15,5 @@ quality.
 ## Two scales share the words high and medium
 
 The harness's model-effort setting is one scale. The naming of a flow's
-tier is another. A flow named high is named by tier, not by effort setting;
-a flow that reads its tier as an effort setting has misread it.
+layer is another. A flow named Primary is named by layer, not by effort setting;
+a flow that reads its layer as an effort setting has misread it.

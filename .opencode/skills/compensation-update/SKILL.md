@@ -1,6 +1,7 @@
 ---
 name: compensation-update
-description: Rotate stable and Next after consumer migration while preserving running sessions.
+description: A component's stable and Next endpoints are rotated, or its consumers are migrated between them.
+dependencies: []
 ---
 
 Treat a channel role and an endpoint identity as different things. An endpoint identity includes its process, service, socket, state root, client route, and running sessions.
@@ -23,6 +24,4 @@ Preserve default launch behavior by proving that the ordinary launcher resolves 
 
 Use the component-supported authentication mechanism without exposing credential contents to the flow or retained evidence. If no supported mechanism can authenticate separate Next, stop before creation and report the prerequisite.
 
-Before declaring success, retain an exact promotion artifact with pre- and post-promotion endpoint identities, the migration gate, default-launch result, explicit-Next result, and actual capability and model verification against the running endpoints.
-
-Do not claim success from a source edit, staged artifact, evaluation, build, or unreachable endpoint.
+Before declaring success, retain an exact promotion artifact with pre- and post-promotion endpoint identities, the migration gate, default-launch result, explicit-Next result, and actual capability and model verification against the running endpoints; a source edit, staged artifact, evaluation, build, or unreachable endpoint never proves success.

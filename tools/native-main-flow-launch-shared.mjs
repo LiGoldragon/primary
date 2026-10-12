@@ -26,6 +26,17 @@ export function canonicalTitleFor(aspect, _model, flowId, layer, topic = CORE_TO
   return topic === CORE_TOPIC ? `{ ${aspect} ${layer} ${flowId} }` : `{ ${aspect} ${topic} ${layer} ${flowId} }`;
 }
 
+
+// Herdr names are transport bindings (1–32 characters), not meta-flow titles.
+export function nativeAgentName(aspect, layer, topic, flowId) {
+  canonicalTitleFor(aspect, undefined, flowId, layer, topic);
+  const suffix = `_${flowId}`;
+  const room = 32 - suffix.length;
+  if (room < aspect.length) throw new Error('flow identity leaves no valid Herdr binding name');
+  const prefix = `${aspect}_${topic === CORE_TOPIC ? '' : `${topic}_`}${layer}`.toLowerCase();
+  return prefix.slice(0, room).replace(/_+$/, '') + suffix;
+}
+
 function readMetaflowSource(file) {
   if (!file || !path.isAbsolute(file) || !fs.statSync(file).isFile()) throw new Error('root launch requires a readable absolute --metaflow source file');
   const metaflow = fs.readFileSync(file, 'utf8');

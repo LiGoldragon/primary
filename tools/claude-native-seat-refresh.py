@@ -30,7 +30,7 @@ MAIN_FLOW_PROMPT = ROOT / "tools" / "main-flow-mode" / "system-prompt.md"
 MAIN_FLOW_SETTINGS = "main-flow-settings.json"
 
 
-def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None, workspace=ROOT, aspect=None, layer=None, metaflow=None):
+def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None, workspace=ROOT, aspect=None, layer=None, metaflow=None, startup_skills=()):
     """The replacing system prompt a main seat launches with; None for any other seat."""
     if not main_seat:
         return None
@@ -50,8 +50,9 @@ def main_flow_mode(main_seat=True, prompt_file=MAIN_FLOW_PROMPT, session_id=None
         names.append("vision-design")
     if aspect == "Psyche" or metaflow:
         names.append("intent-psyche-interaction")
+    names.extend(name for name in startup_skills if name.startswith("intent-"))
     text = file.read_text()
-    for name in names:
+    for name in dict.fromkeys(names):
         body = re.sub(r"^---\r?\n[\s\S]*?\r?\n---\r?\n", "", (skills / name / "SKILL.md").read_text()).strip()
         if not body or f"# {name}\n\n{body}" not in text:
             raise ValueError(f"main-flow system prompt lacks {name}")
@@ -92,9 +93,9 @@ def load_manifest(path):
         raise ValueError("manifest repeats a skill")
     if "nativeTitle" in data or canonical_role(data["role"]) is None:
         raise ValueError("manifest requires a canonical role without an arbitrary nativeTitle")
-    aspect, power = canonical_role(data["role"])
+    aspect, layer = canonical_role(data["role"])
     display = model_title(data["model"])
-    if data.get("titlePlan") != {"aspect": aspect, "power": power, "model": display,
+    if data.get("titlePlan") != {"aspect": aspect, "layer": layer, "model": display,
                                   "afterOwnVerifiedFlowId": True,
                                   "template": f"{aspect} {display} <FLOW_ID>"}:
         raise ValueError("manifest title plan differs from canonical role and model")
@@ -111,10 +112,10 @@ def load_manifest(path):
 def canonical_role(role):
     # Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
     # a Claude seat never carries the Mind aspect.
-    match = re.fullmatch(r"(Psyche|Field) (High|Medium|Low|Ultra Low)", role or "")
+    match = re.fullmatch(r"(Psyche|Field) (Primary|Secondary|Tertiary|Quaternary)", role or "")
     if match:
         return match.groups()
-    return {"Field Astra": ("Field", "High"), "Field Sol": ("Field", "Medium")}.get(role)
+    return None
 
 
 def model_title(model_id):
@@ -128,7 +129,7 @@ def model_title(model_id):
 
 
 def provisional_title(manifest):
-    aspect, _power = canonical_role(manifest["role"])
+    aspect, _layer = canonical_role(manifest["role"])
     return f"{aspect} {model_title(manifest['model'])} (claim pending)"
 
 
@@ -175,7 +176,7 @@ def expanded_skill(name, cwd):
 def startup_skills(manifest, cwd):
     names = []
     for name in manifest["skills"]:
-        if name.startswith("spirit-") or name == "spirit":
+        if name.startswith("spirit-") or name.startswith("intent-") or name == "spirit":
             continue
         body = (cwd / ".claude" / "skills" / name / "SKILL.md").read_text()
         if name in ("operation-main-flow", "operation-psyche-interraction") or re.search(r"^disable-model-invocation:\s*true\s*$", body, re.MULTILINE):
@@ -444,7 +445,7 @@ def validate_partial_bootstrap(manifest, cwd, target, transcript, receipt_path, 
     current_title = observed_title(entries, session_id)
     if current_title != provisional_title(manifest):
         flow_id = observation.get("canonicalFlowId")
-        aspect, _power = canonical_role(manifest["role"])
+        aspect, _layer = canonical_role(manifest["role"])
         expected_title = f"{aspect} {model_title(manifest['model'])} {flow_id}"
         try:
             verify_claim_marker(cwd, flow_id, session_id)
@@ -797,9 +798,9 @@ def payload_hash(manifest, sources):
 def plan(manifest, cwd, mode=None):
     if canonical_role(manifest.get("role")) is None or "nativeTitle" in manifest:
         raise ValueError("canonical role required without arbitrary nativeTitle")
-    aspect, power = canonical_role(manifest["role"])
+    aspect, layer = canonical_role(manifest["role"])
     display = model_title(manifest["model"])
-    if manifest.get("titlePlan") != {"aspect": aspect, "power": power, "model": display,
+    if manifest.get("titlePlan") != {"aspect": aspect, "layer": layer, "model": display,
                                       "afterOwnVerifiedFlowId": True,
                                       "template": f"{aspect} {display} <FLOW_ID>"}:
         raise ValueError("canonical role and model title plan required")
@@ -819,7 +820,7 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
             bootstrap_failed_state_file=None, bootstrap_failed_state_sha256=None,
             controller_attestation_file=None, controller_attestation_sha256=None,
             main_seat=True, main_flow_prompt=MAIN_FLOW_PROMPT):
-    mode = main_flow_mode(main_seat, main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"), manifest.get("metaflow"))
+    mode = main_flow_mode(main_seat, main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], canonical_role(manifest["role"])[1], manifest.get("metaflow"), manifest["skills"])
     receipt = plan(manifest, cwd, mode)
     if continue_partial:
         raise RuntimeError("a launcher cannot resume or resend an ambiguous first prompt")
@@ -942,7 +943,7 @@ def finalize_title(manifest, cwd, flow_id, receipt, timeout, sender=inject, herd
     require_transcript_uuid(entries, manifest["session_id"])
     if observed_title(entries, manifest["session_id"]) != provisional_title(manifest):
         raise RuntimeError("native Claude before-title changed")
-    aspect, _power = canonical_role(manifest["role"])
+    aspect, _layer = canonical_role(manifest["role"])
     title = f"{aspect} {model_title(manifest['model'])} {flow_id}"
     start = len(entries)
     try:
@@ -1018,7 +1019,7 @@ def main():
                          continue_partial=args.continue_partial,
                          partial_observation=json.loads(pathlib.Path(args.partial_observation).read_text()) if args.partial_observation else None,
                          main_seat=args.main_seat, main_flow_prompt=args.main_flow_prompt) if args.refresh else \
-            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], manifest.get("layer"), manifest.get("metaflow")))
+            plan(manifest, cwd, main_flow_mode(args.main_seat, args.main_flow_prompt, manifest["session_id"], cwd, canonical_role(manifest["role"])[0], canonical_role(manifest["role"])[1], manifest.get("metaflow"), manifest["skills"]))
         if args.bootstrap_running_empty or args.continue_partial:
             persist_bootstrap_receipt(pathlib.Path(args.receipt), result)
     print(json.dumps(result, indent=2))

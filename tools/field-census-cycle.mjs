@@ -25,8 +25,8 @@ function read(file, fallback) {
 function config(file) {
   const value = read(file, null);
   if (!value || !/^[a-f0-9]{6}$/.test(value.sender_flow_id) ||
-      !/^[a-f0-9]{6}$/.test(value.field_low_flow_id) ||
-      !/^[a-f0-9]{6}$/.test(value.field_ultra_flow_id) ||
+      !/^[a-f0-9]{6}$/.test(value.field_tertiary_flow_id) ||
+      !/^[a-f0-9]{6}$/.test(value.field_quaternary_flow_id) ||
       !Number.isInteger(value.notify_seconds) || value.notify_seconds < 300) {
     throw new Error('census recipients config requires exact sender/low/ultra Flow IDs and notify_seconds >= 300');
   }
@@ -71,7 +71,7 @@ export async function runCycle({
       console.log(JSON.stringify({status:preview?'dry-run':'observed',snapshot:latest,counts:snapshot.counts,complete:snapshot.complete,notification_due:planned}));
       return;
     }
-    const recipients = [settings.field_low_flow_id, settings.field_ultra_flow_id];
+    const recipients = [settings.field_tertiary_flow_id, settings.field_quaternary_flow_id];
     if (new Set(recipients).size !== recipients.length) throw new Error('low and ultra recipients must be distinct');
     const text = message(snapshot, latest);
     const attempt = {at:now(), recipients, status:'attempting', snapshot_at:snapshot.observed_at};

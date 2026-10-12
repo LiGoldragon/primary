@@ -11,4 +11,4 @@ Fix the file that sentence came from, or should have come from, before fixing th
 
 A skill edit is tested by giving the task that failed to a fresh flow with the edited skill.
 
-The cause a correction names is context, never the flow's care, attention, or discipline. An explanation that names the flow itself as the cause has not found the cause.
+An explanation that names the flow's care, attention, or discipline as the cause has not found the cause.

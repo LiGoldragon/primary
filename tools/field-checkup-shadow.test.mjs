@@ -4,7 +4,7 @@ import {assess} from './field-checkup-shadow.mjs';
 
 const now = Date.parse('2026-09-20T23:00:00Z');
 const native = '11111111-1111-1111-1111-111111111111';
-const tiers = ['high','medium','low','ultra_low'];
+const layers = ['Primary','Secondary','Tertiary','Quaternary'];
 const aspects = ['Field','Mind','Psyche'];
 function fixture() {
   let number = 1;
@@ -12,9 +12,9 @@ function fixture() {
   const rows = [];
   for (const aspect of aspects) {
     roster.aspects[aspect] = {};
-    for (const tier of tiers) {
+    for (const layer of layers) {
       const flow_id = (number++).toString(16).padStart(6,'0');
-      roster.aspects[aspect][tier] = {flow_id, native_thread:native};
+      roster.aspects[aspect][layer] = {flow_id, native_thread:native};
       rows.push({flow_id, binding_state:'exact', native_thread:native, provenance_gap:false, status:'idle', pane_id:`p${flow_id}`});
     }
   }
@@ -32,11 +32,11 @@ test('no duty never becomes a wake decision even with twelve idle exact seats', 
 
 test('missing seat and source gap block a due review', () => {
   const {roster,snapshot} = fixture();
-  roster.aspects.Psyche.ultra_low = null;
+  roster.aspects.Psyche.Quaternary = null;
   const due = {aspects:{Psyche:{mode:'ReviewDue',duty_id:'review-1'}}};
   let result = assess(snapshot, roster, due, now);
   assert.equal(result.aspects.Psyche.decision, 'Inconclusive');
-  assert.deepEqual(result.aspects.Psyche.recovery_required, ['ultra_low']);
+  assert.deepEqual(result.aspects.Psyche.recovery_required, ['Quaternary']);
   snapshot.complete = false;
   result = assess(snapshot, roster, due, now);
   assert.equal(result.aspects.Psyche.decision, 'Inconclusive');
@@ -46,8 +46,8 @@ test('missing seat and source gap block a due review', () => {
 test('working hints suppress review; otherwise pending evidence remains required', () => {
   const {roster,snapshot} = fixture();
   const due = {aspects:{Field:{mode:'WorkDue',duty_id:'work-1'}}};
-  snapshot.rows.find(row => row.flow_id === roster.aspects.Field.low.flow_id).status = 'working';
+  snapshot.rows.find(row => row.flow_id === roster.aspects.Field.Tertiary.flow_id).status = 'working';
   assert.equal(assess(snapshot, roster, due, now).aspects.Field.decision, 'SuppressedByObservedActivity');
-  snapshot.rows.find(row => row.flow_id === roster.aspects.Field.low.flow_id).status = 'idle';
+  snapshot.rows.find(row => row.flow_id === roster.aspects.Field.Tertiary.flow_id).status = 'idle';
   assert.equal(assess(snapshot, roster, due, now).aspects.Field.decision, 'PendingAndDeliveryEvidenceRequired');
 });

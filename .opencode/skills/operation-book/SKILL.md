@@ -9,7 +9,7 @@ Make one new presentation for each message. A presentation is a new living-messe
 Present the source faithfully and simply. The living responds by comment; use no buttons, fields, or other controls.
 
 A drawing starts as a vertical, narrow ASCII specification in the source.
-The book subflow delegates its figure to Haiku 5.5 with the surrounding
+The book subflow delegates its figure to Quaternary with the surrounding
 text, following its figure procedure; the page carries the resulting
 inline SVG, readable on a phone, never the ASCII or Mermaid.
 

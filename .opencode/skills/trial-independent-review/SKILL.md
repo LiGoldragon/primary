@@ -1,7 +1,7 @@
 ---
 name: trial-independent-review
-description: A middle tier brings the living's words to a higher tier for review.
+description: A middle layer brings the living's words to a higher layer for review.
 dependencies: []
 ---
 
-Carry raw psyche and context without a conclusion. The higher tier judges alone, then compares.
+Carry raw psyche and context without a conclusion. The higher layer judges alone, then compares.

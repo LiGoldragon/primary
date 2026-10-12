@@ -5,23 +5,23 @@ import path from 'node:path';
 import {structuralReport} from './field-structure.mjs';
 
 const aspects = ['Field', 'Mind', 'Psyche'];
-const tiers = ['high', 'medium', 'low', 'ultra_low'];
+const layers = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 
 function validatedRoster(value) {
   if (!value || value.version !== 1 || !value.aspects) throw new Error('invalid roster version');
   for (const aspect of aspects) {
     const seats = value.aspects[aspect];
-    if (!seats || tiers.some(tier => !Object.hasOwn(seats, tier))) throw new Error(`roster lacks ${aspect} tier`);
-    for (const tier of tiers) {
-      const seat = seats[tier];
+    if (!seats || layers.some(layer => !Object.hasOwn(seats, layer))) throw new Error(`roster lacks ${aspect} layer`);
+    for (const layer of layers) {
+      const seat = seats[layer];
       if (seat !== null && (!/^[a-f0-9]{6}$/.test(seat.flow_id) || !/^[0-9a-f-]{36}$/.test(seat.native_thread))) {
-        throw new Error(`invalid ${aspect}/${tier} binding declaration`);
+        throw new Error(`invalid ${aspect}/${layer} binding declaration`);
       }
-      const profile = value.expected_profiles?.[aspect]?.[tier];
+      const profile = value.expected_profiles?.[aspect]?.[layer];
       if (profile && (typeof profile.role !== 'string' || typeof profile.model !== 'string' ||
           !['claude','codex'].includes(profile.harness) || typeof profile.source !== 'string' ||
           (profile.effort !== null && typeof profile.effort !== 'string'))) {
-        throw new Error(`invalid ${aspect}/${tier} expected profile`);
+        throw new Error(`invalid ${aspect}/${layer} expected profile`);
       }
     }
   }
@@ -35,22 +35,22 @@ export function assess(snapshot, roster, duties = {aspects:{}} , nowMs = Date.no
   const outcomes = {};
   for (const aspect of aspects) {
     const seats = {};
-    for (const tier of tiers) {
-      const expected = roster.aspects[aspect][tier];
-      if (expected === null) { seats[tier] = {state:'missing-declaration', flow_id:null}; continue; }
+    for (const layer of layers) {
+      const expected = roster.aspects[aspect][layer];
+      if (expected === null) { seats[layer] = {state:'missing-declaration', flow_id:null}; continue; }
       const candidates = snapshot.rows.filter(row => row.flow_id === expected.flow_id);
       const row = candidates.length === 1 ? candidates[0] : null;
       let state = 'unobserved';
       if (candidates.length > 1) state = 'ambiguous';
       else if (row?.binding_state === 'exact' && row.native_thread === expected.native_thread && !row.provenance_gap) state = 'exact-observed';
       else if (row) state = 'binding-mismatch';
-      seats[tier] = {state, flow_id:expected.flow_id, native_thread:expected.native_thread,
+      seats[layer] = {state, flow_id:expected.flow_id, native_thread:expected.native_thread,
         observed_status:row?.status ?? null, pane_id:row?.pane_id ?? null,
         transcript_available:Boolean(row?.transcript_path), context_pct:row?.context_pct ?? null,
         source_snapshot:snapshot.observed_at};
     }
-    const missing = tiers.filter(tier => seats[tier].state !== 'exact-observed');
-    const activeHints = tiers.filter(tier => ['working', 'blocked'].includes(seats[tier].observed_status));
+    const missing = layers.filter(layer => seats[layer].state !== 'exact-observed');
+    const activeHints = layers.filter(layer => ['working', 'blocked'].includes(seats[layer].observed_status));
     const duty = duties.aspects?.[aspect] ?? null;
     let decision = 'DutyUnknown';
     if (duty?.mode === 'Paused' || duty?.mode === 'Held' || duty?.mode === 'PermittedIdle') decision = 'HealthyIdle';
@@ -60,7 +60,7 @@ export function assess(snapshot, roster, duties = {aspects:{}} , nowMs = Date.no
       else decision = 'PendingAndDeliveryEvidenceRequired';
     }
     outcomes[aspect] = {decision, duty_ref:duty?.duty_id ?? null, seats,
-      coverage:{exact:tiers.length - missing.length, expected:tiers.length, missing_or_mismatched:missing},
+      coverage:{exact:layers.length - missing.length, expected:layers.length, missing_or_mismatched:missing},
       active_hints:activeHints,
       recovery_required:missing.length ? missing : [],
       wake: 'disabled-shadow',

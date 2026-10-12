@@ -17,15 +17,16 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {requireModelTitle} from './model-display-name.mjs';
+import {secondaryBeforePrimary} from './secondary-first.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {canonicalTitleFor, continuationForLaunch, requireTopic, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
+import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
 import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup roots per aspect. Curriculum expands their declared dependencies before composition.
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
-export const LAYERS = ['Primary', 'Tertiary', 'Quaternary'];
+export const LAYERS = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 
 export const ASPECT_SKILLS = {
   Mind: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
@@ -73,8 +74,8 @@ export const liveSkillReader = workspace => name =>
 export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
 
-export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect)}) {
-  if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-'))) throw new Error('spirit modules belong only in the main system prompt');
+export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect).filter(name => !name.startsWith('intent-'))}) {
+  if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-') || name.startsWith('intent-'))) throw new Error('startup spirit and intent modules belong only in the main system prompt');
   const blocks = skillNames.map(name => {
     const text = read(name);
     if (!text || !text.trim()) throw new Error(`skill input missing or empty: ${name}`);
@@ -112,6 +113,7 @@ function rolloutFiles(dir) {
 const rows = file => fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).flatMap(l => { try { return [JSON.parse(l)]; } catch { return []; } });
 
 async function launch(o) {
+  let releaseDependency = () => {};
   let step = 'workspace';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
@@ -119,12 +121,14 @@ async function launch(o) {
     o = {...o, model: profile.model, effort: profile.effort};
     const flowsRoot = path.join(o.workspace, 'flows');
     const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow, topic: o.topic});
+    releaseDependency = secondaryBeforePrimary(o, continuation);
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
     fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
+    const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
+    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
@@ -132,7 +136,7 @@ async function launch(o) {
 
     const client = clientForModel(o.model);
     const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
-    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, metaflow: continuation.metaflow}), {flag: 'wx', mode: 0o600});
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, metaflow: continuation.metaflow, startupSkills}), {flag: 'wx', mode: 0o600});
 
     step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
@@ -178,7 +182,7 @@ async function launch(o) {
     done(`read back "${thread.name}"`);
 
     step = 'herdr agent';
-    const name = title.slice(2, -2).toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const name = nativeAgentName(o.aspect, o.layer, continuation.topic, flowId);
     execFileSync('herdr', herdrSessionReportArgs({session: o.herdrSession, paneId}, threadId), {encoding: 'utf8', timeout: 15000});
     herdr(o.herdrSession, 'agent', 'rename', paneId, name);
     await poll('an agent bound to the thread', 120, () => {
@@ -189,7 +193,9 @@ async function launch(o) {
 
     step = 'register';
     done(execFileSync('hm-register', [flowId, name, '--session', o.herdrSession, '--native-thread', threadId], {encoding: 'utf8', timeout: 60000}).trim());
+    releaseDependency();
   } catch (error) {
+    releaseDependency();
     console.error(`${step}: FAILED: ${error.message}`);
     process.exit(1);
   }
@@ -200,7 +206,8 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const skillNames = orderSkillsForPrompt(resolveSkillDependencies(BIRTH_SKILLS(o.aspect)).filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary')) && !(name === 'intent-psyche-interaction' && (o.aspect === 'Psyche' || o.metaflow || o.predecessor))));
+    const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
+    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
   } else await launch(o);
 }

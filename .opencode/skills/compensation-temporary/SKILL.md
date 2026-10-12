@@ -1,6 +1,6 @@
 ---
 name: compensation-temporary
-description: "A temporary condition holds: a host, builder, service or network route differs from its standing state for a stated period."
+description: "A temporary condition holds: a host, builder, service or network route differs from its standing state for a stated period; or the network between hosts matters to the work."
 dependencies: []
 ---
 

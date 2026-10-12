@@ -28,13 +28,13 @@ assert.throws(() => parseArgs(['--model', 'claude-fable-5-1', '--brief', 'b']), 
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'Psyche']), /no startup skill set/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta']).aspect, 'Field');
 assert.deepEqual(EFFORTS, ['low', 'medium', 'high', 'xhigh', 'max']);
-assert.deepEqual(LAYERS, ['Primary', 'Tertiary', 'Quaternary']);
+assert.deepEqual(LAYERS, ['Primary', 'Secondary', 'Tertiary', 'Quaternary']);
 assert.equal(parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--predecessor', 'abcdef']).layer, 'Primary');
 assert.equal(parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta', '--topic', 'Ethos']).topic, 'Ethos');
 assert.throws(() => parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--root', '--metaflow', '/tmp/meta', '--topic', 'ethos-zero']), /dense PascalCase/);
 assert.throws(() => parseArgs(['--model', 'gpt-6-luna', '--brief', 'b', '--aspect', 'Field', '--layer', 'Primary', '--predecessor', 'abcdef', '--topic', 'Ethos']), /--topic is only valid with --root/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Quaternary', '--predecessor', 'abcdef']).layer, 'Quaternary');
-assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Secondary', '--predecessor', 'abcdef']), /no additive layer: Secondary/);
+assert.equal(parseArgs(['--model', 'gpt-6.1-sol', '--brief', 'b', '--layer', 'Secondary', '--predecessor', 'abcdef']).layer, 'Secondary');
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary']), /exactly one/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root']), /requires --metaflow/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root', '--predecessor', 'abcdef', '--metaflow', '/tmp/meta']), /exactly one/);
@@ -62,8 +62,8 @@ const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', b
 assert.ok(prompt.startsWith(leading));
 assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/operation-main-flow\n\n---\nname: operation-main-flow'));
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
-assert.deepEqual(order, BIRTH_SKILLS('Mind'));
-for (const name of STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit')) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+assert.deepEqual(order, BIRTH_SKILLS('Mind').filter(name => !name.startsWith('intent-')));
+for (const name of STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
 const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read, skillNames: ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
 assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']);

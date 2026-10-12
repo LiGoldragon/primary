@@ -44,7 +44,7 @@ The psyche speaks through speech-to-text that fails: words are misheard and sent
 Write every Sanskrit term in IAST notation with its diacritics, in prose and in logs. When the psyche's speech-to-text renders a Sanskrit word without them, correct it inside the quote to IAST, in square brackets, and end the provenance line with the `Transcription corrected:` note, as for any other speech-to-text error (`"Upanishads" → "Upaniṣads"`).
 
 Layer, model, and effort are distinct. Read their configured
-correspondence from `knowledge-layer-models` and Flow; never infer them
+correspondence from `vision-model-roles` and Flow; never infer them
 from a title.
 
 When one message yields entries across several topics, each entry

@@ -141,7 +141,7 @@ class SeatLauncher:
                                  'start_token': identity.start_token, 'cwd': identity.cwd}
             harness = 'Codex' if record['harness'] == 'codex' else 'Claude'
             bindings.append(
-                f'{{ {record["flow_id"]} Field Low {record["model"]} {harness} '
+                f'{{ {record["flow_id"]} Field Tertiary {record["model"]} {harness} '
                 f'{record["native_session"]} {record["workspace"]} {record["pane"]} '
                 f'{record["tab"]} {record["terminal"]} {record["agent_name"]} '
                 f'{identity.datom()} {identity.cwd} }}')

@@ -3,7 +3,7 @@ import test from 'node:test';
 import { alignFlow, desired, plan } from './canonical-title-alignment.mjs';
 
 const flow = '6db4fe';
-const role = { flow_id: flow, aspect: 'Field', power: 'High', model_id: 'gpt-6-astra', native_thread: 'native', harness: 'codex' };
+const role = { flow_id: flow, aspect: 'Field', layer: 'Primary', model_id: 'gpt-6-astra', native_thread: 'native', harness: 'codex' };
 
 function fixture(failure = null, harness = 'codex', paneCount = 2) {
   const hm = { agent: harness, native_thread: 'native', session: 'session', pane_id: 'pane', terminal_id: 'terminal', name: 'old' };
@@ -47,7 +47,7 @@ function fixture(failure = null, harness = 'codex', paneCount = 2) {
   return { state, snapshot, io };
 }
 
-test('canonical title uses explicit aspect, model, power, and own Flow ID while preserving shared tab', () => {
+test('canonical title uses explicit aspect, model, layer, and own Flow ID while preserving shared tab', () => {
   const { snapshot } = fixture();
   assert.deepEqual(desired(flow, role), { title: 'Field Astra 6db4fe', agentName: 'flow-6db4fe',
     paneLabel: 'Field Astra 6db4fe', tabLabel: 'Field Astra 6db4fe' });
@@ -55,7 +55,7 @@ test('canonical title uses explicit aspect, model, power, and own Flow ID while 
   assert.equal(proposed.operations.tabLabel, false);
   assert.equal(proposed.route.tabPaneCount, 2);
   for (const bad of [
-    { ...role, aspect: 'Other' }, { ...role, power: 'Astra' }, { ...role, flow_id: '7091ea' },
+    { ...role, aspect: 'Other' }, { ...role, layer: 'Astra' }, { ...role, flow_id: '7091ea' },
     { ...role, native_thread: 'other' }, { ...role, harness: 'claude' },
   ]) assert.throws(() => plan(snapshot(), bad));
 });

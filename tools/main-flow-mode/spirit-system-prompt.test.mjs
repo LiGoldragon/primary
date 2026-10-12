@@ -34,6 +34,9 @@ try {
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Field', layer: 'Primary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary'}).map(module => module.name), ['spirit-core', 'spirit-future']);
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary', metaflow: 'Owned continuation context'}).map(module => module.name), ['spirit-core', 'spirit-future', 'intent-psyche-interaction']);
+  fs.mkdirSync(path.join(skills, 'intent-topic'));
+  fs.writeFileSync(path.join(skills, 'intent-topic', 'SKILL.md'), 'Topic intent body');
+  assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Mind', layer: 'Tertiary', startupSkills: ['intent-topic', 'intent-topic', 'knowledge-spirit']}).map(module => module.name), ['spirit-core', 'spirit-future', 'intent-topic']);
   fs.mkdirSync(path.join(skills, 'spirit'));
   assert.throws(() => spiritModules(root), /legacy spirit/);
 } finally { fs.rmSync(root, {recursive: true, force: true}); }

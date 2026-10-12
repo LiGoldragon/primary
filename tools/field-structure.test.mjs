@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {structuralReport} from './field-structure.mjs';
 
-const aspects = ['Field','Mind','Psyche'], tiers = ['high','medium','low','ultra_low'];
+const aspects = ['Field','Mind','Psyche'], layers = ['Primary','Secondary','Tertiary','Quaternary'];
 const native = '11111111-1111-1111-1111-111111111111';
 const time = Date.parse('2026-09-20T23:00:00Z');
 function fixture() {
@@ -11,9 +11,9 @@ function fixture() {
   const rows=[];
   for(const aspect of aspects) {
     roster.aspects[aspect]={};
-    for(const tier of tiers) {
+    for(const layer of layers) {
       const flow_id=(++index).toString(16).padStart(6,'0');
-      roster.aspects[aspect][tier]={flow_id,native_thread:native,role:`${aspect} ${tier}`,
+      roster.aspects[aspect][layer]={flow_id,native_thread:native,role:`${aspect} ${layer}`,
         harness:'codex',model:'gpt-5.6-luna',effort:'medium',native_receipt_ref:`receipt-${flow_id}`};
       rows.push({flow_id,native_thread:native,binding_state:'exact',provenance_gap:false,
         pane_id:`p${index}`,terminal_id:`t${index}`,agent_name:`agent-${index}`,
@@ -95,12 +95,12 @@ test('duplicate mapping conflicts, while repeated joins to one physical pane do 
   assert.equal(report.ghosts.every(x=>x.removal_authorized===false),true);
 });
 
-test('declared Haiku profile is retained for a missing Psyche Ultra Low binding', () => {
+test('declared Haiku profile is retained for a missing Psyche Quaternary binding', () => {
   const {roster,snapshot}=fixture();
-  roster.aspects.Psyche.ultra_low=null;
-  roster.expected_profiles={Psyche:{ultra_low:{role:'Psyche ultra low',model:'Haiku',harness:'claude',effort:null,source:'living-correction'}}};
+  roster.aspects.Psyche.Quaternary=null;
+  roster.expected_profiles={Psyche:{Quaternary:{role:'Psyche Quaternary',model:'Haiku',harness:'claude',effort:null,source:'living-correction'}}};
   const report=structuralReport(snapshot,roster,time);
-  const gap=report.gaps.find(x=>x.cell==='Psyche/ultra_low');
+  const gap=report.gaps.find(x=>x.cell==='Psyche/Quaternary');
   assert.equal(gap.reason,'MissingBinding');
   assert.equal(gap.declared_model,'Haiku');
   assert.equal(gap.declared_harness,'claude');

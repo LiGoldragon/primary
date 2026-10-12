@@ -6,14 +6,14 @@ const rows = {
   'Field.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium', source: 'qualified Field Astra profile and user role assignment'},
 
   'Psyche.Secondary': {status: 'configured', harness: 'claude', model: 'claude-opus-5-5', effort: 'medium', source: 'living ruling 2026-10-10'},
-  'Mind.Secondary': {status: 'pending', harness: 'codex', effort: 'medium', reason: 'Curriculum latest Sol correspondence is adoption-pending; exact installed model must be qualified'},
-  'Field.Secondary': {status: 'unresolved', reason: 'no Field Secondary correspondence'},
+  'Mind.Secondary': {status: 'configured', harness: 'codex', model: 'gpt-6.1-sol', effort: 'medium', source: 'Core 2026-10-12 secretary assignment; actual 41fa34 native turn context'},
+  'Field.Secondary': {status: 'configured', harness: 'codex', model: 'gpt-6.1-sol', effort: 'medium', source: 'Core 2026-10-12 secretary assignment; actual 42265e native turn context'},
 
   'Psyche.Tertiary': {status: 'configured', harness: 'claude', model: 'claude-sonnet-5-5', effort: 'medium', source: 'living correspondence'},
   'Mind.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
   'Field.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
 
-  'Psyche.Quaternary': {status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low', source: 'living correspondence'},
+  'Psyche.Quaternary': {status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'medium', source: 'living correspondence'},
   'Mind.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
   'Field.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
 };
@@ -21,7 +21,7 @@ export const VOICE_PROFILES = Object.freeze(Object.fromEntries(Object.entries(ro
 
 const stackRows = Object.fromEntries(['Psyche', 'Mind', 'Field'].map(aspect => [
   `${aspect}.Quaternary.Claude`,
-  Object.freeze({status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'low', source: 'living correspondence'}),
+  Object.freeze({status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'medium', source: 'living correspondence'}),
 ]));
 export const STACK_PROFILES = Object.freeze(stackRows);
 

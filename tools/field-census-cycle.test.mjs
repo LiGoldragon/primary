@@ -21,8 +21,8 @@ test('observe-only refreshes the census without reading recipients or sending, a
     const before = '{"last_completed_at":"2026-09-20T00:00:00Z"}\n';
     fs.writeFileSync(notification, before);
     const configPath = path.join(stateDirectory, 'recipients.json');
-    fs.writeFileSync(configPath, JSON.stringify({sender_flow_id:'9ddcbc',field_low_flow_id:'0347d0',
-      field_ultra_flow_id:'c88918',notify_seconds:300}));
+    fs.writeFileSync(configPath, JSON.stringify({sender_flow_id:'9ddcbc',field_tertiary_flow_id:'0347d0',
+      field_quaternary_flow_id:'c88918',notify_seconds:300}));
     const bin = path.join(stateDirectory, 'bin');
     fs.mkdirSync(bin);
     const marker = path.join(stateDirectory, 'unexpected-send');

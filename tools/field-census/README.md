@@ -47,7 +47,7 @@ before removal.
 
 Invoking `field-census-cycle.mjs` without `--observe-only` retains the earlier
 manual bounded-summary behavior: it sends a short pointer to configured Field
-Low and Ultra Low Flow IDs every `notify_seconds`, after HM revalidates each
+Tertiary and Quaternary Flow IDs every `notify_seconds`, after HM revalidates each
 exact live route. A failed or uncertain submission creates a durable hold in
 `notification-state.json`; an operator must reconcile that state before any
 retry. `recipients.json` is preserved operational state, not timer input.
@@ -55,7 +55,7 @@ retry. `recipients.json` is preserved operational state, not timer input.
 Example `~/.config/field-census/recipients.json`:
 
 ```json
-{"sender_flow_id":"9ddcbc","field_low_flow_id":"0347d0","field_ultra_flow_id":"c88918","notify_seconds":1800}
+{"sender_flow_id":"9ddcbc","field_tertiary_flow_id":"0347d0","field_quaternary_flow_id":"c88918","notify_seconds":1800}
 ```
 
 The snapshot reports observed bindings, including old crossovers. It does not
