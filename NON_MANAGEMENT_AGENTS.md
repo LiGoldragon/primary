@@ -10,11 +10,11 @@
   `.opencode/` trees are generated read-only evidence; never edit them
   directly. Regenerate them through Curriculum Nexus after changing the
   authored sources or manifests.
-- On Primary, leave your owned edits for your main flow. Return their exact paths
-  and validation; never stage, commit or push Primary, and never commit foreign
-  changes. Only the main flow publishes under its acquired PrimaryPublish turn,
-  with a shared HEAD/origin-main check, explicit owned paths and a non-force push.
-  Report a mismatch; do not repair it or use JJ.
+- On Primary, leave your owned edits for the sole standing committer. Your
+  turn-end hook delivers your actual identity and transcript when Primary is
+  dirty. Never stage, commit, push, take PrimaryPublish or rewrite Primary
+  yourself; preserve foreign changes and report blockers. In every other
+  repository, commit and push your own changes as usual.
 - No `/nix/store` filesystem search.
 - No `---` horizontal rules in markdown.
 - DOTOS records are positional; use bare atoms for strings when canonical.

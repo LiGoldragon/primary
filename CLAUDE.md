@@ -17,11 +17,12 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 
 ## Committing
 
-Only a main flow commits and pushes Primary, under its acquired PrimaryPublish turn.
-A subflow leaves its owned edits for its main flow and returns the exact paths and
-validation; it does not stage, commit or push Primary. The main flow checks shared
-HEAD equals origin/main, commits only its explicit owned paths and pushes non-force.
-A mismatch is reported, never repaired; foreign dirty changes are preserved.
+Every flow edits Primary and leaves its owned edits for the sole standing committer.
+Only that committer stages, commits, pushes or holds PrimaryPublish. The editing
+seat's turn-end hook hands over its actual identity and transcript when Primary is
+dirty; preserve foreign edits and report blockers. Main flows and subflows never
+commit or push Primary themselves. A flow editing another repository commits and
+pushes its own changes in that repository.
 
 ## Psyche
 
