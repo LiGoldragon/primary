@@ -59,3 +59,12 @@
 - 2026-10-12 Human-side research in reports/research-unknowns-human.md. FAULT again: that subflow (briefed before the no-commit rule) committed to main (5b56696) and swept my dirty log.md into a 'found in tree' commit (69fb1eb). Jigsaw book being written.
 - 2026-10-12 «The missing pieces» written (books/15); publication dispatched.
 - 2026-10-12 Published «The missing pieces» https://claude.ai/artifact/RaZ2QDgtEXohUGW6EovvCD; link to d68c82; own publish after Field's release.
+- 2026-10-12 Own publish: book 15 and log on main as 75204a (two files, explicit paths); lock 18739 released. Note: git commit takes -m before --.
+- 2026-10-12 Living (via d68c82): commented on «The missing pieces»; wants Fable to reinvestigate the question. Comments being fetched verbatim.
+- 2026-10-12 Nine comments on «The missing pieces» logged verbatim (vision/design.md, spirit.md, books.md, questions.md). Approved: first edition mostly questions (vision-book). Ruled: unknowns line into intent design; rename spirit → spirit-core/spirit-spirit and load all spirit modules by default in main flows; the book is the center of development; design blocks, prototype documents assumptions; hunt unknowns as a wave; judging completeness is the hardest part; investigate the ideal system and its anatomy. Correction: a question must be intelligible; never ask where without the what.
+- 2026-10-12 d68c82: the spirit name (spirit-spirit vs spirit-core) is put to him as a ruling, not chosen; rename withdrawn from the landing subflow; vision-book line and intent-design land.
+- 2026-10-12 psyche-skills main 9bba4bf..28ae42e: 8e8234b vision-book first-edition line; 38a0f6f spirit → spirit-core (pushed before the withdrawal reached the subflow; kept, the name goes to him as a ruling in the second edition); 28ae42e intent-design new. Lock 18773 released. Primary trees show intent-psyche regenerated; the new three not yet.
+- 2026-10-12 Intelligible-question rule landed in field-skills compensation-book-distillation (912f4f4).
+- 2026-10-12 Ideal-system research in reports/research-ideal-system.md (not committed by the subflow). Second edition of «The missing pieces» being written.
+- 2026-10-12 «The missing pieces, second edition» written (books/16); publication dispatched; publish turn requested.
+- 2026-10-12 Published «The missing pieces, second edition» https://claude.ai/artifact/VdiUHkpXL9haU2KXHMWBX8; link to d68c82; own publish.
