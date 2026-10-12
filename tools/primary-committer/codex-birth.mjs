@@ -32,6 +32,14 @@ export async function prepareCodexBirth({call, claim, workspace, model, effort, 
   const threadId = thread.id;
   const flowId = await claim(threadId);
   const ownerConfig = codexOwnerConfig(flowId, {workspace, committer});
+  // A new native thread has an allocated path but no resumable storage yet.
+  // The paginated live-read API persists its empty history without a model
+  // turn. Never fabricate a rollout or detach before this succeeds.
+  if (thread.historyMode !== 'paginated') throw new Error('native birth is not paginated; zero-turn persistence is unqualified');
+  const persisted = await call('thread/read', {threadId, includeTurns: true});
+  if (persisted?.thread?.id !== threadId || persisted.thread.historyMode !== 'paginated' ||
+      !Array.isArray(persisted.thread.turns) || persisted.thread.turns.length !== 0)
+    throw new Error('native persistence did not return the same empty paginated thread; no detach or working turn sent');
   // The native server cold-resumes an idle thread with changed config only
   // after its subscribers detach. Never resume somebody else's active thread.
   const detached = await call('thread/unsubscribe', {threadId});
