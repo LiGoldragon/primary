@@ -280,7 +280,7 @@ A proposal to destroy or archive a record renders unmistakably apart from a land
 Code that teaches a domain-model or code rule explains the Ethos types
 it uses and their purpose, and shows the wrong and right forms.
 
-A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches
+A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. Its only operational fact is whether the work is on the production or a development branch. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches
 a book; the authored file targeted by a proposal stays named.
 
 A diagram in a book's source is ASCII, laid out vertically and no wider than 52 characters so a phone shows it; the published book never shows the ASCII, but a figure drawn from it by a Sonnet or Haiku subflow that keeps every box, label and arrow of the source and adds nothing the source does not say; its colour and layout may carry the surrounding meaning.
@@ -393,6 +393,8 @@ predecessor once the successor has answered; do not reuse or message a
 retired flow.
 
 A flow that hands work to a Primary, or to any flow above it, first gathers through its own subflows everything that work needs: the living's words whole, his comments on the books, the records and the files. It sends all of it in one message. It never sends a pointer or an instruction to go and fetch.
+
+Herdr is third-party software that we never modify.
 
 Before reporting a launch as ready, verify its named Herdr session,
 colour, title, remote control, and its remote listing.

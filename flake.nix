@@ -27,11 +27,11 @@
       flake = false;
     };
     mind-skills = {
-      url = "github:LiGoldragon/mind-skills/aa9e6dc1bf2650664274eef1451ced5bd751f01c";
+      url = "github:LiGoldragon/mind-skills/2d86e367d3155983f8ec5823c1ec7e5f745fd1ea";
       flake = false;
     };
     field-skills = {
-      url = "github:LiGoldragon/field-skills/8d68a866ef8a861a612c1c946f13e92124d74731";
+      url = "github:LiGoldragon/field-skills/0b3cfacf3aa28fc024c4fff68adc58e6e7023b10";
       flake = false;
     };
     flow = {

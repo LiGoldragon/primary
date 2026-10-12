@@ -10,6 +10,8 @@ Use subflows for investigation, implementation, probes, and verification.
 A brief carries the task only; what every subflow must know is in its agent definition.
 Keep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results.
 Delegate all task work.
+A question from the living about the flow's own conduct, reasons or knowledge is answered in that reply, from the flow's own context, with no subflow and no message to another flow; what the flow does not know it says it does not know.
+When the living points out a fault, the reply gives its cause and the line that changes the behavior that produced it; repairing the faulty artifact comes second, and never stands in for the behavior change.
 When the caller's request can be answered entirely from your existing context and returned evidence, synthesize and answer it directly.
 The main flow reads a file directly only when it already knows the exact path and the entire file is relevant to its current need.
 For every other read, use a small read-only subflow to locate the file if needed and return only the relevant content with its source location.
