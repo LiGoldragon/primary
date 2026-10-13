@@ -11,7 +11,7 @@ File: `psyche-context/skills/intent-startup-prompt.md`, the paragraph
 «One block, with the startup skills in it», as it stands, with two
 sentences added at its end.
 
-The launcher: the script that starts a flow, today
+The launcher: the script that starts a flow,
 `tools/claude-main-flow-launch.mjs` and `tools/codex-main-flow-launch.mjs`.
 EDN: Clojure's plain data notation, the form of the launch configuration
 under `primary/config/main-flow/`. A module: one skill file composed
@@ -29,8 +29,8 @@ Sources: flow d8df70, 2026-09-23 and 2026-09-24; flow e51411,
 The EDN line for the per-aspect and per-metaflow files is Proposal 4 of
 «Flow: short term and long term», third edition; this is its code.
 
-File: `primary/tools/claude-main-flow-launch.mjs`. The skills are sent
-in batches of six, each answered before the next:
+File: `primary/tools/claude-main-flow-launch.mjs`, the skills sent in
+batches of six:
 
 ```js
 - export const MAX_SKILLS_PER_PROMPT = 6;
@@ -126,6 +126,8 @@ declared revision and nothing else is written into the block:
 +         (throw (ex-info "ModuleHomeUnknown"
 +                         {:module module})))))
 +
++ ;; git's own words read the file at the declared
++ ;; revision, in its revision:path form.
 + (defn module-text [config module]
 +   (let [home (module-home config module)
 +         repo (get-in config [:repositories home])
@@ -255,14 +257,14 @@ The sentences and the code:
 3. Drop.
 
 Where the fenced file sits:
-4. In the flow's directory under `flows/`, reached through the
+4. In the harness's own starting directory, each flow started in a
+   place of its own (flow f55ec8, 2026-09-16).
+5. In the flow's directory under `flows/`, reached through the
    `FLOW_ID` environment variable the launcher sets (the bootstrap
    pointer Proposal 4 of «Flow: identity and naming», second edition,
    keeps), the machine's design: every flow runs in the one shared
    workspace (Proposal 13), so the harness's own directory cannot
    carry one flow's id.
-5. In the harness's own starting directory, each flow started in a
-   place of its own (flow f55ec8, 2026-09-16).
 
 ### Proposal 3: the first response is a presentation
 
@@ -371,12 +373,13 @@ Under choice 5, the sentence is a short-term line, under «Short term»:
 + Short term: the launcher starts every flow under Herdr.
 ```
 
-**Destroy**, under choice 8: the record «Once the Flow component works
-with a cheap test model, the primary relaunches itself properly in a
-new Flow with a properly loaded first prompt and context; a good
-anatomy, judgment, implement; simple syntax», `flows/fd0f97/vision/launch.md`
-(2026-09-15), whole: a working instruction, whose words on the first
-prompt are drawn into Proposal 1.
+**Destroy**, under choice 9: the record in
+`flows/fd0f97/vision/launch.md` (2026-09-15), whole, a working
+instruction whose words on the first prompt are drawn into Proposal 1:
+
+```text
+- ## Once the Flow component works with a cheap test model, the primary relaunches itself properly in a new Flow with a properly loaded first prompt and context; a good anatomy, judgment, implement; simple syntax
+```
 
 File: `primary/tools/claude-main-flow-launch.mjs`, the command and the
 environment written in code:
@@ -401,8 +404,9 @@ File: `primary/tools/codex-main-flow-launch.mjs`:
 
 File: `primary/config/main-flow/shared.edn`, inside its map. A keyword
 in a command template is a field of the launch record; the colour
-variable goes with the identities a parent leaves behind (flow fd0f97,
-2026-09-15: the black and white came from the launch's environment):
+variable goes with the identities a parent leaves behind (the context
+of flow fd0f97's record, 2026-09-15: `NO_COLOR` came from the launch's
+environment):
 
 ```clojure
 +  :command
@@ -434,9 +438,7 @@ variable goes with the identities a parent leaves behind (flow fd0f97,
 +            "NO_COLOR"]}}
 ```
 
-File: `messenger-clj/src/messenger_clj/launch.clj`; `FLOW_ID` stays in
-the code as the environment variable a flow reads to find its own
-directory:
+File: `messenger-clj/src/messenger_clj/launch.clj`:
 
 ```clojure
 + ;; A keyword in the template is a field of the
@@ -453,6 +455,8 @@ directory:
 +               [part]))
 +           (get-in config [:command harness])))
 +
++ ;; -u is env's own flag; FLOW_ID is the bootstrap
++ ;; pointer a flow reads to find its directory.
 + (defn env-args [config harness flow-id]
 +   (let [path [:environment harness :unset]
 +         unset (get-in config path)]
@@ -488,9 +492,8 @@ third edition; this is its code.
 
 Source: flow d68c82, 2026-10-13.
 
-File: `primary/config/main-flow/shared.edn`. The tool sets are the
-harness's own tool names; today they are validated and read by no
-launcher:
+File: `primary/config/main-flow/shared.edn`; the tool sets are the
+harness's own tool names:
 
 ```clojure
 -  :tools {:claude [:read :edit :write :bash :web]
@@ -583,10 +586,11 @@ handover»):
 ```
 
 File: `messenger-clj/src/messenger_clj/launch.clj`, replacing
-`stop-hook` of Proposal 1 of «Flow: refresh and handover»; `--config`
-is the flag the hooks read, their contract with the command:
+`stop-hook` of Proposal 1 of «Flow: refresh and handover»:
 
 ```clojure
++ ;; "command" is the harness's hook type; bb runs
++ ;; the file; --config is the flag the hooks read.
 + (defn hook-entry [config-file hook]
 +   {:type "command"
 +    :command (str "bb " (:file hook)
@@ -611,11 +615,86 @@ is the flag the hooks read, their contract with the command:
 +           [(str "hooks." (name event)) hooks])))
 ```
 
-Ruling:
+File: `primary/tools/main-flow-mode/reminder-hook.py`, removed whole.
 
+File: `messenger-clj/src/messenger_clj/reminder.clj`, a new file, its
+Clojure rewrite; the machine's design: every Nth prompt re-enters the
+first paragraphs of one module, counted per session in the flow's
+directory. Its data, `primary/config/main-flow/shared.edn`, inside its
+map:
+
+```clojure
++  :reminder {:every 20 :paragraphs 5
++             :module :intent-main-flow
++             :state "reminder"}
+```
+
+```clojure
++ (ns messenger-clj.reminder
++   (:require [babashka.fs :as fs]
++             [clojure.string :as str]
++             [messenger-clj.launch :as launch]))
++
++ ;; The event's keys and the reply's are the
++ ;; harness's hook contract.
++ (defn prompt-event? [event]
++   (= "UserPromptSubmit"
++      (:hook_event_name event)))
++
++ (defn count-file [config flow-dir session]
++   (fs/path flow-dir
++            (get-in config [:reminder :state])
++            session))
++
++ (defn read-count [file]
++   (if (fs/exists? file)
++     (parse-long (str/trim (slurp (str file))))
++     0))
++
++ (defn count-prompt! [file]
++   (let [n (inc (read-count file))]
++     (fs/create-dirs (fs/parent file))
++     (spit (str file) (str n))
++     n))
++
++ (defn due? [config n]
++   (zero? (mod n (get-in config
++                         [:reminder :every]))))
++
++ ;; A blank line is Markdown's own paragraph break.
++ (defn core [config]
++   (let [{:keys [module paragraphs]}
++         (:reminder config)
++         body (launch/module-block config module)]
++     (str/join "\n\n"
++               (take paragraphs
++                     (str/split body
++                                #"\n\s*\n")))))
++
++ (defn reply [text]
++   {:hookSpecificOutput
++    {:hookEventName "UserPromptSubmit"
++     :additionalContext text}})
++
++ (defn remind [config flow-dir event]
++   (when (prompt-event? event)
++     (let [file (count-file config flow-dir
++                            (:session_id event))]
++       (when (due? config (count-prompt! file))
++         (reply (core config))))))
+```
+
+Ruling, one number from each group:
+
+The line and the code:
 1. Land.
 2. Land with changes the living names.
 3. Drop.
+
+The line's mark:
+4. Short term, as shown: the launcher is the short-term tool (flow
+   d68c82, 2026-10-13).
+5. Unmarked.
 
 ### Proposal 8: spawning adapts to the harness
 
@@ -671,7 +750,8 @@ File: `primary/config/main-flow/shared.edn`, inside its map:
 
 File: `messenger-clj/src/messenger_clj/launch.clj`; `read-agent` reads
 the pane's agent from Herdr, `register!` is the messenger's
-registration; the record's keys are Herdr's own:
+registration; the record's keys are Herdr's own; `PaneUnbound` is the
+refusal's own name:
 
 ```clojure
 + (defn bound? [agent pane thread]
@@ -700,6 +780,11 @@ The wait:
    is forbidden by the paragraph above.
 5. The poll stays, registered and reported as a poller.
 
+The line's mark:
+6. Short term, as shown: the launcher is the short-term tool (flow
+   d68c82, 2026-10-13).
+7. Unmarked.
+
 ### Proposal 10: one central Start call and its shorthands
 
 File: `psyche-context/skills/vision-flow.md`, «Starting flows», after
@@ -725,7 +810,7 @@ Under choice 4 the last sentence goes instead to
 ```
 
 File: `primary/tools/claude-main-flow-launch.mjs`, the arguments a
-launch names today:
+launch names:
 
 ```js
 -   const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort', '--predecessor', '--metaflow', '--topic']);
@@ -771,9 +856,65 @@ is what the call itself names:
 +    (slurp (str (metaflow-file config address)))))
 ```
 
+File: `primary/config/main-flow/metaflow/Psyche-Flow-Primary.edn`,
+renamed `Psyche-flow-Primary.edn`, with the other four: a metaflow file
+is named from its address, the topic uncapitalized (Proposal 1).
+
+The figure, in the same skill under «Short term», after Proposal 9's
+line:
+
+```text
++ +--------------------------------------+
++ | the EDN: shared, per aspect,         |
++ | per metaflow                         |
++ +--------------------------------------+
++         | fills
++         v
++ +--------------------------------------+
++ | the Start call, or its shorthand     |
++ +--------------------------------------+
++         | claims
++         v
++ +--------------------------------------+
++ | the flow id and its directory        |
++ +--------------------------------------+
++         | precedes
++         v
++ +--------------------------------------+
++ | the secretary, if a Primary starts   |
++ +--------------------------------------+
++         | precedes
++         v
++ +--------------------------------------+
++ | a Herdr pane, on main                |
++ +--------------------------------------+
++         | runs
++         v
++ +--------------------------------------+
++ | the harness, remote control on,      |
++ | permissions off, hooks installed     |
++ +--------------------------------------+
++         | receives
++         v
++ +--------------------------------------+
++ | one block: id, mode, modules, brief  |
++ +--------------------------------------+
++         | is bound, then registered with
++         v
++ +--------------------------------------+
++ | the messenger                        |
++ +--------------------------------------+
++         | precedes
++         v
++ +--------------------------------------+
++ | the first response: a presentation   |
++ +--------------------------------------+
+```
+
+
 Ruling, one number from each group:
 
-The paragraph and the code:
+The paragraph, the figure and the code:
 1. Land.
 2. Land with changes the living names.
 3. Drop.
@@ -853,6 +994,8 @@ File: `messenger-clj/src/messenger_clj/launch.clj`; `start!` is the
 start of Proposal 10, given the brief of Proposal 3:
 
 ```clojure
++ ;; :Primary and :Secondary are the layers' own
++ ;; names.
 + (defn secretary [address]
 +   (assoc address :layer :Secondary))
 +
@@ -908,6 +1051,7 @@ File: `messenger-clj/src/messenger_clj/launch.clj`;
 `WorkspaceOffBranch` is the refusal's own name:
 
 ```clojure
++ ;; git's own words for the current branch.
 + (defn branch [path]
 +   (str/trim (:out (sh "git" "-C" path "rev-parse"
 +                       "--abbrev-ref" "HEAD"))))
@@ -986,73 +1130,11 @@ What matches a flow's provenance:
 5. The flow itself only.
 6. Any flow of the same metaflow.
 
-### Proposal 15: the launch, as a figure
+### Proposal 15: a question for Mind
 
-File: `psyche-context/skills/vision-flow.md`, under «Short term», after
-Proposal 9's line.
-
-Sources: the proposals above.
-
-```text
-+ +--------------------------------------+
-+ | the EDN: shared, per aspect,         |
-+ | per metaflow                         |
-+ +--------------------------------------+
-+         | fills
-+         v
-+ +--------------------------------------+
-+ | the Start call, or its shorthand     |
-+ +--------------------------------------+
-+         | claims
-+         v
-+ +--------------------------------------+
-+ | the flow id and its directory        |
-+ +--------------------------------------+
-+         | precedes
-+         v
-+ +--------------------------------------+
-+ | the secretary, if a Primary starts   |
-+ +--------------------------------------+
-+         | precedes
-+         v
-+ +--------------------------------------+
-+ | a Herdr pane, on main                |
-+ +--------------------------------------+
-+         | runs
-+         v
-+ +--------------------------------------+
-+ | the harness, remote control on,      |
-+ | permissions off, hooks installed     |
-+ +--------------------------------------+
-+         | receives
-+         v
-+ +--------------------------------------+
-+ | one block: id, mode, modules, brief  |
-+ +--------------------------------------+
-+         | is bound, then registered with
-+         v
-+ +--------------------------------------+
-+ | the messenger                        |
-+ +--------------------------------------+
-+         | precedes
-+         v
-+ +--------------------------------------+
-+ | the first response: a presentation   |
-+ +--------------------------------------+
-```
-
-Ruling:
-
-1. Land.
-2. Change.
-3. Drop.
-
-### Proposal 16: a question for Mind
-
-File: a message to { Mind flow Secondary }, from Proposal 3 of «Clojure
-and data: the rectification»: a question asks for knowledge.
-
-Source: flow d68c82, 2026-10-13.
+File: a message to { Mind flow Secondary } (flow d68c82, 2026-10-13; a
+question asks for knowledge, Proposal 3 of «Clojure and data: the
+rectification»):
 
 ```text
 + Measure, over past transcripts, when a preconfigured subflow of minimal guidance costs fewer tokens than the main flow's own tool calls, and when more; the answer is a knowledge module.

@@ -1,0 +1,676 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flow: launch and lean start</title>
+<h1 class="book-title">Flow: launch and lean start</h1>
+<h2>Crystallization</h2>
+<article class="proposal"><header><span class="pnum">1</span><h2>the startup prompt is one lean block</h2></header>
+<p class="target"><code>psyche-context/skills/intent-startup-prompt.md</code></p><p>the paragraph «One block, with the startup skills in it», as it stands, with two sentences added at its end.</p>
+<p>The launcher: the script that starts a flow, <code>tools/claude-main-flow-launch.mjs</code> and <code>tools/codex-main-flow-launch.mjs</code>. EDN: Clojure's plain data notation, the form of the launch configuration under <code>primary/config/main-flow/</code>. A module: one skill file composed into a prompt. Babashka (bb): the program that runs Clojure scripts at once.</p>
+<p>Sources: flow d8df70, 2026-09-23 and 2026-09-24; flow e51411, 2026-09-24; flow ebbe30, 2026-10-09; flow d68c82, 2026-10-13.</p>
+<div class="diff"><div class="ctx"><p>A flow starts from one startup prompt: a single block of text. Some skills are startup skills: they are given to particular flows at their start and never to their subflows, and the harness is configured so the model cannot see or load them itself. Each harness has a facility for this, and that facility is what is used. A startup skill enters through the startup prompt; if one was left out, it is put in afterward, as a repair of the startup prompt.</p></div><div class="add"><ins><p>The order of the startup skills in the block carries nothing. The block is lean: the flow's id, its mode, its modules and its brief, and nothing else.</p></ins></div></div>
+<p>The EDN line for the per-aspect and per-metaflow files is Proposal 4 of «Flow: short term and long term», third edition; this is its code.</p>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p>the skills sent in batches of six:</p>
+<pre data-diff><code class="language-javascript">- export const MAX_SKILLS_PER_PROMPT = 6;
+- const STARTUP_INSTRUCTION = 'Startup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.';</code></pre>
+<pre data-diff><code class="language-javascript">-   return `${skillNames.map(n =&gt; `/${n}`).join(' ')} # Startup skills\n\n${STARTUP_INSTRUCTION}\n`;</code></pre>
+<pre data-diff><code class="language-javascript">-     while (loadedCount &lt; skillNames.length) {
+-       const nextSkills = skillNames.slice(loadedCount, loadedCount + MAX_SKILLS_PER_PROMPT);
+-       const startupPrompt = composeSkillPrompt({skillNames: nextSkills, exists: liveSkillExists(o.workspace)});
+-       submitPrompt(o.herdrSession, paneId, startupPrompt);</code></pre>
+<p class="target"><code>primary/tools/native-main-flow-launch-shared.mjs</code></p><p>the order forced on the skills:</p>
+<pre data-diff><code class="language-javascript">- export function orderSkillsForPrompt(names, leading = 'compensation-main-flow') {
+-   if (new Set(names).size !== names.length) throw new Error('resolved skill closure contains duplicates');
+-   return names.includes(leading) ? [leading, ...names.filter(name =&gt; name !== leading)] : [...names];
+- }</code></pre>
+<p class="target"><code>primary/tools/codex-main-flow-launch.mjs</code></p><p>the heading and the skill header written into the block:</p>
+<pre data-diff><code class="language-javascript">- export const skillBlock = (workspace, name, text) =&gt;
+-   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;</code></pre>
+<pre data-diff><code class="language-javascript">-   const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;</code></pre>
+<p class="target"><code>primary/tools/main-flow-mode/launch-config.mjs</code></p><p>the repository of a module inferred from its name in code:</p>
+<pre data-diff><code class="language-javascript">-     for (const placement of ['system', 'user']) config.modules[placement] = config.modules[placement].map(name =&gt; ({name, repository: name === 'compensation-book-crystallization' || name === 'compensation-main-flow' || name.startsWith('compensation-') ? 'field' : (name.startsWith('intent-') || name.startsWith('spirit-') || name === 'vision-book' ? 'psyche' : (name.startsWith('knowledge-') || name.startsWith('operation-') ? 'mind' : config.aspect.toLowerCase())), path: `skills/${name}.md`, placement}));</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>The skill path becomes a pattern filled with the module's name; each kind of module names its home; the prompt's parts, their order and their separator are data:</p>
+<pre data-diff><code class="language-clojure">-                         :skills "skills"}
++                         :skills "skills/%s.md"}</code></pre>
+<pre data-diff><code class="language-clojure">+  :module-homes {:spirit :psyche :intent :psyche
++                 :vision :psyche
++                 :knowledge :mind :operation :mind
++                 :compensation :field}
++  :prompt {:parts [:flow-id :mode :modules :brief]
++           :separator "\n\n"}</code></pre>
+<p class="target"><code>primary/config/main-flow/metaflow/Psyche-Flow-Primary.edn</code></p><p>the one shape for system and user modules that the aspect files have:</p>
+<pre data-diff><code class="language-clojure">- {:aspect :Psyche :topic :Flow :layer :Primary :modules [:spirit-core :intent-main-flow :vision-book :compensation-book-crystallization] :user-modules [:compensation-main-flow] :secondary-native-id "da203818-26b4-4a15-9de8-faeb1e7d23cd"}
++ {:aspect :Psyche :topic :flow :layer :Primary
++  :modules
++  {:system [:spirit-core :intent-main-flow
++            :vision-book
++            :compensation-book-crystallization]
++   :user [:compensation-main-flow]}}</code></pre>
+<p>The same shape in <code>Psyche-Flow-Secondary.edn</code>, and in the three Core files, whose <code>:modules [...]</code> becomes <code>:modules {:system [...] :user []}</code>.</p>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p>the file Proposal 5 of «Flow: identity and naming», second edition, creates; the machine's design, because a module's text is read once from its repository at the declared revision and nothing else is written into the block:</p>
+<pre data-diff><code class="language-clojure">+ ;; A module's home is read from its name's first
++ ;; word; the kinds are :module-homes.
++ (defn module-home [config module]
++   (let [words (str/split (name module) #"-" 2)
++         kind (keyword (first words))]
++     (or (get-in config [:module-homes kind])
++         (throw (ex-info "ModuleHomeUnknown"
++                         {:module module})))))
++
++ ;; git's own words read the file at the declared
++ ;; revision, in its revision:path form.
++ (defn module-text [config module]
++   (let [home (module-home config module)
++         repo (get-in config [:repositories home])
++         file (format (:skills repo) (name module))
++         out (sh "git" "-C" (:path repo) "show"
++                 (str (:ref repo) ":" file))]
++     (when-not (zero? (:exit out))
++       (throw (ex-info "ModuleUnavailable"
++                {:module module :file file})))
++     (:out out)))
++
++ ;; The front matter fence is the skill file's own
++ ;; format; the body is what enters a prompt.
++ (defn module-body [text]
++   (str/trim (str/replace-first
++              text #"(?s)\A---\n.*?\n---\n" "")))
++
++ (defn module-block [config module]
++   (module-body (module-text config module)))
++
++ (defn modules [aspect mf placement]
++   (concat (get-in aspect [:modules placement])
++           (get-in mf [:modules placement])))
++
++ (defn join-parts [config parts]
++   (str/join (get-in config [:prompt :separator])
++             parts))
++
++ (defn system-prompt [config aspect mf]
++   (join-parts config
++               (map #(module-block config %)
++                    (modules aspect mf :system))))
++
++ (defn prompt-parts [config aspect mf launch]
++   {:flow-id (:flow-id launch)
++    :mode (format (get-in config [:prompt :mode])
++                  (name (:mode mf)))
++    :modules (join-parts
++              config
++              (map #(module-block config %)
++                   (modules aspect mf :user)))
++    :brief (:brief launch)})
++
++ (defn first-prompt [config parts]
++   (let [order (get-in config [:prompt :parts])]
++     (join-parts config (map parts order))))</code></pre>
+<p>with <code>[clojure.java.shell :refer [sh]]</code> added to its requires. <code>ModuleHomeUnknown</code> and <code>ModuleUnavailable</code> are the two refusals' own names. <code>:mode</code> is Proposal 4.</p>
+<p class="target"><code>primary/CLAUDE.md</code></p><p>under choice 6; <code>knowledge-psyche</code> is a user module of <code>psyche.edn</code> already, so the line asks a second load:</p>
+<div class="diff"><div class="del"><del><p>Load the <code>knowledge-psyche</code> skill. If your work touches a topic the psyche may</p><p>have spoken on, search the vision- and intent- skills, <code>vision-raw/</code>, and <code>flows/*/vision/</code> before assuming.</p></del></div><div class="add"><ins><p>If your work touches a topic the psyche may have spoken on, search the vision- and intent- skills, <code>vision-raw/</code>, and <code>flows/*/vision/</code> before assuming.</p></ins></div></div>
+</article>
+<section class="rulings"><ol><li value="1"><p>Ruling, one number from each group:</p><p>The sentences and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>What «no hashes» in the block means (flow e51411, 2026-09-24):</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>Markdown headings, the <code>#</code> lines; removed as shown.</li><li>Hex identifiers; the flow's id then enters the block in its word form (Proposal 2 of «Flow: identity and naming», second edition), and <code>:parts</code> reads <code>[:words :mode :modules :brief]</code>.</li></ol><p>The <code>CLAUDE.md</code> line:</p><ol class="choices" start="6" style="counter-reset:choice 5"><li>Remove the load, as shown.</li><li>Keep it.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">2</span><h2>the id is claimed for the flow, never by it</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«What it does», the paragraph that begins «A topic's name is a camelCase identifier», one sentence added at its end; and <code>psyche-context/skills/intent-main-flow.md</code>, the paragraph that begins «You run a shell command».</p>
+<p>Sources: flow f55ec8, 2026-09-16; flow e51411, 2026-09-24.</p>
+<div class="diff"><div class="ctx"><p>A topic's name is a camelCase identifier, uncapitalized. A flow's id is the hash of the harness's session id, so a transcript is found from the flow id. Where the harness lets Flow choose the session id, Flow chooses it before the flow starts and the flow reads it in its prompt; where the harness assigns it, Flow learns it when the flow binds. No flow declares its id: every call to Flow is identified by the calling process.</p></div><div class="add"><ins><p>The process that starts a flow claims its id and makes its directory before the flow starts; the id stands in the startup prompt and in a file the flow cannot write, where its subflows find it. No flow or subflow claims an id.</p></ins></div></div>
+<div class="diff"><div class="del"><del><p>You run a shell command for two things only: claiming your Flow ID, and the writes you own: your log, your psyche records, and your summary. Leave Primary edits for the sole standing committer; never stage, commit, push or take PrimaryPublish yourself. In other repositories, commit and push your own changes. Everything else that reaches into the harness, the cluster, or the code goes through a subflow.</p></del></div><div class="add"><ins><p>You run a shell command for the writes you own only: your log, your psyche records, and your summary; your Flow ID was claimed for you as you started and stands in your startup prompt. Leave Primary edits for the sole standing committer; never stage, commit, push or take PrimaryPublish yourself. In other repositories, commit and push your own changes. Everything else that reaches into the harness, the cluster, or the code goes through a subflow.</p></ins></div></div>
+<p class="target"><code>primary/tools/main-flow-mode/system-prompt.md</code></p><p>the same sentence, changed the same way.</p>
+<p>The claim itself is <code>claim!</code> of Proposal 1 of «Flow: identity and naming», second edition; the id enters the block as <code>:flow-id</code> of Proposal 1 here. The file the flow cannot write is the claim's <code>flow-id.edn</code>, fenced after it is written. Its mode is data, <code>primary/config/main-flow/shared.edn</code>, inside <code>:flow-id</code>:</p>
+<pre data-diff><code class="language-clojure">+            :mark-mode "r--r--r--"</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/flow_id.clj</code></p><p>after <code>claim-lane!</code>, whose <code>(spit mark (pr-str seen))</code> is followed by <code>(fence-mark! config mark)</code>:</p>
+<pre data-diff><code class="language-clojure">+ (defn fence-mark! [config mark]
++   (fs/set-posix-file-permissions
++    mark (get-in config [:flow-id :mark-mode])))</code></pre>
+</article>
+<section class="rulings"><ol><li value="2"><p>Ruling, one number from each group:</p><p>The sentences and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>Where the fenced file sits:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>In the harness's own starting directory, each flow started in a place of its own (flow f55ec8, 2026-09-16).</li><li>In the flow's directory under <code>flows/</code>, reached through the <code>FLOW_ID</code> environment variable the launcher sets (the bootstrap pointer Proposal 4 of «Flow: identity and naming», second edition, keeps), the machine's design: every flow runs in the one shared workspace (Proposal 13), so the harness's own directory cannot carry one flow's id.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">3</span><h2>the first response is a presentation</h2></header>
+<p class="target"><code>psyche-context/skills/intent-startup-prompt.md</code></p><p>a new section after «One block, with the startup skills in it».</p>
+<p>Sources: flow 445410, 2026-10-09; flow 73ada7, 2026-10-09.</p>
+<div class="diff"><div class="add"><ins><h3>The first response is a presentation</h3></ins></div><div class="add"><ins><p>A new flow's first response is a presentation of its context: having loaded it, the flow has subflows question and reinforce it, then distills it for its role, as a proposal for how to make things better. Psyche distills into vision, intent and spirit; Mind into knowledge, questions and implementation; Field into its own roles. No flow is told to answer that it is ready.</p></ins></div></div>
+<p>A successor's first presentation is Proposal 7 of «Flow: refresh and handover».</p>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p>the instruction removed in Proposal 1 (<code>Reply exactly READY</code>). File: <code>primary/tools/secondary-first.mjs</code>, the brief written in code:</p>
+<pre data-diff><code class="language-javascript">-         fs.writeFileSync(brief, `You are the ${options.aspect} ${topic} Secondary. Give only your normal startup presentation. No additional task is assigned.\n`, {mode: 0o600});</code></pre>
+<p>It is data, <code>primary/config/main-flow/shared.edn</code>, read by Proposal 12:</p>
+<pre data-diff><code class="language-clojure">+  :secretary
++  {:brief
++   "Give your startup presentation; no task."}</code></pre>
+</article>
+<section class="rulings"><ol><li value="3"><p>Ruling:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">4</span><h2>a flow is given its mode at start</h2></header>
+<p class="target"><code>psyche-context/skills/vision-design.md</code></p><p>a new section at the end. The two modes, design and prototype, are the living's words of the same day in <code>flows/33752b/vision/design.md</code>.</p>
+<p>Source: flow 33752b, 2026-10-12.</p>
+<div class="diff"><div class="ctx"><p>No one can know ahead of time that the pieces are enough to yield the best version that could be come up with at the moment. Everybody contributes to the judgment, without limit. Judging that an idea is complete is the hardest part of a thinking machine to get.</p></div><div class="add"><ins><h3>A flow is given its mode at start</h3></ins></div><div class="add"><ins><p>A flow is told at start whether it designs or builds a prototype; it does not find out.</p></ins></div></div>
+<p class="target"><code>primary/config/main-flow/metaflow/Psyche-Flow-Primary.edn</code></p><p>inside its map, and the mode of each metaflow file:</p>
+<pre data-diff><code class="language-clojure">+  :mode :design</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside <code>:prompt</code>, the line that carries it:</p>
+<pre data-diff><code class="language-clojure">+           :mode "Mode: %s"</code></pre>
+<p>The part <code>:mode</code> of <code>prompt-parts</code>, Proposal 1, reads both.</p>
+</article>
+<section class="rulings"><ol><li value="4"><p>Ruling:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">5</span><h2>the harness command</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after the paragraph that begins «A layer is Primary».</p>
+<p>Herdr: the third-party terminal program the flows run in; a pane: one terminal area in it. Remote control: the harness's own way of reaching a session from another device.</p>
+<p>Sources: flow fd0f97, 2026-09-15, four records; flow e51411, 2026-09-24.</p>
+<div class="diff"><div class="ctx"><p>A layer is Primary, Secondary, Tertiary or Quaternary, in every aspect; the layer decides the model, declared once in Flow as configuration and changed only over its meta socket. A launch names the metaflow, the context modules composed into its prompts, and a brief of a small paragraph; the Nexus composes the prompt from its module registry, checking each module's hash against its source.</p></div><div class="add"><ins><p>A main flow is reachable remotely from the moment it starts, and is seen on the desktop in a normally coloured terminal. Every flow is started with the harness's permission prompts off; a flow that was not is relaunched.</p></ins></div></div>
+<p>Under choice 4, one more sentence:</p>
+<div class="diff"><div class="add"><ins><p>Flow launches it under Herdr.</p></ins></div></div>
+<p>Under choice 5, the sentence is a short-term line, under «Short term»:</p>
+<div class="diff"><div class="add"><ins><p>Short term: the launcher starts every flow under Herdr.</p></ins></div></div>
+<p><strong>Destroy</strong>, under choice 9: the record in <code>flows/fd0f97/vision/launch.md</code> (2026-09-15), whole, a working instruction whose words on the first prompt are drawn into Proposal 1:</p>
+<div class="diff"><div class="del"><del><h3>Once the Flow component works with a cheap test model, the primary relaunches itself properly in a new Flow with a properly loaded first prompt and context; a good anatomy, judgment, implement; simple syntax</h3></del></div></div>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p>the command and the environment written in code:</p>
+<pre data-diff><code class="language-javascript">- export const UNSET_ENV = ['CLAUDE_CODE_CHILD_SESSION', 'CLAUDE_JOB_DIR', 'CLAUDE_CODE_SESSION_KIND', 'CLAUDE_CODE_SESSION_ID', 'CLISESSIONID'];</code></pre>
+<pre data-diff><code class="language-javascript">-     const command = `cd ${sh(o.workspace)} &amp;&amp; exec env ${claudeFlowEnvironment(flowId)} claude --session-id ${sessionId} --model ${sh(o.model)} --effort ${sh(o.effort)} --name ${sh(title)} --remote-control --dangerously-skip-permissions --system-prompt-file ${sh(mode.promptFile)} --settings ${sh(mode.settingsFile)} "$(cat ${sh(promptFile)})"`;</code></pre>
+<p class="target"><code>primary/tools/codex-main-flow-launch.mjs</code></p>
+<pre data-diff><code class="language-javascript">-   const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];</code></pre>
+<pre data-diff><code class="language-javascript">-   return `exec env ${identities.map(name =&gt; `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} ${threadId ? `resume ${sh(threadId)} ` : ''}"$(cat ${sh(promptFile)})"`;</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside its map. A keyword in a command template is a field of the launch record; the colour variable goes with the identities a parent leaves behind (the context of flow fd0f97's record, 2026-09-15: <code>NO_COLOR</code> came from the launch's environment):</p>
+<pre data-diff><code class="language-clojure">+  :command
++  {:claude
++   ["claude" "--session-id" :session
++    "--model" :model "--effort" :effort
++    "--name" :title "--remote-control"
++    "--dangerously-skip-permissions"
++    "--allowedTools" :tools
++    "--system-prompt-file" :system-prompt
++    "--settings" :settings :prompt]
++   :codex
++   ["codex" "-m" :model
++    "-c" :instructions "-c" :reasoning
++    "--dangerously-bypass-approvals-and-sandbox"
++    "-C" :workspace :prompt]}
++  :environment
++  {:claude
++   {:unset ["CLAUDE_CODE_CHILD_SESSION"
++            "CLAUDE_JOB_DIR"
++            "CLAUDE_CODE_SESSION_KIND"
++            "CLAUDE_CODE_SESSION_ID"
++            "CLISESSIONID" "NO_COLOR"]}
++   :codex
++   {:unset ["CODEX_THREAD_ID" "CODEX_SESSION_ID"
++            "CLAUDE_CODE_SESSION_ID"
++            "CLAUDE_SESSION_ID" "THREAD_ID"
++            "FLOW_ID" "FLOW_DIRECTORY"
++            "NO_COLOR"]}}</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p>
+<pre data-diff><code class="language-clojure">+ ;; A keyword in the template is a field of the
++ ;; launch record; a vector field is spliced.
++ (defn command-line [config harness launch]
++   (mapcat (fn [part]
++             (if (keyword? part)
++               (let [v (get launch part)
++                     one #(if (keyword? %) (name %)
++                              (str %))]
++                 (if (coll? v)
++                   (map one v)
++                   [(one v)]))
++               [part]))
++           (get-in config [:command harness])))
++
++ ;; -u is env's own flag; FLOW_ID is the bootstrap
++ ;; pointer a flow reads to find its directory.
++ (defn env-args [config harness flow-id]
++   (let [path [:environment harness :unset]
++         unset (get-in config path)]
++     (concat (mapcat #(list "-u" %) unset)
++             [(str "FLOW_ID=" flow-id)])))</code></pre>
+</article>
+<section class="rulings"><ol><li value="5"><p>Ruling, one number from each group:</p><p>The paragraph and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>Herdr:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>Flow launches under Herdr, long term as well (flow fd0f97, 2026-09-15: «maybe under Herder if it works better»).</li><li>Short term only; long term the terminal is Persona's.</li><li>No Herdr sentence.</li></ol><p>The permissions sentence:</p><ol class="choices" start="7" style="counter-reset:choice 6"><li>Stands as written, unmarked.</li><li>Short term only; the Capsule sandboxes long term.</li></ol><p>The record:</p><ol class="choices" start="9" style="counter-reset:choice 8"><li>Destroy it, as above.</li><li>Keep it.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">6</span><h2>the tools a flow carries</h2></header>
+<p>The line stands as Proposal 5 of «Flow: short term and long term», third edition; this is its code.</p>
+<p>Source: flow d68c82, 2026-10-13.</p>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>the tool sets are the harness's own tool names:</p>
+<pre data-diff><code class="language-clojure">-  :tools {:claude [:read :edit :write :bash :web]
+-          :codex [:read :edit :write :bash :web]
+-          :book-publisher [:read :edit :write :bash :web :artifact :artifact-comments :artifact-data]}}
++  :tools {:claude ["Read" "Edit" "Write" "Bash"
++                   "WebFetch" "WebSearch"]
++          :book-publisher ["Read" "Edit" "Write"
++                           "Bash" "WebFetch"
++                           "WebSearch" "Artifact"
++                           "ArtifactComments"
++                           "ArtifactData"]}}</code></pre>
+<p class="target"><code>primary/config/main-flow/metaflow/Psyche-Flow-Primary.edn</code></p><p>inside its map, the set it carries:</p>
+<pre data-diff><code class="language-clojure">+  :tools :book-publisher</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p><code>:tools</code> in the Claude command template of Proposal 5 is filled from it:</p>
+<pre data-diff><code class="language-clojure">+ (defn tools [config mf]
++   (get-in config [:tools (:tools mf)]))</code></pre>
+</article>
+<section class="rulings"><ol><li value="6"><p>Ruling:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">7</span><h2>every hook, as a notification</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«A replaced session is reaped by the refresh itself», the first long-term paragraph as it stands; a short-term line under «Short term», after the paragraph Proposal 4 of «Flow: short term and long term», third edition, adds.</p>
+<p>A hook: a command the harness runs at one of its events, such as the end of a turn or the submission of a prompt. The messenger: messenger-clj, the short-term tool that registers flows and types messages into them.</p>
+<p>Source: flow 840e42, 2026-09-15.</p>
+<div class="diff"><div class="ctx"><p>Every harness event reaches Flow through the harness's hooks calling the Flow CLI, so Flow knows each flow's state without polling; a marked block landing in a transcript becomes an action, a book among them, with no tool call by the flow; a flow nearing its context limit is told, writes its handover, and is refreshed as it goes idle. Polling is forbidden; a poller that must exist is registered and reported.</p></div></div>
+<div class="diff"><div class="add"><ins><p>Short term: the launcher installs, from the EDN configuration, a hook on every event the harness offers, each calling the messenger with the flow's configuration; what is done with the event is the messenger's.</p></ins></div></div>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p><code>mainFlowMode</code>, the hooks written in code:</p>
+<pre data-diff><code class="language-javascript">-   const hook = ['python3', sh(path.join(modeDir, 'reminder-hook.py')), '--prompt-file', sh(promptFile),
+-     '--state-dir', sh(path.join(jobDir, 'main-flow-reminder')), '--every', '20'].join(' ');
+-   const settings = {hooks: {UserPromptSubmit: [{hooks: [{type: 'command', command: hook, timeout: 10}]}]}};</code></pre>
+<p class="target"><code>primary/tools/codex-main-flow-launch.mjs</code></p><p><code>thread/start</code>:</p>
+<pre data-diff><code class="language-javascript">-         config: {model_reasoning_effort: o.effort, 'features.hooks': true,
+-           'hooks.Stop': [{hooks: [hooks.hook]}],
+-           'hooks.state': {[hooks.hookKey]: {enabled: true, trusted_hash: hooks.hash}}}</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside its map; the event names are each harness's own, and the files are the hooks beside the messenger, <code>refresh.clj</code> among them (Proposal 1 of «Flow: refresh and handover»):</p>
+<pre data-diff><code class="language-clojure">+  :hooks {:claude [{:event "Stop"
++                    :file "refresh.clj"
++                    :timeout-s 30}
++                   {:event "UserPromptSubmit"
++                    :file "reminder.clj"
++                    :timeout-s 10}]
++          :codex [{:event "Stop"
++                   :file "refresh.clj"
++                   :timeout-s 30}]}</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p>replacing <code>stop-hook</code> of Proposal 1 of «Flow: refresh and handover»:</p>
+<pre data-diff><code class="language-clojure">+ ;; "command" is the harness's hook type; bb runs
++ ;; the file; --config is the flag the hooks read.
++ (defn hook-entry [config-file hook]
++   {:type "command"
++    :command (str "bb " (:file hook)
++                  " --config " config-file)
++    :timeout (:timeout-s hook)})
++
++ (defn hook-settings [config harness config-file]
++   (let [hooks (get-in config [:hooks harness])
++         entry #(hook-entry config-file %)]
++     {:hooks
++      (into {}
++            (for [[event group]
++                  (group-by :event hooks)]
++              [(keyword event)
++               [{:hooks (mapv entry group)}]]))}))
++
++ ;; Codex takes its hooks as thread-start config,
++ ;; one key per event; the key form is its own.
++ (defn codex-hook-config [settings]
++   (into {}
++         (for [[event hooks] (:hooks settings)]
++           [(str "hooks." (name event)) hooks])))</code></pre>
+<p class="target"><code>primary/tools/main-flow-mode/reminder-hook.py</code></p><p>removed whole.</p>
+<p class="target"><code>messenger-clj/src/messenger_clj/reminder.clj</code></p><p>a new file, its Clojure rewrite; the machine's design: every Nth prompt re-enters the first paragraphs of one module, counted per session in the flow's directory. Its data, <code>primary/config/main-flow/shared.edn</code>, inside its map:</p>
+<pre data-diff><code class="language-clojure">+  :reminder {:every 20 :paragraphs 5
++             :module :intent-main-flow
++             :state "reminder"}</code></pre>
+<pre data-diff><code class="language-clojure">+ (ns messenger-clj.reminder
++   (:require [babashka.fs :as fs]
++             [clojure.string :as str]
++             [messenger-clj.launch :as launch]))
++
++ ;; The event's keys and the reply's are the
++ ;; harness's hook contract.
++ (defn prompt-event? [event]
++   (= "UserPromptSubmit"
++      (:hook_event_name event)))
++
++ (defn count-file [config flow-dir session]
++   (fs/path flow-dir
++            (get-in config [:reminder :state])
++            session))
++
++ (defn read-count [file]
++   (if (fs/exists? file)
++     (parse-long (str/trim (slurp (str file))))
++     0))
++
++ (defn count-prompt! [file]
++   (let [n (inc (read-count file))]
++     (fs/create-dirs (fs/parent file))
++     (spit (str file) (str n))
++     n))
++
++ (defn due? [config n]
++   (zero? (mod n (get-in config
++                         [:reminder :every]))))
++
++ ;; A blank line is Markdown's own paragraph break.
++ (defn core [config]
++   (let [{:keys [module paragraphs]}
++         (:reminder config)
++         body (launch/module-block config module)]
++     (str/join "\n\n"
++               (take paragraphs
++                     (str/split body
++                                #"\n\s*\n")))))
++
++ (defn reply [text]
++   {:hookSpecificOutput
++    {:hookEventName "UserPromptSubmit"
++     :additionalContext text}})
++
++ (defn remind [config flow-dir event]
++   (when (prompt-event? event)
++     (let [file (count-file config flow-dir
++                            (:session_id event))]
++       (when (due? config (count-prompt! file))
++         (reply (core config))))))</code></pre>
+</article>
+<section class="rulings"><ol><li value="7"><p>Ruling, one number from each group:</p><p>The line and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>The line's mark:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>Short term, as shown: the launcher is the short-term tool (flow d68c82, 2026-10-13).</li><li>Unmarked.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">8</span><h2>spawning adapts to the harness</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», the first paragraph as it stands, one sentence added after it.</p>
+<p>Source: flow 6852f4, 2026-09-17.</p>
+<div class="diff"><div class="ctx"><p>A Nexus component decides the system prompt and everything about a</p><p>launch, replacing the harness's subagents with specialized harnesses</p><p>launched with specialized system prompts.</p></div><div class="add"><ins><p>Flow knows which harness a flow runs in and what that harness can do; how a flow is spawned and spoken to takes the harness's own form.</p></ins></div></div>
+<p>The EDN of Proposals 5 and 7 is keyed by harness; <code>(:harness aspect-config)</code> of <code>start-call</code>, Proposal 10, picks the key.</p>
+</article>
+<section class="rulings"><ol><li value="8"><p>Ruling:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">9</span><h2>the pane is bound before messaging is trusted</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>under «Short term», after Proposal 7's line.</p>
+<p>Source: flow f38926, 2026-09-20, relayed by Field; the wording is the relay's, not established as his.</p>
+<div class="diff"><div class="add"><ins><p>Short term: every new or refreshed flow starts in a Herdr pane, and the launcher registers it with the messenger only once the pane's agent is seen bound to the flow's session.</p></ins></div></div>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p>the wait written as a poll:</p>
+<pre data-diff><code class="language-javascript">-     await poll('an agent bound to the session', 180, () =&gt; {
+-       const a = herdr(o.herdrSession, 'agent', 'get', name).agent;
+-       return hasExactRegistrationBinding(a, paneId, sessionId);
+-     });</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside its map:</p>
+<pre data-diff><code class="language-clojure">+  :binding-wait-ms 5000</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p><code>read-agent</code> reads the pane's agent from Herdr, <code>register!</code> is the messenger's registration; the record's keys are Herdr's own; <code>PaneUnbound</code> is the refusal's own name:</p>
+<pre data-diff><code class="language-clojure">+ (defn bound? [agent pane thread]
++   (and (= pane (:pane_id agent))
++        (= thread (get-in agent [:agent_session
++                                 :value]))))
++
++ (defn register-when-bound! [config read-agent pane
++                             thread register!]
++   (Thread/sleep (:binding-wait-ms config))
++   (if (bound? (read-agent) pane thread)
++     (register!)
++     (throw (ex-info "PaneUnbound"
++              {:pane pane :thread thread}))))</code></pre>
+</article>
+<section class="rulings"><ol><li value="9"><p>Ruling, one number from each group:</p><p>The line:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>The wait:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>One check after a set wait, as shown, the machine's design: polling is forbidden by the paragraph above.</li><li>The poll stays, registered and reported as a poller.</li></ol><p>The line's mark:</p><ol class="choices" start="6" style="counter-reset:choice 5"><li>Short term, as shown: the launcher is the short-term tool (flow d68c82, 2026-10-13).</li><li>Unmarked.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">10</span><h2>one central Start call and its shorthands</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after Proposal 5's paragraph.</p>
+<p>A shorthand: a preconfigured call that fills most of the central call's settings, so a launch names little.</p>
+<p>Sources: flow e51411, 2026-09-25; flow fd0f97, 2026-09-15; flow ebbe30, 2026-10-09.</p>
+<div class="diff"><div class="add"><ins><p>Flow's start is one central call carrying every setting of a launch; a shorthand fills most of it from a declared flow, so that a launch asks little of whoever starts it, and the simple command the living remembers is a shorthand. Every main feature has this shape: one central call and its shorthands.</p></ins></div></div>
+<p>Under choice 4 the last sentence goes instead to <code>psyche-context/skills/vision-design.md</code>, a new section at the end:</p>
+<div class="diff"><div class="add"><ins><h3>One central call and its shorthands</h3></ins></div><div class="add"><ins><p>Every main feature has one central call carrying every setting, and shorthands: preconfigured minimal calls that fill most of it.</p></ins></div></div>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p>the arguments a launch names:</p>
+<pre data-diff><code class="language-javascript">-   const known = new Set(['--model', '--brief', '--aspect', '--layer', '--workspace', '--herdr-session', '--herdr-workspace-label', '--system-prompt-file', '--effort', '--predecessor', '--metaflow', '--topic']);</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside its map; a shorthand is a metaflow file, named from its address:</p>
+<pre data-diff><code class="language-clojure">+  :metaflows {:dir "metaflow"
++              :file "%s-%s-%s.edn"}</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p><code>layer-row</code> is Proposal 2 of «Flow: the metaflow», <code>effort!</code> is Proposal 11; <code>asked</code> is what the call itself names:</p>
+<pre data-diff><code class="language-clojure">  (defn layer-row [aspect-config layer]
+    (or (some #(when (= layer (:layer %)) %)
+              (:layers aspect-config))
+        (throw (ex-info "UnknownLayer"
+                        {:layer layer}))))
++
++ (defn start-call [aspect-config mf asked]
++   (let [row (layer-row aspect-config (:layer mf))]
++     (merge (select-keys mf [:aspect :topic :layer
++                             :mode :tools])
++            {:harness (:harness aspect-config)
++             :model (:model row)
++             :effort (effort! row (:effort asked))}
++            (dissoc asked :effort))))
++
++ (defn metaflow-file [config address]
++   (let [{:keys [dir file]} (:metaflows config)
++         {:keys [aspect topic layer]} address
++         parts (map name [aspect topic layer])]
++     (fs/path (:dir config) dir
++              (apply format file parts))))
++
++ (defn shorthand [config address]
++   (edn/read-string
++    (slurp (str (metaflow-file config address)))))</code></pre>
+<p class="target"><code>primary/config/main-flow/metaflow/Psyche-Flow-Primary.edn</code></p><p>renamed <code>Psyche-flow-Primary.edn</code>, with the other four: a metaflow file is named from its address, the topic uncapitalized (Proposal 1).</p>
+<p>The figure, in the same skill under «Short term», after Proposal 9's line:</p>
+<svg viewBox="0 0 360 820" width="100%" role="img" aria-label="the EDN: shared, per aspect, per metaflow fills the Start call, or its shorthand claims the flow id and its directory precedes the secretary, if a Primary starts precedes a Herdr pane, on main runs the harness, remote control on, permissions off, hooks installed receives one block: id, mode, modules, brief is bound, then registered with the messenger precedes the first response: a presentation" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="36" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the EDN: shared, per aspect,</text><text x="42" y="56" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">per metaflow</text><line x1="70" y1="70" x2="70" y2="113" stroke="currentColor" stroke-width="1.5"/><polygon points="66,112 74,112 70,120" fill="currentColor"/><text x="80" y="99" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">fills</text><rect x="30" y="120" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="145" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the Start call, or its shorthand</text><line x1="70" y1="160" x2="70" y2="203" stroke="currentColor" stroke-width="1.5"/><polygon points="66,202 74,202 70,210" fill="currentColor"/><text x="80" y="189" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">claims</text><rect x="30" y="210" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="235" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the flow id and its directory</text><line x1="70" y1="250" x2="70" y2="293" stroke="currentColor" stroke-width="1.5"/><polygon points="66,292 74,292 70,300" fill="currentColor"/><text x="80" y="279" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">precedes</text><rect x="30" y="300" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="325" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the secretary, if a Primary starts</text><line x1="70" y1="340" x2="70" y2="383" stroke="currentColor" stroke-width="1.5"/><polygon points="66,382 74,382 70,390" fill="currentColor"/><text x="80" y="369" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">precedes</text><rect x="30" y="390" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="415" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">a Herdr pane, on main</text><line x1="70" y1="430" x2="70" y2="473" stroke="currentColor" stroke-width="1.5"/><polygon points="66,472 74,472 70,480" fill="currentColor"/><text x="80" y="459" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">runs</text><rect x="30" y="480" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="506" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the harness, remote control on,</text><text x="42" y="526" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">permissions off, hooks installed</text><line x1="70" y1="540" x2="70" y2="583" stroke="currentColor" stroke-width="1.5"/><polygon points="66,582 74,582 70,590" fill="currentColor"/><text x="80" y="569" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">receives</text><rect x="30" y="590" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="615" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">one block: id, mode, modules, brief</text><line x1="70" y1="630" x2="70" y2="673" stroke="currentColor" stroke-width="1.5"/><polygon points="66,672 74,672 70,680" fill="currentColor"/><text x="80" y="659" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">is bound, then registered with</text><rect x="30" y="680" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="705" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the messenger</text><line x1="70" y1="720" x2="70" y2="763" stroke="currentColor" stroke-width="1.5"/><polygon points="66,762 74,762 70,770" fill="currentColor"/><text x="80" y="749" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" font-size="12">precedes</text><rect x="30" y="770" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="795" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the first response: a presentation</text></svg>
+</article>
+<section class="rulings"><ol><li value="10"><p>Ruling, one number from each group:</p><p>The paragraph, the figure and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>The general sentence:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>In vision-design, as a shape of every feature.</li><li>In vision-flow only, as shown.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">11</span><h2>a launch takes what is declared</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after Proposal 10's paragraph.</p>
+<p>Source: flow e71dab, 2026-09-26.</p>
+<div class="diff"><div class="add"><ins><p>Every flow that may be started is declared in Flow's configuration with its model and effort, and a launch takes what is declared: an effort no declared flow uses is refused, as is a second flow on one role. What is added to a flow's prompt comes from files, named in that declaration.</p></ins></div></div>
+<p>A second flow on one role is refused by Proposal 6 of «Flow: refresh and handover».</p>
+<p class="target"><code>primary/tools/native-voice-profiles.mjs</code></p><p>the check in code:</p>
+<pre data-diff><code class="language-javascript">-   if (effort !== undefined &amp;&amp; effort !== profile.effort) throw new Error(`voice effort differs for ${key}: required ${profile.effort}, received ${effort}`);</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p>before <code>start-call</code>; <code>EffortNotDeclared</code> is the refusal's own name:</p>
+<pre data-diff><code class="language-clojure">+ ;; A declared effort is the only one; a differing
++ ;; request is refused, never taken.
++ (defn effort! [row effort]
++   (when (and effort (not= effort (:effort row)))
++     (throw (ex-info "EffortNotDeclared"
++                     {:asked effort
++                      :declared (:effort row)})))
++   (:effort row))</code></pre>
+</article>
+<section class="rulings"><ol><li value="11"><p>Ruling:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">12</span><h2>every boss its secretary</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after Proposal 11's paragraph.</p>
+<p>The secretary: the Secondary of the same aspect and topic as a Primary.</p>
+<p>Source: flow ee57fb, 2026-10-12.</p>
+<div class="diff"><div class="add"><ins><p>A Primary is never without its Secondary: starting a Primary first starts the Secondary of its metaflow, and a Primary found running without one has it started.</p></ins></div></div>
+<p class="target"><code>primary/tools/secondary-first.mjs</code></p><p>the running Secondaries written in code:</p>
+<pre data-diff><code class="language-javascript">- export const DECLARED_SECONDARIES = Object.freeze([
+-   {aspect: 'Mind', topic: 'Core', layer: 'Secondary', flowId: '41fa34', name: 'mind_sol_41fa34', nativeId: '01a0fdcc-c1a1-7f43-8c23-06d41fa34438'},
+-   {aspect: 'Field', topic: 'Core', layer: 'Secondary', flowId: '42265e', name: 'field_sol_42265e', nativeId: '01a0fdcc-4e82-7353-af14-d6c42265e940'}
+- ]);</code></pre>
+<p>and <code>:secondary-native-id</code> of <code>Psyche-Flow-Primary.edn</code>, removed in Proposal 1. The registry of Proposal 3 of «Flow: the metaflow» holds the Secondary's current flow, read by <code>current</code>.</p>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p><code>start!</code> is the start of Proposal 10, given the brief of Proposal 3:</p>
+<pre data-diff><code class="language-clojure">+ ;; :Primary and :Secondary are the layers' own
++ ;; names.
++ (defn secretary [address]
++   (assoc address :layer :Secondary))
++
++ (defn ensure-secretary! [config address current
++                          start!]
++   (when (= :Primary (:layer address))
++     (let [sec (secretary address)
++           path [:secretary :brief]]
++       (or (current sec)
++           (start! sec (get-in config path))))))</code></pre>
+</article>
+<section class="rulings"><ol><li value="12"><p>Ruling, one number from each group:</p><p>The sentence and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>Who finds a Primary left without its Secondary later, short term:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>No one yet; the launcher checks at the Primary's start only, as shown.</li><li>The hook of Proposal 7, at the end of each of the Primary's turns.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">13</span><h2>a Primary is launched on main</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after Proposal 12's sentence.</p>
+<p>Source: flow 9993b5, 2026-09-17.</p>
+<div class="diff"><div class="add"><ins><p>A Primary is launched in the shared workspace on main, not in a worktree or on a branch, unless the launch names another place.</p></ins></div></div>
+<p>Under choice 5 the sentence begins «Every flow is launched».</p>
+<p class="target"><code>primary/tools/claude-main-flow-launch.mjs</code></p><p><code>parseArgs</code>, the place written in code; the same in <code>codex-main-flow-launch.mjs</code>:</p>
+<pre data-diff><code class="language-javascript">-   const o = {aspect: 'Psyche', effort: undefined, model: undefined, workspace: '/home/li/primary', herdrSession: 'default', herdrWorkspaceLabel: undefined, composeOnly: false, systemPromptFile: undefined, root: false, predecessor: undefined, metaflow: undefined, topic: undefined};</code></pre>
+<p class="target"><code>primary/config/main-flow/shared.edn</code></p><p>inside its map:</p>
+<pre data-diff><code class="language-clojure">+  :workspace {:path "/home/li/primary"
++              :branch "main"}</code></pre>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p><code>WorkspaceOffBranch</code> is the refusal's own name:</p>
+<pre data-diff><code class="language-clojure">+ ;; git's own words for the current branch.
++ (defn branch [path]
++   (str/trim (:out (sh "git" "-C" path "rev-parse"
++                       "--abbrev-ref" "HEAD"))))
++
++ (defn workspace! [config layer]
++   (let [{:keys [path] wanted :branch}
++         (:workspace config)
++         on (branch path)]
++     (when (and (= layer :Primary)
++                (not= wanted on))
++       (throw (ex-info "WorkspaceOffBranch"
++                       {:path path :branch on})))
++     path))</code></pre>
+</article>
+<section class="rulings"><ol><li value="13"><p>Ruling, one number from each group:</p><p>The sentence and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>Whom it binds:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>Primaries (flow 9993b5, 2026-09-17), as shown.</li><li>Every flow, the machine's design: the workspace is one, and a lower flow on a branch would edit what its Primary does not see.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">14</span><h2>who may restart a flow</h2></header>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>«Starting flows», after Proposal 13's sentence.</p>
+<p>Provenance: the flows a flow came from, the one that asked for it among them (the <code>:origin</code> of Proposal 6 of «Flow: identity and naming», second edition).</p>
+<p>Source: flow 9993b5, 2026-09-17.</p>
+<div class="diff"><div class="add"><ins><p>A flow is restarted by a command to Flow; a request whose flow id matches the flow's provenance carries all the authority needed. A harness that locks itself out of relaunching its own flow is a design defect.</p></ins></div></div>
+<p class="target"><code>messenger-clj/src/messenger_clj/launch.clj</code></p><p>the caller is found by <code>pane-flow!</code>, Proposal 4 of «Flow: identity and naming», second edition, never declared; <code>continuation.edn</code> is the record's bootstrap pointer, as that proposal keeps it; <code>RestartRefused</code> is the refusal's own name:</p>
+<pre data-diff><code class="language-clojure">+ (defn continuation [root flow]
++   (edn/read-string
++    (slurp (str (fs/path root flow
++                         "continuation.edn")))))
++
++ (defn provenance [root flow]
++   #{flow (get-in (continuation root flow)
++                  [:origin :flow])})
++
++ (defn restart! [root flow caller start!]
++   (if (contains? (provenance root flow) caller)
++     (start! flow)
++     (throw (ex-info "RestartRefused"
++              {:flow flow :caller caller}))))</code></pre>
+</article>
+<section class="rulings"><ol><li value="14"><p>Ruling, one number from each group:</p><p>The sentences and the code:</p><ol class="choices" start="1"><li>Land.</li><li>Land with changes the living names.</li><li>Drop.</li></ol><p>What matches a flow's provenance:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>The flow itself and the flow that asked for it, as shown, the machine's design: both are in the flow's own record.</li><li>The flow itself only.</li><li>Any flow of the same metaflow.</li></ol></li></ol></section>
+<article class="proposal"><header><span class="pnum">15</span><h2>a question for Mind</h2></header>
+<p class="target"><code>a message to { Mind flow Secondary }</code></p><p>(flow d68c82, 2026-10-13; a question asks for knowledge, Proposal 3 of «Clojure and data: the rectification»):</p>
+<div class="diff"><div class="add"><ins><p>Measure, over past transcripts, when a preconfigured subflow of minimal guidance costs fewer tokens than the main flow's own tool calls, and when more; the answer is a knowledge module.</p></ins></div></div>
+</article>
+<section class="rulings"><ol><li value="15"><p>Ruling:</p><ol class="choices" start="1"><li>Send.</li><li>Not yet.</li></ol></li></ol></section>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
