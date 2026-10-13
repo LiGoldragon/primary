@@ -24,13 +24,13 @@ test('actual clean/dirty repository: notification only, identity, self suppressi
     assert.equal(result.status, 0, result.stderr);
     return result.stdout;
   };
-  const invoke = override => notifyTurnEnd({primary, committer: 'bbbbbb', event, env, run, ...override});
+  const invoke = override => notifyTurnEnd({primary, committer: 'bbbbbb', committerMetaflow: 'Field PrimaryCommitting Quaternary', event, env, run, ...override});
   assert.equal(invoke().status, 'clean');
   assert.equal(invoke({env: {...env, FLOW_ID: ''}}).status, 'clean');
   assert.equal(sent.length, 0);
   fs.writeFileSync(path.join(primary, 'owned.txt'), 'uncommitted owner bytes\n');
   assert.equal(invoke().status, 'notified');
-  assert.deepEqual(sent[0].args, ['bbbbbb', '--stdin']);
+  assert.deepEqual(sent[0].args, ['Field PrimaryCommitting Quaternary', '--stdin']);
   assert.match(sent[0].input, /"flow_id":"aaaaaa"/);
   assert.ok(sent[0].input.includes(transcript));
   assert.equal(invoke({env: {...env, FLOW_ID: 'bbbbbb'}}).status, 'self');
@@ -79,7 +79,7 @@ test('Primary-own clean boundary ignores nested dirt but detects owned paths, mo
     assert.equal(result.status, 0, result.stderr);
     return result.stdout;
   };
-  const invoke = () => notifyTurnEnd({primary, committer: 'bbbbbb', event: {hook_event_name: 'Stop', session_id: 'editor', transcript_path: transcript}, env: {...process.env, FLOW_ID: 'aaaaaa'}, run});
+  const invoke = () => notifyTurnEnd({primary, committer: 'bbbbbb', committerMetaflow: 'Field PrimaryCommitting Quaternary', event: {hook_event_name: 'Stop', session_id: 'editor', transcript_path: transcript}, env: {...process.env, FLOW_ID: 'aaaaaa'}, run});
   fs.writeFileSync(path.join(nested, 'source.txt'), 'preserved nested edit\n');
   fs.writeFileSync(path.join(nested, 'untracked.txt'), 'preserved nested untracked\n');
   assert.notEqual(git(primary, 'status', '--porcelain=v1'), '');
@@ -117,7 +117,7 @@ test('restored recipient overrides stale launcher target without settings reload
   const directory = path.join(primary, 'tools', 'primary-committer');
   fs.mkdirSync(directory, {recursive: true});
   const recipient = path.join(directory, 'recipient.json');
-  fs.writeFileSync(recipient, JSON.stringify({flow_id: '127d95'}));
+  fs.writeFileSync(recipient, JSON.stringify({flow_id: '127d95', metaflow: 'Field PrimaryCommitting Quaternary'}));
   const transcript = path.join(primary, 'editor.jsonl');
   fs.writeFileSync(transcript, '{}\n');
   const sent = [];
@@ -128,19 +128,23 @@ test('restored recipient overrides stale launcher target without settings reload
     return result.stdout;
   };
   const invoke = flow => notifyTurnEnd({primary, committer: '8b084b', event: {hook_event_name: 'Stop', session_id: 'actual-fixture-session', transcript_path: transcript}, env: {...process.env, FLOW_ID: flow}, run});
-  assert.equal(invoke('6f115e').recipient, '127d95');
-  assert.deepEqual(sent, ['127d95']);
+  assert.equal(invoke('6f115e').recipient, 'Field PrimaryCommitting Quaternary');
+  assert.deepEqual(sent, ['Field PrimaryCommitting Quaternary']);
   assert.equal(invoke('127d95').status, 'self');
-  assert.deepEqual(sent, ['127d95']);
+  assert.deepEqual(sent, ['Field PrimaryCommitting Quaternary']);
   fs.writeFileSync(recipient, '{bad json');
   assert.throws(() => invoke('6f115e'));
   fs.writeFileSync(recipient, JSON.stringify({flow_id: 'invalid recipient'}));
   assert.throws(() => invoke('6f115e'), /standing committer/);
-  assert.deepEqual(sent, ['127d95']);
-  fs.writeFileSync(recipient, JSON.stringify({flow_id: 'abcdef'}));
-  assert.equal(invoke('6f115e').recipient, 'abcdef');
-  assert.deepEqual(sent, ['127d95', 'abcdef']);
+  assert.deepEqual(sent, ['Field PrimaryCommitting Quaternary']);
+  fs.writeFileSync(recipient, JSON.stringify({flow_id: 'abcdef', metaflow: 'Field Other Quaternary'}));
+  assert.equal(invoke('6f115e').recipient, 'Field Other Quaternary');
+  assert.deepEqual(sent, ['Field PrimaryCommitting Quaternary', 'Field Other Quaternary']);
+  for (const metaflow of [undefined, 'abcdef', 'Field.Other.Quaternary', 'Field Other']) {
+    fs.writeFileSync(recipient, JSON.stringify({flow_id: 'abcdef', metaflow}));
+    assert.throws(() => invoke('6f115e'), /registered metaflow/);
+  }
   fs.unlinkSync(recipient);
-  assert.equal(invoke('6f115e').recipient, '8b084b');
-  assert.deepEqual(sent, ['127d95', 'abcdef', '8b084b']);
+  assert.throws(() => invoke('6f115e'), /registered metaflow/);
+  assert.deepEqual(sent, ['Field PrimaryCommitting Quaternary', 'Field Other Quaternary']);
 });
