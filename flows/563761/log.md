@@ -11,3 +11,7 @@ Field Core Secondary reports the seat bound to w1:p3S and registered as psyche_f
 
 ## 2026-10-13 first task from Psyche Flow Secondary
 Binding confirmed by Field Core Secondary. Secondary assigns: finish the batch 01 second edition (reviewer pass, publication, phone check, link to Secondary); batch 02 follows. Rectification book published at https://claude.ai/artifact/55knMkm8gem412DzSVZokr; build under its four proposals as written while the living's rulings are pending. Book copied into flows/563761/books/ for this seat's edits.
+
+## 2026-10-13 batch 02 psyches received
+Psyche Flow Secondary delivered the batch 02 #psyches envelope (34 verbatim records on metaflow and flow, flows dc1c58, bad807, d4ae97, 8475a9, e5a0bc, f5a6e9, 73ada7, 445410, 875960, 2026-09-14 to 2026-10-11). Held, not acted on: batch 02 begins after the batch 01 second edition is published and linked. The predecessor holds the same words at flows/0c9a77/books/batch-02-psyches.edn; a subflow compares the two when batch 02 opens.
+Secondary's batch 02 brief: one book crystallizing the 33 pairs into psyche-context skills/vision-flow.md with the code each line lands; Clojure under bb, other-language prototypes proposed as their Clojure rewrite; no data in code; short term and long term never mixed; whole book red and green, no preamble; reviewer pass and phone check at 320 and 375px before publishing; link to the Secondary. Starts after batch 01 second edition is published.
