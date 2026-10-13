@@ -4,12 +4,22 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, BIRTH_SKILLS, EFFORTS, LAYERS, codexHarnessCommand, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, BIRTH_SKILLS, EFFORTS, LAYERS, codexBirthResume, codexHarnessCommand, codexResumeCommand, codexStopHookConfig, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
 // Herdr workspace: the only one whatever its label; a label chooses among several.
 const w1 = {workspace_id: 'w1', label: '56ae53'}, w2 = {workspace_id: 'w2', label: 'other'};
+const baseConfig = JSON.parse(fs.readFileSync(new URL('../config/context-refresh.json', import.meta.url)));
+const hookConfig = codexStopHookConfig({baseConfig, command: '/tmp/context-refresh-hook', nativeSessionId: '01a0e0a1-7075-7cc2-928d-13fc5610abcd', flowId: 'abcdef', aspect: 'Mind', topic: 'Core', layer: 'Secondary', model: 'gpt-6.1-sol', codexModelWindows: {'gpt-6.1-sol': 373000}});
+assert.equal(hookConfig.bindings[0].nativeSessionId, '01a0e0a1-7075-7cc2-928d-13fc5610abcd');
+assert.equal(hookConfig.hooksState[hookConfig.hookKey].enabled, true);
+assert.match(hookConfig.hooksState[hookConfig.hookKey].trusted_hash, /^sha256:[a-f0-9]{64}$/);
+assert.equal(codexResumeCommand('codex', '01a0e0a1-7075-7cc2-928d-13fc5610abcd', 'first prompt'), "'codex' resume '01a0e0a1-7075-7cc2-928d-13fc5610abcd' 'first prompt'");
+const birthOrder = [];
+assert.equal(await codexBirthResume({hookCommand: '/tmp/hook', prompt: 'first', threadStart: async ({hooks}) => { birthOrder.push('thread-start'); assert.match(hooks.hash, /^sha256:/); return {thread: {id: '01a0e0a1-7075-7cc2-928d-13fc5610abcd'}}; }, claim: async id => { birthOrder.push('claim'); assert.ok(id); return 'abcdef'; }, writeBinding: async value => { birthOrder.push('binding'); assert.equal(value.flowId, 'abcdef'); }, resume: (id, prompt) => { birthOrder.push('resume'); return `${id}:${prompt}`; }}), '01a0e0a1-7075-7cc2-928d-13fc5610abcd:first');
+assert.deepEqual(birthOrder, ['thread-start', 'claim', 'binding', 'resume']);
+await assert.rejects(() => codexBirthResume({hookCommand: '/tmp/hook', prompt: 'first', threadStart: async () => ({}), claim: async () => { throw new Error('must not claim'); }, writeBinding: async () => {}, resume: async () => {}}), /no native thread UUID/);
 assert.equal(pickWorkspace([w1], undefined), w1);
 assert.equal(pickWorkspace([w1], 'primary'), w1);
 assert.equal(pickWorkspace([w1, w2], 'other'), w2);

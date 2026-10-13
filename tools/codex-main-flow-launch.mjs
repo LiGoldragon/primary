@@ -13,6 +13,7 @@
    and is never retried. The Flow ID is the native thread's alias, so it is
    claimed as soon as the thread exists, before the title and the registration. */
 import {execFileSync} from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -21,6 +22,7 @@ import {secondaryBeforePrimary} from './secondary-first.mjs';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
 import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
+import {makeContextRefreshBinding} from './main-flow-mode/context-refresh.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {defaultLaunchConfig, birthSkillsFromConfig} from './main-flow-mode/launch-config.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
@@ -32,6 +34,33 @@ export const LAYERS = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 export const LAUNCH_CONFIG = defaultLaunchConfig();
 export const ASPECT_SKILLS = Object.fromEntries(['Mind', 'Field'].map(aspect => [aspect, birthSkillsFromConfig(LAUNCH_CONFIG, aspect)]));
 export const BIRTH_SKILLS = aspect => birthSkillsFromConfig(LAUNCH_CONFIG, aspect);
+
+const canonical = value => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ? Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])])) : value;
+export function codexStopHookConfig({command, ...identity}) {
+  const binding = makeContextRefreshBinding({...identity, harness: 'codex', seatTarget: `${identity.aspect} ${identity.topic} ${identity.layer}`});
+  const spec = codexBirthHookSpec({command});
+  return {...binding, hook: spec.hook, hooksState: {[spec.hookKey]: {enabled: true, trusted_hash: spec.hash}}, hookKey: spec.hookKey};
+}
+export const codexResumeCommand = (executable, threadId, prompt) => {
+  if (!/^[a-f0-9-]{36}$/i.test(threadId)) throw new Error('exact native UUID required for resume');
+  return `${sh(executable)} resume ${sh(threadId)} ${sh(prompt)}`;
+};
+export function codexBirthHookSpec({command}) {
+  if (!command) throw new Error('Codex hook command is required before thread/start');
+  const hook = {type: 'command', command, timeout: 30, async: false};
+  const hash = `sha256:${crypto.createHash('sha256').update(JSON.stringify(canonical({event_name: 'stop', hooks: [hook]}))).digest('hex')}`;
+  return {hook, hookKey: '/<session-flags>/config.toml:stop:0:0', hash};
+}
+export async function codexBirthResume({threadStart, claim, writeBinding, resume, hookCommand, prompt}) {
+  const spec = codexBirthHookSpec({command: hookCommand});
+  const started = await threadStart({hooks: spec});
+  const threadId = started?.thread?.id;
+  if (!threadId) throw new Error('thread/start returned no native thread UUID; resume refused');
+  const flowId = await claim(threadId);
+  if (!flowId) throw new Error('Flow claim failed; resume refused');
+  await writeBinding({threadId, flowId, hook: spec});
+  return resume(threadId, prompt);
+}
 
 // Registration binds the exact native thread to the exact Herdr pane.  It does
 // not need a separate readiness or idleness assertion.
@@ -94,11 +123,11 @@ export function claimFlow(flowsRoot, threadId) {
 }
 
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
-export function codexHarnessCommand(client, o, promptFile, systemPromptFile) {
+export function codexHarnessCommand(client, o, promptFile, systemPromptFile, threadId = undefined) {
   if (!systemPromptFile || !path.isAbsolute(systemPromptFile)) throw new Error('composed main-flow system prompt file required');
   const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];
   // Preserve Herdr's destination pane/socket while dropping parent seat identity.
-  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} "$(cat ${sh(promptFile)})"`;
+  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} ${threadId ? `resume ${sh(threadId)} ` : ''}"$(cat ${sh(promptFile)})"`;
 }
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -149,16 +178,34 @@ async function launch(o) {
     const paneId = panes[0].pane_id;
     done(`${paneId} in tab ${tabId} of workspace ${ws[0].workspace_id}, cwd ${o.workspace}`);
 
-    step = 'harness';
-    const before = new Set(rolloutFiles(sessions));
-    const command = codexHarnessCommand(client, o, promptFile, systemPromptFile);
-    execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId, command], {encoding: 'utf8', timeout: 15000});
-    const rollout = await poll('the native rollout', 120, () => {
-      const fresh = rolloutFiles(sessions).filter(f => !before.has(f) && rows(f)[0]?.payload?.cwd === o.workspace);
-      if (fresh.length > 1) throw new Error('more than one new native thread in this workspace');
-      return fresh[0];
+    step = 'native birth and refresh binding';
+    const refreshConfigPath = path.join(path.dirname(promptFile), 'context-refresh.json');
+    const baseConfig = JSON.parse(fs.readFileSync(path.join(o.workspace, 'config/context-refresh.json'), 'utf8'));
+    const hookCommand = [sh(process.execPath), sh(path.join(o.workspace, 'tools/context-refresh-hook.mjs')), '--config', sh(refreshConfigPath)].join(' ');
+    let threadId, flowId, lineage;
+    await codexBirthResume({
+      hookCommand, prompt,
+      threadStart: ({hooks}) => withRpc(client.endpoint, call => call('thread/start', {
+        model: o.model, cwd: o.workspace, approvalPolicy: 'never', sandbox: 'danger-full-access',
+        baseInstructions: fs.readFileSync(systemPromptFile, 'utf8'), ephemeral: false,
+        config: {model_reasoning_effort: o.effort, 'features.hooks': true,
+          'hooks.Stop': [{hooks: [hooks.hook]}],
+          'hooks.state': {[hooks.hookKey]: {enabled: true, trusted_hash: hooks.hash}}}
+      })),
+      claim: id => { threadId = id; flowId = claimFlow(flowsRoot, id); return flowId; },
+      writeBinding: () => {
+        const binding = makeContextRefreshBinding({baseConfig, nativeSessionId: threadId, flowId,
+          aspect: o.aspect, topic: continuation.topic, layer: o.layer, harness: 'codex', model: o.model,
+          seatTarget: `${o.aspect} ${continuation.topic} ${o.layer}`});
+        fs.writeFileSync(refreshConfigPath, JSON.stringify(binding) + '\n', {flag: 'wx', mode: 0o600});
+        lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
+      },
+      resume: id => execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId,
+        codexHarnessCommand(client, o, promptFile, systemPromptFile, id)], {encoding: 'utf8', timeout: 15000})
     });
-    const threadId = rows(rollout)[0].payload.id;
+    done(`thread ${threadId}, claimed ${flowId}; exact refresh binding written before resume`);
+    const rollout = await poll('the exact native rollout', 120, () =>
+      rolloutFiles(sessions).find(file => rows(file)[0]?.payload?.id === threadId));
     const ctx = await poll('the first turn context', 120, () => rows(rollout).find(r => r.type === 'turn_context')?.payload);
     if (ctx.model !== o.model || ctx.effort !== o.effort || ctx.approval_policy !== 'never' || ctx.sandbox_policy?.type !== 'danger-full-access')
       throw new Error(`native settings differ: ${ctx.model} ${ctx.effort} ${ctx.approval_policy} ${ctx.sandbox_policy?.type}`);
@@ -172,8 +219,6 @@ async function launch(o) {
     done(`accepted once; main-flow leads and ${blocks.length} resolved skill bodies are present`);
 
     step = 'flow';
-    const flowId = claimFlow(flowsRoot, threadId);
-    const lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
     done(`Flow ID ${flowId}, directory ${path.join(o.workspace, 'flows', flowId)}; continuation record ${lineage.recordPath}`);
 
     step = 'title';
