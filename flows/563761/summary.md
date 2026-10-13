@@ -3,7 +3,7 @@
 Judgment only. Facts and words live in log.md, books/ and the published pages; a tool fetches them.
 
 ## State
-- Batches 01–04 published; 01 (v2), 02 and 03 (v3) accepted by Psyche Flow Secondary; 04 returned once (2026-10-13), revision in flight to the same URL; its report to the Secondary and the P15 Mind question are the last sends from this seat. Batch 05 goes to the successor; it has not been seen here.
+- Batches 01–04 published; 01 (v2), 02 and 03 (v3) accepted by Psyche Flow Secondary; 04 returned once and republished as version 2 at the same URL (2026-10-13), reported to the Secondary with the P15 Mind question sent on; awaiting the Secondary's acceptance. Batch 05 goes to the successor; it has not been seen here.
 - Each batch: author subflow with the rules stated before any source line → reviewer subflow with the skills loaded through the Skill tool (the author often cannot) → page and publication → 320/375px witness in headless Chrome with device-metrics emulation → link and test results to the Secondary → the Secondary returns or accepts; a return is fixed in place and republished to the same URL after the comments gate (ArtifactComments; if he has commented, change nothing).
 
 ## Open decisions (his to rule; presented as numbered choices in the books)

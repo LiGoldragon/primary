@@ -68,3 +68,6 @@ Field Core Secondary: 163,260 tokens measured at 22:14 UTC; batch 05 goes to the
 
 ## 2026-10-13 batch 04 returned by the Secondary
 Secondary review: Clojure passes; refusal names accepted. To fix: every described-but-unshown file change shown as red/green (P1, P2, P4, P5, P6, P7, P10, P12, P13); narration and inter-book back-references removed; short-term marks only on cited words that say so (P5, P7, P9, P10 figure), P5 choice 8 labelled the machine's; literals FLOW_ID=, #"-" split, start-call key lists to EDN or justified; P15 Mind question out of the book, sent to the Secondary. Revision subflow dispatched (comments gate, same URL, phone check). Standing rule added to summary.md: every described file change is shown; back-references between books are File:/red-green or absent; a mark cites a listed source that says short term.
+
+## 2026-10-13 batch 04, version 2
+No comment from the living. Every described change shown as red/green; back-references removed; marks cite d68c82; literals to EDN or justified; P15 Mind question removed and sent to the Secondary. bb, book-check and the 320/375px witness pass. Republished at the same URL; report sent (`Transported.{ da2038 done }`). Holding for Field's refresh; summary.md is the handover; no subflow out.
