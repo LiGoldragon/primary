@@ -18,3 +18,6 @@ Secondary's batch 02 brief: one book crystallizing the 33 pairs into psyche-cont
 
 ## 2026-10-13 batch 01 reviewer pass done
 Reviewer pass on books/04-identity-naming-2.md: Proposal 8 replaced by a cross-reference to the third edition; five source line numbers and one wrong diff corrected; machine labels and term explanations added; book-check passes; flow_id.clj and launch.clj run under bb. Decisions: the Codex 33-bit start becomes a numbered choice in Proposal 2 (his sentence untouched); the branch note at the top is removed (no preamble); the EDN file-name literals in code stay — they are the bootstrap pointers to the data, not data. Edits dispatched; publication, 320/375px check and link to the Secondary follow.
+
+## 2026-10-13 batch 01 second edition published
+https://claude.ai/artifact/59QJCCsPL7aFypQwBZoRZJ — page at books/04-identity-naming-2.html; phone check witnessed at 320 and 375px. Link sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Shared-page fact relayed: choices render as letters while the source numbers them. Batch 02 opens: author subflow dispatched for «Flow: the metaflow».
