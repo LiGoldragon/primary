@@ -497,3 +497,7 @@ Field: the four legacy seats are retired; 16 live seats, all with unique meta-fl
 - Field: Mind Tools Secondary and Mind Tools Primary live (Sol, Astra), briefs include the script-survey mission plus the identifier/declarative/short-vs-long scope.
 - Field: Mind Tools seats corrected to script survey only.
 - Fable: «Short term and long term» https://claude.ai/artifact/PNVgijYmb6GH3j3MnFM2AM (11 areas, 12 flow figures, 3 questions).
+- Living (4 comments on «Three lines» 2nd ed.): EDN launch config per aspect + per metaflow; P1's second paragraph a negative again; flowchart not most important; always STT; book muddled: analyse Fable's context noise; Flow tool is the top priority (cheap clean specialized flows, Artifact tool off most); a Flow series. Sent to Fable and Field; noise analysis and term lookup dispatched.
+- Mind Tools Primary relayed three old raw records (transcript search tool, transcript archive, transcriptOverFiles with a double negative). Read for sense: avoid making files, move data into Nexus databases.
+- Fable: «Three lines from the chat, third edition» https://claude.ai/artifact/2amNMmJGu7suKPijei2U1X; Flow parts relayed to Astra.
+- Stripped trailing whitespace in my records for the committer's diff check.
