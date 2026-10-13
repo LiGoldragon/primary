@@ -259,14 +259,16 @@ topic and layer; `messenger-clj/src/messenger_clj/core.clj`,
 added to its requires:
 
 ```clojure
--   (let [matches (for [[id route]
--                       (route-records) ...] id)]
--     (when-not (= 1 (count matches)) ...)
--     (first matches))
-+   (or (store/with-db (root)
-+         #(mf/current (d/db %) target))
-+       (fail (str "TargetNotRegistered: "
-+                  target)))
+-       (let [matches (for [[id route] (route-records)
+-                           :when (and (every? #(m/validate MetaflowPart (get route %)) [:aspect :topic :layer])
+-                                      (= target (metaflow! route)))] id)]
+-         (when-not (= 1 (count matches))
+-           (fail (str (if (empty? matches) "TargetNotRegistered" "AmbiguousTarget") ": " target)))
+-         (first matches)))))
++       (or (store/with-db (root)
++             #(mf/current (d/db %) target))
++           (fail (str "TargetNotRegistered: "
++                      target)))))))
 ```
 
 The launcher, in `messenger-clj/src/messenger_clj/launch.clj`, finds
@@ -353,10 +355,20 @@ the paragraph that begins «A topic never dies».
 Sources: flow bad807, 2026-10-04; flow d4ae97, 2026-10-07; flow 875960,
 2026-10-11.
 
-Under choice 1, the record moves whole, as its own words propose:
+Under choice 1, the record moves whole, as its own words propose.
 
-**Move to notion**: `flows/d4ae97/vision/flow.md`, the entry «The end of
-a metaflow», to `flows/d4ae97/notion/flow.md`.
+**Destroy**: `flows/d4ae97/vision/flow.md`, the entry «The end of a
+metaflow» (2026-10-07), whole:
+
+```text
+- ## The end of a metaflow
+```
+
+File: `flows/d4ae97/notion/flow.md`, the same entry, whole, at its end:
+
+```text
++ ## The end of a metaflow
+```
 
 Under choice 2, the machine's design:
 
@@ -420,11 +432,39 @@ The figure, after line B:
 Line B sits beside Proposal 6 of «Flow: short term and long term»,
 third edition: a handover carries what needs judgment.
 
-**Move to notion**, under choices 2 and 3: `flows/bad807/vision/metaflow.md`,
-the entries «A system that expands and contracts between 3 and 7 roles»
-and «The sun is in the basic triad», to
-`flows/bad807/notion/metaflowDimensions.md`; under choice 3, also the
-entry «The Sun is the primary layer, woken for judgment».
+Under choices 2 and 3, two records move whole.
+
+**Destroy**: `flows/bad807/vision/metaflow.md`, two entries
+(2026-10-04), whole:
+
+```text
+- ## A system that expands and contracts between 3 and 7 roles by demand and availability, 3 the lowest; situation-based clusters of metaflows that span, contract and disappear; designed from human knowledge and symbolism, especially Sanskrit
+- ## The sun is in the basic triad: there is nothing without the sun
+```
+
+File: `flows/bad807/notion/metaflowDimensions.md`, the same entries,
+whole, at its end:
+
+```text
++ ## A system that expands and contracts between 3 and 7 roles by demand and availability, 3 the lowest; situation-based clusters of metaflows that span, contract and disappear; designed from human knowledge and symbolism, especially Sanskrit
++ ## The sun is in the basic triad: there is nothing without the sun
+```
+
+Under choice 3, a third record moves the same way.
+
+**Destroy**: `flows/bad807/vision/metaflow.md`, the entry (2026-10-04),
+whole:
+
+```text
+- ## The Sun is the primary layer, woken for judgment, unwinding when nothing is cooking; only the undecided passes to its next flow; the decided goes into context modules
+```
+
+File: `flows/bad807/notion/metaflowDimensions.md`, the same entry,
+whole, at its end:
+
+```text
++ ## The Sun is the primary layer, woken for judgment, unwinding when nothing is cooking; only the undecided passes to its next flow; the decided goes into context modules
+```
 
 Lands in no code.
 

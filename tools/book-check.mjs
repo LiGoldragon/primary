@@ -23,7 +23,8 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
       if (new RegExp(`^ {0,3}${fence.char}{${fence.size},}\\s*$`).test(line)) {
         fence = null;
       } else {
-        if (fence.code && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
+        // A removed line is quoted as it is; the width limit binds proposed code only.
+        if (fence.code && !line.startsWith("- ") && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
         if (section && line.trim()) {
           section.content = true;
           if (/^File: \S/.test(line)) section.target = true;

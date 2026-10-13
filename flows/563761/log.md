@@ -33,3 +33,6 @@ books/05-metaflow.md written from 33 pairs (books/batch-02-psyches.edn): nine pr
 
 ## 2026-10-13 batch 02 reviewer pass done
 Reviewer (skills loaded): his words lead the forks in P2/P3/P5; P7 split into unmixed Ethos (long term) and Malli (short term) lines, fork only on derivation; flow/thread vocabulary fixed; "lineage" explained; Sun figure added; bb re-witnessed layer-row and metaflow.clj on Datalevin 0.8.25; book-check passes. Decisions: removed lines are quoted verbatim, never elided with `...`, and scroll (the 52-column limit binds proposed code); a move to notion renders as Destroy on the vision record plus a "+ " landing in notion/<topic>.md. Publication subflow dispatched with those edits and the 320/375px check.
+
+## 2026-10-13 batch 02 published
+«Flow: the metaflow» at https://claude.ai/artifact/N1tgM3NYPWrgWo61kaTM8j; page books/05-metaflow.html; phone check witnessed at 320/375px. Link and summary sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Primary working-tree change left for the committer: tools/book-check.mjs and book-check.test.mjs exempt verbatim "- " lines in code fences from the 52-column limit. Waiting for batch 03.

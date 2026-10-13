@@ -22,6 +22,8 @@ test("checks real code width without reflowing or limiting proposed prose", () =
   assert.deepEqual(checkBook(good + "```text\n" + "p".repeat(100) + "\n```\n"), []);
   assert.equal(checkBook(good + "~~~clojure\n" + "x".repeat(53) + "\n~~~\n")[0].reason, "code-over-52-columns");
   assert.deepEqual(checkBook(good + "```rust\n" + "x".repeat(52) + "\n```\n"), []);
+  assert.deepEqual(checkBook(good + "```clojure\n- " + "x".repeat(90) + "\n+ " + "y".repeat(50) + "\n```\n"), []);
+  assert.equal(checkBook(good + "```clojure\n+ " + "y".repeat(51) + "\n```\n")[0].reason, "code-over-52-columns");
 });
 test("a shorter fence does not close code; unclosed fences refuse", () => {
   assert.equal(checkBook(good + "````rust\n```\n").at(-1).reason, "unclosed-code-fence");
