@@ -47,3 +47,15 @@ Context: on «Anatomy audit».
 > There was a period during which this was happening fairly well, even if it was just a simple visual to contextualize myself and to see some simple concepts in a more visually dynamic presentation. The so-called visuals that I've been getting lately are really just colored boxes around quite cryptic and sometimes confusing text.
 
 -- psyche, STT, 2026-10-13.
+
+## A flow speaks to the living only through a printed book
+
+> And by the way if you want to talk to me, you have to talk to me through a book, right? Don't try and talk to me through your answer now. You can use your response to print the book, which is what you should do, but don't expect me to read the answer until that answer is put into a book. If you did try to answer me outside of the book, we need to fix that failure as well so that flows do not keep on trying to talk to me without having their response printed into a book.
+
+-- psyche, STT, 2026-10-13.
+
+## The eye looks for the green section; a book about code shows code
+
+> I don't see a green section. That's what my eye looks for so I don't understand. This just looks like a bunch of blah, blah, blah. It's been a long time since I saw code in the proposal also. I didn't see any code in there, which, in a book about code, is troubling.
+
+-- psyche, STT.

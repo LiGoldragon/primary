@@ -23,3 +23,40 @@
 
 Context: comment on «Three lines from the chat, second edition», Proposal 4.
 -- psyche, STT, 2026-10-13T17:52.
+
+## The refresh procedure starts at a threshold
+
+> Well, Fable should never, rarely, if ever, be allowed to get to 400,000 tokens, so there was a failure there. We need a hook that sends a warning to Field to either recompact or restart a flow when it reaches a certain threshold.
+>
+> For Claude, you would get a preemptive warning at 200,000 tokens, at which point we're basically not forcefully trying to refresh but are actively taking measures to, first of all, warn the flow that we've started a refresh procedure. It should create its handover and potentially even say that some of its context should be split and sent to current topics or to new topic flows if it's trying to touch too many topics.
+>
+> Let's zero in on what all this is specifically when we describe it for actual guidance and crystallization books.
+
+Context: Fable reached 408k tokens while writing a book; ~91% of it was noise for that book.
+-- psyche, STT, 2026-10-13.
+
+## Lean flows, cheap to start
+
+> We need to nail down and deploy a system that can start a very lean flow. Especially for the costly models like Fable and Astra, especially Fable, I don't want to feel constrained by the cost of starting a flow to start a new Fable topic.
+>
+> For all of this artifact tooling and all of this useless stuff, obviously I want to be able to use subagents if it does interact with anything in terms of reading files and calling tools (because in many cases the first tool call might not work or might not be getting the information). That information might involve calling more than one tool and I'd like to measure statistically, for what's been going on so far:
+> - What's the ratio of cases in which a properly configured predefined subagent that requires minimal guidance would be less token-expensive, especially in terms of output but also input, in terms of how big the response is, which we can train the agent to do properly?
+> - How many of the cases would it be more expensive for the main flow to use the subagent rather than just use the tool directly itself, given how many different tries and different tools and how much filtering had to be done on the output?
+>
+> I'd like to do some research on that. I really want to focus on talking about flow, flow design, flow deployment: an efficient flow tool for deploying efficient, specialized, concentrated, high-signal flows that focus more on design than tool calling.
+
+-- psyche, STT, 2026-10-13.
+
+## A compaction request refuses a small or young flow
+
+> I want you to make sure that we have a system in place on the short-term flow solution that lets us easily ask for a certain flow to be compacted or certain meta flows. It would refuse if the context is below a certain threshold. That way we could guard against the compacting request being routed to a brand-new flow, which we didn't know was being started, or if the flow is not a certain age, even in time terms.
+
+-- psyche, STT.
+
+## Compacted flows keep noise
+
+Context: said after compacting this seat; he wants an analysis of compaction against a targeted refresh and handover.
+
+> I don't like compacted flows because they still have a lot of noise. ... I still use compaction right now because we just really can't afford to run these huge massive context windows, which just end up being full of noise and resulting in very poor output.
+
+-- psyche, STT.
