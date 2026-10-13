@@ -1,15 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-// This checks source structure, not the merits of a proposed distillation.
-export function checkBook(source) {
+// This checks source structure, not the merits of a proposed crystallization.
+export function checkBook(source, { allowLegacyDistillation = false } = {}) {
   const errors = [];
   const lines = source.replace(/\r\n/g, "\n").split("\n");
-  let fence = null, section = null, hasDistillation = false;
+  let fence = null, section = null, hasCrystallization = false;
   let inComment = false;
   const finish = () => {
-    if (section && !section.content) errors.push({ line: section.line, reason: "empty-distillation" });
+    if (section && !section.content) errors.push({ line: section.line, reason: "empty-crystallization" });
     section = null;
   };
   lines.forEach((line, i) => {
@@ -41,9 +42,10 @@ export function checkBook(source) {
     const heading = line.match(/^ {0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (heading) {
       if (section && heading[1].length <= section.level) finish();
-      if (/^(?:\d+[.)]\s+)?distillation\b/i.test(heading[2])) {
+      if (/^(?:\d+[.)]\s+)?crystallization\b/i.test(heading[2]) ||
+          (allowLegacyDistillation && /^(?:\d+[.)]\s+)?distillation\b/i.test(heading[2]))) {
         finish();
-        hasDistillation = true;
+        hasCrystallization = true;
         section = { line: number, level: heading[1].length, content: false };
       }
       return;
@@ -53,7 +55,7 @@ export function checkBook(source) {
   });
   finish();
   if (fence) errors.push({ line: fence.line, reason: "unclosed-code-fence" });
-  if (!hasDistillation) errors.push({ reason: "missing-distillation" });
+  if (!hasCrystallization) errors.push({ reason: "missing-crystallization" });
   return errors;
 }
 
@@ -65,7 +67,10 @@ export function main(args) {
   let source;
   try { source = fs.readFileSync(args[0], "utf8"); }
   catch { console.error(JSON.stringify({ errors: [{ reason: "source-unreadable" }] })); return 2; }
-  const errors = checkBook(source);
+  // Historical tracked sources may retain their original section name. New sources use Crystallization.
+  const prior = spawnSync("git", ["-C", path.dirname(args[0]), "show", `HEAD:./${path.basename(args[0])}`], { encoding: "utf8" });
+  const allowLegacyDistillation = prior.status === 0 && /^ {0,3}#{1,6}\s+(?:\d+[.)]\s+)?Distillation\b/im.test(prior.stdout);
+  const errors = checkBook(source, { allowLegacyDistillation });
   if (errors.length) { console.error(JSON.stringify({ errors })); return 1; }
   console.log(JSON.stringify({ checked: true, source: args[0] }));
   return 0;
