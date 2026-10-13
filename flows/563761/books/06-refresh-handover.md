@@ -8,7 +8,8 @@ Presentation.{ «Flow: refresh and handover» }
 ### Proposal 1: the three marks of a flow's context
 
 File: `psyche-context/skills/vision-flow.md`, «A replaced session is
-reaped by the refresh itself», the second of its two paragraphs.
+reaped by the refresh itself», the second of its two paragraphs, both
+long-term; the first is shown as it stands.
 
 A mark: a size of the context at which something happens. The hook: a
 command the harness runs at the end of each of the flow's turns (its
@@ -26,7 +27,7 @@ Sources: flow d68c82, 2026-10-13; flow d4ae97, 2026-10-07; flow 8475a9,
 + A flow's context has three marks, set in Flow's configuration for each layer's model: the floor, below which no refresh is asked for; the warning, at which the flow is told that its refresh has begun and writes its handover; and the ceiling, which a flow is never allowed to reach. The flow is replaced as it goes idle; while the refresh runs the metaflow is locked, and the predecessor is reaped in the same event.
 ```
 
-The figure, after the paragraph:
+The long-term figure, after the paragraph:
 
 ```text
 + +----------------------------------+
@@ -59,10 +60,11 @@ The figure, after the paragraph:
 + +----------------------------------+
 ```
 
-Lands as data and as Clojure. EDN: Clojure's plain data notation, the
-form of the launch configuration under `primary/config/main-flow/`;
-Babashka (bb): the program that runs Clojure scripts at once. The marks
-move out of `primary/config/context-refresh.json`:
+Short term: the marks land as data and as Clojure. EDN: Clojure's plain
+data notation, the form of the launch configuration under
+`primary/config/main-flow/`; Babashka (bb): the program that runs
+Clojure scripts at once. The marks move out of
+`primary/config/context-refresh.json`:
 
 ```json
 -   "warningWindowFraction": 0.5,
@@ -102,18 +104,20 @@ Proposal 2 of «Flow: the metaflow»); the first row:
 +            :window 1000000}
 ```
 
-The hook, `primary/tools/context-refresh-hook.mjs`, and its JSON file
-are removed whole; a new file,
-`messenger-clj/src/messenger_clj/refresh.clj`, beside the messenger,
-is the machine's design. It reads the flow's transcript, the file the
-harness writes for the thread, and finds the flow by the thread the
-messenger registered for it:
+File: `primary/tools/context-refresh-hook.mjs`, removed whole.
+
+File: `primary/config/context-refresh.json`, removed whole.
+
+File: `messenger-clj/src/messenger_clj/refresh.clj`, a new file, the
+machine's design:
 
 ```clojure
 + (ns messenger-clj.refresh
 +   (:require [babashka.fs :as fs]
 +             [cheshire.core :as json]
-+             [clojure.string :as str]))
++             [clojure.edn :as edn]
++             [clojure.string :as str]
++             [messenger-clj.core :as hm]))
 +
 + ;; A mark is tokens, a fraction of the window,
 + ;; or both; the lower one binds.
@@ -164,11 +168,16 @@ messenger registered for it:
 +                          :input_tokens]))
 +        last))
 +
++ ;; :claude and :codex are the aspect file's
++ ;; :harness values, the keys dispatched on.
 + (defn used [harness path]
 +   (case harness
 +     :claude (claude-used path)
 +     :codex (codex-used path)))
 +
++ ;; The transcript is the file the harness writes
++ ;; for the thread; the flow is found by the
++ ;; thread the messenger registered for it.
 + (defn flow-of-thread [routes thread]
 +   (some (fn [[flow route]]
 +           (when (= thread (:native_thread route))
@@ -176,24 +185,28 @@ messenger registered for it:
 +         routes))
 ```
 
-The launcher installs the hook today in
-`primary/tools/claude-main-flow-launch.mjs`, `mainFlowMode`, lines 167
-and 168, and for Codex in `codex-main-flow-launch.mjs`, line 184:
+File: `primary/tools/claude-main-flow-launch.mjs`, `mainFlowMode`:
 
 ```js
 -   const refresh = [sh(process.execPath), sh(path.join(workspace, 'tools', 'context-refresh-hook.mjs')), '--config', sh(seat.refreshConfigPath ?? path.join(workspace, 'config', 'context-refresh.json'))].join(' ');
 -   settings.hooks.Stop = [...(settings.hooks.Stop ?? []), {hooks: [{type: 'command', command: refresh, timeout: 30}]}];
 ```
 
-Its Clojure rewrite, in `messenger-clj/src/messenger_clj/launch.clj`,
-the file Proposal 5 of «Flow: identity and naming», second edition,
-creates:
+File: `primary/tools/codex-main-flow-launch.mjs`:
+
+```js
+-   const hookCommand = [sh(process.execPath), sh(path.join(o.workspace, 'tools/context-refresh-hook.mjs')), '--config', sh(refreshConfigPath)].join(' ');
+```
+
+File: `messenger-clj/src/messenger_clj/launch.clj`, the file Proposal 5
+of «Flow: identity and naming», second edition, creates:
 
 ```clojure
 + ;; The hook's settings keys are the harness's
 + ;; contract; bb runs the hook; the command names
 + ;; the EDN file, the bootstrap pointer to the
-+ ;; configuration.
++ ;; configuration, under --config, the flag the
++ ;; hook reads: its own contract with the command.
 + (defn stop-hook [config config-file hook-file]
 +   (let [timeout (get-in config [:refresh
 +                                 :hook-timeout-s])]
@@ -237,7 +250,8 @@ The floor:
 ### Proposal 2: below the floor, a request is refused
 
 File: `psyche-context/skills/vision-flow.md`, «A replaced session is
-reaped by the refresh itself», after Proposal 1's paragraph and figure.
+reaped by the refresh itself», a long-term paragraph after Proposal 1's
+paragraph and figure.
 
 Sources: flow d68c82, 2026-10-13; flow 33752b, 2026-10-13; flow 88475f,
 2026-09-25; flow e51411, 2026-09-25; flow 692df8, 2026-09-15, two
@@ -247,14 +261,12 @@ records; flow 6cc91b, 2026-09-14.
 + Below the floor, a request to refresh a flow is refused, as is one for a flow younger than a set age, so that a request routed to a flow just started changes nothing. A flow below the floor is still replaced when its direction changes dramatically: a new job starts on a fresh flow, with the training that job needs.
 ```
 
-Compaction, the emergency when a successor fails to start (choice 2 of
-Proposal 1 of «Flow: short term and long term», third edition), is asked
-for through the same request and meets the same guard.
-
-Lands as data, in `shared.edn`, inside `:refresh`:
+Short term: lands as data, in `shared.edn`, inside `:refresh`; `:flows`
+is where a flow's directory is, under the workspace:
 
 ```clojure
 +            :min-age-ms 600000
++            :flows "flows"
 ```
 
 and in `refresh.clj`. A flow's age is its directory's; the request
@@ -273,7 +285,8 @@ names the flow and whether it overrides the floor, under choice 5:
 +           (< age min-age) :TooYoung)))
 +
 + ;; RefreshRefused is typed as the messenger's
-+ ;; RetireRefused is today.
++ ;; RetireRefused is today: the datom head is the
++ ;; type's own name.
 + (defn request [config zone age flow override]
 +   (if-let [reason (and (not override)
 +                        (guard config zone age))]
@@ -282,9 +295,81 @@ names the flow and whether it overrides the floor, under choice 5:
 +     :admitted))
 ```
 
-`main.clj` gains the command `refresh METAFLOW`, with the `hm-refresh`
-shorthand beside the others; the metaflow's current flow is found as
-Proposal 3 of «Flow: the metaflow» finds it.
+File: `messenger-clj/src/messenger_clj/refresh.clj`, after `request`:
+
+```clojure
++ ;; The command's entry. The metaflow's current
++ ;; flow is found as a send target is; the zone
++ ;; is the one the hook last recorded in the
++ ;; state file, the record it keeps between
++ ;; turns (Proposal 4).
++ (defn flow-dir [config flow]
++   (fs/path (get-in config [:refresh :flows])
++            flow))
++
++ (defn state-file [config dir]
++   (fs/path dir (get-in config
++                        [:refresh :state-file])))
++
++ (defn request! [config-file target override]
++   (let [config (edn/read-string
++                 (slurp config-file))
++         flow (hm/target-flow! target)
++         dir (flow-dir config flow)
++         state (edn/read-string
++                (slurp (str (state-file config
++                                        dir))))
++         now (System/currentTimeMillis)]
++     (request config (:zone state)
++              (age-ms dir now) flow override)))
+```
+
+File: `messenger-clj/src/messenger_clj/main.clj`, the `ns` form:
+
+```clojure
+  (ns messenger-clj.main
+    (:require [messenger-clj.core :as hm]
++             [messenger-clj.refresh :as refresh]
+```
+
+The dispatch, before `retire`:
+
+```clojure
++           "refresh"
++           (let [[target & rest] xs
++                 flags #{"--config" "--override"}]
++             (when-not (and target
++                            (arg rest "--config"))
++               (parse-error
++                (str "the following arguments"
++                     " are required:"
++                     " metaflow, --config")))
++             (unknown-flags! rest flags)
++             (extra-values! rest flags)
++             (println
++              (refresh/request!
++               (arg rest "--config") target
++               (some #{"--override"} rest))))
+            "retire" (let [[flow & rest] xs]
+```
+
+File: `messenger-clj/nix/launcher.sh`, the `hm-*` names:
+
+```bash
+    hm-retire) set -- retire "$@" ;;
++   hm-refresh) set -- refresh "$@" ;;
+```
+
+File: `messenger-clj/nix/package.nix`, the `hm-*` links:
+
+```nix
+-     for command in send send-abrupt list register repair deregister rebind move retire heartbeat-state; do ln -s messenger-clj "$out/bin/hm-$command"; done
++     for command in send send-abrupt register \
++       list repair deregister rebind move retire \
++       refresh heartbeat-state; do
++       ln -s messenger-clj "$out/bin/hm-$command"
++     done
+```
 
 Ruling, one number from each group:
 
@@ -344,8 +429,7 @@ entry whole:
 - ## Refresh right now; Flow Master and Luna help
 ```
 
-Lands as data and as Clojure. The recipient leaves
-`context-refresh.json`:
+File: `primary/config/context-refresh.json`, the recipient:
 
 ```json
 -   "recipients": {
@@ -353,16 +437,16 @@ Lands as data and as Clojure. The recipient leaves
 -   },
 ```
 
-for `shared.edn`, inside `:refresh`: a metaflow named whole (choice 4),
-or a layer of the flow's own aspect and topic (choice 5,
-`:runner {:layer :Quaternary}`):
+File: `primary/config/main-flow/shared.edn`, inside `:refresh`: a
+metaflow named whole (choice 4), or a layer of the flow's own aspect
+and topic (choice 5, `:runner {:layer :Quaternary}`):
 
 ```clojure
 +            :runner {:aspect :Field :topic :core
 +                     :layer :Secondary}
 ```
 
-In `refresh.clj`:
+File: `messenger-clj/src/messenger_clj/refresh.clj`:
 
 ```clojure
 + ;; The runner is the metaflow warned beside the
@@ -546,31 +630,98 @@ Source: flow e51411, 2026-09-24.
 + Two flows of one metaflow share everything with each other, and one cedes.
 ```
 
-Lands in the messenger's registration. Under choice 4 the later
-registration displaces the earlier, as Proposal 3 of «Flow: the
-metaflow» makes the later flow current. Under choice 5, in
-`messenger-clj/src/messenger_clj/core.clj`, `register!`, line 547, a
-registration for a metaflow already current is refused unless it names
-the flow it succeeds:
+Under choice 4 the later registration displaces the earlier, as
+Proposal 3 of «Flow: the metaflow» makes the later flow current. Under
+choice 5, a registration for a metaflow already current is refused
+unless it names the flow it succeeds.
+
+File: `messenger-clj/src/messenger_clj/core.clj`, before `register!`,
+whose signature gains the flow succeeded:
 
 ```clojure
++ (defn seat [route]
++   (let [s (select-keys route
++                        [:aspect :topic :layer])]
++     (when (= 3 (count s)) s)))
++
 + (defn same-seat [routes route]
-+   (let [seat #(select-keys % [:aspect :topic
-+                               :layer])]
++   (when-let [s (seat route)]
 +     (for [[flow r] routes
-+           :when (= (seat r) (seat route))]
++           :when (= s (seat r))]
 +       flow)))
 +
 + ;; DuplicateSeat is the registration's own
-+ ;; refusal.
-+ (defn duplicate-seat! [routes route successor-of]
-+   (doseq [flow (same-seat routes route)
-+           :when (not= flow successor-of)]
-+     (fail (str "DuplicateSeat: " flow))))
++ ;; refusal: the head is the type's own name, as
++ ;; the messenger names its refusals.
++ (defn duplicate-seat! [routes route flow
++                        successor-of]
++   (doseq [other (same-seat routes route)
++           :when (not= other flow)
++           :when (not= other successor-of)]
++     (fail (str "DuplicateSeat: " other))))
++
+  (defn register!
+-   ([flow name session native-thread metadata]
++   ([flow name session native-thread metadata]
++    (register! flow name session native-thread
++               metadata nil))
++   ([flow name session native-thread metadata
++     successor-of]
 ```
 
-`main.clj`'s `register` gains the option `--successor-of FLOW`, which
-the launcher passes.
+The check, the first form of `register!`'s body once `route` is bound:
+
+```clojure
++           (duplicate-seat! (route-records) route
++                            flow successor-of)
+```
+
+File: `messenger-clj/src/messenger_clj/main.clj`, the option
+`--successor-of FLOW`, which the launcher passes:
+
+```clojure
+  (defn stdin-text! [] (slurp *in*))
++ (def register-flags
++   #{"--session" "--native-thread" "--aspect"
++     "--topic" "--layer" "--successor-of"})
++
++ (defn register-command [[flow name & rest]]
++   (when-not (and flow name)
++     (parse-error
++      (str "the following arguments"
++           " are required: flow, name")))
++   (unknown-flags! rest register-flags)
++   (extra-values! rest register-flags)
++   (let [flags [[:aspect "--aspect"]
++                [:topic "--topic"]
++                [:layer "--layer"]]
++         pairs (for [[k flag] flags
++                     :when (arg rest flag)]
++                 [k (arg rest flag)])
++         metadata (not-empty (into {} pairs))]
++     (hm/register! flow name
++                   (arg rest "--session")
++                   (arg rest "--native-thread")
++                   metadata
++                   (arg rest "--successor-of"))))
+  (defn -main [& argv]
+```
+
+The dispatch:
+
+```clojure
+-           "register" (let [[flow name & rest] xs session (arg rest "--session") thread (arg rest "--native-thread")]
+-                        (when-not (and flow name) (parse-error "the following arguments are required: flow, name"))
+-                        (unknown-flags! rest #{"--session" "--native-thread" "--aspect" "--topic" "--layer"})
+-                        (extra-values! rest #{"--session" "--native-thread" "--aspect" "--topic" "--layer"})
+-                        (let [metadata (into {} (keep (fn [[k flag]] (when-let [v (arg rest flag)] [k v]))
+-                                                      [[:aspect "--aspect"] [:topic "--topic"] [:layer "--layer"]]))]
+-                          (println (if (seq metadata)
+-                                     (hm/register! flow name session thread metadata)
+-                                     (hm/register! flow name session thread)))))
++           "register"
++           (println (register-command xs))
+```
 
 Ruling, one number from each group:
 
@@ -589,9 +740,9 @@ Which cedes:
 ### Proposal 7: what the successor receives, and does first
 
 File: `psyche-context/skills/vision-flow.md`, «A replaced session is
-reaped by the refresh itself», after the line Proposal 6 of «Flow: short
-term and long term», third edition, adds (the handover carries
-judgment).
+reaped by the refresh itself», a long-term paragraph after the line
+Proposal 6 of «Flow: short term and long term», third edition, adds
+(the handover carries judgment).
 
 Sources: flow 48cff7, 2026-09-16; flow f55ec8, 2026-09-16 and
 2026-09-17; flow 1b8ac0, 2026-09-21; flow e51411, 2026-09-24 and
@@ -602,13 +753,13 @@ Sources: flow 48cff7, 2026-09-16; flow f55ec8, 2026-09-16 and
 + A refresh is made so that the successor is smarter and better equipped than its predecessor, for the problem at hand and in general. Besides the handover, the successor receives the flow's presentations, the raw psyche it was given, the basic skills, and the best of the layers below it, gathered on refresh. What has been merged into files since the last refresh is carried by the files, never again by a handover, so a lineage does not accumulate. The successor's first goal is a presentation of the current state, its open questions and undecided design, and of the design as it understands it, with figures and examples.
 ```
 
-Under choice 7, one more sentence:
+Under choice 7, one more long-term sentence:
 
 ```text
 + The bootstrap is the same for every flow of one layer, so its cache is shared among them.
 ```
 
-The figure, after the paragraph:
+The long-term figure, after the paragraph:
 
 ```text
 + +----------------+  +----------------------+
@@ -631,19 +782,21 @@ The figure, after the paragraph:
 What is decided goes into the context modules and only the undecided
 reaches the next flow: line B of Proposal 6 of «Flow: the metaflow».
 
-Lands as data: the handover's file name in `shared.edn`, inside
-`:refresh`, and the modules a successor starts with in the aspect file,
-`psyche.edn`, after `:modules`:
+File: `primary/config/main-flow/shared.edn`, inside `:refresh`, the
+handover's file name; short term:
 
 ```clojure
 +            :handover-file "handover.md"
 ```
 
+File: `primary/config/main-flow/psyche.edn`, after `:modules`, the
+modules a successor starts with; short term:
+
 ```clojure
 + :successor-modules [:spirit-core :vision-book]
 ```
 
-and in `launch.clj`:
+File: `messenger-clj/src/messenger_clj/launch.clj`; short term:
 
 ```clojure
 + (defn successor-prompt [config aspect-config
