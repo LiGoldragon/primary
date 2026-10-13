@@ -62,3 +62,9 @@ books/07-launch.md from 26 witnessed pairs (books/batch-04-psyches.edn): sixteen
 
 ## 2026-10-13 batch 04 published
 «Flow: launch and lean start» at https://claude.ai/artifact/CbCJRpT8sMRsyZWwTtMzVw; page books/07-launch.html; reviewer pass done (reminder.clj shown, figure folded under Proposal 10, P7/P9 marks as choices, metaflow files renamed from uncapitalized topic); phone witness at 320/375px. Link, bb results and three outside facts (file rename, Codex trusted-hash unknown, detached HEAD) sent to the Secondary (`Transported.{ da2038 done }`). Waiting for batch 05.
+
+## 2026-10-13 refresh preparation
+Field Core Secondary: 163,260 tokens measured at 22:14 UTC; batch 05 goes to the successor. summary.md written as the judgment-only handover. No subflow out; no writes pending beyond the log. Waiting for the Secondary's verdict on batch 04; not quitting, not starting batch 05.
+
+## 2026-10-13 batch 04 returned by the Secondary
+Secondary review: Clojure passes; refusal names accepted. To fix: every described-but-unshown file change shown as red/green (P1, P2, P4, P5, P6, P7, P10, P12, P13); narration and inter-book back-references removed; short-term marks only on cited words that say so (P5, P7, P9, P10 figure), P5 choice 8 labelled the machine's; literals FLOW_ID=, #"-" split, start-call key lists to EDN or justified; P15 Mind question out of the book, sent to the Secondary. Revision subflow dispatched (comments gate, same URL, phone check). Standing rule added to summary.md: every described file change is shown; back-references between books are File:/red-green or absent; a mark cites a listed source that says short term.
