@@ -8,8 +8,7 @@
 - 2026-10-10: 081064 corrected: land only inline D1; asked for the registry comment anchor. 058f16 proposed the Source nexus / Ethos resolution split; answered and forwarded.
 - 2026-10-10: Landed inline import D1 in psyche-skills main 9fb0433 (sent to 081064). Open: archive of d5df1d raw record; Curriculum Nexus regeneration.
 - 2026-10-10: Registry comment anchored on D1 line itself, not a fork option: fork open. Relayed his two question-2 comments (Source nexus) to 081064.
-- 2026-10-10: Provenance: my STT marks on relayed book comments were assumption; appended corrections (typed, per d68c82).
-- 2026-10-10: Provenance: my STT marks on relayed book comments were assumption; appended corrections (typed, per d68c82).
+- 2026-10-10: Provenance: the relayed book comments were speech-to-text.
 - 2026-10-10: Casing rule overlap: 081064 «The prototype name» carries it; 058f16 drops its casing proposal.
 - 2026-10-10: Book «Who archives a record» (081064) sent to d68c82. Checks rerunning pinned to 07714b on Prometheus.
 - 2026-10-10: Ethos Nexus drafts all accepted on 07714b, Prometheus; facts sent to 081064.

@@ -12,5 +12,3 @@ Context: comment on «Sources and the registry», proposal 2, relayed by d68c82,
 > ... This will be used to put together a registry and it'll just keep it. Every time we update some Ethos source, add one, or edit its name or something, we need to change the registry.
 
 -- psyche, STT, relayed by d68c82.
-
-Provenance correction, 2026-10-10: the "STT" above was this flow's assumption, not witnessed. The words are a comment on a published book, relayed by d68c82, whose records mark them typed.

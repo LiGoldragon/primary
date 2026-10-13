@@ -8,7 +8,7 @@ Context: comment on «Sources in the commit message», ruling 1, relayed by d68c
 >
 > I guess you could use vectors when there's more than one type of thing in a commit. It would be good to support that just in case we can't force the commit to be split up or something but we would encourage only one variant per commit message.
 
--- psyche, book comment relayed by d68c82; input mode not stated.
+-- psyche, STT, relayed by d68c82.
 
 ## The vision-distillation references as a variant
 
@@ -18,4 +18,4 @@ Context: same book, at the example commit message listing vision-distillation's 
 >
 > I mean topic and Flow ID.
 
--- psyche, book comment relayed by d68c82; input mode not stated.
+-- psyche, STT, relayed by d68c82.
