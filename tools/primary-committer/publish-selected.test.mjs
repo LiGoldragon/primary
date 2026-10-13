@@ -110,3 +110,22 @@ test('intent-to-add is captured without confusing a genuinely staged empty file 
   assert.ok(fs.readFileSync(path.join(f.primary, '.git/index')).equals(index));
   assert.equal(fs.readFileSync(path.join(f.primary, 'actually-empty.txt'), 'utf8'), 'a different working payload\n');
 });
+
+test('pre-push whitespace refusal reports command status and stdout without echoing stdin or environment', () => {
+  const f = fixture();
+  f.write('owned.txt', 'owner trailing whitespace \n');
+  const before = f.git('rev-parse', 'HEAD');
+  const index = fs.readFileSync(path.join(f.primary, '.git/index'));
+  assert.throws(() => f.publish({paths: ['owned.txt'], message: 'PRIVATE_COMMIT_MESSAGE_SENTINEL'}), error => {
+    assert.match(error.message, /"diff" "--check"/);
+    assert.match(error.message, /status=2/);
+    assert.match(error.message, /stdout=owned\.txt:1: trailing whitespace/);
+    assert.match(error.message, /stderr=\(empty\)/);
+    assert.ok(!error.message.includes('PRIVATE_COMMIT_MESSAGE_SENTINEL'));
+    assert.ok(!error.message.includes('FLOW_ID='));
+    return true;
+  });
+  assert.equal(f.git('rev-parse', 'HEAD'), before);
+  assert.equal(f.git('ls-remote', 'origin', 'refs/heads/main').split(/\s+/)[0], before);
+  assert.ok(fs.readFileSync(path.join(f.primary, '.git/index')).equals(index));
+});

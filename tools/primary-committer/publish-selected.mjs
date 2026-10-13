@@ -23,7 +23,13 @@ export function validateRequest(request) {
 
 function run(program, args, options = {}) {
   const result = spawnSync(program, args, {encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, ...options});
-  if (result.error || result.status !== 0) throw new Error(`${program} failed: ${result.error?.message ?? result.stderr?.trim() ?? result.status}`);
+  if (result.error || result.status !== 0) {
+    // These call sites run only Git plumbing and Observe.Locks. Never print
+    // stdin (file contents/commit message) or the process environment.
+    const command = [program, ...args].map(value => JSON.stringify(value)).join(' ');
+    const excerpt = value => String(value ?? '').trim().slice(0, 8192) || '(empty)';
+    throw new Error(`${command} failed: status=${result.status ?? 'none'} signal=${result.signal ?? 'none'}; error=${result.error?.message ?? 'none'}; stdout=${excerpt(result.stdout)}; stderr=${excerpt(result.stderr)}`);
+  }
   return result.stdout;
 }
 
