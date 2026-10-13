@@ -12,7 +12,7 @@
 - Probe rerun: 4/4 match on prometheus; sent to d5df1d.
 - Types-book claims 7/7 hold on prometheus (orchestrate-test branch types e24da9); sent to d5df1d.
 - Book «Ethos invariants» published by d5df1d; link forwarded to 445410. Types book republishing at same link with claim 7.
-- Living order via 445410 (typed): each Secondary investigates with subagents everything said on how to present its design and context relevant to its lane, including missed context, and reinjects it as a package to its Primary. Sweep dispatched.
+- Living order via 445410 (STT): each Secondary investigates with subagents everything said on how to present its design and context relevant to its lane, including missed context, and reinjects it as a package to its Primary. Sweep dispatched.
 - Presentation package (122 records) sent to d5df1d.
 - Logged living vision (core:Name camelCase, runtime-checked) in vision/ethos.md; relayed to d5df1d.
 - 445410 note on core:Name relayed to d5df1d.

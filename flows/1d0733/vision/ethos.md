@@ -4,7 +4,7 @@ Context: relayed by 445410; the living, after a title written `{ Psyche Core Sec
 
 > but technically it should be uncapitalized core and ethos since theyre the core:Name type which is "camelCaseExpression" type with runtime checks when creating a new one
 
--- psyche, typed, 2026-10-09, relayed by 445410.
+-- psyche, STT, 2026-10-09, relayed by 445410.
 
 ## vision-ethos lives at psyche-skills/vision/ethos.md
 
@@ -12,7 +12,7 @@ Context: a comment on «The golden ethos», third edition, anchored on "psyche-s
 
 > should be psyche-skills/vision/ethos.md
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 ## A type declared by inline import
 
@@ -34,7 +34,7 @@ Context: the living, to 1d0733, on «The inline import, second edition», which 
 
 > The second edition of the inline import has been commented and I don't like this # that I see. This edition with the # in the source list: I don't know what the hell this is but to me that's duplication of data. I don't know what the hell we're keeping that for. What does this have to do with psyche? This looks like a lock file for some kind of update mechanism. This is totally mechanical.
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 ## The inline import is Topic.custom:Name
 

@@ -6,4 +6,4 @@ Context: relayed by 445410. A comment on «The inline import» (thread 60ba019a,
 >
 > Topic:custom.Name is what I had in mind, but there is a problem with that now that I see it. Maybe it's Topic:custom:Name - what is the import syntax atm?
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
