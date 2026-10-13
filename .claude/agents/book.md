@@ -120,6 +120,24 @@ readable labels. Claude Code 2.1.294 resolves this model to Haiku 5.5;
 if that model is unavailable, report the blocker rather than silently
 choosing another model.
 
+Carry the `operation-flashbook-illustration` rules whole in the figure
+subflow's brief, rather than assuming it inherits a skill or asking it to
+fetch one. Give it these rules with the diagram and source text:
+
+- Make a literal, elaborate and artistically attractive picture, using
+  curved paths, gradients, layered shapes and organic forms rather than
+  bare straight lines and boxes. Draw its imagery only from the source.
+- Draw one thing so it rewards looking. Use a title or a few labels at
+  most, at least 16px on a 360px-wide screen, legible in both themes.
+- A flowchart is hand-written inline SVG without a library, with a portrait
+  viewBox about 360 units wide and top-to-bottom flow. Measure its labels
+  to fit, at least 14px. Keep one colour per role across charts, numbered
+  step badges, a solid bright chosen route, a dashed grey alternative,
+  and short labels from the source.
+- Illustrate the flowchart itself: give the connections a style and feeling
+  that the source supports and draw the things around them. Never put two
+  bare charts in succession; alternate image and text.
+
 The figure carries the diagram's relationships and the meaning in the
 surrounding text. It may add visual grouping, color and emphasis that
 the text supports, but no new claim, ruling or relationship. Check the
