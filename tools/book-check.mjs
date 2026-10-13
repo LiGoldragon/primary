@@ -10,7 +10,11 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
   let fence = null, section = null, hasCrystallization = false;
   let inComment = false;
   const finish = () => {
-    if (section && !section.content) errors.push({ line: section.line, reason: "empty-crystallization" });
+    if (section) {
+      if (!section.content) errors.push({ line: section.line, reason: "empty-crystallization" });
+      if (!section.legacy && !section.target) errors.push({ line: section.line, reason: "no-target-file" });
+      if (!section.legacy && !section.added) errors.push({ line: section.line, reason: "no-added-line" });
+    }
     section = null;
   };
   lines.forEach((line, i) => {
@@ -20,7 +24,11 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
         fence = null;
       } else {
         if (fence.code && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
-        if (section && line.trim()) section.content = true;
+        if (section && line.trim()) {
+          section.content = true;
+          if (/^File: \S/.test(line)) section.target = true;
+          if (/^\+ \S/.test(line)) section.added = true;
+        }
       }
       return;
     }
@@ -46,12 +54,16 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
           (allowLegacyDistillation && /^(?:\d+[.)]\s+)?distillation\b/i.test(heading[2]))) {
         finish();
         hasCrystallization = true;
-        section = { line: number, level: heading[1].length, content: false };
+        section = { line: number, level: heading[1].length, content: false, target: false, added: false, legacy: /distillation\b/i.test(heading[2]) };
       }
       return;
     }
     if (/^ {0,3}>/.test(line)) errors.push({ line: number, reason: "quote-block-in-book" });
-    if (section && line.trim() && !/^Presentation\./.test(line)) section.content = true;
+    if (section && line.trim() && !/^Presentation\./.test(line)) {
+      section.content = true;
+      if (/^File: \S/.test(line)) section.target = true;
+      if (/^\+ \S/.test(line)) section.added = true;
+    }
   });
   finish();
   if (fence) errors.push({ line: fence.line, reason: "unclosed-code-fence" });

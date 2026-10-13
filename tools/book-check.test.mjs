@@ -6,7 +6,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { checkBook } from "./book-check.mjs";
 const program = new URL("./book-check.mjs", import.meta.url).pathname;
-const good = "## Proposal\nThe change.\n## Crystallization\nTarget: field-context/skills/example.md\nAdd: Use the supported route.\n";
+const good = "## Proposal\nThe change.\n## Crystallization\nFile: field-context/skills/example.md\n+ Use the supported route.\n";
 
 test("rejects the first-anatomy failure: proposals without crystallization", () => {
   assert.deepEqual(checkBook("## Add an anatomy\n```ethos\nOperation\n```\nA proposal.\n"), [{ reason: "missing-crystallization" }]);
@@ -59,4 +59,12 @@ test("new sources require Crystallization; legacy acceptance is explicit", () =>
   assert.deepEqual(checkBook(good), []);
   assert.deepEqual(checkBook(legacy), [{ reason: "missing-crystallization" }]);
   assert.deepEqual(checkBook(legacy, { allowLegacyDistillation: true }), []);
+});
+
+ test("crystallization requires a target file and an added line in each section", () => {
+  assert.ok(checkBook("## Crystallization\n+ Added.\n").some(e => e.reason === "no-target-file"));
+  assert.ok(checkBook("## Crystallization\nFile: example.md\n").some(e => e.reason === "no-added-line"));
+  assert.deepEqual(checkBook("## Crystallization\n```text\nFile: example.md\n- Old.\n+ New.\n  Kept.\n```\n"), []);
+  assert.ok(checkBook(good + "## Crystallization\nUnqualified second section.\n").some(e => e.reason === "no-target-file"));
+  assert.ok(checkBook("## Crystallization\n<!-- File: false.md\n+ False.\n-->\n").some(e => e.reason === "no-added-line"));
 });
