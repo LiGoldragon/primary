@@ -233,8 +233,8 @@ export function readUserPrompts(rows) {
     .map(row => {
       const text = textOf(row);
       // Herdr's native paste can wrap one complete prompt. Require a whole
-      // wrapper with the same numeric identifier; never match a substring.
-      const pasted = /^\s*<pasted_content id="([0-9]+)">\r?\n([\s\S]*)\r?\n<\/pasted_content id="\1">\s*$/.exec(text);
+      // wrapper with the same hexadecimal identifier; never match a substring.
+      const pasted = /^\s*<pasted_content id="([a-fA-F0-9]+)">\r?\n([\s\S]*)\r?\n<\/pasted_content id="\1">\s*$/.exec(text);
       return {id: row.promptId ?? row.uuid, text: pasted ? pasted[2] : text};
     });
 }

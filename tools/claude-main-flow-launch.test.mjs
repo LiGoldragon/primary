@@ -134,6 +134,7 @@ const finalPrompt = {type: 'user', promptId: 'launch', message: {role: 'user', c
 assert.deepEqual(readUserPrompts([...skillRows, finalPrompt]).at(-1), {id: 'launch', text: 'Say ready.'});
 const pastedPrompt = {...finalPrompt, message: {role: 'user', content: '\n\n<pasted_content id="1581">\nSay ready.\n</pasted_content id="1581">\n'}};
 assert.deepEqual(readUserPrompts([pastedPrompt]), [{id: 'launch', text: 'Say ready.'}]);
+assert.deepEqual(readUserPrompts([{...pastedPrompt, message: {content: pastedPrompt.message.content.replaceAll('1581', '9c05')}}]), [{id: 'launch', text: 'Say ready.'}]);
 for (const text of [
   '<pasted_content id="1581">\nSay ready.\n</pasted_content id="1582">',
   'Extra instruction\n<pasted_content id="1581">\nSay ready.\n</pasted_content id="1581">',
