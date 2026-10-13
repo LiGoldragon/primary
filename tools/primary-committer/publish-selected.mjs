@@ -109,7 +109,19 @@ export function publishSelected(primary, request, {env = process.env, lockSnapsh
       const prior = headEntry[0]?.split('\t')[0].replace(' blob ', ' ') ?? null;
       const stagedValue = staged?.split('\t')[0].replace(/ 0$/, '') ?? null;
       const captured = mode === '0' ? null : `${mode} ${blob}`;
-      requireFact(stagedValue === prior || stagedValue === captured, 'selected staged bytes differ from both main and current file; preserve them');
+      let intentOnly = false;
+      if (staged && prior === null && stagedValue !== captured) {
+        // An empty blob alone is not intent-to-add: a user may have staged an
+        // actual empty file. Require Git's CE_INTENT_TO_ADD flag as well.
+        const debug = git(['ls-files', '--debug', '-z', '--', name]);
+        const nul = debug.indexOf('\0');
+        const flags = /\tflags: ([0-9a-f]+)\n$/.exec(debug.slice(nul + 1));
+        requireFact(nul >= 0 && debug.slice(0, nul) === name && flags, 'cannot qualify selected index flags; preserve them');
+        const emptyBlob = git(['hash-object', '--stdin'], {input: ''}).trim();
+        intentOnly = (BigInt(`0x${flags[1]}`) & 0x20000000n) !== 0n
+          && stagedValue?.split(' ')[1] === emptyBlob;
+      }
+      requireFact(intentOnly || stagedValue === prior || stagedValue === captured, 'selected staged bytes differ from both main and current file; preserve them');
       const entry = `${mode} ${blob}\t${name}\0`;
       inIndex(captureIndex, ['update-index', '-z', '--index-info'], {input: entry});
       inIndex(nextIndex, ['update-index', '-z', '--index-info'], {input: entry});

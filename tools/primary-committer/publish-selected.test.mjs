@@ -84,3 +84,29 @@ test('divergent selected staged data and an unexpected remote tip are not repair
   assert.equal(f.git('rev-parse', 'HEAD'), before);
   assert.equal(fs.readFileSync(path.join(f.primary, 'owned.txt'), 'utf8'), 'working variant\n');
 });
+
+test('intent-to-add is captured without confusing a genuinely staged empty file or changing foreign flags', () => {
+  const f = fixture();
+  f.write('intent-owned.txt', 'completed owner content\n');
+  f.write('intent-foreign.txt', 'foreign unfinished content\n');
+  f.git('add', '--intent-to-add', '--', 'intent-owned.txt', 'intent-foreign.txt');
+  const foreignFlags = f.git('ls-files', '--debug', '-z', '--', 'intent-foreign.txt');
+  const foreignStage = f.git('ls-files', '--stage', '--', 'intent-foreign.txt');
+  const result = f.publish({paths: ['intent-owned.txt'], message: 'publish an intended new file'});
+  assert.equal(result.status, 'published');
+  assert.equal(f.git('show', `${result.commit}:intent-owned.txt`), 'completed owner content');
+  assert.equal(f.git('ls-files', '--debug', '-z', '--', 'intent-foreign.txt'), foreignFlags);
+  assert.equal(f.git('ls-files', '--stage', '--', 'intent-foreign.txt'), foreignStage);
+  assert.equal(fs.readFileSync(path.join(f.primary, 'intent-foreign.txt'), 'utf8'), 'foreign unfinished content\n');
+  assert.equal(f.git('status', '--porcelain', '--', 'intent-owned.txt'), '');
+
+  f.write('actually-empty.txt', '');
+  f.git('add', '--', 'actually-empty.txt');
+  f.write('actually-empty.txt', 'a different working payload\n');
+  const index = fs.readFileSync(path.join(f.primary, '.git/index'));
+  const before = f.git('rev-parse', 'HEAD');
+  assert.throws(() => f.publish({paths: ['actually-empty.txt'], message: 'must retain staged empty payload'}), /staged bytes differ/);
+  assert.equal(f.git('rev-parse', 'HEAD'), before);
+  assert.ok(fs.readFileSync(path.join(f.primary, '.git/index')).equals(index));
+  assert.equal(fs.readFileSync(path.join(f.primary, 'actually-empty.txt'), 'utf8'), 'a different working payload\n');
+});
