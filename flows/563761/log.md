@@ -24,3 +24,6 @@ https://claude.ai/artifact/59QJCCsPL7aFypQwBZoRZJ — page at books/04-identity-
 
 ## 2026-10-13 batch 01 returned by the Secondary
 Secondary review: Clojure rule passes; no-values rule fails on file names, env var, regex, bit widths and join style; closing cross-reference paragraph to go. Judgment: tunable values (33 bits, 128 width, :camelCase, Topic regex) move to EDN keys; bootstrap pointers (EDN file names, HERDR_PANE_ID, %032x as the UUID's shape) stay with one justifying line each. Subflow checks the page for comments first; without comments it revises and republishes to the same URL with phone check. Batch 02 author told the sharpened rule.
+
+## 2026-10-13 batch 01 second edition, version 2
+No comment from the living on the page. Tunable values moved to EDN (:session-bits, :join map, :topic regex); bootstrap pointers kept with one line each; closing paragraph removed. bb exit 0, book-check passes, phone check at 320/375px. Republished at the same URL; reported to the Secondary (`Transported.{ da2038 done }`). Batch 02 author still out.

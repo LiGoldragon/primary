@@ -16,8 +16,9 @@
 - const CODEX_CANDIDATE_START: usize = 23;</code></pre>
 <p>The whole Rust tool is removed. Both numbers move to <code>primary/config/main-flow/shared.edn</code>, an EDN file (EDN: Clojure's plain data notation; braces hold a map, brackets a vector, a word with a leading colon is a keyword). Added inside its map, after <code>:tools</code>:</p>
 <pre data-diff><code class="language-clojure">+  :flow-id {:first-width 6
++            :session-bits 128
 +            :start {:claude 0 :codex 23}}</code></pre>
-<p><code>:start</code> is where in the 32 digits the short id begins: at the first for Claude, at the twenty-fourth for Codex, where its id is random.</p>
+<p><code>:start</code> is where in the 32 digits the short id begins: at the first for Claude, at the twenty-fourth for Codex, where its id is random. <code>:session-bits</code> is the width of the session id, 128 bits, 32 hex digits; the code derives from it the width of the hex form and the longest short id, and Proposal 2 reads the same key. Four bits to a hex digit is the number base's own shape and stays in the code.</p>
 <p>The Clojure rewrite is a new file, <code>messenger-clj/src/messenger_clj/flow_id.clj</code>, beside the messenger (messenger-clj, the short-term tool that registers flows and types messages into them). <code>config</code> below is <code>shared.edn</code> as read, with <code>:dir</code>, the directory it was read from, added by the reader. Under choice 1, the machine's design (a record: Clojure's named map with fixed fields):</p>
 <pre data-diff><code class="language-clojure">+ (ns messenger-clj.flow-id
 +   (:require [babashka.fs :as fs]
@@ -33,12 +34,21 @@
 + (defn session-bits [uuid]
 +   (BigInteger. (str/replace uuid "-" "") 16))
 +
-+ (defn short-hex [{:keys [session start width]}]
-+   (subs (format "%032x" session)
-+         start (+ start width)))
++ (defn hex-digits [config]
++   (quot (get-in config [:flow-id :session-bits])
++         4))
 +
-+ (defn claim-lane! [root id]
-+   (let [lane (fs/path root (short-hex id))
++ (defn session-hex [config session]
++   (format (str "%0" (hex-digits config) "x")
++           session))
++
++ (defn short-hex [config id]
++   (let [{:keys [session start width]} id]
++     (subs (session-hex config session)
++           start (+ start width))))
++
++ (defn claim-lane! [config root id]
++   (let [lane (fs/path root (short-hex config id))
 +         mark (str (fs/path lane "flow-id.edn"))
 +         seen {:session (:session id)
 +               :start (:start id)}]
@@ -54,14 +64,16 @@
 +   (let [{:keys [first-width start]}
 +         (:flow-id config)
 +         from (get start harness)
++         widest (- (hex-digits config) from)
 +         id (-&gt;FlowId (session-bits uuid)
 +                      from first-width)]
-+     (or (some #(claim-lane! root %)
++     (or (some #(claim-lane! config root %)
 +               (map #(assoc id :width %)
 +                    (range first-width
-+                           (- 33 from))))
++                           (inc widest))))
 +         (throw (ex-info "CandidateExhausted"
 +                         {:session uuid})))))</code></pre>
+<p><code>flow-id.edn</code> stays in the code: the file name is the bootstrap pointer to the data, and data cannot name its own file.</p>
 <p>Under choice 2 the record holds only the claimed digits, and the short id is printed from them:</p>
 <pre data-diff><code class="language-clojure">+ (defrecord FlowId [bits width])
 +
@@ -98,7 +110,9 @@
 <p>How many words, and how they are joined, is data in <code>primary/config/main-flow/shared.edn</code>, added inside its map:</p>
 <pre data-diff><code class="language-clojure">+  :flow-words {:file "flow-words.edn"
 +               :length 3
-+               :join :camelCase}</code></pre>
++               :join {:separator ""
++                      :capitalize-rest true}}</code></pre>
+<p><code>:join</code> is the written form: the separator between the words, and whether every word after the first is capitalized.</p>
 <p>The conversion, both ways, is added to <code>messenger-clj/src/messenger_clj/flow_id.clj</code> (Proposal 1), the machine's design. It reads the bits from the record of Proposal 1, choice 1, starting where the short id starts (<code>:start</code>): the first bits for Claude; for Codex the bits from the twenty-fourth digit, as its first digits are not random (choice 5; choice 6 takes <code>:start</code> 0 for both):</p>
 <pre data-diff><code class="language-clojure">+ (defn read-config [config file]
 +   (edn/read-string
@@ -113,17 +127,22 @@
 + (defn bit-width [n]
 +   (dec (.bitLength (biginteger n))))
 +
-+ (defn leading-bits [{:keys [session start]} n]
-+   (.and (.shiftRight session
-+                      (int (- 128 (* 4 start) n)))
-+         (mask n)))
++ (defn leading-bits [config id n]
++   (let [{:keys [session start]} id
++         width (get-in config
++                       [:flow-id :session-bits])]
++     (.and (.shiftRight
++            session
++            (int (- width (* 4 start) n)))
++           (mask n))))
 +
 + (defn words [config id]
 +   (let [{:keys [file length]}
 +         (:flow-words config)
 +         vocab (read-config config file)
 +         per (bit-width (count vocab))
-+         bits (leading-bits id (* per length))]
++         bits (leading-bits config id
++                            (* per length))]
 +     (for [i (range (dec length) -1 -1)]
 +       (nth vocab
 +            (-&gt; bits
@@ -132,11 +151,15 @@
 +                long)))))
 +
 + (defn word-form [config id]
-+   (let [ws (words config id)]
-+     (case (:join (:flow-words config))
-+       :camelCase
-+       (apply str (first ws)
-+              (map str/capitalize (rest ws))))))</code></pre>
++   (let [ws (words config id)
++         {:keys [separator capitalize-rest]}
++         (:join (:flow-words config))
++         rest-form (if capitalize-rest
++                     str/capitalize
++                     identity)]
++     (str/join separator
++               (cons (first ws)
++                     (map rest-form (rest ws))))))</code></pre>
 <p>Back from the words, the pattern that finds the transcript: it matches a session id written without its dashes, at each harness's start:</p>
 <pre data-diff><code class="language-clojure">+ (defn split-words [text]
 +   (map str/lower-case
@@ -172,7 +195,7 @@
 +           (when (pos? r)
 +             (format "[%x-%x]" lo hi))))))</code></pre>
 <p>A search that finds more than one transcript for one pattern has found a collision, which is brought to the living.</p>
-<section class="rulings"><ol><li value="2"><p>Ruling:</p><ol class="choices" type="a"><li>Land now; three words joined as one uncapitalized camelCase word, like <code>wordWordWord</code>, as shown (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07; flow 0c85a3, 2026-10-09).</li><li>Land now; three words apart, with a separator of their own (flow 05c604, 2026-09-15); <code>:join</code> names the separator and <code>word-form</code> gains its branch.</li><li>Land now; two words from a denser published list (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07); <code>:file</code> names that list and <code>:length</code> is 2.</li><li>Wait until after a minimum viable product; no line now (flow dea0ba, 2026-10-03).</li><li>With choice 1, 2 or 3, the machine's design: the 33 bits are taken from <code>:start</code> (digit 24 for Codex), because the Codex id's leading digits are not random.</li><li>With choice 1, 2 or 3, his phrase literally: <code>:start</code> is 0 for both harnesses, so the first 33 bits are the first digits; Codex's hex short id then differs in origin from its words.</li></ol></li></ol></section>
+<section class="rulings"><ol><li value="2"><p>Ruling:</p><ol class="choices" type="a"><li>Land now; three words joined as one uncapitalized camelCase word, like <code>wordWordWord</code>, as shown (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07; flow 0c85a3, 2026-10-09).</li><li>Land now; three words apart, with a separator of their own (flow 05c604, 2026-09-15); <code>:separator</code> names it and <code>:capitalize-rest</code> is false.</li><li>Land now; two words from a denser published list (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07); <code>:file</code> names that list and <code>:length</code> is 2.</li><li>Wait until after a minimum viable product; no line now (flow dea0ba, 2026-10-03).</li><li>With choice 1, 2 or 3, the machine's design: the 33 bits are taken from <code>:start</code> (digit 24 for Codex), because the Codex id's leading digits are not random.</li><li>With choice 1, 2 or 3, his phrase literally: <code>:start</code> is 0 for both harnesses, so the first 33 bits are the first digits; Codex's hex short id then differs in origin from its words.</li></ol></li></ol></section>
 </article>
 <article class="proposal"><header><span class="pnum">3</span><h2>flow ids are for the ledger</h2></header>
 <p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
@@ -250,6 +273,7 @@
 +     (if (= 1 (count hits))
 +       (first hits)
 +       (fail (str "CallerUnknown: " pane)))))</code></pre>
+<p><code>HERDR_PANE_ID</code> stays in the code: the variable name is the contract with herdr, read as the bootstrap of the pane.</p>
 <p>The same replacement in three more places that read the declared id. <code>reserve!</code>, line 451:</p>
 <pre data-diff><code class="language-clojure">- (or *flow-id* (System/getenv "FLOW_ID") flow)
 + (or *flow-id* (pane-flow!))</code></pre>
@@ -270,9 +294,10 @@
 <div class="diff"><div class="del"><del><p>flow id: { Psyche core Secondary &lt;id&gt; }.</p></del></div></div>
 <p>Added:</p>
 <div class="diff"><div class="add"><ins><p>flow id in its word form: { Psyche core Secondary &lt;words&gt; }.</p></ins></div></div>
-<p>Lands as data and as Clojure, the machine's design. The order of the title's parts is data, added to <code>primary/config/main-flow/shared.edn</code> with the default topic:</p>
+<p>Lands as data and as Clojure, the machine's design. The order of the title's parts is data, added to <code>primary/config/main-flow/shared.edn</code> with the default topic and the topic's pattern (EDN has no regex literal, so it is a string the code compiles):</p>
 <pre data-diff><code class="language-clojure">+  :title [:aspect :topic :layer :flow]
-+  :default-topic :core</code></pre>
++  :default-topic :core
++  :topic "^[a-z][A-Za-z0-9]*$"</code></pre>
 <p>Under choice 2 the last part is <code>:words</code>, the word form of Proposal 2:</p>
 <pre data-diff><code class="language-clojure">+  :title [:aspect :topic :layer :words]</code></pre>
 <p>The metaflow files in <code>primary/config/main-flow/metaflow/</code> write the topic capitalized; in each of the five:</p>
@@ -293,12 +318,15 @@
 +   (:require [clojure.string :as str]
 +             [malli.core :as m]))
 +
-+ ;; A topic is a camelCase name, uncapitalized.
-+ (def Topic [:re #"^[a-z][A-Za-z0-9]*$"])
++ ;; A topic is a camelCase name, uncapitalized;
++ ;; its pattern is :topic in shared.edn.
++ (defn topic-shape [config]
++   [:re (re-pattern (:topic config))])
 +
 + (defn topic! [config topic]
 +   (let [topic (or topic (:default-topic config))]
-+     (when-not (m/validate Topic (name topic))
++     (when-not (m/validate (topic-shape config)
++                           (name topic))
 +       (throw (ex-info "InvalidTopic"
 +                       {:topic topic})))
 +     topic))
@@ -338,7 +366,7 @@
 +         (pr-str (assoc lineage
 +                        :flow flow
 +                        :origin (caller-origin)))))</code></pre>
-<p>with <code>[messenger-clj.core :as core]</code> and <code>[babashka.fs :as fs]</code> added to its requires, and the reader of a predecessor's record reading <code>continuation.edn</code>. The turn that asked is not visible to a launcher; the record carries the flow and its session (<code>:thread</code>) only.</p>
+<p>with <code>[messenger-clj.core :as core]</code> and <code>[babashka.fs :as fs]</code> added to its requires, and the reader of a predecessor's record reading <code>continuation.edn</code>. The file name stays in the code: it is the bootstrap pointer to the record, and data cannot name its own file. The turn that asked is not visible to a launcher; the record carries the flow and its session (<code>:thread</code>) only.</p>
 <section class="rulings"><ol><li value="6"><p>Ruling:</p><ol class="choices" type="a"><li>Land the sentence and the code; the turn waits.</li><li>Land the sentence only.</li><li>Neither.</li></ol></li></ol></section>
 </article>
 <article class="proposal"><header><span class="pnum">7</span><h2>why the word flow</h2></header>
@@ -351,7 +379,6 @@
 <div class="diff"><div class="add"><ins><p>a flow is a flow of thought, and an intelligence is many of them, so agent, a word that carries one subject, names none of them;</p></ins></div></div>
 <p>Lands in no code.</p>
 <section class="rulings"><ol><li value="7"><p>Ruling:</p><ol class="choices" type="a"><li>Land it.</li><li>Not in vision-flow.</li></ol></li></ol></section>
-<p>The messenger holding a flow's messages while it refreshes is Proposal 2 of «Flow: short term and long term», third edition (<a href="https://claude.ai/artifact/FLFTXdc6K2mVMwSaG3TCUJ"><code>https://claude.ai/artifact/FLFTXdc6K2mVMwSaG3TCUJ</code></a>), and is not repeated here.</p>
 </article>
 <!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
      Markup, all optional except what the source has:
@@ -366,7 +393,7 @@
          </div>
        </article>
        <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
-         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
        </ol></section>
      Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
      Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
@@ -447,14 +474,14 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .ctx pre{padding-inline:12px}
 .diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 
-/* Rulings: one card per ruling, lettered choices. */
+/* Rulings: one card per ruling, numbered choices. */
 .rulings{display:grid;gap:12px}
 .rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
 .rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
 .choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
 .choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
-.choices>li::before{content:counter(choice,lower-alpha);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
 
 /* Code: never wraps; wide lines scroll inside their block. */
 pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}

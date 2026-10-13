@@ -49,11 +49,16 @@ leading colon is a keyword). Added inside its map, after `:tools`:
 
 ```clojure
 +  :flow-id {:first-width 6
++            :session-bits 128
 +            :start {:claude 0 :codex 23}}
 ```
 
 `:start` is where in the 32 digits the short id begins: at the first
 for Claude, at the twenty-fourth for Codex, where its id is random.
+`:session-bits` is the width of the session id, 128 bits, 32 hex
+digits; the code derives from it the width of the hex form and the
+longest short id, and Proposal 2 reads the same key. Four bits to a
+hex digit is the number base's own shape and stays in the code.
 
 The Clojure rewrite is a new file,
 `messenger-clj/src/messenger_clj/flow_id.clj`, beside the messenger
@@ -78,12 +83,21 @@ fixed fields):
 + (defn session-bits [uuid]
 +   (BigInteger. (str/replace uuid "-" "") 16))
 +
-+ (defn short-hex [{:keys [session start width]}]
-+   (subs (format "%032x" session)
-+         start (+ start width)))
++ (defn hex-digits [config]
++   (quot (get-in config [:flow-id :session-bits])
++         4))
 +
-+ (defn claim-lane! [root id]
-+   (let [lane (fs/path root (short-hex id))
++ (defn session-hex [config session]
++   (format (str "%0" (hex-digits config) "x")
++           session))
++
++ (defn short-hex [config id]
++   (let [{:keys [session start width]} id]
++     (subs (session-hex config session)
++           start (+ start width))))
++
++ (defn claim-lane! [config root id]
++   (let [lane (fs/path root (short-hex config id))
 +         mark (str (fs/path lane "flow-id.edn"))
 +         seen {:session (:session id)
 +               :start (:start id)}]
@@ -99,15 +113,19 @@ fixed fields):
 +   (let [{:keys [first-width start]}
 +         (:flow-id config)
 +         from (get start harness)
++         widest (- (hex-digits config) from)
 +         id (->FlowId (session-bits uuid)
 +                      from first-width)]
-+     (or (some #(claim-lane! root %)
++     (or (some #(claim-lane! config root %)
 +               (map #(assoc id :width %)
 +                    (range first-width
-+                           (- 33 from))))
++                           (inc widest))))
 +         (throw (ex-info "CandidateExhausted"
 +                         {:session uuid})))))
 ```
+
+`flow-id.edn` stays in the code: the file name is the bootstrap
+pointer to the data, and data cannot name its own file.
 
 Under choice 2 the record holds only the claimed digits, and the
 short id is printed from them:
@@ -195,8 +213,12 @@ How many words, and how they are joined, is data in
 ```clojure
 +  :flow-words {:file "flow-words.edn"
 +               :length 3
-+               :join :camelCase}
++               :join {:separator ""
++                      :capitalize-rest true}}
 ```
+
+`:join` is the written form: the separator between the words, and
+whether every word after the first is capitalized.
 
 The conversion, both ways, is added to
 `messenger-clj/src/messenger_clj/flow_id.clj` (Proposal 1), the
@@ -220,17 +242,22 @@ for both):
 + (defn bit-width [n]
 +   (dec (.bitLength (biginteger n))))
 +
-+ (defn leading-bits [{:keys [session start]} n]
-+   (.and (.shiftRight session
-+                      (int (- 128 (* 4 start) n)))
-+         (mask n)))
++ (defn leading-bits [config id n]
++   (let [{:keys [session start]} id
++         width (get-in config
++                       [:flow-id :session-bits])]
++     (.and (.shiftRight
++            session
++            (int (- width (* 4 start) n)))
++           (mask n))))
 +
 + (defn words [config id]
 +   (let [{:keys [file length]}
 +         (:flow-words config)
 +         vocab (read-config config file)
 +         per (bit-width (count vocab))
-+         bits (leading-bits id (* per length))]
++         bits (leading-bits config id
++                            (* per length))]
 +     (for [i (range (dec length) -1 -1)]
 +       (nth vocab
 +            (-> bits
@@ -239,11 +266,15 @@ for both):
 +                long)))))
 +
 + (defn word-form [config id]
-+   (let [ws (words config id)]
-+     (case (:join (:flow-words config))
-+       :camelCase
-+       (apply str (first ws)
-+              (map str/capitalize (rest ws))))))
++   (let [ws (words config id)
++         {:keys [separator capitalize-rest]}
++         (:join (:flow-words config))
++         rest-form (if capitalize-rest
++                     str/capitalize
++                     identity)]
++     (str/join separator
++               (cons (first ws)
++                     (map rest-form (rest ws))))))
 ```
 
 Back from the words, the pattern that finds the transcript: it matches
@@ -294,8 +325,8 @@ Ruling:
    like `wordWordWord`, as shown (flow 05c604, 2026-09-15; flow
    d4ae97, 2026-10-07; flow 0c85a3, 2026-10-09).
 2. Land now; three words apart, with a separator of their own (flow
-   05c604, 2026-09-15); `:join` names the separator and `word-form`
-   gains its branch.
+   05c604, 2026-09-15); `:separator` names it and `:capitalize-rest`
+   is false.
 3. Land now; two words from a denser published list (flow 05c604,
    2026-09-15; flow d4ae97, 2026-10-07); `:file` names that list and
    `:length` is 2.
@@ -445,6 +476,9 @@ variable `HERDR_PANE_ID`. Removed and added:
 +       (fail (str "CallerUnknown: " pane)))))
 ```
 
+`HERDR_PANE_ID` stays in the code: the variable name is the contract
+with herdr, read as the bootstrap of the pane.
+
 The same replacement in three more places that read the declared id.
 `reserve!`, line 451:
 
@@ -501,11 +535,13 @@ Added:
 
 Lands as data and as Clojure, the machine's design. The order of the
 title's parts is data, added to `primary/config/main-flow/shared.edn`
-with the default topic:
+with the default topic and the topic's pattern (EDN has no regex
+literal, so it is a string the code compiles):
 
 ```clojure
 +  :title [:aspect :topic :layer :flow]
 +  :default-topic :core
++  :topic "^[a-z][A-Za-z0-9]*$"
 ```
 
 Under choice 2 the last part is `:words`, the word form of Proposal 2:
@@ -552,12 +588,15 @@ flow's parts, `{:aspect :Psyche :topic :core :layer :Secondary :flow
 +   (:require [clojure.string :as str]
 +             [malli.core :as m]))
 +
-+ ;; A topic is a camelCase name, uncapitalized.
-+ (def Topic [:re #"^[a-z][A-Za-z0-9]*$"])
++ ;; A topic is a camelCase name, uncapitalized;
++ ;; its pattern is :topic in shared.edn.
++ (defn topic-shape [config]
++   [:re (re-pattern (:topic config))])
 +
 + (defn topic! [config topic]
 +   (let [topic (or topic (:default-topic config))]
-+     (when-not (m/validate Topic (name topic))
++     (when-not (m/validate (topic-shape config)
++                           (name topic))
 +       (throw (ex-info "InvalidTopic"
 +                       {:topic topic})))
 +     topic))
@@ -636,8 +675,10 @@ process (`pane-flow!`, Proposal 4):
 
 with `[messenger-clj.core :as core]` and `[babashka.fs :as fs]` added to
 its requires, and the reader of a predecessor's record reading
-`continuation.edn`. The turn that asked is not visible to a launcher;
-the record carries the flow and its session (`:thread`) only.
+`continuation.edn`. The file name stays in the code: it is the
+bootstrap pointer to the record, and data cannot name its own file.
+The turn that asked is not visible to a launcher; the record carries
+the flow and its session (`:thread`) only.
 
 Ruling:
 
@@ -668,9 +709,4 @@ Ruling:
 
 1. Land it.
 2. Not in vision-flow.
-
-The messenger holding a flow's messages while it refreshes is
-Proposal 2 of «Flow: short term and long term», third edition
-(https://claude.ai/artifact/FLFTXdc6K2mVMwSaG3TCUJ), and is not
-repeated here.
 <!-- to-the-living:end -->
