@@ -21,7 +21,7 @@ Context: the living reading the second edition of «Flow, whole, in ethos», 202
 ## The living is spoken to through the books
 "I'm also curious why you seem to think that you're talking to me in your response still, even though I've said the way to communicate with me is through these book artifacts."
 Context: d68c82 had been answering him in chat, with rulings asked there.
--- psyche, typed, 2026-10-12.
+-- psyche, STT, 2026-10-12.
 
 ## A first edition is mostly questions
 "This deserves its own, probably several editions of books but we'll start with the first one obviously. ... The first edition of any book should mostly be questions."
@@ -31,4 +31,19 @@ Context: d68c82 had been answering him in chat, with rulings asked there.
 "Well you can't ask me where I want to put something without telling me what the thing is. Right now I don't know what it is that you're asking me where to put. You should never do that. We need to train the models against asking me where a proposal goes without making a proposal. Or in other words we could broaden this to say the question needs to be intelligible. I need to be able to reason through the question and not just try and guess what the model was inferring behind the question. I can't answer a question that I cannot clearly grasp."
 "See this is a perfect example of a question I can't ask that I cannot answer because I don't know what these people said."
 "In the books, obviously, the book is the evolution of an idea because it's the only thing that I look at so it has the role of the center of development."
--- psyche, typed (book comments on «The missing pieces»), 2026-10-12.
+-- psyche, STT (book comments on «The missing pieces»), 2026-10-12.
+
+## A visual shows the thing; text never assumes what he knows
+"I haven't read the whole thing. I was put off by it. I can't fucking understand half of it. It's too dense. The machine thinks that I know a bunch of things. It seems to assume that there's a bunch of things that I already know that I don't need to be told, but I don't want to. I don't want to be met with a giant wall of text either.
+
+When I say visuals I don't just mean put color around a bunch of unintelligible text. That's more like what I'm getting: bits of text so dense that I have to guess what the context is. Then you just put a block and some color around it and you call that visual. The quality of your books is rapidly degrading."
+Context: on «Anatomy audit».
+-- psyche, STT, 2026-10-12.
+
+## Flowcharts are among the most important parts of a book
+
+> And something has gone wrong in how the books are produced now. There are no more flowcharts and I've always emphasized that I want one of the most important parts of the book to be a very clear concise one. For any sizable book there should be several flowcharts that the bookmaker can illustrate as a more visually meaningful vector graphic.
+>
+> There was a period during which this was happening fairly well, even if it was just a simple visual to contextualize myself and to see some simple concepts in a more visually dynamic presentation. The so-called visuals that I've been getting lately are really just colored boxes around quite cryptic and sometimes confusing text.
+
+-- psyche, STT, 2026-10-13.

@@ -1,0 +1,6 @@
+
+## Tools instead of ad hoc scripts
+
+> I want Mind Astra to go over, or if he's busy, ask a new Mind Astraflow with a topic: to use subagents to document all of the script usage that agents and subagents have been using and to come up with suggestions for tools for adding features in existing tools (so that agents can avoid writing scripts in almost all of the situations in which they have been). The ad hoc script writing is really just making up for the lack of tools and so we should write tools instead of tying our shoelaces every time we take three steps. Let's just keep the shoelaces properly tied up so that we can walk for miles and miles without tying our shoelaces.
+
+-- psyche, STT, 2026-10-13.

@@ -11,7 +11,7 @@ Context: comment on «Sources and the registry», proposal 2, 15:22.
 >
 > For one or another we can do Ethos now so that would go with the Ethos flow, the eco psyche flow [sic] design to design the ethos of all three parts of the Ethos Nexus.
 
--- psyche, typed.
+-- psyche, STT.
 
 ## All traits and all types in Ethos
 Context: the living ordering the Flow topic to re-aggregate Ethos, Nexus and Flow, 2026-10-11.

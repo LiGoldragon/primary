@@ -10,4 +10,4 @@ Context: «Sources and the registry», proposal 3, "What the key reaches", 15:25
 >
 > That would need a dedicated Nexus because it would need to have a database of words. If we're going to do the word-based identifiers, I'd like to get a book on the runtime size cost of having these things in a certain runtime and how it might be smarter to create a dedicated Nexus for that functionality. We could still just build it into whatever we're compiling into, whatever we're doing for now.
 
--- psyche, typed. Transcription corrected: "Esos" → "Ethos".
+-- psyche, STT. Transcription corrected: "Esos" → "Ethos".
