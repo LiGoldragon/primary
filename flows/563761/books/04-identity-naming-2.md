@@ -3,9 +3,6 @@ Presentation.{ «Flow: identity and naming, second edition» }
 
 # Flow: identity and naming, second edition
 
-vision-flow.md is on psyche-context's production branch, main. Primary,
-messenger-clj and harness are on main.
-
 ## Crystallization
 
 ### Proposal 1: a flow id is a hash
@@ -63,7 +60,8 @@ The Clojure rewrite is a new file,
 (messenger-clj, the short-term tool that registers flows and types
 messages into them). `config` below is `shared.edn` as read, with
 `:dir`, the directory it was read from, added by the reader. Under
-choice 1:
+choice 1, the machine's design (a record: Clojure's named map with
+fixed fields):
 
 ```clojure
 + (ns messenger-clj.flow-id
@@ -201,8 +199,12 @@ How many words, and how they are joined, is data in
 ```
 
 The conversion, both ways, is added to
-`messenger-clj/src/messenger_clj/flow_id.clj` (Proposal 1). It reads
-the bits from the record of Proposal 1, choice 1:
+`messenger-clj/src/messenger_clj/flow_id.clj` (Proposal 1), the
+machine's design. It reads the bits from the record of Proposal 1,
+choice 1, starting where the short id starts (`:start`): the first
+bits for Claude; for Codex the bits from the twenty-fourth digit, as
+its first digits are not random (choice 5; choice 6 takes `:start` 0
+for both):
 
 ```clojure
 + (defn read-config [config file]
@@ -299,6 +301,12 @@ Ruling:
    `:length` is 2.
 4. Wait until after a minimum viable product; no line now (flow dea0ba,
    2026-10-03).
+5. With choice 1, 2 or 3, the machine's design: the 33 bits are taken
+   from `:start` (digit 24 for Codex), because the Codex id's leading
+   digits are not random.
+6. With choice 1, 2 or 3, his phrase literally: `:start` is 0 for both
+   harnesses, so the first 33 bits are the first digits; Codex's hex
+   short id then differs in origin from its words.
 
 ### Proposal 3: flow ids are for the ledger
 
@@ -323,8 +331,9 @@ Added, after «never a flow.»:
 + A flow id is for the ledger: it finds a flow's transcript and its place among its metaflow's past flows. Flows name one another, and the living, by metaflow.
 
 Lands in `messenger-clj/src/messenger_clj/core.clj`. A send names its
-target either by flow id or by metaflow, `target-flow!`, line 532, as
-it stands:
+target either by flow id or by metaflow, `target-flow!`, line 533, as
+it stands (`m/validate` checks a value against a shape written in
+Malli, the library the messenger describes its data shapes with):
 
 ```clojure
 (defn target-flow! [target]
@@ -354,7 +363,7 @@ Under choices 1 and 2, a target is a metaflow only:
 +   (let [matches ...] ...))
 ```
 
-The receipt a send prints names the flow id, `record-sent!`, line 944:
+The receipt a send prints names the flow id, `record-sent!`, line 939:
 
 ```clojure
 (str (name grade) ".{ " flow " "
@@ -393,7 +402,7 @@ calling process."
 Source: flow 875960, 2026-10-11.
 
 The messenger takes a sender from the id the flow declares in its
-environment, `sender-origin!`, line 522, as it stands:
+environment, `sender-origin!`, line 524, as it stands:
 
 ```clojure
 (defn sender-origin! []
@@ -421,7 +430,7 @@ variable `HERDR_PANE_ID`. Removed and added:
 + (let [sender (or *flow-id* (pane-flow!))]
 ```
 
-`pane-flow!` is new, above it:
+`pane-flow!` is new, above it, the machine's design:
 
 ```clojure
 + (defn pane-flow! []
@@ -436,12 +445,19 @@ variable `HERDR_PANE_ID`. Removed and added:
 +       (fail (str "CallerUnknown: " pane)))))
 ```
 
-The same replacement in three more places that read the declared id:
-`reserve!`, line 451; `import-retirement!`, line 710; `retire!`, line
-765:
+The same replacement in three more places that read the declared id.
+`reserve!`, line 451:
 
 ```clojure
 - (or *flow-id* (System/getenv "FLOW_ID") flow)
++ (or *flow-id* (pane-flow!))
+```
+
+and the `:retired_by` of a retirement record, in `import-retirement!`,
+line 705, and `retire!`, line 760:
+
+```clojure
+- (or *flow-id* (System/getenv "FLOW_ID") "")
 + (or *flow-id* (pane-flow!))
 ```
 
@@ -483,8 +499,9 @@ Added:
 
 + flow id in its word form: { Psyche core Secondary <words> }.
 
-Lands as data and as Clojure. The order of the title's parts is data,
-added to `primary/config/main-flow/shared.edn` with the default topic:
+Lands as data and as Clojure, the machine's design. The order of the
+title's parts is data, added to `primary/config/main-flow/shared.edn`
+with the default topic:
 
 ```clojure
 +  :title [:aspect :topic :layer :flow]
@@ -596,7 +613,7 @@ successor inherits them. It is written today by
 -   metaflow: continuation.metaflow};
 ```
 
-Its Clojure rewrite, added to
+Its Clojure rewrite, the machine's design, added to
 `messenger-clj/src/messenger_clj/launch.clj` (Proposal 5), writes it as
 EDN, `continuation.edn`, with the origin found from the launching
 process (`pane-flow!`, Proposal 4):
@@ -652,100 +669,8 @@ Ruling:
 1. Land it.
 2. Not in vision-flow.
 
-### Proposal 8: the messenger holds a flow's messages while it refreshes
-
-File: `psyche-context/skills/vision-flow.md`, a new heading after «A
-replaced session is reaped by the refresh itself». The paragraph above
-it, as it stands:
-
-"Reaping belongs to the refresh event, not to a later sweep. A
-refreshed flow takes the replaced end out of receiving messages, so a
-dead end is never left registered and addressable."
-
-Below it, as it stands: «Every harness event reaches Flow through the
-harness's hooks calling the Flow CLI, ...».
-
-Source: flow d68c82, 2026-10-13.
-
-Removed: none.
-
-Added, under choices 1 and 2:
-
-+ ## Messages wait while a flow refreshes
-+
-+ The short-term tools carry messaging. When a flow reaches its context limit it is marked in transition, and from then its messages are queued, not delivered, so it can refresh rather than spin on new ones.
-
-Added also under choice 2, the machine's proposal:
-
-+ Its successor receives them, oldest first.
-
-Lands in `messenger-clj/src/messenger_clj/core.clj`. A route already
-carries a transition mark, and a send to a marked route is held: stored
-and not typed (`in-transition?`, line 381; `send-request!`, line 964):
-
-```clojure
-(defn in-transition? [route]
-  (or (:transition route)
-      (= "transition" (:state route))))
-...
-(when (in-transition? raw-stored)
-  (held! flow :InTransition request stored))
-```
-
-A held message keeps the envelope with its sender's metaflow (`held!`,
-line 501), and a flow in transition can still send its handover
-(`sender-origin!`). Nothing sets the mark. Added, under choices 1 and 2:
-
-```clojure
-+ (defn begin-transition! [flow]
-+   (save-route! (registry) flow
-+     (assoc (load-route (registry) flow)
-+            :transition true)))
-```
-
-Added also under choice 2, the machine's proposal:
-
-```clojure
-+ (defn end-transition! [flow successor]
-+   (doseq [{:keys [attempt]}
-+           (store/pending-for (root) flow)]
-+     (deliver-envelope! successor
-+                        (:submitted attempt)))
-+   (retire! flow))
-```
-
-`store/pending-for` already reads a flow's held messages, oldest first.
-`deliver-envelope!` is new: it types a stored envelope into the
-successor's pane as it was sent, keeping its sender.
-`end-transition!` runs once the successor is registered.
-
-The mark is set where a flow is warned at its threshold, today
-`primary/tools/context-refresh-hook.mjs`. Its Clojure rewrite is a new
-file, `messenger-clj/src/messenger_clj/refresh.clj`; the line that
-marks the flow lands in its threshold branch:
-
-```clojure
-+ (defn on-measurement! [config binding m]
-+   (when (= :threshold (:state m))
-+     (core/begin-transition! (:flow binding))
-+     (warn! config binding m)))
-```
-
-`warn!` sends the warning the hook sends today. Its words are not
-written in code: they move unchanged out of the hook into
-`primary/config/main-flow/context-refresh.edn`, which takes the place
-of `primary/config/context-refresh.json`, and `warn!` reads them there:
-
-```clojure
-+ {:warning "The refresh procedure has started. ..."
-+  ...}
-```
-
-Ruling:
-
-1. Land the heading, the paragraph and the marking code.
-2. As 1, and also the machine's proposal: the successor receives the
-   held messages, oldest first, through `end-transition!`.
-3. Land the paragraph only; the code waits.
-4. Neither.
+The messenger holding a flow's messages while it refreshes is
+Proposal 2 of «Flow: short term and long term», third edition
+(https://claude.ai/artifact/FLFTXdc6K2mVMwSaG3TCUJ), and is not
+repeated here.
 <!-- to-the-living:end -->
