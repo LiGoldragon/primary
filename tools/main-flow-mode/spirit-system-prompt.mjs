@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {execFileSync} from 'node:child_process';
+import {modulesFromConfig, sourceModulesFromConfig} from './launch-config.mjs';
 
 export function spiritModules(workspace, surface = '.agents') {
   const root = path.join(workspace, surface, 'skills');
@@ -17,6 +19,21 @@ export function spiritModules(workspace, surface = '.agents') {
 }
 
 export function mainSystemModules(workspace, surface, {aspect, layer, topic = 'Core', metaflow, startupSkills = []}) {
+  const seat = arguments[2] ?? {};
+  const configured = seat.launchConfig;
+  if (configured) {
+    const base = sourceModulesFromConfig(configured, aspect, 'system');
+    const selected = seat.metaflowConfig?.modules?.map(name => base.find(module => module.name === name) ?? ({name, repository: name === 'compensation-book-crystallization' ? 'field' : 'psyche', path: `skills/${name}.md`, placement: 'system'})) ?? base;
+    return selected.map(module => {
+      const repo = configured.shared.repositories[module.repository];
+      let body;
+      try { body = execFileSync('git', ['-C', repo.path, 'show', `${repo.ref}:${module.path}`], {encoding: 'utf8'}); }
+      catch { throw new Error(`configured system module is unavailable at frozen source: ${module.repository}:${repo.ref}:${module.path}`); }
+      body = body.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
+      if (!body) throw new Error(`empty main system module: ${name}`);
+      return {name: module.name, body};
+    });
+  }
   const modules = spiritModules(workspace, surface);
   const names = [];
   if (aspect === 'Psyche' || layer === 'Primary') names.push('vision-design');

@@ -1,0 +1,13 @@
+{:schema "main-flow-launch/1"
+ :repositories {:psyche {:path "/git/github.com/LiGoldragon/psyche-context"
+                         :ref "c91454e36fe32f31194fd046495de0c6bc30057b"
+                         :skills "skills"}
+                :mind {:path "/git/github.com/LiGoldragon/mind-context"
+                       :ref "80d5d730e4c4a0be62c59e621711c186e43e41ca"
+                       :skills "skills"}
+                :field {:path "/git/github.com/LiGoldragon/field-context"
+                        :ref "108daa054288c037eae9ef5fbc02a8bdb7d684cb"
+                        :skills "skills"}}
+ :tools {:claude [:read :edit :write :bash :web]
+         :codex [:read :edit :write :bash :web]
+         :book-publisher [:read :edit :write :bash :web :artifact :artifact-comments :artifact-data]}}

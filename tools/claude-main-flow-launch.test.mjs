@@ -17,10 +17,10 @@ assert.equal(identityChild.status, 0, identityChild.stderr);
 assert.equal(identityChild.stdout, 'abcdef');
 assert.throws(() => claudeFlowEnvironment(''), /actual claimed FLOW_ID/);
 const hookedMode = mainFlowMode('/fixture/primary', 'session', '/fixture/home', undefined, {}, 'bbbbbb');
-assert.equal(hookedMode.settings.hooks.Stop.length, 1);
+assert.equal(hookedMode.settings.hooks.Stop.length, 2);
 assert.ok(hookedMode.settings.hooks.Stop[0].hooks[0].command.includes("--committer 'bbbbbb'"));
 assert.equal(hookedMode.settings.hooks.UserPromptSubmit.length, 1);
-assert.equal(mainFlowMode('/fixture/primary', 'session', '/fixture/home').settings.hooks.Stop, undefined);
+assert.equal(mainFlowMode('/fixture/primary', 'session', '/fixture/home').settings.hooks.Stop.length, 1);
 assert.throws(() => mainFlowMode('/fixture/primary', 'session', '/fixture/home', undefined, {}, 'bad'), /invalid standing committer/);
 
 // Arguments: refused before anything is touched.
@@ -82,20 +82,20 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 
 // Composition: native Claude loads no more than six selected skills per prompt;
 // main-flow leads, and the one launch brief is sent only after those prompts.
-assert.equal(BIRTH_SKILLS[0], 'operation-main-flow');
-for (const name of STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit')) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+assert.equal(BIRTH_SKILLS[0], 'compensation-main-flow');
+for (const name of BIRTH_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.equal(MAX_SKILLS_PER_PROMPT, 6);
-assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['operation-main-flow', 'spirit-core']}), /only in the main system prompt/);
-const names = ['operation-main-flow', ...Array.from({length: 12}, (_, i) => `skill-${i + 1}`)];
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
+const names = ['compensation-main-flow', ...Array.from({length: 12}, (_, i) => `skill-${i + 1}`)];
 const composition = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true, skillNames: names});
 assert.deepEqual(composition.skillPrompts.map(prompt => [...prompt.matchAll(/\/([A-Za-z0-9_-]+)/g)].map(m => m[1])), [names.slice(0, 6), names.slice(6, 12), names.slice(12)]);
-assert.ok(composition.skillPrompts[0].startsWith('/operation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5 '));
+assert.ok(composition.skillPrompts[0].startsWith('/compensation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5 '));
 assert.ok(composition.skillPrompts.every(prompt => prompt.includes('Reply exactly READY')));
 assert.equal(composition.prompt, 'Say ready.\n');
 assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior # Startup skills\n\nStartup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.\n');
 assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
 assert.throws(() => composeSkillPrompt({skillNames: Array(7).fill('x'), exists: () => true}), /between one and 6/);
-assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit-core']}), /operation-main-flow must lead/);
+assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit-core']}), /only in the main system prompt/);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'knowledge-vocabulary'}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({brief: ' ', exists: () => true}), /brief is empty/);
 
@@ -105,7 +105,7 @@ for (const name of BIRTH_SKILLS) {
   const file = path.join(skillWorkspace, '.claude', 'skills', name, 'SKILL.md');
   fs.mkdirSync(path.dirname(file), {recursive: true}); fs.writeFileSync(file, `${name}\n`);
 }
-assert.equal(liveSkillExists(skillWorkspace)('operation-main-flow'), true);
+assert.equal(liveSkillExists(skillWorkspace)('compensation-main-flow'), true);
 fs.writeFileSync(path.join(skillWorkspace, '.claude', 'skills', 'knowledge-psyche', 'SKILL.md'), '  \n');
 assert.equal(liveSkillExists(skillWorkspace)('knowledge-psyche'), false);
 

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "warningWindowFraction": 0.5,
+  "claude": {
+    "warningTokens": 200000
+  },
+  "codex": {
+    "models": {
+      "gpt-6.1-sol": 373000,
+      "gpt-6-astra": 272000,
+      "gpt-6-sol": 272000,
+      "gpt-6-luna": 272000
+    }
+  },
+  "recipients": {
+    "field": "Field Core Secondary"
+  },
+  "bindings": [
+    {"nativeSessionId": "33752bfb-ebba-4e2d-ba66-be84b318e939", "aspect": "Psyche", "topic": "Core", "layer": "Primary", "seatTarget": "Psyche Core Primary", "harness": "claude", "model": "claude-opus"}
+  ]
+}

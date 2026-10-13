@@ -60,25 +60,25 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 const read = name => `---\nname: ${name}\n---\n\nbody of ${name}\n`;
 const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read});
 assert.ok(prompt.startsWith(leading));
-assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/operation-main-flow\n\n---\nname: operation-main-flow'));
+assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/compensation-main-flow\n\n---\nname: compensation-main-flow'));
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
 assert.deepEqual(order, BIRTH_SKILLS('Mind').filter(name => !name.startsWith('intent-')));
-for (const name of STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+for (const name of order.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
-const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read, skillNames: ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
-assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['operation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']);
+const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read, skillNames: ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
+assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']);
 assert.match(transitive.prompt, /body of compensation-behavior/);
 assert.match(transitive.prompt, /body of compensation-correction/);
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read, skillNames: ['operation-main-flow', 'spirit-core']}), /only in the main system prompt/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'knowledge-vocabulary' ? '' : read(n)}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: ' ', read}), /brief is empty/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(24000)}), /exceeds one argument/);
 
 // The launcher uses the delivered skill files, not a repository revision.
 const skillWorkspace = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-skills-'));
-const skillFile = path.join(skillWorkspace, '.agents', 'skills', 'operation-main-flow', 'SKILL.md');
+const skillFile = path.join(skillWorkspace, '.agents', 'skills', 'compensation-main-flow', 'SKILL.md');
 fs.mkdirSync(path.dirname(skillFile), {recursive: true}); fs.writeFileSync(skillFile, 'live skill\n');
-assert.equal(liveSkillReader(skillWorkspace)('operation-main-flow'), 'live skill\n');
+assert.equal(liveSkillReader(skillWorkspace)('compensation-main-flow'), 'live skill\n');
 assert.throws(() => liveSkillReader(skillWorkspace)('missing'), /ENOENT/);
 
 // Flow claim in a scratch flows root: one thread, one alias; a repeat claim agrees.

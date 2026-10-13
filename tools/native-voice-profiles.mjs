@@ -1,23 +1,13 @@
-// Pure correspondence data. Only a configured row may select a native launch.
-// Pending and unresolved rows retain provenance without supplying a fallback.
-const rows = {
-  'Psyche.Primary': {status: 'configured', harness: 'claude', model: 'claude-fable-5-1', effort: 'medium', source: 'existing chosen launch'},
-  'Mind.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium'},
-  'Field.Primary': {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium', source: 'qualified Field Astra profile and user role assignment'},
+import {defaultLaunchConfig, voiceFromConfig} from './main-flow-mode/launch-config.mjs';
 
-  'Psyche.Secondary': {status: 'configured', harness: 'claude', model: 'claude-opus-5-5', effort: 'medium', source: 'living ruling 2026-10-10'},
-  'Mind.Secondary': {status: 'configured', harness: 'codex', model: 'gpt-6.1-sol', effort: 'medium', source: 'Core 2026-10-12 secretary assignment; actual 41fa34 native turn context'},
-  'Field.Secondary': {status: 'configured', harness: 'codex', model: 'gpt-6.1-sol', effort: 'medium', source: 'Core 2026-10-12 secretary assignment; actual 42265e native turn context'},
-
-  'Psyche.Tertiary': {status: 'configured', harness: 'claude', model: 'claude-sonnet-5-5', effort: 'medium', source: 'living correspondence'},
-  'Mind.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
-  'Field.Tertiary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'medium', source: 'living correspondence'},
-
-  'Psyche.Quaternary': {status: 'configured', harness: 'claude', model: 'claude-haiku-5-5', effort: 'medium', source: 'living correspondence'},
-  'Mind.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
-  'Field.Quaternary': {status: 'configured', harness: 'codex', model: 'gpt-6-luna', effort: 'low', source: 'living correspondence'},
-};
+// Native correspondence is declarative EDN. The reader validates every row
+// before this table is exposed to either launcher.
+const launchConfig = defaultLaunchConfig();
+const rows = Object.fromEntries(['Psyche', 'Mind', 'Field'].flatMap(aspect =>
+  ['Primary', 'Secondary', 'Tertiary', 'Quaternary'].map(layer =>
+    [`${aspect}.${layer}`, voiceFromConfig(launchConfig, {aspect, layer})])));
 export const VOICE_PROFILES = Object.freeze(Object.fromEntries(Object.entries(rows).map(([key, row]) => [key, Object.freeze(row)])));
+export {launchConfig};
 
 const stackRows = Object.fromEntries(['Psyche', 'Mind', 'Field'].map(aspect => [
   `${aspect}.Quaternary.Claude`,

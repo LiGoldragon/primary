@@ -4,6 +4,7 @@ import path from 'node:path';
 import {execFileSync, spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
+import {defaultLaunchConfig, metaflowFor} from './main-flow-mode/launch-config.mjs';
 
 // Explicit Core declarations for already-running secretary seats. A stale
 // record never proves life: require the exact actual native/pane binding.
@@ -28,14 +29,14 @@ export function liveSeats(response) {
 export function missingSecondaries(seats) {
   return seats.filter(seat => seat.layer === 'Primary' && !seats.some(other => other.aspect === seat.aspect && other.topic === seat.topic && other.layer === 'Secondary'));
 }
-export function ensureSecondary(seat, {observe, start}) {
+export function ensureSecondary(seat, {observe, start, declaredNativeId}) {
   if (seat.layer !== 'Primary') return;
   const matching = () => liveSeats(observe()).filter(other => other.aspect === seat.aspect && other.topic === seat.topic && other.layer === 'Secondary');
-  let found = matching();
+  let found = matching().filter(other => !declaredNativeId || other.nativeId === declaredNativeId);
   if (found.length > 1) throw new Error('ambiguous live Secondary bindings; Primary refused');
   if (found.length === 1) return found[0];
   start();
-  found = matching();
+  found = matching().filter(other => !declaredNativeId || other.nativeId === declaredNativeId);
   if (found.length !== 1) throw new Error('Secondary did not become live; Primary refused');
   return found[0];
 }
@@ -53,7 +54,10 @@ export function secondaryBeforePrimary(options, continuation) {
   fs.writeFileSync(path.join(reservation, 'owner.json'), JSON.stringify({pid: process.pid, aspect: options.aspect, topic}));
   const release = () => { fs.unlinkSync(path.join(reservation, 'owner.json')); fs.rmdirSync(reservation); };
   try {
+    let declaredNativeId;
+    try { declaredNativeId = metaflowFor(defaultLaunchConfig(), {aspect: options.aspect, topic, layer: 'Primary'})['secondary-native-id']; } catch (error) { if (topic === 'Flow' && options.aspect === 'Psyche') throw error; }
     ensureSecondary({...options, topic}, {
+      declaredNativeId,
       observe: () => JSON.parse(execFileSync('herdr', ['--session', options.herdrSession, 'agent', 'list'], {encoding: 'utf8', timeout: 15000})),
       start: () => {
         // An unqualified Secondary profile is a concrete refusal, never a

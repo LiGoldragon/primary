@@ -22,17 +22,16 @@ import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic, writeContinuationRecord, clientForModel, herdrSessionReportArgs, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies, setAndReadNativeTitle, withRpc} from './native-main-flow-launch-shared.mjs';
 import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
+import {defaultLaunchConfig, birthSkillsFromConfig} from './main-flow-mode/launch-config.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup roots per aspect. Curriculum expands their declared dependencies before composition.
 export const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 export const LAYERS = ['Primary', 'Secondary', 'Tertiary', 'Quaternary'];
 
-export const ASPECT_SKILLS = {
-  Mind: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
-  Field: ['knowledge-psyche', 'operation-psyche-interraction', 'knowledge-vocabulary', 'operation-edit-coordination'],
-};
-export const BIRTH_SKILLS = aspect => [...new Set(['operation-main-flow', ...STANDING_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit'), ...ASPECT_SKILLS[aspect]])];
+export const LAUNCH_CONFIG = defaultLaunchConfig();
+export const ASPECT_SKILLS = Object.fromEntries(['Mind', 'Field'].map(aspect => [aspect, birthSkillsFromConfig(LAUNCH_CONFIG, aspect)]));
+export const BIRTH_SKILLS = aspect => birthSkillsFromConfig(LAUNCH_CONFIG, aspect);
 
 // Registration binds the exact native thread to the exact Herdr pane.  It does
 // not need a separate readiness or idleness assertion.
@@ -75,6 +74,7 @@ export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
 
 export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect).filter(name => !name.startsWith('intent-'))}) {
+  if (skillNames[0] !== 'compensation-main-flow') throw new Error('compensation-main-flow must lead the resolved skill closure');
   if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-') || name.startsWith('intent-'))) throw new Error('startup spirit and intent modules belong only in the main system prompt');
   const blocks = skillNames.map(name => {
     const text = read(name);
@@ -136,7 +136,7 @@ async function launch(o) {
 
     const client = clientForModel(o.model);
     const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
-    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills}), {flag: 'wx', mode: 0o600});
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills, launchConfig: LAUNCH_CONFIG}), {flag: 'wx', mode: 0o600});
 
     step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
