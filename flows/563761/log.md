@@ -43,3 +43,6 @@ Secondary: batch 02 accepted; batch 03 is 31 pairs (refresh, handover, threshold
 
 ## 2026-10-13 batch 03 draft authored
 books/06-refresh-handover.md from 31 witnessed pairs (books/batch-03-psyches.edn): seven proposals (floor/warning/ceiling marks in EDN with refresh.clj replacing the mjs hook; guarded refresh/compaction request with RefreshRefused; who runs the refresh; the switch-over; successor check, predecessor hears only of failure; two flows of one metaflow, one cedes; what the successor receives and its first goal), three figures; Clojure ran under bb; book-check passes. Reviewer-and-publish subflow dispatched (skills loaded, every literal checked against the no-values rule, narration removed, 320/375px witness).
+
+## 2026-10-13 batch 03 published
+«Flow: refresh and handover» at https://claude.ai/artifact/GSQSYS6nZDzq7k4YzfoTi9; page books/06-refresh-handover.html; reviewer pass done; phone witness at 320/375px. Link, bb results and the compaction-analysis routing note sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Waiting for batch 04.

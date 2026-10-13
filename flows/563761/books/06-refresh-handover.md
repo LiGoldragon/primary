@@ -12,8 +12,8 @@ reaped by the refresh itself», the second of its two paragraphs.
 
 A mark: a size of the context at which something happens. The hook: a
 command the harness runs at the end of each of the flow's turns (its
-Stop hook), the only place the context's size is seen today. The runner:
-the flow that runs the refresh mechanism (Proposal 3).
+Stop hook), which reads the context's size. The runner: the flow that
+runs the refresh mechanism in the short term (Proposal 3).
 
 Sources: flow d68c82, 2026-10-13; flow d4ae97, 2026-10-07; flow 8475a9,
 2026-10-06; flow b80e55, 2026-09-20; flow f55ec8, 2026-09-16; flow
@@ -45,7 +45,7 @@ The figure, after the paragraph:
 +         | tells
 +         v
 + +----------------------------------+
-+ | the flow, and its runner         |
++ | the flow                         |
 + +----------------------------------+
 +         | writes
 +         v
@@ -191,8 +191,9 @@ creates:
 
 ```clojure
 + ;; The hook's settings keys are the harness's
-+ ;; contract; the command names the EDN file,
-+ ;; the bootstrap pointer to the configuration.
++ ;; contract; bb runs the hook; the command names
++ ;; the EDN file, the bootstrap pointer to the
++ ;; configuration.
 + (defn stop-hook [config config-file hook-file]
 +   (let [timeout (get-in config [:refresh
 +                                 :hook-timeout-s])]
@@ -225,7 +226,8 @@ The warning:
 The ceiling:
 7. 400,000 tokens for Claude (flow d68c82, 2026-10-13); 700,000 was
    unacceptable (flow 8475a9, 2026-10-06).
-8. 40% of the window (flow d4ae97, 2026-10-07).
+8. 40% of the window, the top of «20% to 40%» (flow d4ae97,
+   2026-10-07).
 9. 60% (flow 6cc91b, 2026-09-14).
 
 The floor:
@@ -242,13 +244,12 @@ Sources: flow d68c82, 2026-10-13; flow 33752b, 2026-10-13; flow 88475f,
 records; flow 6cc91b, 2026-09-14.
 
 ```text
-+ Below the floor, a request to refresh a flow, or to compact it, is refused, as is one for a flow younger than a set age, so that a request routed to a flow just started changes nothing. A flow below the floor is still replaced when its direction changes dramatically: a new job starts on a fresh flow, with the training that job needs.
++ Below the floor, a request to refresh a flow is refused, as is one for a flow younger than a set age, so that a request routed to a flow just started changes nothing. A flow below the floor is still replaced when its direction changes dramatically: a new job starts on a fresh flow, with the training that job needs.
 ```
 
-The emergency when a successor fails to start is choice 2 of Proposal 1
-of «Flow: short term and long term», third edition. The analysis he
-asked for on 2026-10-13 (flow d68c82) is a question wanting knowledge:
-it lands in mind-context as a knowledge skill, written by a Mind flow.
+Compaction, the emergency when a successor fails to start (choice 2 of
+Proposal 1 of «Flow: short term and long term», third edition), is asked
+for through the same request and meets the same guard.
 
 Lands as data, in `shared.edn`, inside `:refresh`:
 
@@ -309,12 +310,21 @@ metaflow» adds; and a short-term line under «Short term», after the
 paragraph of Proposal 1 of «Flow: short term and long term», third
 edition.
 
-Sources: flow e51411, 2026-09-24; flow 6cc91b, 2026-09-14; flow 02dda6,
-2026-10-07; flow b7da5d, 2026-09-26; flow b860be, 2026-09-26.
+Sources: flow e51411, 2026-09-24; flow 6cc91b, 2026-09-14; flow d68c82,
+2026-10-13; flow 02dda6, 2026-10-07; flow b7da5d, 2026-09-26; flow
+b860be, 2026-09-26.
 
 ```text
 + The refresh is standard at every layer of every aspect, part of every flow's instruction. Any flow can deploy any other: the structure is decentralized and respawns from any point, so one flow left standing redeploys the rest.
 ```
+
+The short-term line, under choice 4:
+
+```text
++ Short term: the hook warns Field beside the flow, and Field runs the refresh mechanism for every aspect's flows.
+```
+
+Under choice 5:
 
 ```text
 + Short term: the Quaternary of each aspect runs the refresh mechanism for its aspect's flows, and the flow above stays aware of what it does.
@@ -343,20 +353,21 @@ Lands as data and as Clojure. The recipient leaves
 -   },
 ```
 
-for `shared.edn`, inside `:refresh`: a layer of the flow's own aspect
-and topic (choice 4), or a metaflow named whole (choice 5,
-`:runner {:aspect :Field :topic :core :layer :Secondary}`):
+for `shared.edn`, inside `:refresh`: a metaflow named whole (choice 4),
+or a layer of the flow's own aspect and topic (choice 5,
+`:runner {:layer :Quaternary}`):
 
 ```clojure
-+            :runner {:layer :Quaternary}
++            :runner {:aspect :Field :topic :core
++                     :layer :Secondary}
 ```
 
 In `refresh.clj`:
 
 ```clojure
 + ;; The runner is the metaflow warned beside the
-+ ;; flow: a layer of the flow's own aspect and
-+ ;; topic, or a metaflow named whole.
++ ;; flow: a metaflow named whole, or a layer of
++ ;; the flow's own aspect and topic.
 + (defn runner [config route]
 +   (let [{:keys [aspect topic layer]}
 +         (get-in config [:refresh :runner])]
@@ -375,11 +386,12 @@ The long-term line:
 3. Drop.
 
 The runner, short term:
-4. The bottom seat of each aspect (flow 02dda6, 2026-10-07; flow
-   b7da5d, 2026-09-26: Luna pumps the CLI, the main flow stays aware).
-5. Field (flow b860be, 2026-09-26: whoever is in charge of refreshing
-   is told; Proposal 8 of «Flow: the metaflow»: Field starts flows until
+4. Field (flow d68c82, 2026-10-13: the hook warns Field, which restarts
+   the flow; flow b860be, 2026-09-26: whoever is in charge of refreshing
+   is told; Proposal 4 of «Flow: the metaflow»: Field starts flows until
    this is automated).
+5. The bottom seat of each aspect (flow 02dda6, 2026-10-07; flow
+   b7da5d, 2026-09-26: Luna pumps the CLI, the main flow stays aware).
 
 The two records:
 6. Destroy both.
@@ -418,7 +430,8 @@ to the flow and to its runner:
 
 ```clojure
 + ;; What one turn's end does, from the zone and
-+ ;; what earlier turns recorded.
++ ;; what earlier turns recorded; :warned-at is the
++ ;; state record's own key.
 + (defn step [config zone state now]
 +   (let [over (get-in config [:refresh
 +                              :switch-over-ms])
@@ -446,9 +459,9 @@ Ruling:
 
 ### Proposal 5: the successor is checked; the predecessor hears only of failure
 
-File: `psyche-context/skills/vision-flow.md`: a long-term paragraph and
-figure in «A replaced session is reaped by the refresh itself», after
-Proposal 4's line; a short-term line under «Short term», after
+File: `psyche-context/skills/vision-flow.md`: a long-term paragraph in
+«A replaced session is reaped by the refresh itself», after Proposal 4's
+line; a short-term line and figure under «Short term», after
 Proposal 4's.
 
 Sources: flow fd0f97, 2026-09-15; flow 692df8, 2026-09-15; flow
@@ -457,6 +470,13 @@ Sources: flow fd0f97, 2026-09-15; flow 692df8, 2026-09-15; flow
 ```text
 + Flow keeps track of a refresh: whether the successor started and is working, judged by a small model and recorded. The predecessor is not woken to be told that it has a successor; it is woken only when the successor fails to start, told that its flow could not be refreshed, and then finds the fault or asks for it to be fixed. A refresh replaces only its own flow in the cluster.
 ```
+
+
+```text
++ Short term: the launcher, having started the successor, checks once after a set wait that it registered with the messenger; failing that, it messages the predecessor that its refresh failed.
+```
+
+The figure, after the short-term line:
 
 ```text
 + +----------------------------------+
@@ -478,10 +498,6 @@ Sources: flow fd0f97, 2026-09-15; flow 692df8, 2026-09-15; flow
 + | the predecessor|  | the predecessor,   |
 + | left idle      |  | told of the failure|
 + +----------------+  +--------------------+
-```
-
-```text
-+ Short term: the launcher, having started the successor, checks once after a set wait that it registered with the messenger; failing that, it messages the predecessor that its refresh failed.
 ```
 
 Lands as data, in `shared.edn`, inside `:refresh`:
@@ -531,9 +547,8 @@ Source: flow e51411, 2026-09-24.
 ```
 
 Lands in the messenger's registration. Under choice 4 the later
-registration displaces the earlier: Proposal 3 of «Flow: the metaflow»
-makes it current and choice 8 of Proposal 2 of «Flow: short term and
-long term», third edition, retires the earlier. Under choice 5, in
+registration displaces the earlier, as Proposal 3 of «Flow: the
+metaflow» makes the later flow current. Under choice 5, in
 `messenger-clj/src/messenger_clj/core.clj`, `register!`, line 547, a
 registration for a metaflow already current is refused unless it names
 the flow it succeeds:
