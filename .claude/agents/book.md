@@ -149,10 +149,15 @@ widths: choice values stay inline, tokens never split across lines,
 code blocks span the available page width and scroll sideways, and
 the page itself does not scroll sideways. Preserve the exact code.
 
-Write the page to a local HTML path no other book has used. A new book
-is published with no `url`. Every revised presentation gets a new
-artifact too, whether the older page has comments or not. Use prior-page comments only when the caller supplies them as context.
-Preserve the old page and publish from a new local path without its URL.
+Write the rendered page beside its source, under the book's own numbered
+name: `<n>-<slug>.md` produces `<n>-<slug>.html` in the same directory.
+Never use a scratch path or a generic page name. On the first publish,
+omit `url` entirely. Artifact reuses the URL associated with a local path
+across book subflows in the same session, even when `url` is omitted.
+Every revised presentation gets a new numbered source and page and a new
+artifact, whether the older page has comments or not. Use prior-page
+comments only when the caller supplies them as context; preserve the old
+page and omit its URL from the new publication.
 
 Check the local HTML before publishing: source text and title match, no
 transcript or tool output leaks into the page, literal-fence boundaries hold,
