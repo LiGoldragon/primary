@@ -27,3 +27,6 @@ Secondary review: Clojure rule passes; no-values rule fails on file names, env v
 
 ## 2026-10-13 batch 01 second edition, version 2
 No comment from the living on the page. Tunable values moved to EDN (:session-bits, :join map, :topic regex); bootstrap pointers kept with one line each; closing paragraph removed. bb exit 0, book-check passes, phone check at 320/375px. Republished at the same URL; reported to the Secondary (`Transported.{ da2038 done }`). Batch 02 author still out.
+
+## 2026-10-13 batch 02 draft authored
+books/05-metaflow.md written from 33 pairs (books/batch-02-psyches.edn): nine proposals (major abstraction; no voice, :voices→:layers; registry of metaflows with lineage, ran under bb with Datalevin; software starts flows; end of a metaflow; clusters and the Sun fork; Ethos/Malli; aspect duties in vision-aspects; two design rules in vision-design). Author could not load skills through the Skill tool; reviewer subflow loads them and reviews. Judgments given to the reviewer: his explicit words lead each fork, the machine's design second; Ethos (long term) and Malli (short term) presented as two unmixed lines, fork only on true incompatibility.
