@@ -154,7 +154,7 @@ export function resolveSkillDependencies(roots, run = request => execFileSync('c
   return names;
 }
 
-export function orderSkillsForPrompt(names, leading = 'operation-main-flow') {
+export function orderSkillsForPrompt(names, leading = 'compensation-main-flow') {
   if (new Set(names).size !== names.length) throw new Error('resolved skill closure contains duplicates');
   return names.includes(leading) ? [leading, ...names.filter(name => name !== leading)] : [...names];
 }

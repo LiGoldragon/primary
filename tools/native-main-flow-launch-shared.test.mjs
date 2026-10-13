@@ -23,15 +23,15 @@ test('Next follows installed wrapper endpoint and refuses mismatched or ambiguou
   } finally { fs.rmSync(home, {recursive: true, force: true}); }
 });
 
-test('Curriculum returns the typed dependency closure and prompt callers keep operation-main-flow first', () => {
+test('Curriculum returns the typed dependency closure and prompt callers keep compensation-main-flow first', () => {
   let request;
-  const closure = resolveSkillDependencies(['operation-main-flow', 'spirit'], value => {
+  const closure = resolveSkillDependencies(['compensation-main-flow', 'spirit'], value => {
     request = value;
-    return 'ResolvedSkills.[ knowledge-vocabulary knowledge-psyche compensation-behavior compensation-correction operation-main-flow compensation-book-distillation spirit ]\n';
+    return 'ResolvedSkills.[ knowledge-vocabulary knowledge-psyche compensation-behavior compensation-correction compensation-main-flow compensation-book-crystallization spirit ]\n';
   });
-  assert.equal(request, 'ResolveSkills.[ operation-main-flow spirit ]');
-  assert.deepEqual(closure, ['knowledge-vocabulary', 'knowledge-psyche', 'compensation-behavior', 'compensation-correction', 'operation-main-flow', 'compensation-book-distillation', 'spirit']);
-  assert.deepEqual(orderSkillsForPrompt(closure), ['operation-main-flow', 'knowledge-vocabulary', 'knowledge-psyche', 'compensation-behavior', 'compensation-correction', 'compensation-book-distillation', 'spirit']);
+  assert.equal(request, 'ResolveSkills.[ compensation-main-flow spirit ]');
+  assert.deepEqual(closure, ['knowledge-vocabulary', 'knowledge-psyche', 'compensation-behavior', 'compensation-correction', 'compensation-main-flow', 'compensation-book-crystallization', 'spirit']);
+  assert.deepEqual(orderSkillsForPrompt(closure), ['compensation-main-flow', 'knowledge-vocabulary', 'knowledge-psyche', 'compensation-behavior', 'compensation-correction', 'compensation-book-crystallization', 'spirit']);
 });
 
 test('Curriculum closure failures stop composition with no partial names', () => {
