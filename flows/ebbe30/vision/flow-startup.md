@@ -24,8 +24,8 @@ Context: Same message of 2026-10-09; the closure and the implementation are brou
 
 ## A new flow's first last response is a presentation of its context
 
-Context: Typed to 445410, 2026-10-09; relayed as #psyche.
+Context: STT to 445410, 2026-10-09; relayed as #psyche.
 
 > The worst thing to make a new flow do is to tell it to just say, "You're ready." We need to tell flows, if they don't have it, to start with a startup task: their first last response is to give a presentation of their context, to distill their context for a vision. ... That's what their first last response is. Their first goal when they loaded up all their context is to take all this context now, get some sub-agents to ask questions, reinforce your context, and then give a presentation. A presentation according to your role, which is described when you load that flow properly with the skill for its role, for its aspect, and for its layer, and for its topic
 
--- psyche, typed, 2026-10-09, relayed by 445410.
+-- psyche, STT, 2026-10-09, relayed by 445410.
