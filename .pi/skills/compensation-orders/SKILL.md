@@ -14,7 +14,7 @@ its owning skill in the turn it is given. A trial or compensation skill
 is read whole and rewritten as one body that carries it; a psyche
 skill's change is proposed in a book; a skill or code another flow owns
 is handed to that flow. Name the skill and rule in the result.
-Exploratory material need not be distilled at once.
+Exploratory material need not be crystallized at once.
 
 The result for a removal or deliverable names the commit, artifact URL,
 or other direct evidence that proves it happened.

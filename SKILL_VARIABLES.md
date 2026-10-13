@@ -5,9 +5,9 @@ Orchestrate release request: Release.<lock-id>
 Psyche Secondary Claude model: claude-opus-5-5[1m]
 Psyche Secondary Claude effort: medium
 Psyche Secondary Claude model without million context: claude-opus-5-5
-Psyche skills: /git/github.com/LiGoldragon/psyche-skills/skills
-Mind skills: /git/github.com/LiGoldragon/mind-skills/skills
-Field skills: /git/github.com/LiGoldragon/field-skills/skills
+Psyche context: /git/github.com/LiGoldragon/psyche-context/skills
+Mind context: /git/github.com/LiGoldragon/mind-context/skills
+Field context: /git/github.com/LiGoldragon/field-context/skills
 Curriculum repository: /git/github.com/LiGoldragon/Curriculum
 Claude transcript root: /home/li/.claude/projects
 NixBuilder: prometheus.goldragon.criome

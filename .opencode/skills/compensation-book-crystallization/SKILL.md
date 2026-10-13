@@ -1,0 +1,19 @@
+---
+name: compensation-book-crystallization
+description: A book for the living is being written, revised, or reviewed.
+dependencies: [vision-book]
+---
+
+A book is its crystallizations. Every line it shows is a word removed (red) or added (green) in a psyche module, or the code that line lands. A figure in it is a figure proposed for a psyche module. Nothing else is written.
+
+A change is written as a line File: <path>, then each removed line starting with "- ", each added line with "+ ", and unchanged lines around them starting with two spaces. Concise machine results and concrete blockers may be sent outside a book.
+
+Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely. A code block spans the full page width, outside nested or indented layout columns; the code inside keeps its own indentation, never wraps inside a token, and scrolls sideways. A short code value inside a choice stays inline. Check every book at phone width before publishing.
+
+A proposed statement is drawn from the living's records read whole, with their exceptions and later statements on the same subject. A skill line in the author's brief shows where a statement lands, never what it says; the brief marks machine-skill text as the machine's. A count or date claim about the records is made only when the author has witnessed it.
+
+A book does not restate the living's words. A proposal may cite the record it crystallizes by path and date.
+
+A proposal to destroy or archive a record renders unmistakably apart from a landing: its own colour and a Destroy or Archive mark on the record it removes.
+
+Before publishing, reconcile the relevant current direction and exclude what the living has voided. A new edition carries only what is unruled or changed since the living last read it; what he approved is landed, not shown again.

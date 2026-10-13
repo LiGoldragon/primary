@@ -22,7 +22,7 @@ above the highest number there. Commit nothing.
 Before rendering, run the source checker on the saved source:
 `node /home/li/primary/tools/book-check.mjs <absolute-source-path>`. A failed check returns its
 defects to the caller and publishes nothing. Every book has a nonempty
-distillation section proposing skill lines and their authored targets.
+crystallization section proposing skill lines and their authored targets.
 Never invent that section or a proposal on the caller's behalf.
 
 Build the page whole from the block, text as written, never from an
@@ -53,13 +53,17 @@ text is preserved and contains no heading element. Keep the existing phone
 font and code geometry; literal text inherits the prose font and wraps.
 
 - Each proposal section is an `<article class="proposal">` with a
-  numbered header. The distillation section keeps its own heading. The file it targets, named in the section, is
+  numbered header. The crystallization section keeps its own heading. The file it targets, named in the section, is
   a chip: `<p class="target"><code>…</code></p>`, right under the header.
-- A change is a `<div class="diff">`: removed lines in `<div
-  class="del">`, added lines in `<div class="add">`, unchanged context in
-  `<div class="ctx">`. A line marked `+` or `-` in the source goes in the
-  matching panel without its mark; a block introduced as added or removed
-  goes whole in that panel. "Removed: none" puts no removal panel.
+- A change is a `<div class="diff">` holding ONE text with word-level
+  marks, inline in place: unchanged words plain, removed words in `<del>`
+  (red, struck through), added words in `<ins>` (green); unchanged context
+  lines in `<div class="ctx">`. For each `- ` line and the `+ ` line(s)
+  that follow it, compute the word diff deterministically (a small inline
+  script or build-time computation) and render the merged line, without
+  the `+`/`-` marks. A wholly new line or paragraph is wholly `<ins>`; a
+  wholly removed one wholly `<del>`. A block introduced as added or removed
+  goes whole the same way. "Removed: none" puts no removed words.
 - Prose proposed for a file (skill lines, vision text, any block that is
   not code) is rendered as formatted text inside its panel, never in
   `<pre>` or a code block. Its hard line breaks are joined, blank lines
@@ -82,7 +86,7 @@ readable labels. Claude Code 2.1.294 resolves this model to Haiku 5.5;
 if that model is unavailable, report the blocker rather than silently
 choosing another model.
 
-Carry the `operation-flashbook-illustration` rules whole in the figure
+Carry the `compensation-flashbook-illustration` rules whole in the figure
 subflow's brief, rather than assuming it inherits a skill or asking it to
 fetch one. Give it these rules with the diagram and source text:
 

@@ -18,7 +18,7 @@ time. It is what the living works with instead of the chat.
 ## Before anything
 
 Load these skills through the skill interface: `knowledge-psyche`,
-`operation-psyche-distillation`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
+`inquiry-psyche-crystallization`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
@@ -48,7 +48,7 @@ The present state of everything in the flow, by subject.
 - What waits on the living's word is on top.
 - The living's own words are not on the page. The living knows what was
   said; the flow's record keeps every word. What the page carries of the
-  living is proposed distillations.
+  living is proposed crystallizations.
 - One column, scrolling down; nothing folded away.
 
 Every word on the page is plain prose for the living: short sentences, the
@@ -77,7 +77,7 @@ against `The living's page`.
   (`null`, or `{option, note}` written by the page; `option` may be
   `null` when the living wrote only a note), `answeredAt` (written by the
   page), `order` (number; lower is higher on the page).
-- `distillations/<id>`: `statement` (Markdown), `destination` (exactly one
+- `crystallizations/<id>`: `statement` (Markdown), `destination` (exactly one
   of `{"vision": "<topic>"}`, `{"intent": "<topic>"}`,
   `{"skill": {"kind": "Operation"|"Documentation"|"Compensation"|"Trial",
   "name": "<skill name>"}}`), `sources` (list of `{flowId, topic}`: the
@@ -102,7 +102,7 @@ The types, as the specification writes them:
     Subject.{ Name State Vector<Waiting> Changed }
     Waiting.{ Question Proposal Vector<Option> Lost Answer }
     Answer.[ None Chosen.{ Option Note } ]
-    Distillation.{ Statement Destination Vector<Source> State }
+    Crystallization.{ Statement Destination Vector<Source> State }
     Destination.[ Vision.Topic  Intent.Topic  Skill.{ Kind Name } ]
     Kind.[ Operation Documentation Compensation Trial ]
     Source.{ FlowId Topic }
@@ -126,7 +126,7 @@ read the whole transcript. `pageReadAt` absent means everything the
 living did on the page is new.
 
 Collect what the living did on the page since `pageReadAt`: every
-`waiting` row with `answeredAt` later than it, every `distillations` row
+`waiting` row with `answeredAt` later than it, every `crystallizations` row
 with `answeredAt` later than it, every comment written later than it.
 These are the living's word, the newest there is, and outrank anything in
 the transcript before them.
@@ -201,45 +201,35 @@ whoever said it. Then:
 - A comment of the living is the living's word on what it is anchored to:
   fold it into the subject or question it concerns.
 
-### 5. Propose distillations
+### 5. Propose crystallizations
 
 A ruling of the living that should outlast the conversation becomes a
-proposed distillation with a proposed destination. The source of the
+proposed crystallization with a proposed destination. The source of the
 living's words is the flow's records, `flows/<flow id>/vision/*.md`, each
 headed with its record id; use the transcript for everything else. A
 record already listed in some row's `records`, or already landed in
 `/home/li/primary/Vision/` (see `Vision/sources/<topic>.md`, one line per
 record source), is not proposed again.
 
-- Distil as the `operation-psyche-distillation` skill says: re-articulate, never
+- Crystallize as the `inquiry-psyche-crystallization` skill says: re-articulate, never
   quote; cut what is unnecessary; the statement stands by itself; a small
   ruling makes a small statement; no undefined term; a statement about a
   syntax, type or wire form shows example code. One record may feed
-  several distillations; one distillation may draw on several records.
-- Not distilled: a working instruction for now (do this, tell that seat,
+  several crystallizations; one crystallization may draw on several records.
+- Not crystallized: a working instruction for now (do this, tell that seat,
   in this order); it belongs in a subject's state, if anywhere. A notion
-  (records under `notion/`) binds nothing and is not distilled.
+  (records under `notion/`) binds nothing and is not crystallized.
 - Destination:
   - `vision` with a topic: how a thing should be. The topic is a noun a
     flow would guess before knowing the ruling; prefer an existing file
     name in `/home/li/primary/Vision/`.
   - `intent`: a broad guiding rule. Propose it only when the living spoke
     at that height.
-  - `skill` with a kind and a skill name: how flows should work. Kinds, as
-    the living drew them: Operation, how flows operate, made by Mind with
-    the living involved; Documentation, how a tool is used, made by Mind;
-    Compensation, making up for how models tend to go wrong, the field's;
-    Trial, a compensation skill still being tried. The name is an existing
-    skill in `Curriculum skills` when the rule belongs there, otherwise a
-    short new name.
-- A record may say it is a good skill of a kind; then that is its
-  destination.
-
 The living's choices on the page, and what you do with each:
 
 - `Approved`, or approved as a good skill of a kind (`approvedAs`): return
   it to the caller, who lands it (vision through the
-  `operation-psyche-distillation` skill; a skill through the seat that owns
+  `inquiry-psyche-crystallization` skill; a skill through the seat that owns
   it).
   Keep the row until the transcript shows it landed, then delete it.
 - `{"changed": note}`: the note is the correction. Rewrite the statement
@@ -258,7 +248,7 @@ write the fewest batches, subjects and waiting first, and the
 - `set` a new or rewritten row, `update` a changed field, `delete` an
   overtaken row.
 - Never write `answer`, `answeredAt` or `approvedAs` except to clear them
-  on a changed distillation; those are the living's.
+  on a changed crystallization; those are the living's.
 - The last write: `update` `state/transcript` with `session` set to the
   printed `session`, `line` set to the printed `last`, and `pageReadAt`
   set to the time you read the page in step 1.
@@ -271,6 +261,6 @@ than anything of yours) and write again. Never drop the living's answer.
 
 To the caller, a few lines and nothing else: what the living answered or
 commented on the page since last time, each with what it answers, in
-short plain sentences, including every distillation the living approved,
+short plain sentences, including every crystallization the living approved,
 changed or refused, with its destination. With nothing answered, say so
 in one line. No summary of the page, no account of your work.

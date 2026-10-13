@@ -24,10 +24,12 @@ result-*
 .env
 .envrc.local
 
-# local Pi continuation state; generated subagent roles are tracked
+# local Pi continuation state; generated roles and skills are tracked
 .pi/*
 !.pi/agents/
 !.pi/agents/**
+!.pi/skills/
+!.pi/skills/**
 
 # transient subagent runtime artifacts — transcripts, inputs, outputs, not history
 /.pi-subagents/

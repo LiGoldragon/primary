@@ -50,21 +50,21 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 - The spirit-core skill — spirit's current home; entry files will
   carry it.
-- The vision-<topic> skill — distilled vision: self-standing
+- The vision-<topic> skill — crystallized vision: self-standing
   statements, each reviewed by the living before it stands.
-- The intent-<topic> skill — distilled intent: entered only on the
+- The intent-<topic> skill — crystallized intent: entered only on the
   living's explicit word.
 - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
-- `vision-raw/<topic>.md` — legacy: the undistilled vision corpus
-  heard before flows, draining into vision skills as distillation
+- `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
+  heard before flows, draining into vision skills as crystallization
   touches it; phased out, gone when empty. Nothing new lands
   there — a raw record lives in the flow that heard it.
 
 Raw means no confirmation was asked. Vision and Notion can be
-raw; Intent and Spirit can only be distilled.
+raw; Intent and Spirit can only be crystallized.
 
 A topic is a noun subject an agent would guess before knowing any ruling; a statement is an entry heading inside it.
 

@@ -41,6 +41,8 @@ An implementer who meets something hard to express in ethos — a mutex, an exce
 
 Find the sentence in the loaded skills or the prompt that led to the output, and quote it. If no sentence led to it, name the skill that should have had one and write the sentence it lacks.
 
+Asked why a flow did or did not do something, the answer is that sentence, quoted, or the sentence it lacks.
+
 The flow that made the mistake does this itself; another flow does not have its context.
 
 Fix the file that sentence came from, or should have come from, before fixing the output.
@@ -134,21 +136,21 @@ A notion may be drawn upon for suggestions. A flow told explicitly to implement 
 
 - The spirit-core skill — spirit's current home; entry files will
   carry it.
-- The vision-<topic> skill — distilled vision: self-standing
+- The vision-<topic> skill — crystallized vision: self-standing
   statements, each reviewed by the living before it stands.
-- The intent-<topic> skill — distilled intent: entered only on the
+- The intent-<topic> skill — crystallized intent: entered only on the
   living's explicit word.
 - `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
   that heard them. Finding raw psyche means searching
   `flows/*/vision/`.
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
-- `vision-raw/<topic>.md` — legacy: the undistilled vision corpus
-  heard before flows, draining into vision skills as distillation
+- `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
+  heard before flows, draining into vision skills as crystallization
   touches it; phased out, gone when empty. Nothing new lands
   there — a raw record lives in the flow that heard it.
 
 Raw means no confirmation was asked. Vision and Notion can be
-raw; Intent and Spirit can only be distilled.
+raw; Intent and Spirit can only be crystallized.
 
 A topic is a noun subject an agent would guess before knowing any ruling; a statement is an entry heading inside it.
 
@@ -163,47 +165,46 @@ Any agent can search psyche logs for answers. If a topic is raised
 that the psyche may have spoken on, check before assuming.
 
 
-Distillation re-articulates psyche records into self-standing
-statements. The model clarifies and purifies; the living reviews
-every distilled statement explicitly before it stands.
+Crystallization re-articulates psyche records into self-standing statements and merges each with what is already crystallized, so the whole stays cohesive and the new reads as if always written with the original context. The model clarifies and purifies; the living reviews
+every crystallized statement explicitly before it stands.
 
-A distillation agglomerates records across flows that touch the
+A crystallization agglomerates records across flows that touch the
 same topic. Records are considered individually, never by file.
-One record may serve many distillations; one distillation may
+One record may serve many crystallizations; one crystallization may
 draw from many topics. When readings overlap or contradict, weigh
 them as the psyche skill says: a later explicit correction carries the
-most weight, and any other tension goes to the psyche. A distillation
+most weight, and any other tension goes to the psyche. A crystallization
 is composed only in the main flow. A subflow only gathers records that
-could qualify as candidates for distilling together.
+could qualify as candidates for crystallizing together.
 
-A proposal re-articulates; it never quotes. A distilled
-statement stands on its own words. Every distillation refers to the raw psyche it was distilled from, in the message of the commit that lands it and never in a skill: one line per reference, the originating flow's short id and the record file's topic, `e06e4c07 nexus` (`vision-raw <topic>` for a vision-raw record). Since distillation moves the record into the archive, the line resolves to the `archive-` file. The archived
+A proposal re-articulates; it never quotes. A crystallized
+statement stands on its own words. Every crystallization refers to the raw psyche it was crystallized from, in the message of the commit that lands it and never in a skill: one line per reference, the originating flow's short id and the record file's topic, `e06e4c07 nexus` (`vision-raw <topic>` for a vision-raw record). Since crystallization moves the record into the archive, the line resolves to the `archive-` file. The archived
 originals keep every original word. A proposed change to a raw
-record — correction included — is proposed as a distillation of
+record — correction included — is proposed as a crystallization of
 its subject, never as an append to the raw file.
 
-A distilled statement carries what the psyche said and nothing beyond it; a small ruling makes a small statement, never a theory grown around the words.
-A distilled statement carries no undefined term. Define the term first, or leave the statement raw.
-A statement about code carries the code: a distilled statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
+A crystallized statement carries what the psyche said and nothing beyond it; a small ruling makes a small statement, never a theory grown around the words.
+A crystallized statement carries no undefined term. Define the term first, or leave the statement raw.
+A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
 
-A distilled statement lands as lines in a vision-, intent- or
-other skill's authored source on the living's explicit approval,
-and never before. A ruling a distillation lands in a skill is not
+A crystallized statement lands as lines in a vision- or intent-
+skill's authored source on the living's explicit approval,
+and never before. A ruling a crystallization lands in a skill is not
 also logged as raw vision; the landing is the record. Intent enters
 an intent- skill only on the living's explicit word. The raw records a
-distillation replaces move into an `archive-` prefixed file
+crystallization replaces move into an `archive-` prefixed file
 beside their source file.
 
 A record's id is its originating session's short id and that
 session's own count.
 
-Distillation is proposed on encounter, dispatched proactively by
+Crystallization is proposed on encounter, dispatched proactively by
 the flow working a subject, or done in dedicated passes.
 
-What the living says fresh while a distillation is being composed is logged as a raw record as it is spoken, like any other psyche, and the distillation draws on it like any other record.
+What the living says fresh while a crystallization is being composed is logged as a raw record as it is spoken, like any other psyche, and the crystallization draws on it like any other record.
 
-A vision impurity encountered in distillation is destroyed, not archived.
-Impurities are never hunted: they fall only through distillation, and
+A vision impurity encountered in crystallization is destroyed, not archived.
+Impurities are never hunted: they fall only through crystallization, and
 a proposal points out the impurities it discards. A proposal names,
 for every statement, the skill it lands in; a statement in the
 wrong topic cannot be approved.
@@ -212,25 +213,25 @@ wrong topic cannot be approved.
 ## Vision impurities
 
 A working instruction logged as vision is a vision impurity. It may
-sit in a log beside valid vision; when distillation finds it, the
+sit in a log beside valid vision; when crystallization finds it, the
 impurity is dissected out of the log and destroyed, and the valid
 vision around it stays.
 
-## Impurities fall out through distillation
+## Impurities fall out through crystallization
 
-Impurities come out in the course of distillation: a distillation
+Impurities come out in the course of crystallization: a crystallization
 proposal points out the impurities it dissects out, and the living
 rules on them with the statements.
 
 ## A proposal names each statement's destination
 
-A distillation proposal says, for every statement, the topic it goes
-to; a statement under the wrong topic is corrected by a distillation
+A crystallization proposal says, for every statement, the topic it goes
+to; a statement under the wrong topic is corrected by a crystallization
 edit of its own.
 
 ## A statement carries what the psyche said
 
-A distilled statement carries what the psyche said and nothing
+A crystallized statement carries what the psyche said and nothing
 beyond it. A small ruling makes a small statement.
 
 ## Designing model behavior is vision
@@ -242,17 +243,17 @@ clarity.
 
 ## No useless negatives
 
-A distilled statement carries no useless negative. Such negatives
+A crystallized statement carries no useless negative. Such negatives
 stay in the archive, which remains linkable.
 
 ## A statement never attributes itself to the psyche
 
-Vision is the psyche's; a distilled statement never says so of itself.
+Vision is the psyche's; a crystallized statement never says so of itself.
 
 
 ## Books
 
-Every book has a distillation section: it proposes the lines that move the living's words into vision, intent and spirit skills. A book without one proposes nothing to move forward.
+Every book has a crystallization section: it proposes the lines that move the living's words into vision, intent and spirit skills. A book without one proposes nothing to move forward.
 
 The first edition of a book is mostly questions.
 
@@ -260,20 +261,18 @@ The book is the center of development: it is the evolution of an idea, and the l
 
 A book carries psyche only. Compensation, knowledge and operation skills are the machines' own: they write them and prove them by tests.
 
+A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A list in boxes, a tally, or a sentence in a rectangle is not a figure. A diagram in a book's source is ASCII in that grammar, laid out vertically and no wider than 52 characters so a phone shows it; a sketch without arrows is rewritten before it is sent. The published book never shows the ASCII, but a figure drawn from it by a Tertiary or Quaternary subflow that is given the grammar with the sketch, keeps every box, label and arrow, and adds nothing the source does not say; a figure that lost an arrow is returned. A sizable book carries several figures.
 
-Every book the living reads is distillation proposals, 99% of it: each section names the file, the lines removed and the lines added, and asks a ruling; around the changed lines it shows the file as it stands, whole when short, otherwise the parts above and below, so the landing can be situated; a new file is shown whole with the explanation around it; a book carries no survey; its context serves the proposals that follow. Concise machine results and concrete blockers may be sent outside a book.
 
-A book opens with its context as figures, with any text a few short lines inside them, then goes straight to the proposals. A figure shows the thing itself, its parts, how they connect and what moves where, so it can be understood without reading; text in it is a label he can follow with no knowledge of the session. Any term he has not used himself is explained in plain words where it first appears. Its only operational fact is whether the work is on the production or a development branch. How the system runs today is knowledge, landed without the living's review; no runtime version, socket or store path, or operational command reaches a book; the authored file targeted by a proposal stays named.
+A book is its crystallizations. Every line it shows is a word removed (red) or added (green) in a psyche module, or the code that line lands. A figure in it is a figure proposed for a psyche module. Nothing else is written.
 
-A diagram in a book's source is ASCII, laid out vertically and no wider than 52 characters so a phone shows it; the published book never shows the ASCII, but a figure drawn from it by a Tertiary or Quaternary subflow that keeps every box, label and arrow of the source and adds nothing the source does not say; its colour and layout may carry the surrounding meaning.
+A change is written as a line File: <path>, then each removed line starting with "- ", each added line with "+ ", and unchanged lines around them starting with two spaces. Concise machine results and concrete blockers may be sent outside a book.
 
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely. A code block spans the full page width, outside nested or indented layout columns; the code inside keeps its own indentation, never wraps inside a token, and scrolls sideways. A short code value inside a choice stays inline. Check every book at phone width before publishing.
 
-Code that teaches a domain-model or code rule explains the Ethos types it uses and their purpose, and shows the wrong and right forms.
-
 A proposed statement is drawn from the living's records read whole, with their exceptions and later statements on the same subject. A skill line in the author's brief shows where a statement lands, never what it says; the brief marks machine-skill text as the machine's. A count or date claim about the records is made only when the author has witnessed it.
 
-A book does not restate the living's words. A proposal may cite the record it distils by path and date.
+A book does not restate the living's words. A proposal may cite the record it crystallizes by path and date.
 
 A proposal to destroy or archive a record renders unmistakably apart from a landing: its own colour and a Destroy or Archive mark on the record it removes.
 
@@ -331,7 +330,7 @@ its owning skill in the turn it is given. A trial or compensation skill
 is read whole and rewritten as one body that carries it; a psyche
 skill's change is proposed in a book; a skill or code another flow owns
 is handed to that flow. Name the skill and rule in the result.
-Exploratory material need not be distilled at once.
+Exploratory material need not be crystallized at once.
 
 The result for a removal or deliverable names the commit, artifact URL,
 or other direct evidence that proves it happened.
@@ -457,7 +456,7 @@ system prompt, never the startup user prompt. Each subagent carries
 every spirit-* body in its own instruction layer.
 
 A flow at or above its layer's configured refresh threshold receives no
-further work. Read that threshold from the layer configuration. When
+further work. Its secretary orders its successor started at once; the successor takes its topics from the handover. Read that threshold from the layer configuration. When
 the configuration or a supported context observation is unavailable,
 report that absence rather than inventing a value. Retire a predecessor only after its fresh successor has
 answered on a supported route and its native role and binding have
@@ -474,10 +473,26 @@ Psyche core Secondary is the hub: it decides what reaches a topic flow, and only
 
 A flow messages only whom its aspect, layer and topic allow, and refuses the rest.
 
-A launched flow's startup task is never to reply READY. Its first response is a presentation of its context: subflows first reinforce that context, then the flow proposes how to make things better in its role, as named by the skills for its aspect, layer and topic. Psyche distils its context for vision, intent and spirit; Mind for knowledge, questions and implementation; Field for its own roles.
+A launched flow's startup task is never to reply READY. Its first response is a presentation of its context: subflows first reinforce that context, then the flow proposes how to make things better in its role, as named by the skills for its aspect, layer and topic. Psyche crystallizes its context into vision, intent and spirit; Mind for knowledge, questions and implementation; Field for its own roles.
 
 
 Psyche data is the most valuable thing there is: what the living has explicitly reviewed and approved outweighs any machine inference.
+
+## Vision is short-term or long-term
+
+Vision is what the living says the system should be, in the long term or for now, the short term. A short-term vision is named so; an unmarked vision is long-term.
+
+The long-term vision is the goalpost, never a blocker; the short-term vision is what the system is to be for now. Either may be implemented or not. A flow holds both apart and never reads their difference as a contradiction. When the long-term vision is implemented and documented, the short-term vision and its documentation are removed.
+
+## What the living reviews is psyche
+
+Anything the living has reviewed is psyche: a line he approves is a vision statement at least, whatever module proposed it, and leaves the mind or field module it sat in. A line he has not reviewed is a machine line.
+
+Only lines that land in a psyche module, and the code they land, are put to the living. A machine module is changed by its owner without him.
+
+## Spirit holds beyond this system
+
+Spirit is philosophy that holds beyond this system. A rule about this system, however broad, is intent at most, on its subject.
 
 
 Before a design, the unknowns are listed and judged against the complete concept the design belongs to. A good idea holds together like a person; a design is not forced from the pieces at hand.

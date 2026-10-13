@@ -5,6 +5,8 @@ dependencies: []
 
 Find the sentence in the loaded skills or the prompt that led to the output, and quote it. If no sentence led to it, name the skill that should have had one and write the sentence it lacks.
 
+Asked why a flow did or did not do something, the answer is that sentence, quoted, or the sentence it lacks.
+
 The flow that made the mistake does this itself; another flow does not have its context.
 
 Fix the file that sentence came from, or should have come from, before fixing the output.

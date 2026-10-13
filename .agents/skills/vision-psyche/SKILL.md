@@ -1,18 +1,18 @@
 ---
-description: The structure of the psyche — its four levels, where psyche data lives, or how distilled vision keeps its provenance — is being designed or judged.
+description: The structure of the psyche — its four levels, where psyche data lives, or how crystallized vision keeps its provenance — is being designed or judged.
 dependencies: [knowledge-psyche]
 ---
 
 Psyche contains Spirit, Intent, Vision, and Notion, in descending authority.
 
-Everything the living says he wants is distilled: psyche data is what the work mines for, and nothing is built rich without it.
+Everything the living says he wants is crystallized into the existing vision: psyche data is what the work mines for, and nothing is built rich without it.
 
 Psyche reaches through its hierarchy to Orchestrate coordinates. Unprefixed
 vision is Psyche's most reliable, accepted gold. These statements are approved
 by the living in the native desktop record at
 `flows/8393ca/vision/operational-herdrVoiceAccess.md` (archive ordinal 1833).
 
-Distilled vision preserves references to its supporting raw records. Archived
+Crystallized vision preserves references to its supporting raw records. Archived
 records retain their original words and provenance.
 
 Psyche data belongs in a dedicated repository symlinked into Primary. Primary

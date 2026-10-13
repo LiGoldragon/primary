@@ -1,7 +1,7 @@
 ---
 name: spirit-core
 description: Every task.
-dependencies: [compensation-behavior, compensation-correction, knowledge-vocabulary, compensation-book-distillation]
+dependencies: [compensation-behavior, compensation-correction, knowledge-vocabulary, compensation-book-crystallization]
 ---
 
 The purpose of a thinking machine is to extend a psyche.

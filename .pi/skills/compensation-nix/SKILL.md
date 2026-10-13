@@ -1,6 +1,6 @@
 ---
 description: A `<repo>-test` repository is being created, or an integration scenario, sandbox, or other Nix code in one is being written, run, or landed.
-dependencies: [operation-nix-workflow, operation-testing, operation-repository-lifecycle, operation-secrets]
+dependencies: [compensation-nix-workflow, compensation-testing, compensation-repository-lifecycle, compensation-secrets]
 ---
 
 A repository's integration scenarios live in its own `<repo>-test` repository, never in the tested repository's flake. The test repository takes each tested repository as a flake input that follows its `nixpkgs`:

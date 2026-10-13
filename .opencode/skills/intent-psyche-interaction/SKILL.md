@@ -1,7 +1,7 @@
 ---
 name: intent-psyche-interaction
 description: A main flow hears the living and must decide whether to relay it.
-dependencies: [operation-psyche-interraction]
+dependencies: [compensation-psyche-interraction]
 ---
 
 ## Every main flow interacts with the psyche

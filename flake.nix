@@ -19,19 +19,19 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/391404e757b5d5d22fcb9140ae8433b737953fa7";
+      url = "github:LiGoldragon/Curriculum/d3df664d9cde7c1a1f465a749e502159d4229f69";
       flake = false;
     };
-    psyche-skills = {
-      url = "github:LiGoldragon/psyche-skills/b615e968f68909dc5798a41abb2ad3d5edc18710";
+    psyche-context = {
+      url = "github:LiGoldragon/psyche-context/c91454e36fe32f31194fd046495de0c6bc30057b";
       flake = false;
     };
-    mind-skills = {
-      url = "github:LiGoldragon/mind-skills/c054cecb723c5074d100b0143a16f560e991e268";
+    mind-context = {
+      url = "github:LiGoldragon/mind-context/80d5d730e4c4a0be62c59e621711c186e43e41ca";
       flake = false;
     };
-    field-skills = {
-      url = "github:LiGoldragon/field-skills/14269e9d0ebd7e25a23b6281b3f924f9bd9d3286";
+    field-context = {
+      url = "github:LiGoldragon/field-context/108daa054288c037eae9ef5fbc02a8bdb7d684cb";
       flake = false;
     };
     flow = {
@@ -226,9 +226,9 @@
                 cp -R ${self}/. "$workspace/"
                 chmod -R u+rwX "$workspace"
                 export XDG_RUNTIME_DIR="$runtime_root"
-                export CURRICULUM_PSYCHES_REPOSITORY_DIR="${inputs."psyche-skills"}"
-                export CURRICULUM_MIND_SKILLS_DIR="${inputs."mind-skills"}/skills"
-                export CURRICULUM_FIELD_SKILLS_DIR="${inputs."field-skills"}/skills"
+                export CURRICULUM_PSYCHES_REPOSITORY_DIR="${inputs."psyche-context"}"
+                export CURRICULUM_MIND_SKILLS_DIR="${inputs."mind-context"}/skills"
+                export CURRICULUM_FIELD_SKILLS_DIR="${inputs."field-context"}/skills"
                 export CURRICULUM_ROLES_FILE="${curriculum}/roles.datom"
                 export CURRICULUM_WORKSPACE="$workspace"
                 ${runtime}/bin/curriculum-nexus > "$TMPDIR/curriculum-nexus.log" 2>&1 &
