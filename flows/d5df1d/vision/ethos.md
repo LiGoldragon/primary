@@ -6,7 +6,7 @@ Context: comment on «The golden ethos» third edition, whole page, thread 06615
 
 > That graph is good. Let's include it in the vision.
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 ## Flow, a current best example
 
@@ -14,7 +14,7 @@ Context: comment on the section "Flow, a current best example" of «The golden e
 
 > good
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 ## Trait: rename every place
 
@@ -22,7 +22,7 @@ Context: comment on the list item "Rename every place." under Trait, «The golde
 
 > rename
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 ## The vision file's place, the registry, and inline import
 
@@ -40,7 +40,7 @@ Context: comment on the section "The ethos of ethos, in vision-ethos" of «The g
 >
 > This is a rather big improvement or change in Etho, so I want to make sure it's done well with a full Opus and Fable topic flow on that. I need to know where we are with starting the new topic flows. Do they exist? Oh wow, they do. Bravo! Oh my god, let's... I'm going to go, and I guess you'll pass all of the relevant stuff to the metaflow that is taking care of ethos and flow and nexus, whatever, whenever their topic is right. I'm going to alternate between you guys. Wow, this is brilliant. Oh my god, let's get to work.
 
--- psyche, typed, 2026-10-09.
+-- psyche, STT, 2026-10-09.
 
 
 ## The inline import, second edition: choice 3 is the way
