@@ -71,17 +71,17 @@
     "field-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791908880,
-        "narHash": "sha256-lCHjMx/4OONKN+kzScYOEwtR76/aFq+eWSJfnXghO5c=",
+        "lastModified": 1791910484,
+        "narHash": "sha256-O59CIa3LsMSn7R4sty8QzzhDu2hvaxgN1IeN7V5UG6Q=",
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "c3af84c48adaa21f1cb836139aa4d04f210acac8",
+        "rev": "14269e9d0ebd7e25a23b6281b3f924f9bd9d3286",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "field-skills",
-        "rev": "c3af84c48adaa21f1cb836139aa4d04f210acac8",
+        "rev": "14269e9d0ebd7e25a23b6281b3f924f9bd9d3286",
         "type": "github"
       }
     },
@@ -105,17 +105,17 @@
     "mind-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791845383,
-        "narHash": "sha256-O2kow9KT4/sFa5+ZSV7/4SJsWiK5lW/866ZkV/jFjJA=",
+        "lastModified": 1791910672,
+        "narHash": "sha256-HOuIe03KKrGnK6CQNvTxHBQ+NNvyxEFw6oAGXo8GkXc=",
         "owner": "LiGoldragon",
         "repo": "mind-skills",
-        "rev": "41b814e6a6666ed6d63978f6dde750ac3d8b1405",
+        "rev": "c054cecb723c5074d100b0143a16f560e991e268",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "mind-skills",
-        "rev": "41b814e6a6666ed6d63978f6dde750ac3d8b1405",
+        "rev": "c054cecb723c5074d100b0143a16f560e991e268",
         "type": "github"
       }
     },
@@ -138,17 +138,17 @@
     "psyche-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791843899,
-        "narHash": "sha256-G+8Fc0WlvgOXUuE+XYSPZa9b2Vmbe/VIg+oClwwWJmU=",
+        "lastModified": 1791910839,
+        "narHash": "sha256-T1LyIlj1aIMeWqceFB1ebkIN+VdO1uCBWnbXJafgCdE=",
         "owner": "LiGoldragon",
         "repo": "psyche-skills",
-        "rev": "29119ab969df09975f077dd5d5a87c6d5a715f50",
+        "rev": "b615e968f68909dc5798a41abb2ad3d5edc18710",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "psyche-skills",
-        "rev": "29119ab969df09975f077dd5d5a87c6d5a715f50",
+        "rev": "b615e968f68909dc5798a41abb2ad3d5edc18710",
         "type": "github"
       }
     },

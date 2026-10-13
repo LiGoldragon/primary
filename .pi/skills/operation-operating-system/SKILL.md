@@ -7,7 +7,7 @@ This is a declarative operating system. Change it by editing its declarative sou
 
 Before debugging installed software, update it to its latest release.
 
-Use `operation-lojix` and `meta-lojix` for deployment and observation; their exact typed contract and terminal verification are defined by the `operation-lojix` instructions.
+Use `lojix` and `lojix-meta` for deployment and observation; their exact typed contract and terminal verification are defined by the `operation-lojix` instructions.
 
 Use existing deployment authorization once concrete artifact and execution prerequisites are satisfied; require separate release approval only if the living explicitly imposed it.
 

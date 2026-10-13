@@ -3,10 +3,6 @@ name: knowledge-codex
 description: Read the version-pinned Codex app-server control surface without turning protocol shapes into runtime claims.
 ---
 
-Record the installed Codex version with a source-verification receipt before relying on its protocol.
-The model-facing account names the source artifact, states match or mismatch, and gives the receipt handle; deterministic code retains the raw revision.
-Until source-verification receipt evidence exists, report that unavailable evidence rather than copying a raw revision into model context.
-
 Initialize the app-server connection before requests.
 
 Use `hooks/list` with optional `cwds` to read its `data` entries for configured hooks. It does not load skills.
@@ -34,5 +30,3 @@ Preserve selected policies and require a runtime witness before claiming config 
 Keep account allowance reads and sparse updates distinct from token usage and approvals.
 
 Start an allowance collector from a read snapshot, merge sparse updates, and read a new snapshot after reconnect because this protocol declares no cursor, ordering, or replay guarantee.
-
-Keep Flow identity allocation out of this knowledge. Current allocation choices and UUIDv7 collision behavior remain design questions for the living.

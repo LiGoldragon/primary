@@ -764,7 +764,7 @@ Registration validates one exact live Herdr identity and stores its native bindi
 `FLOW_ID=<self> hm-retire FLOW` takes only the flow id: it reads the route and live Herdr identity itself, writes the evidence file, and prints its path. A refusal prints `RetireRefused.{ FLOW Reason }` and changes nothing.
 
 
-Prometheus is connected to the internet router, which is not ours, and both laptops, Ouranos and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN.
+The current network topology is set by the skill variable `Network topology`.
 
 A temporary condition does not stop work: what needed the missing host builds or runs locally, or waits for it; everything else goes on.
 

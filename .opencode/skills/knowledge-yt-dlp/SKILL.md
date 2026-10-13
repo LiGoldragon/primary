@@ -3,7 +3,7 @@ name: knowledge-yt-dlp
 description: A YouTube video's title, channel, description, chapters or spoken words (auto subtitles) are needed for research, and the video must not be downloaded or watched.
 ---
 
-`yt-dlp` is on PATH (witnessed 2026.07.04). Without it, `nix run nixpkgs#yt-dlp -- <args>` runs the same tool. It warns that a newer version exists; the warning is harmless.
+`yt-dlp` is on PATH. Without it, `nix run nixpkgs#yt-dlp -- <args>` runs the same tool. It warns that a newer version exists; the warning is harmless.
 
 Write every output into the scratchpad, never the repository: `cd` there first.
 

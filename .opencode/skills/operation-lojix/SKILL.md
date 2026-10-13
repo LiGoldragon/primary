@@ -6,7 +6,7 @@ dependencies: [operation-nix-workflow]
 
 `lojix-nexus` owns durable state and two authority-tiered sockets. The ordinary contract is `signal-lojix`; the owner contract is `meta-signal-lojix`.
 
-Use `operation-lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, and `Unwatch`.
+Use `lojix` on the ordinary socket for `Query`, `WatchDeployments`, `WatchCacheRetention`, and `Unwatch`.
 
 Use `lojix-meta` on the owner socket for `Deploy`, `Pin`, `Unpin`, `Retire`, and `Test`. The owner contract is not optional.
 
@@ -89,7 +89,7 @@ Watching.{ subscription-token commit-sequence }
 
 A rejection is `WatchRejected.MalformedWatch`, `WatchRejected.SubscriptionLimitReached`, or `WatchRejected.StreamUnavailable`.
 
-The current `operation-lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
+The current `lojix` executable exchanges one request for one reply and exits. It cannot consume ongoing subscription events. Do not use it as a streaming terminal monitor; re-query with `Query.ByDeployment` or `Query.ByEventLog`.
 
 `Unwatch` carries one subscription token.
 
@@ -381,4 +381,4 @@ Terminal output is bare `BootstrapTerminal.Succeeded` or `BootstrapTerminal.Fail
 
 Keep Lojix configuration in the operating-system source. Do not add setup-specific deployment scripts to the user environment.
 
-The supported deployment and observation interface is `operation-lojix` and `lojix-meta`; setup-specific wrapper scripts are not an alternative interface.
+The supported deployment and observation interface is `lojix` and `lojix-meta`; setup-specific wrapper scripts are not an alternative interface.

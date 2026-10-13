@@ -4,8 +4,7 @@ dependencies: [knowledge-vocabulary, operation-edit-coordination]
 ---
 
 Write the artifact under the supplied `FLOW_DIRECTORY`.
-Use `reports/<subject>.md` for a carried account and end it with `## Sources` as it is made, naming readable artifacts and receipt handles.
+Use `reports/<subject>.md` for a carried account and end it with `## Sources` as it is made, naming readable artifacts.
 Use `witnesses/<subject>.md` for an observation and state its method.
-Deterministic code retains and compares raw checksums; a PROVENANCE handoff names the artifact and says match or mismatch rather than carrying them.
 Write no log or index entry.
 Use a main-flow-reserved unique path, or acquire edit coordination before sharing a path.

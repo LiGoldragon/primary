@@ -17,12 +17,7 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 
 ## Committing
 
-Every flow edits Primary and leaves its owned edits for the sole standing committer.
-Only that committer stages, commits, pushes or holds PrimaryPublish. The editing
-seat's turn-end hook hands over its actual identity and transcript when Primary is
-dirty; preserve foreign edits and report blockers. Main flows and subflows never
-commit or push Primary themselves. A flow editing another repository commits and
-pushes its own changes in that repository.
+Follow `vision-committing`: Primary is committed through its sole committer.
 
 ## Psyche
 

@@ -19,3 +19,4 @@ The system: /git/github.com/LiGoldragon/CriomOS
 The user environment: /git/github.com/LiGoldragon/CriomOS-home
 Codex transcript root: /home/li/.codex/sessions
 Codex next transcript root: /home/li/.codex-next/sessions
+Network topology: Prometheus is connected to the internet router, which is not ours, and both laptops, Ouranos and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN.

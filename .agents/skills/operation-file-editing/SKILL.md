@@ -8,7 +8,7 @@ Outside Primary, commit and push every change your work produces in every affect
 Outside Primary, commit existing dirty changes first with an appropriate message
 before starting new work.
 
-Only the standing Field Quaternary committer commits and pushes Primary. It holds PrimaryPublish for its lifetime and works in the shared working copy with jj, never a clone or another worktree. Editing flows leave their owned changes in place; their supported turn-end hook notifies that committer only when Primary is dirty, carrying the actual editor FLOW_ID or native session_id and transcript path. The committer reads the transcript and commits the owner’s named paths, preserving other writers’ work and reporting collisions. Follow `compensation-primary-commit` for publication and late-change squashing; editors never acquire a competing publication lock or commit Primary themselves. In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
+In another repository or independent jj workspace, a commit names only the paths this flow edited: `jj commit -m 'message' path ...`.
 
 The sequence for landing normal non-Primary jj work:
 

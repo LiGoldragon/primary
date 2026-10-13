@@ -4,7 +4,7 @@ description: "A temporary condition holds: a host, builder, service or network r
 dependencies: []
 ---
 
-Prometheus is connected to the internet router, which is not ours, and both laptops, Ouranos and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN.
+The current network topology is set by the skill variable `Network topology`.
 
 A temporary condition does not stop work: what needed the missing host builds or runs locally, or waits for it; everything else goes on.
 
