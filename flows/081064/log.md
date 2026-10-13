@@ -155,3 +155,15 @@ On psyche-skills origin/main 5a18f9c there is no skills/vision-ethos.md; vision/
 ## 2026-10-12 d68c82 confirms the target path (via 23824a)
 
 vision/ethos.md stands as the book's target; nothing changes.
+
+## 2026-10-13 correction: the seven 2026-10-10 entries are STT; note removed in place
+
+His words on correction logged verbatim in vision/correction.md. The Core Secondary and 23824a both relay that he has typed nothing in days; 23824a withdraws its 2026-10-10 "typed" word. Applied as a correction, not an addition: the "provenance correction" section (former lines 71-74 of vision/ethos.md) is deleted; the seven provenance lines stand as `STT`. History stays in version control. Skill line owed: operation-psyche-interraction's "Supersede an entry by appending; never edit one" is the sentence that produced the appended note; a correction of a provenance line removes and replaces in place. Sent to d68c82 as the proposed line for the owning skill (Mind's).
+
+## 2026-10-13 skill line goes through 33752b (claim, Psyche Core Secondary)
+
+33752b's book of chat proposals already carries the change to the operation-psyche-interraction line; my wording is sent to it to weigh. This flow proposes no book line on it; the correction of records is still published on the next turn.
+
+## 2026-10-13 committer rule changed (d68c82, as Psyche Core Secondary)
+
+The sole Primary committer is the Field Quaternary 89fbc1; this flow commits nothing itself and hands 89fbc1 its exact paths with a one-line reason by message. Replaces the turn-and-self-commit rule. First handoff: vision/ethos.md, vision/correction.md, log.md.

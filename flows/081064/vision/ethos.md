@@ -69,10 +69,6 @@ Context: same book and heading, anchored on «Two registry types: one for librar
 
 -- psyche, STT, 2026-10-10, relayed by 23824a.
 
-## 2026-10-10 — provenance correction
-
-Each of the seven entries above dated 2026-10-10 and marked "STT" is typed: they are the living's comments on the published book «Sources and the registry» and «The inline import, third edition», recorded typed by d68c82, which relayed them. The relay envelopes carried no input mode; "STT" was an assumption. Read every provenance line above as `-- psyche, typed, 2026-10-10, relayed by 23824a.`
-
 ## 2026-10-10 — trailing Sources sections in vision skills
 
 Context: on the trailing Sources sections of vision skills, the example being 058f16's `source` lines; relayed by 41fa34 to 0c85a3 to this flow. Input mode not established.
