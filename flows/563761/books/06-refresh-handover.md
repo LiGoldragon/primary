@@ -251,7 +251,7 @@ The floor:
 
 File: `psyche-context/skills/vision-flow.md`, «A replaced session is
 reaped by the refresh itself», a long-term paragraph after Proposal 1's
-paragraph and figure.
+paragraph and figure; and two short-term lines under «Short term».
 
 Sources: flow d68c82, 2026-10-13; flow 33752b, 2026-10-13; flow 88475f,
 2026-09-25; flow e51411, 2026-09-25; flow 692df8, 2026-09-15, two
@@ -259,6 +259,21 @@ records; flow 6cc91b, 2026-09-14.
 
 ```text
 + Below the floor, a request to refresh a flow is refused, as is one for a flow younger than a set age, so that a request routed to a flow just started changes nothing. A flow below the floor is still replaced when its direction changes dramatically: a new job starts on a fresh flow, with the training that job needs.
+```
+
+Two short-term lines, under «Short term» after Proposal 5's figure: flow
+6cc91b, 2026-09-14 (the models are not let compact; a fresh flow with a
+good first prompt is better); flow 33752b and flow d68c82, 2026-10-13
+(he still compacts, prefers a refresh, and a compacted flow is noise; a
+request to compact is refused below a threshold or age); flow e51411,
+2026-09-25 (compaction when a flow cannot be refreshed):
+
+```text
++ Short term: a flow at its threshold is refreshed, not compacted; a compacted flow keeps its noise, and a successor on a fresh flow with a good first prompt does better.
+```
+
+```text
++ Short term: compaction is an absolute emergency measure only, taken when a flow cannot be refreshed; a request to compact a flow or a metaflow meets the same guard as a request to refresh it.
 ```
 
 Short term: lands as data, in `shared.edn`, inside `:refresh`; `:flows`
@@ -286,7 +301,8 @@ names the flow and whether it overrides the floor, under choice 5:
 +
 + ;; RefreshRefused is typed as the messenger's
 + ;; RetireRefused is today: the datom head is the
-+ ;; type's own name.
++ ;; type's own name. A request to compact meets
++ ;; this same guard.
 + (defn request [config zone age flow override]
 +   (if-let [reason (and (not override)
 +                        (guard config zone age))]
