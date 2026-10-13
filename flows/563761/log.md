@@ -46,3 +46,6 @@ books/06-refresh-handover.md from 31 witnessed pairs (books/batch-03-psyches.edn
 
 ## 2026-10-13 batch 03 published
 «Flow: refresh and handover» at https://claude.ai/artifact/GSQSYS6nZDzq7k4YzfoTi9; page books/06-refresh-handover.html; reviewer pass done; phone witness at 320/375px. Link, bb results and the compaction-analysis routing note sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Waiting for batch 04.
+
+## 2026-10-13 batch 03 returned by the Secondary
+Secondary review: Clojure and EDN texts pass. To fix: described-but-unshown code (P2 refresh command and hm-refresh, P6 register --successor-of) shown or dropped; remaining narration in P1/P2/P3/P6/P7 removed; literals (RefreshRefused head, DuplicateSeat string, :claude/:codex keys, --config flag) read from EDN or justified in one line; short/long-term marks on every P1/P2/P7 paragraph and figure. Subflow checks for his comments first, then fixes in place and republishes to the same URL with phone check. Standing rule for later books: every code the prose names is shown; every paragraph and figure carries its term mark.
