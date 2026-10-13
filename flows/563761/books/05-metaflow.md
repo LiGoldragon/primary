@@ -48,17 +48,17 @@ The description:
   dependencies: [vision-nexus, vision-ethos]
 ```
 
-The paragraph, under choice 1, with choice 5:
+The paragraph, under choices 1 and 5:
 
 ```text
 - Flow is the Nexus that manages flows. A flow is one run of a voice; the component is named for what it manages. A flow the living asks for is launched, properly and surely. Flow holds the lock on flows.
-+ Flow is the Nexus that manages flows. A flow is one session of a harness, and every flow is one run of a metaflow; the component is named for what it manages. A flow the living asks for is launched, properly and surely. Flow holds the lock on metaflows: it locks a metaflow while the metaflow rolls over into a new flow, and the lock tells whether a request can reach it.
++ Flow is the Nexus that manages flows. A flow is one run, mostly of a metaflow, and a flow may stand outside every metaflow; the component is named for what it manages. A flow the living asks for is launched, properly and surely. Flow holds the lock on metaflows: it locks a metaflow while the metaflow rolls over into a new flow, and the lock tells whether a request can reach it.
 ```
 
 Under choice 2, the second sentence reads instead:
 
 ```text
-+ A flow is one session of a harness; most flows run a metaflow, and a flow may stand outside every metaflow;
++ A flow is one run of a metaflow, and every flow has one;
 ```
 
 Under choice 6, the last sentence stays «Flow holds the lock on flows.»
@@ -103,10 +103,10 @@ returns its model row; `:Fifth` is refused as `UnknownLayer`.
 Ruling, one number from each group:
 
 The flow and its metaflow:
-1. Every flow runs a metaflow, the machine's design: since flow d4ae97,
-   2026-10-08, every flow has an aspect, a topic and a layer, core by
-   default.
-2. A flow may stand outside every metaflow (flow d4ae97, 2026-10-07).
+1. A flow may stand outside every metaflow (flow d4ae97, 2026-10-07).
+2. Every flow runs a metaflow, the machine's design: on 2026-10-08 (flow
+   d4ae97) every flow has an aspect, a topic and a layer, core by
+   default, and that is a metaflow's address.
 
 The description and the EDN key:
 3. Land.
@@ -172,7 +172,9 @@ an order to modify the launch scripts. Its first sentence is drawn into
 the lines above.
 
 Lands as data and as Clojure. Datalevin: the database the messenger
-keeps all its records in. How much lineage a metaflow keeps is data,
+keeps all its records in. A lineage record: the link from a flow to
+the flow it succeeded, kept apart from the metaflow, which holds only
+its current flow. How much lineage a metaflow keeps is data,
 added to `primary/config/main-flow/shared.edn` (`:latest` under choice
 4, `:none` under 5, `:all` under 6):
 
@@ -301,19 +303,22 @@ The lines and the figure:
 3. Drop.
 
 What a metaflow's memory holds:
-4. Its current flow and its predecessor, the machine's design (flow
-   f5a6e9, 2026-10-07).
+4. Its current flow, with its predecessor in a lineage record apart
+   from it, the machine's design: flow f5a6e9, 2026-10-07, wants maybe
+   the predecessor; flow d4ae97, 2026-10-08, one field, the current
+   flow.
 5. Its current flow only.
 6. Its current flow and every flow before it; flow d4ae97, 2026-10-07,
    doubts the whole history is kept.
 
 Where the registry lives, in the short term:
-7. The messenger's Datalevin database, the machine's design: the
-   launcher already registers each flow through the messenger.
-8. Its own database, in a Clojure flow tool beside the messenger (flow
+7. Its own database, in a Clojure flow tool beside the messenger (flow
    d4ae97, 2026-10-08); the code above moves into that tool. Whether
    the launcher and the messenger become one tool is group D of
    Proposal 2 of «Flow: short term and long term», third edition.
+8. The messenger's Datalevin database, the machine's design: the
+   launcher already registers each flow through the messenger, so the
+   registry sits where the flows already are.
 
 ### Proposal 4: software starts flows
 
@@ -348,7 +353,12 @@ the paragraph that begins «A topic never dies».
 Sources: flow bad807, 2026-10-04; flow d4ae97, 2026-10-07; flow 875960,
 2026-10-11.
 
-Under choice 1:
+Under choice 1, the record moves whole, as its own words propose:
+
+**Move to notion**: `flows/d4ae97/vision/flow.md`, the entry «The end of
+a metaflow», to `flows/d4ae97/notion/flow.md`.
+
+Under choice 2, the machine's design:
 
 ```text
   A topic never dies; it goes idle, its flows turned off. When the living touches on it again, whether to wake a flow for it, and at which layer, is a judgment, made by a small model; a topic is bound to its context modules, so Flow knows what to start it with, together with the new input that warrants it.
@@ -356,17 +366,13 @@ Under choice 1:
 + A metaflow on a topic other than core may carry its end: a short description of the goal that closes it; when the goal is reached, its topic goes idle.
 ```
 
-Under choice 2, the record moves whole, as its own words propose:
-
-**Move to notion**: `flows/d4ae97/vision/flow.md`, the entry «The end of
-a metaflow», to `flows/d4ae97/notion/flow.md`.
-
 Lands in no code.
 
 Ruling:
 
-1. Land the line in vision-flow.
-2. Move the record to notion; no line.
+1. Move the record to notion; no line (flow d4ae97, 2026-10-07).
+2. Land the line in vision-flow, the machine's design: the end is the
+   goal, and the goal reached is what idles the topic.
 3. Neither.
 
 ### Proposal 6: the metaflow clusters and the Sun
@@ -392,6 +398,25 @@ Line B, the Sun:
 + The Sun, the Primary layer, is not always on: it is woken for judgment and unwinds when nothing is in progress. Its next flow receives only what is still undecided; what is decided goes into the context modules.
 ```
 
+The figure, after line B:
+
+```text
++ +------------------------------+
++ | a judgment waiting           |
++ +------------------------------+
++         | wakes
++         v
++ +------------------------------+
++ | the Sun, the Primary layer   |
++ +------------------------------+
++     | rules into        | leaves undecided to
++     v                   v
++ +----------------+  +--------------------+
++ | the context    |  | its next flow      |
++ | modules        |  +--------------------+
++ +----------------+
+```
+
 Line B sits beside Proposal 6 of «Flow: short term and long term»,
 third edition: a handover carries what needs judgment.
 
@@ -412,28 +437,40 @@ Ruling:
 ### Proposal 7: what Flow is specified in
 
 File: `psyche-context/skills/vision-flow.md`, «Repository and skills»,
-a new paragraph at its end.
+two new paragraphs at its end: a long-term line, then a short-term one.
 
-Sources: flow d4ae97, 2026-10-08. Against it: Proposal 1 of «Clojure
-and data: the rectification», which rewrites the long term from the
-prototype's Malli specs (Malli: the library the Clojure code describes
-its data shapes with); flow d68c82 and flow da2038, 2026-10-13.
+Sources: flow d4ae97, 2026-10-08; flow f5a6e9, 2026-10-09. Beside it:
+Proposal 1 of «Clojure and data: the rectification», which has the long
+term rewritten from the prototype's Malli specs (Malli: the library the
+Clojure code describes its data shapes with); flow d68c82 and flow
+da2038, 2026-10-13.
 
 ```text
   The flow repository holds the machinery of the Flow Nexus and is a runtime repository. Every skill lives outside it, the basic skills included, so that a change to a skill causes no Nix rebuild. The basic skills give our own take on how an agent behaves in a harness, replacing the prompt the harnesses build in.
 +
-+ Flow's types, functions and logic are specified in Ethos, and Ethos code creates them; the Clojure prototype follows that specification.
++ Flow's types, functions and logic are specified in Ethos, and Ethos code creates them.
++
++ Short term: the launcher and the messenger describe their records in Malli specs.
 ```
 
-Lands in no code here; the Ethos declaration of the registry's records
-waits on this ruling.
+The two lines stand together: Malli now, Ethos in the long term; they
+differ only on which is written from which. Lands in no code here; the
+Ethos declaration of the registry's records is long-term and waits on
+this ruling.
 
-Ruling:
+Ruling, one number from each group:
 
-1. Land: Ethos first, the prototype follows.
-2. No line: the prototype's Malli specs come first, and the long term
-   is rewritten from them, as the rectification's Proposal 1 stands.
-3. Land with changes the living names.
+The two lines:
+1. Land both.
+2. Land with changes the living names.
+3. Drop.
+
+Which is written from which:
+4. Ethos is written first; the prototype's Malli specs follow it (flow
+   d4ae97, 2026-10-08).
+5. The Ethos is rewritten from the prototype's Malli specs, the
+   machine's design, as the rectification's Proposal 1 stands: a
+   running prototype's shapes are witnessed before they are declared.
 
 ### Proposal 8: what each aspect does
 
