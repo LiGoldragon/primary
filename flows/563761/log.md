@@ -36,3 +36,7 @@ Reviewer (skills loaded): his words lead the forks in P2/P3/P5; P7 split into un
 
 ## 2026-10-13 batch 02 published
 «Flow: the metaflow» at https://claude.ai/artifact/N1tgM3NYPWrgWo61kaTM8j; page books/05-metaflow.html; phone check witnessed at 320/375px. Link and summary sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Primary working-tree change left for the committer: tools/book-check.mjs and book-check.test.mjs exempt verbatim "- " lines in code fences from the 52-column limit. Waiting for batch 03.
+
+## 2026-10-13 batch 03 psyches received
+Psyche Flow Secondary delivered the batch 03 #psyches envelope: flow refresh, lifecycle, handover and compaction (flows 6cc91b, 692df8, fd0f97, 48cff7, f55ec8, 9993b5, b80e55, 1b8ac0, e51411, 88475f, b7da5d, b860be, 8475a9, d4ae97, 02dda6, 33752b, d68c82; 2026-09-14 to 2026-10-13). Author dispatched under the batch rules; the envelope is extracted from this flow's transcript into books/batch-03-psyches.edn by the subflow.
+Secondary: batch 02 accepted; batch 03 is 31 pairs (refresh, handover, thresholds), same brief. New standing rules for this and later books: no narration lines (no test-run reports, no "lands in no code", no connective prose); test results go in the message to the Secondary; error names and messages in code read from data or justified in one line. Author brief carries them.
