@@ -33,7 +33,7 @@ export function notifyTurnEnd({primary, committer, event, env = process.env, run
   if (!path.isAbsolute(event.transcript_path ?? '') || !fs.statSync(event.transcript_path).isFile())
     throw new Error('dirty turn has no readable native transcript path');
   const message = [
-    'Primary turn ended with dirty work. Read this firing session transcript, identify the owner’s paths, and commit through your sole in-place JJ route.',
+    'Primary turn ended with dirty work. Read this firing session transcript, identify the owner’s paths, and publish through your sole deterministic selected-path tool; never move the shared working copy or accept a supplied base.',
     JSON.stringify({flow_id: flow || null, identity_kind: flow ? 'claimed_flow' : 'native_session', session_id: event.session_id, transcript_path: event.transcript_path, primary: root}),
     ...(flow ? [] : ['Only the actual native session identity is supplied. Resolve an existing flow claim from its transcript or use its demonstrated edited paths; never derive a Flow ID or invent lane ownership.']),
     'Other writers may still be editing. Report a shared-path collision; do not include their paths. Do not wake a second committer.',
