@@ -21,8 +21,16 @@ Mission: Fable's whole `flows/33752b/reports/mind-flow-mission.md`, living order
 
 ## Measured checkpoint
 
-All enumerated Flow and Message branches were incorporated into main with explicit semantic dispositions; none were deleted. Field's successive changed-input builds now compile Flow production library and binary, then refuse test compilation. Exact test-only correction is Flow `e4c268097514bbb75d796ebdf47a0a9826fcc09e`; its checks are pending.
+All enumerated Flow and Message branches were incorporated into main with explicit semantic dispositions; none were deleted. Earlier compile and recognition refusals remain in their original Field logs and source history.
 
-Message `8d44eef5121be3c00050fc67694e10b851e66abf` passed both recognition unit tests but failed the process restart integration because the fixture kills its writer and redb read-only open refuses pending repair. Changed Message `6d0784a16e33f064bf36f9ae82e2eb3b6d4e1b32` adds snapshot recognition and crash/no-mutation regression coverage; checks are pending. Existing restart assertions remain.
+Field reports Flow `9f159d03ae0bf5aa7f2a8d1c86ba7f386f69a057` passed fmt, no-free-functions and no-inherent-methods. Package/default and checks.default passed its parent `949d21979ac9511c3b947d64cdc187a0bd85337c`; this is not an all-five-same-child claim. Message `990f5bc931891d7ab6fc28a3d243b4fae291bc5e` passed package/default, checks.default and fmt on that exact child. Recognition includes fresh reopen, crash recovery and foreign-store preservation.
 
-No real Flow Start or unified deployment is claimed. Field owns the serial checks and deployment; passing revision and actual behavior will be appended after its receipts.
+Field published Home `2151391053b3a1b225851e4862009feeab302fba`, its exact thirteen-path paired declaration. Field reports runtime realization and four unit/retirement/interface checks passed; trusted closures were copied, with profile-preservation qualification in progress. These are attributed Field receipts, not an independently witnessed live Flow Start. Exact logs remain under `/home/li/private-repos/flow-evidence/42265e/flow-unified-deployment-20261013/`.
+
+## Public identity and specialized launch follow-through
+
+The living's immediate public-name order uses messenger-clj's existing typed registry to resolve the three-field metaflow name to the current native binding. Native Flow's topic-address/process relation remains separate integration work; this bridge is not presented as native Flow ownership. Messenger main `38d8a6a40a9f45fca31601ac28ba27a75a45899f` implements the public name-only command boundary and retains internal audit identities. Field's package checks, coherent caller transition, Home deployment and name-to-name received-envelope witness are still required.
+
+The short-term EDN launcher now belongs to Field's existing author: shared per-aspect configuration and per-metaflow differences specify context modules and SYSTEM/USER placement. Cheap specialized seats, artifact access only where needed, and fresh-context reactivation remain the mission direction. No EDN native success follows from the paired Flow/Message package checks.
+
+No real Flow Start or unified live deployment is claimed here. Field owns deployment; actual behavior and its witnessed revision will be appended after its receipt.
