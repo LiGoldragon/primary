@@ -132,6 +132,13 @@ assert.throws(() => validateLoadedSkillBlocks([loaded[0], loaded[0]], ['operatio
 assert.throws(() => validateLoadedSkillBlocks([{...loaded[0], body: 'altered'}], ['operation-main-flow'], skillReader), /body differs/);
 const finalPrompt = {type: 'user', promptId: 'launch', message: {role: 'user', content: 'Say ready.'}};
 assert.deepEqual(readUserPrompts([...skillRows, finalPrompt]).at(-1), {id: 'launch', text: 'Say ready.'});
+const pastedPrompt = {...finalPrompt, message: {role: 'user', content: '\n\n<pasted_content id="1581">\nSay ready.\n</pasted_content id="1581">\n'}};
+assert.deepEqual(readUserPrompts([pastedPrompt]), [{id: 'launch', text: 'Say ready.'}]);
+for (const text of [
+  '<pasted_content id="1581">\nSay ready.\n</pasted_content id="1582">',
+  'Extra instruction\n<pasted_content id="1581">\nSay ready.\n</pasted_content id="1581">',
+  '<pasted_content id="1581">\nSay ready.\n</pasted_content id="1581">\nExtra instruction',
+]) assert.equal(readUserPrompts([{...finalPrompt, message: {content: text}}])[0].text, text);
 const response = {type: 'assistant', effort: 'medium', perTurnEffort: 'medium', message: {model: 'claude-sonnet-5-5', stop_reason: 'end_turn'}};
 assert.deepEqual(assistantResponses([response]), [response]);
 assert.equal(hasCompletedResponseAfter([response], 0), true);

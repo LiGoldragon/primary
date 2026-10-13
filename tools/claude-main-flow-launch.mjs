@@ -230,7 +230,13 @@ export function validateLoadedSkillBlocks(blocks, skillNames, read) {
 
 export function readUserPrompts(rows) {
   return rows.filter(r => r.type === 'user' && !r.isMeta && !(Array.isArray(r.message?.content) && r.message.content.some(x => x.type === 'tool_result')))
-    .map(row => ({id: row.promptId ?? row.uuid, text: textOf(row)}));
+    .map(row => {
+      const text = textOf(row);
+      // Herdr's native paste can wrap one complete prompt. Require a whole
+      // wrapper with the same numeric identifier; never match a substring.
+      const pasted = /^\s*<pasted_content id="([0-9]+)">\r?\n([\s\S]*)\r?\n<\/pasted_content id="\1">\s*$/.exec(text);
+      return {id: row.promptId ?? row.uuid, text: pasted ? pasted[2] : text};
+    });
 }
 
 export const assistantResponses = rows => rows.filter(r => r.type === 'assistant' && r.message?.model);
