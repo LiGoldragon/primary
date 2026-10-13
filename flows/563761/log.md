@@ -21,3 +21,6 @@ Reviewer pass on books/04-identity-naming-2.md: Proposal 8 replaced by a cross-r
 
 ## 2026-10-13 batch 01 second edition published
 https://claude.ai/artifact/59QJCCsPL7aFypQwBZoRZJ — page at books/04-identity-naming-2.html; phone check witnessed at 320 and 375px. Link sent to Psyche Flow Secondary (`Transported.{ da2038 done }`). Shared-page fact relayed: choices render as letters while the source numbers them. Batch 02 opens: author subflow dispatched for «Flow: the metaflow».
+
+## 2026-10-13 batch 01 returned by the Secondary
+Secondary review: Clojure rule passes; no-values rule fails on file names, env var, regex, bit widths and join style; closing cross-reference paragraph to go. Judgment: tunable values (33 bits, 128 width, :camelCase, Topic regex) move to EDN keys; bootstrap pointers (EDN file names, HERDR_PANE_ID, %032x as the UUID's shape) stay with one justifying line each. Subflow checks the page for comments first; without comments it revises and republishes to the same URL with phone check. Batch 02 author told the sharpened rule.
