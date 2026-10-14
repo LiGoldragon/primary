@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {defaultLaunchConfig} from './launch-config.mjs';
 import {spiritModules, mainSystemModules, composeSpiritSystemPrompt, codexModelSystemPrompt} from './spirit-system-prompt.mjs';
 const root = fs.mkdtempSync(path.join(os.tmpdir(), 'spirit-system-'));
 try {
@@ -37,6 +38,9 @@ try {
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}).map(module => module.name), roleNames);
   const rolePrompt = composeSpiritSystemPrompt('Base.', mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}));
   assert.equal(rolePrompt.split('Read all comments').length - 1, 1);
+  const configuredRole = mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', launchConfig: defaultLaunchConfig()});
+  assert.equal(configuredRole.filter(module => module.name === 'main-seat-role-psyche-core-tertiary').length, 1);
+  assert.ok(configuredRole.at(-1).body.includes('relay ledger'));
   assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', topic: 'Flow'}).some(module => module.name.startsWith('main-seat-role-')));
   assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Secondary'}).some(module => module.name.startsWith('main-seat-role-')));
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Field', layer: 'Primary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design']);

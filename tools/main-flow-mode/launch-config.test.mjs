@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig} from './launch-config.mjs';
+import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig, firstPromptFromConfig} from './launch-config.mjs';
 import {mainSystemModules} from './spirit-system-prompt.mjs';
 
 const config = loadLaunchConfig(path.resolve(import.meta.dirname, '../..'));
@@ -23,3 +23,10 @@ try {
   assert.throws(() => loadLaunchConfig(fixture), /unsupported: bogus/);
 } finally { fs.rmSync(fixture, {recursive: true, force: true}); }
 console.log('launch-config tests passed');
+
+const topic = {aspect: 'Psyche', topic: 'Flow', layer: 'Primary', 'raw-psyche-paths': ['raw/flow.md']};
+const templateConfig = {shared: {'first-prompt-template': '{{modules}}\n{{handover}}\n{{raw-psyche}}\n{{metaflow}}'}};
+assert.equal(firstPromptFromConfig(templateConfig, topic, {modules: '/context', handover: 'judgment'}), '/context\njudgment\nraw/flow.md\nPsyche Flow Primary\n');
+assert.throws(() => firstPromptFromConfig(templateConfig, {...topic, 'raw-psyche-paths': []}, {modules: '', handover: 'judgment'}), /raw-psyche-paths/);
+assert.throws(() => firstPromptFromConfig({shared: {}}, topic, {modules: '', handover: 'judgment'}), /first-prompt-template/);
+assert.throws(() => firstPromptFromConfig({shared: {'first-prompt-template': '{{modules}}{{handover}}{{raw-psyche}}{{invented}}'}}, topic, {modules: '', handover: 'judgment'}), /unknown first-prompt field/);

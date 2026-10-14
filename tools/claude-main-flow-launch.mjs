@@ -37,14 +37,13 @@ import {selectVoiceProfile} from './native-voice-profiles.mjs';
 import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic, writeContinuationRecord, orderSkillsForPrompt, pickWorkspace, resolveSkillDependencies} from './native-main-flow-launch-shared.mjs';
 import {composeSpiritSystemPrompt, mainSystemModules} from './main-flow-mode/spirit-system-prompt.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
-import {defaultLaunchConfig, birthSkillsFromConfig, metaflowFor} from './main-flow-mode/launch-config.mjs';
+import {defaultLaunchConfig, birthSkillsFromConfig, metaflowFor, firstPromptFromConfig} from './main-flow-mode/launch-config.mjs';
 import {makeContextRefreshBinding} from './main-flow-mode/context-refresh.mjs';
 
 // Roots are expanded by Curriculum at launch; prompt composition keeps
 // compensation-main-flow first.
 // Claude expands at most six skill commands from one prompt.
 export const MAX_SKILLS_PER_PROMPT = 6;
-const STARTUP_INSTRUCTION = 'Startup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.';
 export const LAUNCH_CONFIG = defaultLaunchConfig();
 export const BIRTH_SKILLS = birthSkillsFromConfig(LAUNCH_CONFIG);
 // Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
@@ -129,23 +128,20 @@ export function composeSkillPrompt({skillNames, exists}) {
   if (!Array.isArray(skillNames) || skillNames.length === 0 || skillNames.length > MAX_SKILLS_PER_PROMPT) throw new Error(`one Claude prompt must contain between one and ${MAX_SKILLS_PER_PROMPT} skills`);
   if (new Set(skillNames).size !== skillNames.length) throw new Error('Claude skill prompt contains duplicate names');
   for (const name of skillNames) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
-  return `${skillNames.map(n => `/${n}`).join(' ')} # Startup skills\n\n${STARTUP_INSTRUCTION}\n`;
+  return `${skillNames.map(n => `/${n}`).join(' ')}\n`;
 }
 
-export function composeFirstPrompt({brief, exists, skillNames = BIRTH_SKILLS.filter(name => !name.startsWith('intent-'))}) {
+export function composeFirstPrompt({brief, exists, launchConfig = LAUNCH_CONFIG, metaflowConfig = metaflowFor(launchConfig, {aspect: 'Psyche', topic: 'Core', layer: 'Primary'}), skillNames = BIRTH_SKILLS.filter(name => !name.startsWith('intent-'))}) {
   if (!Array.isArray(skillNames) || skillNames.length === 0) throw new Error('resolved skill closure is empty');
   if (new Set(skillNames).size !== skillNames.length) throw new Error('resolved skill closure contains duplicates');
   if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-') || name.startsWith('intent-'))) throw new Error('startup spirit and intent modules belong only in the main system prompt');
   if (skillNames[0] !== 'compensation-main-flow') throw new Error('compensation-main-flow must lead the resolved skill closure');
   for (const name of skillNames) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
   if (!brief.trim()) throw new Error('launch brief is empty');
-  const skillPrompts = [];
-  for (let offset = 0; offset < skillNames.length; offset += MAX_SKILLS_PER_PROMPT) {
-    skillPrompts.push(composeSkillPrompt({skillNames: skillNames.slice(offset, offset + MAX_SKILLS_PER_PROMPT), exists}));
-  }
-  const prompt = `${brief.trim()}\n`;
+  const modules = composeSkillPrompt({skillNames, exists});
+  const prompt = firstPromptFromConfig(launchConfig, metaflowConfig, {modules, handover: brief});
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('launch brief exceeds one argument (120 KiB)');
-  return {skillPrompts, prompt};
+  return {prompt};
 }
 
 // The main-flow mode a main seat starts in: the replacing system prompt, and the
@@ -229,14 +225,33 @@ export function validateLoadedSkillBlocks(blocks, skillNames, read) {
 }
 
 export function readUserPrompts(rows) {
-  return rows.filter(r => r.type === 'user' && !r.isMeta && !(Array.isArray(r.message?.content) && r.message.content.some(x => x.type === 'tool_result')))
-    .map(row => {
+  const prompts = [];
+  const commands = new Map();
+  for (const row of rows.filter(r => r.type === 'user' && !r.isMeta && !(Array.isArray(r.message?.content) && r.message.content.some(x => x.type === 'tool_result')))) {
       const text = textOf(row);
       // Herdr's native paste can wrap one complete prompt. Require a whole
       // wrapper with the same hexadecimal identifier; never match a substring.
       const pasted = /^\s*<pasted_content id="([a-fA-F0-9]+)">\r?\n([\s\S]*)\r?\n<\/pasted_content id="\1">\s*$/.exec(text);
-      return {id: row.promptId ?? row.uuid, text: pasted ? pasted[2] : text};
-    });
+      const command = /^<command-message>([A-Za-z0-9_-]+)<\/command-message>\n<command-name>\/\1<\/command-name>\n<command-args>([\s\S]*)<\/command-args>$/.exec(text);
+      if (command && row.promptId) {
+        let group = commands.get(row.promptId);
+        if (!group) {
+          group = {id: row.promptId, text: command[2], commands: []};
+          commands.set(row.promptId, group);
+          prompts.push(group);
+        }
+        if (group.text !== command[2]) throw new Error('native command arguments differ within one prompt');
+        group.commands.push(command[1]);
+      } else prompts.push({id: row.promptId ?? row.uuid, text: pasted ? pasted[2] : text});
+  }
+  return prompts;
+}
+
+export function matchesFirstPrompt(receipt, prompt, skillNames) {
+  if (!receipt.commands) return receipt.text.trim() === prompt.trim();
+  const prefix = skillNames.map(name => `/${name}`).join(' ');
+  return receipt.commands.length === skillNames.length && receipt.commands.every((name, index) => name === skillNames[index]) &&
+    prompt.startsWith(prefix) && receipt.text.trim() === prompt.slice(prefix.length).trim();
 }
 
 export const assistantResponses = rows => rows.filter(r => r.type === 'assistant' && r.message?.model);
@@ -251,10 +266,6 @@ export function titleRecords(rows, sessionId) {
 }
 
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
-const submitPrompt = (session, paneId, prompt) => {
-  execFileSync('herdr', ['--session', session, 'pane', 'send-text', paneId, prompt.trimEnd()], {encoding: 'utf8', timeout: 15000});
-  execFileSync('herdr', ['--session', session, 'pane', 'send-keys', paneId, 'Enter'], {encoding: 'utf8', timeout: 15000});
-};
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function poll(what, seconds, probe) {
   for (let i = 0; i < seconds; i++) { const v = probe(); if (v) return v; await sleep(1000); }
@@ -286,11 +297,10 @@ async function launch(o) {
     const systemBase = o.systemPromptFile ?? path.join(o.workspace, 'tools/main-flow-mode/system-prompt.md');
     composeSpiritSystemPrompt(fs.readFileSync(systemBase, 'utf8'), mainSystemModules(o.workspace, '.claude', systemSeat));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
-    const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
-    const firstSkillPrompt = composition.skillPrompts[0];
-    const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-')), 'first-skill-prompt.md');
-    fs.writeFileSync(promptFile, firstSkillPrompt);
-    done(`composed ${skillNames.length} selected skills into ${composition.skillPrompts.length} native prompt batches; main-flow leads`);
+    const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow});
+    const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'claude-main-flow-launch-')), 'first-topic-prompt.md');
+    fs.writeFileSync(promptFile, composition.prompt);
+    done(`composed one topic prompt from EDN with ${skillNames.length} selected skills, handover and raw psyche paths`);
 
     step = 'flow';
     const sessionId = crypto.randomUUID();
@@ -322,45 +332,17 @@ async function launch(o) {
     await poll('the native transcript', 120, () => fs.existsSync(transcript));
     done(`claude session ${sessionId}, transcript ${transcript}; system prompt ${mode.promptFile}, settings ${mode.settingsFile}`);
 
-    step = 'skill loading';
-    let transcriptRows = await poll('the first native skill body', 120, () => {
+    step = 'first topic response';
+    const responseTimeout = metaflow['first-response-timeout-seconds'] ?? LAUNCH_CONFIG.shared['first-response-timeout-seconds'];
+    if (!Number.isInteger(responseTimeout) || responseTimeout < 1) throw new Error('EDN first-response-timeout-seconds is required');
+    const transcriptRows = await poll('the first topic prompt and its proposal response', responseTimeout, () => {
       const current = rows(transcript);
-      return readLoadedSkillBlocks(current, o.workspace).length ? current : null;
+      const exact = readUserPrompts(current).filter(receipt => matchesFirstPrompt(receipt, composition.prompt, skillNames));
+      return exact.length === 1 && hasCompletedResponseAfter(current, 0) ? current : null;
     });
-    let loadedCount = validateLoadedSkillBlocks(readLoadedSkillBlocks(transcriptRows, o.workspace), skillNames, liveSkillReader(o.workspace));
-    await poll('the first startup response', 180, () => {
-      transcriptRows = rows(transcript);
-      return hasCompletedResponseAfter(transcriptRows, 0) ? transcriptRows : null;
-    });
-    let responseCount = assistantResponses(transcriptRows).length;
-
-    while (loadedCount < skillNames.length) {
-      const nextSkills = skillNames.slice(loadedCount, loadedCount + MAX_SKILLS_PER_PROMPT);
-      const startupPrompt = composeSkillPrompt({skillNames: nextSkills, exists: liveSkillExists(o.workspace)});
-      submitPrompt(o.herdrSession, paneId, startupPrompt);
-      const previousResponses = responseCount;
-      transcriptRows = await poll(`skills ${nextSkills.join(' ')}`, 180, () => {
-        const current = rows(transcript);
-        const count = validateLoadedSkillBlocks(readLoadedSkillBlocks(current, o.workspace), skillNames, liveSkillReader(o.workspace));
-        return count > loadedCount && hasCompletedResponseAfter(current, previousResponses) ? current : null;
-      });
-      loadedCount = validateLoadedSkillBlocks(readLoadedSkillBlocks(transcriptRows, o.workspace), skillNames, liveSkillReader(o.workspace));
-      responseCount = assistantResponses(transcriptRows).length;
-    }
+    const loadedCount = validateLoadedSkillBlocks(readLoadedSkillBlocks(transcriptRows, o.workspace), skillNames, liveSkillReader(o.workspace));
     if (loadedCount !== skillNames.length) throw new Error(`expected ${skillNames.length} selected skill bodies, got ${loadedCount}`);
-    done(`native transcript contains all ${loadedCount} selected skill bodies once, in resolver order`);
-
-    step = 'launch brief';
-    const previousResponses = responseCount;
-    submitPrompt(o.herdrSession, paneId, composition.prompt);
-    transcriptRows = await poll('the one launch brief and its response', 180, () => {
-      const current = rows(transcript);
-      const exactBriefs = readUserPrompts(current).filter(prompt => prompt.text.trim() === composition.prompt.trim());
-      return exactBriefs.length === 1 && hasCompletedResponseAfter(current, previousResponses) ? current : null;
-    });
-    const exactBriefs = readUserPrompts(transcriptRows).filter(prompt => prompt.text.trim() === composition.prompt.trim());
-    if (exactBriefs.length !== 1) throw new Error(`expected the launch brief once, found ${exactBriefs.length}`);
-    done(`launch brief accepted once after ${loadedCount} verified skill bodies`);
+    done(`one EDN topic prompt accepted; ${loadedCount} selected skill bodies and a completed first response witnessed`);
 
     step = 'harness settings';
     const assistant = assistantResponses(transcriptRows).at(-1);
@@ -399,9 +381,10 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const startupSkills = resolveSkillDependencies(BIRTH_SKILLS);
+    const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: o.topic ?? 'Core', layer: o.layer ?? 'Primary'});
+    const startupSkills = resolveSkillDependencies(metaflow['user-modules'] ?? BIRTH_SKILLS);
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
-    const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames});
-    process.stdout.write(`${composition.skillPrompts.map((prompt, i) => `# Skill batch ${i + 1}\n${prompt}`).join('\n')}\n# Launch brief\n${composition.prompt}`);
+    const composition = composeFirstPrompt({brief: fs.readFileSync(o.brief, 'utf8'), exists: liveSkillExists(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow});
+    process.stdout.write(composition.prompt);
   } else await launch(o);
 }

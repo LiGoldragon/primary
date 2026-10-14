@@ -1,0 +1,1 @@
+{:aspect :Psyche :topic :Spirit :layer :Secondary :modules [:spirit-core :intent-main-flow :intent-context-modules :vision-book :compensation-book-crystallization] :user-modules [:compensation-main-flow] :raw-psyche-paths ["flows/d55c56/vision/" "flows/ee57fb/vision/"]}

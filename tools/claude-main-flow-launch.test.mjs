@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, LAYERS, MAX_SKILLS_PER_PROMPT, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, LAYERS, MAX_SKILLS_PER_PROMPT, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, matchesFirstPrompt, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 import {claudeFlowEnvironment} from './claude-main-flow-launch.mjs';
@@ -81,18 +81,28 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value:
 assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'session'));
 
 // Composition: native Claude loads no more than six selected skills per prompt;
-// main-flow leads, and the one launch brief is sent only after those prompts.
+// The first native prompt contains the topic work, with no staging turn.
 assert.equal(BIRTH_SKILLS[0], 'compensation-main-flow');
 for (const name of BIRTH_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.equal(MAX_SKILLS_PER_PROMPT, 6);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
-const names = ['compensation-main-flow', ...Array.from({length: 12}, (_, i) => `skill-${i + 1}`)];
-const composition = composeFirstPrompt({brief: 'Say ready.\n', exists: () => true, skillNames: names});
-assert.deepEqual(composition.skillPrompts.map(prompt => [...prompt.matchAll(/\/([A-Za-z0-9_-]+)/g)].map(m => m[1])), [names.slice(0, 6), names.slice(6, 12), names.slice(12)]);
-assert.ok(composition.skillPrompts[0].startsWith('/compensation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5 '));
-assert.ok(composition.skillPrompts.every(prompt => prompt.includes('Reply exactly READY')));
-assert.equal(composition.prompt, 'Say ready.\n');
-assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior # Startup skills\n\nStartup context only: load these skills for the upcoming launch brief. Do not begin that work or write files yet. Reply exactly READY.\n');
+const names = ['compensation-main-flow', ...Array.from({length: 5}, (_, i) => `skill-${i + 1}`)];
+const composition = composeFirstPrompt({brief: 'The pending topic judgment.\n', exists: () => true, skillNames: names});
+assert.ok(composition.prompt.startsWith('/compensation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5\n'));
+assert.ok(composition.prompt.includes('The pending topic judgment.'));
+assert.ok(composition.prompt.includes('flows/33752b/vision/'));
+assert.ok(composition.prompt.includes('first response is a crystallization proposal'));
+assert.ok(!composition.prompt.includes('READY'));
+const nativeArgs = composition.prompt.slice(names.map(name => `/${name}`).join(' ').length).trim();
+const commandRows = names.map(name => ({type: 'user', promptId: 'one-topic-prompt', message: {content: `<command-message>${name}</command-message>\n<command-name>/${name}</command-name>\n<command-args>${nativeArgs}</command-args>`}}));
+const firstReceipts = readUserPrompts(commandRows);
+assert.equal(firstReceipts.length, 1);
+assert.ok(matchesFirstPrompt(firstReceipts[0], composition.prompt, names));
+assert.ok(!matchesFirstPrompt(readUserPrompts(commandRows.slice(1))[0], composition.prompt, names));
+assert.ok(!matchesFirstPrompt({...firstReceipts[0], text: `${nativeArgs}\nextra instruction`}, composition.prompt, names));
+assert.equal(readUserPrompts([...commandRows, ...commandRows.map(row => ({...row, promptId: 'duplicate-prompt'}))]).length, 2);
+assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior\n');
+assert.throws(() => composeFirstPrompt({brief: 'Topic work.', exists: () => true, skillNames: [...names, 'overflow']}), /between one and 6/);
 assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
 assert.throws(() => composeSkillPrompt({skillNames: Array(7).fill('x'), exists: () => true}), /between one and 6/);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit-core']}), /only in the main system prompt/);

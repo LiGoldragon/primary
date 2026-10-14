@@ -94,4 +94,19 @@ export function birthSkillsFromConfig(config, aspect = 'Psyche') {
   return [...names];
 }
 
+export function firstPromptFromConfig(config, metaflow, {modules, handover, rawPsychePaths}) {
+  const template = metaflow?.['first-prompt-template'] ?? config.shared['first-prompt-template'];
+  if (typeof template !== 'string' || !template.trim()) throw new Error('EDN first-prompt-template is required');
+  const sources = rawPsychePaths ?? metaflow?.['raw-psyche-paths'];
+  if (!Array.isArray(sources) || !sources.length || sources.some(source => typeof source !== 'string' || !source.trim())) throw new Error('EDN raw-psyche-paths are required');
+  if (!handover?.trim()) throw new Error('first prompt handover or topic context is required');
+  const values = {modules, handover, 'raw-psyche': sources.join('\n'), 'topic-context': metaflow['topic-context'] ?? '', metaflow: `${metaflow.aspect} ${metaflow.topic} ${metaflow.layer}`};
+  const prompt = template.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
+    if (!(key in values)) throw new Error(`unknown first-prompt field: ${key}`);
+    return values[key];
+  });
+  if (!template.includes('{{handover}}') || !template.includes('{{raw-psyche}}') || !template.includes('{{modules}}')) throw new Error('EDN first prompt must carry modules, handover and raw psyche');
+  return `${prompt.trim()}\n`;
+}
+
 export const defaultLaunchConfig = () => loadLaunchConfig(path.resolve(new URL('../..', import.meta.url).pathname));

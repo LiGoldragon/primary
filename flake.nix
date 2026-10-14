@@ -27,11 +27,11 @@
       flake = false;
     };
     mind-context = {
-      url = "github:LiGoldragon/mind-context/80d5d730e4c4a0be62c59e621711c186e43e41ca";
+      url = "github:LiGoldragon/mind-context/0f990b61bc6f89b60f05a34cc1c4a36709406f70";
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context/108daa054288c037eae9ef5fbc02a8bdb7d684cb";
+      url = "github:LiGoldragon/field-context/5a542ba4f87365df5eebda2e85338bb553c00fcb";
       flake = false;
     };
     flow = {

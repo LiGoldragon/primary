@@ -54,8 +54,9 @@ export function secondaryBeforePrimary(options, continuation) {
   fs.writeFileSync(path.join(reservation, 'owner.json'), JSON.stringify({pid: process.pid, aspect: options.aspect, topic}));
   const release = () => { fs.unlinkSync(path.join(reservation, 'owner.json')); fs.rmdirSync(reservation); };
   try {
+    const config = defaultLaunchConfig();
     let declaredNativeId;
-    try { declaredNativeId = metaflowFor(defaultLaunchConfig(), {aspect: options.aspect, topic, layer: 'Primary'})['secondary-native-id']; } catch (error) { if (topic === 'Flow' && options.aspect === 'Psyche') throw error; }
+    try { declaredNativeId = metaflowFor(config, {aspect: options.aspect, topic, layer: 'Primary'})['secondary-native-id']; } catch (error) { if (topic === 'Flow' && options.aspect === 'Psyche') throw error; }
     ensureSecondary({...options, topic}, {
       declaredNativeId,
       observe: () => JSON.parse(execFileSync('herdr', ['--session', options.herdrSession, 'agent', 'list'], {encoding: 'utf8', timeout: 15000})),
@@ -65,7 +66,10 @@ export function secondaryBeforePrimary(options, continuation) {
         const profile = selectVoiceProfile({aspect: options.aspect, layer: 'Secondary'});
         const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'secondary-first-'));
         const brief = path.join(dir, 'brief.md'), metaflow = path.join(dir, 'metaflow.md');
-        fs.writeFileSync(brief, `You are the ${options.aspect} ${topic} Secondary. Give only your normal startup presentation. No additional task is assigned.\n`, {mode: 0o600});
+        const secondary = metaflowFor(config, {aspect: options.aspect, topic, layer: 'Secondary'});
+        const context = secondary['topic-context'] ?? config.shared['secondary-bootstrap-context'];
+        if (typeof context !== 'string' || !context.trim()) throw new Error('EDN Secondary bootstrap context is required');
+        fs.writeFileSync(brief, `${context}\n`, {mode: 0o600});
         fs.writeFileSync(metaflow, continuation.metaflow, {mode: 0o600});
         const backend = path.join(path.dirname(fileURLToPath(import.meta.url)), `${profile.harness}-main-flow-launch.mjs`);
         const args = [backend, '--aspect', options.aspect, '--layer', 'Secondary', '--brief', brief, '--root', '--metaflow', metaflow, '--topic', topic, '--workspace', options.workspace, '--herdr-session', options.herdrSession];

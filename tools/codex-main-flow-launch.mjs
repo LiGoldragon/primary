@@ -24,7 +24,7 @@ import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic,
 import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
 import {makeContextRefreshBinding} from './main-flow-mode/context-refresh.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
-import {defaultLaunchConfig, birthSkillsFromConfig} from './main-flow-mode/launch-config.mjs';
+import {defaultLaunchConfig, birthSkillsFromConfig, metaflowFor, firstPromptFromConfig} from './main-flow-mode/launch-config.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup roots per aspect. Curriculum expands their declared dependencies before composition.
@@ -102,7 +102,7 @@ export const liveSkillReader = workspace => name =>
 export const skillBlock = (workspace, name, text) =>
   `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
 
-export function composeFirstPrompt({workspace, aspect, brief, read, skillNames = BIRTH_SKILLS(aspect).filter(name => !name.startsWith('intent-'))}) {
+export function composeFirstPrompt({workspace, aspect, brief, read, launchConfig = LAUNCH_CONFIG, metaflowConfig = metaflowFor(launchConfig, {aspect, topic: 'Core', layer: 'Primary'}), skillNames = BIRTH_SKILLS(aspect).filter(name => !name.startsWith('intent-'))}) {
   if (skillNames[0] !== 'compensation-main-flow') throw new Error('compensation-main-flow must lead the resolved skill closure');
   if (skillNames.some(name => name === 'spirit' || name.startsWith('spirit-') || name.startsWith('intent-'))) throw new Error('startup spirit and intent modules belong only in the main system prompt');
   const blocks = skillNames.map(name => {
@@ -111,7 +111,7 @@ export function composeFirstPrompt({workspace, aspect, brief, read, skillNames =
     return skillBlock(workspace, name, text);
   });
   if (!brief.trim()) throw new Error('launch brief is empty');
-  const prompt = `${blocks.join('\n')}\n# Launch brief\n\n${brief.trim()}\n`;
+  const prompt = firstPromptFromConfig(launchConfig, metaflowConfig, {modules: blocks.join('\n'), handover: brief});
   if (Buffer.byteLength(prompt) >= 120 * 1024) throw new Error('first prompt exceeds one argument (120 KiB)');
   return {prompt, leading: blocks[0], blocks};
 }
@@ -158,14 +158,15 @@ async function launch(o) {
     step = 'prompt';
     const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
-    const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames});
+    const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: continuation.topic, layer: o.layer});
+    const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
     done(`composed ${Buffer.byteLength(prompt)} bytes from the workspace into ${promptFile}`);
 
     const client = clientForModel(o.model);
     const systemPromptFile = path.join(path.dirname(promptFile), 'main-flow-system-prompt.md');
-    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills, launchConfig: LAUNCH_CONFIG}), {flag: 'wx', mode: 0o600});
+    fs.writeFileSync(systemPromptFile, codexModelSystemPrompt(client, o.model, o.workspace, {...o, topic: continuation.topic, metaflow: continuation.metaflow, startupSkills, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow}), {flag: 'wx', mode: 0o600});
 
     step = 'pane';
     const sessions = path.join(path.dirname(path.dirname(client.endpoint)), 'sessions');
@@ -253,6 +254,7 @@ if (invokedDirectly) {
   if (o.composeOnly) {
     const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
-    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames}).prompt);
+    const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: o.topic ?? 'Core', layer: o.layer ?? 'Primary'});
+    process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow}).prompt);
   } else await launch(o);
 }

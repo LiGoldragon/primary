@@ -83,7 +83,7 @@ def job_dir_holds_only_launch_state(job_dir, mode):
 
 def load_manifest(path):
     data = json.loads(pathlib.Path(path).read_text())
-    required = ("session_id", "model", "effort", "role", "skills", "sources")
+    required = ("session_id", "model", "effort", "role", "topic", "skills", "sources")
     absent = [key for key in required if not data.get(key)]
     if absent:
         raise ValueError("manifest missing: " + ", ".join(absent))
@@ -699,31 +699,48 @@ def wait_for_skill(path, name, start_at, deadline, root=ROOT):
 
 
 def role_brief(manifest, sources, effort_observed=True):
-    provenance = "\n\n".join(
-        f"## Source: `{item['path']}`\n\n{item['body']}"
-        for item in sources
+    metadata = {key: manifest.get(key) for key in ("role", "topic", "model", "effort", "predecessor")}
+    return json.dumps(metadata, ensure_ascii=False) + "\n\n" + "\n\n".join(
+        f"## Source: `{item['path']}`\n\n{item['body']}" for item in sources
     )
-    return (
-        f"# Native Claude main-flow launch brief\n\n"
-        f"You are {manifest['role']}. Preserve the witnessed native model `{manifest['model']}`. "
-        + (f"Preserve the witnessed effort `{manifest['effort']}`. " if effort_observed else
-           f"The process requested effort `{manifest['effort']}`; native effort metadata is unavailable. ")
-        + (f"Your immediate predecessor is `{manifest['predecessor']}`; this does not retire, replace, or deregister it. "
-           if manifest.get('predecessor') else "This is a fresh seat with no predecessor. ")
-        + f"Do not claim a new Flow identity until the native Mainflow receipt "
-        f"has been witnessed.\n\n"
-        f"The audited native skill set is: {', '.join(manifest['skills'])}. "
-        f"The launcher expanded every startup-only skill in this same first user prompt. "
-        f"The following source bundle is provenance-bearing "
-        f"handoff material, not a deployment or retirement instruction.\n\n{provenance}\n\n"
-        "BOOTSTRAP ONLY: do not claim identity, invoke tools, delegate, edit, commit, register, "
-        "or retire anything. Acknowledge this source bundle by replying only `BOOTSTRAP_READY`."
-    )
+
+
+EDN_FIRST_PROMPT = r"""
+(require '[clojure.edn :as edn] '[clojure.string :as str] '[cheshire.core :as json])
+(let [[shared-file metaflow-file] *command-line-args*
+      shared (edn/read-string (slurp shared-file))
+      metaflow (edn/read-string (slurp metaflow-file))
+      input (json/parse-string (slurp *in*) true)
+      template (or (:first-prompt-template metaflow) (:first-prompt-template shared))
+      sources (:raw-psyche-paths metaflow)
+      values {:modules (:modules input) :handover (:handover input)
+              :raw-psyche (str/join "\n" sources)
+              :topic-context (or (:topic-context metaflow) "")
+              :metaflow (:metaflow input)}]
+  (when-not (and (string? template) (seq sources)
+                 (every? #(str/includes? template %) ["{{modules}}" "{{handover}}" "{{raw-psyche}}"] ))
+    (throw (ex-info "EDN first topic prompt contract is missing" {})))
+  (print (str/replace template #"\{\{([^}]+)\}\}"
+                      (fn [[_ key]] (let [k (keyword key)]
+                                     (if (contains? values k) (get values k)
+                                         (throw (ex-info "Unknown first prompt field" {:field key}))))))))
+"""
 
 
 def first_prompt(manifest, cwd, sources, effort_observed=True):
+    aspect, layer = canonical_role(manifest["role"])
+    topic = manifest.get("topic")
+    if not isinstance(topic, str) or not re.fullmatch(r"[A-Z][A-Za-z0-9]*", topic):
+        raise ValueError("qualified topic is required for the EDN first prompt")
     blocks = [expanded_skill(name, cwd) for name in startup_skills(manifest, cwd)]
-    prompt = "\n\n".join([*blocks, role_brief(manifest, sources, effort_observed)])
+    inputs = {"modules": "\n\n".join(blocks),
+              "handover": role_brief(manifest, sources, effort_observed),
+              "metaflow": f"{aspect} {topic} {layer}"}
+    prompt = subprocess.check_output(
+        ["bb", "-e", EDN_FIRST_PROMPT, str(ROOT / "config/main-flow/shared.edn"),
+         str(ROOT / f"config/main-flow/metaflow/{aspect}-{topic}-{layer}.edn")],
+        input=json.dumps(inputs), text=True,
+    )
     if len(prompt.encode()) >= 20 * 1024:
         raise ValueError("single native first prompt must be smaller than 20 KiB")
     return prompt
@@ -867,15 +884,16 @@ def refresh(manifest, cwd, timeout, sender=inject, herdr_target=None,
                                           controller_attestation_file, controller_attestation_sha256, mode)
     sender(short, prompt)
     deadline = time.monotonic() + timeout
-    expected_ack = "BOOTSTRAP_READY"
+    expected_ack = "completed-first-topic-response"
     while time.monotonic() < deadline:
         current = transcript_entries(path)
         require_transcript_uuid(current, manifest["session_id"])
-        if expected_ack in assistant_text(current[prompt_start:]):
+        responses = [entry for entry in current[prompt_start:] if entry.get("type") == "assistant" and entry.get("message", {}).get("stop_reason") == "end_turn"]
+        if responses and assistant_text(responses).strip():
             break
         time.sleep(0.5)
     else:
-        raise RuntimeError("native source-payload acknowledgement missing")
+        raise RuntimeError("native first topic response missing")
     current = transcript_entries(path)
     require_transcript_uuid(current, manifest["session_id"])
     main_flow = expanded_skill("operation-main-flow", cwd)

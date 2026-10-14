@@ -27,7 +27,7 @@ with tempfile.TemporaryDirectory() as temp:
     session = "01234567-0000-4000-8000-000000000000"
     manifest = {
         "session_id": session, "model": "claude-haiku-4-5-20251001", "effort": "low",
-        "role": "Psyche Tertiary",
+        "role": "Psyche Tertiary", "topic": "Core",
         "titlePlan": {"aspect": "Psyche", "layer": "Tertiary", "model": "Haiku 4.5",
                       "afterOwnVerifiedFlowId": True, "template": "Psyche Haiku 4.5 <FLOW_ID>"},
         "skills": ["operation-main-flow", "spirit-core", "operation-psyche-interraction"],
@@ -42,7 +42,8 @@ with tempfile.TemporaryDirectory() as temp:
     main_flow = MODULE.expanded_skill("operation-main-flow", root)
     assert prompt.startswith(main_flow + "\n\n")
     assert MODULE.expanded_skill("operation-psyche-interraction", root) in prompt
-    assert "witnessed source" in prompt and "BOOTSTRAP_READY" in prompt
+    assert "witnessed source" in prompt and "first response is a crystallization proposal" in prompt
+    assert "BOOTSTRAP_READY" not in prompt
     assert len(prompt.encode()) < 20 * 1024
     assert manifest["sources"][0]["sha256"] not in prompt and "SHA-256:" not in prompt
 
@@ -77,8 +78,8 @@ with tempfile.TemporaryDirectory() as temp:
         rows = [
             {"type": "user", "sessionId": session, "message": {"content": text}},
             {"type": "assistant", "sessionId": session,
-             "message": {"model": manifest["model"], "effort": manifest["effort"],
-                         "content": [{"type": "text", "text": "BOOTSTRAP_READY"}]}}
+             "message": {"model": manifest["model"], "effort": manifest["effort"], "stop_reason": "end_turn",
+                         "content": [{"type": "text", "text": "Crystallization proposal: a grounded module change."}]}}
         ]
         with transcript.open("a") as handle:
             for row in rows:
@@ -156,7 +157,7 @@ with tempfile.TemporaryDirectory() as temp:
     try:
         MODULE.refresh(manifest, root, .01, lambda _short, text: dropped_calls.append(text))
     except RuntimeError as error:
-        assert "acknowledgement missing" in str(error)
+        assert "first topic response missing" in str(error)
     else:
         raise AssertionError("unwitnessed launcher injection reached readiness")
     assert dropped_calls == [prompt]
@@ -167,7 +168,7 @@ with tempfile.TemporaryDirectory() as temp:
         {"type": "user", "sessionId": session, "message": {"content": omitted_prompt}},
         {"type": "assistant", "sessionId": session,
          "message": {"model": manifest["model"], "effort": manifest["effort"],
-                     "content": [{"type": "text", "text": "BOOTSTRAP_READY"}]}}
+                     "content": [{"type": "text", "text": "Crystallization proposal: a grounded module change."}]}}
     ]))
     repair_calls = []
     def repair_sender(_short, text):

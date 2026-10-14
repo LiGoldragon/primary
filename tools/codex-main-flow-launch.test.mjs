@@ -68,14 +68,17 @@ assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ot
 
 // Composition: main-flow leads, then every Mind startup skill in order, then the brief.
 const read = name => `---\nname: ${name}\n---\n\nbody of ${name}\n`;
-const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read});
+const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Current topic judgment.\n', read});
 assert.ok(prompt.startsWith(leading));
 assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/compensation-main-flow\n\n---\nname: compensation-main-flow'));
 const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
 assert.deepEqual(order, BIRTH_SKILLS('Mind').filter(name => !name.startsWith('intent-')));
 for (const name of order.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
-assert.ok(prompt.endsWith('# Launch brief\n\nSay ready.\n'));
-const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Say ready.\n', read, skillNames: ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
+assert.ok(prompt.includes('Current topic judgment.'));
+assert.ok(prompt.includes('flows/0c85a3/vision/'));
+assert.ok(prompt.includes('first response is a crystallization proposal'));
+assert.ok(!prompt.includes('READY'));
+const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Current topic judgment.\n', read, skillNames: ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
 assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']);
 assert.match(transitive.prompt, /body of compensation-behavior/);
 assert.match(transitive.prompt, /body of compensation-correction/);

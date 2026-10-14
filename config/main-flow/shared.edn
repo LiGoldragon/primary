@@ -1,12 +1,15 @@
 {:schema "main-flow-launch/1"
+ :first-prompt-template "{{modules}}\n\n# Handover and topic context\n{{handover}}\n\n# Raw psyche records with context\n{{raw-psyche}}\n\n{{topic-context}}\n\nYour first response is a crystallization proposal on {{metaflow}}. Read the referenced raw psyche with its context and use the handover as judgment. Give one concrete proposal in your reply, grounded in his words and naming the psyche module and the removed and added lines. Explain any unresolved reading as a choice. The secretary supplies the next bounded work after Field confirms binding."
+ :first-response-timeout-seconds 900
+ :secondary-bootstrap-context "You carry this topic as its secretary. Begin from its raw psyche and propose the first crystallization for it; coordinate its next bounded work with the Primary after normal binding."
  :repositories {:psyche {:path "/git/github.com/LiGoldragon/psyche-context"
                          :ref "bf03117b424413cea4c3df7cf76a279127c8567d"
                          :skills "skills"}
                 :mind {:path "/git/github.com/LiGoldragon/mind-context"
-                       :ref "80d5d730e4c4a0be62c59e621711c186e43e41ca"
+                       :ref "0f990b61bc6f89b60f05a34cc1c4a36709406f70"
                        :skills "skills"}
                 :field {:path "/git/github.com/LiGoldragon/field-context"
-                        :ref "108daa054288c037eae9ef5fbc02a8bdb7d684cb"
+                        :ref "5a542ba4f87365df5eebda2e85338bb553c00fcb"
                         :skills "skills"}}
  :tools {:claude [:read :edit :write :bash :web]
          :codex [:read :edit :write :bash :web]

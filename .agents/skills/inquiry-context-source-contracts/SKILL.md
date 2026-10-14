@@ -1,0 +1,10 @@
+---
+description: Unresolved mapping, held-queue hook delivery and missing Flow vision-source questions after current-main source inspection.
+---
+
+- What authoritative rule maps a module kind and hyphenated filename to a registry Subaspect/Topic key with Topic:Name camelCase validation? Curriculum currently preserves the stem and Flow's shared Topic declaration is String. No such converter was verified; inventing a casing example would not settle its namespace or collision rules.
+- Which held queue is intended for prompt-hook consumption: messenger pending delivery, a Flow metaflow queue, or another store? What supported operation selects the current recipient, leases/removes entries, preserves psyche payloads and acknowledges delivery only after native context inclusion? A hook's additionalContext output alone provides none of these queue semantics.
+- Which current main source declares and implements that held-queue bridge for each harness, and which native witness proves delivery and duplicate/refusal behavior? Existing pending records and hook support are separate facts; no automatic queue-drain proof was found in the inspected paths.
+- What current source should replace or restore the absent vision-flow-ethos module referenced by Psyche's ethos vision? There is no verified hand-maintained or generated current module to choose between. The `.ethos` sources govern their generated Rust types, but that does not decide the intended reviewed vision representation.
+- Does Claude's latest distributed implementation exactly match the older version-qualified hook conversion already inspected? Its public GitHub main does not expose that implementation. Current Codex main was checked directly; a claim of identical latest Claude implementation remains unverified.
+- Which actual launch path/configuration is in use for each seat, and does it select intent-main-flow despite a metaflow override? Current main declarations establish selection paths, not universal loading by every live layer.
