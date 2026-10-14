@@ -7,8 +7,13 @@ import { fileURLToPath } from "node:url";
 export function checkBook(source, { allowLegacyDistillation = false } = {}) {
   const errors = [];
   const lines = source.replace(/\r\n/g, "\n").split("\n");
-  let fence = null, section = null, hasCrystallization = false;
+  let fence = null, section = null;
   let inComment = false;
+  let fileSeen = false, proposed = false;
+  const track = (line) => {
+    if (/^File: \S/.test(line)) fileSeen = true;
+    if (fileSeen && /^\+ \S/.test(line)) proposed = true;
+  };
   const finish = () => {
     if (section) {
       if (!section.content) errors.push({ line: section.line, reason: "empty-crystallization" });
@@ -25,6 +30,7 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
       } else {
         // A removed line is quoted as it is; the width limit binds proposed code only.
         if (fence.code && !line.startsWith("- ") && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
+        track(line);
         if (section && line.trim()) {
           section.content = true;
           if (/^File: \S/.test(line)) section.target = true;
@@ -54,12 +60,12 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
       if (/^(?:\d+[.)]\s+)?crystallization\b/i.test(heading[2]) ||
           (allowLegacyDistillation && /^(?:\d+[.)]\s+)?distillation\b/i.test(heading[2]))) {
         finish();
-        hasCrystallization = true;
         section = { line: number, level: heading[1].length, content: false, target: false, added: false, legacy: /distillation\b/i.test(heading[2]) };
       }
       return;
     }
     if (/^ {0,3}>/.test(line)) errors.push({ line: number, reason: "quote-block-in-book" });
+    track(line);
     if (section && line.trim() && !/^Presentation\./.test(line)) {
       section.content = true;
       if (/^File: \S/.test(line)) section.target = true;
@@ -67,8 +73,8 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
     }
   });
   finish();
+  if (!proposed) errors.push({ line: 1, reason: "missing-proposal" });
   if (fence) errors.push({ line: fence.line, reason: "unclosed-code-fence" });
-  if (!hasCrystallization) errors.push({ reason: "missing-crystallization" });
   return errors;
 }
 
