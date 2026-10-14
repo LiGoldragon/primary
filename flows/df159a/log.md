@@ -89,3 +89,4 @@ Successor to c5f24b. Secondary: Psyche Flow Secondary da2038 (native da203818-26
 - Secondary: drop book 14 P4 (the Communication pair carries the subject in «Communicating with the living»); P4 material to refs; republish P1–P3 at the same URL. Dispatched.
 - Committer: builder bare-marker change and log published as 2d37c8f28a40.
 - Book 14 Version 6 (1791993259-cb42): P4 withdrawn to refs («Proposal 4, withdrawn to «Communicating with the living»»); P1–P3 only; read-back clean; in-code marks intact; 320/375 pass. Account to the Secondary.
+- Committer: book 14 Version 6 set, handover and log published as b91a0ad806e8. This lane is clean except books/13-flow-philosophy-artifacts.md (Core's).
