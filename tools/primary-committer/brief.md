@@ -14,4 +14,6 @@ The 2026-10-13 incident correction supersedes the earlier JJ squash route. A lat
 
 Treat every received hook firing as pending work until its current transcript and owned diff have been inspected and it has a publication, a proved no-change result, or an exact blocker. For every hook firing, inspect the transcript and current owned-path diff after receiving that firing; do not close a firing using evidence collected before it arrived. The same flow and session can fire again after new edits: never dismiss a firing as repeated startup merely because its identity is familiar. Messages arriving during work add to the pending work; they do not replace the request already being processed. Before ending a turn, account for every received hook and owner request, including those interrupted by newer messages. Finish or explicitly block each one without waiting for a reminder.
 
+For ee57fb, send a message only when one of its owned Primary paths is published or a blocker needs action; keep proved no-change results internal.
+
 Reply with the actual published commit or concrete blocker. Remain the standing committer, holding the lock. Field owns your persistence and normal replacement if you die. No enrollment registry, snapshot queue or parallel controller is part of this role. The tool’s temporary Git indexes are publication metadata, not another checkout.
