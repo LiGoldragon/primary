@@ -7,11 +7,11 @@ Presentation.{ «Nexus, ethos and design» }
 
 ### Proposal 1: an existing harness for now; a custom one later, typed through
 
-2026-08-21, `flows/15b67974/vision/flowDaemon.md`, typed: «yes for now.
+2026-08-21, `flows/15b67974/vision/flowDaemon.md`, STT: «yes for now.
 we will create our own custom harness in the future, which will be 100%
 typed datom messages going in and being expected out.»
 
-2026-09-16, `flows/b49251/vision/flowLaunching.md`, typed: «We won't
+2026-09-16, `flows/b49251/vision/flowLaunching.md`, STT: «We won't
 always necessarily run just these kinds of flows in the cluster. Each
 main flow can run subflows in other harnesses too if it wants, or start
 a specialized main flow, which we'll start to implement now, like
@@ -58,7 +58,7 @@ of the paragraph above)
 
 ### Proposal 2: typed subflows, written in datom for Flow
 
-2026-09-15, `flows/fd0f97/vision/flowTypes.md`, typed: «You should have
+2026-09-15, `flows/fd0f97/vision/flowTypes.md`, STT: «You should have
 a simple command to start a Codex subflow that will answer back to you
 and not have to. It should be lighter for you to write one subflow
 through the Datom language for Flow, because you have different types,
@@ -75,8 +75,8 @@ Sources: `flows/fd0f97/vision/flowTypes.md`, 2026-09-15;
 vision-flow L30 (a launch names the metaflow, the context modules and a
 brief: landed) and L62–67 (a subflow runs under its own system prompt:
 landed). The `Specialty` type of a role is «book 08» Proposal 2's,
-pending, in `flow/crates/flow-ethos/ethos/library.ethos`; no code line
-is added here.
+pending, in `flow/crates/flow-ethos/ethos/library.ethos` (main
+d190e10); no code line is added here.
 
 File: `psyche-context/skills/vision-flow.md` («Subflows replace the
 harness subagent facility», after its paragraph; the figure under it)
@@ -119,17 +119,33 @@ The paragraph and the figure:
 vision-flow L30, landed later, says context modules:
 4. «the vision files», as shown, his words.
 5. «the context modules», machine reading: the vision files a launch
-   injects are the context modules of L30, which the launch names.
+   injects are the context modules of L30, which the launch names:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 5, the
+added paragraph)
+
+```text
+- A subflow has a type, written in datom for Flow, preprogrammed to know everything its specialty needs, so that nothing of how to behave is told to it: the launch gives it the job, its type and the vision files injected into its prompt, one simple command starts it, and it answers back to the flow that launched it.
++ A subflow has a type, written in datom for Flow, preprogrammed to know everything its specialty needs, so that nothing of how to behave is told to it: the launch gives it the job, its type and the context modules injected into its prompt, one simple command starts it, and it answers back to the flow that launched it.
+```
 
 The harness of the subflow; his words say «a Codex subflow», and
 Proposal 1's words say subflows run in other harnesses too:
 6. No harness named, as shown, machine reading of the two records
    together.
-7. «a Codex subflow», his 2026-09-15 words.
+7. «a Codex subflow», his 2026-09-15 words:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 7, the
+added paragraph)
+
+```text
+- A subflow has a type, written in datom for Flow, preprogrammed to know everything its specialty needs, so that nothing of how to behave is told to it: the launch gives it the job, its type and the vision files injected into its prompt, one simple command starts it, and it answers back to the flow that launched it.
++ A Codex subflow has a type, written in datom for Flow, preprogrammed to know everything its specialty needs, so that nothing of how to behave is told to it: the launch gives it the job, its type and the vision files injected into its prompt, one simple command starts it, and it answers back to the flow that launched it.
+```
 
 ### Proposal 3: expression at three levels
 
-2026-09-16, `flows/b49251/vision/flowLaunching.md`, typed: «Let's make
+2026-09-16, `flows/b49251/vision/flowLaunching.md`, STT: «Let's make
 this another kind of flow. It's like the expression flow, and they
 express an idea. He could get one started, and they have both the opus
 and Sol variant.»; «I guess you can even have a cheap idea expression
@@ -142,7 +158,7 @@ out. These are sort of assigned by the concept they're representing, so
 they could be reused, maybe, to bring changes afterwards, but they're
 mostly just a single flow to a single concept otherwise.»
 
-2026-09-16, `flows/b49251/vision/psycheFlows.md`, typed: «There
+2026-09-16, `flows/b49251/vision/psycheFlows.md`, STT: «There
 are going to be three levels of psyche flows: low, medium, and high
 effort.»; «there should be a subflow that checks for intricate answers
 from you and turns them into a visualization with an expression flow. If
@@ -171,8 +187,25 @@ The paragraph:
 The third level's name; his words leave it open («I don't know which
 one is better»):
 4. «high-powered, or high», both, as shown.
-5. «high expression».
-6. «high-powered expression».
+5. «high expression»:
+
+File: `psyche-context/skills/vision-model-roles.md` (under choice 5,
+in the added paragraph)
+
+```text
+- a medium expression is for a new thing, an agent coming up with an idea; a high-powered, or high, expression is the third.
++ a medium expression is for a new thing, an agent coming up with an idea; a high expression is the third.
+```
+
+6. «high-powered expression»:
+
+File: `psyche-context/skills/vision-model-roles.md` (under choice 6,
+in the added paragraph)
+
+```text
+- a medium expression is for a new thing, an agent coming up with an idea; a high-powered, or high, expression is the third.
++ a medium expression is for a new thing, an agent coming up with an idea; a high-powered expression is the third.
+```
 
 The levels against L17 «Every seat runs at medium effort, except the
 OpenAI Quaternary.» and intent-models L8–12 «Capability comes from
@@ -194,13 +227,21 @@ choice 8)
 ```
 
 9. No line on levels: the paragraph keeps its first and last sentence
-   only.
+   only:
+
+File: `psyche-context/skills/vision-model-roles.md` (under choice 9,
+in place of the paragraph above)
+
+```text
+  Every seat runs at medium effort, except the OpenAI Quaternary.
++
++ An expression flow expresses an idea, on the same models, at a level matched to it. An expression flow is assigned to the concept it represents, mostly a single flow to a single concept, reused at most to bring changes afterwards.
+```
 
 ### Proposal 4: a response turned into a presentation; the session tool
 
-2026-09-16, `flows/b49251/vision/flowLaunching.md` (the record says
-typed and carries the transcription brackets as the record has them: a
-machine fact): «There's this tool that can be sent to a session. It's
+2026-09-16, `flows/b49251/vision/flowLaunching.md`, STT (the
+transcription brackets as the record has them): «There's this tool that can be sent to a session. It's
 going to be a machine thinking machine call, but it's going to have a
 certain kind of instruction of what to look for. Maybe it knows exactly
 the time when the thinking machine printed that response, or maybe it
@@ -275,17 +316,23 @@ The paragraph and the figure:
 
 `[transcribed "cloud"]`:
 4. Claude, as shown: «any Claude agent».
-5. Another reading the living names.
 
 `[transcribed "Hardbey"]`:
-6. Herder, read as Flow, as shown: «the signal goes back to Flow»,
+5. Herder, read as Flow, as shown: «the signal goes back to Flow»,
    machine reading.
-7. Herder kept as a name of its own in the line.
-8. Another reading the living names.
+6. Herder kept as a name of its own in the line:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 6, in the
+added paragraph)
+
+```text
+- the signal goes back to Flow, which starts a flow or reaches one already running.
++ the signal goes back to the right Herder agent, which starts a flow or reaches one already running.
+```
 
 ### Proposal 5: no sandboxing in Flow for now
 
-2026-10-03 18:10, `flows/edf227/vision/flow.md`, typed, book comment:
+2026-10-03 18:10, `flows/edf227/vision/flow.md`, STT, book comment:
 «No, Flow doesn't do any sandboxing for now so that's just something
 that we set up for testing outside of Flow. Has nothing to do with Flow
 right now»
@@ -313,16 +360,25 @@ Where it stands; no word of his on this fork:
 4. At the head of the Capsule paragraph, as shown, machine choice: the
    short-term sentence is read before the long-term one it suspends.
 5. A paragraph of its own after L14, machine choice: the Capsule
-   paragraph stays untouched when the sentence is removed.
+   paragraph stays untouched when the sentence is removed:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 5, after
+L14, in place of the change above)
+
+```text
+  The Capsule is the component that makes where a flow runs. Its first embodiment is the semi-sandbox: only the credential files are copied, everything else is recreated, with its own sockets and store, running light models. Later it encrypts the sensitive parts of the filesystem under a volatile key.
++
++ For now Flow does no sandboxing: a sandbox is set up for testing outside Flow.
+```
 
 ### Proposal 6: the flow id in words
 
-2026-10-02, `flows/01e496/vision/flowNexus.md`, typed: «Flow could have
+2026-10-02, `flows/01e496/vision/flowNexus.md`, STT: «Flow could have
 the lock on the flows so that we can lock it and also address it by name
 instead of by Flow ID. I'd also like the Flow ID to be converted into
 words.» Landed in part, vision-flow L12 and L16; the words not landed.
 
-2026-10-02, `flows/01e496/vision/flowIdentity.md`, typed: «They're just
+2026-10-02, `flows/01e496/vision/flowIdentity.md`, STT: «They're just
 for accounting or for the ledger, the archive side of things, and for
 knowing where to search if the transcript is needed, etc.»
 
@@ -347,8 +403,7 @@ Sources: `flows/01e496/vision/flowNexus.md` and
 «book 04» Proposal 2, pending (its line: «A flow id is also written as
 words: the first 33 bits of the harness's session id, as words from a
 published word list…»); the ids for the ledger, «book 04» Proposal 3,
-pending. Machine fact: no word encoding of a flow id exists in the flow
-or the protos repository.
+pending.
 
 File: `psyche-context/skills/vision-flow.md` (after L20; «book 04»
 Proposal 2 adds its word-form sentence there, and the line below
@@ -369,8 +424,25 @@ The line:
 How many words; his words: «three words, maybe even two»:
 4. «three, maybe even two», as shown.
 5. Three: «book 04» Proposal 2's count, the machine's arithmetic (33
-   bits, three words of a 2048-word list).
-6. Two.
+   bits, three words of a 2048-word list):
+
+File: `psyche-context/skills/vision-flow.md` (under choice 5, the
+added line)
+
+```text
+- The words are three, maybe even two. In the chat a flow is named by its metaflow, and the flow id almost disappears; it is for the ledger and for finding the transcript.
++ The words are three. In the chat a flow is named by its metaflow, and the flow id almost disappears; it is for the ledger and for finding the transcript.
+```
+
+6. Two:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 6, the
+added line)
+
+```text
+- The words are three, maybe even two. In the chat a flow is named by its metaflow, and the flow id almost disappears; it is for the ledger and for finding the transcript.
++ The words are two. In the chat a flow is named by its metaflow, and the flow id almost disappears; it is for the ledger and for finding the transcript.
+```
 
 ### Proposal 7: each implementation has its own metaflow
 
@@ -410,18 +482,26 @@ The line:
 «an implementation job, which is actually maybe its own kind»; a
 notion, not ruled; the choices are the machine's:
 4. No line, as shown.
-5. A sentence added: «An implementation job is a kind of its own.»
+5. A sentence added:
+
+File: `psyche-context/skills/vision-flow.md` (under choice 5, the
+added line)
+
+```text
+- Work is kept track of by its flows: each implementation has a flow or metaflow of its own, each at its own layer.
++ Work is kept track of by its flows: each implementation has a flow or metaflow of its own, each at its own layer. An implementation job is a kind of its own.
+```
 
 ### Proposal 8: where Flow's memory lives
 
-2026-09-17, `flows/9993b5/vision/flowAnatomy.md`, typed: «We can map a
+2026-09-17, `flows/9993b5/vision/flowAnatomy.md`, STT: «We can map a
 pretty sensible flow anatomy for the flow CLI. It's not going to be
 where the memory lives, so the mind is going to use it.»; the same
 message, `flows/9993b5/vision/mindMemory.md`: «But the Flow's memory
 will live in mind, and so mind will become our most bloated component in
 terms of the database quickly.»
 
-2026-10-03 18:13, `flows/edf227/vision/flow.md`, typed, book comment
+2026-10-03 18:13, `flows/edf227/vision/flow.md`, STT, book comment
 («Transcription uncertain: "in every story"» in the record): «No the
 configuration flow does not live in a Markdown file in every story. It
 lives in its own database and its memory. That's where the configuration
@@ -432,15 +512,22 @@ only through the memory engine; there is no central store; policy state
 and working state live in that one store, and policy changes only over
 the meta socket.»; vision-nexus L87–94 (configuration in the Nexus's own
 database). The two dated records point two ways and no later word of his
-joins them; the choices are the machine's.
+joins them: a tension, no landing proposed; choice 2 is the
+machine's.
 
 Sources: `flows/9993b5/vision/flowAnatomy.md` and
 `flows/9993b5/vision/mindMemory.md`, 2026-09-17;
 `flows/edf227/vision/flow.md`, 2026-10-03.
 
-Ruling, one number:
+Ruling, one number. His words on each side: 2026-09-17,
+`flows/9993b5/vision/flowAnatomy.md`, STT: «It's not going to be where
+the memory lives, so the mind is going to use it.», and
+`flows/9993b5/vision/mindMemory.md`: «the Flow's memory will live in
+mind»; 2026-10-03, `flows/edf227/vision/flow.md`, STT, book comment:
+«It lives in its own database and its memory.»; the landed line,
+vision-nexus L66, as context: «Its Memory is its own typed store».
 
-1. The 2026-10-03 words and L66 stand; no line.
+1. The 2026-10-03 words and L66 stand; no line, nothing changed.
 2. Flow's memory stays Flow's, and Mind uses the flow data, machine
    reading of the two records together:
 
@@ -448,7 +535,9 @@ File: `psyche-context/skills/vision-flow.md` (after L16, under
 choice 2)
 
 ```text
-+ Flow's memory is Flow's own; the flow data Flow records is what Mind uses for its memory, the biggest database of the system, whose size is kept, distributed or archived.
+  Flow manages metaflows. A metaflow is one address, { Aspect Topic Layer }, that continues through several flows one after another; the flow is its current run, and what is addressed is always the metaflow, never a flow. The default topic is core: the permanent topic, the thing that keeps the machine going, the last topic to stand.
++
++ Flow's memory is Flow's own; the flow data Flow records is what Mind uses for its memory, the most bloated component in terms of the database.
 ```
 
 3. Flow's memory lives in Mind, his 2026-09-17 words; L66 changed:
@@ -462,12 +551,13 @@ File: `psyche-context/skills/vision-nexus.md` (L66, under choice 3)
 
 ### Proposal 9: Nexus objects describe processes
 
-2026-09-14, `flows/e1953c/vision/nexus.md`, STT: «In the Nexus objects,
+`flows/e1953c/vision/nexus.md`, undated, STT; logged by 2026-09-14,
+the machine's reading of `flows/e1953c/log.md`: «In the Nexus objects,
 you're going to describe all the processes. I don't think you need to
 say "process" all the time, but it's kind of included or implied by
 being a Nexus object, which means it can only be used with a Nexus
 meta-actor, meta-process, or meta-flow, basically. It's like the same
-concept as the flow is the actor inside the runtime.»; the same day,
+concept as the flow is the actor inside the runtime.»; the same record,
 later: «What I meant was that there's a meta actor also: the Nexus meta
 actor, the Sema, and the Signal. We talked about this, but we never
 actually reviewed it together: how the trait enforces that it can only
@@ -476,7 +566,7 @@ the main Signal actor, or the Nexus actor. The Nexus actor, the Sema
 actor, and the Signal actor have their sub-actors, or possibly their
 implementations, that need to run inside these actors.»; «We separate
 the logics in the code, and we enforce it on the compiler. Is that
-possible?»; the same day, on effects (the record notes «Speech-to-text
+possible?»; the same record, on effects (it notes «Speech-to-text
 corrected in the quote: "Logic shells out to Nex" for "Lojix shells out
 to Nix"»): «Oh, I'm glad you asked that. What about effects? Lojix
 shells out to Nix. That's Nexus. Nexus encapsulates processes, whether
@@ -489,8 +579,8 @@ as more objects, and you're going to have a certain kind of object, a
 nexus object that is an actor, basically. Maybe we even have to find a
 better term for that.»
 
-Sources: `flows/e1953c/vision/nexus.md`, 2026-09-14 (the date is
-`flows/e1953c/log.md`'s, lines 41–47; the record file is undated);
+Sources: `flows/e1953c/vision/nexus.md`, undated, logged by
+2026-09-14, the machine's reading of `flows/e1953c/log.md`;
 vision-nexus L124–127 («Actors»: landed) and L146–148 («Three parts and
 one path»: landed; Proposal 13 builds on it).
 
@@ -510,7 +600,8 @@ The paragraph:
 2. Land with changes the living names.
 3. Drop.
 
-The three meta-actors against the three parts. His 2026-09-14 words:
+The three meta-actors against the three parts. His words in the
+undated record:
 «the Nexus meta actor, the Sema, and the Signal»; his 2026-10-12 words,
 `flows/d68c82/vision/design.md`, STT: «the three different parts: the
 operation, the signal, and the memory»; the landed line, L148: «Signal
@@ -530,13 +621,8 @@ choice 4)
 + Each part is a meta-actor: its sub-actors run only inside it, the logic of each part separated in the code, and the separation enforced by the compiler.
 ```
 
-5. The 2026-09-14 meta-actors stay in the record; L148 stands alone.
-
-The word «actor»; his words: «Maybe we even have to find a better
-term for that.»:
-6. «actor» stands, L126 unchanged.
-7. Another term the living names, written in place of «actor» at L126
-   and in the paragraph above.
+5. The record's meta-actors stay in the record; L148 stands alone,
+   nothing changed.
 
 ### Proposal 10: configuration loaded from files, in succession, on the meta socket
 
@@ -562,18 +648,6 @@ Landed: vision-nexus L87–94 («Configuration»: no arguments, no bootstrap
 binary, defaults as a constant, the meta socket carries a Configure
 interface); `flows/edf227/vision/flow.md`, 2026-10-03 (configuration in
 Flow's own database and memory, Proposal 8).
-
-Machine facts. flow origin/main d190e10 (2026-10-13):
-`crates/flow-nexus/src/main.rs` opens a configuration-only listener
-(`open_configuration_listener`, L604) that serves one rkyv
-`MetaQuery::Configure(change)` (`serve_one_configuration`, L566, L583).
-meta-signal-flow origin/main 88f3759 (2026-10-09), `ethos/signal.ethos`
-L176–180, declares `ConfigurationFragment`, `ConfigurationFilePath`,
-`ConfigurationFilePathVector`, `ConfigureFiles` and `ConfigurationFile`;
-flow `docs/branch-consolidation-20261013.md` L67 records «Remove
-obsolete ConfigureFiles frontend whose producer types no longer exist.»
-knowledge-datom, a machine skill, says a datom «passes inline at a CLI
-boundary, never as a datom file».
 
 Sources: `flows/445410/vision/nexus.md`, 2026-10-09;
 `flows/081064/vision/ethos.md`, 2026-10-10;
@@ -625,15 +699,34 @@ The file against L56 «A CLI turns text into Signal and nothing more: it
 takes one inline datom, no flags, no subcommands;» (landed); his
 2026-10-09 words: «config files (basically Datom payloads … that the CLI
 can use in succession». The choices are the machine's:
-4. A shell step passes each file's content inline, one call per file;
-   the CLI unchanged, L56 stands.
+4. A loader passes each file's content inline, one CLI call per
+   file; the CLI unchanged, L56 stands:
+
+File: `flow/deployment/configure.clj` (a new file beside the service
+unit, on main d190e10; proposed, not written; its data: a vector of
+file paths, each file one inline Configure datom; the command name,
+`flow-meta`, is the one bootstrap literal)
+
+```clojure
++ (ns configure
++   (:require [babashka.process :as p]
++             [clojure.string :as str]))
++
++ (defn configure! [paths]
++   (doseq [path paths]
++     (let [datom (str/trim (slurp path))]
++       (p/shell "flow-meta" datom))))
++
++ (configure! *command-line-args*)
+```
+
 5. The meta CLI takes a file path; L56 changed:
 
 File: `psyche-context/skills/vision-nexus.md` (L56, under choice 5)
 
 ```text
 - A CLI turns text into Signal and nothing more: it takes one inline datom, no flags, no subcommands; it identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim. A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.
-+ A CLI turns text into Signal and nothing more: it takes one inline datom, or for now the path of a file holding one, no flags, no subcommands; it identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim. A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.
++ A CLI turns text into Signal and nothing more: it takes one inline datom, or the path of a file holding one, no flags, no subcommands; it identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim. A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.
 ```
 
 ### Proposal 11: one shared library identifies the calling process
@@ -647,25 +740,12 @@ to be rewritten for every CLI and increase the ease of cognition when
 reading the code as to what this is doing. Obviously this is done in the
 background whenever the CLI is used so none of it is actually
 user-facing in a sense or configurable. It's just something that happens
-and it may be on all CLIs.»; and, the same comment: «Flow isn't even on
-in production so I'm not even worried about merging more into main.»
+and it may be on all CLIs.»
 
 Landed: vision-flow L20 «No flow declares its id: every call to Flow is
 identified by the calling process.»; vision-nexus L56 «it identifies the
 process that called it and carries that identity in the message, so a
 Nexus knows its caller by the process, never by a claim».
-
-Machine facts. flow origin/main d190e10 (2026-10-13): the Nexus reads
-its peer through the kernel, `crates/flow-nexus/src/caller.rs` L44
-`rustix::net::sockopt::socket_peercred(self)`; the CLI crates
-`crates/flow` and `crates/flow-meta` carry no process identity in the
-message; `crates/flow-ethos/ethos/library.ethos` L37 declares `Process.{
-Pid.Integer Started.Integer }` in Flow's own Library. The shared library
-exists only untracked: nexus at ec097e3 (2026-10-04), `ethos/`
-untracked, 30 lines. The caller's witness,
-`flows/875960/books/8-caller-witnessed.md` Proposals 1 and 2, is
-unruled. In production, the user unit `flow-nexus.service` is inactive
-(dead) since 2026-10-13 12:34:25 CST, after 5 days 1 hour running.
 
 Sources: `flows/875960/vision/flow.md`, 2026-10-12;
 `flows/875960/vision/flow.md`, 2026-10-11 («no claimed [ID]», landed
@@ -744,17 +824,6 @@ Ethos, the Ethos metaflow's. Apart.
 +    Process.[ Identifiable ] ]
 ```
 
-File: `flow/crates/flow-ethos/ethos/library.ethos` (origin/main
-d190e10, L37; Flow's own declaration, which the shared library
-replaces under «book 8» Proposal 1 choice (a); shown as context)
-Ethos, the Ethos metaflow's. Apart.
-
-```ethos
-    Lock.{ Sender Address Until.Integer }
-    Process.{ Pid.Integer Started.Integer }
-    Sender.Address
-```
-
 Ruling, one number from each group:
 
 The paragraph and the figure:
@@ -765,13 +834,25 @@ The paragraph and the figure:
 The ethos file's comments; no word of his on this fork:
 4. Wrapped to the column, as shown, machine choice: the file is read
    on a phone as every book is.
-5. As the file stands, machine choice: the comment runs to the end of
-   its line, and the column is a book's rule, not an ethos file's.
+5. As the file stands, no lines, machine choice: the comment runs to
+   the end of its line, and the column is a book's rule, not an ethos
+   file's.
 
-«it may be on all CLIs»; his words: «I'm not sure now»:
+«it may be on all CLIs»; his words, 2026-10-12 16:21,
+`flows/875960/vision/flow.md`, the same comment: «It's just something
+that happens and it may be on all CLIs. I'm not sure now but it's an
+interesting topic to eventually develop further.»:
 6. «may be on all CLIs», as shown, his words.
 7. «is on every CLI», machine reading of L56's «it identifies the
-   process that called it».
+   process that called it»:
+
+File: `psyche-context/skills/vision-nexus.md` (under choice 7, the
+added paragraph)
+
+```text
+- it runs in the background whenever a CLI is used, neither user-facing nor configurable, and may be on all CLIs.
++ it runs in the background whenever a CLI is used, neither user-facing nor configurable, and is on every CLI.
+```
 
 ### Proposal 12: the identifier made of words
 
@@ -827,10 +908,7 @@ Sources: `flows/875960/vision/flow.md`, 2026-10-11 and 2026-10-12;
 `flows/081064/vision/ethos.md`, 2026-10-10. The name of the type is
 `flows/875960/books/7-flow-whole-ethos-4.md` Ruling 3 (Coinage, Moniker,
 Epithet, Cognomen, or his), unruled; `<identifier>` below stands for
-whichever he names. Machine fact: no camelCase-of-words check exists in
-the protos repository; flow `crates/flow-ethos/ethos/library.ethos` L8–9
-reads «; ethos-zero 16 cannot express Topic:Name yet; check camelCase at
-input.» over `Topic.String`.
+whichever he names.
 
 File: `psyche-context/skills/vision-protos.md` (another topic's skill:
 vision-protos; a new section after «Canonical print», L153)
@@ -859,8 +937,16 @@ The section and the line:
 3. Drop.
 
 The shared library; his words: «maybe the [protos] library»:
-4. The protos library: «It lives in the protos library, used in more
-   than one dialect.»
+4. The protos library:
+
+File: `psyche-context/skills/vision-protos.md` (under choice 4, in
+the added section)
+
+```text
+- It lives in a shared library, used in more than one dialect, and is checked when created.
++ It lives in the protos library, used in more than one dialect, and is checked when created.
+```
+
 5. «a shared library», as shown, unnamed until the library stands.
 
 The check; his words frame the method as exploration («Maybe this
@@ -870,9 +956,25 @@ possibility»): a notion, not ruled; the choices are the machine's:
    research.
 7. A cheap word library first, a System 1 call on what it cannot pass,
    with a certainty threshold, his last sentence; added to the
-   section: «The check is a cheap, lightweight library of words first,
-   and a System 1 call with a certainty threshold where it says no.»
-8. A System 1 call alone, with a certainty threshold.
+   section:
+
+File: `psyche-context/skills/vision-protos.md` (under choice 7, in
+the added section)
+
+```text
+- It lives in a shared library, used in more than one dialect, and is checked when created.
++ It lives in a shared library, used in more than one dialect, and is checked when created. The check is a cheap, lightweight library of words first, and a System 1 call with a certainty threshold where it says no.
+```
+
+8. A System 1 call alone, with a certainty threshold:
+
+File: `psyche-context/skills/vision-protos.md` (under choice 8, in
+the added section)
+
+```text
+- It lives in a shared library, used in more than one dialect, and is checked when created.
++ It lives in a shared library, used in more than one dialect, and is checked when created. The check is a System 1 call with a certainty threshold.
+```
 
 ### Proposal 13: the three parts are the machine's anatomy; one good Nexus first
 
@@ -937,12 +1039,12 @@ choice 5, in place of the paragraph above)
 
 ### Proposal 14: books show code
 
-2026-10-06 14:58, `flows/8475a9/vision/flow.md`, typed, book comment,
+2026-10-06 14:58, `flows/8475a9/vision/flow.md`, STT, book comment,
 relayed: «that would be cool if we could have syntax highlighting. Also
 I feel like it's not enough. I don't see what `self` is although I can
 imagine. I guess seeing code is making me curious about the code. We
 could have code presentation blocks and try to present more code. I like
-that.»; 2026-10-05, the same record, typed: «I want to see code. I want
+that.»; 2026-10-05, the same record, STT: «I want to see code. I want
 to see visuals and not too much text.»
 
 2026-10-06, `flows/8475a9/vision/livingMessenger.md`, STT, relayed: «if
@@ -951,10 +1053,7 @@ let me comment and that I could use with any models, not just Claude.
 That would also have syntax highlighting and things like that and we
 could style it differently.»
 
-Machine fact: `primary/tools/book-code.html` (committed 21b5410a6,
-2026-10-11) highlights ethos and datom through a hand tokenizer and
-rust, clojure and bash through highlight.js 11.9.0. vision-book L6–14
-carries no line on code.
+vision-book L6–14 carries no line on code.
 
 Sources: `flows/8475a9/vision/flow.md`, 2026-10-05 and 2026-10-06;
 `flows/8475a9/vision/livingMessenger.md`, 2026-10-06.
@@ -978,8 +1077,15 @@ The commenting surface; his 2026-10-06 words: «something universal
 differently»:
 4. Not in the line, as shown: the surface is the living messenger's
    subject, machine reading.
-5. A sentence added: «The surface the living comments on is universal,
-   usable with any model, styled our own.»
+5. A sentence added:
+
+File: `psyche-context/skills/vision-book.md` (under choice 5, the
+added line)
+
+```text
+- A book shows code, in code presentation blocks with syntax highlighting, and enough of it that what a line names, `self` among them, is seen; code and visuals, not too much text.
++ A book shows code, in code presentation blocks with syntax highlighting, and enough of it that what a line names, `self` among them, is seen; code and visuals, not too much text. The surface the living comments on is universal, usable with any model, styled our own.
+```
 
 ### Proposal 15: implemented before the comment
 
@@ -1027,6 +1133,30 @@ of the line above)
 
 5. Both: the psyche-module lines land before the comment and are
    modified on it, as shown; the two machine lines are changed by
-   their owners.
-6. No line.
+   their owners:
+
+File: `mind-context/skills/knowledge-psyche.md` (L52–53; a machine
+module, Mind's own, landed by its owner; under choice 5)
+
+```text
+- - The vision-<topic> skill — distilled vision: self-standing
+-   statements, each reviewed by the living before it stands.
++ - The vision-<topic> skill — distilled vision: self-standing
++   statements, each landed before the living comments and
++   modified when the comment comes.
+```
+
+File: `field-context/skills/compensation-psyche-interraction.md`
+(L9–10; a machine module, Field's own, landed by its owner; under
+choice 5)
+
+```text
+- A statement enters a vision- skill only as a crystallization the living
+- has explicitly approved. Intent and spirit enter only on the
++ A statement enters a vision- skill as a crystallization proposed in a
++ book, before the living comments, and is modified when the comment
++ comes. Intent and spirit enter only on the
+```
+
+6. No line, nothing changed.
 <!-- to-the-living:end -->
