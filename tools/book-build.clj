@@ -174,6 +174,65 @@
                         (recur (inc j)) j))]
               (recur j (conj bodies [:p (join-lines (subvec content i j))])))))))))
 
+(defn tokens
+  "Whitespace-separated words, punctuation attached; a `code` span is one word."
+  [s]
+  (vec (re-seq #"(?:`[^`]*`|\S)+" s)))
+
+(defn word-diff
+  "Longest-common-subsequence diff of two token vectors, as a vector of
+  [:same|:del|:add token]; on a tie the removal comes first."
+  [a b]
+  (let [a (vec a) b (vec b)
+        n (count a) m (count b)
+        tbl (reduce
+             (fn [t i]
+               (reduce (fn [t j]
+                         (assoc t [i j]
+                                (if (= (a i) (b j))
+                                  (inc (t [(inc i) (inc j)]))
+                                  (max (t [(inc i) j]) (t [i (inc j)])))))
+                       t (range (dec m) -1 -1)))
+             (into {} (concat (for [j (range (inc m))] [[n j] 0])
+                              (for [i (range (inc n))] [[i m] 0])))
+             (range (dec n) -1 -1))]
+    (loop [i 0 j 0 out []]
+      (cond
+        (and (< i n) (< j m) (= (a i) (b j))) (recur (inc i) (inc j) (conj out [:same (a i)]))
+        (and (< i n) (or (= j m) (>= (tbl [(inc i) j]) (tbl [i (inc j)]))))
+        (recur (inc i) j (conj out [:del (a i)]))
+        (< j m) (recur i (inc j) (conj out [:add (b j)]))
+        :else out))))
+
+(defn marked
+  "One text: unchanged words plain, removed words in <del>, added in <ins>;
+  adjacent words of one kind share one span."
+  [old new fmt]
+  (->> (word-diff (tokens old) (tokens new))
+       (partition-by first)
+       (map (fn [grp]
+              (let [words (str/join " " (map (comp fmt second) grp))]
+                (case (ffirst grp)
+                  :del (str "<del>" words "</del>")
+                  :add (str "<ins>" words "</ins>")
+                  words))))
+       (str/join " ")))
+
+(defn paired-body
+  "A removed and an added body, one text; nil when their kinds differ."
+  [[kind-a a] [kind-b b]]
+  (when (= kind-a kind-b)
+    (if (= kind-a :text)
+      (let [la (vec (str/split a #"\n" -1)) lb (vec (str/split b #"\n" -1))
+            rows (for [i (range (max (count la) (count lb)))
+                       :let [x (get la i) y (get lb i)]]
+                   (cond
+                     (and x y) (marked x y esc)
+                     x (str "<del>" (esc x) "</del>")
+                     :else (str "<ins>" (esc y) "</ins>")))]
+        (str "<div class=\"textblock\">" (str/join "\n" rows) "</div>"))
+      (str "<p>" (marked a b inline) "</p>"))))
+
 (defn panel [sign [kind text]]
   (let [inner (if (= kind :text)
                 (str "<div class=\"textblock\">" (esc text) "</div>")
@@ -182,6 +241,45 @@
       "+" (str "<div class=\"add\"><ins>" inner "</ins></div>")
       "-" (str "<div class=\"del\"><del>" inner "</del></div>")
       (str "<div class=\"ctx\">" inner "</div>"))))
+
+(defn change-panels
+  "A removed run and the added run after it: bodies paired in order, each pair
+  one marked text; the rest wholly removed or wholly added."
+  [removed added]
+  (let [ra (vec (split-chunk removed)) aa (vec (split-chunk added))]
+    (apply str
+           (for [i (range (max (count ra) (count aa)))
+                 :let [r (get ra i) a (get aa i)]]
+             (cond
+               (and r a) (or (paired-body r a) (str (panel "-" r) (panel "+" a)))
+               r (panel "-" r)
+               :else (panel "+" a))))))
+
+(defn code-lines
+  "A non-text fence with removed lines followed by added lines: the same diff
+  line by line, lines kept. Nil otherwise; a wholly added or removed fence stays
+  tinted by the page script."
+  [lines]
+  (let [sgn (fn [l] (cond (str/starts-with? l "- ") :del
+                          (str/starts-with? l "+ ") :add
+                          :else :same))]
+    (when (some (fn [[a b]] (and (= :del (sgn a)) (= :add (sgn b)))) (partition 2 1 lines))
+      (loop [ls (vec lines) out []]
+        (if (empty? ls)
+          (str/join "\n" out)
+          (if (= :same (sgn (first ls)))
+            (recur (subvec ls 1) (conj out (esc (first ls))))
+            (let [[rem r1] (split-with #(= :del (sgn %)) ls)
+                  [add r2] (split-with #(= :add (sgn %)) r1)
+                  rem (vec rem) add (vec add)
+                  rows (for [i (range (max (count rem) (count add)))
+                             :let [r (some-> (get rem i) (subs 2))
+                                   a (some-> (get add i) (subs 2))]]
+                         (cond
+                           (and r a) (str (re-find #"^\s*" a) (marked r a esc))
+                           r (str "<del>" (esc r) "</del>")
+                           :else (str "<ins>" (esc a) "</ins>")))]
+              (recur (vec r2) (into out rows)))))))))
 
 (defn text-panels
   "A fenced text block: sign-prefixed lines into stacked panels."
@@ -200,14 +298,20 @@
                       (and lst (= (first lst) sign)) (conj (pop chunks) (update lst 1 conj content))
                       :else (conj chunks [sign [content]]))))
                 [] lines)
-        chunks (remove nil? chunks)
+        chunks (vec (remove nil? chunks))
         panels (StringBuilder.)
         figures (transient [])]
-    (doseq [[sign content] chunks]
-      (if (figure? content)
-        (conj! figures (svg-figure content))
-        (doseq [body (split-chunk content)]
-          (.append panels (panel sign body)))))
+    (loop [i 0]
+      (when (< i (count chunks))
+        (let [[sign content] (chunks i)
+              [nsign ncontent] (get chunks (inc i))]
+          (cond
+            (figure? content) (do (conj! figures (svg-figure content)) (recur (inc i)))
+            (and (= sign "-") (= nsign "+") (not (figure? ncontent)))
+            (do (.append panels (change-panels content ncontent)) (recur (+ i 2)))
+            :else (do (doseq [body (split-chunk content)]
+                        (.append panels (panel sign body)))
+                      (recur (inc i)))))))
     [(if (pos? (.length panels)) (str "<div class=\"diff\">" panels "</div>") "")
      (persistent! figures)]))
 
@@ -302,8 +406,10 @@
                   (close-record))
                 (when (not= "" diff) (emit diff)))
               (run! emit figs))
-            (emit (str "<pre data-diff><code class=\"language-" (get langs lang lang) "\">"
-                       (esc (str/join "\n" lines)) "</code></pre>"))))
+            (if-let [marked-code (code-lines lines)]
+              (emit (str "<pre><code class=\"language-" (get langs lang lang) "\">" marked-code "</code></pre>"))
+              (emit (str "<pre data-diff><code class=\"language-" (get langs lang lang) "\">"
+                         (esc (str/join "\n" lines)) "</code></pre>")))))
         (let [lines (second b)
               first-line (first lines)
               text (join-lines lines)]

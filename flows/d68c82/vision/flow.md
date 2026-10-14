@@ -84,3 +84,45 @@ Context: said after compacting this seat; he wants an analysis of compaction aga
 > I said before that I want the short-term prototypes to be written in Clojure and I see .mjs and I don't recognize Clojure. ... If any prototype doesn't use Clojure it's going to have to be rewritten in Clojure
 
 -- psyche, STT.
+
+## 2026-10-14 — a flow and synthetic intelligence (landed with the misnomer clause removed)
+
+> Take out the part about artificial intelligence being a misnomer. That's not necessary.
+> Otherwise it's good. Land it.
+
+-- psyche, STT, book comment on «Flow philosophy and artifacts» P1.
+
+## 2026-10-14 — a refreshed flow starts by crystallizing its topic
+
+> The first thing that a flow should do when it refreshes is make a proposal for crystallization on whatever topic it's been given. It loads certain context modules, skills, and then it's given some raw psyche with context so it tries to recrystallize anything. That's its first and last response. There's no point in making an LLM start without giving it something to do.
+>
+> You have a default prompt, basically a default startup context, and like I said I don't want any values, such as prompts, hard-coded into code.
+
+-- psyche, STT.
+
+## 2026-10-14 — Flow, Nexus and Ethos together; Flow is the bootstrap
+
+> We're developing the Flow, the Nexus architecture, and Ethos at the same time. There are three aspects, right?
+> - the language aspect
+> - the runtime architecture
+> - that component itself, [Flow], which is probably the most important component to bootstrap
+>
+> Bootstrap persona, the meta harness, since starting flows like clean lean flows, specialized flows, or refreshing flows is a central part, a cornerstone, of this system.
+
+-- psyche, STT. Transcription corrected: "low" → "Flow".
+
+## 2026-10-14 — refresh thresholds, idle harnesses, and handover at cache expiry
+
+> at 128,000 tokens with Claude we get a warning. ... For Codex models the context window is much smaller and I think that at 96,000 tokens there's a warning and we start to contemplate refreshing. If the flow is working obviously we let it work and if it keeps working we let it work even past compaction.
+>
+> If it works so much that it compacts, eventually in the long-term vision we would have some kind of a check to make a judgment as to whether maybe the topic was misguided.
+>
+> For sure at 150,000, 160,000 tokens on OpenAI's models, we're seriously looking at refreshing, and the same for Claude at 200,000.
+>
+> It would be cool if we could strip down some of these Clojure flows so that they're way more efficient to spawn.
+
+> in the long-term vision, if a flow has just been sitting idle for some time, we can turn off its harness. When the system is properly configured, if a request needs to reach a certain flow (which is not up and running in a harness), then the flow would just restart that flow or start a fresh one.
+>
+> Claude could just tell us the cache is going to expire instead of compacting. Then we would ask for the model to do a handover to produce a handover and that way we could train how we want our handover to be, which is essentially our own form of compaction.
+
+-- psyche, STT, book comments on «Situation, 14 October».

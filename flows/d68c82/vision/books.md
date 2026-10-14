@@ -83,3 +83,65 @@ Context: on «Anatomy audit».
 > All I care about is crystallization. ... My eye just goes to the green. Essentially everything should be: if I see a chart it's being proposed to be added in the Psyche module and everything else should either be red or green unless I'm missing something and you see a more efficient way of presenting this to me.
 
 -- psyche, STT.
+
+## 2026-10-14 — a book never makes him read the same thing twice; visual, minimal, the proposal only
+
+> It keeps making the same suggestion with small differences. It's a catastrophic failure because making me read something twice is a huge failure. Living time, energy, and thinking power are the most important, most valuable resource.
+>
+> The whole point of the books is to maximize communication. We need to go visual, visual: minimal text, minimal amount of text. The suggestions are always minimal: the least amount of instructions to achieve the biggest effect, always. We have to fit more data in so we have to make everything short.
+>
+> The book is really about the proposal. I don't need to get all of the verbatim quotes that are used to create the crystallization. I don't want to read all that. I don't even want to [go] through it. I don't see the point.
+>
+> Like I've said what I've said. Now the machine's job is to crystallize what I've said and that's what I'm interested in doing. That's what engages my mind best: engaging with how the mind can explain what I'm trying to say in a more condensed crystallized form.
+
+-- psyche, STT, relayed by the Psyche Core Tertiary. Transcription corrected: "grow through it" → "go through it".
+
+## 2026-10-14 — communicating with the living is its own skill; the book follows it
+
+> Or maybe it's not visualization but the whole concept of multimodal communication to the living or maybe it's even communicating with the living.
+>
+> We can describe how we want communication with the living to happen in that skill and then we can use the book skill to say we want to create a book that essentially follows how we want to communicate with the living. That way it's not specific to the book. We are reusing the skill, which we'll use for other frameworks, because the Claude artifacts probably won't be the only method that we use. I would like Codex to be able to use something as well.
+
+> I don't want the negative guideline. I just want you to describe what the book should have, not what it shouldn't have. The idea that the living's time is most valuable is basically spirit core ... unless you say a book is optimized to maximize the efficiency of communication to the living.
+
+-- psyche, STT, book comments on «Dense and visual».
+
+## 2026-10-14 — a topic for visualizing and efficient communication
+
+> how to better visualize things
+> how to use efficient forms of communication, especially for code changes or change proposals that involve code or text
+> ways to actually visualize that whereby the amount of text shown to show the difference is as small as possible, sort of like an inline diff sort of thing maybe
+
+-- psyche, STT.
+
+## 2026-10-14 — situational reports
+
+> I want a situational report now and then a situational report whenever there are big changes.
+>
+> Questions, crystallization, and proposals. We can even have one or two knowledge reviews, right?
+
+-- psyche, STT.
+
+## 2026-10-14 — references stay with the book's source, unrendered, archived on acceptance
+
+> Each book needs to have an associated reference, which is not rendered but which is kept with the source of the book, which would be in text, like the unrendered book. We need the references to be archived accordingly if some or all of the proposal is accepted.
+
+> we could point out that it might be read on different-sized screens so that the presentation should be adaptable to the screen size.
+
+-- psyche, STT, book comments on «Communicating with the living».
+
+## 2026-10-14 — variations shown separately, never repeated whole
+
+> Please stop repeating fucking variations of a proposal. Just make the variations separate so you don't make me read the same 90% of the text.
+
+> If I'm interacting with you I'm expecting books to be refreshed or for questions to be posed to me in a book, along with maybe some proposals.
+
+-- psyche, STT.
+
+## 2026-10-14 — nothing read twice in a book, the diff included
+
+> I do not want to reread the same thing twice in the same book.
+
+> This also means the removal and addition. A lot of times I see something that's marked as removed but it's actually repeated verbatim in the addition so it's not actually removed. The diff is not presented properly.
+
+-- psyche, STT.

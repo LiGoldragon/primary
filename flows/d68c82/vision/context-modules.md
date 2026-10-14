@@ -91,3 +91,37 @@ Context: comment on «Figures that move», the drawer's brief proposal (target: 
 > if I have a question, obviously I want knowledge. If I'm explaining what I want, then I want vision or intent, depending on how broad the guide/instruction is.
 
 -- psyche, STT.
+
+## 2026-10-14 — context modules are super dense and precise; no statement in two modules
+
+> I want to go hard on reprogramming the behavior for this in many layers: from the whole concept that the context is super important and the context modules must be super dense and precise (especially the system stuff like spirit and intent), and from the point of view of the book and how it's presented.
+>
+> If the spirit context is long I would refocus on honing in on the whole concept of how to handle the user interface, how to communicate better.
+
+> This would be a repetition so no, we're not going to repeat the same thing in two skills. Let's not do that. Let's skill ourselves against that somewhere.
+
+-- psyche, STT, relayed by the Psyche Core Tertiary; the second quote is a book comment.
+
+## 2026-10-14 — dense modules is intent
+
+> This is great. Actually this is even intent. This is intent. This is system prompt vision, which is intent.
+
+-- psyche, STT, book comment on «Dense and visual» P2.
+
+## 2026-10-14 — a subject he reviews or asks about has a module to hold it; modules have an ideal size
+
+> In review, anything that's thought to be relevant for me to review, especially if I ask questions concerning a subject, means that there should be a skill on that topic or broader topic that will hold it (and doesn't have so much content that it can hold more), right? We have a sort of ideal context module size also.
+
+> A knowledge review is not so much a proposal but I'm reviewing knowledge and it can be knowledge that already exists.
+
+-- psyche, STT.
+
+## 2026-10-14 — a proposal checks the higher modules first; a separator between type and name
+
+> Make sure that whenever someone does a proposal they should make sure that the more authoritative context modules, like psyche and such, are not already stating the same thing or almost the same thing (where it is effectively the same).
+
+> Could we use something like a colon to separate the type, like vision or knowledge, from the name, which then uses hyphens, just so we can visually better see where the type is and what the name is? We would then train the models to be aware of this in the skill names.
+
+> I guess you could make a long-term vision proposal. It's not a different type of skill. It's just that it goes in the long term, in an appropriately named or annotated section that says this is a long-term vision aspect or a short-term ...
+
+-- psyche, STT, book comments on «Communicating with the living».

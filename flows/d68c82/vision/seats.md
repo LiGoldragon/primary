@@ -17,3 +17,11 @@ Context: same comment, 2026-10-13T16:20.
 > We should have a haiku at the lowest power, and then a sonnet, and then an opus. There's no fable subagent.
 
 -- psyche, STT.
+
+## 2026-10-14 — every Primary has a Secondary, started first
+
+> whenever we start a primary it needs a secondary. Every primary needs a secondary to act as a secretary. It's like a variant so you start the secondary first actually. The tertiary is so cheap that you might as well start one too so the secretary has its own assistant. I guess you could start the tertiary first. It's programmatic and it's so cheap. There's actually no point not doing it.
+>
+> Every topic, but then we run into the cost of running a harness. Especially with [Claude] and Codex harnesses, they're heavyweight. Maybe secondary and primary is good most of the time, especially in design, unless the topic becomes really big.
+
+-- psyche, STT. Transcription corrected: "Cloud" → "Claude".

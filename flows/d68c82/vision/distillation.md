@@ -64,3 +64,9 @@ Context: comment on «Three lines from the chat», vision-book proposal. Also 17
 > Be careful with sending all these uncrystallized flow statements. I think we should start with crystallizing them. ... Just make sure we don't overload it. Let's make sure that we actually crystallize this run instead of just throwing all these tokens in the garbage and getting nothing out of it.
 
 -- psyche, STT.
+
+## 2026-10-14 — the machine judges by the situation, not by a keyword
+
+> The whole point of using an LLM is to use the capacity to judge according to the situation.
+
+-- psyche, STT; said of telling an order from vision.

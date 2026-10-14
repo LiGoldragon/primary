@@ -907,3 +907,293 @@ Event: Field reports the defects fixed in source:
 - 2026-10-14 event: batch 09 v3, «Flow CLI, deployment, long term» (KqGmvFzr4VAqEeCA4jYMmA), accepted with 13 proposals. P13 holds his 2026-09-24 archives question, with three placements as choices. The owner work implied by the book is at flows/df159a/reports/book-12-owner-work.md. It rests on unruled proposals, so I hold it until he rules. Batch 10, the last, is being sent.
 
 - 2026-10-14 event: batch 10 v2, «Flow philosophy and artifacts» (KK1F3k86R5yCnDcy5KL3CX), accepted. All ten Flow batches are published and checked. The owner work implied is at df159a reports/book-13-owner-work.md, held until he rules. Uncommitted book tooling is handed to the committer. df159a and da2038 hold for his comments.
+
+## 2026-10-14 — the living on «Flow philosophy and artifacts», relayed by the Psyche Core Tertiary
+
+> I commented on Flow Philosophy and Artifact and it's a really bad book. It keeps making the same suggestion with small differences. It's a catastrophic failure because making me read something twice is a huge failure. Living time, energy, and thinking power are the most important, most valuable resource.
+>
+> The whole point of the books is to maximize communication. We need to go visual, visual: minimal text, minimal amount of text. The suggestions are always minimal: the least amount of instructions to achieve the biggest effect, always. We have to fit more data in so we have to make everything short. This is super important.
+>
+> I want to go hard on reprogramming the behavior for this in many layers: from the whole concept that the context is super important and the context modules must be super dense and precise (especially the system stuff like spirit and intent), and from the point of view of the book and how it's presented. I want to know the situation without messaging. Let's minimize messaging to all the fables for now and get an audit. I want to super emphasize visualization.
+>
+> Anything, any aspect which we can visualize: context size, session size, amount of tokens per day on certain models, all of this, I want to start visualizing. For example now I want to get a state on the Fable context sizes, the different flows, and a rough idea of what their context is about.
+>
+> If the spirit context is long I would refocus on honing in on the whole concept of how to handle the user interface, how to communicate better. The book is really about the proposal. I don't need to get all of the verbatim quotes that are used to create the crystallization. I don't want to read all that. I don't even want to [go] through it. I don't see the point.
+>
+> Like I've said what I've said. Now the machine's job is to crystallize what I've said and that's what I'm interested in doing. That's what engages my mind best: engaging with how the mind can explain what I'm trying to say in a more condensed crystallized form.
+
+-- psyche, STT. Transcription corrected: "grow through it" → "go through it".
+
+On P1 (vision-flow.md, the flow / synthetic intelligence paragraph), thread 70d19d60:
+
+> Take out the part about artificial intelligence being a misnomer. That's not necessary.
+> Otherwise it's good. Land it.
+
+-- psyche, STT, book comment.
+
+On the same paragraph proposed into vision-remembering.md, thread 30541d78:
+
+> This would be a repetition so no, we're not going to repeat the same thing in two skills. Let's not do that. Let's skill ourselves against that somewhere.
+
+-- psyche, STT, book comment.
+
+- 2026-10-14 decision: minimize messaging to the Fables, per his word. da2038 and Field are told to send nothing to df159a or 33752b until he lifts it. I land P1 through my own subflow, and run the audit from transcripts without messaging any flow.
+
+- 2026-10-14 landing: P1 of «Flow philosophy and artifacts» is landed in psyche-context vision-flow.md L14 at 4077058, pushed and matching remote, without the misnomer clause. No figure was landed, because the module carries none. Nothing was added to vision-remembering.
+
+- 2026-10-14 event: published «Dense and visual» (BU6GbRwkA2Ka8EhH8RWLF2), with three proposals: vision-book, vision-context-modules, and a new vision-visualization. Not watched, because the watch limit is reached.
+
+- 2026-10-14 event: the context audit is written to reports/flow-context-2026-10-14.edn, covering 18 live seats. The largest contexts: Mind Sol 41fa34 at 284,854; Field Sol 42265e at 190,566; Psyche Ethos Secondary 23824a at 173,648; Fable df159a at 163,993. Fault: I sent 41fa34 several knowledge tasks while it was past the 200k no-further-work line. Cause: I never observed its context before sending, and compensation-launch requires that observation. The chart is being built.
+
+- 2026-10-14 event: published «Flow context sizes» (LVibhr9Vqcq6oageTW79UU): bars for 18 seats against the 200k line, plus tokens per day per model for 10-07..10-14. Peak day: 10-10, about 2.7 billion tokens, mostly Opus.
+
+## 2026-10-14 — the living on «Dense and visual», relayed by the Psyche Core Tertiary
+
+P3 (vision-visualization), thread b31380b8:
+
+> This goes in the skills that will be used to create the book but I think I have a really cool idea: you actually have it right. Or maybe it's not visualization but the whole concept of multimodal communication to the living or maybe it's even communicating with the living.
+>
+> We can describe how we want communication with the living to happen in that skill and then we can use the book skill to say we want to create a book that essentially follows how we want to communicate with the living. That way it's not specific to the book. We are reusing the skill, which we'll use for other frameworks, because the Claude artifacts probably won't be the only method that we use. I would like Codex to be able to use something as well.
+>
+> Let's take the parts that aren't specific to how the Claude books are made or even the concept of making a web presentation. The living communication, or there's a word there I'm looking for and I can't say it. Let's get a fable to think about all this and come up with a nice presentation on that.
+
+P2 (vision-context-modules), thread 8b0844df:
+
+> This is great. Actually this is even intent. This is intent. This is system prompt vision, which is intent.
+
+P1 (vision-book), thread d318c400:
+
+> I don't want the negative guideline. I just want you to describe what the book should have, not what it shouldn't have. The idea that the living's time is most valuable is basically spirit core, which means that it's at an even higher priority in the system prompt because it's that important. We don't need to repeat that, right, unless you say a book is optimized to maximize the efficiency of communication to the living.
+
+-- psyche, STT, book comments.
+
+- 2026-10-14 event: sent Fable 33752b the communication-with-the-living module design, with his words as #psyches; this is his explicit request for a Fable. P1 and P3 of «Dense and visual» fold into it. P2 is being landed as intent.
+
+- 2026-10-14 landing: P2 of «Dense and visual» landed as intent, in a new module psyche-context intent-context-modules.md, at bf03117, pushed and matching remote. Nothing loads it yet. spirit-core has no line on the value of his time, though he believes it is there. Field is to compose the module into every system prompt; the Fable is to propose the spirit line.
+
+- 2026-10-14 event: Field composed intent-context-modules into the SYSTEM lists of all 3 aspects and 5 metaflows. The committer published it in Primary at 35800aa, and the Curriculum check passed. The prompts of a fresh Claude and a fresh Codex seat carry it. Running seats get it on their next launch or refresh.
+
+- 2026-10-14 event: 33752b published «Communicating with the living» (Sx595Qg3eFmiSBBYN3GLFD). It holds: a new psyche module, with four names as choices; vision-book reduced to the book's own lines; the Field moves as a table; a spirit-core line as its own proposal.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> I commented on a book and I don't see that there has to be a [follow]-up book, right? I want to get to the best-looking book through changing the behavior and reloading the new skills essentially.
+
+-- psyche, STT. Transcription corrected: "full-up" → "follow-up".
+
+- 2026-10-14 correction: the living said "You're confusing an order with vision here." His "I want to get to the best-looking book through changing the behavior and reloading the new skills" is an order: change behavior through skills, then reload, with no follow-up books. It is removed from vision/books.md as an impurity, and the proposed vision-book line is withdrawn. Cause: an "I want" sentence about what to do now was read as vision. Fix: a machine line to Field. Carrying out: Field reloads the Psyche seats.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> Well make sure that you don't start interpreting everything I say with "I want" as an order either. The whole point of using an LLM is to use the capacity to judge according to the situation.
+
+-- psyche, STT.
+
+- 2026-10-14 event: replaced the machine line sent to Field with a situational one; the keyword form is withdrawn.
+
+- 2026-10-14 event: relayed 081064's handover readiness to Field.
+
+- 2026-10-14 event: relayed d55c56's handover readiness to Field, and asked Field to index 42265e.
+
+- 2026-10-14 event: Field landed the situational line at 5a542ba. Refresh scope: 7c89aa included, 19d9f2 excluded pending his ruling on idle seats.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> The first thing that a flow should do when it refreshes is make a proposal for crystallization on whatever topic it's been given. It loads certain context modules, skills, and then it's given some raw psyche with context so it tries to recrystallize anything. That's its first and last response. There's no point in making an LLM start without giving it something to do. It's telling them to just say "reply ready," which is stupid beyond words. Let's make sure that never happens again. You have a default prompt, basically a default startup context, and like I said I don't want any values, such as prompts, hard-coded into code. Did we? I want to book on whether or not we migrate all of our prototypes to Clojure already.
+
+-- psyche, STT. Transcription corrected: "I want to book" → "I want [a] book".
+
+- 2026-10-14 event: ordered Field to drop READY startup prompts from the refresh path now; a successor's first prompt is its handover plus its topic's raw psyche, asking for a crystallization. The prompt is to live in EDN.
+
+- 2026-10-14 event: Clojure audit (reports/clojure-migration-2026-10-14.edn): 178 files, 34 of them live (mjs 19, clj 10, sh 4, py 1). Every launcher and hook is still mjs or py. 58 hard-coded values. The READY text is at claude-main-flow-launch.mjs:47, emitted at :132; BOOTSTRAP_READY at claude-native-seat-refresh.py:720 and :870. A book is being prepared.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> I want a young fable flow of the appropriate topic and I guess if we don't have one we can start one to research.
+>
+> If we start, a rule/invariant is: whenever we start a primary it needs a secondary. Every primary needs a secondary to act as a secretary. It's like a variant so you start the secondary first actually. The tertiary is so cheap that you might as well start one too so the secretary has its own assistant. I guess you could start the tertiary first. It's programmatic and it's so cheap. There's actually no point not doing it.
+>
+> Every topic, but then we run into the cost of running a harness. Especially with [Claude] and Codex harnesses, they're heavyweight. Maybe secondary and primary is good most of the time, especially in design, unless the topic becomes really big.
+>
+> I don't know what the topic is called but it's about:
+> - how to better visualize things
+> - how to use efficient forms of communication, especially for code changes or change proposals that involve code or text
+> - ways to actually visualize that whereby the amount of text shown to show the difference is as small as possible, sort of like an inline diff sort of thing maybe
+>
+> I think it could be cool. I want the Flow topic also reinvigorated with a fresh proposal. We're developing the Flow, the Nexus architecture, and Ethos at the same time. There are three aspects, right?
+> - the language aspect
+> - the runtime architecture
+> - that component itself, [Flow], which is probably the most important component to bootstrap
+>
+> Bootstrap persona, the meta harness, since starting flows like clean lean flows, specialized flows, or refreshing flows is a central part, a cornerstone, of this system.
+
+-- psyche, STT. Transcription corrected: "Cloud" → "Claude"; "low" → "Flow".
+
+- 2026-10-14 event: ordered Field to start a new Psyche Communication pair, Secondary first and then a Fable Primary, which takes over «Communicating with the living». The Flow successor starts with a fresh Flow proposal covering Ethos, Nexus and Flow as the bootstrap meta harness, plus the Clojure migration with the audit and draft code. I do not write the Clojure book myself.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> And I want an analysis, an audit, and then a push on making sure that:
+> - Zeus is up to date, system- and home-wise.
+> - The system is coherent so we don't have overlapping versions of CLIs and things.
+> - Flow is updated with all of the latest changes and fixes.
+> - It is brought to minimum viable product (MVP) state and then deployed everywhere, locally on Zeus.
+>
+> I want to report on all that. I want a situational report now and then a situational report whenever there are big changes.
+>
+> Questions, crystallization, and proposals. We can even have one or two knowledge reviews, right? A knowledge review is not so much a proposal but I'm reviewing knowledge and it can be knowledge that already exists.
+>
+> In review, anything that's thought to be relevant for me to review, especially if I ask questions concerning a subject, means that there should be a skill on that topic or broader topic that will hold it (and doesn't have so much content that it can hold more), right? We have a sort of ideal context module size also. Let's get research on that.
+
+-- psyche, STT.
+
+- 2026-10-14 event: ordered Field to audit and push Zeus currency, system coherence, and Flow updated to MVP and deployed. Sent the ideal-module-size research to Mind Tools Secondary 47d946, because 41fa34 is over 200k. The sitrep is being prepared.
+
+- 2026-10-14 event: published «Situation, 14 October» (9UbL1saMvkiv2QGx2MfWMS), the first situational report. It has 3 questions and 2 proposals: situational reports in vision-book; a module for each subject in vision-context-modules.
+
+- 2026-10-14 event: Field removed the READY literals at claude-main-flow-launch.mjs:47 and secondary-first.mjs:68. The first prompt is now data in config/main-flow/shared.edn :first-prompt-template, with raw-psyche-paths and topic-context per metaflow, and Claude and Codex both render it. Claude launches one combined prompt. The Communication pair and the fresh Flow mission are declared in EDN; generation is running before any launch.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> I just commented a bit on communicating with the living. I haven't finished it but I guess you could kind of get a lot out of what I'm saying (which is kind of broad sometimes) and rethink the whole thing.
+>
+> I also want someone to look into it because I want to have a better speech detection system. I know that Gemini has what we have been calling paralinguistic transcription ability. Apparently there is a way to be able to type using some kind of third-party keyboard on Android, using Gemini for transcription. Hopefully I would like it if it's better than the Wispr Android experience because Wispr is not really up to my standard.
+>
+> I think we can have something a lot better, a bit custom, so that we can get, like I said, paralinguistic speech-to-text transcription that conveys more than just the words, the literal words.
+
+-- psyche, STT.
+
+- 2026-10-14 event: sent the paralinguistic STT research to 47d946. Fetching his comments on «Communicating with the living» for the young Communication Fable, which will rethink the whole book.
+
+## 2026-10-14 — the living's comments on «Communicating with the living» (33752b), read from the artifact
+
+On the module name, thread dffb62ff:
+> Yeah it's the second one: vision, living, communication.
+>
+> What character could we use to separate the type in the file name of the skill or the directory name (I guess), which is when we put it in the harness? Could we use something like a colon to separate the type, like vision or knowledge, from the name, which then uses hyphens, just so we can visually better see where the type is and what the name is? We would then train the models to be aware of this in the skill names. That's how they're named.
+>
+> It would have to be something that works, that's compatible with essentially the harness canonical file name, and that does not have problems with the skill names showing in auto-completion in the harness. Someone could check by injecting a partly typed command, I guess, and then getting a screenshot maybe. I guess you would need to have the harness in focus in [Herdr] or something. I don't know.
+>
+> Document how these kinds of tests are done and maybe write some tools in Clojure to help better do them in the appropriate repository. I don't want tools to accumulate in the main workspace either so they should live in appropriate repositories. I'm not against it: if a machine thinks that it needs a repository for something, it can create a proposal for a new repo.
+
+On "Communication with the living carries the most to him for each moment of his attention. The same lines hold in every harness...", thread ac8ecfad:
+> The sentence that starts with "the same line hold in every harness" is probably just harmful so take that out.
+
+On "It is multimodal: figure, text and speech. It is visual first, and its text is minimal.", thread 4e174dc0:
+> When you say "speech" you're saying you want to put audio, like text-to-speech, into the book. Is that what you're saying? I don't need that. Although eventually the user interface would be much more real-time and involve potentially machine speech, we're not really designing that right now. I guess you could make a long-term vision proposal. It's not a different type of skill. It's just that it goes in the long term, in an appropriately named or annotated section that says this is a long-term vision aspect or a short-term ...
+
+On "It is read on a phone, scrolling top to bottom...", thread d58594f0:
+> We can't unanimously say that it's read on the phone but we could point out that it might be read on different-sized screens so that the presentation should be adaptable to the screen size. I guess you then translate that into another skill, which explains how we deal with the multiple screen sizes with that particular stack.
+
+On "A proposal is the least instruction that gives the biggest effect. It carries his words crystallized and names the records...", thread 765a6283:
+> I think that's a repetition when you say a proposal is the least instruction that gives the biggest effect. I think you've already put that somewhere else.
+>
+> Make sure that whenever someone does a proposal they should make sure that the more authoritative context modules, like psyche and such, are not already stating the same thing or almost the same thing (where it is effectively the same). We don't need to say "carries his words." That's also a repetition. We don't need to say "it names the records it draws from." I don't want to see the records it draws from.
+>
+> Although if the proposal is accepted there has to be a place. Each book needs to have an associated reference, which is not rendered but which is kept with the source of the book, which would be in text, like the unrendered book. We need the references to be archived accordingly if some or all of the proposal is accepted.
+
+-- psyche, STT, book comments. Transcription corrected: "Herder" → "Herdr".
+
+- 2026-10-14 event: logged his 5 comment threads on «Communicating with the living». He ruled the name vision-living-communication. The separator test went to Field. The comments wait for the young Communication Fable, which rethinks the book.
+
+- 2026-10-14 event: 47d946 landed knowledge-context-module-size and inquiry-context-module-size in mind-context at de94013, pushed, independently reviewed, with an inventory of 136 modules.
+
+- 2026-10-14 event: Field removed both BOOTSTRAP_READY sites in claude-native-seat-refresh.py. It reads the EDN template and waits for a real nonempty response; the fixtures pass. The cohort is in final freshness checks before the committer publishes it.
+
+- 2026-10-14 event: the Tertiary relayed the same 6 comments on «Communicating with the living» that I had already read and logged; nothing new. They wait for the young Communication Fable.
+
+## 2026-10-14 — the living's comments on «Situation, 14 October», relayed by the Tertiary
+
+Under way, item 2 (thread 1760c4c4):
+> Yeah I like that topic name: Communication. That's perfect for what I want and it's probably going to be a long-term topic that we're going to touch on a lot.
+
+Question 1, refreshing Mind's Secretary at 285k (thread 513f679b):
+> Actually OpenAI's models' context is different. I would even say that it's not even 200,000 tokens. For Claude's models they have a 1 million-token context and I think even less than that: at 128,000 tokens with Claude we get a warning. Ideally this is long term, especially when we get leaner flows.
+>
+> It would be cool if we could strip down some of these Clojure flows so that they're way more efficient to spawn. For Codex models the context window is much smaller and I think that at 96,000 tokens there's a warning and we start to contemplate refreshing. If the flow is working obviously we let it work and if it keeps working we let it work even past compaction.
+>
+> If it works so much that it compacts, eventually in the long-term vision we would have some kind of a check to make a judgment as to whether maybe the topic was misguided. If it's having such a hard time to accomplish its goal, it might have been either not appropriately trained or misinformed, or it's been given too broad of a problem or something.
+>
+> That's long term. Certainly 128,000 tokens, percentage-wise, is where OpenAI is at: 40%. Anywhere near 40% with Claude is way too much.
+>
+> I think they give us a bigger context window but after about 120,000 tokens the output quality starts to degrade really fast. The context window rollover point is shorter, much shorter, for OpenAI. For sure at 150,000, 160,000 tokens on OpenAI's models, we're seriously looking at refreshing, and the same for Claude at 200,000.
+>
+> That's also why they seem to auto-compact around 160,000 tokens. That's where I see this auto-compaction happen. The smallest I've seen is that it compresses the context by 160,000 tokens. I don't know what the context window was but it'd be interesting to get some figures and then to get some knowledge on what this auto-compaction behavior of Claude is really like. We want to know if maybe OpenAI has a similar feature.
+>
+> It seems they auto-compact before the cache runs out, which is really cool because then you get a cached compaction. Maybe either OpenAI does the same thing or we could look at trying to emulate that feature ourselves. I think it's a really good idea. Because if something has waited so long that its cache is going to be invalidated, then it's basically idle or probably idle. It is idle so there's no point although there is also the possibility that a model is waiting for a command to finish.
+>
+> I'd also like to get some knowledge on that aspect. What if there's a long-running command and then the cache gets invalidated from the model just waiting for the command to return? Side issue, not so important but interesting to know.
+>
+> We could do some research and become more aware of this whole caching timeout. Do providers have an API to know when a cache is running out, to get a warning or something?
+
+Question 2, retiring idle seats (thread 25b78044):
+> Well this is an interesting topic. Right now we're sort of doing things by hand but in the long-term vision, if a flow has just been sitting idle for some time, we can turn off its harness. When the system is properly configured, if a request needs to reach a certain flow (which is not up and running in a harness), then the flow would just restart that flow or start a fresh one.
+>
+> If anything, if we have this cache expiry action mechanism that we enforce ourselves or that we adapt to, maybe we could use Claude's API. Claude could just tell us the cache is going to expire instead of compacting. Then we would ask for the model to do a handover to produce a handover and that way we could train how we want our handover to be, which is essentially our own form of compaction.
+
+Question 3 (thread 120b75d6):
+> Well it must have been where I last commented.
+
+Proposal 1, situational reports (thread 962e38d5):
+> This is a mashup of the living giving an order and inferring a certain approach to things, which we're given a particular form for that particular situation but which would be expressed differently in a context module.
+
+Proposal 2, a subject has a module (thread d8688b22):
+> Yeah this is good.
+
+-- psyche, STT, book comments.
+
+- 2026-10-14 rulings: the topic is named Communication. Sitrep P1 is rejected as a mashup and withdrawn. Sitrep P2 is approved and being landed. He stopped reading the Flow 3rd edition at his last comment. Idle seats: no retirement now; harness-off and restart on demand is long-term vision. Mind 41fa34: by his thresholds it is idle and past them, so it is to be refreshed.
+
+- 2026-10-14 event: sent the cache and compaction research to 47d946, the 41fa34 refresh to Field, and the Flow 3rd-edition answer to da2038.
+
+- 2026-10-14 landing: sitrep P2 landed in psyche-context vision-context-modules.md L59 at 37ecd20, pushed and matching remote.
+
+- 2026-10-14 event: 47d946 landed knowledge-paralinguistic-transcription and inquiry-paralinguistic-transcription in mind-context at f121e69, pushed and independently reviewed. No trial shows a winner over Wispr. Gemini gives verbatim text and word timestamps through its transcription API, and emotion labels through general audio understanding; these are model interpretations, not measured prosody. Options found: vBoard (Gemini via OpenRouter), WhisperToInput, Loquela and Dictus, or a custom Gemini IME at about $0.005/min batch.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> I don't see any Psyche Flow working and I'm supposedly waiting for books that I asked for hours ago. What's happening? Why is there such a communication breakdown? How did he even manage to not make the book I wanted? How hard can it be? I don't get it.
+>
+> Anyway I commented on a Flow-related thing. We get a subagent to send you that context and send it to the Flow topic, also for Fable, to either finally make the book or for the book that's already made to be changed and actually published.
+>
+> I just want to get whether I'm all caught up and whether I don't have a fresh book to comment on. I need a book re-edited or I need questions asked, right? If I'm interacting with you I'm expecting books to be refreshed or for questions to be posed to me in a book, along with maybe some proposals.
+>
+> Please stop repeating fucking variations of a proposal. Just make the variations separate so you don't make me read the same 90% of the text. I'm so tired of this. I don't ever see that again. It's the most annoying thing.
+
+-- psyche, STT.
+
+- 2026-10-14 fault: no Flow book was being made. Cause, as read and written in order: (1) I relayed his minimal-messaging order as "send nothing to df159a, keep it idle"; (2) I routed the Clojure book and the fresh Flow proposal to a successor Fable not yet launched; (3) Field gates that launch behind a whole-cohort regeneration and publication. So the book waited on a launch, and the launch on a generation. Line that changes it, for compensation-launch, Field's: "A book the living asks for goes to a seat that can start it now; no launch, refresh or regeneration holds it." Separately: variants were written as whole repeated proposals.
+
+- 2026-10-14 event: lifted the df159a hold; da2038 is driving the Clojure book now. Field is told: no df159a refresh, the Communication launch first, and the machine line.
+
+> I do not want to reread the same thing twice in the same book.
+
+> This also means the removal and addition. A lot of times I see something that's marked as removed but it's actually repeated verbatim in the addition so it's not actually removed. The diff is not presented properly.
+
+-- psyche, STT, directly to d68c82.
+
+- 2026-10-14 event: sent da2038 the word-level diff rule; a renderer check has been ordered.
+
+- 2026-10-14 cause found: tools/book-build.clj:176-212 paints whole removed and added lines as separate blocks and never computes a word diff, though subagents/book.md:58-66 carries the word-level rule. The Flow books come from book-build.clj. A fix of book-build.clj has been ordered.
+
+## 2026-10-14 — the living's comments on «Flow: CLI, deployment, long term» (KqGmvFzr4VAqEeCA4jYMmA), read from the artifact
+
+```edn
+[
+ ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «Flow exposes the harness; Message makes use of it; Flow first»; anchored passage «Flow exposes everything from the harness, the bare input: a flow is started, stopped and sent a message through Flow, an…»; 2026-10-14T15:15; thread a9e8af3d-20f5-4df8-9e53-f31e91957b1b"
+  "Yes this is good."]
+ ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «anybody may call Flow; a flow refreshes itself safely»; anchored passage «Anybody may call Flow, a flow for its own refresh among them: because the CLI checks the calling process, a flow refresh…»; 2026-10-14T15:16; thread c48143f5-bf5b-4602-a4cd-c6b1db99a153"
+  "Yeah this is good, especially the later part."]
+ ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «an undelivered request tries a higher power, then lower; a crucial metaflow missing is started»; anchored passage «A request that cannot be delivered tries a higher power in its own aspect: the layer above, and when nothing is higher, …»; 2026-10-14T15:18; thread 858cdedf-7fcd-48f6-a7c3-3616049132d6"
+  "We have old vision that is now obsolete in there, with a conflicting vision. The long-term vision is that the flow is started if it's needed, which means it doesn't matter if it's running or not. Even if it doesn't have any working transcript to reawaken, then we just feed it the context modules that this meta flow is supposed to have, along with the prompt that it's supposed to be getting now."]
+]
+
+```
+
+-- psyche, STT, book comments.
+
+- 2026-10-14 event: relayed the 3 batch-09 comments to da2038 as #psyches; two approvals to land, one rejection, then a short second edition after the Clojure book.
+
+- 2026-10-14 event: book-build.clj now renders word-level diffs, one text with inline del and ins; 10 tests pass. Uncommitted; handed to the committer, and da2038 told.
+
+- 2026-10-14 event: 47d946 extended knowledge-compaction and inquiry-compaction in local commit 59af52, unpublished. Claude API cache: 5m default or 1h TTL. OpenAI: a ttl option, 30m minimum. Neither warns before expiry. Quality falls with length: NoLiMa GPT-4o 99.3%→56.0% at 128K; LongCodeBench Claude 3.5 Sonnet 29/19/15/3% at 32/64/128/256K. It asks for parent review before pushing.
