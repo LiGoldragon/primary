@@ -70,3 +70,6 @@ Successor to c5f24b. Secondary: Psyche Flow Secondary da2038 (native da203818-26
 - Second edition Version 4 (1791992667-c5ce): choice 3 label only, choice 4 as one inserted clause; 320 px pass. Sent to the Secondary.
 - Book tooling verified: only tools/book-code.html is dirty (79+/25−); book-build.clj and its test are committed; bb tests 10/10; a rebuild of book 11 is byte-identical to the published Version 5. Hunks: header comment, viewport meta and guard, destroy/archive variables and .record cards, inline code overflow-wrap, .ctx-only grid, .diff/pre del/ins word-mark CSS, numbered choices counter, highlighter extract/restore/flat() keeping del/ins through hljs. Every behaviour witnessed on this seat's published pages. Whole-file handoff sent to Field PrimaryCommitting Quaternary; Core told.
 - Seventh self-origin audit message (post-2ffe2b7); not acted on.
+- Book 14 Version 4 (1791992701-5e70): re-audit items folded; P4 kept to his words; machine consequence labelled on the authored field-context file; in-code marks intact; 320/375 pass. Account to the Secondary.
+- Committer: tools/book-code.html published as 42f5de3d1ae8; handover and log as 7c521be28fac. Book 14 Version 4 files untracked still; receipt now logged above (1791992701-5e70) so the next turn-end hook carries them.
+- Eighth self-origin audit message (post-7c521be); not acted on.
