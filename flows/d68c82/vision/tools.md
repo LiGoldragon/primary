@@ -10,3 +10,9 @@
 > Document how these kinds of tests are done and maybe write some tools in Clojure to help better do them in the appropriate repository. I don't want tools to accumulate in the main workspace either so they should live in appropriate repositories. I'm not against it: if a machine thinks that it needs a repository for something, it can create a proposal for a new repo.
 
 -- psyche, STT, book comment on «Communicating with the living».
+
+## 2026-10-14 — a repeated use case grows an existing tool; EDN in Clojure, datom in Nexus
+
+> Anything that can be abstracted so that it's reused. If we see a use case repeat itself, then we should try to adapt whatever tool we already have to become more capable and broad. If we're in Clojure we use an EDN payload for everything and if we're in Nexus we use a datom.
+
+-- psyche, STT.

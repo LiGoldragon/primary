@@ -125,3 +125,28 @@ Context: comment on «Figures that move», the drawer's brief proposal (target: 
 > I guess you could make a long-term vision proposal. It's not a different type of skill. It's just that it goes in the long term, in an appropriately named or annotated section that says this is a long-term vision aspect or a short-term ...
 
 -- psyche, STT, book comments on «Communicating with the living».
+
+## 2026-10-14 — Inquiry; approve, review, glance
+
+Context: same comment on the vision-flow L24 line.
+
+> Let's also make sure that we mention that a question is a type and how it should be presented, essentially also as a context module, because we have the inquiry. Call it an inquiry so that we match, right? We either have a vision proposal or psyche, in more general terms, and then a mind proposal, which is either knowledge or, not a proposal, a review, right?
+>
+> In mind's terms we review. I review the knowledge. I review the inquiry. When it comes to feel it's more like a situation or glance. We glance, right? I approve psyche, I review mine, and I glance at field.
+>
+> Field shows me metrics and sort of gives me a feel for what the context modules are mostly about. It brings forward to me sort of oddities, seeming inconsistencies, and potential problems, especially in terms of misunderstanding or misinterpreting or overinterpreting certain instructions or if they conflict with higher levels of authority context modules.
+
+-- psyche, STT. Transcription corrected: "feel" → "[Field]"? kept as heard; "review mine" read as "review Mind".
+Correction to the 2026-10-14 "Inquiry; approve, review, glance" entry: Transcription corrected: "feel" → "[Field]"; "I review mine" → "I review [Mind]".
+
+## 2026-10-14 — Subagents as the same layer; a contextualizing subagent
+
+Context: same speech to the Psyche Flow Secondary.
+
+> Please check all this new psyche edition context psyche here. We also need to talk about how to context psyche properly and how main flow should probably call at least a lower-layered subagent. Let's define the basic subagents as the same kind of layer actually because the subagents are just non-main-flow variants, right? Unless they're specialized, create a table of all the most useful specialties right now and redefine how the subagents are using the same data, right?
+>
+> The main flow and the subflows are just the main flow and subagent, the main session and subagent version, and are essentially the same thing. They don't indirectly interact with the living so they don't need to have that. They probably just have asymmetrical training in respect to understanding what that means in any way from their point of view and why they're not directly interacting with the living. They're not logging the living but they might be judging.
+>
+> The skill: we should probably tell main flow to probably use a specialized subagent that we'll define here that specializes in helping to contextualize any raw living entry logging. Before the log there should probably be a subagent call. Let's define that subagent so it's really cheap. It basically is just saying, "contextualize this entry," and then it maybe just uses the first few and last words of the entry or something.
+
+-- psyche, STT.

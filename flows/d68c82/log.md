@@ -1197,3 +1197,146 @@ Proposal 2, a subject has a module (thread d8688b22):
 - 2026-10-14 event: book-build.clj now renders word-level diffs, one text with inline del and ins; 10 tests pass. Uncommitted; handed to the committer, and da2038 told.
 
 - 2026-10-14 event: 47d946 extended knowledge-compaction and inquiry-compaction in local commit 59af52, unpublished. Claude API cache: 5m default or 1h TTL. OpenAI: a ttl option, 30m minimum. Neither warns before expiry. Quality falls with length: NoLiMa GPT-4o 99.3%→56.0% at 128K; LongCodeBench Claude 3.5 Sonnet 29/19/15/3% at 32/64/128/256K. It asks for parent review before pushing.
+
+- 2026-10-14 landing: two batch-09 approvals landed in psyche-context vision-flow.md L22 and L26 at 67d358d, pushed: anybody may call Flow; Flow exposes everything from the harness. The Clojure book and the batch 09 second edition are rendering.
+
+- 2026-10-14 event: Field published the book-availability line in compensation-launch, field-context 3b8963a. The 103-path cohort is submitted to the committer. The Communication pair launches next.
+
+- 2026-10-14 event: da2038 relays the claim, unverified, that curriculum-nexus reads psyche skills from a pinned Nix source, so landings reach the generated trees only after Field rebuilds with a new pin. Routed to Field to witness.
+
+- 2026-10-14 event: the Field audit is at flow-evidence/42265e/zeus-coherence-flow-audit-20261014/audit.md. Communication Secondary 3960eb launched and is answering its first topic prompt; the Primary follows.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> You mean there's a lock that probably needs to be updated? Did we ever get somebody to start designing tools to avoid this infinite regeneration about the [ad hoc] scripting? This essentially applies directly here on lock updates and things. Anything that can be abstracted so that it's reused. If we see a use case repeat itself, then we should try to adapt whatever tool we already have to become more capable and broad. If we're in Clojure we use an EDN payload for everything and if we're in Nexus we use a datom.
+
+-- psyche, STT. Transcription corrected: "hawk" → "ad hoc".
+
+- 2026-10-14 event: ordered Mind Tools 47d946 to design the tools: first a single EDN-payload Clojure tool for land, pin, rebuild and regenerate; then a ranking of repeated ad hoc commands. Due as a book with code.
+
+## 2026-10-14 — the living, directly to d68c82, with a screenshot of the Clojure book (df159a) quoting his records with paths
+
+> So do you think that I wasn't clear enough on the fact that I didn't want stuff like this in the book?
+
+-- psyche, STT.
+
+- 2026-10-14 fault: the Clojure book quotes his words with record paths and gives the machine's count with file paths. Cause, in order: his rule (no verbatim quotes, no records shown, references kept unrendered beside the source) was relayed only to 33752b for the Communication module, which has not landed. My brief to da2038 carried the variants and diff rules but not this one. No landed module carries it, so df159a never had it. Fix: until the module lands, I relay his words with every book brief. They go to da2038 now, and the book is stripped and republished.
+
+- 2026-10-14 event: relayed the three no-quotes and no-records psyches to da2038; the Clojure book is to be stripped and republished.
+
+## 2026-10-14 — the living, directly to d68c82
+
+> You mean you're not actually deploying the context modules properly?
+
+-- psyche, STT.
+
+- 2026-10-14 event: ordered Field to re-pin Curriculum to the current mains now and regenerate, and to keep the pins current after each landing.
+
+- 2026-10-14 event: the Communication pair is live: Secondary 3960eb (Opus) and Primary 17ac8a (Fable). Both system prompts carry intent-context-modules. Cohort 3f1cf6c is published. «Situation, 14 October, evening» is published (3mTpJTTR1q7mwvurCBBFeH).
+
+- 2026-10-14 event: relayed his 6 comments and today's book rules to 3960eb for 17ac8a. Sitrep 2 added to the index.
+
+- 2026-10-14 event: corrected 3960eb on the names: the topic is Communication; the module is vision-living-communication, as he ruled.
+
+- 2026-10-14 event: 3960eb took the name. 17ac8a publishes the single edition. The separator test is already with Field.
+
+- 2026-10-14 event: da2038 failed book 14 v1 (Clojure) on its audit for more than the quotes: P1 not in red and green; an .mjs line and hard-coded file names in the Clojure; an unused Malli schema; a keyword bug; wrong figure arrows; runtime paths and a UUID; the landed bb reader missing. All sent back to df159a. Books 11 and 10, batch 04 and batch 01 are republished with word-level diffs. Batch 06 waits on a CSS fix. Batches 02, 03 and 05 and the rectification book stay as they are, because the builder rejects their sources.
+
+- 2026-10-14 event: 47d946 published the compaction and cache research on mind-context main at bd5fd6c. Tool design is in progress.
+
+## 2026-10-14/15 — the living on machine time
+
+Context: a screenshot of «Situation, 14 October, evening» on his phone at 9:33.
+
+> It's 9:30 in the morning so we need to review how the machine thinks about what time it is I guess.
+
+-- psyche, STT.
+
+Event: the title's "evening" was named by d68c82 without reading a clock; the harness gives this flow a date only, no time of day.
+Event: subflow witnessed Zeus clock 09:35 CST (America/Mexico_City), NTP synced, local date 14 Oct; Claude system prompt gives a date only; no hook injects time; no skill says how a flow learns the time. Codex base context unwitnessed. Line sent to Field for compensation-truth.
+Event: Field 42265e reports current-main rebuild/check passed (Psyche 67d358d, Mind f121e69, Field 3b8963a); guard found deleted generated vision-context-modules files; asks that no other flow run RebuildSkills until its activation completes; clock line included before final pin.
+Event: da2038 republished books 11, 10, batches 04, 06 with word-level marks in code too; batch 01 editions restored; book 14 v3 and batch 09 2nd edition in revision. tools/book-code.html changed, uncommitted.
+Event: Field landed clock line field-context ff56797; cohort Psyche 67d358d, Mind bd5fd6c, Field ff56797 checked (131 modules) and submitted to sole publisher; publication and resolver activation pending; regeneration hold stays.
+Event: committer 89fbc1 refused tools/book-code.html: mixed hunks from df159a, 0c9a77, d68c82, da2038, c5f24b; needs whole-file ownership handoff. Asked df159a to take it.
+Event: Field verified publication of Primary c95c6f4 with pins Psyche 67d358d, Mind bd5fd6c, Field ff56797; 131 modules; clock and book-availability lines propagated; Field owns keeping pins current until Tools replaces it; Home resolver activation pending, hold stays.
+Event: Psyche Flow Primary (df159a) takes book-code.html: wrote no hunks but rendered eight pages with it; subflow checking hunks, bb test, book 11 rebuild identity before whole-file handoff to 89fbc1.
+Event: df159a handed book-code.html whole-file to 89fbc1; evidence: only that file dirty (builder and test already committed), bb 10/10, book 11 rebuild byte-identical to published v5, all hunks rendering.
+Event: da2038 published batch 09 2nd edition (FBGQe51sX8Tr89Ryi1Cy3g v4): vision-flow L24 metaflow started on need; vision-model-roles escalation lines struck; four choices. Clojure book in 3rd revision.
+Event: Open books republished v121 with batch 09 2nd edition.
+Event: 89fbc1 committed tools/book-code.html as 42f5de3, remote matches.
+Event: Field relays Mind's finding: a committer (89fbc1) audit subflow sent messages as FLOW_ID=df159a; messenger takes sender from caller FLOW_ID with no authentication against the native session; behavior corrected; source authentication is an open runtime gap owned by Mind. df159a keeps the books.
+Event: da2038 published «Short-term prototypes: Clojure now?» (8crUcAX5LKJANvvFsts1hy v5): P1 which of 20 files rewritten, P2 one Clojure startup-prompt reader (byte-identical on 14 metaflow EDN), P3 58 values to EDN, P4 vision-book no-quote line. P4 sent back: negative wording, and overlap with the Communication book's module.
+Event: Open books v122 with «Short-term prototypes: Clojure now?».
+Event: P4 moved to Communication book (8e8DotVfgtqvMbAChwakH8): next edition adds «A book shows its proposals in the machine's own words.» and compensation-book-crystallization L14 strike; Clojure book drops P4.
+Event: Clojure book v6, P1–P3 only.
+
+## 2026-10-14 — the living, relayed by the Tertiary (Clojure book)
+
+> I want to know: does Clojure have object-oriented programming where we can have methods on objects instead of functions taking in? So we can be more object-oriented, kind of like how we do [Rust]. Just a side question, not important. If not it's okay.
+
+-- psyche, STT. Transcription corrected: "REST" → "Rust".
+
+Comment on P3's example model gpt-5.6-terra:
+
+> Of all the models of OpenAI, the one we don't use anymore is Terra so that's a really bad example. Until Terra 6 comes out we're not touching Terra.
+
+-- psyche, STT. (Order; tools/native-worker-launch.mjs carries the Terra model.)
+
+Comment on the carried proposal (vision-book, after L8: "A book carries the proposals; it shows no verbatim quote, and the records it draws from are not shown." / "The records a proposal draws from live in an unrendered reference file kept with the book's source; they are archived with the landing when some or all of the proposal is accepted."):
+
+> Yeah both of these blocks are good. Both carry the proposal and the records. Proposal draws. We can land all that.
+
+-- psyche, STT. Ruling: land both lines; reference files in one standard place (references/ beside the books).
+Event: 3960eb landed book references: psyche-context 574ad11 (vision-book two lines after L8, references/ one file per book); field-context 75c14b7, bb59d58 (compensation-book-crystallization L14 struck). Field holds the compensation-book reference-file line and L6 fix; Field owns re-pinning.
+
+## 2026-10-14 — batch 09 2nd edition comments (relayed by Tertiary)
+
+> This concept is not strictly short-term. What makes you think this is a short-term concept?
+(on "Short-term: vertical communication stays within one aspect and normally advances one layer at a time.")
+> Yes do all that removal. (vision-model-roles L62–69 deletions)
+> Yes we can remove that. (vision-model-roles L52–55 deletion)
+-- psyche, STT. Rulings: land the removals.
+
+Also relayed: first-edition comments of 15:15–15:18 (P1 good, P3 good, P4 obsolete vision) — already landed (67d358d) and carried into the 2nd edition.
+
+Fault: book figures are single linear chains. Cause in context: compensation-book-distillation asks for a vertical ASCII source no wider than 52 characters and a figure that adds nothing the source does not say; nothing asks for branches or links.
+Event: Mind order routed via Field 42265e (Mind Secondary 41fa34 past threshold): fresh Mind pair, Astra Primary, three steps. Flow and Communication briefed; Field ordered to land figure line.
+Event: df159a at 321k handing over; Field starting successor; da2038 holds the batch 09 comments for it. Told da2038: Communication owns figure line; land approved strikes and L24 base now.
+Event: 3960eb sent figure and approve/review/glance/inquiry lines to 17ac8a for the next edition of «Communicating with the living».
+Event: da2038 landed psyche-context 1399275 (vision-model-roles strikes L52-55, L62-69) and e3823d6 (vision-flow L24 base sentence). Field owns re-pin.
+Event: Field activation complete: Home 2721883 pins Primary c95c6f4; resolver live with Psyche 67d358d/Mind bd5fd6c/Field ff56797; CheckSkills pass 131. Hold lifted. Terra live helper removed (3d8d9d5).
+Event: Field landed field-context 8f5caac: figure graph clause in compensation-book-crystallization, compensation-book vertical clause aligned, references/archive procedure. Fresh Mind pair being prepared, working topic Prototyping.
+Event: Clojure book v9 by successor Flow Primary 55a2b4: three patterns (P1 standard entry point, EDN input with Malli spec, vision-stack; P2 standard config reader, vision-flow after L38; P3 standard launcher bb/Nix image, vision-stack). Overlap noted: P1 vs sitrep 2 P1 (vision-tools EDN payload) and vs the Mind Prototyping minimum vision.
+Event: batch 09 3rd edition NBDZqnnNptMynwhu6xjrKf v3: branching figure; P1 still-young; P2 young defined (~100k, half-threshold, choice a third); P3 Primary after Secondary, queuing long-term; P4 default task (choice intent-startup-prompt). L51 no landing. tools/book-check.mjs changed (requires a File: proposal), to committer.
+Event: Open books v123 with batch 09 3rd edition.
+Event: 89fbc1 committed tools/book-check.mjs and its test as 0f94b04.
+Event: Field published launch correction 7c78736. Mind Prototyping Secondary launch failed: claimed ec87c3, pane vanished before any rollout or registration; no Secondary accepted, Astra Primary not launched; Field investigating, no blind retry.
+Event: Field accounted failed birth ec87c3 (stderr unknown); Mind says first turn must persist before CLI resume; Primary unstarted.
+Event: Field: Claude launcher refuses Mind (Codex only); Codex launcher births an untouched thread then resumes with no persisted first turn. Unblock: one RPC lifetime covering birth, claim/binding, one real topic turn, persistence readback, same-UUID CLI attach; retain stderr/exit. Ordered Field to build it.
+Event: Flow Nexus book SM9kdHvCWXr7A2zw5DDHZg v4: P1 Flow intention, P2 whole Flow ethos (flow-ethos, library.ethos, refusals incl. NoSecondary), P3 ethos->Clojure derivation rule, P4 provisional patterns pending Mind. P3 overlaps the Mind Prototyping order; Mind brief to build on it.
+Event: Open books v124 with the Flow Nexus book.
+Event: Mind Prototyping Secondary e4b7d7 live (Field binding witnessed); sent its first crystallization: vision-clojure, shared Ethos/Datom→Malli/EDN construct mapping; choice vision-clojure vs vision-ethos. Publishing through a subflow without the verbatim quote. Astra Primary not yet witnessed.
+Event: book «The shared Clojure translation pattern» Bo8aggF1TNjxDq5ZFTUpLR v1; Open books v125. book-build.clj draws only single vertical chains; the fork figure was hand-drawn SVG. Ordered Communication to broaden the builder to draw graphs.
+Event: 89fbc1 committed book 15 files and index as 6941ecd.
+Event: Mind Prototyping pair accepted: Secondary e4b7d7 (Sol medium), Primary 5b9075 (Astra medium). New Clojure Codex birth in field-clj 205fde7, 11 tests pass; first prompt persisted once, no replay.
+Event: Field published Mind pair declarations 5126fb5. Startup limit: Primary 5b9075's first reply deferred its proposal pending a subflow. Likely cause in context: operation-psyche-interraction forbids a proposal while a subflow is out, and the first prompt does not say to propose from the given raw psyche before dispatching. Sent to Field.
+Event: Field published e1fabfb: first-prompt template now makes the first reply a proposal from what the prompt carries, before any subflow; native acceptance pending next birth.
+Event: 3960eb broadened book-build to draw graph figures (tests pass; 25 books gain drawn figures); limits: nested boxes stay text, >4 nodes per rank cramped at 375px, edge labels can misplace (15-flow-nexus-whole). Handed to 89fbc1.
+Ruling: «The shared Clojure translation pattern» approved, land (choice not named; the book's choice 1, vision-clojure, taken). Orders: flesh out with graph in vision and examples; Mind knowledge skill after testing; Chronos rewrite in Nexus/Ethos by a fresh Fable-assisted pair, Secondary first, ≤2000-char head-start prompt; Primary turn-end hook notifying its Secretary; Flow routes hooks (vision).
+Event: e4b7d7 accepted vision-clojure landing; subflow landing it; Astra Primary 5b9075 has the words and the book→testing→knowledge sequence.
+Event: e4b7d7 landed vision-clojure in psyche-context 4d80d68. Variant representation and keyword casing remain unruled (only unruled prose in d4ae97 «Clojure, the vision»); they go in the fleshed-out book.
+Orders (lean mode): retire big Fable sessions now; every Fable call through the living; Chronos Fable launch held; usage report with resets visualized; enforce Secondary-only access to Primaries; book on subagents and a contextualizing subagent.
+Event: da2038 asks division; Flow Nexus book v6 (SM9kdHvCWXr7A2zw5DDHZg) adds P5 hooks routed by Flow; last Fable book work. Told da2038: core takes usage report and subagent book; Field takes retirements, low-usage, enforcement; Flow seat goes idle.
+Event: 3960eb has 17ac8a's last output; «Communicating with the living» ed. 2 (8e8DotVfgtqvMbAChwakH8) and ed. 3 (R13NaiW5c8C5NGy84MX5cV) published; 17ac8a cleared for retirement. da2038's usage subflow also running (duplicate of mine).
+Event: Open books v126 (Communication 3rd edition, Nexus v6 hooks).
+Event: subagent table: 9 Claude roles (read/write x trivial/ordinary/demanding, tester, book, book-page untraced), 10 Codex; Curriculum roles.datom still names gpt-5.6-terra for Codex ordinary (deployed luna). Every non-book subagent carries psyche-logging and living-facing text.
+Orders: research the best Fable fallback (likely open source); Mind (Prototyping pair, Astra in designer mode) designs the lean-call datom dialect of changes and Markdown-to-datom mapping as a book.
+Event: Field retired 17ac8a and 55a2b4 (receipts kept); Chronos Fable held, Chronos Secondary declared not live; Ethos and Spirit Secretaries closing their Fables; Field asks me to confirm 33752b's last output before retiring it — subflow reading it.
+Event: e4b7d7 logged the dialect words in flows/e4b7d7/vision/designer.md; queues the change-language design after the Clojure packet.
+Event: 33752b's last turn ended 14:36Z with its handover written (handover.md) and no work active; 81 uncommitted entries under flows/33752b. Subflow saw host date jump from Wed 12:02 CST to Thu 02:02 CST within one session — clock anomaly, sent to Field.
+Event: da2038 delivered Fable-fallback research (flows/da2038/reports/fable-fallback-research.md: GLM-5.2 judgment, DeepSeek V4 Flash lean calls, llama-server GBNF for datom grammar, front filter supported) and presented it; my duplicate research subflow stopped. Cause: both seats acted on the same words (heard directly by da2038, relayed to me). Rule set with da2038: the seat that hears the living directly carries the work unless it hands it over; relays to me are for coordination.
+Event: my duplicate usage subflow stopped; da2038's report awaited.
+Event: da2038 had stopped its usage subflow on my first word; restarted (Sonnet), report to come whole. Cost: two partial usage runs wasted by crossed stop orders.
+Event: e4b7d7 queued the dialect book brief (Ethos types first, Proposal with Meta/path/edit variant, vector, change language, Markdown mapping) as a fresh lean call after the Clojure book.
+Event: «Subflows: one kind, specialties, a contextualizer» MoqWqQyDx49d8PQ9bYWq1h v1; Open books v127. Builder faults: opening figure not wrapped (overlaps heading at 375px), labels break mid-word.
+Event: Field retired Ethos 081064. For 33752b, a handoff turn would be a Fable call, which now needs the living's word; instead d68c82, its Secondary, takes ownership of its lane and hands it to the committer; Field retires 33752b without a turn.

@@ -126,3 +126,43 @@ Context: said after compacting this seat; he wants an analysis of compaction aga
 > Claude could just tell us the cache is going to expire instead of compacting. Then we would ask for the model to do a handover to produce a handover and that way we could train how we want our handover to be, which is essentially our own form of compaction.
 
 -- psyche, STT, book comments on «Situation, 14 October».
+
+## 2026-10-14 — A full Flow Nexus proposal, short-term and long-term
+
+Context: spoken to the Psyche Core Tertiary after commenting on «Flow: CLI, deployment, long term», 2nd edition; relayed.
+
+> I need to see a full Flow Nexus proposal, also probably separately.
+>
+> Let's have the short-term version and then the long-term/universal version: the parts that are independent of whether or not it's short-term or long-term, like the overall intention of the design, which is going to live in the long-term/Nexus proposal. We focus on specifying the ethos and from the ethos we already talked about the fact that we're going to derive the short-term prototype code.
+
+-- psyche, STT.
+
+## 2026-10-14 — A metaflow's default task
+
+Context: comment on the proposed vision-flow L24 line, a needed metaflow started with its context modules and prompt.
+
+> Yeah that's good. If it doesn't have a task by default, that should be written somewhere else, I guess. Just mentioning it: by default maybe you set it somewhere else later on but the default task is to create a proposal or a question.
+
+-- psyche, STT.
+
+## 2026-10-14 — No Primary without a Secondary; queuing
+
+Context: comment on "A layer a request needs is started whether or not it is running."
+
+> I would be careful here also to maybe emphasize, or let's make sure that somewhere it's made clear that we don't start a primary without a secondary. In the short term anyway eventually, long term, we can say when the system is more reliable in terms of not waking the wrong flow so that we don't have to worry about models like Fable being awakened too much (because the messaging system is smart enough or tuned enough to make sure that the interruptions only were the interruptions and that, when they're done, all of the queue that also should go with it comes in so we can queue stuff). Queuing stuff is also a really important goal post to achieve much higher system output quality and efficiency.
+
+-- psyche, STT.
+
+## 2026-10-14 — A still-young working transcript
+
+Context: comment on choice 4, "with a working transcript, its flow is reawakened from it".
+
+> I would say, with a still-young working transcript, let's have a proposal to explain what a young context is in terms of ratio and where average context size starts to degrade rapidly (around the 100,000-token point).
+
+-- psyche, STT.
+
+## 2026-10-14 — Flow routes hooks
+
+> We should almost just add the functionality in Flow that decides where the hooks actually talk. The hook is a standard call with the right data so that the Flow daemon can check its database to see where these messages should go or what kind of notification should go where (based on the hook and where it came from).
+
+-- psyche, STT. Relayed by the Psyche Core Tertiary; unfinished sentences kept as spoken.

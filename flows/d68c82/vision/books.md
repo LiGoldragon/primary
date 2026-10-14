@@ -145,3 +145,19 @@ Context: on «Anatomy audit».
 > This also means the removal and addition. A lot of times I see something that's marked as removed but it's actually repeated verbatim in the addition so it's not actually removed. The diff is not presented properly.
 
 -- psyche, STT.
+
+## 2026-10-14 — Proposals of code
+
+Context: same speech, relayed by the Psyche Core Tertiary.
+
+> I don't want proposals to code. If you want to propose code to me, I want you to propose an approach or a pattern, or some wrapping code that will become standard, like a standard entry point or a standard pattern.
+
+-- psyche, STT.
+
+## 2026-10-14 — References found the same way
+
+Context: comment on the Clojure book's carried proposal, ruling item on where the reference file lives (choices: beside the book's source, or a references/ directory beside the books); anchored on "under references/ beside the books".
+
+> Yeah make it some kind of standard so that they can all be found the same way.
+
+-- psyche, STT.
