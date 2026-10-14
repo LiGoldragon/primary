@@ -1,0 +1,200 @@
+<title>Usage</title>
+<style>
+/* layout: one column of four charts, phone first, max 640px */
+:root{--bg:#fbfbfa;--fg:#151513;--muted:#5e5d58;--grid:#e6e5e0;--base:#9a9993;--gap:#ecebe6;--rs:#8a8983;--now:#151513;
+--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#4a3aa7;--s8:#e34948;
+--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1a19;--fg:#f4f4f1;--muted:#b4b3aa;--grid:#2e2e2c;--base:#6b6a65;--gap:#262624;--rs:#8d8c85;--now:#f4f4f1;
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1a1a19;--fg:#f4f4f1;--muted:#b4b3aa;--grid:#2e2e2c;--base:#6b6a65;--gap:#262624;--rs:#8d8c85;--now:#f4f4f1;
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-variant-numeric:tabular-nums}
+main{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:20px 32px;display:grid;gap:28px}
+h1{font-size:1.5rem;margin:0;letter-spacing:-.01em}
+section{display:grid;gap:6px}
+h2{font-size:.95rem;margin:0;font-weight:600}
+p{margin:0;color:var(--muted);font-size:.8rem}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.ax{fill:var(--muted);font-size:9px}
+.lbl{fill:var(--fg);font-size:9px;font-weight:600}
+.grid{stroke:var(--grid);stroke-width:1}
+.base{stroke:var(--base);stroke-width:1}
+.gap{fill:var(--gap)}
+.hit{fill:transparent}
+g:hover rect:not(.hit){opacity:.8}
+.rs{stroke:var(--rs);stroke-width:1;stroke-dasharray:2 2}
+.rsn{stroke:var(--now);stroke-width:1.5}
+.rsn.inf{stroke-dasharray:4 3}
+.ln{fill:none;stroke:var(--s1);stroke-width:2;stroke-linejoin:round}
+.pt{fill:var(--s1);stroke:var(--bg);stroke-width:2}
+.lg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.75rem;color:var(--muted)}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+</style>
+<main>
+<h1>Usage</h1>
+<section><h2>Claude tokens per day</h2><div class="lg"><span><i style="background:var(--s1)"></i>Fable</span><span><i style="background:var(--s2)"></i>Opus</span><span><i style="background:var(--s3)"></i>Sonnet</span><span><i style="background:var(--s4)"></i>Haiku</span></div><svg viewBox="0 0 360 224" role="img">
+<line class="grid" x1="40" x2="352" y1="190.0" y2="190.0"/><text class="ax" x="36" y="193.0" text-anchor="end">0M</text>
+<line class="grid" x1="40" x2="352" y1="130.0" y2="130.0"/><text class="ax" x="36" y="133.0" text-anchor="end">500M</text>
+<line class="grid" x1="40" x2="352" y1="70.0" y2="70.0"/><text class="ax" x="36" y="73.0" text-anchor="end">1B</text>
+<line class="grid" x1="40" x2="352" y1="10.0" y2="10.0"/><text class="ax" x="36" y="13.0" text-anchor="end">1.5B</text>
+<g><title>2026-10-01: Fable 59M, Opus 114M, Sonnet 26M, Haiku 13M; total 212M</title><rect fill="var(--s1)" x="41.0" y="182.9" width="20.3" height="6.1"/><rect fill="var(--s2)" x="41.0" y="169.2" width="20.3" height="12.7"/><rect fill="var(--s3)" x="41.0" y="166.1" width="20.3" height="2.1"/><rect fill="var(--s4)" x="41.0" y="164.6" width="20.3" height="0.6"/><rect class="hit" x="40.0" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="51.1" y="203" text-anchor="middle">Oct 1</text>
+<g><title>2026-10-02: Fable 220M, Opus 338M, Sonnet 68M, Haiku 35M; total 661M</title><rect fill="var(--s1)" x="63.3" y="163.6" width="20.3" height="25.4"/><rect fill="var(--s2)" x="63.3" y="123.0" width="20.3" height="39.6"/><rect fill="var(--s3)" x="63.3" y="114.9" width="20.3" height="7.2"/><rect fill="var(--s4)" x="63.3" y="110.7" width="20.3" height="3.2"/><rect class="hit" x="62.3" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-03: Fable 220M, Opus 816M, Sonnet 145M, Haiku 28M; total 1209M</title><rect fill="var(--s1)" x="85.6" y="163.6" width="20.3" height="25.4"/><rect fill="var(--s2)" x="85.6" y="65.7" width="20.3" height="96.9"/><rect fill="var(--s3)" x="85.6" y="48.3" width="20.3" height="16.4"/><rect fill="var(--s4)" x="85.6" y="44.9" width="20.3" height="2.4"/><rect class="hit" x="84.6" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="95.7" y="203" text-anchor="middle"> 3</text>
+<g><title>2026-10-04: Fable 110M, Opus 210M, Sonnet 90M, Haiku 7M; total 417M</title><rect fill="var(--s1)" x="107.9" y="176.8" width="20.3" height="12.2"/><rect fill="var(--s2)" x="107.9" y="151.6" width="20.3" height="24.2"/><rect fill="var(--s3)" x="107.9" y="140.8" width="20.3" height="9.8"/><rect fill="var(--s4)" x="107.9" y="140.0" width="20.3" height="0.5"/><rect class="hit" x="106.9" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-05: Fable 81M, Opus 63M, Sonnet 18M, Haiku 3M; total 165M</title><rect fill="var(--s1)" x="130.1" y="180.3" width="20.3" height="8.7"/><rect fill="var(--s2)" x="130.1" y="172.7" width="20.3" height="6.6"/><rect fill="var(--s3)" x="130.1" y="170.6" width="20.3" height="1.2"/><rect fill="var(--s4)" x="130.1" y="170.2" width="20.3" height="0.5"/><rect class="hit" x="129.1" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="140.3" y="203" text-anchor="middle"> 5</text>
+<g><title>2026-10-06: Fable 26M, Opus 77M, Sonnet 19M, Haiku 5M; total 127M</title><rect fill="var(--s1)" x="152.4" y="186.9" width="20.3" height="2.1"/><rect fill="var(--s2)" x="152.4" y="177.6" width="20.3" height="8.2"/><rect fill="var(--s3)" x="152.4" y="175.4" width="20.3" height="1.3"/><rect fill="var(--s4)" x="152.4" y="174.8" width="20.3" height="0.5"/><rect class="hit" x="151.4" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-07: Fable 38M, Opus 120M, Sonnet 50M, Haiku 17M; total 225M</title><rect fill="var(--s1)" x="174.7" y="185.4" width="20.3" height="3.6"/><rect fill="var(--s2)" x="174.7" y="171.0" width="20.3" height="13.4"/><rect fill="var(--s3)" x="174.7" y="165.0" width="20.3" height="5.0"/><rect fill="var(--s4)" x="174.7" y="163.0" width="20.3" height="1.0"/><rect class="hit" x="173.7" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="184.9" y="203" text-anchor="middle"> 7</text>
+<g><title>2026-10-08: Fable 4M, Opus 60M, Sonnet 4M, Haiku 3M; total 71M</title><rect fill="var(--s1)" x="197.0" y="189.5" width="20.3" height="0.5"/><rect fill="var(--s2)" x="197.0" y="182.3" width="20.3" height="6.2"/><rect fill="var(--s3)" x="197.0" y="181.8" width="20.3" height="0.5"/><rect fill="var(--s4)" x="197.0" y="181.5" width="20.3" height="0.5"/><rect class="hit" x="196.0" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-09: Fable 125M, Opus 386M, Sonnet 102M, Haiku 48M; total 661M</title><rect fill="var(--s1)" x="219.3" y="175.0" width="20.3" height="14.0"/><rect fill="var(--s2)" x="219.3" y="128.7" width="20.3" height="45.3"/><rect fill="var(--s3)" x="219.3" y="116.4" width="20.3" height="11.2"/><rect fill="var(--s4)" x="219.3" y="110.7" width="20.3" height="4.8"/><rect class="hit" x="218.3" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="229.4" y="203" text-anchor="middle"> 9</text>
+<g><title>2026-10-10: Fable 251M, Opus 808M, Sonnet 111M, Haiku 113M; total 1283M</title><rect fill="var(--s1)" x="241.6" y="159.9" width="20.3" height="29.1"/><rect fill="var(--s2)" x="241.6" y="62.9" width="20.3" height="96.0"/><rect fill="var(--s3)" x="241.6" y="49.6" width="20.3" height="12.3"/><rect fill="var(--s4)" x="241.6" y="36.0" width="20.3" height="12.6"/><rect class="hit" x="240.6" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-11: Fable 39M, Opus 102M, Sonnet 50M, Haiku 10M; total 201M</title><rect fill="var(--s1)" x="263.9" y="185.3" width="20.3" height="3.7"/><rect fill="var(--s2)" x="263.9" y="173.1" width="20.3" height="11.2"/><rect fill="var(--s3)" x="263.9" y="167.1" width="20.3" height="5.0"/><rect fill="var(--s4)" x="263.9" y="165.9" width="20.3" height="0.5"/><rect class="hit" x="262.9" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="274.0" y="203" text-anchor="middle"> 11</text>
+<g><title>2026-10-12: Fable 49M, Opus 148M, Sonnet 25M, Haiku 13M; total 235M</title><rect fill="var(--s1)" x="286.1" y="184.1" width="20.3" height="4.9"/><rect fill="var(--s2)" x="286.1" y="166.4" width="20.3" height="16.8"/><rect fill="var(--s3)" x="286.1" y="163.4" width="20.3" height="2.0"/><rect fill="var(--s4)" x="286.1" y="161.8" width="20.3" height="0.6"/><rect class="hit" x="285.1" y="10" width="22.3" height="180"/></g>
+<g><title>2026-10-13: Fable 211M, Opus 233M, Sonnet 54M, Haiku 13M; total 511M</title><rect fill="var(--s1)" x="308.4" y="164.7" width="20.3" height="24.3"/><rect fill="var(--s2)" x="308.4" y="136.7" width="20.3" height="27.0"/><rect fill="var(--s3)" x="308.4" y="130.2" width="20.3" height="5.5"/><rect fill="var(--s4)" x="308.4" y="128.7" width="20.3" height="0.6"/><rect class="hit" x="307.4" y="10" width="22.3" height="180"/></g>
+<text class="ax" x="318.6" y="203" text-anchor="middle"> 13</text>
+<g><title>2026-10-14 (partial): Fable 107M, Opus 144M, Sonnet 25M, Haiku 4M; total 280M</title><rect fill="var(--s1)" x="330.7" y="177.2" width="20.3" height="11.8"/><rect fill="var(--s2)" x="330.7" y="159.9" width="20.3" height="16.3"/><rect fill="var(--s3)" x="330.7" y="156.9" width="20.3" height="2.0"/><rect fill="var(--s4)" x="330.7" y="156.4" width="20.3" height="0.5"/><rect class="hit" x="329.7" y="10" width="22.3" height="180"/></g>
+<line class="base" x1="40" x2="352" y1="190" y2="190"/>
+<text class="ax" x="196.0" y="219" text-anchor="middle">day (UTC−6)</text></svg><p>Oct 1–14, by model; Oct 14 partial.</p></section>
+<section><h2>Codex tokens per day</h2><div class="lg"><span><i style="background:var(--s5)"></i>Astra</span><span><i style="background:var(--s6)"></i>Sol</span><span><i style="background:var(--s7)"></i>Terra</span><span><i style="background:var(--s8)"></i>Luna</span></div><svg viewBox="0 0 360 224" role="img">
+<line class="grid" x1="40" x2="352" y1="190.0" y2="190.0"/><text class="ax" x="36" y="193.0" text-anchor="end">0M</text>
+<line class="grid" x1="40" x2="352" y1="145.0" y2="145.0"/><text class="ax" x="36" y="148.0" text-anchor="end">500M</text>
+<line class="grid" x1="40" x2="352" y1="100.0" y2="100.0"/><text class="ax" x="36" y="103.0" text-anchor="end">1B</text>
+<line class="grid" x1="40" x2="352" y1="55.0" y2="55.0"/><text class="ax" x="36" y="58.0" text-anchor="end">1.5B</text>
+<line class="grid" x1="40" x2="352" y1="10.0" y2="10.0"/><text class="ax" x="36" y="13.0" text-anchor="end">2B</text>
+<g><title>2026-09-12: Astra 21M, Sol 101M, Terra 44M, Luna 1M; total 167M</title><rect fill="var(--s5)" x="41.0" y="188.1" width="7.5" height="0.9"/><rect fill="var(--s6)" x="41.0" y="179.0" width="7.5" height="8.1"/><rect fill="var(--s7)" x="41.0" y="175.0" width="7.5" height="3.0"/><rect fill="var(--s8)" x="41.0" y="174.9" width="7.5" height="0.5"/><rect class="hit" x="40.0" y="10" width="9.5" height="180"/></g>
+<text class="ax" x="44.7" y="203" text-anchor="middle">Sep 12</text>
+<g><title>2026-09-13: Astra 60M, Sol 1M, Terra 91M, Luna 23M; total 175M</title><rect fill="var(--s5)" x="50.5" y="184.6" width="7.5" height="4.4"/><rect fill="var(--s6)" x="50.5" y="184.5" width="7.5" height="0.5"/><rect fill="var(--s7)" x="50.5" y="176.3" width="7.5" height="7.2"/><rect fill="var(--s8)" x="50.5" y="174.3" width="7.5" height="1.0"/><rect class="hit" x="49.5" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-14: Astra 127M, Sol 0M, Terra 201M, Luna 47M; total 375M</title><rect fill="var(--s5)" x="59.9" y="178.6" width="7.5" height="10.4"/><rect fill="var(--s6)" x="59.9" y="178.5" width="7.5" height="0.5"/><rect fill="var(--s7)" x="59.9" y="160.5" width="7.5" height="17.0"/><rect fill="var(--s8)" x="59.9" y="156.3" width="7.5" height="3.2"/><rect class="hit" x="58.9" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-15: Astra 187M, Sol 0M, Terra 410M, Luna 164M; total 761M</title><rect fill="var(--s5)" x="69.4" y="173.2" width="7.5" height="15.8"/><rect fill="var(--s7)" x="69.4" y="136.3" width="7.5" height="35.9"/><rect fill="var(--s8)" x="69.4" y="121.5" width="7.5" height="13.8"/><rect class="hit" x="68.4" y="10" width="9.5" height="180"/></g>
+<text class="ax" x="73.1" y="203" text-anchor="middle"> 15</text>
+<g><title>2026-09-16: Astra 362M, Sol 0M, Terra 415M, Luna 178M; total 955M</title><rect fill="var(--s5)" x="78.8" y="157.5" width="7.5" height="31.5"/><rect fill="var(--s7)" x="78.8" y="120.1" width="7.5" height="36.4"/><rect fill="var(--s8)" x="78.8" y="104.0" width="7.5" height="15.0"/><rect class="hit" x="77.8" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-17: Astra 156M, Sol 163M, Terra 327M, Luna 38M; total 684M</title><rect fill="var(--s5)" x="88.3" y="176.0" width="7.5" height="13.0"/><rect fill="var(--s6)" x="88.3" y="161.3" width="7.5" height="13.7"/><rect fill="var(--s7)" x="88.3" y="131.8" width="7.5" height="28.4"/><rect fill="var(--s8)" x="88.3" y="128.4" width="7.5" height="2.4"/><rect class="hit" x="87.3" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-18: Astra 238M, Sol 63M, Terra 394M, Luna 65M; total 761M</title><rect fill="var(--s5)" x="97.7" y="168.6" width="7.5" height="20.4"/><rect fill="var(--s6)" x="97.7" y="162.9" width="7.5" height="4.7"/><rect fill="var(--s7)" x="97.7" y="127.4" width="7.5" height="34.5"/><rect fill="var(--s8)" x="97.7" y="121.5" width="7.5" height="4.9"/><rect class="hit" x="96.7" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-19: Astra 236M, Sol 196M, Terra 440M, Luna 50M; total 922M</title><rect fill="var(--s5)" x="107.2" y="168.8" width="7.5" height="20.2"/><rect fill="var(--s6)" x="107.2" y="151.1" width="7.5" height="16.7"/><rect fill="var(--s7)" x="107.2" y="111.5" width="7.5" height="38.6"/><rect fill="var(--s8)" x="107.2" y="107.0" width="7.5" height="3.5"/><rect class="hit" x="106.2" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-20: Astra 30M, Sol 193M, Terra 80M, Luna 50M; total 353M</title><rect fill="var(--s5)" x="116.6" y="187.3" width="7.5" height="1.7"/><rect fill="var(--s6)" x="116.6" y="169.9" width="7.5" height="16.4"/><rect fill="var(--s7)" x="116.6" y="162.7" width="7.5" height="6.2"/><rect fill="var(--s8)" x="116.6" y="158.2" width="7.5" height="3.5"/><rect class="hit" x="115.6" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-21: Astra 256M, Sol 916M, Terra 456M, Luna 62M; total 1690M</title><rect fill="var(--s5)" x="126.1" y="166.9" width="7.5" height="22.1"/><rect fill="var(--s6)" x="126.1" y="84.5" width="7.5" height="81.5"/><rect fill="var(--s7)" x="126.1" y="43.4" width="7.5" height="40.0"/><rect fill="var(--s8)" x="126.1" y="37.9" width="7.5" height="4.6"/><rect class="hit" x="125.1" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-22: Astra 96M, Sol 179M, Terra 133M, Luna 64M; total 472M</title><rect fill="var(--s5)" x="135.5" y="181.3" width="7.5" height="7.7"/><rect fill="var(--s6)" x="135.5" y="165.3" width="7.5" height="15.1"/><rect fill="var(--s7)" x="135.5" y="153.3" width="7.5" height="10.9"/><rect fill="var(--s8)" x="135.5" y="147.6" width="7.5" height="4.8"/><rect class="hit" x="134.5" y="10" width="9.5" height="180"/></g>
+<text class="ax" x="139.3" y="203" text-anchor="middle"> 22</text>
+<g><title>2026-09-23: Astra 114M, Sol 242M, Terra 123M, Luna 51M; total 530M</title><rect fill="var(--s5)" x="145.0" y="179.7" width="7.5" height="9.3"/><rect fill="var(--s6)" x="145.0" y="157.9" width="7.5" height="20.8"/><rect fill="var(--s7)" x="145.0" y="146.9" width="7.5" height="10.0"/><rect fill="var(--s8)" x="145.0" y="142.3" width="7.5" height="3.6"/><rect class="hit" x="144.0" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-24: Astra 143M, Sol 575M, Terra 533M, Luna 65M; total 1316M</title><rect fill="var(--s5)" x="154.5" y="177.1" width="7.5" height="11.9"/><rect fill="var(--s6)" x="154.5" y="125.4" width="7.5" height="50.7"/><rect fill="var(--s7)" x="154.5" y="77.4" width="7.5" height="47.0"/><rect fill="var(--s8)" x="154.5" y="71.5" width="7.5" height="4.9"/><rect class="hit" x="153.5" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-25: Astra 32M, Sol 404M, Terra 349M, Luna 82M; total 868M</title><rect fill="var(--s5)" x="163.9" y="187.1" width="7.5" height="1.9"/><rect fill="var(--s6)" x="163.9" y="150.7" width="7.5" height="35.4"/><rect fill="var(--s7)" x="163.9" y="119.3" width="7.5" height="30.4"/><rect fill="var(--s8)" x="163.9" y="111.9" width="7.5" height="6.4"/><rect class="hit" x="162.9" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-26: Astra 41M, Sol 507M, Terra 813M, Luna 42M; total 1401M</title><rect fill="var(--s5)" x="173.4" y="186.4" width="7.5" height="2.6"/><rect fill="var(--s6)" x="173.4" y="140.8" width="7.5" height="44.6"/><rect fill="var(--s7)" x="173.4" y="67.6" width="7.5" height="72.2"/><rect fill="var(--s8)" x="173.4" y="63.9" width="7.5" height="2.7"/><rect class="hit" x="172.4" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-27: Astra 53M, Sol 302M, Terra 328M, Luna 110M; total 793M</title><rect fill="var(--s5)" x="182.8" y="185.2" width="7.5" height="3.8"/><rect fill="var(--s6)" x="182.8" y="158.1" width="7.5" height="26.1"/><rect fill="var(--s7)" x="182.8" y="128.6" width="7.5" height="28.5"/><rect fill="var(--s8)" x="182.8" y="118.7" width="7.5" height="8.9"/><rect class="hit" x="181.8" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-28: Astra 131M, Sol 40M, Terra 421M, Luna 52M; total 643M</title><rect fill="var(--s5)" x="192.3" y="178.2" width="7.5" height="10.8"/><rect fill="var(--s6)" x="192.3" y="174.7" width="7.5" height="2.6"/><rect fill="var(--s7)" x="192.3" y="136.8" width="7.5" height="36.9"/><rect fill="var(--s8)" x="192.3" y="132.1" width="7.5" height="3.7"/><rect class="hit" x="191.3" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-29: Astra 119M, Sol 236M, Terra 344M, Luna 184M; total 882M</title><rect fill="var(--s5)" x="201.7" y="179.3" width="7.5" height="9.7"/><rect fill="var(--s6)" x="201.7" y="158.1" width="7.5" height="20.2"/><rect fill="var(--s7)" x="201.7" y="127.1" width="7.5" height="29.9"/><rect fill="var(--s8)" x="201.7" y="110.6" width="7.5" height="15.5"/><rect class="hit" x="200.7" y="10" width="9.5" height="180"/></g>
+<g><title>2026-09-30: Astra 76M, Sol 146M, Terra 239M, Luna 84M; total 544M</title><rect fill="var(--s5)" x="211.2" y="183.2" width="7.5" height="5.8"/><rect fill="var(--s6)" x="211.2" y="170.1" width="7.5" height="12.1"/><rect fill="var(--s7)" x="211.2" y="148.6" width="7.5" height="20.5"/><rect fill="var(--s8)" x="211.2" y="141.0" width="7.5" height="6.6"/><rect class="hit" x="210.2" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-01: Astra 22M, Sol 144M, Terra 191M, Luna 1M; total 358M</title><rect fill="var(--s5)" x="220.6" y="188.1" width="7.5" height="0.9"/><rect fill="var(--s6)" x="220.6" y="175.1" width="7.5" height="12.0"/><rect fill="var(--s7)" x="220.6" y="157.9" width="7.5" height="16.2"/><rect fill="var(--s8)" x="220.6" y="157.8" width="7.5" height="0.5"/><rect class="hit" x="219.6" y="10" width="9.5" height="180"/></g>
+<text class="ax" x="224.4" y="203" text-anchor="middle">Oct 1</text>
+<g><title>2026-10-02: Astra 41M, Sol 92M, Terra 181M, Luna 34M; total 347M</title><rect fill="var(--s5)" x="230.1" y="186.3" width="7.5" height="2.7"/><rect fill="var(--s6)" x="230.1" y="178.1" width="7.5" height="7.3"/><rect fill="var(--s7)" x="230.1" y="161.8" width="7.5" height="15.3"/><rect fill="var(--s8)" x="230.1" y="158.7" width="7.5" height="2.0"/><rect class="hit" x="229.1" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-03: Astra 96M, Sol 183M, Terra 430M, Luna 104M; total 814M</title><rect fill="var(--s5)" x="239.5" y="181.3" width="7.5" height="7.7"/><rect fill="var(--s6)" x="239.5" y="164.8" width="7.5" height="15.5"/><rect fill="var(--s7)" x="239.5" y="126.2" width="7.5" height="37.7"/><rect fill="var(--s8)" x="239.5" y="116.8" width="7.5" height="8.4"/><rect class="hit" x="238.5" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-04: Astra 24M, Sol 34M, Terra 95M, Luna 1M; total 154M</title><rect fill="var(--s5)" x="249.0" y="187.8" width="7.5" height="1.2"/><rect fill="var(--s6)" x="249.0" y="184.7" width="7.5" height="2.1"/><rect fill="var(--s7)" x="249.0" y="176.2" width="7.5" height="7.5"/><rect fill="var(--s8)" x="249.0" y="176.1" width="7.5" height="0.5"/><rect class="hit" x="248.0" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-05: Astra 27M, Sol 46M, Terra 85M, Luna 2M; total 161M</title><rect fill="var(--s5)" x="258.5" y="187.6" width="7.5" height="1.4"/><rect fill="var(--s6)" x="258.5" y="183.4" width="7.5" height="3.2"/><rect fill="var(--s7)" x="258.5" y="175.7" width="7.5" height="6.7"/><rect fill="var(--s8)" x="258.5" y="175.5" width="7.5" height="0.5"/><rect class="hit" x="257.5" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-06: Astra 7M, Sol 12M, Terra 18M, Luna 5M; total 42M</title><rect fill="var(--s5)" x="267.9" y="189.4" width="7.5" height="0.5"/><rect fill="var(--s6)" x="267.9" y="188.3" width="7.5" height="0.5"/><rect fill="var(--s7)" x="267.9" y="186.7" width="7.5" height="0.6"/><rect fill="var(--s8)" x="267.9" y="186.3" width="7.5" height="0.5"/><rect class="hit" x="266.9" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-07: Astra 75M, Sol 126M, Terra 161M, Luna 305M; total 667M</title><rect fill="var(--s5)" x="277.4" y="183.2" width="7.5" height="5.8"/><rect fill="var(--s6)" x="277.4" y="171.9" width="7.5" height="10.3"/><rect fill="var(--s7)" x="277.4" y="157.4" width="7.5" height="13.5"/><rect fill="var(--s8)" x="277.4" y="130.0" width="7.5" height="26.4"/><rect class="hit" x="276.4" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-08: Astra 13M, Sol 25M, Terra 26M, Luna 43M; total 108M</title><rect fill="var(--s5)" x="286.8" y="188.8" width="7.5" height="0.5"/><rect fill="var(--s6)" x="286.8" y="186.6" width="7.5" height="1.2"/><rect fill="var(--s7)" x="286.8" y="184.2" width="7.5" height="1.3"/><rect fill="var(--s8)" x="286.8" y="180.3" width="7.5" height="2.9"/><rect class="hit" x="285.8" y="10" width="9.5" height="180"/></g>
+<text class="ax" x="290.5" y="203" text-anchor="middle"> 8</text>
+<g><title>2026-10-09: Astra 72M, Sol 186M, Terra 131M, Luna 230M; total 619M</title><rect fill="var(--s5)" x="296.3" y="183.5" width="7.5" height="5.5"/><rect fill="var(--s6)" x="296.3" y="166.8" width="7.5" height="15.8"/><rect fill="var(--s7)" x="296.3" y="154.9" width="7.5" height="10.8"/><rect fill="var(--s8)" x="296.3" y="134.3" width="7.5" height="19.7"/><rect class="hit" x="295.3" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-10: Astra 128M, Sol 341M, Terra 145M, Luna 473M; total 1087M</title><rect fill="var(--s5)" x="305.7" y="178.5" width="7.5" height="10.5"/><rect fill="var(--s6)" x="305.7" y="147.8" width="7.5" height="29.7"/><rect fill="var(--s7)" x="305.7" y="134.8" width="7.5" height="12.0"/><rect fill="var(--s8)" x="305.7" y="92.2" width="7.5" height="41.6"/><rect class="hit" x="304.7" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-11: Astra 28M, Sol 92M, Terra 32M, Luna 19M; total 171M</title><rect fill="var(--s5)" x="315.2" y="187.5" width="7.5" height="1.5"/><rect fill="var(--s6)" x="315.2" y="179.2" width="7.5" height="7.3"/><rect fill="var(--s7)" x="315.2" y="176.3" width="7.5" height="1.9"/><rect fill="var(--s8)" x="315.2" y="174.6" width="7.5" height="0.7"/><rect class="hit" x="314.2" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-12: Astra 112M, Sol 333M, Terra 81M, Luna 128M; total 654M</title><rect fill="var(--s5)" x="324.6" y="179.9" width="7.5" height="9.1"/><rect fill="var(--s6)" x="324.6" y="149.9" width="7.5" height="29.0"/><rect fill="var(--s7)" x="324.6" y="142.6" width="7.5" height="6.3"/><rect fill="var(--s8)" x="324.6" y="131.1" width="7.5" height="10.5"/><rect class="hit" x="323.6" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-13: Astra 77M, Sol 162M, Terra 17M, Luna 234M; total 491M</title><rect fill="var(--s5)" x="334.1" y="183.1" width="7.5" height="5.9"/><rect fill="var(--s6)" x="334.1" y="168.5" width="7.5" height="13.6"/><rect fill="var(--s7)" x="334.1" y="166.9" width="7.5" height="0.6"/><rect fill="var(--s8)" x="334.1" y="145.8" width="7.5" height="20.1"/><rect class="hit" x="333.1" y="10" width="9.5" height="180"/></g>
+<g><title>2026-10-14 (partial): Astra 10M, Sol 105M, Terra 6M, Luna 201M; total 321M</title><rect fill="var(--s5)" x="343.5" y="189.1" width="7.5" height="0.5"/><rect fill="var(--s6)" x="343.5" y="179.7" width="7.5" height="8.5"/><rect fill="var(--s7)" x="343.5" y="179.2" width="7.5" height="0.5"/><rect fill="var(--s8)" x="343.5" y="161.1" width="7.5" height="17.1"/><rect class="hit" x="342.5" y="10" width="9.5" height="180"/></g>
+<line class="base" x1="40" x2="352" y1="190" y2="190"/>
+<text class="ax" x="196.0" y="219" text-anchor="middle">day (UTC−6)</text></svg><p>Sep 12–Oct 14, by model family, from rollout token events; Oct 14 partial.</p></section>
+<section><h2>Weekly limit, Claude</h2><svg viewBox="0 0 360 164" role="img">
+<line class="grid" x1="40" x2="352" y1="130.0" y2="130.0"/><text class="ax" x="36" y="133.0" text-anchor="end">0%</text>
+<line class="grid" x1="40" x2="352" y1="70.0" y2="70.0"/><text class="ax" x="36" y="73.0" text-anchor="end">50%</text>
+<line class="grid" x1="40" x2="352" y1="10.0" y2="10.0"/><text class="ax" x="36" y="13.0" text-anchor="end">100%</text>
+<line class="rs" x1="152.9" x2="152.9" y1="10" y2="130"><title>reset Sep 26 07:00</title></line>
+<line class="rs" x1="208.2" x2="208.2" y1="10" y2="130"><title>reset Oct 03 07:00</title></line>
+<line class="rsn inf" x1="318.8" x2="318.8" y1="10" y2="130"/>
+<text class="lbl" x="315.8" y="19" text-anchor="end">next Oct 17 07:00?</text>
+<circle class="pt" cx="151.3" cy="11.2" r="4"><title>Sep 26 02:06: 99%</title></circle>
+<circle class="pt" cx="160.7" cy="85.6" r="4"><title>Sep 27 06:42: 37%</title></circle>
+<circle class="pt" cx="194.0" cy="64.0" r="4"><title>Oct 01 11:57: 55%</title></circle>
+<circle class="pt" cx="208.0" cy="29.2" r="4"><title>Oct 03 06:23: 84%</title></circle>
+<text class="ax" x="63.7" y="143" text-anchor="middle">Sep 15</text>
+<text class="ax" x="119.0" y="143" text-anchor="middle">Sep 22</text>
+<text class="ax" x="174.3" y="143" text-anchor="middle">Sep 29</text>
+<text class="ax" x="190.1" y="143" text-anchor="middle">Oct 1</text>
+<text class="ax" x="245.4" y="143" text-anchor="middle">Oct 8</text>
+<text class="ax" x="300.7" y="143" text-anchor="middle">Oct 15</text>
+<line class="base" x1="40" x2="352" y1="130" y2="130"/><text class="ax" x="196.0" y="159" text-anchor="middle">weekly window used (UTC−6)</text></svg><p>Recorded % points; dashed lines are resets, the dark line the next (inferred, unrecorded since Oct 3).</p></section>
+<section><h2>Weekly limit, Codex</h2><svg viewBox="0 0 360 164" role="img">
+<line class="grid" x1="40" x2="352" y1="130.0" y2="130.0"/><text class="ax" x="36" y="133.0" text-anchor="end">0%</text>
+<line class="grid" x1="40" x2="352" y1="70.0" y2="70.0"/><text class="ax" x="36" y="73.0" text-anchor="end">50%</text>
+<line class="grid" x1="40" x2="352" y1="10.0" y2="10.0"/><text class="ax" x="36" y="13.0" text-anchor="end">100%</text>
+<line class="rs" x1="64.7" x2="64.7" y1="10" y2="130"><title>reset Sep 15 03:08</title></line>
+<line class="rs" x1="98.3" x2="98.3" y1="10" y2="130"><title>reset Sep 19 09:05</title></line>
+<line class="rs" x1="138.7" x2="138.7" y1="10" y2="130"><title>reset Sep 24 11:49</title></line>
+<line class="rs" x1="168.8" x2="168.8" y1="10" y2="130"><title>reset Sep 28 07:21</title></line>
+<line class="rs" x1="193.5" x2="193.5" y1="10" y2="130"><title>reset Oct 01 10:19</title></line>
+<line class="rs" x1="209.5" x2="209.5" y1="10" y2="130"><title>reset Oct 03 11:06</title></line>
+<line class="rs" x1="241.0" x2="241.0" y1="10" y2="130"><title>reset Oct 07 10:41</title></line>
+<line class="rs" x1="258.3" x2="258.3" y1="10" y2="130"><title>reset Oct 09 15:13</title></line>
+<line class="rs" x1="295.7" x2="295.7" y1="10" y2="130"><title>reset Oct 14 08:52</title></line>
+<line class="rs" x1="327.7" x2="327.7" y1="10" y2="130"><title>reset Oct 18 10:01</title></line>
+<line class="rsn" x1="343.4" x2="343.4" y1="10" y2="130"/>
+<text class="lbl" x="340.4" y="19" text-anchor="end">next Oct 20 09:57</text>
+<path class="ln" d="M43.3,126.4 L43.5,124.0 L44.1,124.0"/>
+<circle class="pt" cx="47.1" cy="122.8" r="1.5"/>
+<path class="ln" d="M50.9,122.8 L51.1,121.6 L52.5,121.6 L52.8,119.2 L53.0,118.0 L53.5,116.8 L53.8,115.6 L54.0,113.2 L54.8,113.2"/>
+<path class="ln" d="M58.1,112.0 L58.4,110.8 L58.5,109.6 L59.1,106.0 L59.4,102.4 L59.5,101.2 L60.1,98.8 L60.4,95.2 L60.5,95.2 L61.3,95.2 L61.6,92.8 L61.8,92.8"/>
+<path class="ln" d="M67.0,91.6 L67.3,91.6 L67.6,89.2 L68.0,86.8 L68.3,85.6 L68.6,82.0 L69.0,80.8 L69.3,76.0 L69.6,73.6 L69.9,70.0 L70.1,68.8 L70.9,67.6 L71.3,64.0 L71.6,60.4 L71.9,55.6 L72.3,52.0 L72.6,47.2 L72.9,43.6 L73.2,42.4 L73.6,38.8 L73.7,37.6 L74.6,34.0 L74.9,29.2 L75.2,20.8 L75.5,16.0 L75.9,12.4 L75.9,12.4 L76.4,11.2"/>
+<path class="ln" d="M82.3,11.2 L83.4,130.0 L83.8,124.0 L84.1,122.8 L84.4,119.2 L84.7,115.6 L85.1,115.6 L85.4,110.8 L85.5,109.6 L86.1,106.0 L86.4,100.0 L86.6,98.8"/>
+<path class="ln" d="M90.4,95.2 L90.7,94.0 L91.0,92.8 L91.3,86.8 L91.7,80.8 L92.0,77.2 L92.3,73.6 L92.7,67.6 L92.9,64.0 L93.4,62.8"/>
+<path class="ln" d="M95.9,61.6 L96.3,56.8 L96.4,54.4"/>
+<path class="ln" d="M98.4,53.2 L98.9,53.2 L99.2,50.8 L99.6,49.6 L99.9,44.8 L100.2,42.4 L100.6,41.2 L100.7,38.8 L101.0,38.8 L101.5,34.0 L101.6,34.0 L102.2,25.6 L102.5,22.0 L102.7,22.0 L103.1,22.0 L103.4,22.0"/>
+<path class="ln" d="M106.5,20.8 L106.7,18.4 L107.1,18.4 L107.4,17.2 L107.8,16.0 L108.0,16.0 L108.5,13.6 L108.8,12.4 L109.1,10.0 L109.4,10.0 L109.7,10.0 L110.0,10.0 L110.4,10.0 L110.7,10.0 L111.0,10.0 L111.4,10.0 L111.7,10.0 L112.0,10.0 L112.4,10.0 L112.7,10.0 L113.0,10.0 L113.3,10.0 L113.6,130.0 L114.1,128.8 L114.4,119.2 L114.7,107.2 L115.4,100.0 L115.7,88.0 L116.0,82.0 L116.4,71.2 L116.5,70.0 L117.3,67.6 L117.5,66.4"/>
+<path class="ln" d="M120.9,64.0 L121.9,61.6 L122.3,58.0 L122.5,55.6 L123.6,52.0 L123.9,48.4 L124.3,48.4"/>
+<path class="ln" d="M129.8,48.4 L130.2,47.2 L130.5,44.8 L130.8,43.6 L131.1,40.0 L131.5,36.4 L131.6,36.4 L132.5,31.6 L132.8,28.0 L133.0,26.8"/>
+<path class="ln" d="M137.4,26.8 L137.7,19.6 L138.1,11.2 L138.3,128.8 L139.1,127.6 L139.4,121.6 L139.7,116.8 L140.1,110.8 L140.4,106.0 L140.7,104.8 L141.0,102.4 L141.1,102.4 L141.7,101.2 L141.7,101.2"/>
+<path class="ln" d="M145.6,101.2 L146.0,98.8 L146.3,95.2 L146.6,92.8 L146.9,92.8 L147.3,89.2 L147.6,86.8 L147.9,84.4 L148.2,83.2 L148.9,83.2 L149.3,82.0 L149.6,80.8 L149.9,78.4 L150.2,78.4 L150.5,77.2 L150.9,77.2 L151.2,77.2 L151.4,77.2 L153.2,76.0 L153.5,73.6 L153.9,71.2 L154.1,71.2 L154.5,130.0 L154.7,130.0 L155.8,128.8 L156.2,127.6 L156.5,124.0 L156.8,119.2 L157.2,114.4 L157.5,110.8 L157.8,107.2 L158.2,101.2 L158.5,96.4 L158.8,90.4 L159.1,86.8 L159.5,83.2 L159.8,78.4 L159.9,78.4 L161.1,78.4 L161.4,77.2 L161.6,77.2 L162.1,74.8 L162.3,74.8 L162.7,73.6 L162.9,73.6 L164.3,73.6"/>
+<path class="ln" d="M169.9,72.4 L170.3,71.2 L170.7,68.8 L171.0,64.0 L171.3,61.6 L171.6,55.6 L171.9,52.0 L172.3,50.8 L172.4,49.6"/>
+<path class="ln" d="M177.9,44.8 L178.2,40.0 L178.5,37.6 L178.8,36.4 L179.5,31.6 L179.9,28.0 L180.2,23.2 L180.3,20.8"/>
+<path class="ln" d="M184.8,20.8 L185.1,18.4 L185.5,14.8 L185.8,128.8 L186.1,127.6"/>
+<path class="ln" d="M188.7,124.0 L190.1,122.8 L190.1,121.6"/>
+<path class="ln" d="M194.0,119.2 L194.1,119.2 L194.7,118.0 L194.7,118.0 L195.7,118.0 L196.0,116.8 L196.3,115.6 L196.7,114.4 L197.0,113.2 L197.3,112.0 L197.4,112.0"/>
+<path class="ln" d="M200.3,110.8 L200.4,110.8 L201.8,109.6 L202.3,106.0 L202.4,104.8 L202.9,103.6 L203.2,128.8 L203.6,127.6 L203.6,126.4 L204.5,126.4 L204.6,126.4 L205.5,126.4 L205.6,126.4 L206.0,125.2"/>
+<path class="ln" d="M208.2,125.2 L208.5,121.6 L208.7,120.4 L209.2,119.2 L209.5,116.8 L209.8,113.2 L210.2,109.6 L210.5,107.2 L210.8,103.6 L211.1,102.4 L211.5,102.4 L211.8,101.2 L211.9,101.2 L212.5,100.0 L212.7,100.0"/>
+<path class="ln" d="M217.4,98.8 L217.5,98.8 L218.7,95.2 L218.8,95.2 L219.2,94.0 L219.7,94.0 L220.0,94.0 L220.0,94.0"/>
+<path class="ln" d="M225.3,92.8 L225.6,89.2 L225.8,86.8"/>
+<path class="ln" d="M233.2,86.8 L233.4,85.6 L234.3,85.6"/>
+<path class="ln" d="M240.4,130.0 L240.7,130.0 L241.1,128.8 L241.4,126.4 L241.7,125.2 L242.1,122.8 L242.4,120.4 L242.6,119.2 L243.1,118.0 L243.4,115.6 L243.7,114.4 L244.9,114.4"/>
+<path class="ln" d="M249.0,114.4 L249.2,112.0"/>
+<path class="ln" d="M256.6,112.0 L256.9,108.4 L257.2,107.2 L257.5,104.8 L257.6,104.8 L258.2,101.2 L258.3,100.0"/>
+<path class="ln" d="M260.8,97.6 L261.2,96.4 L261.5,92.8 L261.8,89.2 L262.2,86.8 L262.5,85.6 L262.8,82.0 L263.1,79.6 L263.5,78.4 L263.8,77.2 L264.5,76.0 L264.6,76.0 L265.4,76.0 L265.8,72.4"/>
+<path class="ln" d="M272.4,128.8 L272.9,128.8 L273.7,126.4 L274.0,125.2 L274.2,124.0"/>
+<path class="ln" d="M280.6,121.6 L280.9,119.2 L281.2,116.8 L281.6,113.2 L281.9,110.8 L282.2,107.2 L282.6,106.0 L282.9,103.6 L283.0,102.4"/>
+<path class="ln" d="M288.2,130.0 L288.5,126.4 L288.8,121.6 L289.1,118.0 L289.4,116.8 L289.8,116.8 L290.0,116.8 L290.4,116.8 L290.8,116.8 L291.1,115.6 L291.4,115.6 L291.6,115.6 L292.1,115.6 L292.2,115.6"/>
+<path class="ln" d="M295.7,114.4 L296.1,113.2 L296.4,113.2 L296.7,112.0 L296.8,112.0"/>
+<circle class="pt" cx="296.8" cy="112.0" r="4"><title>Oct 14 12:16: 15%</title></circle>
+<text class="lbl" x="290.8" y="106.0" text-anchor="end">15%</text>
+<text class="ax" x="63.7" y="143" text-anchor="middle">Sep 15</text>
+<text class="ax" x="119.0" y="143" text-anchor="middle">Sep 22</text>
+<text class="ax" x="174.3" y="143" text-anchor="middle">Sep 29</text>
+<text class="ax" x="190.1" y="143" text-anchor="middle">Oct 1</text>
+<text class="ax" x="245.4" y="143" text-anchor="middle">Oct 8</text>
+<text class="ax" x="300.7" y="143" text-anchor="middle">Oct 15</text>
+<line class="base" x1="40" x2="352" y1="130" y2="130"/><text class="ax" x="196.0" y="159" text-anchor="middle">weekly window used (UTC−6)</text></svg><p>Hourly recorded %; dashed lines are stated resets, the dark line the next reset.</p></section>
+<section><h2>Share by model</h2><div class="lg"><span><i style="background:var(--s1)"></i>Fable</span><span><i style="background:var(--s2)"></i>Opus</span><span><i style="background:var(--s3)"></i>Sonnet</span><span><i style="background:var(--s4)"></i>Haiku</span><span><i style="background:var(--s5)"></i>Astra</span><span><i style="background:var(--s6)"></i>Sol</span><span><i style="background:var(--s7)"></i>Terra</span><span><i style="background:var(--s8)"></i>Luna</span></div><svg viewBox="0 0 360 64" role="img">
+<rect fill="var(--s1)" x="1.0" y="4" width="43.3" height="28"><title>Fable 1,540M, 12.6%</title></rect>
+<text class="ax" x="22.6" y="46" text-anchor="middle">13%</text>
+<rect fill="var(--s2)" x="46.3" y="4" width="104.4" height="28"><title>Opus 3,619M, 29.5%</title></rect>
+<text class="ax" x="98.4" y="46" text-anchor="middle">30%</text>
+<rect fill="var(--s3)" x="152.6" y="4" width="21.1" height="28"><title>Sonnet 787M, 6.4%</title></rect>
+<rect fill="var(--s4)" x="175.7" y="4" width="7.2" height="28"><title>Haiku 312M, 2.5%</title></rect>
+<rect fill="var(--s5)" x="184.9" y="4" width="19.5" height="28"><title>Astra 732M, 6.0%</title></rect>
+<rect fill="var(--s6)" x="206.4" y="4" width="53.3" height="28"><title>Sol 1,882M, 15.4%</title></rect>
+<text class="ax" x="233.1" y="46" text-anchor="middle">15%</text>
+<rect fill="var(--s7)" x="261.7" y="4" width="45.0" height="28"><title>Terra 1,599M, 13.1%</title></rect>
+<text class="ax" x="284.2" y="46" text-anchor="middle">13%</text>
+<rect fill="var(--s8)" x="308.7" y="4" width="50.3" height="28"><title>Luna 1,780M, 14.5%</title></rect>
+<text class="ax" x="333.9" y="46" text-anchor="middle">15%</text>
+<text class="ax" x="2" y="60">Claude 51%</text><text class="ax" x="358" y="60" text-anchor="end">Codex 49%</text></svg><p>Tokens Oct 1–14, both providers.</p></section>
+</main>

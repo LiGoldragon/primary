@@ -1355,3 +1355,9 @@ Event: rerun (bb 1.13.219) printed true,true,true,false,true: the scratch file p
 Event: corrected rerun: true,false,true,true,false, all five as expected; digest 2bd0e91c, bb 1.13.219; receipt in refs.
 Event: 89fbc1 committed index.html whole (768d250).
 Event: e4b7d7 matched the corrected receipt hashes and passed the evidence to its Primary for the frozen packet.
+Event: 89fbc1 committed Book B ed. 2, refs and log (fdc2775).
+Event: 89fbc1 committed the six 33752b files (166b359); 33752b lane fully committed.
+Event: da2038 usage report: Claude Max 20x, 6.26B tokens Oct 1-14 (Opus 58%, Fable 25%), weekly reached 99% (09-26) and 84% (10-03), resets Saturdays 07:00 local, no percentage since 10-03; d68c82 top consumer 446M. Codex pro: no local data since 09-26 though Codex seats run today (data location unknown); weekly 100% hits on 09-06, 09-20, 09-24.
+Event: Chronos Secondary launch stopped before birth (pinned psyche 67d358d has no vision-ethos module); Field qualifying the right module. Fables retired: 33752b, 17ac8a, 55a2b4, 081064; Spirit d55c56 pending.
+Event: Usage page TdqUgx6H7sJP5j3QsgiyHC; Open books v129. Codex lives in CODEX_HOME ~/.codex-next-8mkkxq293hk2 (earlier ~/.codex-next); Codex weekly 15% used, resets Oct 20 09:57 local (moved from Oct 18), last reset Oct 14 08:52; Claude 84% last recorded 10-03, next reset inferred Oct 17 07:00. Oct 1-14 Terra 1,599M still used.
+Event: Psyche Chronos Secondary 984e88 (Opus medium) live, first crystallization done; head-start held for the living; no Fable born. Terra post-fix audit under way.
