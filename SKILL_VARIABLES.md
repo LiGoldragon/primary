@@ -22,4 +22,6 @@ Codex next transcript root: /home/li/.codex-next/sessions
 Codex active home: /home/li/.codex-next-8mkkxq293hk2
 Codex active transcript root: /home/li/.codex-next-8mkkxq293hk2/sessions
 Codex active home declaration: CriomOS-home/modules/home/profiles/min/codex-next-candidate.nix
-Network topology: Prometheus is connected to the internet router, which is not ours, and both laptops, Ouranos and Zeus, are connected to the Wi-Fi that Prometheus is connected to through LAN.
+Network topology: Prometheus reaches the internet router over Ethernet. Ouranos and Zeus currently use direct router Wi-Fi on 192.168.1.0/24. Prometheus Wi-Fi on 10.18.0.0/24 passed an association, DHCP, SSH, packet-loss and HTTPS test from Zeus; it remains a saved alternative, because the normal Zeus name resolves to its router-network address. Ouranos does not currently see Prometheus Wi-Fi. Both Wi-Fi routes share the same upstream internet router.
+Network preferred Wi-Fi: CASA TAMARINDOS
+Network fallback Wi-Fi: goldragon.criome (tested on Zeus; Ouranos visibility and cross-network host naming remain unresolved)
