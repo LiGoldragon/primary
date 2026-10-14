@@ -7,19 +7,24 @@
          <p>…</p>                                    the section's prose, as text
          <div class="diff">                          one change
            <div class="ctx">…</div>                  unchanged context (muted)
-           <div class="del">…</div>                  removed lines (red, struck through)
-           <div class="add">…</div>                  added lines (green)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
          </div>
        </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
        <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
-         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
        </ol></section>
-     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
      Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
      Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
-     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     A code block with data-diff tints each line
      that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
      scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 /* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
@@ -28,6 +33,7 @@
   --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
   --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
   --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
   --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
   --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
   --f-prose:"Literata",Georgia,"Times New Roman",serif;
@@ -39,6 +45,7 @@
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
 :root[data-theme="dark"]{
@@ -46,6 +53,7 @@
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
@@ -58,7 +66,7 @@ p,ul,ol{margin:0}
 .textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
 :where(article,section,div,li)>*+*{margin-top:.7em}
 a{color:var(--accent)}
-:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:normal;word-break:normal}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
 table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
 th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
 th{color:var(--muted);font-weight:600;letter-spacing:.03em}
@@ -75,33 +83,43 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 
 /* A change: stacked panels, each with a sign gutter. */
 .diff{display:grid;gap:6px;min-width:0}
-.diff>*{margin:0}
-.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
-.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
-.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
-.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
-.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
-.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
 .ctx{background:var(--ctx-bg);color:var(--muted)}
 .ctx::before{content:"";}
-.del{background:var(--del-bg);color:var(--del-fg)}
-.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
-.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
-.add{background:var(--add-bg);color:var(--add-fg)}
-.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
-.del pre,.add pre,.ctx pre{padding-inline:12px}
-.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
-.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.ctx pre{padding-inline:12px}
 .diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 
-/* Rulings: one card per ruling, lettered choices. */
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
 .rulings{display:grid;gap:12px}
 .rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
 .rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
 .choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
 .choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
-.choices>li::before{content:counter(choice,lower-alpha);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
 
 /* Code: never wraps; wide lines scroll inside their block. */
 pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
@@ -128,9 +146,45 @@ pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!impo
       return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
     return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
   }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
   document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
-    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
   });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
   // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
   function marks(){
     document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
@@ -144,7 +198,7 @@ pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!impo
       });
     });
   }
-  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
   marks();
   window.addEventListener('resize',marks);
   var s=document.createElement('script');
