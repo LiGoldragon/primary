@@ -9,6 +9,7 @@ Judgment only. Facts and words live in log.md, books/, reports/, and the publish
 - Committing: nothing in Primary commits itself; the seat's turn-end hook messages Field PrimaryCommitting Quaternary when Primary is dirty. Pending dirt at any moment is whatever the last turn left.
 - 2026-10-14: book 14 «Short-term prototypes: Clojure now?» at https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy (Version 6, final: P1–P3; P4 withdrawn to the Communication pair, its material in the refs file; account sent). Book 12 second edition at https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g (Version 4, final per two Secondary audits; account sent). Book 12 P1 and P3 landed in psyche-context vision-flow.md (67d358d7bb86); book 13 held by Core; book 12 first edition commented (never changed again).
 - tools/book-code.html: whole-file ownership handed to the committer 89fbc1 by this seat (witnessed behaviour; hunks authored by other seats). Rendering today: word-level diff renderer and in-code word marks landed by others in tools/book-build.clj and tools/book-code.html (uncommitted). Republished word-level: books 11, 10, batches 04, 06; in-code marks republished on those four (11 v5, 10 v4, 04 v5, 06 v5). Batch 01 editions restored to pre-word-diff rendering (sources have bare + lines outside fences). Batches 02, 03, 05 and the rectification book stay as published (sources not buildable by the current builder).
+- His 2026-10-14 words after commenting on book 14 are in vision/clojure.md, vision/books.md, vision/models.md.
 - Holds: no RebuildSkills, regeneration or re-pin until Field 42265e reports activation complete. Regeneration path witnessed: Curriculum reads a Nix store pin, not the live psyche-context; a landing reaches flows only after a re-pin and RebuildSkills.
 
 ## Chain per book (binding, in its final form)
@@ -36,8 +37,8 @@ Envelope → read subflow pre-maps landing lines → author subflow (rules befor
 - Inherited, unruled: books 01–09 items in flows/563761/summary.md, flows/288af9/summary.md, flows/c5f24b handover.
 
 ## Next bounded work
-- In flight at handover: flows/df159a/reports/self-origin-messages.md (four «Psyche Flow Primary»-origin audit messages, transcript positions, messenger and committer trail) for the messenger owner. Awaiting the Secondary's verdicts on book 14 Version 3 and the second edition Version 3.
-- Then whatever the Secondary briefs; book 13 is Core's.
+- Two books ordered by Core on 2026-10-14, briefs in flows/df159a/brief-patterns.md: (A) book 14 Version 7 at its URL — approaches and standard patterns, per-file code to refs, no Terra; (B) new book «Ethos and Datom in Clojure and EDN» — a vision context module for translating Ethos/Datom into Malli schemas and EDN, pattern and standard entry point. Neither was started: the subflows were stopped and the lane restored to HEAD at refresh. Link and account to the Secondary for each.
+- Awaiting the Secondary: acceptance of book 14 Version 6 and the second edition Version 4; the Communication pair lands book 14's former P4 (approved), not this seat.
 
 ## Topics to split
 - Owner-work dispatch: the three reports are with the Secondary; whether owners (Mind, Field) received them is unwitnessed here.

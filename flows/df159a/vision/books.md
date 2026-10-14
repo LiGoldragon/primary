@@ -27,3 +27,11 @@ Context: 2026-10-14, to d68c82, with a screenshot of the Clojure-migration book 
 > So do you think that I wasn't clear enough on the fact that I didn't want stuff like this in the book?
 
 -- psyche, STT.
+
+## No proposals of code; propose an approach, a pattern, or wrapping code that becomes standard
+
+Context: 2026-10-14, spoken to the Psyche Core Tertiary after commenting on «Short-term prototypes: Clojure now?». Relayed by Psyche Flow Secondary da2038.
+
+> I don't want proposals to code. If you want to propose code to me, I want you to propose an approach or a pattern, or some wrapping code that will become standard, like a standard entry point or a standard pattern.
+
+-- psyche, STT.
