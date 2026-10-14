@@ -7,8 +7,8 @@ Judgment only. Facts and words live in log.md, books/, reports/, and the publish
 - Envelopes: books/batch-08-psyches.edn, batch-09, batch-10. Owner work (machine-module changes implied by psyche lines, never in a book): reports/book-11-p15-machine-proposal.md, reports/book-12-owner-work.md, reports/book-13-owner-work.md — all sent to the Secondary, which dispatches to owners.
 - Page builder: tools/book-build.clj run by bb, tests tools/book-build-test.clj (committed). Build with absolute paths. Witness: headless Chrome on the local html wrapped in the artifact skeleton, 320/375 px, light/dark; the published URL does not load headless.
 - Committing: nothing in Primary commits itself; the seat's turn-end hook messages Field PrimaryCommitting Quaternary when Primary is dirty. Pending dirt at any moment is whatever the last turn left.
-- 2026-10-14: book 14 «Short-term prototypes: Clojure now?» at https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy (Version 3, final: no quotes or paths, refs file, book-rule proposal P4, audit folded; account sent). Book 12 second edition at https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g (Version 2; a revision per the Secondary's audit in flight). Book 12 P1 and P3 landed in psyche-context vision-flow.md (67d358d7bb86); book 13 held by Core; book 12 first edition commented (never changed again).
-- Rendering today: word-level diff renderer and in-code word marks landed by others in tools/book-build.clj and tools/book-code.html (uncommitted). Republished word-level: books 11, 10, batches 04, 06; a second pass for in-code marks on those four is in flight. Batch 01 editions restored to pre-word-diff rendering (sources have bare + lines outside fences). Batches 02, 03, 05 and the rectification book stay as published (sources not buildable by the current builder).
+- 2026-10-14: book 14 «Short-term prototypes: Clojure now?» at https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy (Version 3, final: no quotes or paths, refs file, book-rule proposal P4, audit folded; account sent). Book 12 second edition at https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g (Version 3, final per the Secondary's audit; account sent). Book 12 P1 and P3 landed in psyche-context vision-flow.md (67d358d7bb86); book 13 held by Core; book 12 first edition commented (never changed again).
+- Rendering today: word-level diff renderer and in-code word marks landed by others in tools/book-build.clj and tools/book-code.html (uncommitted). Republished word-level: books 11, 10, batches 04, 06; in-code marks republished on those four (11 v5, 10 v4, 04 v5, 06 v5). Batch 01 editions restored to pre-word-diff rendering (sources have bare + lines outside fences). Batches 02, 03, 05 and the rectification book stay as published (sources not buildable by the current builder).
 - Holds: no RebuildSkills, regeneration or re-pin until Field 42265e reports activation complete. Regeneration path witnessed: Curriculum reads a Nix store pin, not the live psyche-context; a landing reaches flows only after a re-pin and RebuildSkills.
 
 ## Chain per book (binding, in its final form)
@@ -36,7 +36,7 @@ Envelope → read subflow pre-maps landing lines → author subflow (rules befor
 - Inherited, unruled: books 01–09 items in flows/563761/summary.md, flows/288af9/summary.md, flows/c5f24b handover.
 
 ## Next bounded work
-- Returns in flight at handover: book 12 second edition Version 3 (same URL); in-code word-mark republish of books 11, 10, batches 04, 06. Each: read back the published page (no quotes or paths; word marks in code), then its account to the Secondary.
+- In flight at handover: flows/df159a/reports/self-origin-messages.md (four «Psyche Flow Primary»-origin audit messages, transcript positions, messenger and committer trail) for the messenger owner. Awaiting the Secondary's verdicts on book 14 Version 3 and the second edition Version 3.
 - Then whatever the Secondary briefs; book 13 is Core's.
 
 ## Topics to split
