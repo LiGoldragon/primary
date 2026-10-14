@@ -99,8 +99,20 @@ export function parseArgs(argv) {
 export const liveSkillReader = workspace => name =>
   fs.readFileSync(path.join(workspace, '.agents', 'skills', name, 'SKILL.md'), 'utf8');
 
-export const skillBlock = (workspace, name, text) =>
-  `Base directory for this skill: ${path.join(workspace, '.agents', 'skills', name)}\n\n${text.trim()}\n`;
+export const skillBlock = (workspace, name) =>
+  `[$${name}](skill://${path.join(workspace, '.agents', 'skills', name, 'SKILL.md')})`;
+
+export function validateNativeSkillFragments(records, names, read) {
+  const fragments = records.flatMap(record => record.type === 'response_item' && record.payload?.role === 'user' ? record.payload.content ?? [] : [])
+    .map(item => item.text ?? '').filter(text => text.startsWith('<skill>'));
+  for (const name of names) {
+    const body = read(name).replace(/^---\n[\s\S]*?\n---\n/, '').trim();
+    const matching = fragments.filter(text => text.includes(`<name>${name}</name>`));
+    if (!matching.length) return null;
+    if (matching.length !== 1 || !matching[0].includes(body)) throw new Error(`native skill instruction mismatch: ${name}`);
+  }
+  return names.length;
+}
 
 export function composeFirstPrompt({workspace, aspect, brief, read, launchConfig = LAUNCH_CONFIG, metaflowConfig = metaflowFor(launchConfig, {aspect, topic: 'Core', layer: 'Primary'}), skillNames = BIRTH_SKILLS(aspect).filter(name => !name.startsWith('intent-'))}) {
   if (skillNames[0] !== 'compensation-main-flow') throw new Error('compensation-main-flow must lead the resolved skill closure');
@@ -123,11 +135,13 @@ export function claimFlow(flowsRoot, threadId) {
 }
 
 const sh = s => `'${s.replaceAll("'", `'\\''`)}'`;
-export function codexHarnessCommand(client, o, promptFile, systemPromptFile, threadId = undefined) {
+export function codexHarnessCommand(client, o, promptFile, systemPromptFile, threadId = undefined, claimedFlowId = undefined) {
   if (!systemPromptFile || !path.isAbsolute(systemPromptFile)) throw new Error('composed main-flow system prompt file required');
   const identities = ['CODEX_THREAD_ID', 'CODEX_SESSION_ID', 'CLAUDE_CODE_SESSION_ID', 'CLAUDE_SESSION_ID', 'THREAD_ID', 'FLOW_ID', 'FLOW_DIRECTORY'];
+  if (claimedFlowId !== undefined && (!threadId || !/^[a-f0-9]{6,}$/.test(claimedFlowId))) throw new Error('claimed runtime identity requires the native thread and actual flow claim');
+  const binding = claimedFlowId === undefined ? '' : ` FLOW_ID=${sh(claimedFlowId)} FLOW_DIRECTORY=${sh(path.join(o.workspace, 'flows', claimedFlowId))}`;
   // Preserve Herdr's destination pane/socket while dropping parent seat identity.
-  return `exec env ${identities.map(name => `-u ${name}`).join(' ')} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} ${threadId ? `resume ${sh(threadId)} ` : ''}"$(cat ${sh(promptFile)})"`;
+  return `exec env ${identities.map(name => `-u ${name}`).join(' ')}${binding} ${sh(client.expectedPath)} -m ${sh(o.model)} -c ${sh(`model_instructions_file=${JSON.stringify(systemPromptFile)}`)} -c ${sh(`model_reasoning_effort="${o.effort}"`)} --dangerously-bypass-approvals-and-sandbox -C ${sh(o.workspace)} ${threadId ? `resume ${sh(threadId)} ` : ''}"$(cat ${sh(promptFile)})"`;
 }
 const herdr = (session, ...args) => JSON.parse(execFileSync('herdr', ['--session', session, ...args], {encoding: 'utf8', timeout: 15000})).result;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -156,9 +170,9 @@ async function launch(o) {
     done(`${o.workspace} is available`);
 
     step = 'prompt';
-    const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
-    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: continuation.topic, layer: o.layer});
+    const startupSkills = resolveSkillDependencies(metaflow['user-modules'] ?? BIRTH_SKILLS(o.aspect));
+    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
     fs.writeFileSync(promptFile, prompt);
@@ -202,7 +216,7 @@ async function launch(o) {
         lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
       },
       resume: id => execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId,
-        codexHarnessCommand(client, o, promptFile, systemPromptFile, id)], {encoding: 'utf8', timeout: 15000})
+        codexHarnessCommand(client, o, promptFile, systemPromptFile, id, flowId)], {encoding: 'utf8', timeout: 15000})
     });
     done(`thread ${threadId}, claimed ${flowId}; exact refresh binding written before resume`);
     const rollout = await poll('the exact native rollout', 120, () =>
@@ -215,9 +229,9 @@ async function launch(o) {
     step = 'first prompt';
     const texts = r => (r.type === 'response_item' && r.payload?.role === 'user' ? r.payload.content ?? [] : []).map(c => c.text ?? '');
     const accepted = await poll('the first prompt in the rollout', 60, () => rows(rollout).flatMap(texts).find(t => t.startsWith(leading)));
-    const missing = blocks.filter(block => !accepted.includes(block));
-    if (missing.length) throw new Error(`accepted prompt omitted resolved skill bodies: ${missing.length}`);
-    done(`accepted once; main-flow leads and ${blocks.length} resolved skill bodies are present`);
+    if (accepted.trim() !== prompt.trim()) throw new Error('accepted first topic prompt differs from EDN composition');
+    const loaded = await poll('native skill instruction fragments', 120, () => validateNativeSkillFragments(rows(rollout), skillNames, liveSkillReader(o.workspace)));
+    done(`accepted once; ${loaded} skill bodies witnessed through the native skill interface`);
 
     step = 'flow';
     done(`Flow ID ${flowId}, directory ${path.join(o.workspace, 'flows', flowId)}; continuation record ${lineage.recordPath}`);
@@ -252,9 +266,9 @@ if (invokedDirectly) {
   let o;
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
-    const startupSkills = resolveSkillDependencies(BIRTH_SKILLS(o.aspect));
-    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: o.topic ?? 'Core', layer: o.layer ?? 'Primary'});
+    const startupSkills = resolveSkillDependencies(metaflow['user-modules'] ?? BIRTH_SKILLS(o.aspect));
+    const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow}).prompt);
   } else await launch(o);
 }

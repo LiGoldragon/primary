@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {ASPECT_SKILLS, BIRTH_SKILLS, EFFORTS, LAYERS, codexBirthResume, codexHarnessCommand, codexResumeCommand, codexStopHookConfig, claimFlow, composeFirstPrompt, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
+import {ASPECT_SKILLS, BIRTH_SKILLS, EFFORTS, LAYERS, codexBirthResume, codexHarnessCommand, codexResumeCommand, codexStopHookConfig, claimFlow, composeFirstPrompt, validateNativeSkillFragments, hasExactRegistrationBinding, liveSkillReader, parseArgs, pickWorkspace} from './codex-main-flow-launch.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 
@@ -66,26 +66,29 @@ assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'thr
 assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value: 'thread'}}, 'p', 'thread'));
 assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'thread'));
 
-// Composition: main-flow leads, then every Mind startup skill in order, then the brief.
+// Native references carry no pasted instruction bodies; the harness supplies them.
 const read = name => `---\nname: ${name}\n---\n\nbody of ${name}\n`;
 const {prompt, leading} = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Current topic judgment.\n', read});
 assert.ok(prompt.startsWith(leading));
-assert.ok(leading.startsWith('Base directory for this skill: /w/.agents/skills/compensation-main-flow\n\n---\nname: compensation-main-flow'));
-const order = [...prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]);
+assert.equal(leading, '[$compensation-main-flow](skill:///w/.agents/skills/compensation-main-flow/SKILL.md)');
+const order = [...prompt.matchAll(/\[\$([^\]]+)\]/g)].map(m => m[1]);
 assert.deepEqual(order, BIRTH_SKILLS('Mind').filter(name => !name.startsWith('intent-')));
-for (const name of order.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(order.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
+assert.ok(!prompt.includes('body of'));
 assert.ok(prompt.includes('Current topic judgment.'));
 assert.ok(prompt.includes('flows/0c85a3/vision/'));
 assert.ok(prompt.includes('first response is a crystallization proposal'));
 assert.ok(!prompt.includes('READY'));
-const transitive = composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'Current topic judgment.\n', read, skillNames: ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']});
-assert.deepEqual([...transitive.prompt.matchAll(/^Base directory for this skill: \/w\/\.agents\/skills\/(.+)$/gm)].map(m => m[1]), ['compensation-main-flow', 'compensation-behavior', 'compensation-correction', 'knowledge-vocabulary']);
-assert.match(transitive.prompt, /body of compensation-behavior/);
-assert.match(transitive.prompt, /body of compensation-correction/);
+const names = ['compensation-main-flow', 'compensation-behavior'];
+const records = names.map(name => ({type:'response_item',payload:{role:'user',content:[{text:`<skill>\n<name>${name}</name>\n${read(name)}\n</skill>`}]}}));
+assert.equal(validateNativeSkillFragments(records,names,read),2);
+assert.equal(validateNativeSkillFragments(records.slice(0,1),names,read),null);
+assert.throws(()=>validateNativeSkillFragments([...records,records[0]],names,read),/mismatch/);
+assert.throws(()=>validateNativeSkillFragments(records,names,()=> 'wrong body'),/mismatch/);
+assert.equal(validateNativeSkillFragments([{type:'response_item',payload:{role:'user',content:[{text:prompt}]}}],names,read),null);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => n === 'knowledge-vocabulary' ? '' : read(n)}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: ' ', read}), /brief is empty/);
-assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'x', read: n => 'y'.repeat(24000)}), /exceeds one argument/);
+assert.throws(() => composeFirstPrompt({workspace: '/w', aspect: 'Mind', brief: 'y'.repeat(130000), read}), /exceeds one argument/);
 
 // The launcher uses the delivered skill files, not a repository revision.
 const skillWorkspace = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-skills-'));
@@ -126,4 +129,12 @@ console.log(JSON.stringify({environment:Object.fromEntries(['CODEX_THREAD_ID','C
   assert.equal(actual.environment.HERDR_SOCKET_PATH, '/fixture-herdr.sock');
   assert.ok(actual.args.includes('model_reasoning_effort="low"'), 'explicit low effort reaches the Codex launcher config');
   assert.ok(!actual.args.includes('model_reasoning_effort="medium"'), 'explicit low effort does not retain the medium default');
+  const claimed = codexHarnessCommand({command:fakeClient,expectedPath:fakeClient},{model:'gpt-6.1-sol',effort:'medium',workspace:environmentRoot},brief,path.join(environmentRoot,'system.md'),'01a0e0a1-7075-7cc2-928d-13fc5610abcd','abcdef');
+  const rebound = spawnSync('sh',['-c',claimed],{encoding:'utf8',env:environment});
+  assert.equal(rebound.status,0,rebound.stderr);
+  const own = JSON.parse(rebound.stdout);
+  assert.equal(own.environment.FLOW_ID,'abcdef');
+  assert.equal(own.environment.FLOW_DIRECTORY,path.join(environmentRoot,'flows','abcdef'));
+  assert.equal(own.environment.CODEX_THREAD_ID,null);
+  assert.throws(()=>codexHarnessCommand({expectedPath:fakeClient},{workspace:environmentRoot},brief,path.join(environmentRoot,'system.md'),undefined,'abcdef'),/actual flow claim/);
 } finally { fs.rmSync(environmentRoot, {recursive:true,force:true}); }
