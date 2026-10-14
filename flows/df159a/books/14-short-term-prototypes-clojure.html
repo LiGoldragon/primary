@@ -1,0 +1,359 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Short-term prototypes: Clojure now?</title>
+<h1 class="book-title">Short-term prototypes: Clojure now?</h1>
+<h2>Crystallization</h2>
+<article class="proposal"><header><span class="pnum">1</span><h2>the live path today, by language, and which files leave it</h2></header>
+<svg viewBox="0 0 360 570" width="100%" role="img" aria-label="a seat the living asks for is launched by 19 .mjs and 1 .py under tools/ launchers, hooks, committer, census read config/main-flow/*.edn shared, aspect, metaflow name modules in psyche-, mind-, field-context are loaded into the running seat 2 sh hooks, 1 sh status line sends and commits through hm-* and field: 10 .clj messenger-clj, field-clj; 1 sh" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="10" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="36" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">a seat the living asks for</text><line x1="41.25" y1="50" x2="41.25" y2="88" stroke="currentColor" stroke-width="1.5"/><polygon points="37.25,88 45.25,88 41.25,96" fill="currentColor"/><text x="51.25" y="65" font-size="12" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" text-anchor="start">is launched by</text><rect x="30" y="96" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="122" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">19 .mjs and 1 .py under tools/</text><text x="42" y="142" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">launchers, hooks, committer, census</text><line x1="41.25" y1="156" x2="41.25" y2="194" stroke="currentColor" stroke-width="1.5"/><polygon points="37.25,194 45.25,194 41.25,202" fill="currentColor"/><text x="51.25" y="171" font-size="12" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" text-anchor="start">read</text><rect x="30" y="202" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="228" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">config/main-flow/*.edn</text><text x="42" y="248" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">shared, aspect, metaflow</text><line x1="41.25" y1="262" x2="41.25" y2="300" stroke="currentColor" stroke-width="1.5"/><polygon points="37.25,300 45.25,300 41.25,308" fill="currentColor"/><text x="51.25" y="277" font-size="12" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" text-anchor="start">name modules in</text><rect x="30" y="308" width="300" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="334" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">psyche-, mind-, field-context</text><line x1="41.25" y1="348" x2="41.25" y2="386" stroke="currentColor" stroke-width="1.5"/><polygon points="37.25,386 45.25,386 41.25,394" fill="currentColor"/><text x="51.25" y="363" font-size="12" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" text-anchor="start">are loaded into</text><rect x="30" y="394" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="420" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the running seat</text><text x="42" y="440" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">2 sh hooks, 1 sh status line</text><line x1="41.25" y1="454" x2="41.25" y2="492" stroke="currentColor" stroke-width="1.5"/><polygon points="37.25,492 45.25,492 41.25,500" fill="currentColor"/><text x="51.25" y="469" font-size="12" fill="currentColor" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" text-anchor="start">sends and commits through</text><rect x="30" y="500" width="300" height="60" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="42" y="526" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">hm-* and field: 10 .clj</text><text x="42" y="546" font-size="14" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">messenger-clj, field-clj; 1 sh</text></svg>
+<p class="target"><code>tools/</code></p><p>(the non-Clojure live files; group one removed under choices 1 and 2, group two under choice 1 only)</p>
+<pre data-diff><code class="language-paths">- claude-main-flow-launch.mjs
+- codex-main-flow-launch.mjs
+- opencode-main-flow-launch.mjs
+- main-flow-mode/launch-config.mjs
+- main-flow-mode/spirit-system-prompt.mjs
+- native-main-flow-launch-shared.mjs
+- native-voice-profiles.mjs
+- native-voice-launch.mjs
+- model-display-name.mjs
+- standing-skill-selection.mjs
+- secondary-first.mjs
+- native-worker-launch.mjs
+-
+- context-refresh-hook.mjs
+- main-flow-mode/context-refresh.mjs
+- main-flow-mode/reminder-hook.py
+- field-census/claude-context.mjs
+- field-census/codex-context.mjs
+- primary-committer/codex-birth.mjs
+- primary-committer/restart.mjs
+- primary-committer/turn-end.mjs</code></pre>
+<p class="target"><code>src/</code></p><p>(in the repository of choice 4 or 5; group one added under choices 1 and 2, group two under choice 1 only; each run by bb)</p>
+<pre data-diff><code class="language-paths">+ launch/seat.clj
++ launch/config.clj
++ launch/system_prompt.clj
++ launch/first_prompt.clj
++ launch/voices.clj
++ launch/worker.clj
++ launch/secondary_first.clj
++ launch/values.clj
++
++ hooks/context_refresh.clj
++ hooks/reminder.clj
++ census/context.clj
++ committer/birth.clj
++ committer/restart.clj
++ committer/turn_end.clj</code></pre>
+<section class="rulings"><ol><li value="1"><p>Ruling, one number from each group:</p><p>Which files leave the live path now:</p><ol class="choices" start="1"><li>Both groups: all 20 removed, the 14 Clojure files added, each old file removed as its Clojure lands.</li><li>Group one, the launch chain, now; group two after.</li><li>Neither: every new prototype is .clj; the 20 stay until the long-term Flow Nexus replaces them.</li></ol><p>Where the Clojure lives, outside the main workspace:</p><ol class="choices" start="4" style="counter-reset:choice 3"><li>field-clj, the repository that already holds the Field CLI.</li><li>A new repository, by a proposal for a new repo.</li></ol></li></ol></section>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>one Clojure reader of the startup prompt</h2></header>
+<p class="target"><code>tools/main-flow-mode/launch-config.mjs</code></p><p>(removed under Proposal 1 choices 1 and 2; under choice 3 its callers run the Clojure file)</p>
+<pre data-diff><code class="language-javascript">- export function firstPromptFromConfig(…) {
+-   …
+-   return `${prompt.trim()}\n`;
+- }</code></pre>
+<p class="target"><code>tools/claude-native-seat-refresh.py</code></p><p>(the embedded script removed)</p>
+<pre data-diff><code class="language-python">- EDN_FIRST_PROMPT = r"""
+- …
+- """</code></pre>
+<p class="target"><code>tools/claude-native-seat-refresh.py</code></p><p>(the call; <code>first-prompt</code> is installed on PATH by Nix as the hm-* commands are)</p>
+<pre><code class="language-python">        <del>["bb", "-e", EDN_FIRST_PROMPT, str(ROOT / "config/main-flow/shared.edn"),</del> <ins>["first-prompt",</ins>
+<ins>         str(ROOT /</ins>
+<ins>             "config/main-flow/shared.edn"),</ins></code></pre>
+<p class="target"><code>nix/launcher.sh</code></p><p>(in the repository of Proposal 1 choice 4 or 5; the dispatch, as hm-* are dispatched)</p>
+<pre data-diff><code class="language-bash">+ exec "@babashka@/bin/bb" \
++   --config "@out@/share/launch/bb.edn" \
++   -m launch.first-prompt "$@"</code></pre>
+<p class="target"><code>bb.edn</code></p><p>(choice 5's new repository; under choice 4 field-clj's deps.edn already carries malli 0.18.0)</p>
+<pre data-diff><code class="language-clojure">+ {:paths ["src"]
++  :deps {metosin/malli {:mvn/version "0.18.0"}}}</code></pre>
+<p class="target"><code>src/launch/first_prompt.clj</code></p><p>(the embedded script, moved and changed; its first line, elided, against the file's; it takes the JSON and the EDN paths its caller already sends)</p>
+<pre><code class="language-clojure"><del>(require '[clojure.edn :as edn] …)</del> <ins>(ns launch.first-prompt</ins>
+<ins>  (:require [clojure.string :as str]</ins>
+<ins>            [cheshire.core :as json]</ins>
+<ins>            [malli.core :as m]</ins>
+<ins>            [launch.values :as values]))</ins>
+<ins></ins>
+<ins>(def fields ["{{modules}}" "{{handover}}"</ins>
+<ins>             "{{raw-psyche}}"])</ins>
+<ins></ins>
+<ins>(def Launch</ins>
+<ins>  [:map</ins>
+<ins>   [:template</ins>
+<ins>    [:and :string</ins>
+<ins>     [:fn #(every? (fn [f] (str/includes? % f))</ins>
+<ins>                   fields)]]]</ins>
+<ins>   [:sources [:vector {:min 1}</ins>
+<ins>              [:string {:min 1}]]]</ins>
+<ins>   [:handover [:string {:min 1}]]])</ins>
+<ins></ins>
+<ins>(defn- fill [template values]</ins>
+<ins>  (str/replace template #"\{\{([^}]+)\}\}"</ins>
+<ins>    (fn [[_ k]]</ins>
+<ins>      (let [k (keyword k)]</ins>
+<ins>        (if (contains? values k)</ins>
+<ins>          (get values k)</ins>
+<ins>          (throw (ex-info "unknown field"</ins>
+<ins>                          {:field k})))))))</ins>
+<ins></ins>
+<ins>(defn first-prompt [config input]</ins>
+<ins>  (let [sources (:raw-psyche-paths config)</ins>
+<ins>        launch {:template</ins>
+<ins>                (:first-prompt-template config)</ins>
+<ins>                :sources sources</ins>
+<ins>                :handover (:handover input)}]</ins>
+<ins>    (when-not (m/validate Launch launch)</ins>
+<ins>      (throw (ex-info "first prompt contract"</ins>
+<ins>                      (m/explain Launch launch))))</ins>
+<ins>    (fill (:template launch)</ins>
+<ins>          {:modules (:modules input)</ins>
+<ins>           :handover (:handover input)</ins>
+<ins>           :raw-psyche (str/join "\n" sources)</ins>
+<ins>           :topic-context</ins>
+<ins>           (:topic-context config "")</ins>
+<ins>           :metaflow (:metaflow input)})))</ins>
+<ins></ins>
+<ins>(defn -main [&amp; edn-paths]</ins>
+<ins>  (print (first-prompt</ins>
+<ins>          (apply values/config edn-paths)</ins>
+<ins>          (json/parse-string (slurp *in*) true))))</ins></code></pre>
+<section class="rulings"><ol><li value="2"><p>Ruling, one number from each group:</p><p>The readers:</p><ol class="choices" start="1"><li>The one Clojure file; both existing readers removed.</li><li>The Clojure file; the embedded script stays until its .py is retired.</li></ol></li></ol></section>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>the values leave the code</h2></header>
+<p class="target"><code>tools/native-worker-launch.mjs</code></p><p>(removed, kind model)</p>
+<pre data-diff><code class="language-javascript">- const MODEL = 'gpt-5.6-terra';</code></pre>
+<p class="target"><code>config/main-flow/mind.edn</code></p><p>(added)</p>
+<pre data-diff><code class="language-clojure">+ :worker {:model "gpt-5.6-terra" :effort :medium}</code></pre>
+<p class="target"><code>tools/standing-skill-selection.mjs</code></p><p>(removed, kind skill list; the list lands in the <code>:modules :user</code> vector each aspect EDN already carries)</p>
+<pre data-diff><code class="language-javascript">- export const STANDING_SKILLS = Object.freeze([
+-   …
+- ]);</code></pre>
+<p class="target"><code>src/launch/values.clj</code></p><p>(the one reader of the EDN; first_prompt.clj reads through it)</p>
+<pre data-diff><code class="language-clojure">+ (ns launch.values
++   (:require [clojure.edn :as edn]))
++
++ (defn- read [path]
++   (edn/read-string (slurp path)))
++
++ (defn config
++   "the EDN files the caller passes; later wins."
++   [&amp; paths]
++   (apply merge (map read paths)))</code></pre>
+<section class="rulings"><ol><li value="3"><p>Ruling, one number from each group:</p><p>The prompts:</p><ol class="choices" start="1"><li>EDN strings in <code>config/main-flow</code>, as the startup prompt is today.</li><li>Context modules in field-context, named in the EDN by module name, the prompt body under the living's review like every module.</li></ol><p>The flow ids and the native session ids:</p><ol class="choices" start="3" style="counter-reset:choice 2"><li>Not authored at all: registered at launch and resolved at run time, never in EDN.</li><li>In EDN, written by the launcher as it registers them.</li></ol><p>The order:</p><ol class="choices" start="5" style="counter-reset:choice 4"><li>All 58 move as each file is rewritten under Proposal 1.</li><li>All 58 move now; the line each .mjs reads them with is the owner's, not proposed here.</li></ol></li></ol></section>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2>a book carries proposals only; the records live in a reference file</h2></header>
+<p class="target"><code>psyche-context/skills/vision-book.md</code></p><p>(«Books», after L8)</p>
+<div class="diff"><div class="ctx"><p>A book is a proposal into context modules, and the whole of it is its crystallization: a line removed shows in red, a line added in green, and a figure in it is a figure proposed for a module.</p></div><div class="add"><ins><p>A book carries the proposals; it shows no verbatim quote, and the records it draws from are not shown.</p></ins></div><div class="add"><ins><p>The records a proposal draws from live in an unrendered reference file kept with the book's source; they are archived with the landing when some or all of the proposal is accepted.</p></ins></div></div>
+<p>Consequence for the owner of a machine module, not a psyche landing: the second sentence of L14 falls.</p>
+<p class="target"><code>field-context/skills/compensation-book-crystallization.md</code></p><p>(L14)</p>
+<div class="diff"><p>A book does not restate the living's words. <del>A proposal may cite the record it crystallizes by path and date.</del></p></div>
+<section class="rulings"><ol><li value="4"><p>Ruling, one number from each group:</p><p>The reference file:</p><ol class="choices" start="1"><li><code>&lt;book&gt;.refs.md</code> beside the book's source, as shown.</li><li>A <code>references/</code> directory beside the books, one file per book:</li></ol><p class="target"><code>psyche-context/skills/vision-book.md</code></p><p>(under choice 2, the differing words)</p><div class="diff"><p>live in an unrendered <del>reference</del> file <del>kept with</del> <ins>under references/ beside</ins> the <del>book's source</del> <ins>books</ins></p></div></li></ol></section>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
