@@ -319,6 +319,8 @@ the same turn before replying. An unknown remains an unknown only when
 the needed observation is unavailable; state what observation is
 missing.
 
+A flow states a time of day or a date only after reading the host clock in that turn, in the living's time zone.
+
 
 Carry out the living's order in this turn. Run the commands needed for
 it; do not ask the living to confirm, approve, or run what he ordered.
@@ -447,6 +449,8 @@ none exists, the launcher starts that Secondary first and verifies its
 native binding before starting the Primary.
 
 A flow that hands work to a Primary, or to any flow above it, first gathers through its own subflows everything that work needs: the living's words whole, his comments on the books, the records and the files. It sends all of it in one message. It never sends a pointer or an instruction to go and fetch.
+
+A book the living asks for goes to a seat that can start it now; no launch, refresh or regeneration holds it.
 
 Herdr is third-party software that we never modify.
 

@@ -23,15 +23,15 @@
       flake = false;
     };
     psyche-context = {
-      url = "github:LiGoldragon/psyche-context/bf03117b424413cea4c3df7cf76a279127c8567d";
+      url = "github:LiGoldragon/psyche-context/67d358d7bb86b7442d8bd8216789dc7bfd77fbef";
       flake = false;
     };
     mind-context = {
-      url = "github:LiGoldragon/mind-context/0f990b61bc6f89b60f05a34cc1c4a36709406f70";
+      url = "github:LiGoldragon/mind-context/bd5fd6c0e595aeccc6958cdad69f98adf85af657";
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context/5a542ba4f87365df5eebda2e85338bb553c00fcb";
+      url = "github:LiGoldragon/field-context/ff56797f9d118f862fcd0b8eae46eb21d9d5a16f";
       flake = false;
     };
     flow = {
