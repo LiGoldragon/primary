@@ -185,13 +185,13 @@ pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!impo
   });
   // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
   if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
-  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
   function marks(){
     document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
       e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
       var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
       e.textContent.split('\n').forEach(function(l,i){
-        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
         if(!k||!lh)return;
         var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
         m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);

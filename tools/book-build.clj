@@ -33,15 +33,6 @@
 
 (defn cp-count [^String s] (.codePointCount s 0 (.length s)))
 
-(defn cp-slice
-  "Code-point slice of s from a to (cp-count s) - b."
-  [^String s a b]
-  (let [n (cp-count s)
-        end (- n b)]
-    (if (<= end a)
-      ""
-      (subs s (.offsetByCodePoints s 0 a) (.offsetByCodePoints s 0 end)))))
-
 (defn esc [s]
   (-> s (str/replace "&" "&amp;") (str/replace "<" "&lt;") (str/replace ">" "&gt;")))
 
@@ -49,7 +40,7 @@
   (-> (esc s) (str/replace "\"" "&quot;") (str/replace "'" "&#x27;")))
 
 (defn num [x]
-  (let [x (double x)]
+  (let [x (/ (Math/rint (* 100 (double x))) 100)]
     (if (== x (Math/floor x)) (str (long x)) (str x))))
 
 (defn inline
@@ -67,87 +58,6 @@
 
 (defn join-lines [lines]
   (str/join " " (keep #(let [t (strip %)] (when (not= "" t) t)) lines)))
-
-;; ------------------------------------------------------------------ figures
-
-(def edge-re #"\+-+\+")
-
-(defn figure? [lines]
-  (boolean (and (seq lines) (re-matches edge-re (rstrip (first lines))))))
-
-(defn parse-figure [lines]
-  (let [lines (vec lines)
-        n (count lines)
-        width (cp-count (rstrip (first lines)))]
-    (loop [i 0 boxes [] arrows []]
-      (if (>= i n)
-        [width boxes arrows]
-        (let [l (rstrip (lines i))]
-          (cond
-            (re-matches edge-re l)
-            (let [[i texts] (loop [i (inc i) texts []]
-                              (if (and (< i n) (str/starts-with? (rstrip (lines i)) "|"))
-                                (recur (inc i) (conj texts (strip (cp-slice (rstrip (lines i)) 1 1))))
-                                [i texts]))]
-              (recur (inc i) (conj boxes texts) arrows))
-
-            (re-find #"(?U)^\s*v\s*$" l)
-            (recur (inc i) boxes arrows)
-
-            :else
-            (let [m (re-find #"(?U)^(\s*)\|\s?(.*)$" l)]
-              (when-not m
-                (throw (ex-info (str "figure line not understood: " (pr-str l)) {})))
-              (let [col (cp-count (m 1))
-                    arrows (if (< (count arrows) (count boxes)) (conj arrows [col []]) arrows)
-                    k (dec (count arrows))
-                    arrows (update-in arrows [k 1] conj (rstrip (m 2)))]
-                (recur (inc i) boxes arrows)))))))))
-
-(defn svg-figure [lines]
-  (let [[width boxes arrows] (parse-figure lines)
-        boxw (* width 7.5)
-        x 30
-        parts (StringBuilder.)
-        label-parts (transient [])]
-    (loop [k 0 y 10 maxw 360]
-      (if (>= k (count boxes))
-        (str "<svg viewBox=\"0 0 " (num maxw) " " (num (+ y 10))
-             "\" width=\"100%\" role=\"img\" aria-label=\""
-             (esc-attr (str/join " " (persistent! label-parts)))
-             "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>")
-        (let [texts (boxes k)
-              h (+ 40 (* 20 (dec (count texts))))]
-          (.append parts (str "<rect x=\"" (num x) "\" y=\"" (num y) "\" width=\"" (num boxw)
-                              "\" height=\"" (num h)
-                              "\" rx=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/>"))
-          (doseq [[j t] (map-indexed vector texts)]
-            (.append parts (str "<text x=\"" (num (+ x 12)) "\" y=\"" (num (+ y 26 (* 20 j)))
-                                "\" font-size=\"14\" fill=\"currentColor\" font-family=\"" box-font "\">"
-                                (esc-attr t) "</text>"))
-            (conj! label-parts t))
-          (let [maxw (max maxw (+ x boxw 30))
-                y1 (+ y h)]
-            (if (< k (count arrows))
-              (let [[col labels] (arrows k)
-                    lx (+ 30 (* (+ col 0.5) 7.5))
-                    length (+ 38 (* 23 (dec (count labels))))
-                    y2 (+ y1 length)]
-                (.append parts (str "<line x1=\"" (num lx) "\" y1=\"" (num y1) "\" x2=\"" (num lx)
-                                    "\" y2=\"" (num y2) "\" stroke=\"currentColor\" stroke-width=\"1.5\"/>"))
-                (.append parts (str "<polygon points=\"" (num (- lx 4)) "," (num y2) " "
-                                    (num (+ lx 4)) "," (num y2) " " (num lx) "," (num (+ y2 8))
-                                    "\" fill=\"currentColor\"/>"))
-                (let [maxw (reduce
-                            (fn [maxw [j lab]]
-                              (.append parts (str "<text x=\"" (num (+ lx 10)) "\" y=\"" (num (+ y1 15 (* 23 j)))
-                                                  "\" font-size=\"12\" fill=\"currentColor\" font-family=\""
-                                                  label-font "\" text-anchor=\"start\">" (esc-attr lab) "</text>"))
-                              (conj! label-parts lab)
-                              (max maxw (Math/rint (+ (+ (+ lx 10) (* (cp-count lab) 7.2)) 14))))
-                            maxw (map-indexed vector labels))]
-                  (recur (inc k) (+ y2 8) maxw)))
-              (recur (inc k) y1 maxw))))))))
 
 ;; ------------------------------------------------------------ graph figures
 ;;
@@ -455,17 +365,14 @@
         (throw (ex-info (str "figure edge names no node: " (pr-str [from to])) {}))))
     g))
 
-(defn chain?
-  "A single line of nodes, each edge to the next."
-  [{:keys [nodes edges]}]
-  (and (= (count edges) (dec (count nodes)))
-       (every? #(<= % 1) (vals (frequencies (map :from edges))))
-       (every? #(<= % 1) (vals (frequencies (map :to edges))))
-       (= 1 (- (count (set (map :id nodes))) (count (set (map :to edges)))))))
-
 ;; ------------------------------------------------------------ graph layout
 
-(def fig-w 375)
+;; A figure is drawn at the width it is shown at, so its 12px text is 12px
+;; on screen. On a 320px page (tools/book-code.html): the body's content is
+;; 320 - 2*16 = 288; a proposal's, 288 - 2*16 padding - 2*1 border = 254; a
+;; ruling's inside it, 254 - 3.4rem - 16 padding - 2*1 border = 181.
+(def fig-w 254)
+(def ruling-fig-w 181)
 (def ^:private margin 8)
 (def ^:private col-gap 12)
 (def ^:private pad 9)
@@ -477,21 +384,23 @@
 (def ^:private arrow 8)
 
 (defn wrap
-  "Greedy word wrap at maxc code points; each source line wraps alone."
+  "Greedy word wrap at maxc code points, only at spaces; a word longer than
+  maxc stands whole on its line. The source's lines are kept when each fits;
+  when one does not, the whole text flows as one."
   [text maxc]
-  (let [maxc (max 4 maxc)]
-    (vec (mapcat (fn [line]
-                   (let [words (mapcat (fn [w] (map #(apply str %) (partition-all maxc (re-seq #"(?s)." w))))
-                                       (remove #(= "" %) (str/split (strip line) #"(?U)\s+")))]
-                     (if (empty? words)
-                       []
-                       (reduce (fn [acc w]
-                                 (let [l (peek acc)]
-                                   (if (and l (<= (+ (cp-count l) 1 (cp-count w)) maxc))
-                                     (conj (pop acc) (str l " " w))
-                                     (conj acc w))))
-                               [] words))))
-                 (str/split-lines (or text ""))))))
+  (let [maxc (max 1 maxc)
+        src (remove #(= "" %) (map strip (str/split-lines (or text ""))))
+        fill (fn [words]
+               (reduce (fn [acc w]
+                         (let [l (peek acc)]
+                           (if (and l (<= (+ (cp-count l) 1 (cp-count w)) maxc))
+                             (conj (pop acc) (str l " " w))
+                             (conj acc w))))
+                       [] words))
+        words-of #(remove (fn [w] (= "" w)) (str/split % #"(?U)\s+"))]
+    (if (every? #(<= (cp-count %) maxc) src)
+      (vec src)
+      (fill (mapcat words-of src)))))
 
 (defn- back-edge-set
   "Indices of edges that close a cycle, found by depth-first search."
@@ -542,8 +451,9 @@
 
 (defn graph-svg
   "Inline SVG of a graph {:nodes [{:id :label}] :edges [{:from :to :verb}]},
-  at most fig-w wide."
-  [{:keys [nodes edges]}]
+  drawn at width w, the width it is shown at, so its text keeps its size."
+  ([g] (graph-svg g fig-w))
+  ([{:keys [nodes edges]} fig-w]
   (let [nodes (vec nodes)
         ids (mapv :id nodes)
         node (zipmap ids nodes)
@@ -584,57 +494,147 @@
                             (assoc layers r (vec (sort-by key (layers r))))))
                         layers (if down? (range 1 nranks) (range (- nranks 2) -1 -1))))
         layers (reduce (fn [l d] (sweep l d)) layers [true false true false true])
-        ;; an edge closing a cycle runs up a lane of its own at the right,
-        ;; its verb on the lane
-        back-verb (into {} (for [e backs :when (:verb e)] [(:i e) (wrap (:verb e) 10)]))
-        lane-w (into {} (for [e backs]
-                          [(:i e) (max 10 (+ 6 (if-let [ls (back-verb (:i e))]
-                                                 (+ 6 (* verb-cw (reduce max 0 (map cp-count ls))))
-                                                 0)))]))
-        lane (reduce + (vals lane-w))
+        ;; an edge closing a cycle runs up a lane at the right, its verb on
+        ;; the lane; edges whose ranks do not meet share a lane. When the
+        ;; lanes would take a third of the width, their verbs wrap at their
+        ;; longest word
+        lanes (reduce (fn [lanes e]
+                        (let [lo (rank (:to e)) hi (rank (:from e))
+                              free? (fn [l] (every? #(or (< (rank (:from %)) lo) (< hi (rank (:to %)))) l))
+                              k (first (keep-indexed #(when (free? %2) %1) lanes))]
+                          (if k (update lanes k conj e) (conj lanes [e]))))
+                      [] (sort-by #(rank (:to %)) backs))
+        lane-width (fn [verbs] (mapv (fn [l] (reduce max 10 (for [e l :let [ls (verbs (:i e))] :when ls]
+                                                               (+ 12 (* verb-cw (reduce max 0 (map cp-count ls)))))))
+                                     lanes))
+        verbs-at (fn [maxc] (into {} (for [e backs :when (:verb e)] [(:i e) (wrap (:verb e) (maxc (:verb e)))])))
+        back-verb (let [v (verbs-at (constantly 10))]
+                    (if (< (* 3 (reduce + (lane-width v))) fig-w)
+                      v
+                      (verbs-at #(reduce max 1 (map cp-count (str/split (strip %) #"(?U)\s+"))))))
+        lane-ws (lane-width back-verb)
+        lane (reduce + lane-ws)
         inner (- fig-w (* 2 margin) lane)
-        ;; widths
-        slot (vec (for [l layers]
-                    (let [k (count (remove vector? l)) m (count (filter vector? l))]
-                      (/ (- inner (* col-gap (dec (count l))) (* dummy-w m)) (double (max 1 k))))))
-        geom (into {}
-                   (for [[r l] (map-indexed vector layers)
-                         it l :when (not (vector? it))
-                         :let [{:keys [label note bare]} (node it)
-                               s (slot r)
-                               lines (wrap label (int (/ (- s (* 2 pad)) box-cw)))
-                               nlines (if note (wrap note (int (/ (- s (* 2 pad)) verb-cw))) [])
-                               w (min s (max 40 (+ (* 2 pad)
-                                                   (max (* box-cw (reduce max 0 (map cp-count lines)))
-                                                        (* verb-cw (reduce max 0 (map cp-count nlines)))))))
-                               h (+ (* 2 pad) (* box-lh (count lines)) (if (seq nlines) (+ 4 (* verb-lh (count nlines))) 0))]]
-                     [it {:w w :h h :lines lines :notes nlines :bare bare}]))
-        band-h (vec (for [l layers] (reduce max 0 (map #(:h (geom %) 0) l))))
-        ;; verbs: shared at a fork's or join's trunk when all its edges carry one
+        ;; verbs: shared at a fork's or join's trunk when all its edges
+        ;; carry one; otherwise each edge's own, on its first segment
         outs (group-by :from fwd)
         ins (group-by :to fwd)
-        verb-max (fn [r] (int (/ (- (reduce min (map slot (filter #(< -1 % nranks) [r (inc r)]))) 8) verb-cw)))
         shared-verb (fn [es] (let [vs (map :verb es)]
                                (when (and (< 1 (count es)) (first vs) (apply = vs)) (first vs))))
-        fork-shared (into {} (for [[n es] outs :let [v (shared-verb es)] :when v]
-                               [n (wrap v (verb-max (rank n)))]))
-        join-shared (into {} (for [[n es] ins
-                                   :when (not-any? #(fork-shared (:from %)) es)
-                                   :let [v (shared-verb es)] :when v]
-                               [n (wrap v (verb-max (dec (rank n))))]))
-        own-verb (into {} (for [e fwd
-                                :when (and (:verb e) (not (fork-shared (:from e))) (not (join-shared (:to e))))]
-                            [(:i e) (wrap (:verb e) (verb-max (rank (:from e))))]))
+        fork-verb (into {} (for [[n es] outs :let [v (shared-verb es)] :when v] [n v]))
+        join-verb (into {} (for [[n es] ins
+                                 :when (not-any? #(fork-verb (:from %)) es)
+                                 :let [v (shared-verb es)] :when v]
+                             [n v]))
+        own-text (fn [{:keys [e first?]}]
+                   (let [{:keys [from to verb]} (edges e)]
+                     (when (and first? verb (not (fork-verb from)) (not (join-verb to))) verb)))
+        fork? (fn [{:keys [a first?]}] (boolean (and first? (< 1 (count (outs a))))))
+        ;; Every edge runs down its source's column, turns at a level of
+        ;; its own in the gap below, and runs down its target's column, so
+        ;; a verb drawn in a column has under it only its own edge. Edges
+        ;; joining at a target with verbs of their own come down side by
+        ;; side in its column, each at a port, and meet just above it.
+        ported (into {} (for [[b ss] seg-in
+                              :when (and (< 1 (count ss)) (some own-text ss))]
+                          [b (vec (sort-by #(.indexOf ^java.util.List (layers (item-rank (:a %))) (:a %)) ss))]))
+        lines-of (fn [t] (str/split-lines (strip (or t ""))))
+        words-of (fn [ls] (mapcat #(str/split % #"(?U)\s+") ls))
+        text-w (fn [ls cw extra] (if (seq ls) (+ extra (* cw (reduce max 0 (map cp-count ls)))) 0))
+        verb-w (fn [ls] (text-w ls verb-cw 6))
+        port-w (fn [s unit] (verb-w (unit (lines-of (own-text s)))))
+        ;; what a column draws: its box, the verbs at its x, its ports
+        column (fn [it unit bcw gap]
+                 (let [{:keys [label note]} (node it)
+                       real? (not (vector? it))
+                       ps (ported it)
+                       in-own (when-not ps (keep own-text (seg-in it)))]
+                   (max (if real? (max (text-w (unit (lines-of label)) bcw (* 2 pad))
+                                       (text-w (unit (lines-of note)) verb-cw (* 2 pad)))
+                            0)
+                        (reduce max 0 (map #(verb-w (unit (lines-of %)))
+                                           (concat (keep fork-verb [it]) (keep join-verb [it]) in-own)))
+                        (if ps (+ (reduce + (map #(port-w % unit) ps)) (* gap (dec (count ps)))) 0))))
+        ;; widths: a rank shares its width among its columns. A column takes
+        ;; what it draws on one line; when they do not all fit, the widest
+        ;; are capped alike, never below their longest word. A rank whose
+        ;; words do not fit narrows its gaps, then sets its boxes at 12px;
+        ;; when even then they do not fit, the figure widens
+        narrow? (fn [it] (and (vector? it) (not (ported it)) (empty? (keep own-text (seg-in it)))))
+        fits (fn [l gap size]
+               (let [fixed (set (filter narrow? l))
+                     free (remove fixed l)
+                     bcw (* box-cw (/ size 14.0))]
+                 {:fixed fixed :free free :gap gap :size size
+                  :avail (- inner (* gap (dec (count l))) (* dummy-w (count fixed)))
+                  :need (into {} (for [it free] [it (column it identity bcw gap)]))
+                  :floor (into {} (for [it free] [it (min (column it identity bcw gap) (column it words-of bcw gap))]))}))
+        words-fit? (fn [{:keys [floor avail]}] (<= (reduce + (vals floor)) avail))
+        row-fit (vec (for [l layers]
+                       (or (first (filter words-fit? (for [[gap size] [[col-gap 14] [4 14]]] (fits l gap size))))
+                           (fits l 4 12))))
+        over (reduce max 0 (map #(- (reduce + (vals (:floor %))) (:avail %)) row-fit))
+        inner (+ inner over)
+        fig-w (+ fig-w over)
+        lane-x (into {} (for [[k l] (map-indexed vector lanes)
+                              :let [x (- fig-w margin (reduce + (take k lane-ws)) (/ (lane-ws k) 2.0))]
+                              {:keys [i]} l]
+                          [i x]))
+        row-fit (mapv #(update % :avail + over) row-fit)
+        col-w (into {}
+                    (for [[r l] (map-indexed vector layers)
+                          :let [{:keys [fixed free need floor avail]} (row-fit r)
+                                fit (fn [cap] (reduce + (map #(max (floor %) (min (need %) cap)) free)))
+                                cap (if (<= (reduce + (vals need)) avail)
+                                      ##Inf
+                                      (loop [lo 0.0 hi (reduce max 0.0 (vals need)) n 0]
+                                        (if (< n 40)
+                                          (let [mid (/ (+ lo hi) 2)]
+                                            (if (<= (fit mid) avail) (recur mid hi (inc n)) (recur lo mid (inc n))))
+                                          lo)))]
+                          it l]
+                      [it (if (fixed it) dummy-w (max (floor it) (min (need it) cap)))]))
+        gap-at (fn [it] (:gap (row-fit (item-rank it))))
+        size-at (fn [it] (:size (row-fit (item-rank it))))
+        chars (fn [w cw extra] (int (+ 1e-9 (/ (- w extra) cw))))
+        ;; each port takes its share of its column
+        port (into {} (for [[b ps] ported
+                            :let [needs (map #(port-w % identity) ps)
+                                  room (- (col-w b) (* (gap-at b) (dec (count ps))))
+                                  ws (map #(* room (/ % (reduce + needs))) needs)]
+                            [s w] (map vector ps ws)]
+                        [s {:w w :lines (wrap (own-text s) (chars w verb-cw 6))}]))
+        fork-shared (into {} (for [[n v] fork-verb] [n (wrap v (chars (col-w n) verb-cw 6))]))
+        join-shared (into {} (for [[n v] join-verb] [n (wrap v (chars (col-w n) verb-cw 6))]))
+        own (fn [s] (when (own-text s)
+                      (if (port s) (:lines (port s)) (wrap (own-text s) (chars (col-w (:b s)) verb-cw 6)))))
+        geom (into {}
+                   (for [l layers
+                         it l :when (not (vector? it))
+                         :let [{:keys [label note bare]} (node it)
+                               s (col-w it)
+                               size (size-at it)
+                               bcw (* box-cw (/ size 14.0))
+                               blh (* box-lh (/ size 14.0))
+                               lines (wrap label (chars s bcw (* 2 pad)))
+                               nlines (if note (wrap note (chars s verb-cw (* 2 pad))) [])
+                               w (min s (max 40 (+ (* 2 pad)
+                                                   (max (* bcw (reduce max 0 (map cp-count lines)))
+                                                        (* verb-cw (reduce max 0 (map cp-count nlines)))))))
+                               h (+ (* 2 pad) (* blh (count lines)) (if (seq nlines) (+ 4 (* verb-lh (count nlines))) 0))]]
+                     [it {:w w :h h :lines lines :notes nlines :bare bare :size size :lh blh}]))
+        band-h (vec (for [l layers] (reduce max 0 (map #(:h (geom %) 0) l))))
         ;; x: each item drawn toward its neighbours, order kept, each
-        ;; footprint (box or the verbs drawn at its x) apart
-        verb-w (fn [ls] (+ 6 (* verb-cw (reduce max 0 (map cp-count ls)))))
-        foot (reduce (fn [m [it ls]] (update m it (fnil max 0) (verb-w ls)))
-                     (into {} (for [l layers it l] [it (if (vector? it) dummy-w (:w (geom it)))]))
-                     (concat fork-shared join-shared
-                             (for [{:keys [a b e first?]} segs :when (and first? (own-verb e))]
-                               [(if (< 1 (count (outs a))) b a) (own-verb e)])))
+        ;; footprint (box, verbs and ports drawn at its x) apart
+        foot (into {} (for [l layers it l]
+                        [it (reduce max (if (vector? it) dummy-w (:w (geom it)))
+                                    (concat (map verb-w (keep #(% it) [fork-shared join-shared]))
+                                            (keep #(some-> (own %) verb-w) (when-not (ported it) (seg-in it)))
+                                            (when-let [ps (ported it)]
+                                              [(+ (reduce + (map #(:w (port %)) ps)) (* (gap-at it) (dec (count ps))))])))]))
         place (fn [l desired]
-                (let [lo (+ margin) hi (+ margin inner)
+                (let [col-gap (gap-at (first l))
+                      lo (+ margin) hi (+ margin inner)
                       fw (reduce (fn [acc it]
                                    (let [w (/ (foot it) 2.0)
                                          x (max (desired it) (+ lo w))
@@ -649,7 +649,8 @@
                                  () (rseq fw))]
                   (into {} bw)))
         xs0 (into {} (for [l layers
-                           :let [total (+ (reduce + (map foot l)) (* col-gap (dec (count l))))
+                           :let [col-gap (gap-at (first l))
+                                 total (+ (reduce + (map foot l)) (* col-gap (dec (count l))))
                                  x0 (+ margin (/ (- inner total) 2.0))]
                            [it x] (map vector l (reductions + (+ x0 (/ (foot (first l)) 2.0))
                                                             (map (fn [a b] (+ (/ (foot a) 2.0) col-gap (/ (foot b) 2.0)))
@@ -667,91 +668,177 @@
                     r (reduce max (map (fn [[it x]] (+ x (/ (foot it) 2.0))) xs))]
                 (- (+ margin (/ inner 2.0)) (/ (+ l r) 2.0)))
         xs (update-vals xs #(Math/rint (+ % shift)))
-        trunk (fn [n shared es] (when (< 1 (count es)) (+ 12 (if-let [ls (shared n)] (+ 6 (* verb-lh (count ls))) 0))))
-        split-len (into {} (for [[n es] outs :let [t (trunk n fork-shared es)] :when t] [n t]))
-        merge-len (into {} (for [[n es] ins :let [t (trunk n join-shared es)] :when t] [n t]))
-        gap (vec (for [r (range (dec nranks))]
-                   (+ 26
-                      (reduce max 0 (keep split-len (layers r)))
-                      (reduce max 0 (keep merge-len (layers (inc r))))
-                      (reduce max 0 (for [{:keys [a e first?]} segs
-                                          :when (and first? (= r (item-rank a)) (own-verb e))]
-                                      (+ 8 (* verb-lh (count (own-verb e)))))))))
-        tops (vec (reductions + 10 (map + band-h (concat gap [0]))))
-        height (+ (peek tops) 0)
+        ;; where a segment comes down in its target's column
+        port-x (into {} (for [[b ps] ported
+                              :let [ws (map #(:w (port %)) ps)
+                                    g (gap-at b)
+                                    total (+ (reduce + ws) (* g (dec (count ps))))
+                                    lefts (reductions + (- (xs b) (/ total 2.0)) (map #(+ % g) ws))]
+                              [s left w] (map vector ps lefts ws)]
+                          [s (Math/rint (+ left (/ w 2.0)))]))
+        x-in (fn [s] (or (port-x s) (xs (:b s))))
+        turns? (fn [s] (or (fork? s) (not (== (xs (:a s)) (x-in s)))))
+        ;; y: a gap holds, top to bottom, the verbs shared at fork trunks,
+        ;; one level per source whose edges turn, the verb band, and the
+        ;; meeting of ports above the arrowheads
+        verb-h (fn [ls] (* verb-lh (count ls)))
+        turners (vec (for [r (range (dec nranks))]
+                       (vec (sort-by xs (distinct (for [s segs :when (and (= r (item-rank (:a s))) (turns? s))] (:a s)))))))
+        gap (vec (for [r (range (dec nranks))
+                       :let [shared (reduce max 0 (map verb-h (keep fork-shared (layers r))))
+                             fs (if (pos? shared) (+ shared 12) 0)
+                             nlev (count (turners r))
+                             levels (if (pos? nlev) (+ 8 (* 7 (dec nlev))) 0)
+                             band (reduce max 13 (map #(+ 10 (verb-h %))
+                                                      (concat (keep own (filter #(= r (item-rank (:a %))) segs))
+                                                              (keep join-shared (layers (inc r))))))]]
+                   {:fs fs :levels levels :band band}))
+        tops-of (fn [extra] (vec (reductions + 10 (map + band-h (concat (map-indexed #(+ (:fs %2) (:levels %2) (:band %2) 16 (extra %1 0)) gap) [0])))))
+        mid (fn [tops it] (+ (tops (item-rank it)) (/ (:h (geom it)) 2.0)))
+        ;; a gap a cycle's lane spans grows until the lane's verb fits
+        ;; the longest stretch of a lane no other edge crosses, as
+        ;; [top bottom rank-at-top]
+        free-span (fn [tops {:keys [i from to]}]
+                    (let [ends (fn [{:keys [from to]}] [[(+ (mid tops from) 5) (item-rank from)]
+                                                       [(- (mid tops to) 5) (item-rank to)]])
+                          [[y1 r1] [y2 r2]] (ends {:from from :to to})
+                          [lo hi] (sort-by first [[y1 r1] [y2 r2]])
+                          cuts (sort-by first (for [e backs :when (> (lane-x (:i e)) (lane-x i))
+                                                    [y r] (ends e) :when (< (first lo) y (first hi))]
+                                                [y r]))
+                          spans (map vector (cons lo cuts) (concat cuts [hi]))
+                          [[s0 r0] [s1 _]] (apply max-key (fn [[[p] [q]]] (- q p)) spans)]
+                      [s0 s1 r0]))
+        extra (reduce (fn [extra _]
+                        (let [tops (tops-of extra)]
+                          (reduce (fn [m {:keys [i] :as e}]
+                                    (let [ls (back-verb i)
+                                          [s0 s1 r] (free-span tops e)
+                                          short (- (+ 10 (* verb-lh (count ls))) (- s1 s0))]
+                                      (if (and ls (pos? short) (< r (dec nranks)))
+                                        (update m r (fnil + 0) short)
+                                        m)))
+                                  extra backs)))
+                      {} (range 3))
+        tops (tops-of extra)
+        height (peek tops)
         top-of (fn [it] (tops (item-rank it)))
         out-y (fn [it] (if (vector? it) (+ (top-of it) (band-h (item-rank it))) (+ (top-of it) (:h (geom it)))))
+        bottom (fn [r] (+ (tops r) (band-h r)))
+        level (fn [a] (let [r (item-rank a)]
+                        (+ (bottom r) (:fs (gap r)) 8 (* 7 (.indexOf ^java.util.List (turners r) a)))))
+        band-top (fn [r] (+ (bottom r) (:fs (gap r)) (:levels (gap r))))
+        band-bottom (fn [r] (- (tops (inc r)) 16))
         parts (StringBuilder.)
-        add! #(.append parts %)]
+        add! #(.append parts %)
+        ;; a verb on a lane sits clear of the edges crossing the lane
+        back-ys (into {} (for [{:keys [i from to]} backs
+                               :let [ga (geom from) gb (geom to)]]
+                           [i [(+ (top-of from) (/ (:h ga) 2.0) 5) (- (+ (top-of to) (/ (:h gb) 2.0)) 5)]]))]
     ;; edges first, so boxes and verbs sit over them
-    (doseq [{:keys [a b e first?]} segs]
+    (doseq [{:keys [a b] :as s} segs]
       (let [xa (xs a) xb (xs b) ya (out-y a) yb (top-of b)
+            xt (x-in s)
             real-b? (not (vector? b))
-            fork? (and first? (split-len a))
-            join? (and real-b? (merge-len b))
-            jog (cond fork? (+ ya (split-len a))
-                      join? (- yb (merge-len b))
-                      :else (- yb 13))
-            end (if real-b? (- yb arrow) yb)
-            pts (if (and (== xa xb) (not fork?) (not join?))
-                  [[xa ya] [xa end]]
-                  [[xa ya] [xa jog] [xb jog] [xb end]])]
-        (add! (path-el pts))
+            meet (- yb 14)]
+        (add! (path-el (concat [[xa ya]]
+                               (when (turns? s) [[xa (level a)] [xt (level a)]])
+                               (when (port-x s) [[xt meet] [xb meet]])
+                               [[xb (if real-b? (- yb arrow) yb)]])))
         (when (vector? a)
           (add! (path-el [[xa (top-of a)] [xa ya]])))
         (when real-b? (add! (arrow-el xb yb [0 1])))))
-    (doseq [[i {:keys [from to verb]}] (map-indexed vector edges) :when (back i)
-            :let [before (take-while #(not= i %) (map :i backs))
-                  lx (- fig-w margin (reduce + (map lane-w before)) (/ (lane-w i) 2.0))
-                  ga (geom from) gb (geom to)
-                  x1 (+ (xs from) (/ (:w ga) 2.0)) y1 (+ (top-of from) (/ (:h ga) 2.0) 5)
-                  x2 (+ (xs to) (/ (:w gb) 2.0)) y2 (- (+ (top-of to) (/ (:h gb) 2.0)) 5)]]
+    (doseq [{:keys [i from to]} backs
+            :let [lx (lane-x i)
+                  [y1 y2] (back-ys i)
+                  x1 (+ (xs from) (/ (:w (geom from)) 2.0))
+                  x2 (+ (xs to) (/ (:w (geom to)) 2.0))]]
       (add! (path-el [[x1 y1] [lx y1] [lx y2] [(+ x2 arrow) y2]]))
       (add! (arrow-el x2 y2 [-1 0]))
       (when-let [ls (back-verb i)]
-        (add! (verb-el lx (min y1 y2) (max y1 y2) ls))))
+        (let [lo (min y1 y2) hi (max y1 y2)
+              ;; edges whose lanes lie further right cross this one
+              [s0 s1] (free-span tops {:i i :from from :to to})]
+          (add! (verb-el lx s0 s1 ls)))))
     ;; verbs
-    (doseq [{:keys [a b e first?]} segs :when (and first? (own-verb e))]
-      (let [ya (out-y a) yb (top-of b)
-            real-b? (not (vector? b))
-            lo (if (split-len a) (+ ya (split-len a)) ya)
-            hi (- (if (and real-b? (merge-len b)) (- yb (merge-len b)) yb) arrow)
-            x (if (split-len a) (xs b) (xs a))]
-        (add! (verb-el x lo (if (split-len a) hi (min hi (- yb 13))) (own-verb e)))))
+    (doseq [{:keys [a] :as s} segs :let [ls (own s)] :when ls
+            :let [r (item-rank a)]]
+      (add! (verb-el (x-in s) (band-top r) (band-bottom r) ls)))
     (doseq [[n ls] fork-shared]
-      (add! (verb-el (xs n) (out-y n) (+ (out-y n) (split-len n)) ls)))
+      (add! (verb-el (xs n) (out-y n) (level n) ls)))
     (doseq [[n ls] join-shared]
-      (add! (verb-el (xs n) (- (top-of n) (merge-len n)) (- (top-of n) arrow) ls)))
+      (let [r (dec (item-rank n))]
+        (add! (verb-el (xs n) (band-top r) (band-bottom r) ls))))
     ;; nodes
-    (doseq [[it {:keys [w h lines notes bare]}] geom]
+    (doseq [[it {:keys [w h lines notes bare size lh]}] geom]
       (let [x (- (xs it) (/ w 2.0)) y (top-of it)]
         (when-not bare
           (add! (str "<rect x=\"" (num x) "\" y=\"" (num y) "\" width=\"" (num w) "\" height=\"" (num h)
                      "\" rx=\"3\" stroke-width=\"1.5\" style=\"" sheet ";stroke:var(--fg,currentColor)\"/>")))
         (doseq [[j l] (map-indexed vector lines)]
-          (add! (text-el (xs it) (+ y pad 13 (* box-lh j)) "middle" 14 box-font fg l)))
+          (add! (text-el (xs it) (+ y pad (* 13 (/ size 14.0)) (* lh j)) "middle" size box-font fg l)))
         (doseq [[j l] (map-indexed vector notes)]
-          (add! (text-el (xs it) (+ y pad 4 11 (* box-lh (count lines)) (* verb-lh j)) "middle" 12 label-font muted l)))))
-    (str "<svg viewBox=\"0 0 " fig-w " " (num height) "\" width=\"" fig-w
+          (add! (text-el (xs it) (+ y pad 4 11 (* lh (count lines)) (* verb-lh j)) "middle" 12 label-font muted l)))))
+    (str "<svg viewBox=\"0 0 " (num fig-w) " " (num height) "\" width=\"" (num fig-w)
          "\" style=\"display:block;max-width:100%;height:auto\" role=\"img\" aria-label=\""
-         (esc-attr (str/join " " (concat (mapcat (fn [n] (keep n [:label :note])) nodes) (keep :verb edges))))
-         "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>")))
+         (esc-attr (str/join " " (mapcat lines-of (concat (mapcat (fn [n] (keep n [:label :note])) nodes) (keep :verb edges)))))
+         "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>"))))
+
+;; A figure stands in a block of its own, so the page's grid gives it the
+;; whole height it is drawn at.
+(defn figure-el [svg] (str "<div class=\"figure\">" svg "</div>"))
 
 (defn figure-svg
-  "The SVG of a sketch, or nil when it draws no edge. A chain the former
-  reader takes keeps its former drawing."
-  [content raws]
-  (let [graph (try (ascii-graph raws) (catch Exception _ nil))
-        old (when (figure? content) (try (parse-figure content) (catch Exception _ nil)))]
-    (cond
-      (and old (or (nil? graph) (chain? graph))) (svg-figure content)
-      (seq (:edges graph)) (graph-svg graph)
-      :else nil)))
+  "The SVG of a sketch at width w, or nil when it draws no edge."
+  ([content raws] (figure-svg content raws fig-w))
+  ([_content raws w]
+   (let [graph (try (ascii-graph raws) (catch Exception _ nil))]
+     (when (seq (:edges graph)) (graph-svg graph w)))))
 
 ;; -------------------------------------------------------------- text fences
 
+;; ------------------------------------------------------------------ tables
+
+(defn table-sep?
+  "A table's separator row: dashes between pipes, a colon marking alignment."
+  [l]
+  (boolean (and (str/includes? l "|")
+                (re-matches #"(?U)\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*" l))))
+
+(defn table-at?
+  "Line i of ls opens a table: a row with pipes over a separator row."
+  [ls i]
+  (and (< (inc i) (count ls)) (str/includes? (ls i) "|") (table-sep? (ls (inc i)))))
+
+(defn table-end
+  "The index past the last row of the table opening at i."
+  [ls i]
+  (loop [j (+ i 2)] (if (and (< j (count ls)) (str/includes? (ls j) "|")) (recur (inc j)) j)))
+
+(defn- cells [l]
+  (let [t (strip l)
+        t (if (str/starts-with? t "|") (subs t 1) t)
+        t (if (and (str/ends-with? t "|") (not (str/ends-with? t "\\|"))) (subs t 0 (dec (count t))) t)]
+    (mapv #(str/replace (strip %) "\\|" "|") (str/split t #"(?<!\\)\|" -1))))
+
+(defn table-html [ls]
+  (let [[head sep & rows] ls
+        aligns (mapv #(let [c (strip %)]
+                        (cond (and (str/starts-with? c ":") (str/ends-with? c ":")) "center"
+                              (str/ends-with? c ":") "right"
+                              :else nil))
+                     (cells sep))
+        row (fn [tag l]
+              (str "<tr>" (apply str (map-indexed (fn [k c]
+                                                     (str "<" tag (when-let [a (get aligns k)] (str " style=\"text-align:" a "\"")) ">"
+                                                          (inline c) "</" tag ">"))
+                                                   (cells l)))
+                   "</tr>"))]
+    (str "<table><thead>" (row "th" head) "</thead><tbody>" (apply str (map #(row "td" %) rows)) "</tbody></table>")))
+
 (defn split-chunk
-  "A chunk may open with front matter or a heading, kept as text."
+  "A chunk may open with front matter or a heading, kept as text; a table
+  stands as a table."
   [content]
   (let [content (vec content)
         n (count content)
@@ -768,9 +855,14 @@
             (str/starts-with? l "#")
             (recur (inc i) (conj bodies [:text l]))
 
+            (table-at? content i)
+            (let [j (table-end content i)]
+              (recur j (conj bodies [:table (subvec content i j)])))
+
             :else
             (let [j (loop [j i]
-                      (if (and (< j n) (not (str/starts-with? (content j) "#")) (not (rule? j)))
+                      (if (and (< j n) (not (str/starts-with? (content j) "#")) (not (rule? j))
+                               (not (table-at? content j)))
                         (recur (inc j)) j))]
               (recur j (conj bodies [:p (join-lines (subvec content i j))])))))))))
 
@@ -821,7 +913,7 @@
 (defn paired-body
   "A removed and an added body, one text; nil when their kinds differ."
   [[kind-a a] [kind-b b]]
-  (when (= kind-a kind-b)
+  (when (and (= kind-a kind-b) (not= kind-a :table))
     (if (= kind-a :text)
       (let [la (vec (str/split a #"\n" -1)) lb (vec (str/split b #"\n" -1))
             rows (for [i (range (max (count la) (count lb)))
@@ -834,8 +926,9 @@
       (str "<p>" (marked a b inline) "</p>"))))
 
 (defn panel [sign [kind text]]
-  (let [inner (if (= kind :text)
-                (str "<div class=\"textblock\">" (esc text) "</div>")
+  (let [inner (case kind
+                :text (str "<div class=\"textblock\">" (esc text) "</div>")
+                :table (table-html text)
                 (str "<p>" (inline text) "</p>"))]
     (case sign
       "+" (str "<div class=\"add\"><ins>" inner "</ins></div>")
@@ -882,8 +975,10 @@
               (recur (vec r2) (into out rows)))))))))
 
 (defn text-panels
-  "A fenced text block: sign-prefixed lines into stacked panels."
-  [lines]
+  "A fenced text block: sign-prefixed lines into stacked panels, and its
+  figures drawn w wide."
+  ([lines] (text-panels lines fig-w))
+  ([lines w]
   (let [chunks (reduce
                 (fn [chunks raw]
                   (let [signed (and (#{\+ \-} (first raw))
@@ -906,16 +1001,16 @@
       (when (< i (count chunks))
         (let [[sign content sketch] (chunks i)
               [nsign ncontent nsketch] (get chunks (inc i))
-              fig (figure-svg content sketch)]
+              fig (figure-svg content sketch w)]
           (cond
             fig (do (conj! figures fig) (recur (inc i)))
-            (and (= sign "-") (= nsign "+") (not (figure-svg ncontent nsketch)))
+            (and (= sign "-") (= nsign "+") (not (figure-svg ncontent nsketch w)))
             (do (.append panels (change-panels content ncontent)) (recur (+ i 2)))
             :else (do (doseq [body (split-chunk content)]
                         (.append panels (panel sign body)))
                       (recur (inc i)))))))
     [(if (pos? (.length panels)) (str "<div class=\"diff\">" panels "</div>") "")
-     (persistent! figures)]))
+     (persistent! figures)])))
 
 ;; ------------------------------------------------------------------- blocks
 
@@ -1001,17 +1096,17 @@
           (when (and @rulings @pending-close) (close-rulings true))
           (cond
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
-            (emit (graph-svg (read-figure lines)))
+            (emit (figure-el (graph-svg (read-figure lines) (if @rulings ruling-fig-w fig-w))))
 
             (= lang "text")
-            (let [[diff figs] (text-panels lines)]
+            (let [[diff figs] (text-panels lines (if @rulings ruling-fig-w fig-w))]
               (if @record-open
                 (let [diff (str/replace-first diff "<div class=\"diff\">" "")
                       diff (if (str/ends-with? diff "</div>") (subs diff 0 (- (count diff) 6)) diff)]
                   (emit diff)
                   (close-record))
                 (when (not= "" diff) (emit diff)))
-              (run! emit figs))
+              (run! (comp emit figure-el) figs))
 
             :else
             (if-let [marked-code (code-lines lines)]
@@ -1049,6 +1144,10 @@
             (str/starts-with? first-line "File: `")
             (do (when (and @rulings @pending-close) (close-rulings true))
                 (emit (file-line lines)))
+
+            (some #(table-at? (vec lines) %) (range (count lines)))
+            (emit (apply str (map (fn [[kind body]] (if (= kind :table) (table-html body) (str "<p>" (inline body) "</p>")))
+                                  (split-chunk lines))))
 
             :else
             (if-let [m (re-find #"^\*\*(Destroy|Archive)\*\*(?U)\s*(.*)$" text)]
