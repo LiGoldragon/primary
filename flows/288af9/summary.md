@@ -4,11 +4,13 @@ Judgment only. Facts and words live in log.md, books/, flows/563761/books/07-lau
 
 ## State
 - Batch 04 (07-launch, flows/563761/books/) republished as version 3 at https://claude.ai/artifact/CbCJRpT8sMRsyZWwTtMzVw and accepted by Psyche Flow Secondary.
-- Batch 05 (08-main-flow-roles, flows/288af9/books/, envelope books/batch-05-psyches.edn, 20 pairs) published version 1 at https://claude.ai/artifact/N77pCE2NAc9CuKUBKAuJSj; link, tests, five Mind-flow questions and two facts sent to the Secondary; awaiting the verdict. Batch 06 goes to the successor; it has not been seen here.
+- Batch 05 (08-main-flow-roles, flows/288af9/books/, envelope books/batch-05-psyches.edn, 20 pairs) returned once by the Secondary and republished as version 2 at https://claude.ai/artifact/N77pCE2NAc9CuKUBKAuJSj with Mind's five answers applied; two questions lifted out of the book and five facts sent with the link; settled per the Secondary (relayed by Field Core Secondary). Batch 06 goes to the successor; it has not been seen here. Batch 06 goes to the successor; it has not been seen here.
 - Each batch: envelope extracted from the main flow's own transcript by a subflow into books/batch-NN-psyches.edn, pairs counted → author subflow of a type that has the Skill tool (write-* types have none and refuse) with the rules stated before any source line and the landing points pre-mapped → reviewer subflow with the skills loaded, judging the file alone → fix subflow on the reviewer's findings → page hand-built from the .md (no converter exists; scratchpad build08.py/figs08.py were the last), ending with tools/book-code.html, published with the Artifact tool (same URL on a return, `url` set) after an ArtifactComments read → 320/375px witness in headless Chrome (CHROMIUM=/home/li/.nix-profile/bin/google-chrome, DevTools device metrics) → link and test results to the Secondary.
 
 ## Open decisions (his to rule; numbered choices in the books)
-- Batch 05: role shape (aspect inside each role vs roles nested under aspects, P2 c8/c9); where the agent script lands (harness tree vs Curriculum roles.datom + subagents/, P1 c6/c7); operator's notes as vision or notion (P7); Fable-judges hook design as vision or notion, and the :judge tool set (P8); «Usually» vs Always on relaying psyche (P6); the layer-to-model table's home (P3 c4/c5).
+- Batch 05 (his choice first in each): roles nested under aspects vs flat (P2 c6/c7); harness in the layer rows vs per model (P2 c4/c5); agent script via Curriculum roles.datom + subagents/ vs launcher-written (P1 c4/c5); the layer-to-model table to its own skill vs staying (P3 c4/c5); intent paragraph alone vs the messenger's layer-route check (P4 c4/c5); «Usually» vs Always on relaying psyche (P6); operator's notes as vision or notion (P7); Fable-judges design as vision or notion, and the :judge tool set (P8); Flow/Role/Model ethos placement in flow-ethos library.ethos (P2, long term).
+- Questions the Secondary holds (asked by him, unanswered in the records): whether a hook re-entering the main-flow skill every N prompts is wanted (d8df70); the name for the main flow's variant carrying aspect, topic and layer (d4ae97).
+- Facts standing from batch 05: the six Mind harness skills cited are candidates in flow-evidence, not landed; codex-reply reads the last output_text anywhere in a rollout; metaflow file name case differs between books 07 and 08; roles.datom depth is a second model declaration beside :layers.
 - Batch 04 facts standing: launch-record assembly unshown; messenger-clj files shown as current are earlier books' unlanded proposals; Codex Stop hook payload keys unverified.
 - Inherited from 563761 (unruled): batch 01 P2 Codex 33-bit start; batch 02 flow outside every metaflow, registry home, 3-to-7 clusters and the Sun, Ethos-first vs Malli-first; batch 03 thresholds, ceiling, floor, runner, event name.
 
@@ -17,8 +19,7 @@ Judgment only. Facts and words live in log.md, books/, flows/563761/books/07-lau
 - A URL in a message to another flow is copied from the publish receipt, never typed.
 
 ## Next bounded work
-- Receive the Secondary's verdict on batch 05; a return is fixed in place and republished at the same URL after the comments gate; if he has commented, change nothing and tell the Secondary.
-- Batch 06 from the Secondary: same chain.
+- Batch 06 from the Secondary: same chain. If he comments on the batch 04 or 05 page, the page is not changed; the comment goes to the Secondary.
 
 ## Topics to split (inherited and new)
 - Identifier types, readable alphabet, collision levels (692df8): an ethos or identifiers skill, not vision-flow.
