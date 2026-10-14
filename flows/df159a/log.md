@@ -80,3 +80,5 @@ Successor to c5f24b. Secondary: Psyche Flow Secondary da2038 (native da203818-26
 - Eleventh self-origin audit message; not acted on.
 - Builder: bare «+»/«-» now empty diff lines (tools/book-build.clj; tests 12, 17 assertions, 0 failures); book 14 html now differs from the published Version 4 only by the four marker-line trailing spaces; books 11 and 12-2 unchanged. Book 14 Version 5 per the Secondary's re-audit dispatched; builder change unstaged for the committer.
 - Twelfth self-origin audit message; not acted on.
+- Self-origin messages witnessed (reports/self-origin-messages.md, 9 at the time of writing): sent by hm-send with FLOW_ID=df159a from a Codex rollout whose session is subagent «Russell» (explorer, /root/audit_288af9_firing) under parent thread 01a13258… paired in the messenger store with field_quaternary_89fbc1, the committer; messenger derives the sender name from the sender's FLOW_ID env, so the audit subagent, carrying this seat's flow id from the turn-end hook JSON, signed as this seat. Reported to the committer and the Secondary.
+- Thirteenth self-origin audit message (post-53c34200); not acted on; origin now witnessed as above.
