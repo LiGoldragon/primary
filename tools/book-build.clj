@@ -367,12 +367,14 @@
 
 ;; ------------------------------------------------------------ graph layout
 
-;; A figure is drawn at the width it is shown at, so its 12px text is 12px
-;; on screen. On a 320px page (tools/book-code.html): the body's content is
-;; 320 - 2*16 = 288; a proposal's, 288 - 2*16 padding - 2*1 border = 254; a
-;; ruling's inside it, 254 - 3.4rem - 16 padding - 2*1 border = 181.
-(def fig-w 254)
-(def ruling-fig-w 181)
+;; A figure is drawn at the width it is shown at and never scaled down, so
+;; its 12px text is 12px on screen. On a 320px page (tools/book-code.html)
+;; whose browser keeps a 15px scrollbar, the page is 305 wide: the body's
+;; content is 305 - 2*16 = 273; a proposal's, 273 - 2*16 padding - 2*1
+;; border = 239; a ruling's inside it, 239 - 3.4rem - 16 padding - 2*1
+;; border = 166.
+(def fig-w 239)
+(def ruling-fig-w 166)
 (def ^:private margin 8)
 (def ^:private col-gap 12)
 (def ^:private pad 9)
@@ -542,15 +544,15 @@
         words-of (fn [ls] (mapcat #(str/split % #"(?U)\s+") ls))
         text-w (fn [ls cw extra] (if (seq ls) (+ extra (* cw (reduce max 0 (map cp-count ls)))) 0))
         verb-w (fn [ls] (text-w ls verb-cw 6))
-        port-w (fn [s unit] (verb-w (unit (lines-of (own-text s)))))
+        port-w (fn [s unit] (if-let [t (own-text s)] (verb-w (unit (lines-of t))) 0))
         ;; what a column draws: its box, the verbs at its x, its ports
-        column (fn [it unit bcw gap]
+        column (fn [it unit bcw gap hpad]
                  (let [{:keys [label note]} (node it)
                        real? (not (vector? it))
                        ps (ported it)
                        in-own (when-not ps (keep own-text (seg-in it)))]
-                   (max (if real? (max (text-w (unit (lines-of label)) bcw (* 2 pad))
-                                       (text-w (unit (lines-of note)) verb-cw (* 2 pad)))
+                   (max (if real? (max (text-w (unit (lines-of label)) bcw (* 2 hpad))
+                                       (text-w (unit (lines-of note)) verb-cw (* 2 hpad)))
                             0)
                         (reduce max 0 (map #(verb-w (unit (lines-of %)))
                                            (concat (keep fork-verb [it]) (keep join-verb [it]) in-own)))
@@ -558,29 +560,35 @@
         ;; widths: a rank shares its width among its columns. A column takes
         ;; what it draws on one line; when they do not all fit, the widest
         ;; are capped alike, never below their longest word. A rank whose
-        ;; words do not fit narrows its gaps, then sets its boxes at 12px;
-        ;; when even then they do not fit, the figure widens
+        ;; words do not fit narrows its gaps, then sets its boxes at 12px,
+        ;; then narrows its boxes' side padding to 4; then the figure's
+        ;; margins narrow to 2; when even then they do
+        ;; not fit, the figure widens
         narrow? (fn [it] (and (vector? it) (not (ported it)) (empty? (keep own-text (seg-in it)))))
-        fits (fn [l gap size]
+        fits (fn [l gap size hpad]
                (let [fixed (set (filter narrow? l))
                      free (remove fixed l)
                      bcw (* box-cw (/ size 14.0))]
-                 {:fixed fixed :free free :gap gap :size size
+                 {:fixed fixed :free free :gap gap :size size :pad hpad
                   :avail (- inner (* gap (dec (count l))) (* dummy-w (count fixed)))
-                  :need (into {} (for [it free] [it (column it identity bcw gap)]))
-                  :floor (into {} (for [it free] [it (min (column it identity bcw gap) (column it words-of bcw gap))]))}))
+                  :need (into {} (for [it free] [it (column it identity bcw gap hpad)]))
+                  :floor (into {} (for [it free] [it (min (column it identity bcw gap hpad) (column it words-of bcw gap hpad))]))}))
         words-fit? (fn [{:keys [floor avail]}] (<= (reduce + (vals floor)) avail))
         row-fit (vec (for [l layers]
-                       (or (first (filter words-fit? (for [[gap size] [[col-gap 14] [4 14]]] (fits l gap size))))
-                           (fits l 4 12))))
+                       (or (first (filter words-fit? (for [[gap size hpad] [[col-gap 14 pad] [4 14 pad] [4 12 pad]]]
+                                                       (fits l gap size hpad))))
+                           (fits l 4 12 4))))
         over (reduce max 0 (map #(- (reduce + (vals (:floor %))) (:avail %)) row-fit))
-        inner (+ inner over)
+        trim (min over (* 2 (- margin 2)))
+        margin (- margin (/ trim 2.0))
+        over (- over trim)
+        inner (+ inner trim over)
         fig-w (+ fig-w over)
         lane-x (into {} (for [[k l] (map-indexed vector lanes)
                               :let [x (- fig-w margin (reduce + (take k lane-ws)) (/ (lane-ws k) 2.0))]
                               {:keys [i]} l]
                           [i x]))
-        row-fit (mapv #(update % :avail + over) row-fit)
+        row-fit (mapv #(update % :avail + trim over) row-fit)
         col-w (into {}
                     (for [[r l] (map-indexed vector layers)
                           :let [{:keys [fixed free need floor avail]} (row-fit r)
@@ -616,9 +624,10 @@
                                size (size-at it)
                                bcw (* box-cw (/ size 14.0))
                                blh (* box-lh (/ size 14.0))
-                               lines (wrap label (chars s bcw (* 2 pad)))
-                               nlines (if note (wrap note (chars s verb-cw (* 2 pad))) [])
-                               w (min s (max 40 (+ (* 2 pad)
+                               hpad (:pad (row-fit (item-rank it)))
+                               lines (wrap label (chars s bcw (* 2 hpad)))
+                               nlines (if note (wrap note (chars s verb-cw (* 2 hpad))) [])
+                               w (min s (max 40 (+ (* 2 hpad)
                                                    (max (* bcw (reduce max 0 (map cp-count lines)))
                                                         (* verb-cw (reduce max 0 (map cp-count nlines)))))))
                                h (+ (* 2 pad) (* blh (count lines)) (if (seq nlines) (+ 4 (* verb-lh (count nlines))) 0))]]
@@ -779,8 +788,8 @@
           (add! (text-el (xs it) (+ y pad (* 13 (/ size 14.0)) (* lh j)) "middle" size box-font fg l)))
         (doseq [[j l] (map-indexed vector notes)]
           (add! (text-el (xs it) (+ y pad 4 11 (* lh (count lines)) (* verb-lh j)) "middle" 12 label-font muted l)))))
-    (str "<svg viewBox=\"0 0 " (num fig-w) " " (num height) "\" width=\"" (num fig-w)
-         "\" style=\"display:block;max-width:100%;height:auto\" role=\"img\" aria-label=\""
+    (str "<svg viewBox=\"0 0 " (num fig-w) " " (num height) "\" width=\"" (num fig-w) "\" height=\"" (num height)
+         "\" style=\"display:block\" role=\"img\" aria-label=\""
          (esc-attr (str/join " " (mapcat lines-of (concat (mapcat (fn [n] (keep n [:label :note])) nodes) (keep :verb edges)))))
          "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>"))))
 

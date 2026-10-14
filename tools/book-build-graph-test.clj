@@ -3,7 +3,8 @@
 (ns book-build-graph-test
   (:require [clojure.test :refer [deftest is run-tests]]
             [clojure.string :as str]
-            [babashka.fs :as fs]))
+            [babashka.fs :as fs]
+            [babashka.process :as p]))
 
 (def tools-dir (str (fs/parent (fs/absolutize *file*))))
 (load-file (str (fs/path tools-dir "book-build.clj")))
@@ -294,19 +295,36 @@
     (is (all-words-drawn? g out))
     (is (width-ok? out))))
 
+(defn on-a-page
+  "Each figure of a built page as Chrome shows it in a 320px-wide frame that
+  scrolls, with the page code: the width reaching the figure, the width it is
+  shown at, and its smallest text on screen."
+  [md]
+  (let [dir (str (fs/create-temp-dir))
+        page (str (fs/path dir "page.html"))
+        frame (str (fs/path dir "frame.html"))
+        probe "var d=document.getElementById('f').contentDocument;document.getElementById('r').textContent=JSON.stringify([].map.call(d.querySelectorAll('svg[viewBox]'),function(s){var c=s.parentElement,cs=getComputedStyle(c),b=s.getBoundingClientRect(),k=b.width/s.viewBox.baseVal.width,m=99;s.querySelectorAll('text').forEach(function(t){m=Math.min(m,parseFloat(t.getAttribute('font-size'))*k)});return [c.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight),b.width,m]}))"]
+    (spit page (book-build/build md (book-build/read-text (fs/path tools-dir "book-code.html"))))
+    (spit frame (str "<html><body style=\"margin:0\"><iframe id=\"f\" src=\"page.html\" style=\"width:320px;height:300px;border:0\"></iframe><pre id=\"r\"></pre>"
+                     "<script>document.getElementById('f').onload=function(){" probe "}</script></body></html>"))
+    (let [out (:out (p/shell {:out :string :err :string} "google-chrome" "--headless=new" "--disable-gpu" "--no-sandbox"
+                             "--allow-file-access-from-files" "--window-size=600,400" "--virtual-time-budget=4000"
+                             "--dump-dom" (str "file://" frame)))
+          [_ json] (re-find #"<pre id=\"r\">([^<]*)</pre>" out)]
+      (mapv (fn [[reach shown text]] {:reach reach :shown shown :text text})
+            (read-string (str/replace json "," " "))))))
+
 (deftest text-at-least-12px-on-a-320px-page
-  ;; a figure is drawn 1:1 at the width of a proposal on a 320px page, or of
-  ;; a ruling inside it, so no text is scaled below its size
-  (is (= 254 book-build/fig-w))
-  (is (= 181 book-build/ruling-fig-w))
-  (doseq [g [nexus-launch (graph subflows) (graph diamond) (graph chain)]
-          :let [out (book-build/graph-svg g)]]
-    (is (width-ok? out 254))
-    (is (every? #(>= % 12) (font-sizes out))))
-  (let [html (book-build/build (str "### Proposal 1: x\n\nRuling, one number per line:\n\n```text\n" fork "\n```\n") "")
-        svg (re-find #"(?s)<svg .*?</svg>" html)]
-    (is (str/includes? html "<li value=\"1\">"))
-    (is (width-ok? svg 181) "a figure in a ruling is drawn at the ruling's width")))
+  ;; measured, not assumed: a 320px page in a browser that keeps a scrollbar,
+  ;; a figure in a proposal and one in a ruling
+  (let [figs (on-a-page (str "### Proposal 1: x\n\n```text\n" subflows "\n```\n\n"
+                             "```figure\n" (pr-str nexus-launch) "\n```\n\n"
+                             "Ruling, one number per line:\n\n```text\n" fork "\n```\n\n"
+                             (apply str (repeat 40 "A paragraph long enough to make the page scroll.\n\n"))))]
+    (is (= 3 (count figs)))
+    (doseq [{:keys [reach shown text] :as f} figs]
+      (is (<= shown reach) (str "the figure fits the width reaching it " f))
+      (is (>= text 11.99) (str "no text under 12px on screen " f)))))
 
 (deftest every-figure-in-its-wrapper
   (doseq [html [(book-build/build (str "# T\n\n```text\n" subflows "\n```\n\n## Next\n") "")

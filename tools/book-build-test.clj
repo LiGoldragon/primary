@@ -70,7 +70,7 @@
   (let [page (book-build/build fixture-md "TAIL\n")
         svg (re-find #"(?s)<svg .*?</svg>" page)]
     (is (= fixture-expected (str/replace page svg "FIGURE")))
-    (is (str/starts-with? svg "<svg viewBox=\"0 0 254 "))
+    (is (str/starts-with? svg (str "<svg viewBox=\"0 0 " book-build/fig-w " ")))
     (is (= 3 (count (re-seq #"<rect [^>]*rx=" svg))) "three boxes")
     (is (= 2 (count (re-seq #"<polygon" svg))) "two arrowheads")
     (doseq [t ["Flow" "with &quot;two&quot; lines" "Recipient" "Log" "sends it&#x27;s message" "reads"]]

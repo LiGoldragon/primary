@@ -67,6 +67,8 @@ p,ul,ol{margin:0}
 :where(article,section,div,li)>*+*{margin-top:.7em}
 a{color:var(--accent)}
 :not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways. */
+.figure{overflow-x:auto;max-width:100%;min-width:0}
 table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
 th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
 th{color:var(--muted);font-weight:600;letter-spacing:.03em}
