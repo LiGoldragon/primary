@@ -86,3 +86,5 @@ Successor to c5f24b. Secondary: Psyche Flow Secondary da2038 (native da203818-26
 - Committer: book 14 Version 5 set, handover and log published as 9d22f80deecf.
 - At HEAD 9d22f80de: tools/book-build.clj and its test (bare-marker change, tests 12/12) still uncommitted, for the committer at this turn's end; flows/df159a/books/13-flow-philosophy-artifacts.md untracked with trailing whitespace at L177, held by Core, untouched here.
 - Secondary (Core): book 14 P4 may leave the book if the Communication pair carries the statement in vision-living-communication (one module per statement; 3960eb asked); hold P4 until answered; if it stays, word it positively, e.g. «A book shows the proposals in the machine's own words; the records they draw from live beside its source, unrendered, and are archived with a landing.» P1–P3 stand. Holding.
+- Secondary: drop book 14 P4 (the Communication pair carries the subject in «Communicating with the living»); P4 material to refs; republish P1–P3 at the same URL. Dispatched.
+- Committer: builder bare-marker change and log published as 2d37c8f28a40.
