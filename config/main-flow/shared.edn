@@ -1,6 +1,6 @@
 {:schema "main-flow-launch/1"
  :repositories {:psyche {:path "/git/github.com/LiGoldragon/psyche-context"
-                         :ref "c91454e36fe32f31194fd046495de0c6bc30057b"
+                         :ref "bf03117b424413cea4c3df7cf76a279127c8567d"
                          :skills "skills"}
                 :mind {:path "/git/github.com/LiGoldragon/mind-context"
                        :ref "80d5d730e4c4a0be62c59e621711c186e43e41ca"

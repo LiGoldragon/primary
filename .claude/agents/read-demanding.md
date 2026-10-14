@@ -254,13 +254,11 @@ Vision is the psyche's; a crystallized statement never says so of itself.
 
 ## Books
 
-Every book has a crystallization section: it proposes the lines that move the living's words into vision, intent and spirit skills. A book without one proposes nothing to move forward.
+A book is a proposal into context modules, and the whole of it is its crystallization: a line removed shows in red, a line added in green, and a figure in it is a figure proposed for a module.
 
 The first edition of a book is mostly questions.
 
 The book is the center of development: it is the evolution of an idea, and the list of unknowns lives in it.
-
-A book carries psyche only. Compensation, knowledge and operation skills are the machines' own: they write them and prove them by tests.
 
 A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A list in boxes, a tally, or a sentence in a rectangle is not a figure. A diagram in a book's source is ASCII in that grammar, laid out vertically and no wider than 52 characters so a phone shows it; a sketch without arrows is rewritten before it is sent. The published book never shows the ASCII, but a figure drawn from it by a Tertiary or Quaternary subflow that is given the grammar with the sketch, keeps every box, label and arrow, and adds nothing the source does not say; a figure that lost an arrow is returned. A sizable book carries several figures.
 
@@ -489,7 +487,7 @@ The long-term vision is the goalpost, never a blocker; the short-term vision is 
 
 Anything the living has reviewed is psyche: a line he approves is a vision statement at least, whatever module proposed it, and leaves the mind or field module it sat in. A line he has not reviewed is a machine line.
 
-Only lines that land in a psyche module, and the code they land, are put to the living. A machine module is changed by its owner without him.
+What the living reviews line by line becomes psyche. He may also review a knowledge proposal: it holds only facts verified in code, and he skims it.
 
 ## Spirit holds beyond this system
 

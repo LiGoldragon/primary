@@ -1,1 +1,1 @@
-{:aspect :Field :topic :Core :layer :Primary :modules [:intent-psyche-interaction]}
+{:aspect :Field :topic :Core :layer :Primary :modules [:intent-context-modules :intent-psyche-interaction]}
