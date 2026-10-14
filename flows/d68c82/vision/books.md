@@ -59,3 +59,27 @@ Context: on «Anatomy audit».
 > I don't see a green section. That's what my eye looks for so I don't understand. This just looks like a bunch of blah, blah, blah. It's been a long time since I saw code in the proposal also. I didn't see any code in there, which, in a book about code, is troubling.
 
 -- psyche, STT.
+
+## A book shows what is being landed: the proposed code, in green
+
+> I don't care about blah blah blah. I want to know what we're landing. What is the fucking proposal? Where's the fucking proposed fucking code?
+
+-- psyche, STT.
+
+## The whole book is a crystallization
+
+> We need a complete proposal and everything that takes time to make is a proposal to be [landed as] crystallization. Essentially the whole book is a crystallization or should be. ... I want to recrystallize my vision essentially 99.9% of the time. ... Most of the time my vision, my intent, and my spirit crystallize. That's what the whole book is about.
+
+-- psyche, STT. Transcription corrected: "landest" → "[landed as]".
+
+## Only the changed words are marked
+
+> It's almost like we don't even need the green section other than to differentiate what's being added and what's being removed. ... a lot of the time when there's a removal and addition, only a few words change. It takes me a long time to read the whole removal and the whole addition. Really there are just a few words that change. It's being presented to me in a very inefficient form and I would like it to be presented to me in a very efficient form.
+
+-- psyche, STT.
+
+## Everything in a book is red or green; a chart is a proposed addition
+
+> All I care about is crystallization. ... My eye just goes to the green. Essentially everything should be: if I see a chart it's being proposed to be added in the Psyche module and everything else should either be red or green unless I'm missing something and you see a more efficient way of presenting this to me.
+
+-- psyche, STT.

@@ -11,3 +11,9 @@
 
 Context: same comment, 2026-10-13T16:20.
 -- psyche, STT.
+
+## Subagents run Haiku, Sonnet and Opus; there is no Fable subagent
+
+> We should have a haiku at the lowest power, and then a sonnet, and then an opus. There's no fable subagent.
+
+-- psyche, STT.

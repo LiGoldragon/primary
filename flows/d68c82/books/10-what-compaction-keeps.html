@@ -1,0 +1,173 @@
+<title>What compaction keeps</title>
+<h1 class="book-title">What compaction keeps</h1>
+<p>This analysis comes from this seat's own four compactions today and from 944 Codex compactions found on this machine, read alongside the installed Claude Code and Codex programs.</p>
+<h2>Claude Code</h2>
+<figure style="margin:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 440" width="100%" style="max-width:340px;height:auto" role="img" aria-label="Flow chart of how Claude Code compacts a flow's context. Starting from context near the limit, the same model makes one extra call that sees everything and fills a nine-part template. The new context holds a summary, every skill loaded so far (44k characters), the last few files read, and the last reply verbatim. The flow then resumes at about 60k tokens." font-family="sans-serif"><defs><marker id="a1" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--line,#9aa59e)"/></marker></defs><text x="170" y="24" text-anchor="middle" font-size="15" style="fill:var(--fg,#1d2420)">context near the limit</text><line x1="170" y1="34" x2="170" y2="72" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a1)"/><rect x="30" y="76" width="280" height="96" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="48" y="106" font-size="15" style="fill:var(--fg,#1d2420)">the same model, one extra</text><text x="48" y="128" font-size="15" style="fill:var(--fg,#1d2420)">call, sees everything and</text><text x="48" y="150" font-size="15" style="fill:var(--fg,#1d2420)">fills a nine-part template</text><line x1="170" y1="172" x2="170" y2="210" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a1)"/><rect x="30" y="212" width="280" height="152" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="48" y="240" font-size="15" style="fill:var(--fg,#1d2420)">new context:</text><text x="48" y="262" font-size="15" style="fill:var(--fg,#1d2420)">summary</text><text x="48" y="284" font-size="15" style="fill:var(--fg,#1d2420)">+ every skill loaded so</text><text x="66" y="306" font-size="15" style="fill:var(--fg,#1d2420)">far (44k characters)</text><text x="48" y="328" font-size="15" style="fill:var(--fg,#1d2420)">+ the last few files read</text><text x="48" y="350" font-size="15" style="fill:var(--fg,#1d2420)">+ the last reply, verbatim</text><line x1="170" y1="372" x2="170" y2="400" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a1)"/><text x="170" y="426" text-anchor="middle" font-size="15" style="fill:var(--fg,#1d2420)">flow resumes at about 60k tokens</text></svg></figure>
+<ul><li><p><strong>Kept verbatim:</strong></p><ul><li>the system prompt, project instructions and tool list;</li><li>every skill loaded so far, re-injected each time;</li><li>two to four recently read files;</li><li>the flow's last reply.</li></ul></li><li><p><strong>Dropped:</strong></p><ul><li>every earlier tool call and result;</li><li>everything the flow said before its last reply;</li><li>its reasoning.</li></ul><p>This came to 1.14 million tokens across this seat's four compactions.</p></li><li><p><strong>Summarized:</strong> everything else, in one call by the same model whose context is already full. The template it fills has a section called "All user messages". Even so, only 13 to 26 of your 91 to 156 messages per stretch survived whole. Between 54 and 98 per stretch share not even eight words in a row with the summary.</p></li><li><p><strong>Chained:</strong> each summary is written from a context that begins with the previous summary, so your words drift a little further with each compaction.</p></li><li><p><strong>Trigger:</strong> automatic, at about 286k to 336k tokens in this seat; or manual, when you run it.</p></li></ul>
+<h2>Codex</h2>
+<figure style="margin:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 366" width="100%" style="max-width:340px;height:auto" role="img" aria-label="Codex compaction flow. Context near the limit leads to an encrypted summary that OpenAI's server writes and nobody can read. That summary goes into a new context made of instructions, your messages verbatim, other flows' messages, and the encrypted summary. The flow then resumes at about 29k tokens." font-family="sans-serif"><defs><marker id="a2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--line,#9aa59e)"/></marker></defs><text x="170" y="24" text-anchor="middle" font-size="15" style="fill:var(--fg,#1d2420)">context near the limit</text><line x1="170" y1="34" x2="170" y2="60" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a2)"/><rect x="30" y="64" width="280" height="84" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="48" y="90" font-size="15" style="fill:var(--fg,#1d2420)">OpenAI's server writes an</text><text x="48" y="110" font-size="15" style="fill:var(--fg,#1d2420)">encrypted summary nobody</text><text x="48" y="130" font-size="15" style="fill:var(--fg,#1d2420)">can read</text><line x1="170" y1="148" x2="170" y2="176" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a2)"/><rect x="30" y="178" width="280" height="124" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="48" y="204" font-size="15" style="fill:var(--fg,#1d2420)">new context:</text><text x="48" y="224" font-size="15" style="fill:var(--fg,#1d2420)">instructions</text><text x="48" y="244" font-size="15" style="fill:var(--fg,#1d2420)">+ your messages, verbatim</text><text x="48" y="264" font-size="15" style="fill:var(--fg,#1d2420)">+ other flows' messages</text><text x="48" y="284" font-size="15" style="fill:var(--fg,#1d2420)">+ the encrypted summary</text><line x1="170" y1="302" x2="170" y2="330" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a2)"/><text x="170" y="356" text-anchor="middle" font-size="15" style="fill:var(--fg,#1d2420)">flow resumes at about 29k tokens</text></svg></figure>
+<ul><li><p><strong>Kept verbatim:</strong> about nine in ten of your messages, and every message from other flows.</p></li><li><p><strong>Dropped or sealed:</strong> every tool call, tool result and the flow's own reasoning. Their content survives only inside a summary that no one, machine or human, can inspect.</p></li><li><p><strong>Trigger:</strong> about 224k tokens of a 258k window.</p></li></ul>
+<h2>Why it harms this system</h2>
+<ul><li><p><strong>Your words drift.</strong> In Claude Code, most of your words reach the next stretch only in the summarizer's paraphrase, and each further compaction paraphrases them again.</p></li><li><p><strong>Provenance is lost.</strong> A summary line does not say whether something was witnessed or only claimed, or where it came from. In Codex, the summary cannot be read at all.</p></li><li><p><strong>Stale claims return as fact.</strong> The "current work" and "next step" sections are written without seeing the messages that are kept, as the summary itself admits.</p></li><li><p><strong>Noise is carried forward.</strong> The same 44k characters of skills, and whichever files were read last, come back whether they still matter or not.</p></li><li><p><strong>The noisy flow writes its own summary.</strong> It is the flow whose context is full of noise, filling a fixed template that knows nothing of psyche.</p></li></ul>
+<h2>Why a refresh by handover is better</h2>
+<figure style="margin:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 410" width="100%" style="max-width:340px;height:auto" role="img" aria-label="Vertical flow chart. A flow at its threshold writes a handover listing open orders, rulings with reasons, and where evidence is. A fresh flow starts with its own modules and the handover, and reads the living's words from their records, verbatim. The successor then answers, and the old flow is retired." font-family="sans-serif"><defs><marker id="a3" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--line,#9aa59e)"/></marker></defs><text x="170" y="30" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">flow at its threshold</text><line x1="170" y1="40" x2="170" y2="70" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a3)"/><rect x="30" y="72" width="280" height="100" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="170" y="102" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">flow writes a handover:</text><text x="170" y="124" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">open orders, rulings with</text><text x="170" y="146" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">reasons, where evidence is</text><line x1="170" y1="172" x2="170" y2="200" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a3)"/><rect x="30" y="200" width="280" height="122" rx="10" stroke-width="1.5" style="fill:var(--chip,#e9ede7);stroke:var(--line,#9aa59e)"/><text x="170" y="230" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">fresh flow: its own</text><text x="170" y="252" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">modules + the handover;</text><text x="170" y="274" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">your words read from their</text><text x="170" y="296" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">records, verbatim</text><line x1="170" y1="322" x2="170" y2="350" stroke-width="2" style="stroke:var(--line,#9aa59e)" marker-end="url(#a3)"/><text x="170" y="376" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">successor answers, then the</text><text x="170" y="398" text-anchor="middle" font-size="16" style="fill:var(--fg,#1d2420)">old flow is retired</text></svg></figure>
+<ul><li><p><strong>Chosen, not forced.</strong> The flow writes the handover deliberately, at a clean point between tasks, rather than when a threshold cuts in mid-task.</p></li><li><p><strong>Your words are not paraphrased.</strong> They are read again from your records, not from a summary.</p></li><li><p><strong>Nothing stale is reloaded.</strong> No skills, files or earlier summaries come back unless the fresh flow needs them.</p></li><li><p><strong>It costs:</strong></p><ul><li>one writing turn by the old flow, which is still the noisy one;</li><li>any working detail that was never written down;</li><li>a launch, a registration and a cold cache;</li><li>a check that the successor has answered before the old flow is retired.</li></ul></li></ul>
+<h2>Crystallization</h2>
+<article class="proposal"><header><span class="pnum">1</span><h2>A flow is refreshed, not compacted</h2></header><p class="target"><code>psyche-context/skills/vision-flow.md</code></p><div class="diff"><div class="add"><p>A flow at its threshold is refreshed: it writes a handover of judgments, and a fresh flow starts from its own modules and that handover. The living's words reach it from his records, never from a summary.</p></div></div><section class="rulings"><ol><li value="1"><p>Ruling: land, amend, or reject.</p></li></ol></section></article>
+<article class="proposal"><header><span class="pnum">2</span><h2>Compaction is a makeshift</h2></header><p class="target"><code>psyche-context/skills/vision-flow.md</code></p><div class="diff"><div class="add"><p>Compaction is a makeshift, used only while a fresh flow costs more than the noise a compacted flow keeps.</p></div></div><section class="rulings"><ol><li value="2"><p>Ruling: land, amend, or reject.</p></li></ol></section></article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <div class="del">…</div>                  removed lines (red, struck through)
+           <div class="add">…</div>                  added lines (green)
+         </div>
+       </article>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices" type="a"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx/del/add is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block inside .add or .del is tinted whole; a code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:normal;word-break:normal}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0}
+.ctx,.del,.add{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before,.del::before,.add::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*,.del>*,.add>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child,.del>:first-child,.add>:first-child{padding-top:10px}
+.ctx>:last-child,.del>:last-child,.add>:last-child{padding-bottom:12px}
+.ctx>*+*,.del>*+*,.add>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.del{background:var(--del-bg);color:var(--del-fg)}
+.del::before{content:"\2212";color:var(--del-bg);background:var(--del-edge)}
+.del :is(p,li,h3,td){text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--del-edge) 70%,transparent);text-decoration-thickness:1.5px}
+.add{background:var(--add-bg);color:var(--add-fg)}
+.add::before{content:"+";color:var(--add-bg);background:var(--add-edge)}
+.del pre,.add pre,.ctx pre{padding-inline:12px}
+.add pre:has(>code[class*="language-"]){background:var(--hl-add)}
+.del pre:has(>code[class*="language-"]){background:var(--hl-del)}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Rulings: one card per ruling, lettered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice,lower-alpha);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    e.innerHTML=e.textContent.split('\n').map(line).join('\n');
+  });
+  // Tint lines starting with + or - in code blocks marked data-diff; the text itself is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var k=l.charAt(0)==='+'?'add':l.charAt(0)==='-'?'del':'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{hljs.highlightElement(e)}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

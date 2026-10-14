@@ -595,3 +595,315 @@ Event: proposals 1–4 of «Where the green went» and proposals 2–4 of «Why 
 -- psyche, STT.
 
 Event: the seat-prompt line on answering the living's conduct question is edited in tools/main-flow-mode/system-prompt.md, as he approved. It is handed to the committer.
+
+## 2026-10-13 — the living
+
+> You've given all the relevant psyche in the middle stratum to the ethos topic and told it that I want a proposal, just like I've been asking 15,000 times this morning.
+
+-- psyche, STT. Order: relay every relevant Flow record as #psyche to the Psyche Flow topic, with the order for the Flow short-term and long-term proposal. Transcription corrected: "ethos topic" → "[Flow] topic".
+
+Event: Field reports that the crystallization rename is already on Field main 5070467, and compensation-book-crystallization exists there. The local Field checkout is detached at an older revision, so readers see the old name. Field is advancing that checkout. The dangling dependency was a stale checkout, not a missing file.
+
+Event: Fable's Flow book «Flow: short term and long term» is written, with five proposals, all to vision-flow, and its publish is running at 18:24Z. Publishing of the compaction-request book was stopped at 18:23Z; the transcript records the stop as a user interruption.
+
+Event: Mind Tools Primary 0430eb delivered its research on what delegation costs. Measured findings:
+- In five large single-read cases, delegating cut the visible text in the main window by 94%: 33.6k characters down to 2.0k. The delegated briefs were reconstructed, not run.
+- In small-read cases, direct reading wins once a delegation envelope of 300–1000 characters is added.
+- Break-even: delegate when call + result + avoidable output > brief + return + transport overhead.
+- One real read-trivial child, a Codex child on Luna at low effort, began at 33.4k input tokens, with 4,380 characters of injected context. A minimal brief does not by itself make a lean child.
+- Fable's 408k context divides strictly into 73% noise, 19% adjacent and 8% relevant.
+- No population ratio is justified; it lists what must be measured to get one.
+Forwarded in brief to Fable for the Flow series.
+
+## 2026-10-13 — the living
+
+> So it was written by the Ethos topic fable.?
+
+-- psyche, STT. Question: who wrote the Flow book.
+
+Event: compaction analysis returned (read-only subflow; body in transcript, not saved as report). Witnessed: this seat compacted 4 times (3 auto at ~336k/286k/334k, 1 manual), each restarting at 58–64k; the summary is written by the same model in one forked call, nine-section template; only 13–26 of 91–156 user messages survive whole per span; 21 skill bodies (44k chars) re-injected each time; summaries chain. Codex: 944 compactions witnessed, summary is a server-side encrypted blob; ~90% of user messages kept verbatim, all tool work and reasoning only inside the blob; trigger median ~224k of 258.4k, restart ~29k. Book «What compaction keeps» written.
+
+Event: Fable published «Flow: short term and long term» (BHmDfKn8gQF8R7uZijP6Lq), all vision-flow, and «A guarded compaction request» (RgrKnpsVcvCCve73zXiNpw), psyche lines only; its code landing went to Mind Core Primary. «What compaction keeps» has gone to the book subagent.
+
+Event: «What compaction keeps» is published, 7nx5nPQRN8N8FMZ4XhaD6P. The index now lists Fable's two books and this one at the top, and the author of «Where the green went» is corrected. Stray old content remains in the index page; it is left for a cleanup.
+
+Event: Flow psyche package ready: 223 verbatim pairs, 156 KB, about 40k tokens. Psyche Ethos Primary 081064 is at 129.8k tokens; sending would bring it near 170k. Held pending his ruling on whether Ethos gets it.
+
+## 2026-10-13 — the living
+
+> We have a Flow topic fable, right? This is what I meant. The Flow topic is concerned with Flow. Was the Flow book made by the Flow topic fable, which it should have been, or if not then why the fuck not?
+>
+> I took a really quick glance at the Flow book that was made and it's garbage. There's zero code proposal and most of the book is not in green, which means it's just blah blah blah blah blah blah blah blah blah blah. Why are you just blah blah blah? I don't care about blah blah blah. I want to know what we're landing. What is the fucking proposal? Where's the fucking proposed fucking code?
+
+-- psyche, STT. Earlier "ethos topic" meant the Flow topic.
+
+Causes, from my own context:
+(1) I routed the Flow book to Core Fable 33752b, not the Flow topic Primary 875960. My records called the Flow pair "to be replaced by a fresh pair", and the fresh pair is not launched, so I bypassed the seat that holds the topic. Lacking line: a topic's work goes to that topic's seat while its successor is not running.
+(2) My relay to Fable said "Machine modules and code changes are landed by the machines without his review." That kept code out of the Flow book.
+
+## 2026-10-13 — the living
+
+> No I said Ethos topic but I meant the Flow topic.
+
+-- psyche, STT. Transcription corrected in the earlier entry: "ethos topic" → "Flow topic".
+
+Event: the Flow topic Primary 875960 is at 166k tokens and its Secondary 9519a1 at 185k; the package of about 40k would put 875960 over 200k. Ordered Field to launch a fresh, lean Psyche Flow pair now; the package goes to it as #psyches once it answers.
+
+Event: misplacement audit at reports/misplaced-proposals-2026-10-13.md. No module sits in the wrong repository by type. 42 modules of retired types remain: 32 operation- in mind-context and 10 trial- in field-context. In today's books, 15 carry 46 proposals targeting non-psyche places. Main cause: operation-psyche-interraction:100 'presents the line for the owning skill'. No sentence says that only psyche lines go to the living. Writing the book «Only psyche reaches you»; machine fixes ordered to Field.
+
+Event: «Only psyche reaches you» is published, PcWhhQuQa6U49f3AsjRRLQ. The index is republished with it at the top, and its stray content is removed.
+
+## 2026-10-13 — the living
+
+> Be careful with sending all these uncrystallized flow statements. I think we should start with crystallizing them. I guess that's what he's going to do, right? You can do that. Just make sure we don't overload it. Let's make sure that we actually crystallize this run instead of just throwing all these tokens in the garbage and getting nothing out of it.
+>
+> We need a complete proposal and everything that takes time to make is a proposal to be [landed as] crystallization. Essentially the whole book is a crystallization or should be. For some topics there's no need for anything other than "What I recrystallize my vision." I want to recrystallize my vision essentially 99.9% of the time. Other than that ideally, I don't have to tell the machine that it forgot to wipe its ass or something. Sometimes it happens and I do have to tell it, "Go back in the bathroom and get all that shit off your ass." Most of the time my vision, my intent, and my spirit crystallize. That's what the whole book is about.
+>
+> It's almost like we don't even need the green section other than to differentiate what's being added and what's being removed. Also I'd like to add the fact that the removal and addition is a bit confusing because a lot of the time when there's a removal and addition, only a few words change. It takes me a long time to read the whole removal and the whole addition. Really there are just a few words that change. It's being presented to me in a very inefficient form and I would like it to be presented to me in a very efficient form.
+
+-- psyche, STT. Transcription corrected: "landest" → "[landed as]".
+
+Event: the Flow words are sorted into 10 batches, reports/flow-psyche-batches/, each 3–22k characters, all targeting vision-flow (84 lines today). They wait for the fresh Flow Fable, one batch at a time.
+
+Event: inline word-level diff: rule in subagents/book.md, styles in tools/book-code.html; handed to committer.
+
+## 2026-10-13 — the living's comment on «Only psyche reaches you», relayed by the Psyche Core Tertiary, 18:33
+
+On the proposal "Only lines that land in a psyche module, and the code they land, are put to the living. A machine module is changed by its owner without him.":
+> Yeah this is good but like I just said to Psyche Secondary, what the fuck is the rest of this book for? All I care about is crystallization. You just wrote all of this and I won't even read it. My eye just goes to the green. Essentially everything should be: if I see a chart it's being proposed to be added in the Psyche module and everything else should either be red or green unless I'm missing something and you see a more efficient way of presenting this to me.
+
+-- psyche, STT.
+
+Event: the intent-psyche line is approved and goes to be landed. Cause of the preamble: compensation-book-crystallization's line "A book opens with the context its proposals rest on, conceptual and as visual as possible…" is replaced through Field.
+
+Event: the intent-psyche line is landed as psyche-context 5fd293b, pushed.
+
+Event: Fable published «A guarded compaction request», second edition, LwF4EsZcL3CChqbobHjqYJ, proposals only; it replaces the first. The index is being updated.
+
+Event: the index is republished, version 100, with the second edition of «A guarded compaction request» at the top.
+
+Event: Fable published «Flow: short term and long term», second edition, SsYkw9p8EFKq4ZHczHKHPN, proposals only; it replaces the first in the index. Psyche Flow Secondary da2038 is up and awaits the Flow package.
+
+## 2026-10-13 — the living
+
+> I'm kind of touching on the same topic that I was just talking about, which is that the book is essentially always just a proposal. I wanted to come back a little bit and maybe retract the idea that I only review psyche. I could also review mind content.
+>
+> In the sense that if I'm asking a question and I want to be informed on something, then I'm asking for knowledge context to be assembled. I just opened the book on compaction quickly and realized that what you're showing me is potentially context that could become knowledge. Future flows that want to know about compaction could load this compaction skill from the knowledge type.
+>
+> If there are things that are unclear, then it would land in a question type or an inquiry type. Maybe it's just called ignorance or uncertainty. Maybe uncertainty is better or ignorance. What we ignore, knowledge, what we know, or maybe something less direct and derogatory than ignorance, maybe something less offensive semantically.
+>
+> We have different books now. Everything is a proposal to go into context modules. I don't think I'll review compensation skills but I could read a book about compensation skills in general periodically to make sure that nothing in there is getting out of hand. Or we could do an audit, essentially, that looks for problems with compensation being problematic versus vision or psyche, or either psyche or mind context, because of the hierarchy. Mind is above compensation and psyche is above, or mind is above field and psyche is above mind. Anything in field that is contradicted by mind would be ruled over. The contradictions would be removed from the field context and so on, like for mind and psyche. Get me a book on the overview of all this: What are books for? What kind of reviews are there and how are they treated?
+>
+> If I reviewed a knowledge proposal I wouldn't have to read the whole thing, obviously, because everything in the knowledge proposal is just hard facts that have been written. They have been actually verified in code. That's all I want to see in a knowledge proposal.
+>
+> We could even audit them from time to time to make sure that they're both true and up to date or that there are no variations in practice from what is stated in the knowledge. In that case this could go into ignorance/inquiry/question or whatever we call the other type, the ignorance type.
+
+-- psyche, STT. Tension: this partly retracts the intent-psyche line landed as 5fd293b ("Only lines that land in a psyche module ... are put to the living") and qualifies "everything I review becomes psyche".
+
+Event: index republished, version 101, with the Flow book's second edition. Ordered Fable to write the overview book on books, reviews and the hierarchy, with his words relayed and the intent-psyche tension flagged. Briefed da2038 to feed its Primary the 10 batches one at a time, in red-and-green-only form with Flow code.
+
+Event: Field reports da2038 is launched and registered. The Fable Primary launch was refused before spawn: the launcher's gate saw two live Psyche Flow Secondaries, the old 9519a1 and the new da2038, and could not choose. Field is adding explicit selection of the declared new Secondary. The Field book-rule replacement is published as 2660011, and the module type moves are proceeding.
+
+Event: the fresh Psyche Flow Primary 0c9a77 (Fable) is live and has accepted. da2038 feeds it the batches. Field is ordered to retire the old pair, 875960 and 9519a1.
+
+Event: Field confirms the new Flow pair is bound: 0c9a77 on Fable, da2038 on Opus, both at medium effort. The old pair 875960/9519a1 is retired and its panes closed; their records are kept.
+
+Event: Fable published «Books, reviews and the hierarchy», W3zTifMSWjBHGDEn7PKDfX. Its proposals replace the intent-psyche line of 5fd293b and offer names for the unknown type as alternatives. Added to the index.
+
+## 2026-10-13 — the living's comments on «Flow: short term and long term», second edition, relayed by the Psyche Core Tertiary
+
+Proposal 1, the short-term figure, anchored on "Field compacts it, or restarts it", 18:43:
+> No compaction. Compaction is an absolute emergency measure so we're not talking about compaction in any terms other than absolute emergency. It's only going to happen until the tools start behaving properly, in which case starting a new flow is easy and reliable, which hasn't been the case so far. Let's keep compaction mostly out of the discussion and mention it only in an emergency setting.
+>
+> Also we should say that maybe we should make that flow tool also do the messaging since it can mark a flow as being in transition. Therefore it can start queuing messages instead of delivering them when the flow has reached its context limit and therefore should not receive more messages. That would just send it into a spin: potentially it could never actually refresh because it keeps getting new messages.
+
+Proposal 2, the EDN launch, on "...sent to Flow as configuration payloads on its meta socket.", 18:45:
+> What do you mean by meta socket? I don't understand. You're talking about meta sockets, which have to do with nexus, and then you're talking about the short-term solution, which is [Clojure]. Total fucking confusion here. Hallucinating model, now I don't trust anything you're saying or any system you've made. In this department I'm afraid that the current code or the current proposal is fucked.
+
+-- psyche, STT. Transcription corrected: "closure" → "Clojure".
+
+## 2026-10-13 — the living's comments on «Books, reviews and the hierarchy», relayed by the Psyche Core Tertiary
+
+P1 (vision-book, a book is a proposal into context modules, the whole of it its crystallization), 18:46:
+> This edit is good.
+
+P2 (intent-psyche, "What the living reviews line by line becomes psyche. He may also review a knowledge proposal: it holds only facts verified in code, and he skims it.", replacing 5fd293b's line), 18:46:
+> This also is good.
+
+P2, choice A or B for the paragraph "Anything the living has reviewed [line by line] is psyche...", 18:47:
+> Well both A and B contradicted the first paragraph so I can't approve contradictions.
+
+P3 (figure, the context modules and their review, into vision-context-modules), 18:47:
+> Yes this is good. Land it.
+
+P4 (the name of the unclear type), 18:48:
+> Yeah let's pick inquiry.
+
+P5 (knowledge audited for truth and currency), 18:48:
+> This is good, landed.
+
+P6 (compensation audit; the higher layer rules and the contradicted line is removed), 18:51:
+> Well this is a bit tricky. If we're talking about a knowledge module which documents how things work, then if it's contradicted by the vision (in the sense that what we want is not what we have), it would be incorrect to remove the documentation. Removing the documentation would just hide how things work currently from the future flows.
+>
+> It's not so much that we remove the documentation but that, at least, where there's a contradiction, it indicates that some action needs to be taken. Meaning if there is a contradiction between the documentation and the vision, that means we have to bring the vision into implementation so that the current system is replaced by a better system. That system is then documented and would then behave in the same way that the vision wants behavior to take place, since the implementation was based on the vision, right?
+>
+> We can't just wholeheartedly delete documentation because the way the system works now, it doesn't behave the way we want it to behave.
+
+-- psyche, STT.
+
+Event: P1, P2's first paragraph, P3, P4 (choice A, inquiry) and P5 go to be landed in psyche-context. P2's second paragraph and P6 go back to Fable for a second edition.
+
+## 2026-10-13 — the living
+
+> Is the flow proposal being reworked? Did you get my comments on that?
+
+-- psyche, STT.
+
+Event: his two comments had reached 0c9a77, but no rework had been ordered. Ordered 0c9a77 to make the third edition of the Flow book first; the batches wait.
+
+Event: P1–P5 of «Books, reviews and the hierarchy» are landed as psyche-context 03aa854: vision-book, intent-psyche, and the new vision-context-modules.
+
+Event: batch 01 had already reached 0c9a77 before the hold. da2038 has told it to put the batch aside until the third edition of the Flow book is published.
+
+Event: Fable published «Books, reviews and the hierarchy», second edition, 6z72eB7TjjbRARp1br7Ks5, with the two rejected proposals only. Added to the index.
+
+Event: Field measured first-request context. The old Flow pair started at about 56k tokens (Oct 10) and the fresh pair at about 60.5k, so the lean launch is not lean yet. The weight is the harness's tool and catalog surface plus the base seat text, which usage records do not attribute. A complete EDN composition of capabilities and sources is still needed.
+
+## 2026-10-13 — the living
+
+> Well that's okay. We can use the flows as they are. We'll just consider that context size to be our current lean. Those new flows are working on the proposal. Would you add additional comments to the book, right?
+
+-- psyche, STT. Ruling: about 60k tokens is the current lean. The last sentence is read as asking whether his further comments on the Flow book arrived; checking.
+
+Event: read directly. The Flow book has only the two comments already relayed (18:43, 18:45); the first edition has none.
+
+## 2026-10-13 — the living
+
+> So why does it look like nobody's redoing the flow proposal? If we have the new flows on the flow topic, shouldn't I expect they should be working on the new proposal?
+
+-- psyche, STT.
+
+Event: witnessed. 0c9a77 is working on the third edition of the Flow book: a draft exists, has passed a review, and small fixes are being applied before publishing. It had started on batch 01 before the hold, and stopped that publish. It is at 126k tokens.
+
+## 2026-10-13 — the living
+
+> Let's make sure the subagent definitions are using the right models. We should have a haiku at the lowest power, and then a sonnet, and then an opus. There's no fable subagent.
+
+-- psyche, STT. Order sent to Field.
+
+Event: 0c9a77 published «Flow: short term and long term», third edition, FLFTXdc6K2mVMwSaG3TCUJ, with six proposals, replacing the second in the index. Defects witnessed while writing it: the launcher config, its reader and the refresh hook are uncommitted; neither launcher installs the hook; a flow marked in transition cannot send; held messages lose the sender's envelope and are unordered. Sent to Field. Batch 01 resumes.
+
+Event: batch 01 book «Flow: identity and naming» is published, Nej5cp1CsWP8nuTxp2kshn, and added to the index. da2038 sends batch 02.
+
+Event: 0c9a77 reports two book page defects: no viewport meta tag, and no .del/.add panel styles since the move to inline word marks. A subflow is fixing tools/book-code.html.
+
+Event: 0c9a77 corrects itself: the missing viewport was seen only in the local files and is unverified on the published pages. The missing .del/.add styles stand. Its two pages are republished with inline <del>/<ins>.
+
+Event: tools/book-code.html now has a viewport meta, with a script adding it to <head> when missing, and fallback .del/.add panel colours. Not tested in a browser. Handed to the committer.
+
+## 2026-10-13 — the living, reading «Flow: identity and naming», relayed by the Psyche Flow Secondary
+
+> I said before that I want the short-term prototypes to be written in Clojure and I see .mjs and I don't recognize Clojure. I'm pretty sure Clojure is .clj. In the proposal all the code that's being proposed is the wrong stack. If any prototype doesn't use Clojure it's going to have to be rewritten in Clojure and I don't understand.
+
+> Part of the book seems to be suggesting that we put a context module in the code, which goes 100% against my instruction that no data lives in the code. We have a massive failure on our hands. Let's get a book on that topic and how to rectify everything.
+
+> Can we fix the behavior so that I don't have to keep telling you that every time I correct something, it means that I want a proposal for a fix in the right place? Unless I specify where, then the machine's judgment will be used to decide where and what kind of fix should be made, preferring psyche, right?
+
+> For [a question,] knowledge[:] if I have a question, obviously I want knowledge. If I'm explaining what I want, then I want vision or intent, depending on how broad the guide/instruction is.
+
+-- psyche, STT.
+
+Event: da2038 paused the batches and is preparing the rectification book with the correction behavior fix. To avoid two books, the book is left to it, and my audit goes to it as evidence.
+
+Event: I had sent conflicting orders. My message to 0c9a77 said I would write the rectification book; my later one to da2038 gave it to da2038. Resolved: da2038 writes it; 0c9a77 may redo batch 01 under the two rules; batch 02 waits until the rectification book is published.
+
+Event: da2038 measured 0c9a77 at 162k tokens at 19:12Z; the Primary's own estimate of 90k was wrong. da2038 measures again before batch 02 and asks Field for a refresh near 200k.
+
+Event: stack and data audit, reports/stack-and-data-audit-2026-10-13.md. Of the tools, 71 are not Clojure and 1 is, and that one is unused. The live launch path is JavaScript and Python, with module names, the startup prompt, model ids, flow ids and paths in code. Neither rule is crystallized; both exist as raw records only. One tension: negatives.md expects Ethos may one day carry data inline. Both of the Flow Primary's books break the rules. Sent to da2038.
+
+Event: da2038 published «Clojure and data: the rectification», 55knMkm8gem412DzSVZokr, with four crystallizations: vision-stack, intent-data (with the Ethos tension as a choice), intent-psyche correction lines, and intent-main-flow relay check. The code rewrite waits on his ruling. Added to the index.
+
+Event: 0c9a77 is at 165k tokens. Batch 02 would push it past 200k, so da2038 asked Field for its refresh; batch 02 goes to the successor.
+
+Event: Field reports the defects fixed in source:
+- The EDN launcher config, its reader and the refresh hook are committed as Primary 858b204.
+- The Codex birth hook is wired as d0cb8f9.
+- The Claude and Codex launchers now build per-flow Stop hooks; no firing is witnessed yet.
+- The messenger owner published transition, FIFO and envelope fixes; activation is pending.
+- 0c9a77's handover is ready, and its successor launches after regeneration. Curriculum's stale root is fixed as 753d0e8.
+
+- 2026-10-13 event: Field Core Secondary reports the Psyche Flow Primary refreshed. Successor 563761 (Fable, medium) launched and accepted a send to da2038. Predecessor 0c9a77 retired, its pane closed, records kept. Launch-ordering fix 68a636c published. The 541-path propagation 66239d1 is published; native propagation is not proven.
+
+- 2026-10-13 event: da2038 published «Flow: identity and naming», 2nd edition (59QJCCsPL7aFypQwBZoRZJ v2). Values are moved to EDN. Three literals are kept, each with a reason for the living to judge: flow-id.edn, continuation.edn, HERDR_PANE_ID. Batch 02 is in progress at 563761. tools/book-code.html now numbers ruling choices (uncommitted).
+
+- 2026-10-13 event: da2038 published batch 02, «Flow: the metaflow» (N1tgM3NYPWrgWo61kaTM8j). Its audit: all code is Clojure, and the only values in code are two error-name literals. Some narration lines are to be dropped from later books. 563761 left an uncommitted change exempting removed lines from the 52-column limit in tools/book-check.mjs. 563761 was at 113,941 tokens at 21:01 UTC. Batch 03 is being sent.
+
+- 2026-10-13 event: da2038 published batch 03, «Flow: refresh and handover» (GSQSYS6nZDzq7k4YzfoTi9). Its audit is pending. da2038 routed the compaction-analysis request back to me as knowledge, out of the Flow books, for a Mind flow and a knowledge skill.
+
+- 2026-10-13 event: I sent 41fa34 the compaction-analysis task as knowledge for mind-context. Fault: the --psyche relay that went with it carried a wording rebuilt from my compaction summary, not the logged verbatim. Cause: I sourced the quote from the summary instead of the raw log, which operation-psyche-interraction forbids ("retrieve each verbatim from the raw psyche log"). The exact words are being fetched for a corrected relay.
+
+- 2026-10-13 event: the misquote to 41fa34 is corrected; the verbatim from log.md:524-533 was sent as #psyche.
+
+- 2026-10-13 event: Mind Core Secondary 41fa34 landed knowledge-compaction (facts) and inquiry-compaction (unresolved claims) in mind-context at ebaa6ca, pushed. It corrects earlier universal claims in my analysis on several points: restore budgets and variants, token accounting, retry and fallback, the scope of retained messages, API generation, opaque content. Evidence is under flow-evidence/41fa34/compaction-knowledge-20261013/.
+
+- 2026-10-13 event: da2038 reports that batch 03 carried neither compaction ruling. 563761 is revising it to carry both as vision-flow lines: refresh, not compaction, at the threshold; and compaction as an absolute emergency measure only. The two lines of «What compaction keeps» are withdrawn once the revision is republished.
+
+- 2026-10-13 event: batch 03 republished (GSQSYS6nZDzq7k4YzfoTi9 v3). Its Proposal 2 carries both compaction lines to vision-flow.md, marked short term. The two lines of «What compaction keeps» are withdrawn in its favour. Batch 04 is being sent.
+
+- 2026-10-13 event: da2038 routed to me the delegation-cost question, a request for knowledge. The question: when a preconfigured subflow costs fewer tokens than the main flow's own tool calls. Batch 04 v2 is under re-check. Field is refreshing 563761 before batch 05.
+
+- 2026-10-13 event: I sent the delegation-cost question to 41fa34 as knowledge. No #psyche went with it: my log holds only a summary of his words (line 512), not the verbatim. A question is not psyche.
+
+- 2026-10-13 event: Field refreshed the Psyche Flow Primary again. Successor 288af9 (Fable, medium) accepted a send to da2038. 563761 retired, its pane closed, records kept. The successor started at 62,603 input tokens. Wrapper correction b41c44d is published. da2038 is told batch 05 goes to 288af9.
+
+- 2026-10-13 event: 41fa34 landed knowledge-subflow-token-cost and inquiry-subflow-token-cost in mind-context at de46c50, pushed. Inquiry holds: whether delegation cuts tokens, the rate across all flows, total savings, billing, and the counterfactuals. Corrections: there is no universal small-read rule; the study had four completed reads plus one failed, not five. Evidence is under flow-evidence/41fa34/subflow-token-cost-20261013/.
+
+- 2026-10-13 event: batch 04, «Flow: launch and lean start» (CbCJRpT8sMRsyZWwTtMzVw v3), has 14 proposals. Gaps it declares: how the launch record is assembled is not shown; the files it calls current (launch, flow_id, refresh and reminder .clj) are earlier books' proposals, not yet in messenger-clj main; the Codex Stop hook payload keys are unverified. Batch 05 is going to 288af9.
+
+- 2026-10-13 event: batch 05, «main-flow mode and roles» (N77pCE2NAc9CuKUBKAuJSj), is published; its audit is pending. da2038 routed me five knowledge questions and two discrepancies: knowledge-layer-models row 18 against his 2026-10-12 model-roles word; Curriculum having a book role but no book-page role. The questions go to 41fa34, the Curriculum discrepancy to Field 42265e.
+
+- 2026-10-13 event: Field reports no Curriculum discrepancy. 73414b6 is historical; c522b9b added the book-page role. Current main d3df664, pinned in Primary, has the role, the manifest entry and the generated file.
+
+- 2026-10-13 event: 41fa34 landed six modules in mind-context at f316373, pushed: knowledge-subagent-context, knowledge-harness-effort, knowledge-codex-rollout, knowledge-claude-tool-allowance, knowledge-claude-agent-frontmatter, and inquiry-harness-contracts. Haiku: knowledge-layer-models was already deleted at f84525. The configured Haiku effort is medium, matching his 2026-10-12 word; no difference found. Evidence is under flow-evidence/41fa34/harness-knowledge-20261013/.
+
+- 2026-10-13 event: batch 05 v2 accepted (N77pCE2NAc9CuKUBKAuJSj). 288af9's predecessor claims the six Mind modules are only candidates under flow-evidence, against 41fa34's report that they are published at f316373; a witness is ordered. Left out as questions: the 2026-09-24 hook question, «Can you make a hook like that?», a reminder re-entered every twentieth prompt, which wants knowledge; and the name for one variant carrying aspect, topic and layer, asked of him by d4ae97 on 2026-10-07 and unanswered. The metaflow file name differs between books 04 and 05; the successor reconciles it.
+
+- 2026-10-13 event: witnessed that mind-context remote main is now 1fc3adc, which does not descend from f316373; main was rewritten. None of the six harness modules are on main or in the shared checkout. f316373 still exists and holds them. Whether ebaa6ca and de46c50 survived is not checked. Sent to 41fa34.
+
+- 2026-10-14 event: Field refreshed the Psyche Flow Primary again. Successor c5f24b (Fable, medium) accepted a send to da2038. 288af9 retired, its pane closed, records kept. da2038 is told batch 06 may proceed.
+
+- 2026-10-14 event: 41fa34 witnessed that remote main is f316373, which descends from 1fc3adc, ebaa6ca and de46c50, and that all ten modules are present; there was no rewrite. Local refs/heads/main sits at 1fc3adc, which is why the shared checkout lacks the files. My subflow's witness was wrong: it claimed a rewrite and inverted the ancestry. 41fa34 asks for the clone's URL and commands.
+
+- 2026-10-14 event: the false rewrite witness is explained. The scratch clone was made from the local shared checkout, whose main is at 1fc3adc, not from GitHub. Its own ancestry check gives 1fc3adc as an ancestor of f316373. GitHub main is f316373. Cause: my brief said "fetch remote main" without naming the GitHub URL, and the subflow took the local path as the remote. Sent to 41fa34.
+
+- 2026-10-14 event: 41fa34 landed knowledge-periodic-hook-context and inquiry-periodic-hook-context in mind-context at 1be5ba7, pushed. Both harnesses have a UserPromptSubmit hook that can add context, and a handler can keep its own count. Neither has a built-in every-nth scheduler. Claude adds the text as a user-role system reminder; Codex adds it as developer-role context. Neither touches the base prompt. The d8df70 record says "every so many messages", not twenty.
+
+- 2026-10-14 event: batch 06, «context modules and prompt» (UQiKz4ZHVfgREo6CHHRmkU), is published; its audit is pending. Questions 1, 2, 3, 5 and 6 go to 41fa34 as knowledge. Question 4, which blake3 is taken over a repository, goes back to the designer as a proposal. Questions 7 (what «isos environment» names) and 8 (flow-ethos or vision-flow-ethos) are for the living, together with the unanswered variant-name question. book-code.html is getting Destroy and Archive styles.
+
+- 2026-10-14 event: da2038 sent the three records verbatim. 7: "isos environment" (f5a6e9 contextModules.md:3-19; 1d0733 marks it [sic]). 8: "vision-flow ... flow-ethos" (f5a6e9 flow.md:111-117), against the landed line in psyche-context vision/ethos.md:8 naming vision-flow-ethos. Variant name: his own question to the machine (d4ae97 flow.md:107-117), never answered. My ruling on routing: none of the three is a question for him. Each becomes a proposal in the Flow books: the name, as the designer's proposal; the ethos pointer, as a red/green change; the transcription, as a proposed reading.
+
+- 2026-10-14 event: 41fa34 landed knowledge-context-source-contracts and inquiry-context-source-contracts at 0f990b6, pushed. Answers: the book subagents are authored in Primary subagents/, and Curriculum reads them in. intent-main-flow is an ordinary intent module whose loading depends on metaflow overrides. Names keep their hyphens; the Topic:Name mapping is unresolved. Hooks can inject text but do not drain a queue. vision-flow-ethos exists nowhere, so the pointer at psyche-context vision/ethos.md:8 points to a missing module; library.ethos is the source of the Rust types.
+
+- 2026-10-14 event: batch 06 v3 accepted (UQiKz4ZHVfgREo6CHHRmkU), with ten proposals: P6 the blake3 choice; P8 the ethos pointer; P9 the reading «[ethos] environment»; P10 the umbrella name. Its roles.datom point is already settled by Field: 73414b6 is historical, and current d3df664 declares book-page. Told da2038. Uncommitted: the book-code.html diff-wrap fix.
+
+- 2026-10-14 event: Field refreshed the Psyche Flow Primary again. Successor df159a (Fable, medium) accepted a send to da2038. c5f24b retired, records kept. Next: the batch 07 revision, then batch 08.
+
+- 2026-10-14 event: batch 07 v2, «messaging between flows» (YBBK3jSZuoivFtB25Eg82s), accepted. Fault caught by da2038: the Flow Primary added tools/book-build.py in Python, against the Clojure rule; it is told to rewrite it under bb before the committer takes it. Batch 08 is being sent.
+
+- 2026-10-14 event: batch 08, «Nexus, ethos and design» (B755eSrUkP5K5Ar73Q9KCi), is published; its audit is pending. book-build.py is replaced by book-build.clj under bb, 4 tests passing, unstaged. Questions a-d from the Flow Primary; (a) is being searched.
+
+- 2026-10-14 event: answered da2038 on (b). All his words are STT, book comments included; "typed" in 9fb0ad, f5a6e9 and b49251 is wrong.
+
+- 2026-10-14 event: answered da2038 on (a). His words are at log.md:265. The comment itself was never found, so where he stopped is unknown; every uncommented proposal of the Flow 3rd edition is treated as unread.
+
+- 2026-10-14 event: sent Field the fix to the provenance line in operation-psyche-interraction: STT only, never typed. It was found by da2038.
+
+- 2026-10-14 event: Field landed STT-only provenance in compensation-psyche-interraction, field-context e47635c, pushed. The typed alternative is removed. It is in source only; the projection reaches flows at the next generation.
+
+- 2026-10-14 event: batch 08 v2 accepted (B755eSrUkP5K5Ar73Q9KCi). P15's machine lines go to their owners. Batch 09 is being sent.
+
+- 2026-10-14 event: book 11 (batch 08, «Nexus, ethos and design») v3 drops the machine lines of P15. Their machine proposal is at flows/df159a/reports/book-11-p15-machine-proposal.md: knowledge-psyche L52-53 and compensation-psyche-interraction L9-10. Both depend on P15 (vision-book: proposals implemented before he comments), which is unruled and in tension with intent-psyche. My decision: I hold the proposal here and route it to Mind and Field only after he rules P15, so neither owner carries work it cannot act on.
+
+- 2026-10-14 event: batch 09 v3, «Flow CLI, deployment, long term» (KqGmvFzr4VAqEeCA4jYMmA), accepted with 13 proposals. P13 holds his 2026-09-24 archives question, with three placements as choices. The owner work implied by the book is at flows/df159a/reports/book-12-owner-work.md. It rests on unruled proposals, so I hold it until he rules. Batch 10, the last, is being sent.
+
+- 2026-10-14 event: batch 10 v2, «Flow philosophy and artifacts» (KK1F3k86R5yCnDcy5KL3CX), accepted. All ten Flow batches are published and checked. The owner work implied is at df159a reports/book-13-owner-work.md, held until he rules. Uncommitted book tooling is handed to the committer. df159a and da2038 hold for his comments.

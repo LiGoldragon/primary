@@ -60,3 +60,27 @@ Context: said after compacting this seat; he wants an analysis of compaction aga
 > I don't like compacted flows because they still have a lot of noise. ... I still use compaction right now because we just really can't afford to run these huge massive context windows, which just end up being full of noise and resulting in very poor output.
 
 -- psyche, STT.
+
+## Compaction is an absolute emergency measure
+
+> No compaction. Compaction is an absolute emergency measure so we're not talking about compaction in any terms other than absolute emergency. It's only going to happen until the tools start behaving properly, in which case starting a new flow is easy and reliable, which hasn't been the case so far.
+
+-- psyche, STT.
+
+## The flow tool queues messages for a flow in transition
+
+> maybe we should make that flow tool also do the messaging since it can mark a flow as being in transition. Therefore it can start queuing messages instead of delivering them when the flow has reached its context limit and therefore should not receive more messages. That would just send it into a spin: potentially it could never actually refresh because it keeps getting new messages.
+
+-- psyche, STT.
+
+## The short term and the long term are not mixed
+
+> You're talking about meta sockets, which have to do with nexus, and then you're talking about the short-term solution, which is [Clojure]. Total fucking confusion here.
+
+-- psyche, STT. Transcription corrected: "closure" → "Clojure".
+
+## Short-term prototypes are written in Clojure
+
+> I said before that I want the short-term prototypes to be written in Clojure and I see .mjs and I don't recognize Clojure. ... If any prototype doesn't use Clojure it's going to have to be rewritten in Clojure
+
+-- psyche, STT.

@@ -43,3 +43,51 @@ Context: comment on «Figures that move», the drawer's brief proposal (target: 
 > Everything I review becomes psyche. ... Field is 100% agent-reviewed, 0% living-reviewed. As soon as I review something it becomes psyche.
 
 -- psyche, STT.
+
+## Books propose into any context module; he may review mind content
+
+> the book is essentially always just a proposal. I wanted to come back a little bit and maybe retract the idea that I only review psyche. I could also review mind content. In the sense that if I'm asking a question and I want to be informed on something, then I'm asking for knowledge context to be assembled. ... Future flows that want to know about compaction could load this compaction skill from the knowledge type. ... We have different books now. Everything is a proposal to go into context modules.
+
+-- psyche, STT.
+
+## The unknown has its own type
+
+> If there are things that are unclear, then it would land in a question type or an inquiry type. Maybe it's just called ignorance or uncertainty. Maybe uncertainty is better or ignorance. What we ignore, knowledge, what we know, or maybe something less direct and derogatory than ignorance, maybe something less offensive semantically.
+
+-- psyche, STT.
+
+## The hierarchy rules over contradictions
+
+> I don't think I'll review compensation skills but I could read a book about compensation skills in general periodically to make sure that nothing in there is getting out of hand. Or we could do an audit ... Mind is above field and psyche is above mind. Anything in field that is contradicted by mind would be ruled over. The contradictions would be removed from the field context and so on, like for mind and psyche.
+
+-- psyche, STT.
+
+## A knowledge proposal is verified fact only, audited for truth
+
+> If I reviewed a knowledge proposal I wouldn't have to read the whole thing, obviously, because everything in the knowledge proposal is just hard facts that have been written. They have been actually verified in code. That's all I want to see in a knowledge proposal. We could even audit them from time to time to make sure that they're both true and up to date or that there are no variations in practice from what is stated in the knowledge. In that case this could go into ignorance/inquiry/question or whatever we call the other type, the ignorance type.
+
+-- psyche, STT.
+
+## A contradiction between knowledge and vision calls for implementation, not deletion
+
+> If we're talking about a knowledge module which documents how things work, then if it's contradicted by the vision (in the sense that what we want is not what we have), it would be incorrect to remove the documentation. Removing the documentation would just hide how things work currently from the future flows. ... where there's a contradiction, it indicates that some action needs to be taken. Meaning if there is a contradiction between the documentation and the vision, that means we have to bring the vision into implementation so that the current system is replaced by a better system. That system is then documented ... We can't just wholeheartedly delete documentation because the way the system works now, it doesn't behave the way we want it to behave.
+
+-- psyche, STT.
+
+## No data lives in the code
+
+> Part of the book seems to be suggesting that we put a context module in the code, which goes 100% against my instruction that no data lives in the code.
+
+-- psyche, STT.
+
+## A correction asks for a fix in the right place, psyche preferred
+
+> every time I correct something, it means that I want a proposal for a fix in the right place? Unless I specify where, then the machine's judgment will be used to decide where and what kind of fix should be made, preferring psyche, right?
+
+-- psyche, STT.
+
+## A question asks for knowledge; an explanation of what he wants is vision or intent
+
+> if I have a question, obviously I want knowledge. If I'm explaining what I want, then I want vision or intent, depending on how broad the guide/instruction is.
+
+-- psyche, STT.

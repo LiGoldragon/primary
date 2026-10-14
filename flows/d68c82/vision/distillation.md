@@ -58,3 +58,9 @@ Context: on the proposed spirit-core line "No values in the runtime ...".
 
 Context: comment on «Three lines from the chat», vision-book proposal. Also 17:29: "distillation is a term we're not using anymore. We're using crystallization or recrystallization." and "The name of the file is wrong. We have to change its name."
 -- psyche, STT, 2026-10-13T17:29–17:32.
+
+## A run is crystallized, not thrown away
+
+> Be careful with sending all these uncrystallized flow statements. I think we should start with crystallizing them. ... Just make sure we don't overload it. Let's make sure that we actually crystallize this run instead of just throwing all these tokens in the garbage and getting nothing out of it.
+
+-- psyche, STT.
