@@ -1132,31 +1132,10 @@ of the line above)
 ```
 
 5. Both: the psyche-module lines land before the comment and are
-   modified on it, as shown; the two machine lines are changed by
-   their owners:
-
-File: `mind-context/skills/knowledge-psyche.md` (L52–53; a machine
-module, Mind's own, landed by its owner; under choice 5)
-
-```text
-- - The vision-<topic> skill — distilled vision: self-standing
--   statements, each reviewed by the living before it stands.
-+ - The vision-<topic> skill — distilled vision: self-standing
-+   statements, each landed before the living comments and
-+   modified when the comment comes.
-```
-
-File: `field-context/skills/compensation-psyche-interraction.md`
-(L9–10; a machine module, Field's own, landed by its owner; under
-choice 5)
-
-```text
-- A statement enters a vision- skill only as a crystallization the living
-- has explicitly approved. Intent and spirit enter only on the
-+ A statement enters a vision- skill as a crystallization proposed in a
-+ book, before the living comments, and is modified when the comment
-+ comes. Intent and spirit enter only on the
-```
+   modified on it, as shown; the corresponding lines in
+   `knowledge-psyche` (L52–53) and
+   `compensation-psyche-interraction` (L9–10) go to their owners,
+   Mind and Field, outside the book.
 
 6. No line, nothing changed.
 <!-- to-the-living:end -->
