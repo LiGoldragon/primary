@@ -33,3 +33,21 @@ Context: the living had commented on the second edition of the Flow CLI developm
 > I want to move away. Let's get Mind Astra [sic] on a fresh flow to work with Mind primary and secondary on a fresh flow or maybe on a new topic on Clojure. Let's get the design down first: land some minimum vision on how we want to do this ethos/datom-to-Clojure prototyping. Then we'll get a minimal proposal for all of the short-term tools that we need. Then we'll get a specific Mind primary and secondary topic, a Clojure topic that will focus on writing, maintaining Clojure prototypes, or migrating any kind of script or needs into Clojure.
 
 -- psyche, STT. "Mind Astra" left as heard; the intended name is unclear, not corrected.
+
+## The Clojure translation lands; fleshed out with the flow graph, examples, a knowledge skill, Chronos as the test, a Fable-assisted Primary and Secondary, an end-turn hook (2026-10-14)
+
+Context: the living had read the shared Clojure translation and spoke this to the Tertiary.
+
+> I read the shared Clojure translation, or whatever it's called, and it's all good. It can all land in the proposal.
+>
+> Now I want it much more fleshed out. Even the graph, the flow graph, should be in the vision. I want even more actual examples. I want to see some example code that's been... and then I want the mind to document it to create a knowledge skill that I'll review in terms of how this actually works in practice after testing it.
+>
+> Also let's use the most usable component that works best for testing the Nexus component but I guess something actually really simple. Maybe we re-adapt Chronos, the tool I had made to get astrological time based on current time or based on a specific time and location. Let's rewrite it in idiomatic Nexus architecture and ethos: full specification, just a simple thing, right?
+>
+> Send it to a fresh Fable-assisted primary and secondary. Starting with the secondary, we'll assemble all of the psyche-relevant and then start creating a prompt, not too long, like a couple thousand characters maximum, to add to what Fable will start with (so that he has a head start in terms of collecting stuff and it comes into the user prompt). Then Fable can just create the design and that's all Fable is for, really.
+>
+> The only thing it actually can be bothered with is to be given more information and then it can either be allowed to ask questions. If it ends its turn with a question or more than one question, then the secondary will just... We need an end-turn hook, basically, for the primary's turn end to notify the secretary.
+>
+> We should almost just add the functionality in Flow that decides where the hooks actually talk. The hook is a standard call with the right data so that the Flow daemon can check its database to see where these messages should go or what kind of notification should go where (based on the hook and where it came from).
+
+-- psyche, STT. "I want to see some example code that's been..." and "the secondary will just..." are unfinished sentences, kept as spoken.
