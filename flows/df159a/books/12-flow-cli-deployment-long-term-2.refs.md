@@ -55,3 +55,16 @@ Review subflow (2026-10-14) against the rules: passed lines-only form, module-li
 ## Witnessed
 
 Checker `node tools/book-check.mjs` passed; built with `bb tools/book-build.clj`; word-level marks confirmed on the built page (the L24 pair renders as one line with only the added sentence in `<ins>`).
+
+## Version 3 revision (Secondary audit of Version 2)
+
+Removed from the rendered page, kept here:
+
+- Edition preamble: second edition of https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA (Version 3), carrying only what his 2026-10-14 comments changed; Proposals 1 and 3 approved and landed; the edition fact stays in the title only.
+- Default (no number): the sentence lands in vision-flow L24 — starting a flow and delivering to it are Flow's (vision-flow L8–10, L20, L24); vision-messaging holds the message's form, priority, per-harness delivery and witness. Choice 1 is the vision-messaging landing: the request that finds no flow running is the message's subject.
+- Choice 2 (model-roles lines stand, marked short-term): intent-psyche L10, «A short-term vision is named so; an unmarked vision is long-term.»; the lines describe the routing in place today until start-on-demand is implemented.
+- Choice 3 (machine choice): his words name no layer routing; the sentence «A layer a request needs is started whether or not it is running.» is his vision-flow line said in vision-model-roles terms, offered because L52–55 and L62–69 lose their vertical-route sentences when struck.
+- Choice 4: his «Even if it doesn't have any working transcript to reawaken» (2026-10-14 15:18) with d68c82 2026-10-14 «restart that flow or start a fresh one»; the default carries only the case he names; «reawaken» is his word, «restart» no longer used.
+- Dropped: the former choice 7 (the higher-then-lower escalation surviving for a metaflow Flow cannot start) — it revived what he called obsolete; the former choices 1–3 (land / amend / drop) and the restating choices 4, 6, 8, 10.
+- vision-model-roles replacements: the former rewrites («If the adjacent layer is not running, Flow starts it, so a Tertiary reaches the Secondary…», «Vertical routing selects the adjacent layer…») added routing he did not speak on; now the obsolete sentences are struck only, each removed row paired with its surviving words so the renderer marks one removed run per row (L52 keeps «at a time.»; L62–67 keep «the sender's layer.», «Busy is still eligible.», «Multiple bindings … never fanout.», «Resolve the binding immediately before each attempt.»; L68–69 wholly removed). The owner re-wraps on landing.
+- Figure: the last box now carries his words «the prompt it is to get now»; the condition «with no working transcript to reawaken» sits in the flow's box, the verbs (reaches, starts, is fed) on the arrows.

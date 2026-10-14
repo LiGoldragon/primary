@@ -7,6 +7,9 @@ Judgment only. Facts and words live in log.md, books/, reports/, and the publish
 - Envelopes: books/batch-08-psyches.edn, batch-09, batch-10. Owner work (machine-module changes implied by psyche lines, never in a book): reports/book-11-p15-machine-proposal.md, reports/book-12-owner-work.md, reports/book-13-owner-work.md — all sent to the Secondary, which dispatches to owners.
 - Page builder: tools/book-build.clj run by bb, tests tools/book-build-test.clj (committed). Build with absolute paths. Witness: headless Chrome on the local html wrapped in the artifact skeleton, 320/375 px, light/dark; the published URL does not load headless.
 - Committing: nothing in Primary commits itself; the seat's turn-end hook messages Field PrimaryCommitting Quaternary when Primary is dirty. Pending dirt at any moment is whatever the last turn left.
+- 2026-10-14: book 14 «Short-term prototypes: Clojure now?» at https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy (Version 3, final: no quotes or paths, refs file, book-rule proposal P4, audit folded; account sent). Book 12 second edition at https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g (Version 2; a revision per the Secondary's audit in flight). Book 12 P1 and P3 landed in psyche-context vision-flow.md (67d358d7bb86); book 13 held by Core; book 12 first edition commented (never changed again).
+- Rendering today: word-level diff renderer and in-code word marks landed by others in tools/book-build.clj and tools/book-code.html (uncommitted). Republished word-level: books 11, 10, batches 04, 06; a second pass for in-code marks on those four is in flight. Batch 01 editions restored to pre-word-diff rendering (sources have bare + lines outside fences). Batches 02, 03, 05 and the rectification book stay as published (sources not buildable by the current builder).
+- Holds: no RebuildSkills, regeneration or re-pin until Field 42265e reports activation complete. Regeneration path witnessed: Curriculum reads a Nix store pin, not the live psyche-context; a landing reaches flows only after a re-pin and RebuildSkills.
 
 ## Chain per book (binding, in its final form)
 Envelope → read subflow pre-maps landing lines → author subflow (rules before sources) → separate review-and-fix subflow with byte-for-byte quote grep → `node tools/book-check.mjs` → bb build → Artifact publish (new, or `url` after an ArtifactComments read; if the living commented, the page is not changed and the comment goes to the Secondary) → phone witness → link, proposal list, exclusions, owner work and open items to the Secondary.
@@ -23,6 +26,7 @@ Envelope → read subflow pre-maps landing lines → author subflow (rules befor
 - A proposal building on an unruled earlier proposal says so on its File: line and offers land-with / wait / land-alone.
 - A notion is cited, labelled, and never the base landing.
 - Subflow types write-trivial/ordinary/demanding have no Skill tool; a brief to them carries the needed lines rather than skill names.
+- His word of 2026-10-14 (vision/books.md): the rendered book carries the proposals only — figure, choices, lines — no verbatim quote, no record or source path, no provenance line, no «carries his words»; references live in an unrendered <book>.refs.md beside the source and are archived with the landing when a proposal is accepted. Variants are never repeated proposals: shared text once, each variant a numbered choice carrying only its differing words. A proposal stands as the default; no land/amend/drop choices, no choices restating it; no «machine choice: reason» narration (to refs). A mostly rewritten line shows as one removed and one added line. A URL in a message is pasted from the receipt, never typed.
 
 ## Open decisions (his; numbered choices in the books, none ruled)
 - Book 10: P1 orchestrate reservation and held/repair ledger; P1 7–8 flow id in Flow's answers; P2 6–7 when the old flow stops receiving; P3 L12; P4 routing guidance vs hard-enforced; P5 intent module wording; P6 session-reader home, 6–9.
@@ -32,8 +36,8 @@ Envelope → read subflow pre-maps landing lines → author subflow (rules befor
 - Inherited, unruled: books 01–09 items in flows/563761/summary.md, flows/288af9/summary.md, flows/c5f24b handover.
 
 ## Next bounded work
-- The Secondary's return or acceptance on book 13 Version 2: fix in place at the same URL after an ArtifactComments read, phone check, link back.
-- Thereafter, whatever the Secondary briefs: his comments on books 10–13 (a commented page is never changed; the comment goes to the Secondary), the book 12 P13 c6 deferral if ruled, or a new series.
+- Returns in flight at handover: book 12 second edition Version 3 (same URL); in-code word-mark republish of books 11, 10, batches 04, 06. Each: read back the published page (no quotes or paths; word marks in code), then its account to the Secondary.
+- Then whatever the Secondary briefs; book 13 is Core's.
 
 ## Topics to split
 - Owner-work dispatch: the three reports are with the Secondary; whether owners (Mind, Field) received them is unwitnessed here.
