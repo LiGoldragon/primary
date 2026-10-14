@@ -260,8 +260,8 @@
   line by line, lines kept. Nil otherwise; a wholly added or removed fence stays
   tinted by the page script."
   [lines]
-  (let [sgn (fn [l] (cond (str/starts-with? l "- ") :del
-                          (str/starts-with? l "+ ") :add
+  (let [sgn (fn [l] (cond (or (= l "-") (str/starts-with? l "- ")) :del
+                          (or (= l "+") (str/starts-with? l "+ ")) :add
                           :else :same))]
     (when (some (fn [[a b]] (and (= :del (sgn a)) (= :add (sgn b)))) (partition 2 1 lines))
       (loop [ls (vec lines) out []]
@@ -273,8 +273,8 @@
                   [add r2] (split-with #(= :add (sgn %)) r1)
                   rem (vec rem) add (vec add)
                   rows (for [i (range (max (count rem) (count add)))
-                             :let [r (some-> (get rem i) (subs 2))
-                                   a (some-> (get add i) (subs 2))]]
+                             :let [r (some-> (get rem i) (subs (min 2 (count (get rem i)))))
+                                   a (some-> (get add i) (subs (min 2 (count (get add i)))))]]
                          (cond
                            (and r a) (str (re-find #"^\s*" a) (marked r a esc))
                            r (str "<del>" (esc r) "</del>")

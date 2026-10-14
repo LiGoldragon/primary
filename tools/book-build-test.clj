@@ -72,5 +72,17 @@
   (is (= "<div class=\"diff\"><div class=\"ctx\"><p>a</p></div><div class=\"ctx\"><p>b</p></div></div>\n"
          (book-build/build "```\na\n\nb\n```\n" ""))))
 
+(deftest bare-markers-equal-marker-space
+  (is (= (book-build/code-lines ["x" "- a" "-  " "- b" "+ a" "+ " "+ b"])
+         (book-build/code-lines ["x" "- a" "-" "- b" "+ a" "+" "+ b"])))
+  (is (= "x\n\n<del></del>"
+         (book-build/code-lines ["x" "-" "- " "+"])) "unpaired empties stay empty marks")
+  (is (= (change "- a\n- \n+ b\n+ ") (change "- a\n-\n+ b\n+"))))
+
+(deftest fixture-output-has-no-trailing-whitespace
+  (is (nil? (re-find #"(?m)[ \t]+$" (book-build/build fixture-md "TAIL\n"))))
+  (is (nil? (re-find #"(?m)[ \t]+$"
+                     (book-build/build "```clj\nx\n- a\n-\n+ a\n+\n```\n" "")))))
+
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))
