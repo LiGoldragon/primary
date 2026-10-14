@@ -53,7 +53,7 @@ function fakeServer(socketPath, mutate = () => {}) {
           const typed = request.params.input.filter(item => item.type === 'skill');
           const rows = [
             { type: 'session_meta', payload: { id: threadId, cwd: temporary } },
-            { type: 'turn_context', payload: { turn_id: turnId, model: 'gpt-5.6-terra', effort: 'medium' } },
+            { type: 'turn_context', payload: { turn_id: turnId, model: 'gpt-6-luna', effort: 'medium' } },
             { type: 'event_msg', payload: { thread_id: threadId, turn_id: turnId, item: { type: 'UserMessage', content: request.params.input } } },
             ...typed.map(item => ({ type: 'response_item', payload: { role: 'user', content: [{ text: `<skill>\n<name>${item.name}</name>\n<path>${item.path}</path>\n${fs.readFileSync(item.path, 'utf8')}\n</skill>` }] } })),
             { type: 'event_msg', payload: { thread_id: threadId, turn_id: turnId, item: { type: 'AgentMessage', content: [{ type: 'Text', text: 'Fixture complete.' }] } } },
@@ -90,7 +90,7 @@ const fixture = fakeServer(socketPath); await new Promise(resolve => fixture.ser
 const launched = await run([], socketPath, receipt);
 assert.equal(launched.code, 0, launched.stderr);
 const parsed = JSON.parse(launched.stdout), stored = JSON.parse(fs.readFileSync(receipt));
-assert.equal(parsed.status, 'verified'); assert.equal(stored.model, 'gpt-5.6-terra'); assert.equal(stored.effort, 'medium');
+assert.equal(parsed.status, 'verified'); assert.equal(stored.model, 'gpt-6-luna'); assert.equal(stored.effort, 'medium');
 assert.equal(stored.oneStartupPrompt, true); assert.equal(stored.mainFlowIdentityCreated, false); assert.equal(stored.nativeTitleAssigned, false);
 assert.deepEqual(fixture.calls.map(call => call.method), ['initialize', 'skills/list', 'thread/start', 'turn/start']);
 const first = fixture.calls.find(call => call.method === 'turn/start');
@@ -116,7 +116,7 @@ const badSocket = path.join(temporary, 'bad.sock'), badReceipt = path.join(tempo
 const bad = fakeServer(badSocket, rows => { rows.find(row => row.type === 'turn_context').payload.model = 'gpt-6-sol'; });
 await new Promise(resolve => bad.server.listen(badSocket, resolve));
 const refused = await run([], badSocket, badReceipt);
-assert.notEqual(refused.code, 0); assert.match(refused.stderr, /exact Terra model\/effort context/);
+assert.notEqual(refused.code, 0); assert.match(refused.stderr, /exact configured worker model\/effort context/);
 assert.equal(JSON.parse(fs.readFileSync(badReceipt)).status, 'failed');
 bad.server.close();
 

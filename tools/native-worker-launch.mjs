@@ -1,12 +1,14 @@
 #!/usr/bin/env node
-/* Launch one native Codex Terra worker with typed skill inputs and verify its rollout. */
+/* Launch one native Codex worker using the configured Mind Tertiary model with typed skill inputs and verify its rollout. */
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import net from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
+import {selectVoiceProfile} from './native-voice-profiles.mjs';
 
-const MODEL = 'gpt-5.6-terra';
+const WORKER_PROFILE = selectVoiceProfile({aspect: 'Mind', layer: 'Tertiary', harness: 'codex'});
+const MODEL = WORKER_PROFILE.model;
 const args = process.argv.slice(2);
 const values = name => args.flatMap((value, index) => value === name ? [args[index + 1]] : []);
 const value = name => values(name).at(-1);
@@ -32,7 +34,7 @@ function parseOptions() {
   const parentFlowDirectory = value('--parent-flow-directory');
   const briefFile = value('--brief-file');
   const receiptFile = value('--receipt');
-  const effort = value('--effort') ?? 'medium';
+  const effort = value('--effort') ?? WORKER_PROFILE.effort;
   const socket = path.resolve(value('--socket') ?? path.join(os.homedir(), '.codex/app-server-control/app-server-control.sock'));
   const sessionsRoot = path.resolve(value('--sessions-root') ?? path.join(os.homedir(), '.codex/sessions'));
   const waitSeconds = Number(value('--wait-seconds') ?? 180);
@@ -45,7 +47,7 @@ function parseOptions() {
   if (!fs.existsSync(parentFlowDirectory) || !fs.statSync(parentFlowDirectory).isDirectory()) fail('parent Flow directory is missing');
   if (!briefFile || !fs.existsSync(briefFile) || !fs.statSync(briefFile).isFile()) fail('brief file is missing');
   if (!receiptFile || !path.isAbsolute(receiptFile)) fail('receipt path must be explicit and absolute');
-  if (!['low', 'medium'].includes(effort)) fail('Terra effort must be low or medium');
+  if (!['low', 'medium'].includes(effort)) fail('worker effort must be low or medium');
   if (!Number.isInteger(waitSeconds) || waitSeconds < 1 || waitSeconds > 900) fail('wait seconds must be an integer from 1 through 900');
   if (!skills.length || !skills.includes('subflow')) fail('required skills must explicitly include subflow');
   if (skills.some(name => !/^[a-z][a-z0-9-]*$/.test(name)) || new Set(skills).size !== skills.length) fail('skill names must be unique lowercase names');
@@ -203,7 +205,7 @@ function verifyRollout(file, pending) {
   const session = rows.find(row => row.type === 'session_meta')?.payload;
   if (session?.id !== pending.threadId || path.resolve(session?.cwd ?? '') !== pending.cwd) fail('rollout session identity or cwd differs');
   const contexts = rows.filter(row => row.type === 'turn_context' && row.payload?.turn_id === pending.turnId);
-  if (contexts.length !== 1 || contexts[0].payload.model !== MODEL || contexts[0].payload.effort !== pending.effort) fail('rollout lacks one exact Terra model/effort context');
+  if (contexts.length !== 1 || contexts[0].payload.model !== MODEL || contexts[0].payload.effort !== pending.effort) fail('rollout lacks one exact configured worker model/effort context');
   const userMessages = rows.filter(row => row.type === 'event_msg' && row.payload?.thread_id === pending.threadId && row.payload?.item?.type === 'UserMessage');
   if (userMessages.length !== 1 || userMessages[0].payload?.turn_id !== pending.turnId) fail('rollout does not contain exactly one startup user message');
   const content = userMessages[0].payload.item.content ?? [];
