@@ -8,4 +8,4 @@ Context: comment on «Psyche is the gold», on the proposed vision-psyche paragr
 >
 > All the sources of the distillation should be removed from all skills and all of the history. The commit history needs to be rewritten and the sources of these distillations put into the commit messages that belong to them. The whole history needs to be rewritten and the whole main branch needs to be moved. I said this 2 days ago. It should already be done. If it's not done then fucking get on it.
 
--- psyche, typed, 2026-10-11, comment on the book.
+-- psyche, STT, 2026-10-11, comment on the book.

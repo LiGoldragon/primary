@@ -24,4 +24,4 @@ Context: typed to the Psyche core Primary after it returned Astra's committer de
 
 > Well, make sure it's not so complicated that we never actually fucking implement it.
 
--- psyche, typed, 2026-10-12.
+-- psyche, STT, 2026-10-12.
