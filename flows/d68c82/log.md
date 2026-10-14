@@ -1361,3 +1361,11 @@ Event: da2038 usage report: Claude Max 20x, 6.26B tokens Oct 1-14 (Opus 58%, Fab
 Event: Chronos Secondary launch stopped before birth (pinned psyche 67d358d has no vision-ethos module); Field qualifying the right module. Fables retired: 33752b, 17ac8a, 55a2b4, 081064; Spirit d55c56 pending.
 Event: Usage page TdqUgx6H7sJP5j3QsgiyHC; Open books v129. Codex lives in CODEX_HOME ~/.codex-next-8mkkxq293hk2 (earlier ~/.codex-next); Codex weekly 15% used, resets Oct 20 09:57 local (moved from Oct 18), last reset Oct 14 08:52; Claude 84% last recorded 10-03, next reset inferred Oct 17 07:00. Oct 1-14 Terra 1,599M still used.
 Event: Psyche Chronos Secondary 984e88 (Opus medium) live, first crystallization done; head-start held for the living; no Fable born. Terra post-fix audit under way.
+Event: 89fbc1 committed usage page, index, log (e2801bf).
+Event: Terra after the fix: one old write-ordinary child of Mind Core Secondary 41fa34 (5 Terra turns, latest 18:19Z); Field ordered it stopped. CODEX_HOME is declared in Home (codex-next-<hash>); skill variables still name the older homes, Field reconciling.
+Event: 3960eb fixed five book-build faults (edges in own columns, figures drawn at shown width, 12px min at 320), rebuilt 16-subflows.html and 55a2b4 book 15 in place. Accepted: a changed figure is shown whole in its new form.
+Event: Field published SKILL_VARIABLES with the active Codex home (613772b); no other post-fix Terra found. First-prompt fix witnessed natively: Chronos Secondary's first message a crystallization with zero tool or subflow uses.
+Event: subflows book republished v2 with the fixed builder.
+Event: Flow Nexus book v7 republished; figure text ~11.3px at 320px (12px floor holds only unscaled).
+Event: Field landed field-context c872f54 (changed figure shown once, whole, new form); re-pin/regeneration still needed for this afternoon's landings.
+Event: 3960eb's subflow fixing the 12px floor at 320 as rendered.
