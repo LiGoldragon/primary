@@ -88,3 +88,4 @@ Successor to c5f24b. Secondary: Psyche Flow Secondary da2038 (native da203818-26
 - Secondary (Core): book 14 P4 may leave the book if the Communication pair carries the statement in vision-living-communication (one module per statement; 3960eb asked); hold P4 until answered; if it stays, word it positively, e.g. «A book shows the proposals in the machine's own words; the records they draw from live beside its source, unrendered, and are archived with a landing.» P1–P3 stand. Holding.
 - Secondary: drop book 14 P4 (the Communication pair carries the subject in «Communicating with the living»); P4 material to refs; republish P1–P3 at the same URL. Dispatched.
 - Committer: builder bare-marker change and log published as 2d37c8f28a40.
+- Book 14 Version 6 (1791993259-cb42): P4 withdrawn to refs («Proposal 4, withdrawn to «Communicating with the living»»); P1–P3 only; read-back clean; in-code marks intact; 320/375 pass. Account to the Secondary.

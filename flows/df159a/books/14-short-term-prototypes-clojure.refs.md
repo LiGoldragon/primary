@@ -132,3 +132,42 @@ choices stay. The caller's change (claude-native-seat-refresh.py:740)
 is shown red/green; the installed-executable pattern is messenger-clj's
 nix/launcher.sh (exec bb --config … ); malli 0.18.0 is the version in
 field-clj/deps.edn and messenger-clj/bb.edn.
+
+## Proposal 4, withdrawn to «Communicating with the living»
+
+Removed from the page in Version 6; the Communication pair carries the
+book-rule subject in its own book. The withdrawn source, verbatim:
+
+### Proposal 4: a book carries proposals only; the records live in a reference file
+
+File: `psyche-context/skills/vision-book.md` («Books», after L8)
+
+```text
+  A book is a proposal into context modules, and the whole of it is its crystallization: a line removed shows in red, a line added in green, and a figure in it is a figure proposed for a module.
++
++ A book carries the proposals; it shows no verbatim quote, and the records it draws from are not shown.
++
++ The records a proposal draws from live in an unrendered reference file kept with the book's source; they are archived with the landing when some or all of the proposal is accepted.
+```
+
+Consequence for the owner of a machine module, not a psyche landing: the second sentence of L14 falls.
+
+File: `field-context/skills/compensation-book-crystallization.md` (L14)
+
+```text
+- A book does not restate the living's words. A proposal may cite the record it crystallizes by path and date.
++ A book does not restate the living's words.
+```
+
+Ruling, one number from each group:
+
+The reference file:
+1. `<book>.refs.md` beside the book's source, as shown.
+2. A `references/` directory beside the books, one file per book:
+
+File: `psyche-context/skills/vision-book.md` (under choice 2, the differing words)
+
+```text
+- live in an unrendered reference file kept with the book's source
++ live in an unrendered file under references/ beside the books
+```
