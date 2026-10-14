@@ -1,19 +1,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The shared Clojure translation pattern</title>
 <h1 class="book-title">The shared Clojure translation pattern</h1>
-<figure style="margin:0"><svg viewBox="0 0 360 394" width="100%" style="max-width:420px" role="img" aria-label="Ethos type declares and Datom value carries into one construct mapping, which forks into a Malli schema and an EDN value; the EDN value round-trips to the same typed value" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ct-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--accent)"/></marker></defs><rect x="10" y="10" width="150" height="44" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="1.5"/><text x="85" y="37" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">Ethos type</text><rect x="200" y="10" width="150" height="44" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="1.5"/><text x="275" y="37" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">Datom value</text><path d="M85 54 C85 85,150 95,165 118" fill="none" style="stroke:var(--accent)" stroke-width="2" marker-end="url(#ct-ah)"/><path d="M275 54 C275 85,210 95,195 118" fill="none" style="stroke:var(--accent)" stroke-width="2" marker-end="url(#ct-ah)"/><text x="78" y="80" font-size="12" text-anchor="end" style="fill:var(--muted)" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace">declares</text><text x="282" y="80" font-size="12" text-anchor="start" style="fill:var(--muted)" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace">carries</text><rect x="60" y="122" width="240" height="46" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="2"/><text x="180" y="150" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">one construct mapping</text><path d="M140 168 C130 200,90 205,85 234" fill="none" style="stroke:var(--accent)" stroke-width="2" marker-end="url(#ct-ah)"/><path d="M220 168 C230 200,270 205,275 234" fill="none" style="stroke:var(--accent)" stroke-width="2" marker-end="url(#ct-ah)"/><text x="100" y="198" font-size="12" text-anchor="end" style="fill:var(--muted)" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace">schema</text><text x="260" y="198" font-size="12" text-anchor="start" style="fill:var(--muted)" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace">value</text><rect x="10" y="238" width="150" height="44" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="1.5"/><text x="85" y="265" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">Malli schema</text><rect x="200" y="238" width="150" height="44" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="1.5"/><text x="275" y="265" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">EDN value</text><path d="M275 282 L275 336" fill="none" style="stroke:var(--accent)" stroke-width="2" marker-end="url(#ct-ah)"/><text x="268" y="314" font-size="12" text-anchor="end" style="fill:var(--muted)" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace">round trip</text><rect x="150" y="340" width="200" height="44" rx="8" fill="var(--sheet)" stroke="currentColor" stroke-width="1.5"/><text x="250" y="367" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif">the same typed value</text></svg></figure>
-<p>«The Flow Nexus, whole» P3 proposes Ethos parts becoming namespaces, Malli schemas and EDN; «Short-term prototypes: Clojure now?» proposes the entry point, reader and launcher. This adds the shared translation contract inside them.</p>
+<div class="figure"><svg viewBox="0 0 254 478" width="254" style="display:block;max-width:100%;height:auto" role="img" aria-label="Ethos declaration typed Datom value shared construct mapping Malli schema EDN value checks the typed value through through gives gives recovers" xmlns="http://www.w3.org/2000/svg"><path d="M68 64 L68 72 L127 72 L127 112" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="123,112 131,112 127,120" style="fill:var(--fg,currentColor)"/><path d="M186 64 L186 79 L127 79 L127 112" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="123,112 131,112 127,120" style="fill:var(--fg,currentColor)"/><path d="M127 156 L127 191 L182 191 L182 212" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="178,212 186,212 182,220" style="fill:var(--fg,currentColor)"/><path d="M127 156 L127 191 L108 191 L108 220" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><path d="M108 256 L108 285" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><path d="M108 220 L108 256" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><path d="M108 321 L108 329 L145 329 L145 357" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><path d="M108 285 L108 321" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="141,357 149,357 145,365" style="fill:var(--fg,currentColor)"/><path d="M182 256 L182 277" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="178,277 186,277 182,285" style="fill:var(--fg,currentColor)"/><path d="M182 321 L182 336 L145 336 L145 357" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="141,357 149,357 145,365" style="fill:var(--fg,currentColor)"/><path d="M145 401 L145 434" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="141,434 149,434 145,442" style="fill:var(--fg,currentColor)"/><rect x="113.2" y="406" width="63.6" height="15" style="fill:var(--sheet,Canvas)"/><text x="145" y="417" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">recovers</text><rect x="106" y="166" width="42" height="15" style="fill:var(--sheet,Canvas)"/><text x="127" y="177" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">gives</text><rect x="98.8" y="84" width="56.4" height="15" style="fill:var(--sheet,Canvas)"/><text x="127" y="95" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">through</text><rect x="15" y="10" width="106" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="68" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Ethos</text><text x="68" y="50" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">declaration</text><rect x="133" y="10" width="106" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="186" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">typed Datom</text><text x="186" y="50" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">value</text><rect x="22" y="120" width="210" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="127" y="142" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">shared construct mapping</text><rect x="125" y="220" width="114" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="182" y="242" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Malli schema</text><text x="182" y="307" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">checks</text><rect x="100" y="365" width="90" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="145" y="387" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">EDN value</text><rect x="76" y="442" width="138" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="145" y="464" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">the typed value</text></svg></div>
+<p>The shared translation contract is landed in <code>vision-clojure</code>.</p>
 <h2>Crystallization</h2>
-<article class="proposal"><header><span class="pnum">1</span><h2>One mapping keeps the Ethos anatomy</h2></header>
-<p class="target"><code>psyche-context/skills/vision-clojure.md</code></p><p>new</p>
-<div class="diff"><div class="add"><ins><div class="textblock">---
-description: A Clojure prototype represents an Ethos type or a Datom value.
-dependencies: []
----</div></ins></div><div class="add"><ins><div class="textblock">## Clojure</div></ins></div><div class="add"><ins><p>The Clojure translation preserves the anatomy declared in Ethos: named types, struct positions, variant identity and payload, and nested containers. One shared construct mapping defines their Malli schemas and EDN representations, including how Datom values become those EDN values. Each representation keeps enough information to recover the same typed value.</p></ins></div></div>
-<p>Where the line lands:</p>
-<ol class="choices" start="1"><li><code>vision-clojure</code>, holding the Clojure representation of both Ethos and Datom.</li><li><code>vision-ethos</code>, beside the schema language.</li></ol>
-<p>The next book shows the mapping itself, and the choices for variant representation and keyword casing.</p>
-<p>Ruling: land, amend, or reject.</p>
+<article class="proposal"><header><span class="pnum">2</span><h2>The mapping and its graph</h2></header>
+<p class="target"><code>psyche-context/skills/vision-clojure.md</code></p><p>after the landed line</p>
+<div class="diff"><div class="add"><ins><p>[graph above]</p></ins></div><div class="add"><ins><p>The declaration determines the schema and the interpretation of each value. Recovery preserves the typed value, not its textual spelling.</p></ins></div></div>
+<p>The construct mapping:</p>
+<pre data-diff><code class="language-clojure">Ethos        Malli schema        EDN value
+scalar       named schema        scalar
+struct       closed map of       map of the
+             required entries    entries
+vector       ordered vector      vector
+variant      tag plus whole      tagged value
+             payload
+nesting      recursive           recursive
+Option,      keep their variant  Some(None) is
+Result       distinctions        not None</code></pre>
+<p>The worked example. Ethos:</p>
+<pre data-diff><code class="language-clojure">Library
+[]
+[ Person.{ Name.String Age.Integer }
+  Reply.[ Accepted.Person
+          Refused.String
+          Pending ] ]
+[]
+[]</code></pre>
+<p>Datom values:</p>
+<pre data-diff><code class="language-clojure">{ Ada 36 }
+Accepted.{ Ada 36 }
+Pending</code></pre>
+<p>EDN values, the unit variant an empty vector:</p>
+<pre data-diff><code class="language-clojure">{:name "Ada" :age 36}
+#accepted {:name "Ada" :age 36}
+#pending []</code></pre>
+<p>Clojure, run:</p>
+<pre data-diff><code class="language-clojure">(ns translation-example
+  (:require [clojure.edn :as edn]
+            [malli.core :as m]))
+
+(defn variant [tag schema]
+  (let [valid? (m/validator schema)]
+    [:fn (fn [value]
+           (and (tagged-literal? value)
+                (= tag (:tag value))
+                (valid? (:form value))))]))
+
+(def Person
+  [:map {:closed true}
+   [:name :string] [:age :int]])
+
+(def Reply
+  [:or (variant 'accepted Person)
+       (variant 'refused :string)
+       (variant 'pending [:tuple])])
+
+(def readers
+  (into {}
+        (map (fn [tag]
+               [tag #(tagged-literal tag %)])
+             '[accepted refused pending
+               some none])))
+
+(defn read-example [text]
+  (edn/read-string {:readers readers} text))
+
+(def accepted
+  (read-example
+    "#accepted {:name \"Ada\" :age 36}"))
+
+(m/validate Reply accepted)
+;; =&gt; true
+(m/validate Reply
+  (read-example
+    "#accepted {:name \"Ada\" :age \"36\"}"))
+;; =&gt; false
+
+(defn option-schema [payload]
+  [:or (variant 'none [:tuple])
+       (variant 'some payload)])
+
+(def NestedOption
+  (option-schema (option-schema Person)))
+(def absent (read-example "#none []"))
+(def present-absent
+  (read-example "#some #none []"))
+
+(m/validate NestedOption absent)
+;; =&gt; true
+(m/validate NestedOption present-absent)
+;; =&gt; true
+(= absent present-absent)
+;; =&gt; false</code></pre>
+<p>Choice A, variant representation:</p>
+<ol class="choices" start="1"><li>Tagged literals, <code>#accepted {...}</code> (recommended).</li><li>Tagged vectors.</li><li>Tag and payload maps.</li></ol>
+<p>Choice B, keyword casing:</p>
+<ol class="choices" start="1"><li>Kebab-case, <code>:flow-id</code> (recommended; collisions are detected).</li><li>Ethos spelling, <code>:FlowId</code>.</li></ol>
+<p>After the choices: a minimal test fixture, then a knowledge module on how it works in practice, for review.</p>
+<p>Ruling: land Proposal 2, with choices A and B.</p>
 </article>
 <!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
      Markup, all optional except what the source has:

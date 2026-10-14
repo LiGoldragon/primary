@@ -1340,3 +1340,18 @@ Event: da2038 had stopped its usage subflow on my first word; restarted (Sonnet)
 Event: e4b7d7 queued the dialect book brief (Ethos types first, Proposal with Meta/path/edit variant, vector, change language, Markdown mapping) as a fresh lean call after the Clojure book.
 Event: «Subflows: one kind, specialties, a contextualizer» MoqWqQyDx49d8PQ9bYWq1h v1; Open books v127. Builder faults: opening figure not wrapped (overlaps heading at 375px), labels break mid-word.
 Event: Field retired Ethos 081064. For 33752b, a handoff turn would be a Fable call, which now needs the living's word; instead d68c82, its Secondary, takes ownership of its lane and hands it to the committer; Field retires 33752b without a turn.
+Event: e4b7d7 sent expanded Book B packet (Proposal 2: graph, construct mapping, worked Ethos/Datom/EDN example, untested Clojure+Malli code, variant choices tagged-literal/vector/map, casing kebab/preserve, test plan, host notes). Publishing condensed as edition 2 of book 15, with the code run first.
+Event: 89fbc1 committed 12 d68c82 paths (be48d2f); index.html held as mixed. All its hunks, the Communication entry included, are d68c82's subflows'.
+Event: e4b7d7: field-clj owned by Field; future demonstration in one isolated Field lane after a frozen packet with exact cases. My subflow runs the book example only in my scratchpad, no repository.
+Event: e4b7d7 asks for the run's exact code, versions, command and per-case results; to send when the subflow returns.
+Event: 89fbc1 committed 75 of 81 33752b paths (985dee7); six refused on whitespace, subflow fixing; index.html still held as mixed.
+Event: six 33752b files cleaned and resent; index resent as whole-file d68c82.
+Event: Field retired 33752b without a model turn (pane closed); Ethos, Communication, Flow retirements complete; Spirit pending its Secretary. Zeus/Ouranos clocks agree, NTP synced, no time-change journal entries; the reported jump is unexplained (subflow command provenance unknown). Curriculum remote main d3df664 has no Terra; stale shared checkout corrected locally; two old dirty files kept.
+Event: Book B ed. 2 built; example run under bb with malli 0.18.0 in scratchpad/clj-example: all five expectations held, no fix. Builder fault: a Markdown table separator row renders as red removed text.
+Event: Book B ed. 2 published (Bo8aggF1TNjxDq5ZFTUpLR v2); Open books v128.
+Event: compensation review order heard directly by da2038; da2038 carries it. Fable wake: only the Psyche Secondary asks the living's permission, proposing the waking prompt and whether a new flow.
+Event: e4b7d7 flagged that only cases 1-2 were rerun after reformatting; my message overstated it as a full rerun. Subflow rerunning all five with digests and bb version into the refs.
+Event: rerun (bb 1.13.219) printed true,true,true,false,true: the scratch file prints Reply-accepted, absent, present-absent, equality, and a duplicate present-absent; the :age "36" case was evaluated unprinted. Subflow making it print and rerunning.
+Event: corrected rerun: true,false,true,true,false, all five as expected; digest 2bd0e91c, bb 1.13.219; receipt in refs.
+Event: 89fbc1 committed index.html whole (768d250).
+Event: e4b7d7 matched the corrected receipt hashes and passed the evidence to its Primary for the frozen packet.
