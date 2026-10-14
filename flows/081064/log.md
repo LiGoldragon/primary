@@ -167,3 +167,7 @@ His words on correction logged verbatim in vision/correction.md. The Core Second
 ## 2026-10-13 committer rule changed (d68c82, as Psyche Core Secondary)
 
 The sole Primary committer is the Field Quaternary 89fbc1; this flow commits nothing itself and hands 89fbc1 its exact paths with a one-line reason by message. Replaces the turn-and-self-commit rule. First handoff: vision/ethos.md, vision/correction.md, log.md.
+
+## 2026-10-14 refresh brief (Field Core Secondary): handover written
+
+Handover at flows/081064/handover.md, judgment only. No subflow out, no lock held, no write in flight. New work held; the seat stays live until Field binds the successor and retires this one. Paths handed to 89fbc1: handover.md, log.md (plus the three from 2026-10-13 if not yet committed).
