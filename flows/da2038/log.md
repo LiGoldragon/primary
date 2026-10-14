@@ -1,0 +1,185 @@
+# { Psyche Flow Secondary da2038 }
+
+- 2026-10-13 Launched as Psyche Flow Secondary (Opus, medium). Registered by launcher; acceptance sent to Psyche Core Secondary (Transported).
+- 2026-10-13 Package received from Psyche Core Secondary: secretary of the Flow topic; feed fresh Psyche Flow Primary the 10 batches in flows/d68c82/reports/flow-psyche-batches/ one at a time as #psyches, one book per batch (red/green only), next batch after publication; keep Primary under 200k; old pair 875960/9519a1 retires after Primary accepts; book links to Core Secondary.
+- 2026-10-13 No fresh Primary registered; "Psyche Flow Primary" still resolves to old 875960. Asked Field Core Secondary for the fresh Primary's id.
+- 2026-10-13 Primary is 0c9a77 (per Core Secondary). Sent batch 01 (identity and naming) as #psyches with book brief.
+- 2026-10-13 Field confirms Primary 0c9a77 (Fable medium) registered; old pair 875960/9519a1 retired. Batch 01 was already sent to 0c9a77 by id; later sends go to quoted 'Psyche Flow Primary'.
+- 2026-10-13 Core ordered hold on batch 01: third edition of Flow book first. Batch 01 already delivered; told Primary to hold it.
+- 2026-10-13 Batch 01 book published: https://claude.ai/artifact/Nej5cp1CsWP8nuTxp2kshn (link relayed to Core). Sent batch 02 (metaflow concept).
+- 2026-10-13 Core: third edition Flow book is FLFTXdc6K2mVMwSaG3TCUJ. Primary at 126k tokens at 19:00. Standing: check Primary context before each batch; at 200k ask Field for refresh, successor continues batches.
+- 2026-10-13 Living ruled batch 01 book a failure (non-Clojure code; context module in code). Logged vision (prototypes, data, correction). Stopped Primary on batch 02; relayed psyche to Core; rectification book in preparation.
+- 2026-10-13 Core: rectification book is mine; Core audit report coming at flows/d68c82/reports/stack-and-data-audit-2026-10-13.md; behavior fixes are psyche lines, likely intent-psyche. Asked Primary for context size.
+- 2026-10-13 Primary reports Core writes rectification book and ordered batches to resume under Clojure/no-data rules; conflicts with Core's message to me. Asked Core which holds.
+- 2026-10-13 Core resolved: I write rectification book; Primary may redo batch 01 second edition; batch 02 waits for rectification book. Relayed to Primary. Primary self-estimates ~90k (inconsistent with 126k at 19:00); measuring.
+- 2026-10-13 Primary measured at 162,147 tokens (19:12Z) from transcript; his 90k estimate wrong. Told Core.
+- 2026-10-13 Audit of Flow books: batch01 mixes Ethos/Rust/.mjs/clj landings; P5 adds .mjs constants; third edition P1 puts handover prompt string in context-refresh-hook.mjs (likely the 'context module in code'). No Clojure Flow prototype exists; .mjs launcher is Node. Cause chain: d68c82 brief named Rust crates; I relayed it verbatim. Report: scratchpad/audit-books.md
+- 2026-10-13 Wrote rectification book «Clojure and data: the rectification» (vision-stack new; intent-data no values in code + Ethos tension; intent-psyche correction/question/explanation; intent-main-flow relay check). Book subflow publishing.
+- 2026-10-13 Rectification book published: https://claude.ai/artifact/55knMkm8gem412DzSVZokr (link to Core). Phone-width check not run by book subflow.
+- 2026-10-13 Primary at 165,382 (19:13Z). Asked Field to refresh Primary before batch 02; told Core.
+- 2026-10-13 Field: refresh requested from Primary 0c9a77 (handover, no batch 02). Batch 02 held until Field reports ready successor and binding.
+- 2026-10-13 Book template tools/book-code.html inline-code wrap fixed (lock 20201, uncommitted); rectification book republished v2 at same URL, no comments at the time.
+- 2026-10-13 Field: context bundle published/verified (66239d1); Primary handover summary ready; successor brief frozen; batch 02 held until new identity and binding reported.
+- 2026-10-13 Successor Primary 563761 (Fable medium) reports ready with 0c9a77 handover. Told him to hold for Field's binding confirmation, then finish batch 01 second edition.
+- 2026-10-13 Field confirmed 563761 bound; 0c9a77 retired. Authorized 563761 to finish batch 01 second edition.
+- 2026-10-13 Core ordered batch 02 to 563761; sent batch 02 (metaflow) with rules, to start after batch 01 second edition publishes.
+- 2026-10-13 Batch 01 second edition published by 563761: https://claude.ai/artifact/59QJCCsPL7aFypQwBZoRZJ. Auditing against stack/data rules before relaying to Core. Template defect reported: ruling choices render as letters, source numbers them.
+- 2026-10-13 Audit of batch 01 2nd ed: Clojure passes; values-in-code fails (file names in P1, P6; borderline env var, regex, widths). Returned to 563761 before relaying.
+- 2026-10-13 tools/book-code.html: ruling choices now numbered (lock 20242, uncommitted). Phone test passes when run as flake defines (template path + CHROMIUM); earlier failure was missing args.
+- 2026-10-13 Batch 01 2nd ed v2 accepted after audit; link relayed to Core.
+- 2026-10-13 Batch 02 audited (pass, minor narration) and relayed to Core. Primary 113,941 tokens. Sent batch 03 (refresh/handover/thresholds).
+- 2026-10-13 Batch 03 published by 563761: https://claude.ai/artifact/GSQSYS6nZDzq7k4YzfoTi9; auditing. Routed compaction-knowledge request to Core.
+- 2026-10-13 Batch 03 audit: Clojure ok; narration, unshown code, message literals, unmarked term lines. Returned to 563761. Primary 135,781 tokens (21:27Z).
+- 2026-10-13 Core asked if batch 03 carries compaction rulings; it does not (my return note struck the compaction sentence as narration: error). Told 563761 to carry both as vision-flow lines; told Core.
+- 2026-10-13 Batch 03 v3 accepted; compaction lines relayed to Core (flagged short-term marking). Sent batch 04 (launch and lean start).
+- 2026-10-13 Primary at 143,733 tokens (21:41Z) as batch 04 starts. Plan: refresh after batch 04 or 05 by measure.
+- 2026-10-13 Primary 163,260 (22:14Z). Asked Field to prepare refresh after batch 04 settles; batch 05 to successor.
+- 2026-10-13 Batch 04 audit: unshown code in many proposals, unsupported short-term marks, a few literals, P15 a Mind question. Returned to 563761.
+- 2026-10-13 Batch 04 v2 republished; signalled Field to refresh 563761 (handover ready). Routed subflow-cost knowledge question to Core.
+- 2026-10-13 Batch 04 v2 re-audit: remaining unshown code (P7 refresh.clj/reminder hook, P12 current, P14 pane-flow!, P1 choice 5), unlabelled machine choices (P5, P10, P12, P14), P5/P10 short-term marks unsourced. To give to successor as first task before batch 05.
+- 2026-10-13 Successor Primary 288af9 (Fable medium) up. Gave batch 04 residual fixes as first task; batch 05 after.
+- 2026-10-13 Successor Primary 288af9 (Fable medium) up; name ambiguous (563761 still registered). Gave batch 04 residual fixes by id.
+- 2026-10-13 Field: 288af9 bound, 563761 retired. Batch 05 after 288af9 finishes batch 04 residuals.
+- 2026-10-13 Batch 04 v3 accepted with declared gaps; relayed to Core. Sent batch 05 (main-flow mode and roles) to 288af9.
+- 2026-10-13 Batch 05 published by 288af9: https://claude.ai/artifact/N77pCE2NAc9CuKUBKAuJSj; auditing. Routed 5 knowledge questions and 2 Mind facts to Core.
+- 2026-10-13 288af9 at 157,405 (23:37Z). Asked Field to prepare refresh after batch 05 settles.
+- 2026-10-13 Batch 05 audit failed (fork order, unshown choices, open questions as choices, unmarked Ethos, literals, unlabelled machine design, partial Destroy). Returned to 288af9.
+- 2026-10-13 Mind answered 5 harness questions (mind-context knowledge skills); relayed to 288af9 for batch 05 revision.
+- 2026-10-13 Batch 05 v2 accepted; signalled Field to refresh 288af9; relayed to Core with Mind-candidate discrepancy, two questions, filename inconsistency.
+- 2026-10-13 Successor 288af9→c5f24b. Sent batch 06 (context modules and prompt) by id.
+- 2026-10-13 Field confirmed c5f24b bound; 288af9 retired. Batch 06 already with c5f24b.
+- 2026-10-13 c5f24b writing batch 06 book (09). Facts: Flow tree has uncommitted Ethos registry work (Key.{Subaspect Topic}, Blake3); launch.clj still unlanded; a vision/ethos.md line points to nonexistent vision-flow-ethos skill.
+- 2026-10-14 Batch 06 book published by c5f24b: https://claude.ai/artifact/UQiKz4ZHVfgREo6CHHRmkU; auditing. Routed 8 open questions to Core.
+- 2026-10-14 tools/book-code.html: Destroy (violet) / Archive (amber) record classes added (lock 20389, uncommitted); phone test passes; colours not visually witnessed.
+- 2026-10-14 Batch 06 audit failed (narration, unshown landings/choices, unmarked Ethos, fork order, placeholders, figure). Returned to c5f24b with blake3-as-proposal and Destroy classes.
+- 2026-10-14 Sent Core the three questions' verbatim words (#psyches) and paths.
+- 2026-10-14 Core ruled the three questions become proposals; sent to c5f24b for batch 06 revision with the words.
+- 2026-10-14 Mind answered batch 06 questions (knowledge-context-source-contracts); relayed to c5f24b.
+- 2026-10-14 Batch 06 v3 accepted (10 proposals incl. three ruled questions); relayed to Core.
+- 2026-10-14 c5f24b at 148,145 (01:04Z). Sent batch 07 (messaging). Asked Field to prepare refresh after batch 07.
+- 2026-10-14 Core: roles.datom at current d3df664 declares book-page; 73414b6 historical. Told c5f24b to correct book 09 after batch 07.
+- 2026-10-14 Flagged to c5f24b: routing guidance-vs-hard-rule tension (stmt 10 vs vision-flow L34 vs book 08 P4) as numbered choices in book 10.
+- 2026-10-14 Batch 07 book published by c5f24b: https://claude.ai/artifact/YBBK3jSZuoivFtB25Eg82s. Auditing; revision goes to successor. Signalled Field to refresh c5f24b.
+- 2026-10-14 Successor c5f24b→df159a. Sent book 10 revision brief (audit faults + open questions as choices).
+- 2026-10-14 Sent df159a the L34 provenance and both dated sides for book 10 P4.
+- 2026-10-14 Field: df159a bound; c5f24b retired. df159a already briefed on book 10 revision and L34 provenance.
+- 2026-10-14 Batch 07 v2 accepted; relayed to Core. Caught tools/book-build.py (Python) — told df159a to rewrite in Clojure. Sent batch 08 (Nexus, ethos, design).
+- 2026-10-14 Batch 08 book published by df159a: https://claude.ai/artifact/B755eSrUkP5K5Ar73Q9KCi; auditing. book-build.py replaced by book-build.clj. Routed machine questions to Core.
+- 2026-10-14 Core answered (b)-(d); relayed (c),(d) to df159a; questioned Core's (b) claim that his words are always STT (book comments are typed).
+- 2026-10-14 Batch 08 audit failed (unshown choices, open choices, shell loader, machine facts, unsupported short-term mark, unsourced quote, tension-only P8). Returned to df159a.
+- 2026-10-14 Core: all his words STT (no typed); third-edition unread proposals stay open. Relayed to df159a; flagged operation-psyche-interraction typed line to Core.
+- 2026-10-14 Batch 08 v2 accepted (P15 machine lines to leave the book). Relayed to Core. Sent batch 09 (Flow CLI, deployment, long term).
+- 2026-10-14 Book 11 v3 (P15 machine lines out). Machine proposal routed to Core with hold until P15 ruled.
+- 2026-10-14 Batch 09 book (12) published by df159a: https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; auditing, measuring.
+- 2026-10-14 Batch 09 audit failed (unshown moves, narration, working instructions as vision, unsupported short-term, context-only half, P12 builds on unruled P15); open questions to choices. Returned to df159a.
+- 2026-10-14 Batch 09 v3 accepted; owner-work report routed to Core. Sent batch 10 (philosophy and artifacts), the last.
+- 2026-10-14 Batch 10 book (13) published by df159a: https://claude.ai/artifact/KK1F3k86R5yCnDcy5KL3CX; auditing. All ten batches published.
+- 2026-10-14 Batch 10 audit: unshown alternate landings, withdrawn draft at P4 fork, notion built on in P4. Returned to df159a.
+- 2026-10-14 Batch 10 v2 accepted. All ten batches published; full link list and uncommitted tool changes sent to Core. Primary df159a holds for comments.
+- 2026-10-14 Core: all ten in Open books; no next task. Hold with df159a for his comments; relay each and send revision links to Core.
+- 2026-10-14 Core: living ordered minimal messaging to Fable flows; send nothing to df159a, keep it idle. Core lands P1 of «Flow philosophy and artifacts» himself (no misnomer clause, not in vision-remembering). Do not revise the book.
+- 2026-10-14 Field refresh brief: handover written to flows/da2038/handover.md; holding.
+- 2026-10-14 Core: «Flow: short term and long term» 3rd ed.: living stopped reading at his last comment; proposals after it unread, open, held for fresh Flow Primary. Topic name Communication approved. Added to handover.
+- 2026-10-14 Core: hold lifted, urgent. Briefed df159a: Clojure-migration book (brief-clojure-migration.md). Book-comment revision to follow when Core relays the comments. New book rule: variants shown once, each variant a numbered choice with only differing words.
+- 2026-10-14 Core: living rule, word-level diff (one line, struck red / green words). Briefed df159a: renderer change, republish all Flow books + new one, verify on published page.
+- 2026-10-14 living comments on book 09 (two approvals, one correction: needed flow started running or not). Logged vision/flow.md; relayed psyches + revision brief to df159a.
+- 2026-10-14 Core: renderer word-diff fix being made elsewhere; df159a told not to touch renderer, render after it lands; land two approvals in psyche-context; book 09 short second edition after Clojure book.
+- 2026-10-14 Core: word-diff fix landed in book-build.clj; told df159a to render both books with it.
+- 2026-10-14 df159a claims P1/P3 approvals landed in psyche-context vision-flow.md, commit 67d358d (claim; subflow verifying). Books rendering.
+- 2026-10-14 Verified: psyche-context 67d358d on main, pushed; vision-flow.md L22 tail + L26 exactly the two approved texts; nothing else.
+- 2026-10-14 df159a: psyche landings blocked from generated trees by pinned Nix source in curriculum-nexus (claim). Routed to Field; told Core.
+- 2026-10-14 Field: owns pin/regeneration/resolver activation; current cohort psyche bf03117 with publisher; Communication launch first; will qualify 67d358d and propagate vision-flow separately; diagnosis not yet verified.
+- 2026-10-14 df159a published «Short-term prototypes: Clojure now?» https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy v1; audit subflow running.
+- 2026-10-14 living: books carry proposals only, no quotes or record citations; references unrendered beside source, archived on landing. Logged vision/books.md; relayed psyches + revision brief to df159a.
+- 2026-10-14 Core confirms no-refs rule for all books from now; told df159a.
+- 2026-10-14 df159a republished books 11,10, batch 04, batch 01 x2 with word diff; batch 01 regressed (restore told); batch 06 held for overflow; renderer CSS fix subflow launched; 02/03/05/rectification left as published; book 13 is Core's.
+- 2026-10-14 Audit of book 14 v1: fails red/green, Clojure/no-values, figure, runtime facts; findings sent to df159a (audit-book14.md).
+- 2026-10-14 book-code.html CSS fix landed (del/ins red/green + inline wrap; tests pass); in-code del/ins untested; df159a told to publish batch 06 and confirm.
+- 2026-10-14 batch 06 republished v4 (word diff ok outside code); batch 01 2nd ed restored v4; 1st ed restore in progress; book 12 2nd ed at https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g (fixing overflow). Page script drops in-code word marks; subflow fixing.
+- 2026-10-14 df159a: book 12 2nd ed v2 https://claude.ai/artifact/FBGQe51sX8Tr89Ryi1Cy3g ; audit running.
+- 2026-10-14 batch 06 v4 URL confirmed https://claude.ai/artifact/UQiKz4ZHVfgREo6CHHRmkU (df159a typo corrected).
+- 2026-10-14 Core: no RebuildSkills/regeneration/re-pin until Field reports activation complete; relayed to df159a.
+- 2026-10-14 page-script fix landed: word marks survive highlighting in code; df159a told to republish books with code changes.
+- 2026-10-14 Audit book 12 2nd ed v2: fails preamble/narration, noise choices + choice 7 revives obsolete, "restarted from it" beyond his words; sent to df159a.
+- 2026-10-14 batch 01 restored: 2nd ed https://claude.ai/artifact/59QJCCsPL7aFypQwBZoRZJ v4; 1st ed https://claude.ai/artifact/Nej5cp1CsWP8nuTxp2kshn v4 (pre-word-diff rendering; word-level needs sources fenced).
+- 2026-10-14 df159a: two #msg from origin «Psyche Flow Primary» (own name); asked Field whether a successor is bound or a registration is wrong.
+- 2026-10-14 book 14 v3 published https://claude.ai/artifact/8crUcAX5LKJANvvFsts1hy ; re-audit running.
+- 2026-10-14 Field: no successor bound; df159a holds Flow books. Self-origin msgs cause unknown; df159a told to retain evidence.
+- 2026-10-14 df159a republished with in-code word marks: book 11 v5, book 10 v4, batch 04 v5, batch 06 v5 (same URLs); no living comments.
+- 2026-10-14 book 12 2nd ed v3 published; re-audit running.
+- 2026-10-14 Re-audit book 14 v3: fails narration/counts, noise choices, empty-vector check, EDN/JSON caller mismatch, wrong P4 file, P4 adds words; sent to df159a.
+- 2026-10-14 Re-audit book 12 2nd ed v3: two small fixes sent to df159a.
+- 2026-10-14 book 12 2nd ed v4 passed audit; link sent to Core.
+- 2026-10-14 book 14 v4 published; re-audit running.
+- 2026-10-14 Re-audit book 14 v4: caller change missing, docstring, stray counts; sent to df159a.
+- 2026-10-14 Self-origin msgs: claim — committer 89fbc1 Codex audit subagent sent with FLOW_ID=df159a; relayed to Field for messenger owner.
+- 2026-10-14 book 14 v5 passed audit; link sent to Core.
+- 2026-10-14 Core: book 14 P4 negative wording; same subject in Communication (17ac8a) vision-living-communication. Asked 3960eb; df159a holds P4.
+- 2026-10-14 3960eb: Communication carries whole book-references subject; df159a dropping P4; told Core.
+- 2026-10-14 book 14 v6 (P1–P3) link sent to Core.
+- 2026-10-14 living: Ethos/datom→Clojure/EDN translation context module wanted; no code proposals, only approaches/patterns/standard wrapping code; Terra not used until Terra 6. Logged (ethos, books, models); psyches relayed to df159a.
+- 2026-10-14 Core orders: Clojure book to patterns not code, no Terra; new book on Ethos/Datom→Clojure/EDN translation module. Briefed df159a (brief-patterns.md).
+- 2026-10-14 Living approved book 14 former P4 (refs, one standard location); Communication (3960eb) lands it per Core; df159a told not to.
+- 2026-10-14 df159a at 321,144 tokens; asked Field for refresh, df159a for handover.
+- 2026-10-14 df159a handover ready (flows/df159a/handover.md); Field told to launch successor.
+- 2026-10-14 Communication landed book-references: psyche-context 574ad11c (vision-book after L8, refs one per book in references/ beside books); field-context 75c14b70, bb59d58 (L14 struck whole). Successor must put refs in references/.
+- 2026-10-14 Field: successor on cohort c95c6f4 (psyche 67d358d); told Field of 574ad11c/75c14b70/bb59d58.
+- 2026-10-14 living: 8 comments on book 12 2nd ed (full Flow Nexus proposal short/long; default task; vertical not short-term (question); removals approved; no Primary without Secondary + queuing; young transcript ~100k; figures must branch). Logged; held for successor; told Core.
+- 2026-10-14 Core: (1) land model-roles strikes now (subflow landing in psyche-context); (2) batch 09 3rd ed; (3) Flow Nexus book; (4) ethos/datom→Clojure module moves to Mind, dropped from Flow. Items 2-3 + Clojure revision for successor.
+- 2026-10-14 17ac8a: Communication ed3 carries figure branching and approval/inquiry lines; told them Flow proposes neither; asked about default task overlap.
+- 2026-10-14 17ac8a: default task stays in Flow ed3; Communication holds figure, three kinds, inquiry type, code-proposal line. No overlap.
+- 2026-10-14 Landed psyche-context 1399275 (model-roles strikes), e3823d6 (vision-flow L24 base); reported to Core.
+- 2026-10-14 Core: regeneration hold lifted; Field activation complete; use installed current resolver only.
+- 2026-10-14 Successor 55a2b4 bound. Sent brief (rules, A Clojure revision, B batch 09 ed3, C Flow Nexus book; drop Ethos/Clojure book) + 5 psyches.
+- 2026-10-14 Sent 55a2b4 the Clojure-book psyches (Ethos module, code proposals, Terra).
+- 2026-10-14 55a2b4: A/B/C taken; refs in flows/55a2b4/references/; «Flow: the first response» ordered by Field binding prompt, publish status pending; book A subflow out.
+- 2026-10-14 «Flow: the first response» not published; held until A–C out.
+- 2026-10-14 Field: 55a2b4 accepted (Fable medium); df159a retired. Rules and books already delivered to 55a2b4.
+- 2026-10-14 55a2b4 book A v7 published (patterns); audit running.
+- 2026-10-14 Audit book A v7: fails values in code/bash launcher, unfounded vision lines, stack home; sent to 55a2b4.
+- 2026-10-14 55a2b4 took all book A v7 audit items; v8 coming; book B in figure/witness.
+- 2026-10-14 55a2b4 book B (batch 09 ed3) https://claude.ai/artifact/NBDZqnnNptMynwhu6xjrKf v1; audit running.
+- 2026-10-14 Audit book B v1: noise, unlabelled machine additions, queuing as goal, figure short-term mark; sent to 55a2b4.
+- 2026-10-14 55a2b4 took all book B v1 items; v2 coming with A v8.
+- 2026-10-14 book A v8 published; re-audit running.
+- 2026-10-14 Re-audit A v8: passes except L57/L118/L187 overreach; sent. Rectification book File: lines should read psyche-context/skills (psyche-skills is symlink) — my book, note for its next edition.
+- 2026-10-14 55a2b4: A v9 cutting three lines to records; republish pending.
+- 2026-10-14 book A v9 passed; link sent to Core.
+- 2026-10-14 Book B v2 spot-check: two leftovers; checker lost proposal requirement — asked 55a2b4 to replace with File:+ requirement.
+- 2026-10-14 55a2b4: B v3 coming; checker gains missing-proposal rule (uncommitted).
+- 2026-10-14 book B v3 passed; link sent to Core.
+- 2026-10-14 55a2b4 book C «The Flow Nexus, whole» https://claude.ai/artifact/SM9kdHvCWXr7A2zw5DDHZg v1; audit running.
+- 2026-10-14 Audit book C v1: module name clash with batch 06 flow-ethos + Mind library.ethos, ethos vs nexus/flow/messaging, unlabelled additions, P4 dependency; sent to 55a2b4.
+- 2026-10-14 55a2b4 took all book C v1 items; v2 coming.
+- 2026-10-14 book C v2 published; re-audit running.
+- 2026-10-14 Re-audit C v2: Priority head, L34, vision-nexus example, two untagged, figure 1 linear, name reuse; sent.
+- 2026-10-14 55a2b4 took all C v2 items; v3 coming.
+- 2026-10-14 C v3 published; re-audit running; asked Busy/L24 reading as a choice.
+- 2026-10-14 Re-audit C v3 passes; two small items (Succeeded undeclared, Compose step) + Busy choice for v4.
+- 2026-10-14 book C v4 passed; link sent to Core.
+- 2026-10-14 Core: new graph-figure builder; label-on-wrong-edge in book 15; told 55a2b4 to rebuild and adjust.
+- 2026-10-14 55a2b4 rebuilding book C v5 under graph builder; A and B keep drawn figures.
+- 2026-10-14 living: Flow decides where hooks talk (logged); relayed to 55a2b4 for book C v5.
+- 2026-10-14 55a2b4: hooks folded into book C v5 as P5 (vision-flow after L60 + ethos).
+- 2026-10-14 Graph builder limits (label width row, 9.48px text) sent to 3960eb.
+- 2026-10-14 C v5: hook gaps to page as Machine-tagged routing record + kind; v6 requested.
+- 2026-10-14 LIVING DIRECT: low-usage mode (lean Opus + Sonnet/Haiku; retire big Fable sessions; every Fable call through him; Primaries reached only by Secondaries, fallback when metaflow inactive); usage report with resets; subflows same kind, specialties table; cheap contextualizer subflow before logging. Logged flow/usage/subflows.
+- 2026-10-14 Relayed living psyche to Core and Field; asked Field to retire 55a2b4; told 55a2b4 to stop and checkpoint.
+- 2026-10-14 C v6 spot-check pass; link sent to Core.
+- 2026-10-14 55a2b4 stopped; checkpoint flows/55a2b4/summary.md; holding for Field retirement.
+- 2026-10-14 Core: Field retires Fables, low-usage, Secondary-only Primaries; Core takes usage report + subagent book; Flow books on my seat, no Fable. Told Field 55a2b4 ready; usage result to go to Core.
+- 2026-10-14 Core: usage report and subagent book are Core's; stopped my usage subflow. Flow seat stands down to idle, records kept, until the living names his lean Opus.
+- 2026-10-14 LIVING DIRECT: research best Fable fallback (open source); lean datom calls (variant+payload struct with meta); change language; Markdown→datom; Astra designer mode via Mind Secondary, context <128k. Logged; psyche to Core.
+- 2026-10-14 Fable fallback research done: reports/fable-fallback-research.md; to Core and the living.
+- 2026-10-14 Core: carry out what the living says to me directly; usage report to Core whole. Restarted usage subflow.
+- 2026-10-14 Sent psyche + design request (datom response dialect, change language, Markdown mapping) to Mind Core Secondary for Astra.
+- 2026-10-14 LIVING DIRECT: review all compensation skills for conflicts; positive guidance; compensation/vision/knowledge core; low-power wake rule via Psyche Secondary. Logged vision/skills.md; to Core; carrying out.
+- 2026-10-14 Core: I carry compensation review; Fable wake via Core (Psyche Secondary) proposal + living permit; Field lands compensation lines — send proposed lines to Field.
+- 2026-10-14 Usage report done (reports/usage-2026-10-14.md); sent whole to Core.
+- 2026-10-14 LIVING DIRECT: mass-delete overruled/overcomplicated raw psyche; long-term explicit; makeshift = Clojure/Malli/EDN. His shared message did not arrive. Logged vision/psyche.md.
+- 2026-10-14 LIVING DIRECT (order): Astra designs a full Ethos spec for everything needed now, then a Clojure prototype from it, and writes the knowledge of how; he approves the vision and reviews the knowledge as it goes.
+- 2026-10-14 Compensation review done (reports/compensation-review.md): 50 skills, 20 conflicts, ~170 negations, core 13 lines; loading/drift/harm items sent to Field. Book next.
+- 2026-10-14 LIVING DIRECT: presentation book for subscribers/backers (fast, meta, lunation, solar cadences); everything tropical, Chronos daemon for astrological time; spirit reality as highest prompt (core spirit, core spirit reality, spirit, spirit behavior). Logged books.md, spirit.md. Shared message still missing.
+- 2026-10-14 3960eb fixed graph builder faults; book C html rebuilt; republish subflow out.
+- 2026-10-14 Book «Compensation core» v1 https://claude.ai/artifact/JqnZvp7RsbdsKycdbjZz8Z published by subflow; audit running.
+- 2026-10-14 Book C v7 republished; file to committer 89fbc1; Core and 3960eb told (11.3px effective).
