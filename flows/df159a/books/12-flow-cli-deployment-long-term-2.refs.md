@@ -68,3 +68,8 @@ Removed from the rendered page, kept here:
 - Dropped: the former choice 7 (the higher-then-lower escalation surviving for a metaflow Flow cannot start) — it revived what he called obsolete; the former choices 1–3 (land / amend / drop) and the restating choices 4, 6, 8, 10.
 - vision-model-roles replacements: the former rewrites («If the adjacent layer is not running, Flow starts it, so a Tertiary reaches the Secondary…», «Vertical routing selects the adjacent layer…») added routing he did not speak on; now the obsolete sentences are struck only, each removed row paired with its surviving words so the renderer marks one removed run per row (L52 keeps «at a time.»; L62–67 keep «the sender's layer.», «Busy is still eligible.», «Multiple bindings … never fanout.», «Resolve the binding immediately before each attempt.»; L68–69 wholly removed). The owner re-wraps on landing.
 - Figure: the last box now carries his words «the prompt it is to get now»; the condition «with no working transcript to reawaken» sits in the flow's box, the verbs (reaches, starts, is fed) on the arrows.
+
+## Version 4 revision (Secondary re-audit of Version 3)
+
+- Choice 3 reads «Machine choice:» alone; its reason: the vertical route is said in vision-model-roles too, so one sentence after L52 keeps that module whole once L52–55 are struck.
+- Choice 4's sentence is now the default sentence with one clause inserted («with a working transcript, its flow is reawakened from it;»), so the renderer marks a single added run instead of interleaving; the builder pairs a removed run with the added run that follows it row by row, and a blank line does not break that pairing.

@@ -84,7 +84,7 @@ File: `psyche-context/skills/vision-model-roles.md` (under choice 2, L51; L52–
 + Short-term: vertical communication stays within one aspect and normally advances one layer
 ```
 
-3. Machine choice, the vertical route said in vision-model-roles too, one sentence added after L52:
+3. Machine choice:
 
 File: `psyche-context/skills/vision-model-roles.md` (under choice 3, after L52)
 
@@ -98,6 +98,6 @@ File: `psyche-context/skills/vision-flow.md` (under choice 4, the added sentence
 
 ```text
 - A metaflow a request needs is started whether or not it is running; with no working transcript to reawaken, it is fed the metaflow's context modules and the prompt it is to get now.
-+ A metaflow a request needs is started whether or not it is running: with a working transcript, its flow is reawakened from it; with none, it is fed the metaflow's context modules and the prompt it is to get now.
++ A metaflow a request needs is started whether or not it is running; with a working transcript, its flow is reawakened from it; with no working transcript to reawaken, it is fed the metaflow's context modules and the prompt it is to get now.
 ```
 <!-- to-the-living:end -->
