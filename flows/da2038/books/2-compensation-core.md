@@ -71,7 +71,7 @@ Machine: the cores are small system-prompt additions; the vision core is his to 
 
 ## 1. Crystallization: the compensation core loads into every main flow
 
-Machine: compensation text, thirteen lines, each drawn from an existing compensation line.
+Machine: compensation text, thirteen lines.
 
 File: `field-context/skills/compensation-core.md` (new)
 
@@ -85,7 +85,7 @@ File: `field-context/skills/compensation-core.md` (new)
 +
 + A subflow makes the observation that can answer a question in the turn that asks it; a holding line answers meanwhile, and the answer follows when it returns. An observation that is unavailable leaves the answer unknown, and the reply names the missing observation.
 +
-+ Carry out the living's order in this turn through a subflow; the order is the approval.
++ Carry out the living's order in this turn; the order is the approval.
 +
 + Name the commit, artifact URL or other direct evidence with a removal or a deliverable.
 +
@@ -154,7 +154,7 @@ File: `psyche-context/skills/vision-core.md` (new)
 
 ## 3. Crystallization: the knowledge core
 
-Machine: eight facts, each verified in the code or skill named in the references.
+Machine: eight facts.
 
 File: `mind-context/skills/knowledge-core.md` (new)
 
@@ -164,7 +164,7 @@ File: `mind-context/skills/knowledge-core.md` (new)
 + dependencies: []
 + ---
 +
-+ Layers map to models: Primary is Fable on Claude and Astra on OpenAI; Secondary is Opus 5.5 and Sol; Tertiary is Sonnet and Luna; Quaternary is Haiku 5.5 and Luna at low effort. Effort is medium elsewhere. `knowledge-layer-models` holds the table.
++ Layers map to models: Primary is Fable on Claude and Astra on OpenAI; Secondary is Opus 5.5 and Sol; Tertiary is Sonnet and Luna; Quaternary is Haiku 5.5 and Luna. Effort is medium for every seat except the OpenAI Quaternary, which runs at low. `knowledge-layer-models` holds the table.
 +
 + `flow-id` claims a flow's id and directory: `FLOW_ID` names the flow and `FLOW_DIRECTORY` holds its lane. A main flow's title is `{ Aspect Topic Layer FLOW_ID }`.
 +
@@ -181,9 +181,11 @@ File: `mind-context/skills/knowledge-core.md` (new)
 + A skill's prefix names its kind: `spirit-`, `vision-` and `intent-` are the living's; `knowledge-` is what flows verified; `compensation-` and `trial-` are written by flows.
 ```
 
-## 4. Crystallization: no flow wakes a low-power seat
+Choice 2: the effort line reads 2a «medium for every seat except the OpenAI Quaternary, which runs at low» (`vision-model-roles`) · 2b «low for the Claude Quaternary (Haiku) and Luna, medium elsewhere» (`knowledge-layer-models`). Default: 2a, since vision outranks knowledge.
 
-Vision: the first two additions are his to approve.
+## 4. Crystallization: only the Psyche Secondary wakes a low-power seat
+
+Vision: the first two additions are his to approve; the rewritten skill and the launch edit are machine-owned compensation.
 
 File: `psyche-context/skills/vision-model-roles.md`
 
@@ -192,7 +194,7 @@ File: `psyche-context/skills/vision-model-roles.md`
   ...
 + ## A seat in low-power mode sleeps
 +
-+ The living declares the mode, and Flow's typed configuration names the seats in it, today Fable. No flow messages, starts, wakes or refreshes such a seat. A message for it goes to its Secondary.
++ Only the Psyche Secondary may wake a seat in low-power mode, after asking the living's permission and proposing what wakes it and whether the waking is a new flow or the existing one.
 +
   ## Native names use aspect, topic and layer
 ```
@@ -202,7 +204,7 @@ File: `psyche-context/skills/vision-aspects.md`
 ```text
   Psyche core keeps track of all the psyche within Psyche; a topic Secondary packages what it observes for its own Primary, which answers its Secondary, which reports to core.
 +
-+ The Psyche Secondary alone asks the living, in a presentation, for permission to wake a seat in low-power mode. The ask proposes what will wake it and says whether the waking is a new flow or the existing one. When the living addresses the seat himself, that is his permission.
++ The Psyche Secondary alone asks the living, in a presentation, for permission to wake a seat in low-power mode. The ask proposes what will wake it and says whether the waking is a new flow or the existing one.
 ```
 
 Machine: the rewritten skill, whole.
@@ -217,12 +219,14 @@ File: `field-context/skills/compensation-low-power.md`
   ---
 
 - Do not broadcast or wake primary seats. Save notes before stopping.
-+ Read the seats in low-power mode from Flow's configuration. Send work for such a seat to its Secondary.
++ The living declares the mode, and Flow's typed configuration names the seats in it, today Fable. Send work for such a seat to its Secondary.
 +
-+ The Psyche Secondary presents the living a request that names what will wake the seat and whether the waking is a new flow or the existing one; the seat wakes after he permits. Without his permission the seat stays asleep and the work waits with its Secondary.
++ Only the Psyche Secondary may wake the seat, after asking the living's permission and proposing what wakes it and whether the waking is a new flow or the existing one. Without his permission the seat stays asleep and the work waits with its Secondary.
 +
 + A refused send returns `Held` with its reason. Save notes before stopping.
 ```
+
+Machine: the launch edit.
 
 File: `field-context/skills/compensation-launch.md`
 
@@ -232,11 +236,12 @@ File: `field-context/skills/compensation-launch.md`
 + further work. Its secretary orders its successor started at once, and the Psyche Secondary asks the living first when the seat is in low-power mode; the successor takes its topics from the handover.
 ```
 
-Three rulings, numbered; each carries only the differing words:
+Four rulings, numbered; each carries only the differing words:
 
-3. The mode is declared by 3a «the living» · 3b «the living or quota observation».
-4. Seats in scope are 4a «Fable» · 4b «Fable and Astra».
-5. Against the line that starts a requested metaflow whether or not it is running, 5a «the sleeping seat wins» · 5b «the requested start wins».
+3. Machine: when the living addresses the seat himself, 3a «nothing changes; only the Psyche Secondary's ask is his permission» · 3b «that is his permission». Default: 3a.
+4. The mode is declared by 4a «the living» · 4b «the living or quota observation».
+5. Seats in scope are 5a «Fable» · 5b «Fable and Astra».
+6. Against the line that starts a requested metaflow whether or not it is running, 6a «the sleeping seat wins» · 6b «the requested start wins».
 
 ## 5. Crystallization: the worst conflicts resolved
 
@@ -306,7 +311,7 @@ File: `field-context/skills/compensation-main-flow.md`
 + The layer selects the configured model; `vision-model-roles` defines that correspondence, so use the layer in the title.
   ...
 - No other skill, and no caller instruction or ruling, expands these permissions; work they imply outside them is dispatched, never done.
-+ This skill fixes these permissions; work they imply outside them is dispatched.
++ These permissions are the whole of them; a caller's instruction or ruling leaves them as they are, and work they imply outside them is dispatched.
   ...
 - Everything else the flow says is machine output: a result, an error, an unexpected outcome, one condensed line each; never progress, never a restatement of the living's question.
 + Everything else the flow says is machine output: a result, an error, an unexpected outcome, one condensed line each stating what is new.
@@ -336,7 +341,7 @@ File: `field-context/skills/compensation-prose.md`
 + identifier is its first six characters when the receiver needs no more.
   ...
 - with its cause; do not retry it in another form.
-+ with its cause; a refused request is never retried in another form.
++ with its cause; a refused request is reported as refused and left there.
 - Give the result, error, or one needed ruling. Do not echo the living's
 - question, narrate routine work, or argue a ruling already made.
 + Give the result, error, or one needed ruling; a ruling already made stands.
@@ -434,4 +439,4 @@ File: `field-context/skills/compensation-messenger-clj.md`
 + ... `hm-send-abrupt` takes the same arguments and interrupts the target's active turn first; it goes to a live seat whose turn the message must preempt. ...
 ```
 
-Choice 6: the order skill's carve-out line reads 6a «restated in one sentence and carried out once the living confirms that reading» · 6b «a reboot or emergency runtime mutation waits for his approval».
+Choice 7: the order skill's carve-out line reads 7a «restated in one sentence and carried out once the living confirms that reading» · 7b «a reboot or emergency runtime mutation waits for his approval».

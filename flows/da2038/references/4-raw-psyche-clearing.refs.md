@@ -1,0 +1,763 @@
+# References for «Raw psyche: the clearing» (unrendered)
+
+Report: flows/da2038/reports/raw-psyche-supersession.md, sections 2, 3, 4a-4d and the deletion arithmetic.
+Living's request, 2026-10-14: flows/da2038/vision/psyche.md:2.
+
+## Proposal 1: supersession groups
+
+Group S1, Voice and seat vocabulary; later record flows/875960/vision/flow.md:11 (2026-10-11); later words «we've gotten rid of the voice concept».
+- flows/01e496/vision/seat.md:3 2026-10-02
+- flows/01e496/vision/messaging.md:3 2026-10-02
+- flows/91ea9f/vision/addressing.md:15 2026-10-02
+- flows/3ec648/vision/voices.md:3 2026-10-02
+- flows/5578cc/vision/vocabulary.md:3 2026-10-03
+- flows/5578cc/vision/flow.md:27 2026-10-03
+- flows/edf227/vision/flowRole.md:3 2026-10-03
+- flows/edf227/vision/flowRole.md:20 2026-10-03
+- flows/aa887c/vision/ethos.md:3 2026-10-04~
+- flows/bad807/notion/voices.md:3 2026-10-04
+- flows/8475a9/vision/voices.md:3 2026-10-05
+- flows/8475a9/vision/voices.md:13 2026-10-05
+- flows/8475a9/vision/voices.md:71 2026-10-05
+- flows/8475a9/vision/messenger.md:3 2026-10-05
+- flows/d66c26/vision/voices.md:17 2026-10-05
+- flows/f5a6e9/vision/flow.md:3 2026-10-07~
+
+Group S2, Curriculum and skill-generation machinery; later record flows/183ae0/vision/skills.md:11 (2026-09-29~); later words «not supposed to be in the curriculum anymore».
+- flows/48cff7/vision/skillKindsTaxonomy.md:3 2026-09-16
+- flows/9993b5/vision/curriculumNexus.md:3 2026-09-17~
+- flows/108ab0/vision/operational-curriculumAsModuleSystem.md:3 2026-09-17~
+- flows/108ab0/vision/operational-skillIsVisionUnified.md:3 2026-09-17~
+- flows/b80e55/vision/curriculumAndTriadSkillGeneration.md:3 2026-09-20~
+- flows/26c50c/vision/curriculum.md:2 2026-09-24
+
+Group S3, Flashbook illustration, swipe pages and buttons; later record flows/fe945a/vision/books.md:31 (2026-10-01); later words «No need for illustration».
+- flows/1b8ac0/vision/flashbooks.md:13 2026-09-20~
+- flows/0625c3/vision/flashbookBookShape.md:5 2026-09-20
+- flows/0625c3/vision/flashbookBookShape.md:11 2026-09-20
+- flows/b80e55/vision/flashbookDesignAndFormat.md:3 2026-09-20~
+- flows/b81560/vision/operational-twelveFoldRolesOnly.md:3 2026-09-20~
+- flows/d8df70/vision/flashbooks.md:3 2026-09-23
+- flows/d8df70/vision/flashbooks.md:15 2026-09-23
+- flows/836818/vision/flashbooks.md:17 2026-09-23
+- flows/d8df70/vision/flashbooks.md:74 2026-09-24
+- flows/1b8ac0/vision/mentciWeb.md:3 2026-09-21~
+
+Group S4, High, Medium and Low effort tiers of psyche flows; later record flows/1ac573/vision/operational-effortIsAlwaysMedium.md:3 (2026-09-18~); later words «it's all medium».
+- flows/024bc7/vision/effort.md:3 2026-09-13
+- flows/b49251/vision/psycheFlows.md:39 2026-09-16~
+- flows/b49251/vision/psycheFlows.md:47 2026-09-16~
+- flows/b49251/vision/psycheFlows.md:66 2026-09-16~
+- flows/f55ec8/vision/psycheLayers.md:3 2026-09-17~
+- flows/f55ec8/vision/psycheMedium.md:3 2026-09-17~
+
+Group S5, Datom and Protos delimiters: parentheses, curly quotes, guillemet maps, key-value, version number; later record flows/ad19b1/vision/archive-protos.md:4 (2026-09-04); later words «drop that delimiter and concept entirely».
+- flows/a5587095/vision/archive-datomSyntax.md:2 [archived] 2026-08-11
+- flows/a5587095/vision/archive-datomSyntax.md:14 [archived] 2026-08-11
+- flows/06196cc7/vision/archive-datomSyntax.md:2 [archived] 2026-08-13
+- flows/06196cc7/vision/archive-datomSyntax.md:53 [archived] 2026-08-14
+- flows/06196cc7/vision/archive-datomSyntax.md:79 [archived] 2026-08-14
+- flows/ac1e9ec8/vision/archive-datomSyntax.md:29 [archived] 2026-08-26
+- flows/ac1e9ec8/vision/archive-datomSyntax.md:95 [archived] 2026-08-26
+- flows/04db2fd2/vision/archive-datomMaps.md:7 [archived] 2026-09-03~
+- flows/ad19b1/vision/archive-ethos.md:4 [archived] 2026-09-04
+- flows/ad19b1/vision/archive-ethos.md:22 [archived] 2026-09-04
+- flows/ad19b1/vision/archive-ethos.md:31 [archived] 2026-09-04
+- flows/6329f1/vision/archive-ethos.md:12 [archived] 2026-09-04
+
+Group S6, Kinds as qualifiers, verbs and layer capabilities; later record flows/ebbe30/vision/ethos.md:9 (2026-10-09); later words «the kind has been changed to trait».
+- vision-raw/archive-traitsAsCapabilities.md:21 [archived] 2026-08-13
+- flows/04db2fd2/vision/archive-kinds.md:5 [archived] 2026-09-04~
+- flows/04db2fd2/vision/archive-kinds.md:11 [archived] 2026-09-04~
+- flows/4decf7/vision/archive-kinds.md:13 [archived] 2026-09-03
+- flows/62022e8f/vision/archive-kinds.md:20 [archived] 2026-09-04~
+- flows/e4a40e/vision/archive-kinds.md:14 [archived] 2026-09-04
+
+Group S7, Message envelope: 800-character pieces and part numbers; later record flows/88475f/vision/message.md:33 (2026-09-25~); later words «remove the 800-character limit».
+- flows/88475f/vision/message.md:17 2026-09-25~
+- flows/88475f/vision/message.md:9 2026-09-25~
+
+Group S8, Mentci GUI; later record flows/6f51ad/vision/mentci.md:2 (2026-09-28); later words «the Menchi you're referring to is obsolete now».
+- vision-raw/mentci.md:3 2026-08-13
+
+Group S9, Opus 4.6 preferred over Opus 5; later record flows/b80e55/vision/retirement.md:3 (2026-09-24); later words «We are phasing out Opus 4.6».
+- vision-raw/gradientsOfAuthority.md:3 2026-08-10
+- flows/58a86d/vision/subagentModel.md:3 2026-09-05
+- flows/5851f4/vision/psycheFacingModel.md:3 2026-09-08~
+- flows/f55ec8/vision/layers.md:13 2026-09-16~
+- flows/f55ec8/vision/modelRoles.md:3 2026-09-16~
+- flows/1ac573/vision/operational-defaultModelPsycheMediumClaude.md:3 2026-09-18~
+- flows/1ac573/vision/operational-olderOpusIs46.md:3 2026-09-18~
+
+Group S10, Nota and Dotos syntax; later record flows/01a03d6e/vision/archive-ethosInterfaces.md:21 (2026-08-26); later words «that is obsolete nota/dotos format».
+- vision-raw/archive-ethosDotosDivisionAndHelp.md:4 [archived] 2026-08-02
+- flows/55d18f4f/vision/archive-signalIsOurMessagingLayer.md:1 [archived] 2026-08-08
+- flows/c6b71b4c/vision/archive-threeStacks.md:2 [archived] 2026-08-10
+- flows/012fbf07/vision/archive-threeStacks.md:84 [archived] 2026-08-11
+
+Group S11, Training daemon; later record flows/358f143a/vision/trainingRepo.md:35 (2026-08-18); later words «isnt training anymore».
+- flows/358f143a/vision/trainingRepo.md:1 2026-08-17
+
+Group S12, Flow titles with V2 and per-model names; later record flows/d4ae97/vision/flow.md:160 (2026-10-08); later words «completely obsolete now».
+- flows/e51411/vision/titles.md:19 2026-09-25
+- flows/e51411/notion/v2.md:3 2026-09-25
+- flows/5ac3a3/vision/flow.md:2 2026-09-27
+
+Group S13, Flow artifacts: subflow marking and handoff file; later record flows/5c8be3ca/vision/flowArtifacts.md:20 (2026-08-21); later words «then we should drop the idea».
+- flows/5c8be3ca/vision/flowArtifacts.md:11 2026-08-21
+- flows/5c8be3ca/vision/flowArtifacts.md:1 2026-08-21
+
+Group S14, Psyche log ids as hashes; later record flows/06196cc7/vision/psycheLogStructure.md:94 (2026-08-14); later words «I've changed my mind on hashing the IDs».
+- flows/06196cc7/vision/psycheLogStructure.md:21 2026-08-14
+
+Group S15, Ethos Monolith as its own stack; later record flows/fe34eb/vision/ethos.md:11 (2026-09-10); later words «it's not relevant anymore».
+- flows/ba906ae2/vision/archive-threeStacks.md:2 [archived] 2026-08-14
+- vision-raw/mainFunction.md:74 2026-08-21
+
+## Proposal 2: duplicates (copy <- keeper)
+
+Exact copies, 360:
+- flows/01a02b46/vision/zeusUpdate.md:73 2026-08-09 <- keep flows/019fe641/vision/hostEnvironmentRecovery.md:1
+- flows/a5587095/vision/archive-protosIsTheSharedStyle.md:3 [archived] 2026-08-11 <- keep flows/b7ba00/vision/meaningLanguage.md:131
+- flows/a5587095/vision/archive-structuredStringType.md:37 [archived] 2026-08-11 <- keep flows/b7ba00/vision/meaningLanguage.md:131
+- flows/a5587095/vision/archive-structuredStringType.md:18 [archived] 2026-08-11 <- keep flows/a5587095/vision/archive-datomSyntax.md:14
+- flows/a5587095/vision/archive-threeStacks.md:2 [archived] 2026-08-11 <- keep flows/a5587095/vision/archive-structuredStringType.md:82
+- flows/01a02b46/vision/zeusUpdate.md:41 2026-08-19 <- keep flows/01a01a93/vision/hostEnvironmentRecovery.md:23
+- flows/fd301d9a/vision/actorLibrary.md:48 2026-08-21 <- keep flows/15b67974/vision/hexis.md:1
+- flows/15b67974/vision/archive-actorLibrary.md:3 [archived] 2026-08-21 <- keep flows/fd301d9a/vision/actorLibrary.md:18
+- vision-raw/actorLibrary.md:3 2026-08-21 <- keep flows/fd301d9a/vision/actorLibrary.md:25
+- vision-raw/spiritComponentAndFile.md:14 2026-08-21 <- keep flows/fd301d9a/vision/actorLibrary.md:41
+- flows/fd301d9a/vision/archive-nexusTraits.md:3 [archived] 2026-08-22 <- keep flows/15b67974/vision/worldModelBeforeCode.md:11
+- flows/15b67974/vision/archive-actorLibrary.md:12 [archived] 2026-08-22 <- keep flows/fd301d9a/vision/actorLibrary.md:3
+- flows/01a03eda/vision/archive-datomInteger.md:7 [archived] 2026-08-26 <- keep flows/01a03eda/vision/observe.md:3
+- flows/b7ba00/vision/meaningLanguage.md:121 2026-09-26~ <- keep flows/5851f4/vision/anatomyOfCommunicatingThinkingAndReacting.md:3
+- flows/b7ba00/vision/meaningLanguage.md:109 2026-09-26~ <- keep flows/5851f4/vision/ashtadhyayiKnowledgeBase.md:3
+- flows/564f55/vision/archive-protos.md:91 [archived] 2026-09-09 <- keep flows/564f55/vision/archive-protos.md:73
+- flows/bcd02a/notion/ethos.md:11 2026-09-13 <- keep flows/024bc7/notion/ethosDelta.md:3
+- flows/bcd02a/notion/prometheus.md:3 2026-09-13 <- keep flows/024bc7/vision/effort.md:11
+- flows/bcd02a/vision/network.md:3 2026-09-13 <- keep flows/024bc7/vision/network.md:3
+- flows/bcd02a/notion/ethos.md:3 2026-09-13 <- keep flows/024bc7/vision/nexus.md:13
+- flows/bcd02a/vision/paired-flows.md:15 2026-09-13 <- keep flows/024bc7/vision/parallelSessions.md:31
+- flows/bcd02a/notion/persona.md:3 2026-09-13 <- keep flows/024bc7/vision/soul.md:3
+- flows/bcd02a/notion/persona.md:9 2026-09-13 <- keep flows/024bc7/vision/soul.md:9
+- flows/bcd02a/notion/nexus.md:3 2026-09-13 <- keep flows/024bc7/vision/storage.md:3
+- flows/eae736/vision/sessionAccess.md:3 2026-09-14~ <- keep flows/e1953c/vision/terminal.md:3
+- flows/840e42/vision/messages.md:11 2026-10-01~ <- keep flows/cf7879/vision/cluster.md:3
+- flows/6852f4/vision/communication.md:3 2026-09-17~ <- keep flows/108ab0/vision/operational-flowDatomLauncherLanguage.md:3
+- flows/9993b5/vision/typedString.md:3 2026-09-17~ <- keep flows/b7ba00/vision/meaningLanguage.md:101
+- flows/b05237/vision/operational-logOnMainNowMigrateLater.md:3 2026-09-18~ <- keep flows/33ba2b/vision/psycheDataArchitecture.md:51
+- flows/b81560/vision/operational-meaningStructureRootVariant.md:3 2026-09-19~ <- keep flows/b7ba00/vision/meaningLanguage.md:47
+- flows/f38926/vision/meaningLanguage.md:3 2026-09-19~ <- keep flows/b7ba00/vision/meaningLanguage.md:47
+- flows/b81560/vision/archive-operational-meaningLanguageLogographic.md:3 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:55
+- flows/f38926/vision/archive-meaningLanguage.md:15 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:55
+- flows/b81560/vision/archive-operational-meaningLanguageAnnotationLayers.md:3 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:63
+- flows/f38926/vision/archive-meaningLanguage.md:23 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:63
+- flows/f38926/vision/archive-meaningLanguage.md:3 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:73
+- flows/b81560/vision/archive-operational-vaisheshikaRuledAndSyntaxQuestion.md:3 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:85
+- flows/f38926/vision/archive-meaningLanguage.md:59 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:85
+- flows/b81560/vision/archive-operational-meaningDualSanskritEnglishNames.md:3 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:93
+- flows/f38926/vision/archive-meaningLanguage.md:67 [archived] 2026-09-20~ <- keep flows/b7ba00/vision/meaningLanguage.md:93
+- flows/f38926/vision/archive-operational-openCodeRemoteAccess.md:11 [archived] 2026-09-20~ <- keep flows/b81560/vision/operational-deployOnTheHostYoureOn.md:3
+- flows/f38926/vision/nightWork.md:3 2026-09-19~ <- keep flows/b81560/vision/operational-nightWorkDirective.md:3
+- flows/f38926/vision/archive-operational-openCodeRemoteAccess.md:3 [archived] 2026-09-20~ <- keep flows/b81560/vision/operational-openCodeOnUranusNotZeus.md:3
+- flows/f38926/vision/operational-openCodeRemoteAccess.md:3 2026-09-19~ <- keep flows/b81560/vision/operational-openCodeTestWithCodexSubscription.md:3
+- flows/b81560/vision/archive-operational-pocSandboxVmFirst.md:3 [archived] 2026-09-20~ <- keep flows/f38926/vision/operational-openCodeRemoteAccess.md:13
+- flows/b81560/vision/operational-twelveFoldRolesOnly.md:3 2026-09-20~ <- keep flows/1b8ac0/vision/roles.md:3
+- flows/b81560/vision/operational-allPsychesRelayUpChain.md:3 2026-09-20~ <- keep flows/1b8ac0/vision/roles.md:11
+- flows/f38926/vision/archive-committing.md:3 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-explicitFilePathCommits.md:3
+- flows/f38926/vision/archive-subflows.md:13 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-fieldUltraLowRoutesSubflowRequests.md:3
+- flows/f38926/vision/archive-horizon.md:3 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-horizonNexusAndNodeResources.md:3
+- flows/f38926/vision/archive-meaningLanguage.md:33 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-meaningContentAddressedAnnotation.md:3
+- flows/f38926/vision/archive-subflows.md:21 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-subflowRequestIdAndAsync.md:3
+- flows/b80e55/vision/autonomousClusterOperation.md:3 2026-09-21~ <- keep flows/1b8ac0/vision/autonomousOperation.md:3
+- flows/5f38bc/vision/prometheusZeusInternetPropagationAndTailnetAlternatives.md:8 2026-09-24~ <- keep flows/00f95a/vision/prometheus-zeus-mesh-possibilities.md:1
+- flows/e71dab/vision/meshNetwork.md:26 2026-09-24~ <- keep flows/00f95a/vision/prometheus-zeus-mesh-possibilities.md:1
+- flows/d8df70/vision/deployment.md:9 2026-09-24 <- keep flows/836818/vision/flowNexus.md:47
+- flows/d8df70/vision/flowTool.md:9 2026-09-24 <- keep flows/836818/vision/flowNexus.md:55
+- flows/b7da5d/vision/meaningLanguage.md:1 2026-09-24 <- keep flows/b7ba00/vision/meaningLanguage.md:39
+- flows/e51411/vision/flashbooks.md:3 2026-09-24 <- keep flows/d8df70/vision/flashbooks.md:64
+- flows/e51411/vision/flashbooks.md:13 2026-09-24 <- keep flows/d8df70/vision/flashbooks.md:74
+- flows/e51411/vision/launch.md:3 2026-09-24 <- keep flows/d8df70/vision/launch.md:12
+- flows/e51411/vision/launch.md:11 2026-09-24 <- keep flows/d8df70/vision/launch.md:20
+- flows/e51411/vision/titles.md:3 2026-09-24 <- keep flows/d8df70/vision/titles.md:4
+- flows/88475f/vision/asks.md:1 2026-09-25~ <- keep flows/e51411/vision/authority.md:3
+- flows/88475f/vision/asks.md:9 2026-09-25~ <- keep flows/e51411/vision/authority.md:21
+- flows/88475f/vision/speechToText.md:1 2026-09-25~ <- keep flows/e51411/vision/speech.md:3
+- flows/504461/vision/cluster-builds.md:2 2026-09-25 <- keep flows/26c50c/vision/build-placement.md:2
+- flows/da88cf/vision/clusterData.md:3 2026-09-25 <- keep flows/26c50c/vision/build-placement.md:2
+- flows/b7da5d/vision/prometheusBuildPolicy.md:9 2026-09-25 <- keep flows/504461/vision/cluster-builds.md:8
+- flows/da88cf/vision/prometheus.md:47 2026-09-25 <- keep flows/504461/vision/cluster-builds.md:8
+- flows/e71dab/vision/tailscale.md:10 2026-09-25 <- keep flows/504461/vision/cluster-builds.md:8
+- flows/e51411/vision/stack.md:18 2026-09-25 <- keep flows/b7da5d/vision/flowClj.md:1
+- flows/da88cf/vision/prometheus.md:11 2026-09-25 <- keep flows/b7da5d/vision/prometheusBuilder.md:9
+- flows/e51411/vision/network.md:11 2026-09-25 <- keep flows/da88cf/vision/daisyChain.md:11
+- flows/17ac8a/vision/communication.md:45 ?~ <- keep flows/df159a/vision/books.md:23
+- flows/88475f/vision/flow.md:9 2026-09-25~ <- keep flows/e51411/vision/launch.md:91
+- flows/88475f/vision/power.md:1 2026-09-25~ <- keep flows/e51411/vision/launch.md:105
+- flows/88475f/vision/psycheInteraction.md:1 2026-09-25~ <- keep flows/e51411/vision/mainFlow.md:29
+- flows/88475f/vision/message.md:17 2026-09-25~ <- keep flows/e51411/vision/messaging.md:99
+- flows/b7ba00/vision/modelFlows.md:3 2026-09-26 <- keep flows/56ae53/vision/model-flow-emergency.md:1
+- flows/b7da5d/vision/modelSpendEmergency.md:2 2026-09-26 <- keep flows/56ae53/vision/model-flow-emergency.md:1
+- flows/e71dab/vision/modelGovernance.md:2 2026-09-26 <- keep flows/56ae53/vision/model-flow-emergency.md:1
+- flows/b7ba00/notion/sema.md:3 2026-09-26 <- keep flows/93ba9f/notion/semaCommunication.md:1
+- flows/e71dab/vision/paneLifecycle.md:10 2026-09-26 <- keep flows/93ba9f/vision/automation.md:1
+- flows/b7ba00/vision/callerIdentity.md:3 2026-09-26 <- keep flows/93ba9f/vision/callerIdentity.md:1
+- flows/b7ba00/vision/messaging.md:63 2026-09-26 <- keep flows/93ba9f/vision/datomVocabulary.md:1
+- flows/b7ba00/vision/fableRole.md:3 2026-09-26 <- keep flows/93ba9f/vision/fableRole.md:1
+- flows/b7da5d/vision/fieldOwnership.md:2 2026-09-26 <- keep flows/93ba9f/vision/fableRole.md:1
+- flows/b7ba00/vision/designBook.md:11 2026-09-26 <- keep flows/93ba9f/vision/fieldTool.md:1
+- flows/b7ba00/vision/mindRoles.md:3 2026-09-26 <- keep flows/93ba9f/vision/mindRoles.md:1
+- flows/b7ba00/vision/reachingTheLiving.md:9 2026-09-26 <- keep flows/93ba9f/vision/primarySeats.md:1
+- flows/b7ba00/vision/designBook.md:3 2026-09-26 <- keep flows/93ba9f/vision/psycheSharing.md:1
+- flows/e167d8/vision/layerVocabulary.md:3 2026-09-26 <- keep flows/b7ba00/vision/meaningLanguage.md:31
+- flows/e71dab/vision/launchGovernance.md:10 2026-09-26 <- keep flows/b7ba00/vision/modelFlows.md:19
+- flows/b860be/vision/messageSize.md:3 2026-09-26 <- keep flows/b7da5d/vision/layerVocabularyAndReview.md:15
+- flows/e167d8/vision/psycheMessages.md:3 2026-09-26 <- keep flows/b7da5d/vision/layerVocabularyAndReview.md:15
+- flows/f5a74e/vision/independent-analysis.md:16 2026-09-26 <- keep flows/b7da5d/vision/layerVocabularyAndReview.md:15
+- flows/b860be/vision/mainRoles.md:3 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:3
+- flows/b860be/vision/fieldTool.md:3 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:31
+- flows/b860be/vision/fieldTool.md:15 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:43
+- flows/e167d8/vision/fieldTool.md:13 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:43
+- flows/b860be/vision/openCode.md:3 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:51
+- flows/e167d8/vision/openCode.md:3 2026-09-26 <- keep flows/b7da5d/vision/mainFlowRefreshAndRoles.md:51
+- flows/b860be/vision/aiModels.md:3 2026-09-26 <- keep flows/b7da5d/vision/modelPlacement.md:1
+- flows/e167d8/vision/prometheus.md:3 2026-09-26 <- keep flows/b7da5d/vision/modelPlacement.md:1
+- flows/31147a/vision/ai-model-placement.md:2 2026-09-26~ <- keep flows/b7da5d/vision/modelPlacement.md:1
+- flows/31147a/vision/ai-model-placement.md:10 2026-09-26~ <- keep flows/b7da5d/vision/piper.md:1
+- flows/31147a/vision/ai-model-placement.md:18 2026-09-26~ <- keep flows/b7da5d/vision/piper.md:1
+- flows/f5a74e/vision/independent-analysis.md:2 2026-09-26 <- keep flows/b860be/vision/layerVocabulary.md:1
+- flows/caf622/vision/Fable.md:16 2026-09-28 <- keep flows/6f51ad/vision/communication.md:3
+- flows/c02c0d/vision/seats.md:3 2026-09-28 <- keep flows/6f51ad/vision/communication.md:11
+- flows/caf622/vision/Fable.md:2 2026-09-28 <- keep flows/6f51ad/vision/communication.md:11
+- flows/8904b1/vision/deployment.md:3 2026-09-28 <- keep flows/6f51ad/vision/home.md:3
+- flows/b666e7/vision/namesOfFlows.md:2 2026-09-28 <- keep flows/6f51ad/vision/namesOfFlows.md:2
+- flows/c02c0d/vision/presentation.md:3 2026-09-28 <- keep flows/6f51ad/vision/presentation.md:3
+- flows/caf622/vision/Fable.md:9 2026-09-28 <- keep flows/c02c0d/vision/seats.md:11
+- flows/d5b96b/vision/cluster-survey.md:2 2026-09-29 <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/c64ee3/vision/network.md:3 2026-09-29 <- keep flows/6f51ad/vision/network.md:3
+- flows/c64ee3/vision/presentation.md:3 2026-09-29 <- keep flows/6f51ad/vision/transcripts.md:3
+- flows/b666e7/notion/hook.md:2 2026-09-29~ <- keep flows/bd0019/vision/hook.md:3
+- flows/b666e7/vision/flows.md:2 2026-09-29~ <- keep flows/caf622/vision/Luna-Flow.md:2
+- flows/b666e7/vision/communication.md:2 2026-10-01~ <- keep flows/7328f4/vision/seats.md:3
+- flows/b666e7/vision/polling.md:1 2026-10-01~ <- keep flows/1bc255/vision/pollingSystems.md:1
+- flows/7328f4/vision/stateful.md:3 2026-10-01 <- keep flows/b666e7/vision/declarative-features.md:8
+- flows/7328f4/vision/seats.md:11 2026-10-01 <- keep flows/b666e7/vision/seat-migration.md:1
+- flows/7328f4/vision/network.md:11 2026-10-01 <- keep flows/b666e7/vision/usb-ethernet-sharing.md:8
+- flows/e2a70a/vision/blocks-for-the-living.md:3 2026-10-01 <- keep flows/6997eb/vision/presentation.md:3
+- flows/91ea9f/vision/books.md:11 2026-10-01 <- keep flows/6997eb/vision/presentation.md:105
+- flows/fe945a/vision/presentation.md:22 2026-10-01 <- keep flows/6997eb/vision/presentation.md:105
+- flows/fe945a/vision/questions.md:3 2026-10-01 <- keep flows/6997eb/vision/questions.md:3
+- flows/fe945a/vision/repositoryClassification.md:3 2026-10-01 <- keep flows/6997eb/vision/repositoryClassification.md:3
+- flows/bd0019/vision/marker.md:3 2026-10-01 <- keep flows/91ea9f/vision/books.md:3
+- flows/fe945a/vision/skills.md:3 2026-10-01 <- keep flows/bd0019/vision/skillProposals.md:3
+- flows/fe945a/vision/hashes.md:13 2026-10-01 <- keep flows/e2a70a/vision/identifying-strings.md:3
+- flows/91ea9f/vision/books.md:25 2026-10-02 <- keep flows/01e496/vision/books.md:3
+- flows/41fa34/vision/what-the-book-is.md:1 2026-10-02 <- keep flows/01e496/vision/books.md:11
+- flows/91ea9f/vision/books.md:33 2026-10-02 <- keep flows/01e496/vision/books.md:11
+- flows/91ea9f/vision/books.md:41 2026-10-02 <- keep flows/01e496/vision/books.md:19
+- flows/41fa34/vision/design-by-astra.md:9 2026-10-02 <- keep flows/01e496/vision/design.md:3
+- flows/42265e/vision/flow-component.md:19 2026-10-02 <- keep flows/01e496/vision/design.md:3
+- flows/42265e/vision/flow-component.md:27 2026-10-02 <- keep flows/01e496/vision/design.md:3
+- flows/91ea9f/vision/roles.md:3 2026-10-02 <- keep flows/01e496/vision/design.md:3
+- flows/edf227/vision/illustrations.md:9 2026-10-03 <- keep flows/01e496/vision/flashbook.md:3
+- flows/41fa34/vision/continuous-names.md:1 2026-10-02 <- keep flows/01e496/vision/flowIdentity.md:3
+- flows/91ea9f/vision/addressing.md:3 2026-10-02 <- keep flows/01e496/vision/flowIdentity.md:3
+- flows/fe945a/vision/flowNexus.md:3 2026-10-02 <- keep flows/01e496/vision/flowNexus.md:3
+- flows/42265e/vision/flow-component.md:3 2026-10-02 <- keep flows/01e496/vision/flowNexus.md:11
+- flows/42265e/vision/flow-component.md:11 2026-10-02 <- keep flows/01e496/vision/flowNexus.md:11
+- flows/91ea9f/vision/flowNexus.md:3 2026-10-02 <- keep flows/01e496/vision/flowNexus.md:11
+- flows/41fa34/vision/continuous-names-messaging.md:1 2026-10-02 <- keep flows/01e496/vision/messaging.md:3
+- flows/91ea9f/vision/addressing.md:9 2026-10-02 <- keep flows/01e496/vision/messaging.md:3
+- flows/91ea9f/vision/seat.md:3 2026-10-02 <- keep flows/01e496/vision/seat.md:3
+- flows/41fa34/vision/working-system.md:1 2026-10-02 <- keep flows/01e496/vision/simpleWorkingSystem.md:3
+- flows/91ea9f/vision/priority.md:3 2026-10-02 <- keep flows/01e496/vision/simpleWorkingSystem.md:3
+- flows/41fa34/vision/presentation-publication.md:1 2026-10-02 <- keep flows/01e496/vision/skills.md:3
+- flows/91ea9f/vision/skills.md:3 2026-10-02 <- keep flows/01e496/vision/skills.md:3
+- flows/91ea9f/vision/addressing.md:23 2026-10-02 <- keep flows/3ec648/vision/voices.md:3
+- flows/42265e/vision/flashbooks.md:27 2026-10-02~ <- keep flows/41fa34/vision/checkboxes.md:1
+- flows/42265e/vision/flashbooks.md:59 2026-10-02~ <- keep flows/41fa34/vision/expands-vertically.md:1
+- flows/42265e/vision/capsule.md:2 2026-10-02 <- keep flows/41fa34/vision/semi-sandbox.md:2
+- flows/42265e/vision/system.md:2 2026-10-02 <- keep flows/41fa34/vision/simple-working-system.md:2
+- flows/91ea9f/vision/skills.md:9 2026-10-02 <- keep flows/41fa34/vision/skill-catch-up.md:1
+- flows/42265e/vision/flashbooks.md:51 2026-10-02~ <- keep flows/41fa34/vision/sonnet-comments.md:1
+- flows/42265e/vision/flashbooks.md:35 2026-10-02~ <- keep flows/41fa34/vision/swiping-left-right.md:1
+- flows/42265e/vision/skill-proposals.md:3 2026-10-02 <- keep flows/41fa34/vision/who-implements-skill-proposals.md:1
+- flows/bd0019/vision/metaHarness.md:3 2026-10-02 <- keep flows/6997eb/vision/metaHarness.md:3
+- flows/fe945a/vision/metaHarness.md:3 2026-10-02 <- keep flows/6997eb/vision/metaHarness.md:3
+- flows/fe945a/vision/flowLifecycle.md:12 2026-10-02 <- keep flows/91ea9f/vision/flowLifecycle.md:3
+- flows/dea0ba/vision/flowLifecycle.md:2 2026-10-03 <- keep flows/41fa34/vision/flowLifecycle.md:2
+- flows/dea0ba/vision/flowLifecycle.md:8 2026-10-03 <- keep flows/41fa34/vision/flowLifecycle.md:10
+- flows/9fb0ad/vision/identifiers.md:3 2026-10-03 <- keep flows/41fa34/vision/identifiers.md:2
+- flows/5578cc/vision/layers.md:3 2026-10-03 <- keep flows/41fa34/vision/layers.md:2
+- flows/5578cc/vision/publishing.md:3 2026-10-03 <- keep flows/41fa34/vision/publication.md:2
+- flows/dea0ba/vision/publishing.md:1 2026-10-03 <- keep flows/41fa34/vision/publication.md:2
+- flows/edf227/vision/workspaces.md:3 2026-10-03 <- keep flows/41fa34/vision/publication.md:2
+- flows/41fa34/vision/speech.md:18 2026-10-03 <- keep flows/41fa34/vision/skills.md:2
+- flows/5578cc/vision/skills.md:11 2026-10-03 <- keep flows/41fa34/vision/skills.md:2
+- flows/dea0ba/vision/speech.md:14 2026-10-03 <- keep flows/41fa34/vision/skills.md:2
+- flows/5578cc/vision/skills.md:19 2026-10-03 <- keep flows/41fa34/vision/skills.md:10
+- flows/5578cc/vision/flow.md:39 2026-10-03 <- keep flows/41fa34/vision/speech.md:2
+- flows/9fb0ad/vision/speech.md:9 2026-10-03 <- keep flows/41fa34/vision/speech.md:2
+- flows/dea0ba/vision/speech.md:8 2026-10-03 <- keep flows/41fa34/vision/speech.md:2
+- flows/9fb0ad/vision/speech.md:3 2026-10-03 <- keep flows/41fa34/vision/speech.md:10
+- flows/5578cc/vision/behavior.md:11 2026-10-03 <- keep flows/41fa34/vision/speech.md:26
+- flows/edf227/vision/readingTheLiving.md:3 2026-10-03 <- keep flows/41fa34/vision/speech.md:26
+- flows/42265e/vision/routing-examples.md:1 2026-10-03~ <- keep flows/41fa34/vision/speech.md:26
+- flows/9fb0ad/vision/subflows.md:3 2026-10-03 <- keep flows/41fa34/vision/subflows.md:2
+- flows/5578cc/vision/skills.md:39 2026-10-03 <- keep flows/41fa34/vision/subflows.md:10
+- flows/edf227/vision/subflowBriefs.md:3 2026-10-03 <- keep flows/41fa34/vision/subflows.md:10
+- flows/6e782c/vision/bookRendering.md:1 2026-10-03 <- keep flows/5578cc/vision/flashbook.md:3
+- flows/dea0ba/vision/illustrations.md:1 2026-10-03 <- keep flows/5578cc/vision/flashbook.md:3
+- flows/9fb0ad/vision/identifiers.md:15 2026-10-03 <- keep flows/5578cc/vision/flow.md:19
+- flows/dea0ba/vision/titles.md:1 2026-10-03 <- keep flows/5578cc/vision/flow.md:19
+- flows/9fb0ad/vision/identifiers.md:21 2026-10-03 <- keep flows/5578cc/vision/flow.md:27
+- flows/9fb0ad/vision/deterministicWork.md:3 2026-10-03 <- keep flows/5578cc/vision/flow.md:47
+- flows/dea0ba/vision/deterministicWork.md:1 2026-10-03 <- keep flows/5578cc/vision/flow.md:47
+- flows/9fb0ad/vision/systemPrompt.md:3 2026-10-03 <- keep flows/5578cc/vision/flow.md:55
+- flows/9fb0ad/vision/identifiers.md:9 2026-10-03 <- keep flows/5578cc/vision/identifiers.md:3
+- flows/9fb0ad/vision/ethosLibrary.md:3 2026-10-03 <- keep flows/5578cc/vision/identifiers.md:11
+- flows/9fb0ad/vision/identifiers.md:31 2026-10-03 <- keep flows/5578cc/vision/identifiers.md:19
+- flows/dea0ba/vision/locking.md:1 2026-10-03 <- keep flows/5578cc/vision/locking.md:3
+- flows/9fb0ad/vision/speakingToTheLiving.md:3 2026-10-03 <- keep flows/5578cc/vision/writing.md:3
+- flows/dea0ba/vision/speakingToTheLiving.md:1 2026-10-03 <- keep flows/5578cc/vision/writing.md:3
+- flows/28d847/vision/infrastructure.md:3 2026-10-03~ <- keep flows/5ed94b/vision/infrastructure.md:3
+- flows/d66c26/vision/layers.md:3 2026-10-03 <- keep flows/5ed94b/vision/seats.md:3
+- flows/edf227/vision/layers.md:3 2026-10-03 <- keep flows/5ed94b/vision/seats.md:3
+- flows/28d847/vision/layers.md:3 2026-10-03~ <- keep flows/5ed94b/vision/seats.md:3
+- flows/dea0ba/vision/subflows.md:13 2026-10-03~ <- keep flows/5ed94b/vision/seats.md:3
+- flows/28d847/vision/books.md:11 2026-10-03~ <- keep flows/5ed94b/vision/visionBooks.md:11
+- flows/dea0ba/vision/clusterMonitoring.md:1 2026-10-03 <- keep flows/9fb0ad/vision/clusterMonitoring.md:3
+- flows/dea0ba/vision/contactingTheLiving.md:1 2026-10-03 <- keep flows/9fb0ad/vision/contactingTheLiving.md:3
+- flows/dea0ba/vision/ethosLibrary.md:1 2026-10-03 <- keep flows/9fb0ad/vision/ethosLibrary.md:9
+- flows/dea0ba/vision/messaging.md:2 2026-10-03 <- keep flows/9fb0ad/vision/messaging.md:3
+- flows/dea0ba/vision/permissions.md:1 2026-10-03 <- keep flows/9fb0ad/vision/permissions.md:3
+- flows/28d847/vision/quotas.md:17 2026-10-03~ <- keep flows/d66c26/vision/quota-metrics.md:3
+- flows/edf227/vision/topics.md:3 2026-10-03 <- keep flows/dea0ba/vision/books.md:1
+- flows/5ed94b/vision/visionBooks.md:33 2026-10-04 <- keep flows/28d847/vision/books.md:17
+- flows/bad807/vision/presentations.md:3 2026-10-04 <- keep flows/28d847/vision/books.md:25
+- flows/d66c26/vision/books.md:2 2026-10-04 <- keep flows/28d847/vision/books.md:25
+- flows/41fa34/vision/layers.md:18 2026-10-03~ <- keep flows/28d847/vision/layers.md:11
+- flows/dea0ba/vision/voices.md:15 2026-10-03~ <- keep flows/28d847/vision/layers.md:11
+- flows/5ed94b/vision/seats.md:11 2026-10-04 <- keep flows/28d847/vision/layers.md:19
+- flows/5ed94b/vision/nexusEntryPoint.md:3 2026-10-04 <- keep flows/28d847/vision/nexus.md:3
+- flows/bad807/vision/skills.md:3 2026-10-04 <- keep flows/28d847/vision/skills.md:39
+- flows/d66c26/notion/topic-flows.md:2 2026-10-04 <- keep flows/bad807/notion/topicFlows.md:3
+- flows/d66c26/vision/proposals.md:2 2026-10-04 <- keep flows/bad807/vision/distillation.md:12
+- flows/aa887c/vision/distillation.md:3 2026-10-04~ <- keep flows/bad807/vision/distillation.md:20
+- flows/aa887c/vision/ethos.md:3 2026-10-04~ <- keep flows/bad807/vision/ethos.md:3
+- flows/d66c26/vision/flow-context-injection.md:2 2026-10-04 <- keep flows/bad807/vision/flowContextInjection.md:3
+- flows/d66c26/vision/messaging.md:2 2026-10-04 <- keep flows/bad807/vision/messaging.md:3
+- flows/aa887c/vision/nexus.md:3 2026-10-04~ <- keep flows/bad807/vision/nexus.md:3
+- flows/aa887c/vision/nexus.md:11 2026-10-04~ <- keep flows/bad807/vision/nexus.md:11
+- flows/aa887c/vision/nexus.md:23 2026-10-04~ <- keep flows/bad807/vision/nexus.md:19
+- flows/aa887c/vision/nexus.md:31 2026-10-04~ <- keep flows/bad807/vision/nexus.md:27
+- flows/d66c26/vision/voices.md:2 2026-10-04 <- keep flows/bad807/vision/voices.md:3
+- flows/28d847/vision/workspace.md:3 2026-10-04~ <- keep flows/bad807/vision/workspace.md:3
+- flows/dea0ba/vision/workspace.md:3 2026-10-05~ <- keep flows/bad807/vision/workspace.md:3
+- flows/d66c26/vision/messaging.md:9 2026-10-05 <- keep flows/8475a9/vision/messenger.md:3
+- flows/f768df/vision/messenger.md:3 2026-10-05 <- keep flows/8475a9/vision/messenger.md:3
+- flows/d4ae97/vision/messenger.md:3 2026-10-06~ <- keep flows/8475a9/vision/messenger.md:3
+- flows/f768df/vision/messenger.md:13 2026-10-05 <- keep flows/8475a9/vision/messenger.md:11
+- flows/d66c26/vision/voices.md:8 2026-10-05 <- keep flows/8475a9/vision/voices.md:3
+- flows/f768df/vision/voices.md:3 2026-10-05 <- keep flows/8475a9/vision/voices.md:3
+- flows/d4ae97/vision/voices.md:3 2026-10-06~ <- keep flows/8475a9/vision/voices.md:3
+- flows/d66c26/vision/voice-registry.md:2 2026-10-05 <- keep flows/8475a9/vision/voices.md:13
+- flows/f768df/vision/voices.md:14 2026-10-05 <- keep flows/8475a9/vision/voices.md:13
+- flows/d4ae97/vision/voices.md:13 2026-10-06~ <- keep flows/8475a9/vision/voices.md:13
+- flows/f768df/vision/voices.md:23 2026-10-05 <- keep flows/8475a9/vision/voices.md:29
+- flows/f768df/vision/layers.md:3 2026-10-05 <- keep flows/8475a9/vision/voices.md:39
+- flows/f768df/vision/voices.md:35 2026-10-05 <- keep flows/8475a9/vision/voices.md:63
+- flows/d4ae97/vision/vocabulary.md:3 2026-10-06~ <- keep flows/8475a9/vision/voices.md:63
+- flows/f768df/vision/voices.md:44 2026-10-05 <- keep flows/8475a9/vision/voices.md:71
+- flows/d4ae97/vision/voices.md:21 2026-10-06~ <- keep flows/8475a9/vision/voices.md:71
+- flows/f768df/vision/voices.md:52 2026-10-05 <- keep flows/8475a9/vision/voices.md:91
+- flows/d4ae97/vision/books.md:3 2026-10-06~ <- keep flows/d66c26/vision/books.md:9
+- flows/d4ae97/vision/flow.md:3 2026-10-06~ <- keep flows/d66c26/vision/voices.md:17
+- flows/f768df/vision/flow.md:2 2026-10-06 <- keep flows/8475a9/vision/flow.md:16
+- flows/d4ae97/vision/flow.md:11 2026-10-06~ <- keep flows/8475a9/vision/flow.md:16
+- flows/d4ae97/vision/books.md:36 2026-10-06~ <- keep flows/8475a9/vision/flow.md:24
+- flows/f768df/vision/flow.md:10 2026-10-06 <- keep flows/8475a9/vision/flow.md:32
+- flows/d4ae97/vision/flow.md:19 2026-10-06~ <- keep flows/8475a9/vision/flow.md:32
+- flows/f768df/vision/flow.md:20 2026-10-06 <- keep flows/8475a9/vision/flow.md:42
+- flows/d4ae97/vision/flow.md:29 2026-10-06~ <- keep flows/8475a9/vision/flow.md:42
+- flows/d4ae97/vision/flow.md:37 2026-10-06~ <- keep flows/8475a9/vision/flow.md:50
+- flows/f768df/vision/flow.md:28 2026-10-06 <- keep flows/8475a9/vision/flow.md:58
+- flows/d4ae97/vision/ethos.md:3 2026-10-06~ <- keep flows/8475a9/vision/flow.md:58
+- flows/f768df/vision/books.md:12 2026-10-06 <- keep flows/8475a9/vision/flow.md:66
+- flows/d4ae97/vision/books.md:44 2026-10-06~ <- keep flows/8475a9/vision/flow.md:66
+- flows/f768df/vision/flow.md:36 2026-10-06 <- keep flows/8475a9/vision/flow.md:74
+- flows/d4ae97/vision/flow.md:45 2026-10-06~ <- keep flows/8475a9/vision/flow.md:74
+- flows/f768df/vision/living-messenger.md:2 2026-10-06 <- keep flows/8475a9/vision/livingMessenger.md:3
+- flows/d4ae97/vision/livingMessenger.md:3 2026-10-06~ <- keep flows/8475a9/vision/livingMessenger.md:3
+- flows/f768df/vision/books.md:20 2026-10-07 <- keep flows/e5a0bc/vision/books.md:19
+- flows/d4ae97/vision/books.md:95 2026-10-07 <- keep flows/02dda6/vision/books-as-web.md:1
+- flows/6aa08d/vision/books.md:2 2026-10-09~ <- keep flows/02dda6/vision/books-as-web.md:1
+- flows/4ddfe1/vision/books.md:3 2026-10-10~ <- keep flows/02dda6/vision/books-as-web.md:1
+- flows/f5a6e9/vision/books.md:3 2026-10-07~ <- keep flows/d4ae97/vision/books.md:60
+- flows/f5a6e9/vision/flow.md:87 2026-10-07~ <- keep flows/d4ae97/vision/flow.md:131
+- flows/ebbe30/vision/vision.md:1 2026-10-07 <- keep flows/d4ae97/vision/skills.md:86
+- flows/ebbe30/vision/vision.md:9 2026-10-07 <- keep flows/d4ae97/vision/skills.md:93
+- flows/f5a6e9/vision/books.md:11 2026-10-07~ <- keep flows/db38f8/vision/booksAndProposals.md:1
+- flows/ebbe30/vision/books.md:1 2026-10-09 <- keep flows/f5a6e9/vision/books.md:23
+- flows/445410/vision/flow.md:1 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:103
+- flows/4ddfe1/vision/core.md:3 2026-10-10~ <- keep flows/f5a6e9/vision/flow.md:103
+- flows/1d0733/vision/ethos.md:1 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:119
+- flows/445410/vision/flow.md:33 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:119
+- flows/9fed42/vision/flow.md:1 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:119
+- flows/0c85a3/vision/startup-task.md:2 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:127
+- flows/73ada7/vision/flow.md:3 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:127
+- flows/9fed42/vision/flow.md:9 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:127
+- flows/ebbe30/vision/flow-startup.md:25 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:127
+- flows/9fed42/vision/flow.md:17 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:135
+- flows/9fed42/vision/flow.md:25 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:143
+- flows/445410/vision/messaging.md:25 2026-10-09 <- keep flows/f5a6e9/vision/messaging.md:11
+- flows/ebbe30/vision/messaging.md:1 2026-10-09 <- keep flows/f5a6e9/vision/messaging.md:11
+- flows/73ada7/vision/flow.md:11 2026-10-09 <- keep flows/0c85a3/vision/aspect-topics.md:2
+- flows/d5df1d/notion/ethos.md:3 2026-10-09 <- keep flows/1d0733/notion/ethos.md:1
+- flows/d5df1d/vision/ethos.md:46 2026-10-10~ <- keep flows/1d0733/vision/ethos.md:39
+- flows/dcd651/notion/metaflow.md:3 2026-10-09 <- keep flows/445410/notion/metaflow-ethos.md:1
+- flows/f5a6e9/notion/flow.md:3 2026-10-09~ <- keep flows/445410/notion/metaflow-ethos.md:1
+- flows/4ddfe1/notion/metaflow-ethos.md:3 2026-10-10~ <- keep flows/445410/notion/metaflow-ethos.md:1
+- flows/4ddfe1/vision/books.md:8 2026-10-10~ <- keep flows/445410/vision/books.md:1
+- flows/4ddfe1/vision/voice-relay.md:9 2026-10-10~ <- keep flows/445410/vision/messaging.md:1
+- flows/4ddfe1/vision/voice-relay.md:15 2026-10-10~ <- keep flows/445410/vision/messaging.md:9
+- flows/4ddfe1/vision/voice-relay.md:21 2026-10-10~ <- keep flows/445410/vision/messaging.md:17
+- flows/9fed42/vision/messaging.md:1 2026-10-09 <- keep flows/73ada7/vision/messaging.md:3
+- flows/f5a6e9/vision/contextModules.md:3 2026-10-09~ <- keep flows/d5df1d/vision/ethos.md:27
+- flows/081064/notion/ethos.md:3 2026-10-10 <- keep flows/058f16/notion/ethos.md:3
+- flows/23824a/notion/rustTypes.md:3 2026-10-10~ <- keep flows/058f16/notion/ethos.md:3
+- flows/d68c82/notion/ethos.md:3 2026-10-10~ <- keep flows/058f16/notion/ethos.md:3
+- flows/d68c82/vision/books.md:3 2026-10-10~ <- keep flows/058f16/vision/book.md:3
+- flows/d68c82/vision/source.md:42 2026-10-10~ <- keep flows/058f16/vision/source.md:3
+- flows/23824a/vision/registry.md:3 2026-10-10~ <- keep flows/058f16/vision/source.md:23
+- flows/d68c82/vision/source.md:20 2026-10-10~ <- keep flows/058f16/vision/source.md:31
+- flows/23824a/vision/sources.md:3 2026-10-10~ <- keep flows/081064/vision/ethos.md:18
+- flows/23824a/vision/names.md:3 2026-10-10~ <- keep flows/081064/vision/ethos.md:26
+- flows/875960/vision/distillation.md:3 2026-10-10 <- keep flows/081064/vision/ethos.md:72
+- flows/23824a/vision/commitMessage.md:13 2026-10-10~ <- keep flows/081064/vision/ethos.md:92
+- flows/d68c82/vision/commitMessage.md:15 2026-10-10~ <- keep flows/081064/vision/ethos.md:92
+- flows/d68c82/vision/distillation.md:11 2026-10-10~ <- keep flows/875960/vision/distillation.md:11
+- flows/d68c82/vision/metaHarness.md:3 2026-10-10 <- keep flows/875960/vision/harness.md:3
+- flows/9519a1/vision/metaHarness.md:1 2026-10-10~ <- keep flows/875960/vision/harness.md:3
+- flows/d68c82/vision/persona.md:3 2026-10-10~ <- keep flows/875960/vision/persona.md:3
+- flows/d68c82/vision/persona.md:11 2026-10-10~ <- keep flows/875960/vision/persona.md:19
+- flows/875960/vision/books.md:11 2026-10-11 <- keep flows/d68c82/vision/books.md:16
+- flows/d55c56/vision/spirit.md:11 2026-10-11 <- keep flows/d68c82/vision/distillation.md:18
+- flows/9519a1/vision/messaging.md:1 2026-10-11~ <- keep flows/875960/vision/flow.md:35
+- flows/d68c82/notion/ethos.md:13 2026-10-12 <- keep flows/081064/notion/ethos.md:12
+- flows/23824a/notion/delimiters.md:3 2026-10-12~ <- keep flows/081064/notion/ethos.md:12
+- flows/875960/vision/nexus.md:3 2026-10-12 <- keep flows/33752b/vision/design.md:67
+- flows/d68c82/vision/design.md:20 2026-10-12 <- keep flows/33752b/vision/design.md:67
+- flows/ee57fb/vision/launch.md:3 2026-10-12 <- keep flows/d68c82/vision/seats.md:2
+- flows/d68c82/vision/psyche.md:54 2026-10-13 <- keep flows/081064/vision/correction.md:3
+- flows/d68c82/vision/psyche.md:29 2026-10-13 <- keep flows/d55c56/vision/makeshift.md:21
+- flows/3960eb/vision/communication.md:37 2026-10-14 <- keep flows/17ac8a/vision/communication.md:70
+- flows/d68c82/vision/books.md:157 2026-10-14 <- keep flows/17ac8a/vision/communication.md:70
+- flows/3960eb/vision/communication.md:45 2026-10-14 <- keep flows/17ac8a/vision/communication.md:77
+- flows/7c89aa/vision/ethos-in-clojure.md:11 2026-10-14 <- keep flows/17ac8a/vision/communication.md:77
+- flows/d68c82/vision/books.md:149 2026-10-14 <- keep flows/17ac8a/vision/communication.md:77
+- flows/da2038/vision/books.md:22 2026-10-14 <- keep flows/17ac8a/vision/communication.md:77
+- flows/df159a/vision/books.md:31 2026-10-14~ <- keep flows/17ac8a/vision/communication.md:77
+- flows/17ac8a/vision/communication.md:13 ?~ <- keep flows/3960eb/vision/communication.md:3
+- flows/17ac8a/vision/communication.md:20 ?~ <- keep flows/3960eb/vision/communication.md:11
+- flows/17ac8a/vision/communication.md:27 ?~ <- keep flows/3960eb/vision/communication.md:29
+- flows/d68c82/vision/flow.md:164 2026-10-14 <- keep flows/55a2b4/vision/flow.md:3
+- flows/da2038/vision/flow.md:78 2026-10-14 <- keep flows/55a2b4/vision/flow.md:3
+- flows/d68c82/vision/ethos.md:21 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:3
+- flows/da2038/vision/ethos.md:2 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:3
+- flows/df159a/vision/clojure.md:3 2026-10-14~ <- keep flows/7c89aa/vision/ethos-in-clojure.md:3
+- flows/da2038/vision/skills.md:2 2026-10-14 <- keep flows/d68c82/vision/context-modules.md:154
+- flows/da2038/vision/flow.md:102 2026-10-14 <- keep flows/d68c82/vision/ethos.md:47
+- flows/da2038/vision/flow.md:36 2026-10-14 <- keep flows/d68c82/vision/flow.md:140
+- flows/da2038/vision/flow.md:62 2026-10-14 <- keep flows/d68c82/vision/flow.md:148
+- flows/da2038/vision/flow.md:70 2026-10-14 <- keep flows/d68c82/vision/flow.md:156
+- flows/da2038/vision/books.md:30 2026-10-14 <- keep flows/d68c82/vision/visualization.md:11
+- flows/df159a/vision/books.md:3 2026-10-14~ <- keep flows/da2038/vision/books.md:2
+- flows/df159a/vision/books.md:13 2026-10-14~ <- keep flows/da2038/vision/books.md:12
+- flows/df159a/vision/flow.md:3 2026-10-14~ <- keep flows/da2038/vision/flow.md:18
+- flows/df159a/vision/models.md:3 2026-10-14~ <- keep flows/da2038/vision/models.md:2
+- flows/e4b7d7/vision/clojure.md:1 ?~ <- keep flows/5b9075/vision/clojure.md:2
+
+Contained copies, 259 (excerpt <- longer record kept):
+- flows/019fe121/vision/hostEnvironmentRecovery.md:11 2026-08-08 <- keep flows/01a02b46/vision/zeusUpdate.md:11
+- flows/019fe121/vision/hostEnvironmentRecovery.md:25 2026-08-08 <- keep flows/01a02b46/vision/zeusUpdate.md:11
+- flows/019fe121/vision/hostEnvironmentRecovery.md:36 2026-08-08 <- keep flows/01a02b46/vision/zeusUpdate.md:11
+- flows/019fe121/vision/hostEnvironmentRecovery.md:46 2026-08-08 <- keep flows/01a02b46/vision/zeusUpdate.md:11
+- flows/019fe121/vision/hostEnvironmentRecovery.md:71 2026-08-08 <- keep flows/01a02b46/vision/zeusUpdate.md:11
+- flows/fd301d9a/vision/actorLibrary.md:33 2026-08-14 <- keep vision-raw/archive-rustComponentArchitecture.md:3
+- vision-raw/lojixOwnership.md:19 2026-08-14 <- keep flows/01a02b46/vision/zeusUpdate.md:47
+- vision-raw/setupIndependentInterfaces.md:1 2026-08-14 <- keep flows/01a02b46/vision/zeusUpdate.md:57
+- vision-raw/setupIndependentInterfaces.md:7 2026-08-14 <- keep flows/01a02b46/vision/zeusUpdate.md:57
+- vision-raw/setupIndependentInterfaces.md:13 2026-08-14 <- keep flows/01a02b46/vision/zeusUpdate.md:57
+- flows/fd301d9a/vision/nexusTraits.md:15 2026-08-19 <- keep flows/e06e4c07/vision/archive-nexus.md:125
+- vision-raw/setupIndependentInterfaces.md:31 2026-08-19 <- keep flows/01a02b46/vision/zeusUpdate.md:57
+- flows/fd301d9a/vision/archive-nexusTraits.md:9 [archived] 2026-08-19 <- keep flows/e06e4c07/vision/archive-nexus.md:79
+- flows/01a03eda/vision/archive-datomSyntax.md:4 [archived] 2026-08-26 <- keep flows/ac1e9ec8/vision/archive-datomSyntax.md:95
+- flows/024bc7/vision/speechToText.md:3 2026-09-13 <- keep flows/bcd02a/notion/speech.md:3
+- flows/bcd02a/notion/models.md:3 2026-09-13 <- keep flows/024bc7/vision/parallelSessions.md:13
+- flows/bcd02a/notion/router.md:11 2026-09-13 <- keep flows/024bc7/vision/router.md:3
+- flows/bcd02a/notion/sandbox.md:3 2026-09-13 <- keep flows/024bc7/vision/sandbox.md:3
+- flows/bcd02a/notion/sandbox.md:11 2026-09-13 <- keep flows/024bc7/vision/sandbox.md:3
+- flows/bcd02a/vision/context.md:11 2026-09-13 <- keep flows/024bc7/vision/context.md:3
+- flows/bcd02a/vision/council.md:3 2026-09-13 <- keep flows/024bc7/vision/parallelSessions.md:19
+- flows/bcd02a/vision/nexus.md:3 2026-09-13 <- keep flows/024bc7/vision/nexus.md:3
+- flows/bcd02a/vision/paired-flows.md:3 2026-09-13 <- keep flows/024bc7/vision/parallelSessions.md:25
+- flows/bcd02a/vision/paired-flows.md:9 2026-09-13 <- keep flows/024bc7/vision/parallelSessions.md:13
+- flows/bcd02a/vision/runtime.md:3 2026-09-13 <- keep flows/024bc7/vision/nexus.md:19
+- flows/bcd02a/vision/signal.md:3 2026-09-13 <- keep flows/024bc7/vision/signal.md:3
+- flows/056f6d/vision/messaging.md:3 2026-09-18 <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/056f6d/vision/psycheGeneratedMessaging.md:3 2026-09-18 <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/c7128c/vision/messageAndFlow.md:3 2026-09-18 <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/c7128c/vision/psycheVersusMachineMessaging.md:3 2026-09-18 <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/1ac573/vision/operational-fableFlowAndOpusComparison.md:3 2026-09-18~ <- keep flows/908786/vision/vision-led-audit-and-fable.md:1
+- flows/1ac573/vision/operational-visionLedAudit.md:3 2026-09-18~ <- keep flows/908786/vision/vision-led-audit-and-fable.md:1
+- flows/b05237/vision/operational-fieldEnergyLevels.md:3 2026-09-18~ <- keep flows/893603/vision/claude-persistence.md:11
+- flows/b05237/vision/operational-fieldKeepsThingsWorking.md:3 2026-09-18~ <- keep flows/33ba2b/vision/operational-fieldRefreshSuccession.md:3
+- flows/b05237/vision/operational-fieldTwoSeatsAndRefreshNaming.md:3 2026-09-18~ <- keep flows/33ba2b/vision/operational-fieldRefreshSuccession.md:3
+- flows/b05237/vision/operational-primaryNextPsycheLogging.md:3 2026-09-18~ <- keep flows/33ba2b/vision/psycheDataArchitecture.md:18
+- flows/b05237/vision/operational-typedMessagesDistinguishPsyche.md:3 2026-09-18~ <- keep flows/33ba2b/vision/psycheDataArchitecture.md:18
+- flows/b7ba00/vision/meaningLanguage.md:73 2026-09-19 <- keep flows/b81560/vision/archive-operational-asyncSubflowsAndMeaningLanguage.md:3
+- flows/1f96fc/vision/fieldMaintenanceAndRefresh.md:8 2026-09-19~ <- keep flows/b81560/vision/operational-psychePropagationAndNamingAndInfrastructure.md:3
+- flows/f38926/vision/archive-subflows.md:3 [archived] 2026-09-20~ <- keep flows/b81560/vision/archive-operational-asyncSubflowsAndMeaningLanguage.md:3
+- flows/d8df70/vision/flashbooks.md:15 2026-09-23 <- keep flows/836818/vision/flashbooks.md:17
+- flows/d8df70/vision/flashbooks.md:21 2026-09-23 <- keep flows/836818/vision/flashbooks.md:17
+- flows/d8df70/vision/flashbooks.md:27 2026-09-23 <- keep flows/836818/vision/flashbooks.md:17
+- flows/d8df70/vision/flashbooks.md:33 2026-09-23 <- keep flows/836818/vision/flashbooks.md:17
+- flows/d8df70/vision/building.md:9 2026-09-24 <- keep flows/836818/vision/flowNexus.md:21
+- flows/d8df70/vision/deployment.md:3 2026-09-24 <- keep flows/836818/vision/flowNexus.md:39
+- flows/d8df70/vision/flashbooks.md:51 2026-09-24 <- keep flows/836818/vision/flashbooks.md:31
+- flows/d8df70/vision/flowLifecycle.md:3 2026-09-24 <- keep flows/836818/vision/flowNexus.md:21
+- flows/d8df70/vision/flowLifecycle.md:9 2026-09-24 <- keep flows/836818/vision/flowNexus.md:21
+- flows/d8df70/vision/flowTool.md:3 2026-09-24 <- keep flows/836818/vision/flowNexus.md:21
+- flows/d8df70/vision/messaging.md:58 2026-09-24 <- keep flows/836818/vision/flowNexus.md:9
+- flows/d8df70/vision/messaging.md:64 2026-09-24 <- keep flows/836818/vision/flowNexus.md:21
+- flows/b7da5d/vision/prometheusBuilder.md:17 2026-09-25 <- keep flows/da88cf/vision/prometheus.md:19
+- flows/da88cf/vision/prometheus.md:39 2026-09-25 <- keep flows/26c50c/vision/build-placement.md:2
+- flows/88475f/vision/flow.md:1 2026-09-25~ <- keep flows/e51411/vision/authority.md:27
+- flows/88475f/vision/integration.md:25 2026-09-25~ <- keep flows/da88cf/vision/prometheus.md:55
+- flows/88475f/vision/nexus.md:1 2026-09-25~ <- keep flows/e51411/vision/nexus.md:3
+- flows/88475f/vision/titles.md:1 2026-09-25~ <- keep flows/e51411/vision/titles.md:19
+- flows/88475f/vision/waiting.md:1 2026-09-25~ <- keep flows/e51411/vision/authority.md:11
+- flows/6fe957/vision/prometheus-networking.md:2 2026-09-26 <- keep flows/19ff9f/vision/prometheus-wifi.md:1
+- flows/93ba9f/vision/automation.md:1 2026-09-26 <- keep flows/b7ba00/vision/modelFlows.md:35
+- flows/93ba9f/vision/sessionClosing.md:1 2026-09-26 <- keep flows/b7ba00/vision/modelFlows.md:35
+- flows/b7ba00/vision/flowAnatomy.md:3 2026-09-26 <- keep flows/93ba9f/vision/flowLaunching.md:1
+- flows/b7ba00/vision/meaningLanguage.md:5 2026-09-26 <- keep flows/93ba9f/vision/meaningLanguage.md:1
+- flows/b7ba00/vision/meaningLanguage.md:19 2026-09-26 <- keep flows/93ba9f/vision/ethosNames.md:1
+- flows/b7ba00/vision/meaningLanguage.md:31 2026-09-26 <- keep flows/b860be/vision/layerVocabulary.md:1
+- flows/b7ba00/vision/meaningLanguage.md:139 2026-09-26 <- keep flows/93ba9f/vision/meaningLanguage.md:1
+- flows/b7ba00/vision/meaningLanguage.md:155 2026-09-26 <- keep flows/93ba9f/vision/meaningLanguage.md:1
+- flows/b7ba00/vision/meaningLanguage.md:161 2026-09-26 <- keep flows/93ba9f/vision/meaningLanguage.md:1
+- flows/b7ba00/vision/messaging.md:3 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:11 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:19 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:25 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:39 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:77 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/messaging.md:97 2026-09-26 <- keep flows/93ba9f/vision/messagingInterface.md:1
+- flows/b7ba00/vision/modelFlows.md:11 2026-09-26 <- keep flows/93ba9f/vision/flowLaunching.md:1
+- flows/b7ba00/vision/modelFlows.md:19 2026-09-26 <- keep flows/93ba9f/vision/flowLaunching.md:1
+- flows/b7ba00/vision/modelFlows.md:27 2026-09-26 <- keep flows/93ba9f/vision/flowLaunching.md:1
+- flows/b7ba00/vision/reachingTheLiving.md:3 2026-09-26 <- keep flows/93ba9f/vision/presentation.md:1
+- flows/b7ba00/vision/types.md:3 2026-09-26 <- keep flows/93ba9f/vision/ethosNames.md:1
+- flows/b7ba00/vision/wordIds.md:3 2026-09-26 <- keep flows/93ba9f/vision/wordIdentifiers.md:1
+- flows/b7da5d/vision/piper.md:1 2026-09-26 <- keep flows/b860be/vision/ouranos.md:3
+- flows/b7da5d/vision/refreshHooks.md:11 2026-09-26 <- keep flows/b860be/vision/refreshAutomation.md:3
+- flows/b860be/vision/datomSyntax.md:3 2026-09-26 <- keep flows/f5a74e/vision/datom-messaging.md:2
+- flows/e167d8/vision/deployment.md:3 2026-09-26 <- keep flows/b860be/vision/deployment.md:3
+- flows/e167d8/vision/independentReview.md:3 2026-09-26 <- keep flows/b860be/vision/layerVocabulary.md:1
+- flows/e167d8/vision/psycheMessages.md:13 2026-09-26 <- keep flows/f5a74e/vision/datom-messaging.md:2
+- flows/e167d8/vision/refresh.md:3 2026-09-26 <- keep flows/b860be/vision/refreshAutomation.md:3
+- flows/f5a74e/vision/refresh-hooks.md:2 2026-09-26 <- keep flows/b860be/vision/refreshAutomation.md:3
+- flows/6f51ad/vision/communication.md:3 2026-09-28 <- keep flows/c02c0d/vision/seats.md:19
+- flows/6f51ad/vision/mentci.md:2 2026-09-28 <- keep flows/8904b1/vision/presentation.md:21
+- flows/6f51ad/vision/zeus.md:3 2026-09-28 <- keep flows/8904b1/vision/deployment.md:9
+- flows/183ae0/vision/presentation.md:3 2026-09-28~ <- keep flows/6f51ad/vision/presentation.md:3
+- flows/bd0019/vision/hook.md:3 2026-09-29 <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/bd0019/vision/userPromptLayer.md:3 2026-09-29 <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/c64ee3/notion/hooks.md:3 2026-09-29 <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/c64ee3/vision/aspects.md:3 2026-09-29 <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/caf622/vision/stateful-installation.md:2 2026-09-29 <- keep flows/b666e7/vision/stateful.md:2
+- flows/d5b96b/vision/prometheus-wifi.md:2 2026-09-29 <- keep flows/6f51ad/vision/network.md:3
+- flows/183ae0/vision/messaging.md:3 2026-09-29~ <- keep flows/6f51ad/vision/registration.md:3
+- flows/b666e7/vision/network.md:2 2026-09-29~ <- keep flows/6f51ad/vision/network.md:3
+- flows/b666e7/vision/triad.md:22 2026-09-29~ <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/b666e7/vision/triad.md:30 2026-09-29~ <- keep flows/6f51ad/vision/clusterSurvey.md:3
+- flows/7328f4/vision/hooks.md:3 2026-09-30 <- keep flows/b666e7/notion/hook.md:10
+- flows/bd0019/vision/aspect.md:3 2026-09-30 <- keep flows/7328f4/vision/books.md:13
+- flows/fe945a/vision/stableNext.md:31 2026-09-30 <- keep flows/d5b96b/notion/codex-update.md:2
+- flows/1bc255/vision/pollingSystems.md:1 2026-09-30~ <- keep flows/7328f4/vision/polling.md:3
+- flows/b666e7/vision/hook.md:22 2026-09-30~ <- keep flows/7328f4/vision/polling.md:3
+- flows/bd0019/vision/clusterNotBlocking.md:3 2026-10-01 <- keep flows/fe945a/vision/cluster.md:3
+- flows/fe945a/vision/books.md:3 2026-10-01 <- keep flows/bd0019/vision/transcriptNotFiles.md:3
+- flows/af762b/vision/operational-flowOwnsHerdr.md:3 2026-10-01~ <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/af762b/vision/operational-psycheGeneratedMessaging.md:3 2026-10-01~ <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/af762b/vision/operational-psycheLogDuty.md:3 2026-10-01~ <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/af762b/vision/operational-refreshAndImplementClosestLayer.md:3 2026-10-01~ <- keep flows/b05237/vision/operational-messagingToDeployment.md:3
+- flows/01e496/vision/books.md:3 2026-10-02 <- keep flows/41fa34/vision/living-messenger.md:1
+- flows/01e496/vision/books.md:11 2026-10-02 <- keep flows/41fa34/vision/living-messenger.md:1
+- flows/01e496/vision/books.md:19 2026-10-02 <- keep flows/41fa34/vision/reusing-a-commented-book.md:1
+- flows/01e496/vision/flashbook.md:3 2026-10-02 <- keep flows/d86ec0/vision/bookFlowcharts.md:3
+- flows/01e496/vision/flowNexus.md:11 2026-10-02 <- keep flows/41fa34/vision/flow-component.md:9
+- flows/01e496/vision/seat.md:3 2026-10-02 <- keep flows/41fa34/vision/seat-abstraction.md:9
+- flows/41fa34/vision/checkboxes.md:1 2026-10-02 <- keep flows/91ea9f/vision/books.md:87
+- flows/41fa34/vision/ethos-and-example-datom.md:2 2026-10-02 <- keep flows/91ea9f/vision/flowNexus.md:9
+- flows/41fa34/vision/if-i-ask-for-a-new-flow.md:2 2026-10-02 <- keep flows/91ea9f/vision/flowLifecycle.md:3
+- flows/41fa34/vision/semi-sandbox.md:2 2026-10-02 <- keep flows/3ec648/vision/capsule.md:3
+- flows/41fa34/vision/simple-working-system.md:2 2026-10-02 <- keep flows/01e496/vision/simpleWorkingSystem.md:3
+- flows/41fa34/vision/sonnet-comments.md:1 2026-10-02 <- keep flows/91ea9f/vision/ethos.md:36
+- flows/41fa34/vision/who-implements-skill-proposals.md:1 2026-10-02 <- keep flows/01e496/vision/skills.md:3
+- flows/42265e/vision/flashbooks.md:3 2026-10-02 <- keep flows/91ea9f/vision/books.md:77
+- flows/42265e/vision/flashbooks.md:11 2026-10-02 <- keep flows/91ea9f/vision/books.md:77
+- flows/42265e/vision/flashbooks.md:19 2026-10-02 <- keep flows/91ea9f/vision/books.md:69
+- flows/41fa34/vision/flowLifecycle.md:2 2026-10-03 <- keep flows/9fb0ad/vision/flowLifecycle.md:3
+- flows/41fa34/vision/flowLifecycle.md:10 2026-10-03 <- keep flows/9fb0ad/vision/flowLifecycle.md:3
+- flows/41fa34/vision/identifiers.md:2 2026-10-03 <- keep flows/dea0ba/vision/identifiers.md:2
+- flows/41fa34/vision/subflows.md:2 2026-10-03 <- keep flows/dea0ba/vision/subflows.md:2
+- flows/5578cc/notion/permissions.md:3 2026-10-03 <- keep flows/9fb0ad/vision/permissions.md:3
+- flows/5578cc/vision/behavior.md:3 2026-10-03 <- keep flows/dea0ba/vision/quotaTracking.md:1
+- flows/5578cc/vision/behavior.md:19 2026-10-03 <- keep flows/edf227/vision/incorrectness.md:9
+- flows/5578cc/vision/ethos.md:3 2026-10-03 <- keep flows/edf227/vision/contextModules.md:19
+- flows/5578cc/vision/flow.md:27 2026-10-03 <- keep flows/dea0ba/vision/identifiers.md:2
+- flows/5578cc/vision/flow.md:55 2026-10-03 <- keep flows/dea0ba/vision/systemPrompt.md:1
+- flows/5578cc/vision/identifiers.md:19 2026-10-03 <- keep flows/dea0ba/vision/identifiers.md:2
+- flows/5578cc/vision/permissions.md:3 2026-10-03 <- keep flows/9fb0ad/vision/permissions.md:3
+- flows/9fb0ad/vision/identifiers.md:37 2026-10-03 <- keep flows/dea0ba/vision/identifiers.md:2
+- flows/9fb0ad/vision/quotaTracking.md:3 2026-10-03 <- keep flows/dea0ba/vision/quotaTracking.md:1
+- flows/edf227/vision/contextModules.md:29 2026-10-03 <- keep flows/5578cc/vision/curriculum.md:3
+- flows/edf227/vision/flow.md:3 2026-10-03 <- keep flows/dea0ba/vision/flowCorrections.md:1
+- flows/edf227/vision/flow.md:9 2026-10-03 <- keep flows/dea0ba/vision/flowCorrections.md:1
+- flows/edf227/vision/flow.md:14 2026-10-03 <- keep flows/dea0ba/vision/flowCorrections.md:1
+- flows/edf227/vision/flowRole.md:3 2026-10-03 <- keep flows/dea0ba/vision/subflows.md:2
+- flows/edf227/vision/flowRole.md:14 2026-10-03 <- keep flows/dea0ba/vision/flowCorrections.md:1
+- flows/edf227/vision/visionNotification.md:3 2026-10-03 <- keep flows/dea0ba/vision/visionNotification.md:1
+- flows/edf227/vision/visionNotification.md:8 2026-10-03 <- keep flows/dea0ba/vision/visionNotification.md:1
+- flows/28d847/vision/books.md:3 2026-10-03~ <- keep flows/5ed94b/vision/visionBooks.md:3
+- flows/28d847/vision/curriculum.md:3 2026-10-03~ <- keep flows/5ed94b/vision/skills.md:3
+- flows/28d847/vision/infrastructure.md:11 2026-10-03~ <- keep flows/5ed94b/vision/infrastructure.md:11
+- flows/28d847/vision/skills.md:27 2026-10-03~ <- keep flows/5ed94b/vision/skills.md:3
+- flows/28d847/vision/skills.md:33 2026-10-03~ <- keep flows/5ed94b/vision/skills.md:3
+- flows/28d847/vision/subflows.md:3 2026-10-03~ <- keep flows/edf227/vision/subflowBriefs.md:9
+- flows/28d847/vision/subflows.md:11 2026-10-03~ <- keep flows/edf227/vision/subflowBriefs.md:9
+- flows/42265e/vision/finding-out.md:1 2026-10-03~ <- keep flows/dea0ba/vision/quotaTracking.md:1
+- flows/8475a9/vision/voices.md:21 2026-10-05 <- keep flows/dea0ba/vision/voices.md:22
+- flows/d66c26/vision/books.md:9 2026-10-05 <- keep flows/8475a9/vision/voices.md:29
+- flows/d66c26/vision/voices.md:17 2026-10-05 <- keep flows/8475a9/vision/voices.md:29
+- flows/f768df/vision/layers.md:14 2026-10-05 <- keep flows/8475a9/vision/voices.md:79
+- flows/f768df/vision/layers.md:23 2026-10-05 <- keep flows/8475a9/vision/voices.md:79
+- flows/e5a0bc/vision/books.md:27 2026-10-06~ <- keep flows/db38f8/vision/ethosAndBookComments.md:1
+- flows/e5a0bc/vision/ethos.md:3 2026-10-06~ <- keep flows/db38f8/vision/ethosAndBookComments.md:1
+- flows/0c85a3/notion/memory.md:2 2026-10-07 <- keep flows/02dda6/notion/ethos-code-in-vision.md:1
+- flows/0c85a3/notion/spirit.md:2 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:15
+- flows/0c85a3/vision/ethos.md:1 2026-10-07 <- keep flows/d4ae97/vision/ethos.md:106
+- flows/0c85a3/vision/shastra.md:1 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:1
+- flows/0c85a3/vision/shastra.md:9 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:1
+- flows/0c85a3/vision/spirit.md:2 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:15
+- flows/0c85a3/vision/spirit.md:10 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:15
+- flows/0c85a3/vision/spirit.md:18 2026-10-07 <- keep flows/02dda6/vision/spirit-system-prompt.md:15
+- flows/0c85a3/vision/vision.md:2 2026-10-07 <- keep flows/02dda6/vision/ethos-code-in-vision.md:1
+- flows/41fa34/vision/flow-registry.md:2 2026-10-07 <- keep flows/f5a6e9/vision/flow.md:71
+- flows/d4ae97/vision/skills.md:58 2026-10-07 <- keep flows/8f0f57/vision/skillsAsInterface.md:1
+- flows/d4ae97/vision/skills.md:65 2026-10-07 <- keep flows/8f0f57/vision/skillsAsInterface.md:1
+- flows/d4ae97/vision/skills.md:72 2026-10-07 <- keep flows/8f0f57/vision/skillsAsInterface.md:1
+- flows/d4ae97/vision/skills.md:81 2026-10-07 <- keep flows/8f0f57/vision/skillsAsInterface.md:1
+- flows/d4ae97/vision/skills.md:86 2026-10-07 <- keep flows/8f0f57/vision/visionAndTools.md:1
+- flows/d4ae97/vision/skills.md:93 2026-10-07 <- keep flows/8f0f57/vision/visionAndTools.md:1
+- flows/ebbe30/vision/skills.md:1 2026-10-07 <- keep flows/8f0f57/vision/skillsAsInterface.md:1
+- flows/f5a6e9/vision/flow.md:95 2026-10-07~ <- keep flows/d4ae97/vision/flow.md:165
+- flows/f5a6e9/vision/flow.md:143 2026-10-07~ <- keep flows/445410/vision/nexus.md:1
+- flows/41fa34/notion/clojure-flow.md:2 2026-10-08 <- keep flows/d4ae97/vision/flow.md:153
+- flows/41fa34/vision/clojure-flow.md:2 2026-10-08 <- keep flows/d4ae97/vision/flow.md:153
+- flows/41fa34/vision/codex-upgrades.md:2 2026-10-08 <- keep flows/d4ae97/vision/deployment.md:3
+- flows/41fa34/vision/compensation.md:2 2026-10-08 <- keep flows/d4ae97/vision/skills.md:102
+- flows/f5a6e9/vision/messaging.md:3 2026-10-08~ <- keep flows/d4ae97/vision/messenger.md:11
+- flows/0c85a3/vision/aspect-topics.md:2 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:135
+- flows/0c85a3/vision/deployment-accounting.md:2 2026-10-09 <- keep flows/445410/vision/deployment.md:1
+- flows/0c85a3/vision/nexus-configuration.md:2 2026-10-09 <- keep flows/445410/vision/nexus.md:1
+- flows/445410/vision/books.md:9 2026-10-09 <- keep flows/ebbe30/vision/ethos.md:39
+- flows/445410/vision/ethos.md:1 2026-10-09 <- keep flows/ebbe30/vision/ethos.md:39
+- flows/445410/vision/flow.md:9 2026-10-09 <- keep flows/ebbe30/vision/metaflow-naming.md:1
+- flows/445410/vision/flow.md:17 2026-10-09 <- keep flows/ebbe30/vision/metaflow-naming.md:1
+- flows/73ada7/vision/nexus.md:3 2026-10-09 <- keep flows/d5df1d/vision/ethos.md:27
+- flows/73ada7/vision/nexus.md:11 2026-10-09 <- keep flows/445410/vision/nexus.md:1
+- flows/ebbe30/vision/clojure.md:1 2026-10-09 <- keep flows/0c85a3/notion/flow-identifiers.md:2
+- flows/ebbe30/vision/flow-startup.md:9 2026-10-09 <- keep flows/f5a6e9/vision/vision.md:3
+- flows/ebbe30/vision/vision.md:27 2026-10-09 <- keep flows/f5a6e9/vision/flow.md:111
+- flows/f5a6e9/vision/vision.md:11 2026-10-09~ <- keep flows/ebbe30/vision/metaflow-naming.md:1
+- flows/058f16/vision/source.md:23 2026-10-10 <- keep flows/081064/vision/ethos.md:3
+- flows/058f16/vision/source.md:53 2026-10-10 <- keep flows/d68c82/vision/naming.md:3
+- flows/081064/vision/ethos.md:18 2026-10-10 <- keep flows/058f16/vision/source.md:41
+- flows/081064/vision/ethos.md:26 2026-10-10 <- keep flows/d68c82/vision/naming.md:3
+- flows/081064/vision/ethos.md:72 2026-10-10 <- keep flows/9519a1/vision/distillationSources.md:1
+- flows/875960/vision/distillation.md:11 2026-10-10 <- keep flows/9519a1/vision/distillationSources.md:1
+- flows/875960/vision/persona.md:3 2026-10-10 <- keep flows/9519a1/vision/persona.md:1
+- flows/875960/vision/persona.md:11 2026-10-10 <- keep flows/9519a1/vision/persona.md:1
+- flows/875960/vision/persona.md:19 2026-10-10 <- keep flows/9519a1/vision/persona.md:1
+- flows/23824a/vision/typeEthos.md:3 2026-10-10~ <- keep flows/081064/vision/ethos.md:80
+- flows/d68c82/vision/books.md:11 2026-10-10~ <- keep flows/9519a1/vision/books.md:1
+- flows/d68c82/vision/books.md:16 2026-10-10~ <- keep flows/9519a1/vision/books.md:1
+- flows/d68c82/vision/ethos.md:3 2026-10-10~ <- keep flows/081064/vision/ethos.md:3
+- flows/d68c82/vision/ethos.md:16 2026-10-10~ <- keep flows/875960/vision/flow.md:3
+- flows/875960/vision/books.md:3 2026-10-11 <- keep flows/9519a1/vision/books.md:1
+- flows/875960/vision/flow.md:11 2026-10-11 <- keep flows/9519a1/vision/flow.md:1
+- flows/875960/vision/flow.md:19 2026-10-11 <- keep flows/9519a1/vision/flow.md:1
+- flows/875960/vision/flow.md:27 2026-10-11 <- keep flows/9519a1/vision/flow.md:1
+- flows/875960/vision/flow.md:43 2026-10-11 <- keep flows/9519a1/vision/flow.md:1
+- flows/33752b/vision/books.md:3 2026-10-12 <- keep flows/d68c82/vision/books.md:30
+- flows/33752b/vision/design.md:11 2026-10-12 <- keep flows/d68c82/vision/design.md:13
+- flows/33752b/vision/design.md:19 2026-10-12 <- keep flows/d68c82/vision/design.md:13
+- flows/33752b/vision/design.md:27 2026-10-12 <- keep flows/d68c82/vision/design.md:13
+- flows/33752b/vision/questions.md:3 2026-10-12 <- keep flows/d68c82/vision/books.md:30
+- flows/9519a1/notion/identifier.md:1 2026-10-12~ <- keep flows/875960/vision/flow.md:51
+- flows/9519a1/vision/callerIdentity.md:1 2026-10-12~ <- keep flows/875960/vision/flow.md:51
+- flows/9519a1/vision/nexus.md:1 2026-10-12~ <- keep flows/33752b/vision/design.md:67
+- flows/d68c82/vision/psyche.md:23 2026-10-13 <- keep flows/d55c56/vision/relaying.md:3
+- flows/d68c82/vision/context-modules.md:53 2026-10-13~ <- keep flows/33752b/vision/books.md:51
+- flows/d68c82/vision/context-modules.md:65 2026-10-13~ <- keep flows/33752b/vision/books.md:51
+- flows/d68c82/vision/context-modules.md:77 2026-10-13~ <- keep flows/da2038/vision/data.md:3
+- flows/d68c82/vision/context-modules.md:83 2026-10-13~ <- keep flows/da2038/vision/correction.md:3
+- flows/d68c82/vision/context-modules.md:89 2026-10-13~ <- keep flows/da2038/vision/correction.md:11
+- flows/d68c82/vision/flow.md:50 2026-10-13~ <- keep flows/33752b/vision/flow.md:3
+- flows/d68c82/vision/flow.md:56 2026-10-13~ <- keep flows/33752b/vision/flow.md:11
+- flows/d68c82/vision/flow.md:64 2026-10-13~ <- keep flows/33752b/vision/flow.md:19
+- flows/d68c82/vision/flow.md:70 2026-10-13~ <- keep flows/33752b/vision/flow.md:19
+- flows/d68c82/vision/flow.md:76 2026-10-13~ <- keep flows/33752b/vision/flow.md:29
+- flows/3960eb/vision/communication.md:19 2026-10-14 <- keep flows/17ac8a/vision/communication.md:34
+- flows/3960eb/vision/communication.md:53 2026-10-14 <- keep flows/d68c82/vision/visualization.md:11
+- flows/55a2b4/vision/flow.md:3 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:37
+- flows/d68c82/vision/books.md:141 2026-10-14 <- keep flows/17ac8a/vision/communication.md:52
+- flows/d68c82/vision/ethos.md:37 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:37
+- flows/d68c82/vision/flow.md:130 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:25
+- flows/d68c82/vision/nexus.md:2 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:37
+- flows/d68c82/vision/seats.md:29 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:37
+- flows/d68c82/vision/visualization.md:3 2026-10-14 <- keep flows/7c89aa/vision/books.md:3
+- flows/da2038/vision/books.md:2 2026-10-14 <- keep flows/7c89aa/vision/books.md:3
+- flows/da2038/vision/books.md:12 2026-10-14 <- keep flows/17ac8a/vision/communication.md:34
+- flows/da2038/vision/flow.md:26 2026-10-14 <- keep flows/7c89aa/vision/ethos-in-clojure.md:25
+- flows/da2038/vision/subflows.md:2 2026-10-14 <- keep flows/d68c82/vision/context-modules.md:142
+- flows/da2038/vision/subflows.md:12 2026-10-14 <- keep flows/d68c82/vision/context-modules.md:142
+- flows/da2038/vision/usage.md:2 2026-10-14 <- keep flows/d68c82/vision/seats.md:37
+- flows/e4b7d7/vision/designer.md:1 ?~ <- keep flows/d68c82/vision/ethos.md:47
+
+## Proposal 3: open scope
+
+Archive-kinds family and the other archived groups: report section 2 S5, S6, S10, S15 and the deletion arithmetic.
+- Subagent facility removed against main flows delegating to subagents: flows/b81560/vision/archive-operational-asyncSubflowsAndMeaningLanguage.md:3, flows/e51411/vision/mainFlow.md:5
+- Messages forced to be Datom against not enforcing Datom on a messenger that does not need it: flows/b05237/vision/operational-messengerUsesDatomNow.md:3, flows/8904b1/vision/datom.md:3
+- Skill manifest dropped against a manifest of paths: vision-raw/skillsRepository.md:3, flows/108ab0/vision/operational-curriculumAsModuleSystem.md:3
+- Mentci as an app on a minimal CriomOS, after the Mentci GUI was declared obsolete: flows/840e42/vision/mobile.md:3, flows/6f51ad/vision/mentci.md:2
+- Flow lock given to the receiving seat against the flow not giving the lock to the message: flows/d8df70/vision/flowLifecycle.md:3, flows/875960/vision/flow.md:35
+- Voice remnant in the base prompt against the voice concept being gone: flows/875960/vision/flow.md:11
+- Flow-id length: four, six, or words from 33 bits: flows/e1953c/vision/flowIdentity.md:13, flows/01a03d6e/vision/flowIdentity.md:3
+- Refresh payload and addendum against handover at cache expiry: flows/1b8ac0/vision/refresh.md:3, flows/d68c82/vision/flow.md:114
+- Reports and logs as files against everything in the transcript: flows/9993b5/vision/transcriptOverFiles.md:3, flows/5c8be3ca/vision/flowArtifacts.md:1
+- Value layer in Datom, reclassified as a notion: flows/564f55/notion/datom.md:3, flows/564f55/vision/datom.md:19
+
+## Proposal 4: long term and short term
+
+Themes: report section 4d, with the three earliest sample records each; makeshift stack: report section 4b, 59 records listed there line by line (flows/da2038/reports/raw-psyche-supersession.md:996-1058). Rules: flows/d55c56/vision/makeshift.md:3,21; flows/d68c82/vision/flow.md:76,82; flows/da2038/vision/prototypes.md:3; flows/da2038/vision/psyche.md:2.
+
+## Proposal 5: cautions
+
+Voice: flows/875960/vision/flow.md:11 against the base prompt term «Flow: one run of a voice»; the 16 records are group S1 above.
+Files against transcript: flows/9993b5/vision/transcriptOverFiles.md:3, flows/fd0f97/vision/psyche.md:3, flows/c64ee3/vision/recording.md:3 against flows/5c8be3ca/vision/flowArtifacts.md.

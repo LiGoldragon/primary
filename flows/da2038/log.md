@@ -183,3 +183,19 @@
 - 2026-10-14 3960eb fixed graph builder faults; book C html rebuilt; republish subflow out.
 - 2026-10-14 Book «Compensation core» v1 https://claude.ai/artifact/JqnZvp7RsbdsKycdbjZz8Z published by subflow; audit running.
 - 2026-10-14 Book C v7 republished; file to committer 89fbc1; Core and 3960eb told (11.3px effective).
+- 2026-10-14 Committer published da2038 paths in 6be50e0 (remote matches).
+- 2026-10-14 Committer published book C html in dbf6aa2.
+- 2026-10-14 Audit of compensation book v1: fixes (provenance phrases, never L339, L309 clause, core dup, L205 permission, L195/L220 overreach, effort choice, numbering); revision subflow out.
+- 2026-10-14 LIVING DIRECT: pod controller long-term vision; seed book with crystallization, clear signals, ethos anatomy (library + three parts); make sure Chronos book and all books are done with basic anatomy. Logged vision/pod.md.
+- 2026-10-14 Compensation book v2 republished, all audit fixes in; ready for the living.
+- 2026-10-14 Raw psyche inventory done (reports/raw-psyche-supersession.md): 3729 records, 15 supersession groups (79), ~619 redundant copies; clearing book subflow out.
+- 2026-10-14 No Chronos book exists; sent psyches + request to Chronos Secondary 984e88.
+- 2026-10-14 Pod book v1 https://claude.ai/artifact/PXxe5anzqVKT6Z3WbPsT1p; audit+fix subflow out (Primary exemption, Capsule as choices).
+- 2026-10-14 Clearing book v1 https://claude.ai/artifact/RPqeC6TsJnuvCmojRA5dkU; spot-check running.
+- 2026-10-14 Pod book v2 published, passes; ready for the living.
+- 2026-10-14 Clearing book spot-check: quotes on page, 4 records not clearly overruled, preamble, table overflow; fix subflow out.
+- 2026-10-14 3960eb: builder no longer scales figures (12px); clearing book figure 4 cols too wide — told fix subflow; book 15 needs rebuild later.
+- 2026-10-14 Clearing book v2 (75 records/14 groups, 13 unclear); figure redraw + book 15 rebuild subflow out.
+- 2026-10-14 Clearing book v3 (two-column figure, fits 320px) ready for the living.
+- 2026-10-14 Book C v8 republished with unscaled 239px figures.
+- 2026-10-14 Report whitespace fixed; committer asked to publish 11 paths.
