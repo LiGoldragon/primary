@@ -977,7 +977,8 @@
             (emit (apply str (map body-html (split-chunk lines))))
 
             :else
-            (if-let [m (re-find #"^\*\*(Destroy|Archive)\*\*(?U)\s*(.*)$" text)]
+            (if-let [m (do (when (str/starts-with? text "Ruling:") (close-record))
+                           (re-find #"^\*\*(Destroy|Archive)\*\*(?U)\s*(.*)$" text))]
               (do (close-record)
                   (emit (cond-> (str "<div class=\"record " (str/lower-case (m 1)) "\">")
                           (not= "" (m 2)) (str "<p>" (inline (m 2)) "</p>")))
