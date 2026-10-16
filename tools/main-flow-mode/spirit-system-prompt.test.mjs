@@ -41,6 +41,15 @@ try {
   const configuredRole = mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', launchConfig: defaultLaunchConfig()});
   assert.equal(configuredRole.filter(module => module.name === 'main-seat-role-psyche-core-tertiary').length, 1);
   assert.ok(configuredRole.at(-1).body.includes('relay ledger'));
+  for (const modules of [[], ['vision-book']]) {
+    const selected = mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Secondary', launchConfig: defaultLaunchConfig(), metaflowConfig: {aspect: 'Psyche', modules}});
+    const names = selected.map(module => module.name);
+    assert.ok(names.includes('spirit-core'));
+    assert.ok(names.includes('intent-main-flow'));
+    assert.ok(names.includes('intent-psyche'));
+    assert.equal(names.filter(name => name === 'spirit-core').length, 1);
+  }
+
   assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', topic: 'Flow'}).some(module => module.name.startsWith('main-seat-role-')));
   assert.ok(!mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Secondary'}).some(module => module.name.startsWith('main-seat-role-')));
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Field', layer: 'Primary'}).map(module => module.name), ['spirit-core', 'spirit-future', 'vision-design']);

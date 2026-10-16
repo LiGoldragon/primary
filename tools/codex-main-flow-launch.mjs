@@ -24,7 +24,7 @@ import {canonicalTitleFor, nativeAgentName, continuationForLaunch, requireTopic,
 import {codexModelSystemPrompt} from './main-flow-mode/spirit-system-prompt.mjs';
 import {makeContextRefreshBinding} from './main-flow-mode/context-refresh.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
-import {defaultLaunchConfig, birthSkillsFromConfig, metaflowFor, firstPromptFromConfig} from './main-flow-mode/launch-config.mjs';
+import {defaultLaunchConfig, birthSkillsFromConfig, roleModulesFromConfig, metaflowFor, firstPromptFromConfig} from './main-flow-mode/launch-config.mjs';
 export {pickWorkspace} from './native-main-flow-launch-shared.mjs';
 
 // Startup roots per aspect. Curriculum expands their declared dependencies before composition.
@@ -171,7 +171,7 @@ async function launch(o) {
 
     step = 'prompt';
     const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: continuation.topic, layer: o.layer});
-    const startupSkills = resolveSkillDependencies(metaflow['user-modules'] ?? BIRTH_SKILLS(o.aspect));
+    const startupSkills = resolveSkillDependencies(roleModulesFromConfig(LAUNCH_CONFIG, metaflow, 'user'));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     const {prompt, leading, blocks} = composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow});
     const promptFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'codex-main-flow-launch-')), 'first-prompt.md');
@@ -268,7 +268,7 @@ if (invokedDirectly) {
   try { o = parseArgs(process.argv.slice(2)); } catch (e) { console.error(`arguments: FAILED: ${e.message}`); process.exit(2); }
   if (o.composeOnly) {
     const metaflow = metaflowFor(LAUNCH_CONFIG, {aspect: o.aspect, topic: o.topic ?? 'Core', layer: o.layer ?? 'Primary'});
-    const startupSkills = resolveSkillDependencies(metaflow['user-modules'] ?? BIRTH_SKILLS(o.aspect));
+    const startupSkills = resolveSkillDependencies(roleModulesFromConfig(LAUNCH_CONFIG, metaflow, 'user'));
     const skillNames = orderSkillsForPrompt(startupSkills.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-') && !(name === 'vision-design' && (o.aspect === 'Psyche' || o.layer === 'Primary'))));
     process.stdout.write(composeFirstPrompt({workspace: o.workspace, aspect: o.aspect, brief: fs.readFileSync(o.brief, 'utf8'), read: liveSkillReader(o.workspace), skillNames, launchConfig: LAUNCH_CONFIG, metaflowConfig: metaflow}).prompt);
   } else await launch(o);

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {modulesFromConfig, sourceModulesFromConfig} from './launch-config.mjs';
+import {roleModulesFromConfig, sourceModulesFromConfig} from './launch-config.mjs';
 
 export function spiritModules(workspace, surface = '.agents') {
   const root = path.join(workspace, surface, 'skills');
@@ -24,7 +24,15 @@ export function mainSystemModules(workspace, surface, {aspect, layer, topic = 'C
   let modules;
   if (configured) {
     const base = sourceModulesFromConfig(configured, aspect, 'system');
-    const selected = seat.metaflowConfig?.modules?.map(name => base.find(module => module.name === name) ?? ({name, repository: name === 'compensation-book-crystallization' ? 'field' : 'psyche', path: `skills/${name}.md`, placement: 'system'})) ?? base;
+    // A row may add context; even an empty row cannot remove spirit/intent.
+    const names = [...new Set([
+      ...roleModulesFromConfig(configured, {...seat.metaflowConfig, aspect}, 'system'),
+      ...startupSkills.filter(name => name.startsWith('spirit-') || name.startsWith('intent-')),
+    ])];
+    if (!names.includes('spirit-core') || !names.includes('intent-main-flow'))
+      throw new Error('main system context requires spirit-core and intent-main-flow');
+    const sources = [...base, ...sourceModulesFromConfig(configured, aspect, 'user')];
+    const selected = names.map(name => sources.find(module => module.name === name) ?? ({name, repository: name === 'compensation-book-crystallization' ? 'field' : 'psyche', path: `skills/${name}.md`, placement: 'system'}));
     modules = selected.map(module => {
       const repo = configured.shared.repositories[module.repository];
       let body;
