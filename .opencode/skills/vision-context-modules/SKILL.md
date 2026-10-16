@@ -60,3 +60,5 @@ Knowledge modules are audited from time to time for truth and currency against p
 A subject the living reviews or asks about has a module, on its topic or a broader one, with room to hold it.
 
 A module declares its placement: the system prompt, or loaded on demand. A skill is the harness's interface for an on-demand module.
+
+A context repository holds one folder per module type; no folder is called skills. A file is named by its subject alone, and its folder gives its type.

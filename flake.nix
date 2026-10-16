@@ -23,7 +23,7 @@
       flake = false;
     };
     psyche-context = {
-      url = "github:LiGoldragon/psyche-context/e1a300e5f03551f23ab40d7bc75c2213609e8256";
+      url = "github:LiGoldragon/psyche-context/8bf1b253cd543f9ebec4c41a26f65e3a4b862e4d";
       flake = false;
     };
     mind-context = {
