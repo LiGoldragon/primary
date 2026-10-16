@@ -40,7 +40,7 @@ Claude names its built-in subflows Explore, Plan and general-purpose. Codex name
 
 ## Crystallization
 
-### 1. A subflow's kind is its use
+### Proposal 1: A subflow's kind is its use
 
 File: psyche-context/skills/vision-flow.md, at the end
 
@@ -48,7 +48,7 @@ File: psyche-context/skills/vision-flow.md, at the end
 
 Ruling: land, amend, or reject.
 
-### 2. The Kind in Ethos
+### Proposal 2: The Kind in Ethos
 
 File: Curriculum/kinds.ethos, new
 
@@ -82,7 +82,7 @@ Aspect, Role and Level are enums, and Kind is a struct of the three. The Ethos c
 
 Ruling: land, amend, or reject.
 
-### 3. A datom is shown with its type
+### Proposal 3: A datom is shown with its type
 
 File: psyche-context/skills/vision-datom.md, at the end
 
@@ -98,7 +98,7 @@ The head `type` is lowercase, so it cannot be read as a variant.
 
 Ruling: land, amend, or reject.
 
-### 4. Context repositories by type
+### Proposal 4: Context repositories by type
 
 File: psyche-context/skills/vision-context-modules.md, at the end
 
@@ -128,7 +128,7 @@ File: psyche-context/skills/vision-context-modules.md, at the end
 
 Ruling: land, amend, or reject.
 
-### 5. Models by role, numbers out of view
+### Proposal 5: Models by role, numbers out of view
 
 File: psyche-context/skills/vision-model-roles.md, at the end
 
@@ -136,7 +136,7 @@ File: psyche-context/skills/vision-model-roles.md, at the end
 
 Ruling: land, amend, or reject.
 
-### 6. The contextualizer
+### Proposal 6: The contextualizer
 
 Carried unchanged from the previous edition, Proposal 3.
 

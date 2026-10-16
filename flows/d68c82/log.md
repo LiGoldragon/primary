@@ -1417,3 +1417,10 @@ Ethos checked by ethos-zero 16.0.0; Clojure run true/false under bb 1.13.219. Fi
 
 ## 2026-10-15 — Subflows ed. 3 published (XpPEQD1TFjWA8rQXrTSTNN); Open books updated with it and Chronos ed. 2
 Book subflow claims: figures in a plain div because the page's .figure class collapsed the first figure to zero height (builder fault, unconfirmed); Proposals 5–6 and the Clojure review not viewed at phone width. Check dispatched; files to 89fbc1.
+
+## 2026-10-15 — 89fbc1 committed 13 requested paths as bf111a (Subflows ed. 3, index, records); book-build diff commit not yet confirmed separately.
+
+## 2026-10-15 — Subflows ed. 3 page check: layout passes; code text 8.93px at phone width (book-code.html:130), figure labels ~11.3px
+Cause of the hand-built page: my presentation headed proposals "### 1." where book-build expects "### Proposal N:", so the tool refused and the book subflow built the page another way instead of returning the source to me. The line that should have prevented it is in no module I load: the heading form. Rebuild ordered with the tool.
+
+## 2026-10-15 — Subflows ed. 3 rebuilt with book-build and republished (v2); code 12px at 320 (book-code.html), figure labels 12–14px, no sideways scroll. Handed to 89fbc1.
