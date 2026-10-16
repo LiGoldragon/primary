@@ -19,6 +19,8 @@ A book's reference file is references/<book-source-basename>.md in the directory
 
 A page is republished from its local source; a page read back from the host is never copied over that source.
 
+A change to the book builder rebuilds every published book and compares it with the previous build before it is used.
+
 After publication is complete, return its title and URL to the requester
 with a very short voice answer to the question.
 
