@@ -1532,3 +1532,30 @@ Cause witnessed: since a865c3, a bare fence without +/- lines under a File: prop
 ## 2026-10-16 — «Code shown as code» published (Vdp9uBau3wPHx9NQcheopL). Index wrongly published to a new URL (8A7fL7Qr5CvGE7ZWuFRprw); republishing to MhfwBH. Fetch cause (claim): book-fetch reads text blocks only; unconfirmed, since the block was in a text block of the message.
 
 ## 2026-10-16 — Open books republished at MhfwBH (v135), 120 entries, «Code shown as code» first. To 89fbc1.
+
+## 2026-10-16 — 89fbc1 committed Code shown as code and index as d71a06.
+
+## 2026-10-16 — Field landed the builder regression rule in compensation-book (field ca3674); Home 702316 with Flow 0.28 passes; final pin pending.
+
+## 2026-10-16 — The living (via Tertiary): Field disables failing services and a book says what each was for; a fresh proposal book on cluster monitoring
+Tertiary claim: opencode-testing.service fails with ServeError and restarts every 2 s, 119,366 restarts, ~1.2 s CPU and 270 MB each (a candidate for the desktop's IO pressure, unmeasured); opencode.service idle since 09-26; opencode-local-model beside it. Order relayed to Field; monitoring research dispatched.
+
+## 2026-10-16 — «Code shown as code» P1 withdrawn on his comment: the fault was the builder code (fixed, with the rebuild-and-compare rule), not missing context.
+
+## 2026-10-16 — Comments at 01:34 on Context modules (the anchored text is the 1st edition's, though the relay names the 2nd): P1 "Yeah, this is good.", P2 "This is good." (already landed), P3 old wording "This is good as well." (his 01:15 amendment asked other wording). Landing P1 as approved; P3 wording put to him.
+
+## 2026-10-16 — Landed: vision-context-modules, the folder names the type (psyche-context 8bf1b25). Field asked to pin it and to plan the by-type layout with Mind.
+
+## 2026-10-15 19:37 (host clock, local) — Date correction
+Entries above headed 2026-10-16 were dated from the harness's UTC date, not the host clock; in the living's time zone they fall on 2026-10-15. Cause: I took the date from the harness note instead of reading the host clock, as the clock line asks. From here each entry's date comes from the host clock in the same write.
+
+## 2026-10-15 19:37 — Monitoring research returned
+No monitoring stack in CriomOS; only home-level checkup timers. Earlier: his 10-03 ask (low overhead, useful data, visual UI, alerts); a book offered Netdata, Beszel, Prometheus with Grafana (Mind recommended Netdata and ntfy); he asked for two-way rich contact. Ouranos IO pressure now some 88 / full 77. opencode-local-model (llama.cpp) runs on Ouranos, against "local models only on Prometheus": sent to Field. Book composed.
+
+## 2026-10-15 19:38 — «Watching the cluster» published (2B6H6S5MLYL1YrJu9w4iM8), first in Open books (v136). Its figure is cut at ~240px tall and scrolls inside: builder fault, fix dispatched.
+
+## 2026-10-15 19:39 — Mind Core Primary's layout migration plan received (plan only): map skills/<type>-<subject>.md to <type>/<subject>.md, keep <type>-<subject> as the logical id, Curriculum the sole registry with explicit layout versions, launchers read the resolved source contract, generated harness trees unchanged, one coherent cohort with whole-cohort rollback. Authorized under his ruling (8bf1b25); sent to Field to sequence.
+
+## 2026-10-15 19:42 — Figure height fixed (book-code.html:71, overflow-y hidden, min-height min-content); test at 320–768; 91 buildable books differ only in that rule; 22 republished (v2). Tables share the flaw; same fix ordered.
+
+## 2026-10-15 19:43 — Tables fixed the same way; 91 books differ only in the table rule; 22 republished (v3). To 89fbc1.

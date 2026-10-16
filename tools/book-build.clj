@@ -794,8 +794,8 @@
          (esc-attr (str/join " " (mapcat lines-of (concat (mapcat (fn [n] (keep n [:label :note])) nodes) (keep :verb edges)))))
          "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>"))))
 
-;; A figure stands in a block of its own, so the page's grid gives it the
-;; whole height it is drawn at.
+;; A figure stands in a block of its own; the page's CSS (book-code.html,
+;; .figure) holds the box to the whole height it is drawn at.
 (defn figure-el [svg] (str "<div class=\"figure\">" svg "</div>"))
 
 (defn figure-svg

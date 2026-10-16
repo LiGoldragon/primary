@@ -242,3 +242,11 @@ Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Context m
 > Whereas a psyche module Requires approval before it can land
 
 -- psyche, typed.
+
+## A module does not state what a model does by default
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Code shown as code», its one proposal (code in a book shown as code).
+
+> I think that if we need to put this in, then there's something wrong somewhere else in the training, because that would be what a model would do by default.
+
+-- psyche, STT.
