@@ -1424,3 +1424,25 @@ Book subflow claims: figures in a plain div because the page's .figure class col
 Cause of the hand-built page: my presentation headed proposals "### 1." where book-build expects "### Proposal N:", so the tool refused and the book subflow built the page another way instead of returning the source to me. The line that should have prevented it is in no module I load: the heading form. Rebuild ordered with the tool.
 
 ## 2026-10-15 — Subflows ed. 3 rebuilt with book-build and republished (v2); code 12px at 320 (book-code.html), figure labels 12–14px, no sideways scroll. Handed to 89fbc1.
+
+## 2026-10-15 — 89fbc1 committed book-code and Subflows rebuild as e48ff6; punctuation-aware diff committed as f1f1d3.
+
+## 2026-10-15 — Field landed the two book lines in compensation-book-crystallization (field-context 0755e0); regenerated; Primary publication of the generated paths pending with 89fbc1.
+
+## 2026-10-15 — The living: a report on the suspend drain, its cause and proper fix, with others' fixes, visuals and photographs
+"I want a report made on what the problem was with the battery being drained on suspend and how it's properly fixed, with solid knowledge of other people, how they fixed it, and what the problem was. I want visuals and photographs, as usual." Logged vision (a question reviews a knowledge module). The report is a book that proposes a knowledge module. Research dispatched: Field's evidence plus the web.
+
+## 2026-10-15 — The living: "Obviously, Claude is in low-power mode, so you should prefer sending jobs to Mind."
+Cause: no loaded module states Claude's low-power mode or where jobs go while it holds; the lean-mode words live only in vision/seats.md. Line sent to Field for compensation-temporary. The suspend research subflow already running is kept (stopping it wastes what it spent); the report's next jobs go to Mind.
+
+## 2026-10-15 — The living: "actually, its only fable in low power mode. opus usage is quite fine"
+Correction of the line just sent to Field; corrected line sent in its place. The report's jobs stay on Claude subflows.
+
+## 2026-10-15 — Suspend research returned
+Witnessed in Field's evidence: Ouranos T14 Gen 5 Intel (Meteor Lake), BIOS 1.12, s2idle only, zero S0ix residency on every counter, spd5118 resume -6 twice; firmware gives XHCI and the Ethernet controller GLAN (00:1f.6) the same wake GPE 6D; GLAN is an active wake source; CriomOS 6a06e99 declares only XHCI wake disabled; the live GPE 6D disable is in no source. Others on this model: e1000e (Ethernet) blocks s2idle; the Meteor Lake GBE block holds S0ix. Leading hypothesis (inference): Ethernet wake and S0ix blocking; spd5118 is a resume error, not the drain. Sent to Field; report book composed.
+
+## 2026-10-15 — Field: Fable-only low-power line landed in compensation-temporary (06602a), broad Claude line removed; Primary publication pending
+Ouranos readback (claim): Ethernet GLAN PCI wake enabled, e1000e, wake-on-LAN magic enabled; GPE 6D now enabled again (changed outside Field since the earlier read; so the live hotfix is gone). Field asked Mind for a bounded design of the declared fix; nothing deployed yet.
+
+## 2026-10-15 — «Battery drain in sleep» published (URVXpeNYZU2phmCRBumr8v), in Open books; three photographs embedded; checks pass at 320/375
+The builder silently leaves a figure as raw text when a box line is one character too wide; it should refuse instead (builder fault, not yet handed). Not watched (watch limit); the Tertiary relays comments.

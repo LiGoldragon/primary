@@ -184,3 +184,11 @@ Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-15 
 > The fact that there are two folders means that either the code is bad in that it puts the source code for the same thing in two places, or the code is bad in that it doesn't make skills with all of the files. If it only makes skills from the `skill` directory, then we're missing skills in `harness`. All of this either goes into a system prompt or, in which case, it doesn't appear as a skill unless possibly eventually we might have modules that become skills if they're not in that particular system prompt. That's long term.
 
 -- psyche, STT.
+
+## A question about how things work reviews a knowledge module
+
+Said to Psyche Core Secondary directly, 2026-10-15, asking for a report on the laptop's battery drain during suspend and its proper fix.
+
+> I guess when I'm asking a question like that, I'm reviewing a knowledge context module.
+
+-- psyche, STT.
