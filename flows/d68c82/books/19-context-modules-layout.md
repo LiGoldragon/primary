@@ -38,7 +38,7 @@ Presentation.{ «Context modules: folders, types, placement» }
 
 Every context module is a skill today. The system prompt carries a few of them as well: spirit, the intents on context modules, the main flow and the psyche, and, for Psyche seats, the book modules. Launch lists for each aspect choose them; no module says where it belongs.
 
-Only one module, Ethos, sits outside a skills folder, in psyche-context's vision folder. The code that reads that folder is development work in Curriculum, not yet committed.
+Only one module, Ethos, sits outside a skills folder, in psyche-context's vision folder. The code that reads that folder is in production.
 
 The type is written twice: in the folder or repository, and again in the file name.
 

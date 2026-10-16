@@ -1461,3 +1461,20 @@ Witnessed: only psyche-context/vision/ethos.md lies outside skills/; Curriculum 
 ## 2026-10-15 — 44cda5 is Field Core Primary (Astra), whose Secretary is 42265e itself; Field's own Held send to it is a route fault. Told Field.
 
 ## 2026-10-15 — «Context modules: folders, types, placement» published (6DGnwVoHuRKkNCdWM3NbmB), first in Open books; Subflows P4 marked carried. Builder needs a box around a bare tree to draw it (builder limit). To 89fbc1.
+
+## 2026-10-15 — 89fbc1 committed the context-modules book, index and records as 1fa2c6.
+
+## 2026-10-15 — Field: its Primary 44cda5 shows Blocked, "Action Required"; hm-repair refuses a Held.Blocked send. Swap 17 GiB by process: Codex 11.8 (server 2.7, clients 2.0/2.0/1.4/1.4), an old .codex-wrapped 1.0, Claude harnesses 1.1, Chrome 0.6, Claude Desktop 0.5, Wispr 0.5. Two unclaimed D-state Python icon readers not stopped.
+Decision (this seat): no flow claims the two Python readers; Field may stop them with SIGTERM and receipts. Asked Field to map each Codex client to its flow with its idle time, so retirements can be proposed to the living.
+
+## 2026-10-15 — Field: both Python icon readers ended on their own before any signal (cause unknown); IO pressure still high just after. Codex mapping table and Primary prompt check pending.
+
+## 2026-10-15 — Field Primary 44cda5 waits on the living's Wispr symptom (same question already asked of him here); Herdr labels its idle question Blocked, and hm-send holds on it.
+
+## 2026-10-16 — Field's Codex swap map (claims)
+Three shared app-servers 2.8 / 1.0 / 0.25 GiB; active seats 42265e 2.1, 41fa34 (Mind Core Secondary) 2.0, 0c85a3 1.5, 44cda5 1.4, 89fbc1 0.5; idle over a day: Mind Tools pair 0430eb/47d946 (~31–33 h, 1.0 GiB), Mind Prototyping pair 5b9075/e4b7d7 (~30.5 h, 0.46 GiB). Swap is mostly resting pages (21 GiB free); the IO pressure source is still unfound. Retirement put to the living.
+
+## 2026-10-16 — Field corrects the layout survey: the deploy used published Curriculum d3df664; generated modules match the pinned sources
+The survey compared against stale shared checkouts (Curriculum HEAD 73414b6, Mind HEAD 344f6c), not the immutable pins the generation read. False claims retracted: "uncommitted Curriculum code deployed" and "generated tree mismatches sources". The Context modules book carried the first; corrected in place (no comments on it yet). Cause: no loaded module says a survey of deployed context reads the pinned sources; line sent to Field. Remaining: Home's default resolver still pins an older Field cohort; Field owns re-pinning.
+
+## 2026-10-16 — Context modules book corrected in place (v2): the vision-folder reader is in production.
