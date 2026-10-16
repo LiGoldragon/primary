@@ -86,7 +86,7 @@ assert.equal(BIRTH_SKILLS[0], 'compensation-main-flow');
 for (const name of BIRTH_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
 const names = ['compensation-main-flow', ...Array.from({length: 5}, (_, i) => `skill-${i + 1}`)];
-const composition = composeFirstPrompt({brief: 'The pending topic judgment.\n', exists: () => true, skillNames: names});
+const composition = composeFirstPrompt({brief: 'The pending topic judgment.\n', exists: () => true, skillNames: names, metaflowConfig: {aspect: 'Psyche', topic: 'Fixture', layer: 'Primary', 'raw-psyche-paths': ['flows/33752b/vision/']}});
 assert.ok(composition.prompt.startsWith('/compensation-main-flow /skill-1 /skill-2 /skill-3 /skill-4 /skill-5\n'));
 assert.ok(composition.prompt.includes('The pending topic judgment.'));
 assert.ok(composition.prompt.includes('flows/33752b/vision/'));
@@ -101,7 +101,7 @@ assert.ok(!matchesFirstPrompt(readUserPrompts(commandRows.slice(1))[0], composit
 assert.ok(!matchesFirstPrompt({...firstReceipts[0], text: `${nativeArgs}\nextra instruction`}, composition.prompt, names));
 assert.equal(readUserPrompts([...commandRows, ...commandRows.map(row => ({...row, promptId: 'duplicate-prompt'}))]).length, 2);
 assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior\n');
-assert.ok(composeFirstPrompt({brief: 'Topic work.', exists: () => true, skillNames: [...names, 'seventh']}).prompt.startsWith([...names, 'seventh'].map(n => '/' + n).join(' ')));
+assert.throws(() => composeFirstPrompt({brief: 'Topic work.', exists: () => true, skillNames: [...names, 'seventh']}), /Curriculum-generated startup bundle/);
 assert.throws(() => composeFirstPrompt({brief: 'x'.repeat(120 * 1024), exists: () => true, skillNames: names}), /120 KiB/);
 assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
 assert.throws(() => composeSkillPrompt({skillNames: [], exists: () => true}), /nonempty/);

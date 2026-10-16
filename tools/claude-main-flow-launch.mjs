@@ -123,8 +123,11 @@ export const liveSkillExists = workspace => name => {
 export const liveSkillReader = workspace => name =>
   fs.readFileSync(path.join(workspace, '.claude', 'skills', name, 'SKILL.md'), 'utf8');
 
+export const MAX_SKILLS_PER_PROMPT = 6;
+
 export function composeSkillPrompt({skillNames, exists}) {
   if (!Array.isArray(skillNames) || skillNames.length === 0) throw new Error('one Claude prompt requires a nonempty skill closure');
+  if (skillNames.length > MAX_SKILLS_PER_PROMPT) throw new Error('native Claude accepts at most6 slash skills; preserve the full closure with a Curriculum-generated startup bundle');
   if (skillNames.some(name => !/^[A-Za-z0-9_-]+$/.test(name))) throw new Error('invalid skill name');
   if (new Set(skillNames).size !== skillNames.length) throw new Error('Claude skill prompt contains duplicate names');
   for (const name of skillNames) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
