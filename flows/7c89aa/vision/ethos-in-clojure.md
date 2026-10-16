@@ -51,3 +51,18 @@ Context: the living had read the shared Clojure translation and spoke this to th
 > We should almost just add the functionality in Flow that decides where the hooks actually talk. The hook is a standard call with the right data so that the Flow daemon can check its database to see where these messages should go or what kind of notification should go where (based on the hook and where it came from).
 
 -- psyche, STT. "I want to see some example code that's been..." and "the secondary will just..." are unfinished sentences, kept as spoken.
+
+## Fable in the loop: an Ethos flow reviews the Ethos, the Nexus and the Chronos example (2026-10-16)
+
+Context: the living, after ordering Fable to weigh in on presentations.
+
+> I want to start getting Fable in the loop here. Let's get the Ethos and the Nexus with the Chronos example project reviewed first, with all of the recent additions of Psyche by both a secondary and a primary Psyche that focus on this. I guess you could call it the Ethos flow, really. The topic is Ethos.
+>
+> We can refresh the Opus on Ethos and then get it to put together a nice package for a primary Ethos flow: a really nice proposal for all of this, all of these three main things:
+> - the Ethos
+> - the Nexus
+> - the Chronos example project
+>
+> That way we can have a nice golden example to implement Flow properly and then other nexuses.
+
+-- psyche, typed.
