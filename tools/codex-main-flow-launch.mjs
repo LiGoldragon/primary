@@ -214,6 +214,7 @@ async function launch(o) {
           seatTarget: `${o.aspect} ${continuation.topic} ${o.layer}`});
         fs.writeFileSync(refreshConfigPath, JSON.stringify(binding) + '\n', {flag: 'wx', mode: 0o600});
         lineage = writeContinuationRecord(flowsRoot, flowId, continuation);
+        herdr(o.herdrSession, 'tab', 'rename', tabId, canonicalTitleFor(o.aspect, o.model, flowId, o.layer, continuation.topic));
       },
       resume: id => execFileSync('herdr', ['--session', o.herdrSession, 'pane', 'run', paneId,
         codexHarnessCommand(client, o, promptFile, systemPromptFile, id, flowId)], {encoding: 'utf8', timeout: 15000})

@@ -314,7 +314,7 @@ async function launch(o) {
 
     step = 'pane';
     const ws = pickWorkspace(herdr(o.herdrSession, 'workspace', 'list').workspaces, o.herdrWorkspaceLabel);
-    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', title.slice(2, -2).replace(` ${flowId}`, ''), '--no-focus');
+    const created = herdr(o.herdrSession, 'tab', 'create', '--workspace', ws.workspace_id, '--cwd', o.workspace, '--label', title, '--no-focus');
     const tabId = created.tab?.tab_id ?? created.tab_id;
     const panes = herdr(o.herdrSession, 'pane', 'list').panes.filter(p => p.tab_id === tabId);
     if (!tabId || panes.length !== 1) throw new Error('new tab has no single pane');

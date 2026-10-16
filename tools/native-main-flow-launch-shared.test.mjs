@@ -90,10 +90,10 @@ test('a topic is recorded at the root, inherited by continuation, and refused un
 });
 
 test('native voice title is model-free and always carries aspect layer and Flow ID', () => {
-  assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Tertiary'), '{ Mind Tertiary 918df4 }');
-  assert.equal(canonicalTitleFor('Field', 'gpt-6-astra', 'abcdef', 'Primary'), '{ Field Primary abcdef }');
+  assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Tertiary'), '{ mind core tertiary 918df4 }');
+  assert.equal(canonicalTitleFor('Field', 'gpt-6-astra', 'abcdef', 'Primary'), '{ field core primary abcdef }');
   assert.throws(() => canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef'), /exact layer/);
-  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Ethos'), '{ Psyche Ethos Secondary abcdef }');
-  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Core'), '{ Psyche Secondary abcdef }');
+  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Ethos'), '{ psyche ethos secondary abcdef }');
+  assert.equal(canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'Core'), '{ psyche core secondary abcdef }');
   assert.throws(() => canonicalTitleFor('Psyche', 'claude-opus-5-5', 'abcdef', 'Secondary', 'ethos'), /dense PascalCase/);
 });

@@ -48,9 +48,9 @@ assert.equal(parseArgs(['--model', 'gpt-6.1-sol', '--brief', 'b', '--layer', 'Se
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary']), /exactly one/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root']), /requires --metaflow/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root', '--predecessor', 'abcdef', '--metaflow', '/tmp/meta']), /exactly one/);
-assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Quaternary'), '{ Mind Quaternary 918df4 }');
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary'), '{ Field Primary abcdef }');
-assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary', 'Ethos'), '{ Field Ethos Primary abcdef }');
+assert.equal(canonicalTitleFor('Mind', 'gpt-6-luna', '918df4', 'Quaternary'), '{ mind core quaternary 918df4 }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary'), '{ field core primary abcdef }');
+assert.equal(canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef', 'Primary', 'Ethos'), '{ field ethos primary abcdef }');
 assert.throws(() => canonicalTitleFor('Field', 'gpt-6-luna', 'abcdef'), /exact layer/);
 assert.equal(parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort', 'low']).effort, 'low');
 assert.throws(() => parseArgs(['--model', 'gpt-6-astra', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort', 'tiny']), /no supported Codex effort: tiny/);

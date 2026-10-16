@@ -40,8 +40,8 @@ assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Secondary', '--predec
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Quinary', '--predecessor', 'abcdef']), /no additive layer: Quinary/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary']), /exactly one/);
 assert.throws(() => parseArgs(['--brief', 'b', '--layer', 'Primary', '--root']), /requires --metaflow/);
-assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'bfdae1', 'Secondary'), '{ Mind Secondary bfdae1 }');
-assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), '{ Field Quaternary abcdef }');
+assert.equal(canonicalTitleFor('Mind', 'claude-opus-5-5', 'bfdae1', 'Secondary'), '{ mind core secondary bfdae1 }');
+assert.equal(canonicalTitleFor('Field', 'claude-opus-5-5', 'abcdef', 'Quaternary'), '{ field core quaternary abcdef }');
 assert.throws(() => canonicalTitleFor('Psyche', 'claude-unmapped-1', 'abcdef'), /exact layer/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort', 'huge']), /no such effort: huge/);
 assert.throws(() => parseArgs(['--model', 'claude-opus-5-5', '--brief', 'b', '--layer', 'Primary', '--predecessor', 'abcdef', '--effort']), /bad argument: --effort/);
