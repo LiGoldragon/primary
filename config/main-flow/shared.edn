@@ -3,13 +3,13 @@
  :first-response-timeout-seconds 900
  :secondary-bootstrap-context "You carry this topic as its secretary. Begin from its raw psyche and propose the first crystallization for it; coordinate its next bounded work with the Primary after normal binding."
  :repositories {:psyche {:path "/git/github.com/LiGoldragon/psyche-context"
-                         :ref "67d358d7bb86b7442d8bd8216789dc7bfd77fbef"
+                         :ref "f81b7b2ceee748c734cb7098578437251bbe0d78"
                          :skills "skills"}
                 :mind {:path "/git/github.com/LiGoldragon/mind-context"
                        :ref "bd5fd6c0e595aeccc6958cdad69f98adf85af657"
                        :skills "skills"}
                 :field {:path "/git/github.com/LiGoldragon/field-context"
-                        :ref "ff56797f9d118f862fcd0b8eae46eb21d9d5a16f"
+                        :ref "dd87edbed4e6e8a5035195a2638643fd452d1358"
                         :skills "skills"}}
  :tools {:claude [:read :edit :write :bash :web]
          :codex [:read :edit :write :bash :web]
