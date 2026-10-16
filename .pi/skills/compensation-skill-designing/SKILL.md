@@ -15,6 +15,8 @@ Search `Reference skill collections` for prior art on the situation before writi
 
 A changed authored skill is committed and pushed at once in its source repository. Regenerate the skill trees normally from the published source; when those outputs are in Primary, only the standing Primary committer commits and pushes their qualified owned paths. Never edit the generated trees directly.
 
+A survey of deployed context reads the pinned sources the last generation used, never a shared checkout.
+
 A description names the situation that should make an agent load the skill,
 in the words of the task at hand. State a trigger, not a topic.
 Open with the situation itself. A shared formula carries nothing.

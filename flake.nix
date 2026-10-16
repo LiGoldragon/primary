@@ -31,7 +31,7 @@
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context/e4ce90b6aa9d7a3b0f5e98d0037d081ff07d27e3";
+      url = "github:LiGoldragon/field-context/a9164432e6c76f26d184b5f441b6db32250175e8";
       flake = false;
     };
     flow = {
