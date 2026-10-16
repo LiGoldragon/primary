@@ -7,7 +7,8 @@
 ;; Crystallization heading, proposals (### Proposal N: title), File:
 ;; lines, fenced text as red/green/context panels, fenced code as code
 ;; blocks, and numbered rulings. An ASCII box-and-arrow diagram in an unlabelled
-;; fence is never drawn: the n-th diagram needs fig-n.svg in the --figures
+;; fence, and every unlabelled fence outside a proposal, boxed or not, is a
+;; diagram; it is never drawn: the n-th diagram needs fig-n.svg in the --figures
 ;; directory, else the build refuses with a one-line error and exit 1. A paragraph opening with
 ;; **Destroy** or **Archive** wraps the record that follows in a
 ;; record panel of that class. The page code (tools/book-code.html) is
@@ -789,7 +790,8 @@
             (let [out (cond-> out (seq para) (into (flush-para para)))
                   lang (if (= "" (m 1)) "text" (m 1))
                   j (loop [j (inc i)] (if (and (< j n) (not (re-find fence-close (lines j)))) (recur (inc j)) j))]
-              (recur (inc j) (conj out [:fence lang (subvec lines (inc i) (min n j))]) []))
+              (recur (inc j) (conj out (with-meta [:fence lang (subvec lines (inc i) (min n j))]
+                                         {:bare (= "" (m 1))})) []))
             (cond
               (blank? l) (recur (inc i) (cond-> out (seq para) (into (flush-para para))) [])
               (re-find skip l) (recur (inc i) out para)
@@ -890,6 +892,10 @@
             (emit (show-fig lines))
 
             (and (= lang "text") (not-any? signed-line? lines) (diagram? lines))
+            (emit (show-fig lines))
+
+            ;; An unlabelled fence outside a proposal is a diagram, boxed or not.
+            (and (:bare (meta b)) (not @in-article) (not-any? signed-line? lines))
             (emit (show-fig lines))
 
             (and (= lang "text") (not-any? signed-line? lines))

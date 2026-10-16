@@ -196,6 +196,15 @@
   (is (str/includes? (refusal "```figure\n{:nodes [{:id 1 :label \"a\"} {:id 2 :label \"b\"}] :edges [{:from 1 :to 2}]}\n```\n") "diagram 1")
       "a figure fence needs its figure too"))
 
+(deftest unboxed-arrow-chain-is-a-diagram
+  (let [chain "```\n Ethos\n   | specifies\n   v\n Nexus\n   | then\n   v\n Flow\n```\n"]
+    (is (str/includes? (refusal chain) "diagram 1") "an unlabelled fence outside a proposal needs its figure")
+    (let [html (with-figures {"fig-1.svg" drawn} #(book-build/build chain ""))]
+      (is (str/includes? html "DRAWN") "it is replaced by fig-1.svg")
+      (is (not (str/includes? html "<pre")) "the sketch is not shown as code")))
+  (is (nil? (refusal "```ethos\n Ethos\n   | specifies\n   v\n Nexus\n```\n")) "a labelled fence stays code")
+  (is (nil? (refusal "### Proposal 1: x\n\n```\n Ethos\n   |\n   v\n Nexus\n```\n")) "inside a proposal an unboxed fence stays code"))
+
 (deftest refusal-names-the-diagram
   (is (str/includes? (refusal sketch-md) "+-------+")))
 
