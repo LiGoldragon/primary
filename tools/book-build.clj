@@ -1,7 +1,7 @@
 #!/usr/bin/env bb
 ;; Build a book page from its Markdown source.
 ;;
-;; usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR]
+;; usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF]
 ;;
 ;; The source is a book in the to-the-living form: a title, a
 ;; Crystallization heading, proposals (### Proposal N: title), File:
@@ -12,7 +12,12 @@
 ;; directory, else the build refuses with a one-line error and exit 1. A paragraph opening with
 ;; **Destroy** or **Archive** wraps the record that follows in a
 ;; record panel of that class. The page code (tools/book-code.html) is
-;; appended whole.
+;; appended whole. Every ```ethos fence, and every fence in a proposal whose
+;; language is ethos, must pass ethos-zero's Check: the pinned build, or the
+;; one --ethos-zero names (a flake reference such as
+;; github:LiGoldragon/ethos-zero/<branch> carrying proposed syntax, a store
+;; path, or a binary); else the build refuses, naming the block's first line
+;; and ethos-zero's error, and exits 1.
 (ns book-build
   (:require [clojure.string :as str]
             [clojure.edn]
@@ -891,8 +896,93 @@
          (str "<h2>" (inline title) "</h2>"))
        "</header>"))
 
+;; ------------------------------------------------------------- ethos check
+;;
+;; Every ```ethos fence, and every fence in a proposal whose language is
+;; ethos (its File line or its heading names an .ethos file), is read by
+;; ethos-zero's Check; a block it refuses fails the build. A fence written as
+;; a change is checked as it reads after the change. ethos-zero is never
+;; compiled here: the flake reference is realised with no local build job, so
+;; it is substituted or built on the remote builder.
+
+(def pinned-ethos-zero
+  "The ethos-zero the books are checked against: main of LiGoldragon/ethos-zero."
+  "github:LiGoldragon/ethos-zero/07714b0171802787bea1eefe4caa2d826d9c4030")
+
+(def ^:dynamic *ethos-zero*
+  "The ethos-zero to check against: a flake reference, a store path, or an
+  ethos-zero binary."
+  pinned-ethos-zero)
+
+(def ^:dynamic *ethos-check*
+  "A function of an ethos text giving nil when ethos-zero accepts it, else
+  its refusal; nil means the default, *ethos-zero*'s Check."
+  nil)
+
+(defn- sh [& args]
+  (let [p (.start (doto (ProcessBuilder. ^java.util.List (vec args))
+                    (.redirectErrorStream true)))
+        out (slurp (.getInputStream p))]
+    {:exit (.waitFor p) :out out}))
+
+(def ethos-zero-binary
+  "The ethos-zero binary a reference names, realised once per reference."
+  (memoize
+   (fn [ref]
+     (let [f (fs/file ref)]
+       (cond
+         (and (fs/regular-file? f) (fs/executable? f)) (str f)
+         (fs/executable? (fs/path ref "bin" "ethos-zero")) (str (fs/path ref "bin" "ethos-zero"))
+         :else
+         (let [{:keys [exit out]} (sh "nix" "build" "--no-link" "--print-out-paths" "--max-jobs" "0" ref)
+               store (last (remove blank? (str/split-lines out)))]
+           (when-not (and (zero? exit) store (str/starts-with? store "/nix/store/"))
+             (throw (ex-info (str "ethos-zero " ref " could not be realised: "
+                                  (strip (last (remove blank? (str/split-lines out)))))
+                             {})))
+           (str store "/bin/ethos-zero")))))))
+
+(defn ethos-zero-check
+  "ethos-zero's Check of an ethos text: nil when accepted, else its refusal
+  without the temporary file's path."
+  [ref text]
+  (let [exe (ethos-zero-binary ref)
+        dir (fs/create-temp-dir {:prefix "book-ethos"})
+        f (str (fs/path dir "block.ethos"))]
+    (try
+      (spit f (str text "\n") :encoding "UTF-8")
+      (let [{:keys [exit out]} (sh exe (str "Check." f))]
+        (when-not (zero? exit)
+          (let [out (strip out)
+                out (str/replace out (str f " ") "")]
+            (if (str/starts-with? out "Rejected.") out (str "ethos-zero failed: " out)))))
+      (finally (fs/delete-tree dir)))))
+
+(defn ethos-text
+  "An ethos fence's text as it reads after its change: removed lines dropped,
+  added lines without their sign; in a text fence a context line also loses
+  its two-space indent."
+  [lang lines]
+  (if (some signed-line? lines)
+    (str/join "\n" (keep (fn [l]
+                           (cond (and (signed-line? l) (= \- (first l))) nil
+                                 (signed-line? l) (subs l (min 2 (count l)))
+                                 (and (= lang "text") (str/starts-with? l "  ")) (subs l 2)
+                                 :else l))
+                         lines))
+    (str/join "\n" lines)))
+
+(defn ethos-refusal
+  "The refusal of an ethos fence, as one line naming its first line, or nil."
+  [lang lines]
+  (when-let [reason ((or *ethos-check* #(ethos-zero-check *ethos-zero* %)) (ethos-text lang lines))]
+    (str "ethos block (" (pr-str (strip (or (first (remove blank? lines)) "")))
+         ") refused by ethos-zero: " reason)))
+
 (defn build [src code]
   (let [nfig (volatile! 0)
+        heading-where (volatile! nil)
+        refusals (volatile! [])
         datom-title (presentation-title src)
         bs (vec (blocks src))
         file-next? (fn [i] (let [[kind ls] (get bs (inc i))]
@@ -928,6 +1018,12 @@
     (doseq [[i b] (map-indexed vector bs)]
       (if (= :fence (first b))
         (let [[_ lang lines per-line] b]
+          (when (and (not per-line)
+                     (or (= lang "ethos")
+                         (and @in-article (= lang "text")
+                              (= "ethos" (target-lang (or @target @heading-where)))
+                              (not (and (not-any? signed-line? lines) (diagram? lines))))))
+            (when-let [r (ethos-refusal lang lines)] (vswap! refusals conj r)))
           (when (and @rulings @pending-close) (close-rulings true))
           (cond
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
@@ -975,6 +1071,7 @@
                 (close-record)
                 (vreset! glue false)
                 (vreset! target nil)
+                (vreset! heading-where nil)
                 (when @in-article (append! "</article>"))
                 (let [m (re-find #"(?U)^### Proposal (\d+): (.*)$" text)]
                   (when-not m (throw (ex-info (str "proposal heading not understood: " (pr-str text)) {})))
@@ -987,6 +1084,7 @@
               (close-record)
               (vreset! glue false)
               (vreset! target nil)
+              (vreset! heading-where (when-not (file-next? i) (str/replace (strip where) "`" "")))
               (when @in-article (append! "</article>"))
               (append! (proposal-header n (strip where) (not (file-next? i))))
               (vreset! in-article true))
@@ -1044,6 +1142,8 @@
     (close-rulings false)
     (close-record)
     (when @in-article (append! "</article>"))
+    (when (seq @refusals)
+      (throw (ex-info (str/join "\nbook-build: " @refusals) {:refusals @refusals})))
     (str (str/join "\n" @out) "\n" code)))
 
 (defn read-text
@@ -1055,15 +1155,17 @@
   (let [args (vec args)]
     (when (< (count args) 2)
       (binding [*out* *err*]
-        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR]"))
+        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF]"))
       (System/exit 1))
     (let [[src-path out-path] args
           ci (.indexOf args "--code")
           code-path (if (>= ci 0)
                       (get args (inc ci))
                       (str (fs/path script-dir "book-code.html")))
-          fi (.indexOf args "--figures")]
-      (binding [*figures-dir* (when (>= fi 0) (get args (inc fi)))]
+          fi (.indexOf args "--figures")
+          ei (.indexOf args "--ethos-zero")]
+      (binding [*figures-dir* (when (>= fi 0) (get args (inc fi)))
+                *ethos-zero* (if (>= ei 0) (get args (inc ei)) pinned-ethos-zero)]
         (try (spit out-path (build (read-text src-path) (read-text code-path)) :encoding "UTF-8")
              (catch clojure.lang.ExceptionInfo e
                (binding [*out* *err*] (println (str "book-build: " (ex-message e))))

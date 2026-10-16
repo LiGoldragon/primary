@@ -15,9 +15,12 @@
 (def root (str (fs/parent tools-dir)))
 (def code (book-build/read-text (fs/path tools-dir "book-code.html")))
 
+;; These books predate the ethos check; their rendering is compared with ethos-zero
+;; told to accept every block. That the check refuses their ethos is tested below.
 (defn rebuilt [book]
   (let [dir (fs/path root "flows/c5f24b/books")]
-    (book-build/build (book-build/read-text (fs/path dir (str book ".md"))) code)))
+    (binding [book-build/*ethos-check* (constantly nil)]
+      (book-build/build (book-build/read-text (fs/path dir (str book ".md"))) code))))
 
 ;; The published html of these two books predates the one-text diff, so it is
 ;; no longer compared byte for byte: no removed panel may stay directly before
@@ -202,7 +205,9 @@
     (let [html (with-figures {"fig-1.svg" drawn} #(book-build/build chain ""))]
       (is (str/includes? html "DRAWN") "it is replaced by fig-1.svg")
       (is (not (str/includes? html "<pre")) "the sketch is not shown as code")))
-  (is (nil? (refusal "```ethos\n Ethos\n   | specifies\n   v\n Nexus\n```\n")) "a labelled fence stays code")
+  (is (nil? (binding [book-build/*ethos-check* (constantly nil)]
+               (refusal "```ethos\n Ethos\n   | specifies\n   v\n Nexus\n```\n")))
+      "a labelled fence stays code")
   (is (nil? (refusal "### Proposal 1: x\n\n```\n Ethos\n   |\n   v\n Nexus\n```\n")) "inside a proposal an unboxed fence stays code"))
 
 (deftest refusal-names-the-diagram
@@ -277,6 +282,82 @@
   (let [html (book-build/build "### Proposal 1: a\n\nsome text\n## Proposal 2: b\nmore\n" "")]
     (is (str/includes? html "<p>some text</p>\n</article>\n<article class=\"proposal\"><header><span class=\"pnum\">2</span>"))
     (is (not (str/includes? html "## Proposal 2")))))
+
+;; ------------------------------------------------------------- ethos check
+;; These run the pinned ethos-zero, realised with no local build job (already
+;; in the store, or substituted, or built on the remote builder).
+
+(def accepted-ethos "Library\n[]\n[ Point.{ X.Integer Y.Integer } ]\n[]\n[]")
+
+(defn checked
+  "The ethos texts the build hands to ethos-zero, each accepted."
+  [md]
+  (let [seen (atom [])]
+    (binding [book-build/*ethos-check* (fn [t] (swap! seen conj t) nil)]
+      (book-build/build md ""))
+    @seen))
+
+(deftest ethos-zero-accepts-a-whole-file
+  (let [html (book-build/build (str "# B\n\n```ethos\n" accepted-ethos "\n```\n") "")]
+    (is (str/includes? html "<code class=\"language-ethos\">Library"))))
+
+(deftest ethos-zero-refusal-fails-the-build
+  (let [msg (refusal "# B\n\n```ethos\nPoint.{ X.Integer\n```\n")]
+    (is (some? msg))
+    (is (str/includes? msg "(\"Point.{ X.Integer\")") "names the block's first line")
+    (is (str/includes? msg "Structural.ProtosError") "carries the parser error")
+    (is (not (str/includes? msg "block.ethos")) "without the temporary path"))
+  (let [msg (refusal "# B\n\n```ethos\nPoint.{ X.Integer }\n```\n")]
+    (is (str/includes? msg "Conceptual.{ [ 0 ] Root }") "a fragment with no root is refused"))
+  (let [msg (refusal (str "# B\n\n```ethos\nA.{\n```\n\n```ethos\n" accepted-ethos "\n```\n\n```ethos\nB.[\n```\n"))]
+    (is (str/includes? msg "(\"A.{\")"))
+    (is (str/includes? msg "(\"B.[\")"))
+    (is (not (str/includes? msg "Library")) "an accepted block is not named")))
+
+(deftest the-old-messaging-book-is-refused
+  (let [md (book-build/read-text (fs/path root "flows/c5f24b/books/10-messaging-between-flows.md"))]
+    (is (str/includes? (refusal md) "refused by ethos-zero"))))
+
+(deftest which-fences-are-ethos
+  (is (= ["A"] (checked "```ethos\nA\n```\n")) "an ethos fence anywhere")
+  (is (= [] (checked "```text\nA\n```\n\n```rust\nfn a() {}\n```\n")) "other languages")
+  (is (= ["A"] (checked "### Proposal 1: x\n\nFile: `repo/x.ethos`\n\n```text\nA\n```\n"))
+      "a text fence under a File line naming an .ethos file")
+  (is (= ["A"] (checked "### Proposal 1: x\n\nFile: `repo/x.ethos`\n\n```\nA\n```\n"))
+      "an unlabelled fence there too")
+  (is (= [] (checked "### Proposal 1: x\n\nFile: `repo/x.md`\n\n```text\nA\n```\n"))
+      "not under a File line naming another language")
+  (is (= ["A"] (checked "## Proposal 1: `repo/x.ethos`\n\n```text\nA\n```\n"))
+      "a proposal heading naming an .ethos file")
+  (is (= [] (checked "## Proposal 1: `repo/x.ethos`\n\nFile: `repo/y.md`\n\n```text\nA\n```\n"))
+      "a File line overrides the heading")
+  (is (= ["A"] (checked "## Proposal 1: `repo/x.ethos`\n\n```text\nA\n```\n\n## Proposal 2: `repo/y.md`\n\n```text\nB\n```\n"))
+      "the next proposal resets it"))
+
+(deftest a-change-is-checked-as-it-reads-after
+  (is (= ["Library\n[]\n[ New ]"]
+         (checked "### Proposal 1: x\n\nFile: `r/x.ethos`\n\n```text\n  Library\n  []\n- [ Old ]\n+ [ New ]\n```\n"))
+      "a text fence's context loses its indent")
+  (is (= ["Library\n[ New ]"]
+         (checked "```ethos\nLibrary\n- [ Old ]\n+ [ New ]\n```\n"))
+      "an ethos fence's context is kept as written"))
+
+(deftest cli-checks-against-a-named-ethos-zero
+  (let [dir (fs/create-temp-dir)
+        src (str (fs/path dir "b.md")) out (str (fs/path dir "b.html"))
+        fake (str (fs/path dir "ethos-zero"))
+        run #(apply clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out %&)]
+    (try (spit src (str "# B\n\n```ethos\n" accepted-ethos "\n```\n"))
+         (spit fake "#!/bin/sh\necho \"Rejected.{ ${1#Check.} { 1 1 } Proposed.Syntax }\"\nexit 1\n")
+         (fs/set-posix-file-permissions fake "rwxr-xr-x")
+         (is (= 0 (:exit (run))) "the pinned ethos-zero accepts it")
+         (let [r (run "--ethos-zero" fake)]
+           (is (= 1 (:exit r)))
+           (is (= "book-build: ethos block (\"Library\") refused by ethos-zero: Rejected.{ { 1 1 } Proposed.Syntax }\n" (:err r))
+               "the named build is the one asked"))
+         (let [store (str (fs/parent (fs/parent (book-build/ethos-zero-binary book-build/pinned-ethos-zero))))]
+           (is (= 0 (:exit (run "--ethos-zero" store))) "a store path names a build"))
+         (finally (fs/delete-tree dir)))))
 
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))
