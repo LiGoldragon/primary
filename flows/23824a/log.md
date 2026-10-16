@@ -42,3 +42,9 @@
 - 2026-10-12: d68c82: vector book proposals must target psyche-skills/skills/vision-ethos.md; relayed to 081064.
 - 2026-10-12: 081064 witnessed vision/ethos.md is the authored vision-ethos source (no skills/vision-ethos.md at 5a18f9c); target kept; told d68c82.
 - 2026-10-12: d68c82 withdrew the target correction; book unchanged.
+- 2026-10-14: Field Core Secondary: refresh through handover. Wrote flows/23824a/handover.md. No subflows, writes or locks in flight; holding new work.
+- 2026-10-14: 081064 retirement ordered (lean mode, no successor). Boundary witnessed: idle, no locks/subflows/uncommitted; handover 41d8b8 = origin/main; last output kept in reports/081064-last-output.md. Reported to 42265e.
+- 2026-10-14: 081064 retired (pane closed). No-Fable mode: Ethos packets and rulings go to Psyche Core Secondary for routing; no replacement Primary; Core holds any Fable-use exception.
+- 2026-10-16: Living (via core Secondary): Fable back in the loop; refresh the Ethos Opus, then it packages a proposal for a Primary Ethos flow on Ethos, the Nexus and the Chronos example project. Logged vision: goldenExample. Seat on hold for refresh.
+- 2026-10-16: Handover rewritten for refresh (current checkpoint). Psyche gathering written: reports/ethos-nexus-chronos-psyche.md (105 Ethos, 27 Nexus, 6 Chronos records; 64 skill sections). No subflows, writes or locks; holding.
+- 2026-10-16: Publish refused on EOF blank line in psyche report; trimmed, diff --check clean; five-path handoff resent to committer 89fbc1.
