@@ -1,16 +1,16 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-16T18:30:53Z",
+  "updatedUTC": "2026-10-16T19:12:38Z",
   "orders": [
     {
       "id": "opus-topics",
       "work": "Ethos2dcabc and Nexusa60bc8 born with34modules; hold topic tasks for Core independent transcript check; then Ethos successor acceptance before23824a retirement; Chronos design after both proposals.",
-      "state": "Opus proposals active; both native checks passed;23824a retired after successor handover accepted"
+      "state": "65f93a and a275c0 independent checks passed and proposals delivered;23824a retired;504f11 Chronos design released after Core36module check"
     },
     {
       "id": "context-three-repos",
       "work": "Move outside authored context into three aspect repos; role/raw IDs only; fixed-root Curriculum composer; one Flow starter and thin adapters; generated subagent runtime storage must satisfy no composed files.",
-      "state": "in-progress-with-Mind-and-Flow"
+      "state": "Curriculum remote package13tests passed with generatedwire/targetedlock/roles/changedfixture; fullcohort live Nexus checks pending"
     },
     {
       "id": "context-layout",
@@ -30,7 +30,7 @@
     {
       "id": "remaining-context-lines",
       "work": "Land Fable launch/wake/15percent100k limits; new book no technicalpart heading-only identifiers; Nix no-outlink rule already source; retire receipt/hash duplicates.",
-      "state": "pending-source-child"
+      "state": "Fable/book/terminology source f80e139 published; further compensation redo waves remain pending"
     },
     {
       "id": "mind-knowledge",
@@ -75,7 +75,7 @@
     {
       "id": "fable-core",
       "work": "8a8bed held; one authorizedrelaunch after freshfullcontextproof withpsycheproposalsonly; no furtherworkbefore.",
-      "state": "held"
+      "state": "39bd0c fresh whole-context Fable review active;8a8bed retired after successor acceptance"
     },
     {
       "id": "fable-ethos",
@@ -116,6 +116,21 @@
       "id": "redo-packets",
       "work": "All incoming redo packets retained in root transcript; consistent behavioral changes to apply, conflicts explicitly dropped byCore; refreshthresholds/rolelibrary/Chronosdefaultsheld. Metaflowdefinitions and subflow-kind work cannot revive outside context bodies.",
       "state": "pending-coordinated-source-waves"
+    },
+    {
+      "id": "core-tertiary-refresh",
+      "work": "Fresh Sonnet4201a3 live full35modules; waiting Core independentcheck; release handover then retire7c89aa only after acceptance",
+      "state": "awaiting-independent-check"
+    },
+    {
+      "id": "book-comments",
+      "work": "Exact new-edition rule frozen in private Field049757 child; inquiry quoted-words-only correction Mind e3fcd4; include both in finalcohort",
+      "state": "source-candidates-pending-coordinated-publication"
+    },
+    {
+      "id": "flow-0346",
+      "work": "Home pin Flowe8cddd4 title/storedfreshwakebundle; serialcheck/deploy/readback",
+      "state": "queued"
     }
   ]
 }
