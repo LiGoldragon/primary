@@ -63,3 +63,19 @@ Context: spoken to the Psyche Flow Secondary after the low-usage order; relayed.
 > If it's not on the same topic, if it's a wildly varying topic, that's why we want lean calls: it's cheap to just start another one because it really doesn't even need tool calls. It can just talk to secondary to ask it what it would like to know. All the tool calls are really just talking to the secondary and the secondary then handles ...
 
 -- psyche, STT. Transcription corrected: "mine secondary" → "[Mind] Secondary". Last sentence unfinished.
+
+## A hand-maintained vector of types imported from Rust
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 on «Chronos», Proposal 2, on Latitude.Decimal.
+
+> Maybe there is a fraction library or even an angle library that has more properly developed types for this. Let's just maintain a hand-maintained, specified vector for a list of types that we sort of import directly from Rust into Ethos, so that the Ethos-to-Rust compiler can use that to know what to link to. We can even eventually have proper programmatic feedback on the code, so it would know where these types are coming from, like built-ins, basically.
+
+-- psyche, STT.
+
+## A datom is shown with its Ethos specification
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 on «Subflows», Proposal 2, the line { read minimal «One known question, one line back.» }.
+
+> This syntax is wrong because these should be variants so they should be capitalized and never show a [datom] without its ethos specification, which can just use the prefix `type`, right? We can create an inline syntax for an ethos object and an example of it, or more than one example of it.
+
+-- psyche, STT. Transcription corrected: "datum" → "datom".

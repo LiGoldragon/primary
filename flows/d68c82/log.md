@@ -1369,3 +1369,51 @@ Event: subflows book republished v2 with the fixed builder.
 Event: Flow Nexus book v7 republished; figure text ~11.3px at 320px (12px floor holds only unscaled).
 Event: Field landed field-context c872f54 (changed figure shown once, whole, new form); re-pin/regeneration still needed for this afternoon's landings.
 Event: 3960eb's subflow fixing the 12px floor at 320 as rendered.
+Event: 89fbc1 committed 16-subflows.html and log (3fa3a96).
+Event: da2038 published «Compensation core» JqnZvp7RsbdsKycdbjZz8Z v2 (compensation core 13 lines, vision core, knowledge core, low-power wake rule, conflicts, positive rewrites, harm fixes, 7 choices). Also on his direct word: «The pod controller» seed book; Astra full Ethos spec + Clojure prototype via Mind Secondary.
+Event: Open books v130 with «Compensation core».
+Event: Chronos head-start held (flows/984e88/head-start.md, 1989 chars); Chronos Secondary next writes the Chronos book with basic Ethos anatomy (assigned by da2038). Fable wake question put to the living.
+Event: Field independently confirmed the Chronos head-start (1989 chars, sha recorded by Field); Fable hold stands.
+Event: 3960eb: 11.3px cause was desktop scrollbar (305px content); figures now drawn at 239/166, all 88 at >=12px at 320 and 375; one four-column figure (da2038 book 4) scrolls sideways — sent to da2038 to redraw.
+Event: Field handled the living's network request: Ouranos, Zeus, Prometheus reachable by SSH, internet HTTPS ok; Zeus tested on Prometheus SSID goldragon.criome (all pings ok) and restored to CASATAMARINDOS; Prometheus profile saved as local fallback (same upstream router, not ISP backup); temporary compensation module landed field-context 49284ec.
+
+## 2026-10-14 — #psyches from Mind Core Secondary: package update/audit, stable/next Codex server
+Logged verbatim in vision/packages.md (two entries) and vision/context-modules.md (stateful context). The living gave the work to Mind Core Secondary with the Mind Primary; it forwarded the words here as he asked. This seat carries no part of the work; Psyche side: the stateful-context line becomes a crystallization when Mind's design lands.
+
+## 2026-10-14 — Field Core Secondary re-relayed the same two entries (already logged)
+Field claims (unwitnessed here): it is auditing declarations and runtime under its deployment ownership; three Codex units are running (stable, next, and a next candidate named by its derivation); nothing stopped, no auth copied, no alias switched. Design stays with Mind.
+
+## 2026-10-14 — Mind Core Secondary: package-update design delivered by Mind Core Primary
+Claim (design not read here): it covers an immediate ChatGPT profile enclosure; one prebuilt Codex release manifest and updater; declared stable/next/last plus an active release; unit, client, endpoint and context generated together; switching and rolling back a client while it is in use; later, shared OS adapter operations (Inspect, Plan, Check, Apply, Verify, Rollback). Unresolved: whether ChatGPT's embedded server can use an external endpoint. Field has the design and executes Home. ChatGPT 26.1007.71326 is built locally; publication and activation receipts are pending.
+
+## 2026-10-14 — Mind Core Secondary: ChatGPT enclosure done by Field
+Claim (Mind read Field's receipts; not witnessed here): ChatGPT 26.1007.71326 is active in its own profile; the old app was closed and the new one reopened; the prior generation is kept. Embedded Codex processes still run beside the three user units, so the single-server goal is not reached. Next serial Field job: consumed-manifest Phase A. Full Claude/Codex/per-host update still pending. Prometheus BIOS: version 1.11 exposes no headless setting for power-on after AC loss; nothing changed.
+
+## 2026-10-15 — Tertiary relay: laptop suspend drain, proper CriomOS fix
+Logged in vision/criomos.md. Order routed to Field Core Secondary (CriomOS and deploy owner). Tertiary is reading his new book comments and will send them.
+
+## 2026-10-15 — Field accepted the suspend-drain fix
+Claim: Ouranos (T14 Gen 5) offers only s2idle; the last sleep (Oct 15 08:51–17:48) reached zero S0ix residency; resume error from spd5118 at 9-0050 (-6). XHCI wake is already disabled in the declaration; a live GPE 6D disable is a hotfix still to be traced and moved into source. Zeus is unreachable; the laptop identity is not assumed. No live suspend or reboot; Field will not call the next sleep fixed from configuration alone.
+
+## 2026-10-15 — Book comments relayed by the Tertiary
+Flow Nexus: P1 lands except the sentence on starting a new topic on the costliest model, re-proposed smaller in the next version; P2's Ethos paragraph "This is good"; the diff on the dependencies line is wrong (vision-flow kept). Chronos: Decimal → a Rust-imported type vector; sign and nakṣatra derived from an arc. Subflows book: model numbers obsolete and hidden by default; roles by role and level; a subflow's kind depends on its use (P1 heading rejected); variants capitalized, a datom shown with its Ethos type. Open books: "Test", "This is good." Vision logged in books, ethos, context-modules, chronos, seats, flow; notion in notion/ethos.md.
+
+## 2026-10-15 — Landed: Flow Nexus P1 in psyche-context vision-flow (2faca02), the costliest-model clause dropped
+Re-proposal for the next edition: "A new topic starts a new flow." Needs a re-pin by Field. Diff cause witnessed: book-build.clj tokenizes on whitespace only (line 880); fix under way in a subflow.
+
+## 2026-10-15 — Chronos Secondary drafting the next edition as a fresh presentation (the commented one stays unchanged)
+
+## 2026-10-15 — Flow Secondary carries finishing and deploying the Flow Nexus (asked whether another seat holds it)
+
+## 2026-10-15 — book-build word diff fixed in the working copy
+Tokens are now words, punctuation, whitespace runs and backtick spans; joined without inserted spaces; lone separators between edits folded. The dependencies case renders `vision-flow<ins>, vision-nexus</ins>]`; 13 tests pass. A rebuild of 563761's book 07 keeps the text and changes only markup. The subflow tried a git stash on the shared copy for a baseline; it failed on err.txt and changed nothing. Its brief lacked "never stash or reset the shared working copy"; add that to the write roles' definition. Handed to 89fbc1.
+
+## 2026-10-15 — Subflows ed. 3 composed (kind = aspect, role, level; typed datom form; context by type; model numbers hidden)
+Ethos checked by ethos-zero 16.0.0; Clojure run true/false under bb 1.13.219. Files in scratchpad-subflow-kinds/. Published fresh, since ed. 2 carries comments. Asked Field to add "never stash or reset the shared working copy" to the write roles' shared context.
+
+## 2026-10-15 — Chronos ed. 2 published by 984e88 (Fd1jGBnf2dcfkrSRShrE6w): arcs as Rational64 (num-rational), a vision-ethos proposal for the Rust-imported type vector, sign and nakṣatra derived; ten choices. Added to Open books.
+
+## 2026-10-15 — Field: shared-working-copy rule landed (Curriculum 7c638e), generated roles published (a5ba50), Home pin 69168e; resolver check still evaluating. Fresh write roles carry it; running sessions keep their cached context.
+
+## 2026-10-15 — Subflows ed. 3 published (XpPEQD1TFjWA8rQXrTSTNN); Open books updated with it and Chronos ed. 2
+Book subflow claims: figures in a plain div because the page's .figure class collapsed the first figure to zero height (builder fault, unconfirmed); Proposals 5–6 and the Clojure review not viewed at phone width. Check dispatched; files to 89fbc1.

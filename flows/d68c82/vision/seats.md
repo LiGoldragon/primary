@@ -49,3 +49,11 @@ Context: spoken to the Psyche Flow Secondary on Claude usage running low; relaye
 > There are also two resets, I think, with ChatGPT/OpenAI that I need to check the date on so we should visualize that too. We should probably lean heavily right now, just like a single opus with its lower stack, like secondary maximum psyche with a rare Fable call. Basically mode now, so every Fable call has to go through me and has to be special.
 
 -- psyche, STT.
+
+## Model numbers stay out of view by default
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 on «Subflows», Proposal 2, the depths line naming claude-haiku-4-5 and gpt-5.6-luna.
+
+> All these model numbers are obsolete. Plus we shouldn't make the user interface expose the model number by default. Most users will be oblivious to the model number. It'll just be whatever is the default at that moment. We will at some point specify model numbers of course and then we might even have aliases sometimes when we want to keep some versions because it's interesting.
+
+-- psyche, STT.

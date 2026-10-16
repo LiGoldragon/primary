@@ -161,3 +161,15 @@ Context: comment on the Clojure book's carried proposal, ruling item on where th
 > Yeah make it some kind of standard so that they can all be found the same way.
 
 -- psyche, STT.
+
+## A diff that understands the change
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comments of 2026-10-14 on «The Flow Nexus», Proposal 2, on a front-matter line whose diff struck "vision-flow]" and added "vision-flow, vision-nexus]".
+
+> The diff that you're using is flawed because Vision Flow is actually still there so you've used the wrong diff maker.
+
+> Maybe there isn't anything like this but I think there are some tools and algorithms to create the right diff that has a better understanding of the changes.
+
+> Once we have that tool and technique figured out, that goes in the knowledge skill on how to create our diffs for the book, which also becomes a tool that can live in a book (like a web book or something like that): a tool repository written in Clojure, of course, with the ethos specification for its types.
+
+-- psyche, STT.

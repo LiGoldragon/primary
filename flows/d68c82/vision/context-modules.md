@@ -150,3 +150,37 @@ Context: same speech to the Psyche Flow Secondary.
 > The skill: we should probably tell main flow to probably use a specialized subagent that we'll define here that specializes in helping to contextualize any raw living entry logging. Before the log there should probably be a subagent call. Let's define that subagent so it's really cheap. It basically is just saying, "contextualize this entry," and then it maybe just uses the first few and last words of the entry or something.
 
 -- psyche, STT.
+
+## 2026-10-14 — Compensation reviewed, positive; a small core
+
+Context: spoken to the Psyche Flow Secondary; relayed for coordination. One sentence [sic] as spoken.
+
+> Use compensation skills. Review all the compensation skills yourself with the subagent to make sure that nothing conflicts. All skills, but compensation skills need to keep getting, so make sure we remove in compensation skills. [sic]
+>
+> Try to remove negative guidance and come up with positive guidance on what we actually want. Avoid terms like "never" and "always" unless you're certain, which is why we also want System 1 models to make certainty calls on things. But make sure compensation skills are there, with some compensation core for a standard system prompt addition to all of the main flows. I don't know. The meta flow is a main flow or maybe more so, so let's review that.
+>
+> Some of it could even go in vision (vision core). Core would be the default for everything. Let's make this core standard in knowledge core and vision core. That part needs to be kept small and if it grows too big it has to be brought up.
+>
+> In compensation we have to be careful about harmful stuff. Knowledge will be pretty standard and vision, of course, is always reviewed by the living. Let's make sure the compensation skills are well adapted to and defaulted on everything in the core stuff: how not to message other aspects or aspects that are in low-power mode right now (like Fable), unless only the secondary psyche can ask permission and propose what Fable will be woken by and whether or not it'll be a new flow (before it can actually wake it up for any reason).
+
+-- psyche, STT.
+
+## A stateful, specified part of context
+
+Relayed by Mind Core Secondary, 2026-10-14, within the stable/next Codex server request.
+
+> The agent can use this as some kind of compensation context. We could even start having a more stateful part of the context infrastructure that can be changed, which is like a specified configuration. One of those is which [Codex] server we're using currently. ... [Tell] agents [what] to use. Let's say they're told that right now we need to use Next, right, because that's where the server we're using lives.
+
+-- psyche, STT. Transcription corrected: "codec server" → "Codex server"; "Tail agents to use" → "Tell agents what to use".
+
+## The directory names the type; no "skill" in our language
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-15 on «The Flow Nexus», Proposal 2, on the file name psyche-context/vision/flow-ethos.md.
+
+> You see the name here. There's the direction [sic] directory called `vision` so it tells you which type of skill it is. You don't have to say it at the beginning of the skill file name. We don't need to say `skill` anywhere here in this repository or any of those repositories.
+>
+> `skill` doesn't even need to enter our language at that layer. The skill is just the interface on which we plug into and harness but we break it up more than just skills. For us they're all context modules and they have different types. All of those files in the `vision` folder are made into skills so they're all objects with different types.
+>
+> The fact that there are two folders means that either the code is bad in that it puts the source code for the same thing in two places, or the code is bad in that it doesn't make skills with all of the files. If it only makes skills from the `skill` directory, then we're missing skills in `harness`. All of this either goes into a system prompt or, in which case, it doesn't appear as a skill unless possibly eventually we might have modules that become skills if they're not in that particular system prompt. That's long term.
+
+-- psyche, STT.

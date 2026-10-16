@@ -166,3 +166,36 @@ Context: comment on choice 4, "with a working transcript, its flow is reawakened
 > We should almost just add the functionality in Flow that decides where the hooks actually talk. The hook is a standard call with the right data so that the Flow daemon can check its database to see where these messages should go or what kind of notification should go where (based on the hook and where it came from).
 
 -- psyche, STT. Relayed by the Psyche Core Tertiary; unfinished sentences kept as spoken.
+
+## Subflows by role and by level
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 on «Subflows», Proposal 2, the specialties table.
+
+> These would all just be redone by role and by level. Secondary is the highest subagent, of course, and then tertiary and quaternary.
+>
+> Let's have some basic roles instead of writer and reader. ... Let's split this up into these context modules. In these context repos, like psyche context, mind context, and field context, we don't write skills. There's no skills directory. Let's refashion that so it's by type. ...
+>
+> This is all basically in ethos code, with implied equivalent [Clojure], which we need to draft on also: what the equivalents look like, with some examples and actual code in a knowledge review.
+
+-- psyche, STT. Transcription corrected: "closure" → "Clojure".
+
+## A subflow's kind depends on its use
+
+Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 on «Subflows», Proposal 1, the heading "A subflow is the same kind of flow as its main flow".
+
+> No, the same. The subflow is not the same kind of flow as the main flow. The subflow's kind depends on its use so we need to define roles or tasks, or domains, so we can even compose them.
+>
+> Probably we should have three things, one of which could be the aspect:
+> - Is it a psyche? Does it deal with thinking? Is it mind? Does it deal with documentation, tools, and changing codebases for merge requests or for audit reviews?
+> - Field, which deals with debugging, system audits, system search, and things, so that each of these has its default suggested route and basic context modules that are appropriate for this kind of task. How do we want field flows to query the system? Let's build our own tools there, maybe around the field.
+> - The field CLJ/CLI prototype that is based on an emulated Nexus architecture of EDN payloads, so that essentially everything can be written as one or the other configuration of an Ethos-based specification language in EDN off the bat (with basic Clojure architecture and stack), which is really easy to code on, deploy, and for machines to think in terms of an analog to [protobuf]-like language.
+
+-- psyche, STT. Transcription corrected: "protos-like" → "protobuf-like"; "No, the same" kept [sic].
+
+## No harness kept running for an idle session
+
+Relayed by Psyche Flow Secondary, 2026-10-15; the living spoke to it directly.
+
+> It's really important that we finish and deploy the new Flow Nexus, especially so that when a session is not running, we don't have to keep a harness going. If we have a lot of topics, we're going to have too many harnesses running in the background, and that will just bog down the computer with excessive RAM usage.
+
+-- psyche, STT.
