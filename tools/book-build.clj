@@ -1184,8 +1184,23 @@
     (cond-> (str "<p class=\"target\"><code>" (esc path) "</code></p>")
       (not= "" rest*) (str "<p>" (inline rest*) "</p>"))))
 
+(defn signed-line?
+  "A fence line written as a change: opens with + or - and a space, or is that sign alone."
+  [l]
+  (boolean (and (#{\+ \-} (first l)) (or (= 1 (count l)) (= \space (nth l 1))))))
+
+(def ^:private target-langs
+  {"ethos" "ethos" "datom" "datom" "rs" "rust" "clj" "clojure" "cljc" "clojure"
+   "edn" "clojure" "sh" "bash" "bash" "bash"})
+
+(defn target-lang
+  "The code language a File line's path names by extension; \"text\" otherwise."
+  [path]
+  (get target-langs (some-> path (str/split #"\.") rest last) "text"))
+
 (defn build [src code]
   (let [out (atom [])
+        target (volatile! nil)
         in-article (volatile! false)
         rulings (volatile! false)
         pending-close (volatile! false)
@@ -1212,6 +1227,12 @@
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
             (emit (figure-el (graph-svg (read-figure lines) (if @rulings ruling-fig-w fig-w))))
 
+            (and (= lang "text") (not-any? signed-line? lines)
+                 (empty? (second (text-panels lines (if @rulings ruling-fig-w fig-w)))))
+            ;; An unsigned fence that draws no figure is a block of code or file text: kept as written.
+            (emit (str "<pre><code class=\"language-" (target-lang @target) "\">"
+                       (esc (str/join "\n" lines)) "</code></pre>"))
+
             (= lang "text")
             (let [[diff figs] (text-panels lines (if @rulings ruling-fig-w fig-w))]
               (if @record-open
@@ -1229,7 +1250,8 @@
                          (esc (str/join "\n" lines)) "</code></pre>")))))
         (let [lines (second b)
               first-line (first lines)
-              text (join-lines lines)]
+              text (join-lines lines)
+              _ (when-let [m (re-find #"^File: `?([^`\s,]+)" text)] (vreset! target (m 1)))]
           (cond
             (str/starts-with? first-line "# ")
             (let [title (strip (subs first-line 2))]
@@ -1241,6 +1263,7 @@
             (do (close-rulings false)
                 (close-record)
                 (vreset! glue false)
+                (vreset! target nil)
                 (when @in-article (append! "</article>"))
                 (let [m (re-find #"(?U)^### Proposal (\d+): (.*)$" text)]
                   (when-not m (throw (ex-info (str "proposal heading not understood: " (pr-str text)) {})))

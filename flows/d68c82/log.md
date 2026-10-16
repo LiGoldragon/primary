@@ -1517,3 +1517,12 @@ P2 "This is good. Land it." — landing dispatched. P1 and P3 amended in his wor
 ## 2026-10-16 — Field: Psyche pin e1a300e included, regenerated, Primary 8d8026 published; final Home pin and activation in preparation.
 
 ## 2026-10-16 — index.html cleaned to source (host wrapper and highlight runtime removed; one-line diff). Cause: a live page read back from the host was copied over the source. Line sent to Field. Paths back to 89fbc1.
+
+## 2026-10-16 — 89fbc1 committed Context modules ed. 2, index and records as f6ae27.
+
+## 2026-10-16 — Field landed the local-source republishing rule in compensation-book (field f8c06d); in the pending cohort.
+
+## 2026-10-16 — The living (screenshot via Tertiary): «Subflows» P2's Ethos code renders as one run-on serif paragraph. "something went wrong there. fix and get secondary to propose a vision fix". Diagnosis and fix dispatched; vision line to propose.
+
+## 2026-10-16 — Run-on code fixed; Subflows republished (v3)
+Cause witnessed: since a865c3, a bare fence without +/- lines under a File: proposal went to text-panels and was joined into one prose paragraph; also hit P3's datom block and the Clojure values. Fix: such a fence renders as code, language from the File: extension; test added; 15 + 19 tests pass. Books 18–20 unaffected. Behavior cause: the a865c3 change was tested on one book only; line sent to Field. Vision line proposed to the living. To 89fbc1.

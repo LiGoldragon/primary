@@ -87,8 +87,8 @@
     (is (str/includes? html "<del><p>Gone line.</p></del>") "a line opening with - and a space is still removed")))
 
 (deftest empty-line-in-text-fence
-  (is (= "<div class=\"diff\"><div class=\"ctx\"><p>a</p></div><div class=\"ctx\"><p>b</p></div></div>\n"
-         (book-build/build "```\na\n\nb\n```\n" ""))))
+  (is (= "<div class=\"diff\"><div class=\"add\"><ins><p>a</p></ins></div><div class=\"add\"><ins><p>b</p></ins></div></div>\n"
+         (book-build/build "```\n+ a\n\n+ b\n```\n" ""))))
 
 (deftest bare-markers-equal-marker-space
   (is (= (book-build/code-lines ["x" "- a" "-  " "- b" "+ a" "+ " "+ b"])
@@ -115,6 +115,21 @@
     (is (str/includes? html "<div class=\"del\"><del><div class=\"fm\">") "removed module is rendered and marked")
     (is (not (str/includes? html "---")) "no YAML syntax shown")
     (is (not (str/includes? html "<div class=\"textblock\">")))))
+
+(deftest unsigned-fence-is-code
+  (let [ethos (str "; The kind of a subflow: aspect, role and level.\nLibrary\n[]                    ; imports: intrinsics only\n"
+                   "[ Aspect.[ Psyche     ; thinking, psyche records\n           Mind       ; documentation, tools,\n"
+                   "                      ; code changes, audit review\n           Field ]    ; debugging, system audit,\n"
+                   "                      ; system search, deploy\n  Role.[ Explorer     ; locate and read\n"
+                   "         Researcher ] ; the web\n  Level.[ Secondary\n          Tertiary\n          Quaternary ]\n"
+                   "  Kind.{ Aspect\n         Role\n         Level } ]\n[]                    ; kinds\n[]                    ; associations")
+        md (fn [file] (str "### Proposal 1: The Kind in Ethos\n\nFile: " file "\n\n```\n" ethos "\n```\n\nAfter.\n"))
+        esc* (book-build/esc ethos)]
+    (doseq [[file lang] [["Curriculum/kinds.ethos, new" "ethos"] ["`Curriculum/kinds.ethos`, new" "ethos"] ["a/b.md, new" "text"]]
+            :let [html (book-build/build (md file) "")]]
+      (is (str/includes? html (str "<pre><code class=\"language-" lang "\">" esc* "</code></pre>")) file)
+      (is (not (str/includes? html "<div class=\"diff\">")))
+      (is (not (str/includes? html "<div class=\"ctx\">"))))))
 
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))

@@ -6,31 +6,55 @@
 <h2>Crystallization</h2>
 <article class="proposal"><header><span class="pnum">1</span><h2>A subflow's kind is its use</h2></header>
 <p>File: psyche-context/skills/vision-flow.md, at the end</p>
-<p>+ A subflow's kind is its use: an aspect, a role and a level, which compose. Secondary is the highest level of a subflow, then Tertiary and Quaternary. Each kind has its default route and its context modules.</p>
+<div class="diff"><div class="add"><ins><p>A subflow's kind is its use: an aspect, a role and a level, which compose. Secondary is the highest level of a subflow, then Tertiary and Quaternary. Each kind has its default route and its context modules.</p></ins></div></div>
 <p>Ruling: land, amend, or reject.</p>
 </article>
 <article class="proposal"><header><span class="pnum">2</span><h2>The Kind in Ethos</h2></header>
 <p>File: Curriculum/kinds.ethos, new</p>
-<div class="diff"><div class="ctx"><p>; The kind of a subflow: aspect, role and level. Library []                    ; imports: intrinsics only [ Aspect.[ Psyche     ; thinking, psyche records Mind       ; documentation, tools, ; code changes, audit review Field ]    ; debugging, system audit, ; system search, deploy Role.[ Explorer     ; locate and read Worker       ; implement or fix Tester Reviewer Publisher    ; books and figures Operator     ; deploy, debug, launch Researcher ] ; the web Level.[ Secondary Tertiary Quaternary ] Kind.{ Aspect Role Level } ] []                    ; kinds []                    ; associations</p></div></div>
+<pre><code class="language-ethos">; The kind of a subflow: aspect, role and level.
+Library
+[]                    ; imports: intrinsics only
+[ Aspect.[ Psyche     ; thinking, psyche records
+           Mind       ; documentation, tools,
+                      ; code changes, audit review
+           Field ]    ; debugging, system audit,
+                      ; system search, deploy
+  Role.[ Explorer     ; locate and read
+         Worker       ; implement or fix
+         Tester
+         Reviewer
+         Publisher    ; books and figures
+         Operator     ; deploy, debug, launch
+         Researcher ] ; the web
+  Level.[ Secondary
+          Tertiary
+          Quaternary ]
+  Kind.{ Aspect
+         Role
+         Level } ]
+[]                    ; kinds
+[]                    ; associations</code></pre>
 <p>Aspect, Role and Level are enums, and Kind is a struct of the three. The Ethos checker accepts the file.</p>
 <p>Ruling: land, amend, or reject.</p>
 </article>
 <article class="proposal"><header><span class="pnum">3</span><h2>A datom is shown with its type</h2></header>
 <p>File: psyche-context/skills/vision-datom.md, at the end</p>
-<p>+ A datom shown to a reader stands beside its Ethos type, written <code>type.&lt;Type&gt;</code> before it:</p>
-<div class="diff"><div class="ctx"><p>type.Kind { Field Operator Tertiary } type.Kind { Psyche Explorer Quaternary } type.Level Secondary</p></div></div>
+<div class="diff"><div class="add"><ins><p>A datom shown to a reader stands beside its Ethos type, written <code>type.&lt;Type&gt;</code> before it:</p></ins></div></div>
+<pre><code class="language-text">type.Kind { Field Operator Tertiary }
+type.Kind { Psyche Explorer Quaternary }
+type.Level Secondary</code></pre>
 <p>The head <code>type</code> is lowercase, so it cannot be read as a variant.</p>
 <p>Ruling: land, amend, or reject.</p>
 </article>
 <article class="proposal"><header><span class="pnum">4</span><h2>Context repositories by type</h2></header>
 <p>File: psyche-context/skills/vision-context-modules.md, at the end</p>
 <div class="figure"><svg viewBox="0 0 239 366" width="239" height="366" style="display:block" role="img" aria-label="compensation/ Curriculum: every file is a context module; its folder is its type psyche-context spirit/ intent/ vision/ mind-context knowledge/ operation/ field-context &lt;type&gt;-&lt;subject&gt; harness name" xmlns="http://www.w3.org/2000/svg"><path d="M120 46 L120 67" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="116,67 124,67 120,75" style="fill:var(--fg,currentColor)"/><path d="M120 289 L120 322" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="116,322 124,322 120,330" style="fill:var(--fg,currentColor)"/><rect x="73.8" y="294" width="92.4" height="15" style="fill:var(--sheet,Canvas)"/><text x="120" y="305" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">harness name</text><text x="120" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">compensation/</text><rect x="39" y="75" width="162" height="214" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="120" y="97" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Curriculum: every</text><text x="120" y="115" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">file is a context</text><text x="120" y="133" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">module; its folder</text><text x="120" y="151" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">is its type</text><text x="120" y="171" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">psyche-context</text><text x="120" y="186" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">spirit/</text><text x="120" y="201" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">intent/</text><text x="120" y="216" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">vision/</text><text x="120" y="231" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">mind-context</text><text x="120" y="246" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">knowledge/</text><text x="120" y="261" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">operation/</text><text x="120" y="276" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">field-context</text><rect x="47" y="330" width="146" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="120" y="352" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">&lt;type&gt;-&lt;subject&gt;</text></svg></div>
-<p>+ A context repository holds one folder per module type, and a file in it is named by its subject alone. Curriculum makes every file a module of its folder's type; the type and subject join into a name only at the harness.</p>
+<div class="diff"><div class="add"><ins><p>A context repository holds one folder per module type, and a file in it is named by its subject alone. Curriculum makes every file a module of its folder's type; the type and subject join into a name only at the harness.</p></ins></div></div>
 <p>Ruling: land, amend, or reject.</p>
 </article>
 <article class="proposal"><header><span class="pnum">5</span><h2>Models by role, numbers out of view</h2></header>
 <p>File: psyche-context/skills/vision-model-roles.md, at the end</p>
-<p>+ A model is shown by its role and level; its number appears only where a version is pinned, and an alias keeps a version worth keeping.</p>
+<div class="diff"><div class="add"><ins><p>A model is shown by its role and level; its number appears only where a version is pinned, and an alias keeps a version worth keeping.</p></ins></div></div>
 <p>Ruling: land, amend, or reject.</p>
 </article>
 <article class="proposal"><header><span class="pnum">6</span><h2>The contextualizer</h2></header>
@@ -47,7 +71,10 @@
    [:aspect Aspect]
    [:role Role]
    [:level Level]])</code></pre>
-<div class="diff"><div class="ctx"><p>{:aspect #field [] :role #operator [] :level #tertiary []}            =&gt; true {:aspect #field [] :role #operator [] :level #primary []}             =&gt; false</p></div></div>
+<pre><code class="language-text">{:aspect #field [] :role #operator []
+ :level #tertiary []}            =&gt; true
+{:aspect #field [] :role #operator []
+ :level #primary []}             =&gt; false</code></pre>
 <p>A variant is a tagged literal and a key is kebab-case, following the recommended choices in «Clojure translation», ed. 2. The second value fails because Level has no Primary.</p>
 <h2>Question</h2>
 <p>Does a level set the model's power — Secondary the strongest, Quaternary the lightest — or only the place in the chain of command?</p>
@@ -155,6 +182,20 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
 .diff .add{color:var(--add-edge);background:var(--hl-add)}
 .del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
 .ctx pre{padding-inline:12px}
 .diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 
