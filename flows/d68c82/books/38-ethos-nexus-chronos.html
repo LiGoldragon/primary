@@ -1,0 +1,402 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ethos, Nexus and Chronos: the vision</title>
+<h1 class="book-title">Ethos, Nexus and Chronos: the vision</h1>
+<p>Ethos is the language of types and traits. A Nexus is the long-running component Ethos specifies, in three parts: Signal, Operation and Memory. Chronos is the first simple Nexus, built as the golden example. Flow follows from it, then the other nexuses.</p>
+<div class="figure" style="position:relative;height:0;padding-bottom:150%;overflow:hidden"><svg viewBox="0 0 360 540" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+<title id="t">From Ethos to Flow</title>
+<desc id="d">Ethos, the language of types and traits, specifies Nexus, made of Signal, Operation and Memory. Nexus is first built as Chronos, the golden example. Then comes Flow, then the other nexuses.</desc>
+<style>
+:root{--ink:#1F2933;--grey:#6B7280;--blue:#0072B2;--tint:rgba(0,114,178,.12);--soft:rgba(107,114,128,.12)}
+@media (prefers-color-scheme: dark){:root{--ink:#E5E7EB;--grey:#9CA3AF;--blue:#56B4E9;--tint:rgba(86,180,233,.16);--soft:rgba(156,163,175,.14)}}
+text{font-family:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;fill:var(--ink);text-anchor:middle}
+.h{font-size:19px;font-weight:700}.s{font-size:14px}.g{fill:var(--grey)}.v{font-size:14px;font-style:italic;text-anchor:start}
+.box{fill:none;stroke:var(--ink);stroke-width:1.25}
+.seg{fill:var(--soft);stroke:var(--grey);stroke-width:1.25}
+.focus{fill:var(--tint);stroke:var(--blue);stroke-width:3}
+.blue{fill:var(--blue)}
+.arr{stroke:var(--ink);stroke-width:3;fill:none}
+.ah{fill:var(--ink)}
+.dash{fill:none;stroke:var(--grey);stroke-width:1.25;stroke-dasharray:5 4}
+</style>
+
+<rect class="box" x="30" y="16" width="300" height="64" rx="3"/>
+<text class="h" x="180" y="43">Ethos</text>
+<text class="s g" x="180" y="64">the language of types and traits</text>
+<line class="arr" x1="180" y1="80" x2="180" y2="120"/><path class="ah" d="M171 118h18l-9 12z"/>
+<text class="v" x="196" y="110">specifies</text>
+
+<rect class="box" x="30" y="130" width="300" height="126" rx="3"/>
+<text class="h" x="180" y="157">Nexus</text>
+<text class="s g" x="180" y="177">three parts</text>
+<rect class="seg" x="42" y="190" width="86" height="54" rx="3"/>
+<rect class="seg" x="137" y="190" width="86" height="54" rx="3"/>
+<rect class="seg" x="232" y="190" width="86" height="54" rx="3"/>
+<text class="s" x="85" y="222">Signal</text>
+<text class="s" x="180" y="222">Operation</text>
+<text class="s" x="275" y="222">Memory</text>
+<line class="arr" x1="180" y1="256" x2="180" y2="304"/><path class="ah" d="M171 302h18l-9 12z"/>
+<text class="v" x="196" y="291">first built as</text>
+
+<rect class="focus" x="30" y="314" width="300" height="84" rx="3"/>
+<path class="blue" transform="translate(180 338)" d="M0-11l3.2 6.8 7.5 1-5.5 5.2 1.4 7.4L0 5.7l-6.6 3.7 1.4-7.4-5.5-5.2 7.5-1z"/>
+<text class="h" x="180" y="372">Chronos</text>
+<text class="s" x="180" y="390" style="font-weight:700;fill:var(--blue)">the golden example</text>
+<line class="arr" x1="180" y1="398" x2="180" y2="440"/><path class="ah" d="M171 438h18l-9 12z"/>
+<text class="v" x="196" y="428">then</text>
+
+<rect class="box" x="30" y="450" width="300" height="76" rx="3"/>
+<text class="h" x="180" y="476">Flow</text>
+<rect class="dash" x="60" y="486" width="240" height="30" rx="8"/>
+<text class="s g" x="180" y="506">then the other nexuses</text>
+</svg></div>
+<article class="proposal"><header><span class="pnum">1</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<p>Your records disagree on which example comes first. This proposal takes your latest word, from 2026-10-16.</p>
+<div class="diff"><h4><del>Flow, a current best</del><ins>The golden</ins> example</h4><p><del>Flow is one of</del><ins>Ethos,</ins> the <del>best current examples of ethos; its ethos lives in</del><ins>Nexus and the Chronos example project together are</ins> the <del>vision-flow-ethos skill, which carries the code</del><ins>golden example</ins>.</p><div class="add"><ins><p>Flow is implemented properly from that golden example, then the other nexuses.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>Where types are shown, the Ethos is shown, never the Rust it generates, unless the work is on how Ethos generates Rust.</p></ins></div><div class="add"><ins><p>Ethos is never shown out of context: it says what its types are for.</p></ins></div><div class="add"><ins><p>A datom is never shown without its Ethos specification.</p></ins></div><div class="add"><ins><p>A type ethos opens with <code>type</code> and defines a single type, everything inline; it may use the inline import.</p></ins></div><div class="add"><ins><p>A type ethos may carry one or more examples of its datom, inline.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<p>Your words from 2026-10-02 to 2026-10-12 all name the stored part Memory, where this paragraph says Sema. This proposal takes Memory.</p>
+<div class="diff"><p>Library, Signal, Operation, Memory. No version in a file.<del> Signal's sections are</del></p><p><ins>Signal's sections are </ins>queries and responses, since there is communication; <del>Sema</del><ins>Memory</ins>'s are record<ins> types, the rest to be decided.</ins></p><p><del>types, the rest to be decided. </del>Signal gives a Nexus its main types and<ins> Memory its database types.</ins></p><div class="del"><del><p>Sema its database types.</p></del></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<p>The module still allows type aliases. Your later word, from 2026-10-09, wants new types, not type aliases.</p>
+<div class="diff"><p>Ethos Zero emits <code>Datomizable</code> and <code>Compositional</code> on every struct and<ins> enum it generates, so every ethos-declared type always bears both traits.</ins></p><p><del>enum it generates, so every ethos-declared </del><ins>A type of one position is a new </ins>type<del> always bears both</del><ins>, never a type alias.</ins></p><p><del>traits and no declared type can exist without them. An alias bears them</del><ins>A struct of one field is forbidden.</ins></p><p><del>through the</del><ins>A new</ins> type <del>it names</del><ins>never wraps another new type</ins>: <del>an alias is not</del><ins>if a job is</ins> a <del>new type and cannot carry</del><ins>flow id, it is written flow id.</ins></p><div class="del"><del><p>a derive.</p></del></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">5</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>Inline declaration is mandatory, unless the type is so deep that it needs too much recursion; an algorithm decides which.</p></ins></div><div class="add"><ins><p>Structs are preferred over chains of variants.</p></ins></div><div class="add"><ins><p>Variants are ordered by seniority: the first is the most senior.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<p>Your later words, from 2026-10-06 and 2026-10-07, prefer a new line to opening beside the declaring head.</p>
+<div class="diff"><p>Ethos expands vertically<ins>, not horizontally</ins>: <ins>where </ins>a structure <del>with more than one element opens on</del><ins>would run far to the right,</ins> its <del>line and its elements hang beneath the first</del><ins>first element opens on a new line</ins>, <del>aligned; the closing delimiter ends the last</del><ins>indented, and each</ins> element<del>'s line. Nothing that has</del><ins> with</ins> a next layer <del>sits on one</del><ins>takes its own</ins> line.</p><div class="add"><ins><p>The closing delimiter ends the last element's line; it never takes a line of its own.</p></ins></div><div class="add"><ins><p>Nothing that has a next layer sits on one line.</p></ins></div><div class="add"><ins><p>Ethos indents by three spaces.</p></ins></div><div class="add"><ins><p>A comment sits above or beside what it comments on, never below, lined up with that object's indentation.</p></ins></div><div class="add"><ins><p>A vector may hold several items per line; past a width it wraps and lines up with its first item.</p></ins></div></div>
+<div class="diff"><div class="add"><ins><p>Metaflow.{                    ; who a flow is Aspect.[ Psyche Mind Field ] Topic                      ; core by default Layer.[ Primary Secondary Tertiary Quaternary ] }</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">7</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<p>The pinned ethos-zero generates types only, not traits, and Flow already holds 209 hand-written traits. You ruled: "Long term we want all the traits in ethos and short term we just do without."</p>
+<div class="diff"><div class="add"><ins><p>Long term: Ethos declares every trait and ethos-zero generates it, and every implementation sits under one of those traits, so no hand-written trait remains.</p></ins></div><div class="add"><ins><p>Short term: hand-written traits are allowed.</p></ins></div><div class="add"><ins><p>Every feature is a capability, borne by a trait; a trait is named for the capability its type of object has.</p></ins></div><div class="add"><ins><p>A trait carries real weight: a trait with one function is suspicious, and one implemented by only one type is doubly so.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">8</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>A hand-maintained vector lists the types imported directly from Rust into Ethos, so the Ethos-to-Rust compiler knows what to link to.</p></ins></div><div class="add"><ins><p>An implementer reports whatever seems hard to express in Ethos.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">9</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>A type whose datom form differs from its runtime form bears a special representation trait: its own datom encoding and decoding.</p></ins></div><div class="add"><ins><p>Ethos describes the real type and the representation type, which fixes the input and output types; Rust does the implementation.</p></ins></div><div class="add"><ins><p>A hash is held as bytes in memory and written in datom in an alphanumeric encoding; a flow id is written as three camelCase words.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">10</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>The Ethos Nexus has the three parts: Signal, Memory and Operation.</p></ins></div><div class="add"><ins><p>It keeps the registry of Ethos sources, filled from datom files that the repositories carry, loaded together atomically into one full registry.</p></ins></div><div class="add"><ins><p>Every Ethos source added, edited or renamed changes the registry.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">11</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-flow.md</code></h2></header>
+<p>Your later word, from 2026-10-12, rejects Name as the identifier's name and puts its check in a shared library rather than in its own Nexus.</p>
+<div class="diff"><p>Every flow has a topic; a flow with no special topic has the topic core, the heart of its aspect.<del> A topic is a core:Name, a camelCaseExpression checked when created. A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary &lt;id&gt; }.</del></p><div class="add"><ins><p>A topic is an uncapitalized camelCase identifier made of words, checked when created; its lowercase first letter tells it from a variant.</p></ins></div><div class="add"><ins><p>The name of this identifier type is still to be found; Name and Word are not it.</p></ins></div><div class="add"><ins><p>Its check sits in a shared library, perhaps protos, for use across dialects: a cheap, light check that the parts are words, falling back to a System 1 call with a certainty threshold.</p></ins></div><div class="add"><ins><p>A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary &lt;id&gt; }.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">12</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>On 2026-10-05 you said no Nexus should hold any datom. Your later word, from 2026-10-14, says a Nexus uses datom, and this proposal takes it.</p>
+<div class="diff"><p>A CLI turns text into Signal and nothing more: it takes one inline datom, no flags, no subcommands<del>; it identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim. A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.</del><ins>.</ins></p><div class="add"><ins><p>It identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim.</p></ins></div><div class="add"><ins><p>A CLI speaks to one Nexus, opens no store, stays thin.</p></ins></div><div class="add"><ins><p>A Clojure prototype uses an EDN payload for everything; a Nexus uses datom.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">13</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>On 2026-10-03 you said the flow id is a hash. Your later word, from 2026-10-09, keeps it a string for now, with a comment saying so.</p>
+<div class="diff"><p>[ FlowId.<del>Integer                         </del><ins>String  </ins>; types<ins>; the string is very ;   unideal: a real id from ;   the flow's hash is needed</ins></p></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">14</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>Your later word, from 2026-10-11, drops the voice. Every other Voice in this example becomes Metaflow.</p>
+<div class="diff"><div class="del"><del><p>Voice.{ Aspect Layer }                 ;   who a flow speaks for, and at which layer</p></del></div></div>
+<div class="diff"><div class="add"><ins><p>Metaflow.{ Aspect Topic Layer }  ; who a flow is</p></ins></div></div>
+<div class="diff"><div class="add"><ins><p>The voice concept is gone; the default topic is core, the permanent topic, the last to stand.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">15</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>Your later word, from 2026-10-09, says trait, and every place is renamed.</p>
+<div class="diff"><p>[]                                       ; <del>kinds</del><ins>traits</ins></p></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">16</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>Your later word, from 2026-10-09, loads configuration atomically from many files; starting with no arguments stays.</p>
+<div class="diff"><div class="add"><ins><p>A Nexus's configuration may live in separate files in different repositories, each a datom payload, and is loaded atomically.</p></ins></div><div class="add"><ins><p>The CLI sends those payloads one after another on the meta socket, so the Nexus starts with the right configuration, even at different layers.</p></ins></div><div class="add"><ins><p>The meta socket belongs to the Nexus, never to the short-term Clojure prototype.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">17</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<p>Your word of 2026-10-04 leaves open whether a Nexus is actor-based until it is tried, so the Kameo line goes.</p>
+<div class="diff"><p><del>The </del><ins>Whether the </ins>engine inside a Nexus is <del>driven by Kameo actors. The standards</del><ins>actor-based or something else is refined after practice.</ins></p><p><del>of their use are still </del><ins>Signal talks only to Operation, Memory talks only </ins>to <del>be designed. Arc-Mutex is permitted</del><ins>Operation, and Operation talks to both</ins>.</p><div class="add"><ins><p>Arc-Mutex is permitted.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">18</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>The three parts, Signal, Operation and Memory, and how each divides, are most of the machine's anatomy.</p></ins></div><div class="add"><ins><p>A standard entry point, like a Rust macro, enforces the three parts and their one path, so nothing bypasses them; the bodies are written by hand.</p></ins></div><div class="add"><ins><p>Ethos, the Nexus architecture and Flow are developed together: the language, the runtime architecture, and the component to bootstrap.</p></ins></div><div class="add"><ins><p>Signal defines the formats a message can take: the simple form, without the flow id, for common queries and responses; the extended form for the technical side, debugging and other components.</p></ins></div><div class="add"><ins><p>Nexuses are the long term; Clojure prototypes are the short term, derived from the same Ethos.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">19</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-source.md, a new file</code></h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>The Source nexus, which holds and verifies sources, is being designed or judged.</dd><dt>Dependencies</dt><dd>vision-nexus</dd></dl></div></ins></div><div class="add"><ins><h4>Source</h4></ins></div><div class="add"><ins><p>One Source nexus holds the sources for all components; to get a source is to send it a source request.</p></ins></div><div class="add"><ins><p>A source is a Git repository at a revision, or a local path on a host, fetched by its own kind of backend fetcher.</p></ins></div><div class="add"><ins><p>The Source nexus keeps its own Blake3 hash of the whole snapshot, without the Git directory, as Nix does.</p></ins></div><div class="add"><ins><p>It keeps several registries; the Git equivalence registry is dropped when Git is cut off.</p></ins></div><div class="add"><ins><p>The hash is there to verify that the files are the right files; a smart store that knows what to keep comes later.</p></ins></div><div class="add"><ins><p>Ethos and curriculum share one sources library, with Memory objects for the registry of sources; a skill refers to a source by name.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">20</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-chronos.md, a new file</code></h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>Chronos, the Nexus that tells astrological time, is being designed or judged against what the living wants it to be.</dd><dt>Dependencies</dt><dd>vision-nexus, vision-ethos</dd></dl></div></ins></div><div class="add"><ins><h4>Chronos tells astrological time</h4></ins></div><div class="add"><ins><p>Chronos tells astrological time for the present moment, or for a given time and location.</p></ins></div><div class="add"><ins><p>It tells it in a purely solar or a purely lunar format, and may tell more, the lunar nodes, the apogee and the aphelion among them.</p></ins></div><div class="add"><ins><h4>Tropical, on the ecliptic</h4></ins></div><div class="add"><ins><p>Everything is tropical, the nakṣatras included: Aśvinī begins at 0° Aries.</p></ins></div><div class="add"><ins><p>Everything is reckoned around the ecliptic of the Sun.</p></ins></div><div class="add"><ins><h4>Positions are arcs</h4></ins></div><div class="add"><ins><p>Sign and nakṣatra are not kept; they are obtained from an arc, absolute or relative.</p></ins></div><div class="add"><ins><p>A lunation of 31° between the Sun and the Moon reads as Taurus.</p></ins></div><div class="add"><ins><h4>The golden example</h4></ins></div><div class="add"><ins><p>Chronos is a simple, idiomatic Nexus with a full Ethos specification.</p></ins></div><div class="add"><ins><p>With Ethos and the Nexus it is the golden example, from which Flow is implemented, then the other nexuses.</p></ins></div><div class="add"><ins><p>It is the MVP Nexus: the mind builds it with Astra in prototype-making mode, following the vision and the Ethos, and the living reviews it.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<h2>Fable's view</h2>
+<article class="proposal"><header><span class="pnum">21</span><h2>psyche-context › skills/vision-nexus.md</h2></header>
+<p>Amends Proposal 12; your word of 2026-10-14 says which text a payload is written in, Clojure EDN or Nexus datom, and does not undo your word of 2026-10-05 that no datom and no string handling sit inside a running Nexus, so the two do not conflict and the struck line stays.</p>
+<div class="diff"><p>A <del>Clojure prototype uses an EDN payload for everything</del><ins>CLI speaks to one Nexus, opens no store, stays thin</ins>; <del>a </del><ins>datom and all text handling are compiled out of the </ins>Nexus<del> uses datom</del><ins>, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many</ins>.</p><div class="add"><ins><p>A Nexus's payloads, its configuration files among them, are written in datom; a Clojure prototype's are written in EDN.</p></ins></div><div class="add"><ins><p>A Nexus reads a datom file only through an outside tool, the CLI it is meant to work with, never by handling the text itself.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">22</span><h2>psyche-context › vision/ethos.md</h2></header>
+<p>Amends Proposal 3; the rename to Memory also reaches the Associations paragraph, which still says Sema.</p>
+<div class="diff"><p>dot, a bracket of its traits. In the Signal and <del>Sema</del><ins>Memory</ins> roots the</p></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">23</span><h2>psyche-context › skills/vision-nexus.md</h2></header>
+<p>Amends Proposal 16; your word of 2026-10-09 calls loading configuration files in succession a hack to get the Nexus started until datom path expansion is solved, and the Configuration paragraph still says Sema.</p>
+<div class="diff"><p>it looks for its <del>Sema</del><ins>Memory</ins> database at the default location: a database</p><div class="add"><ins><p>Until datom path expansion is solved, the CLI sends the configuration files one after another on the meta socket; this is the way to start a Nexus for now, not the lasting design.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">24</span><h2>psyche-context › skills/vision-nexus.md</h2></header>
+<p>The book keeps the caller identity in the CLI but misses your words of 2026-10-03 and 2026-10-12 that these pieces live in libraries shared by every component, not in one Nexus's library.</p>
+<div class="diff"><div class="add"><ins><p>The process object that identifies a CLI's caller lives in a shared library that many nexuses use, so no CLI rewrites it and the code reads plainly; it is never user-facing and never configurable.</p></ins></div><div class="add"><ins><p>The word id conversion lives in a library every component reuses, generic over hash sizes, so a flow id is one use of it and not its owner.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">25</span><h2>psyche-context › vision/ethos.md</h2></header>
+<p>Amends Proposal 1; you approved the section "Flow, a current best example" on 2026-10-09 and told us to point at the Flow Ethos skill rather than duplicate its code, and your word of 2026-10-16 adds the golden example project without taking that back, so the removed lines stay and the new ones are added beside them.</p>
+<div class="diff"><div class="add"><ins><h4>Flow, a current best example</h4></ins></div><div class="add"><ins><p>Flow is one of the best current examples of ethos; its ethos lives in the vision-flow-ethos skill, which carries the code.</p></ins></div><div class="add"><ins><h4>The golden example</h4></ins></div><div class="add"><ins><p>The golden ethos is the ethos of ethos itself, the one that defines the types ethos goes into.</p></ins></div><div class="add"><ins><p>Ethos, the Nexus and the Chronos example project together are the golden example, from which Flow is implemented properly, then the other nexuses.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>
