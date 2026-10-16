@@ -120,7 +120,7 @@
     {
       "id": "core-tertiary-refresh",
       "work": "Fresh Sonnet4201a3 live full35modules; waiting Core independentcheck; release handover then retire7c89aa only after acceptance",
-      "state": "awaiting-independent-check"
+      "state": "4201a3 independently passed; handover accepted;7c89aa retired and exactpane closed"
     },
     {
       "id": "book-comments",
