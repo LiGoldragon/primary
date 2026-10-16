@@ -45,10 +45,11 @@
     (if (== x (Math/floor x)) (str (long x)) (str x))))
 
 (defn inline
-  "Escape text and turn `code` into <code>."
+  "Escape text; turn `code` into <code> and **bold** into <strong>."
   [text]
   (let [m (re-matcher #"`([^`]+)`" text)
-        sb (StringBuilder.)]
+        sb (StringBuilder.)
+        esc (fn [t] (str/replace (esc t) #"\*\*(?=\S)(.+?)(?<=\S)\*\*" "<strong>$1</strong>"))]
     (loop [pos 0]
       (if (.find m)
         (do (.append sb (esc (subs text pos (.start m))))
@@ -334,7 +335,9 @@
             notes (group-by (fn [i] (apply min-key
                                            #(min-metric (:cells (blocks i)) (box-cells %))
                                            (range (count boxes))))
-                            note-blocks)]
+                            note-blocks)
+            ;; a note standing wholly above its box's top row titles the box
+            above? (fn [bi i] (< (apply max (map first (:cells (blocks i)))) (:r0 (boxes bi))))]
         ;; a sketch read only in part is not drawn: a box inside a box, or
         ;; a line that joins no two nodes
         (when-not (or (some #(re-find #"[+|]-{3,}|-{3,}[+|]" (box-text g %)) boxes)
@@ -344,8 +347,10 @@
                        (cond-> {:id (ids nk)
                                 :label (if (= kind :box) (box-text g (boxes i)) (:text (blocks i)))}
                          (= kind :text) (assoc :bare true)
-                         (and (= kind :box) (notes i))
-                         (assoc :note (str/join "\n" (map #(:text (blocks %)) (sort-by #(pos [:text %]) (notes i))))))))
+                         (and (= kind :box) (seq (filter #(above? i %) (notes i))))
+                         (assoc :title (str/join "\n" (map #(:text (blocks %)) (sort-by #(pos [:text %]) (filter #(above? i %) (notes i))))))
+                         (and (= kind :box) (seq (remove #(above? i %) (notes i))))
+                         (assoc :note (str/join "\n" (map #(:text (blocks %)) (sort-by #(pos [:text %]) (remove #(above? i %) (notes i)))))))))
          :edges (vec (for [[k es] (sort-by key edges-of) e es
                            :let [v (verbs [k e])]]
                        (cond-> {:from (ids (:from e)) :to (ids (:to e))}
@@ -553,7 +558,8 @@
                        ps (ported it)
                        in-own (when-not ps (keep own-text (seg-in it)))]
                    (max (if real? (max (text-w (unit (lines-of label)) bcw (* 2 hpad))
-                                       (text-w (unit (lines-of note)) verb-cw (* 2 hpad)))
+                                       (text-w (unit (lines-of note)) verb-cw (* 2 hpad))
+                                       (text-w (unit (lines-of (:title (node it)))) verb-cw (* 2 hpad)))
                             0)
                         (reduce max 0 (map #(verb-w (unit (lines-of %)))
                                            (concat (keep fork-verb [it]) (keep join-verb [it]) in-own)))
@@ -620,7 +626,7 @@
         geom (into {}
                    (for [l layers
                          it l :when (not (vector? it))
-                         :let [{:keys [label note bare]} (node it)
+                         :let [{:keys [label note title bare]} (node it)
                                s (col-w it)
                                size (size-at it)
                                bcw (* box-cw (/ size 14.0))
@@ -628,11 +634,14 @@
                                hpad (:pad (row-fit (item-rank it)))
                                lines (wrap label (chars s bcw (* 2 hpad)))
                                nlines (if note (wrap note (chars s verb-cw (* 2 hpad))) [])
+                               tlines (if title (wrap title (chars s verb-cw (* 2 hpad))) [])
                                w (min s (max 40 (+ (* 2 hpad)
                                                    (max (* bcw (reduce max 0 (map cp-count lines)))
-                                                        (* verb-cw (reduce max 0 (map cp-count nlines)))))))
-                               h (+ (* 2 pad) (* blh (count lines)) (if (seq nlines) (+ 4 (* verb-lh (count nlines))) 0))]]
-                     [it {:w w :h h :lines lines :notes nlines :bare bare :size size :lh blh}]))
+                                                        (* verb-cw (reduce max 0 (map cp-count (concat tlines nlines))))))))
+                               h (+ (* 2 pad) (* blh (count lines))
+                                    (if (seq tlines) (+ 4 (* verb-lh (count tlines))) 0)
+                                    (if (seq nlines) (+ 4 (* verb-lh (count nlines))) 0))]]
+                     [it {:w w :h h :lines lines :notes nlines :titles tlines :bare bare :size size :lh blh}]))
         band-h (vec (for [l layers] (reduce max 0 (map #(:h (geom %) 0) l))))
         ;; x: each item drawn toward its neighbours, order kept, each
         ;; footprint (box, verbs and ports drawn at its x) apart
@@ -780,23 +789,71 @@
       (let [r (dec (item-rank n))]
         (add! (verb-el (xs n) (band-top r) (band-bottom r) ls))))
     ;; nodes
-    (doseq [[it {:keys [w h lines notes bare size lh]}] geom]
+    (doseq [[it {:keys [w h lines notes titles bare size lh]}] geom]
       (let [x (- (xs it) (/ w 2.0)) y (top-of it)]
         (when-not bare
           (add! (str "<rect x=\"" (num x) "\" y=\"" (num y) "\" width=\"" (num w) "\" height=\"" (num h)
                      "\" rx=\"3\" stroke-width=\"1.5\" style=\"" sheet ";stroke:var(--fg,currentColor)\"/>")))
-        (doseq [[j l] (map-indexed vector lines)]
-          (add! (text-el (xs it) (+ y pad (* 13 (/ size 14.0)) (* lh j)) "middle" size box-font fg l)))
-        (doseq [[j l] (map-indexed vector notes)]
-          (add! (text-el (xs it) (+ y pad 4 11 (* lh (count lines)) (* verb-lh j)) "middle" 12 label-font muted l)))))
-    (str "<svg viewBox=\"0 0 " (num fig-w) " " (num height) "\" width=\"" (num fig-w) "\" height=\"" (num height)
+        (let [th (if (seq titles) (+ 4 (* verb-lh (count titles))) 0)]
+          (doseq [[j l] (map-indexed vector titles)]
+            (add! (text-el (xs it) (+ y pad 11 (* verb-lh j)) "middle" 12 label-font muted l)))
+          (doseq [[j l] (map-indexed vector lines)]
+            (add! (text-el (xs it) (+ y pad th (* 13 (/ size 14.0)) (* lh j)) "middle" size box-font fg l)))
+          (doseq [[j l] (map-indexed vector notes)]
+            (add! (text-el (xs it) (+ y pad th 4 11 (* lh (count lines)) (* verb-lh j)) "middle" 12 label-font muted l))))))
+    (str "<svg viewBox=\"0 0 " (num fig-w) " " (num (+ height 2)) "\" width=\"" (num fig-w) "\" height=\"" (num (+ height 2))
          "\" style=\"display:block\" role=\"img\" aria-label=\""
-         (esc-attr (str/join " " (mapcat lines-of (concat (mapcat (fn [n] (keep n [:label :note])) nodes) (keep :verb edges)))))
+         (esc-attr (str/join " " (mapcat lines-of (concat (mapcat (fn [n] (keep n [:title :label :note])) nodes) (keep :verb edges)))))
          "\" xmlns=\"http://www.w3.org/2000/svg\">" parts "</svg>"))))
 
 ;; A figure stands in a block of its own; the page's CSS (book-code.html,
 ;; .figure) holds the box to the whole height it is drawn at.
-(defn figure-el [svg] (str "<div class=\"figure\">" svg "</div>"))
+;; The container carries the height itself (inline min-height, or the aspect
+;; ratio of an illustrator's SVG): a grid row sized by min-content alone was
+;; seen collapsing in Chrome, letting the next block overlap the figure.
+(defn- svg-height [svg]
+  (some-> (re-find #"^<svg[^>]* height=\"([\d.]+)\"" svg) second))
+
+(defn figure-el [svg]
+  (str "<div class=\"figure\""
+       (when-let [h (svg-height svg)] (str " style=\"min-height:" h "px\""))
+       ">" svg "</div>"))
+
+(defn sanitize-svg
+  "An illustrator's SVG made safe to inline: no script, foreignObject or
+  event attribute, no external reference; scaled to the width of its container."
+  [svg]
+  (let [svg (-> svg
+                (str/replace #"(?s)<\?xml.*?\?>|<!DOCTYPE.*?>|<!--.*?-->" "")
+                (str/replace #"(?is)<script\b.*?</script\s*>|<script\b[^>]*/>" "")
+                (str/replace #"(?is)<foreignObject\b.*?</foreignObject\s*>" "")
+                (str/replace #"(?i)\s+on[a-z]+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)" "")
+                (str/replace #"(?i)\s+(?:xlink:)?href\s*=\s*(\"(?!#)[^\"]*\"|'(?!#)[^']*')" "")
+                (str/replace #"(?i)url\(\s*(['\"]?)(?!#)[^)]*\)" "none")
+                (str/replace #"(?i)javascript:" "")
+                strip)
+        [_ tag] (re-find #"(?s)^(<svg\b[^>]*>)" svg)
+        _ (when-not tag (throw (ex-info "illustration is not an svg" {})))
+        attr (fn [a] (some-> (re-find (re-pattern (str "(?i)\\s" a "\\s*=\\s*\"([^\"]*)\"")) tag) second))
+        vb (or (attr "viewBox")
+               (let [w (attr "width") h (attr "height")]
+                 (when (and w h (re-matches #"[\d.]+(px)?" w) (re-matches #"[\d.]+(px)?" h))
+                   (str "0 0 " (str/replace w "px" "") " " (str/replace h "px" "")))))
+        tag' (-> tag
+                 (str/replace #"(?i)\s(width|height|style|viewBox)\s*=\s*(\"[^\"]*\"|'[^']*')" "")
+                 (str/replace #"^<svg" (str "<svg viewBox=\"" vb "\" width=\"100%\" style=\"display:block;position:absolute;left:0;top:0;width:100%;height:100%\"")))]
+    (str tag' (subs svg (count tag)))))
+
+(defn illustration-el
+  "The figure container of an illustrator's SVG, held to its aspect ratio by padding, which
+  a grid row cannot collapse."
+  [raw]
+  (let [svg (sanitize-svg raw)
+        [w h] (map #(Double/parseDouble %) (take-last 2 (re-seq #"[\d.]+" (second (re-find #"viewBox=\"([^\"]*)\"" svg)))))]
+    (str "<div class=\"figure\" style=\"position:relative;height:0;padding-bottom:" (num (* 100.0 (/ h w)))
+         "%;overflow:hidden\">" svg "</div>")))
+
+(def ^:dynamic *figures-dir* nil)
 
 (defn figure-svg
   "The SVG of a sketch at width w, or nil when it draws no edge."
@@ -1076,11 +1133,28 @@
   [[_ content]]
   (odd? (count (filter #(re-find #"^```" %) content))))
 
+(defn- continues?
+  "In a change written line by line, the line goes on the chunk before it:
+  that chunk holds an open code fence or front matter, or both are list items
+  or table rows."
+  [[_ content :as lst] line]
+  (let [l (peek content)
+        bullet? #(boolean (re-find bullet-re %))
+        row? #(str/starts-with? (strip-left %) "|")]
+    (or (in-fence? lst)
+        (and (= "---" (rstrip (first content)))
+             (= 1 (count (filter #(= "---" (rstrip %)) content))))
+        (and (bullet? l) (bullet? line))
+        (and (row? l) (row? line)))))
+
 (defn text-panels
   "A fenced text block: sign-prefixed lines into stacked panels, and its
-  figures drawn w wide."
+  figures drawn w wide. With per-line, as a change written outside a fence,
+  each signed line is its own line: consecutive lines are not one paragraph,
+  and a run of removed lines pairs line by line with the added run after it."
   ([lines] (text-panels lines fig-w))
-  ([lines w]
+  ([lines w] (text-panels lines w false))
+  ([lines w per-line]
   (let [chunks (reduce
                 (fn [chunks raw]
                   (let [signed (and (#{\+ \-} (first raw))
@@ -1090,16 +1164,19 @@
                                       (str/starts-with? raw "  ") (subs raw 2)
                                       :else raw)
                         sketch (if signed content raw)
-                        lst (peek chunks)]
+                        lst (peek chunks)
+                        joins? (and lst (= (first lst) sign)
+                                    (or (not per-line) (continues? lst content)))]
                     (cond
                       (and lst (= (first lst) sign) (in-fence? lst)) (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
                       (blank? content) (conj chunks nil)
-                      (and lst (= (first lst) sign)) (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
+                      joins? (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
                       :else (conj chunks [sign [content] [sketch]]))))
                 [] lines)
         chunks (vec (remove nil? chunks))
         panels (StringBuilder.)
-        figures (transient [])]
+        figures (transient [])
+        run (fn [i sign] (count (take-while #(= sign (first %)) (subvec chunks i))))]
     (loop [i 0]
       (when (< i (count chunks))
         (let [[sign content sketch] (chunks i)
@@ -1107,6 +1184,12 @@
               fig (figure-svg content sketch w)]
           (cond
             fig (do (conj! figures fig) (recur (inc i)))
+            (and per-line (= sign "-"))
+            (let [nr (run i "-") na (run (+ i nr) "+")]
+              (doseq [k (range (max nr na))]
+                (.append panels (change-panels (if (< k nr) (second (chunks (+ i k))) [])
+                                               (if (< k na) (second (chunks (+ i nr k))) []))))
+              (recur (+ i nr na)))
             (and (= sign "-") (= nsign "+") (not (figure-svg ncontent nsketch w)))
             (do (.append panels (change-panels content ncontent)) (recur (+ i 2)))
             :else (do (doseq [body (split-chunk content)]
@@ -1139,11 +1222,14 @@
     (boolean (and (seq para) (every? signed para)
                   (some #(or (str/starts-with? % "+") (= "- ---" (rstrip %))) para)))))
 
-(defn flush-para [para]
-  (if (diff-para? para) [[:fence "text" para]] (split-para para)))
+(defn flush-para
+  "A paragraph written as a change is a text fence read line by line."
+  [para]
+  (if (diff-para? para) [[:fence "text" para :per-line]] (split-para para)))
 
 (defn blocks
-  "Split the source into blocks: [:fence lang lines] or [:para lines]."
+  "Split the source into blocks: [:fence lang lines] (a change written outside
+  a fence also carries :per-line) or [:para lines]."
   [src]
   (let [lines (vec (str/split src #"\n" -1))
         n (count lines)
@@ -1198,8 +1284,36 @@
   [path]
   (get target-langs (some-> path (str/split #"\.") rest last) "text"))
 
+(defn presentation-title
+  "The title of the Presentation datom on the source's first line that is not
+  a comment, or nil."
+  [src]
+  (let [l (first (remove #(or (blank? %) (re-find #"(?U)^<!--.*-->\s*$" %)) (str/split-lines src)))]
+    (some->> l (re-find #"(?U)^Presentation\.\{\s*«([^»]*)».*\}\s*$") second strip not-empty)))
+
+(defn proposal-header
+  "The opening of a proposal's sheet. With no File line under it, its title
+  says where it lands, and is shown as the target chip in the header."
+  [n title where?]
+  (str "<article class=\"proposal\"><header><span class=\"pnum\">" n "</span>"
+       (if where?
+         (str "<h2 class=\"target\"><code style=\"font-size:.95rem\">" (esc (str/replace title "`" "")) "</code></h2>")
+         (str "<h2>" (inline title) "</h2>"))
+       "</header>"))
+
 (defn build [src code]
-  (let [out (atom [])
+  (let [nfig (volatile! 0)
+        datom-title (presentation-title src)
+        bs (vec (blocks src))
+        file-next? (fn [i] (let [[kind ls] (get bs (inc i))]
+                             (and (= :para kind) (str/starts-with? (first ls) "File: "))))
+        show-fig (fn [svg]
+                   (let [n (vswap! nfig inc)
+                         f (when *figures-dir* (fs/path *figures-dir* (str "fig-" n ".svg")))]
+                     (if (and f (fs/exists? f))
+                       (illustration-el (slurp (str f) :encoding "UTF-8"))
+                       (figure-el svg))))
+        out (atom [])
         target (volatile! nil)
         in-article (volatile! false)
         rulings (volatile! false)
@@ -1219,13 +1333,13 @@
                          (extend-last! "</div>")
                          (vreset! record-open false)))
         emit (fn [s] (if (or @rulings @glue) (extend-last! s) (append! s)))]
-    (doseq [b (blocks src)]
+    (doseq [[i b] (map-indexed vector bs)]
       (if (= :fence (first b))
-        (let [[_ lang lines] b]
+        (let [[_ lang lines per-line] b]
           (when (and @rulings @pending-close) (close-rulings true))
           (cond
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
-            (emit (figure-el (graph-svg (read-figure lines) (if @rulings ruling-fig-w fig-w))))
+            (emit (show-fig (graph-svg (read-figure lines) (if @rulings ruling-fig-w fig-w))))
 
             (and (= lang "text") (not-any? signed-line? lines)
                  (empty? (second (text-panels lines (if @rulings ruling-fig-w fig-w)))))
@@ -1234,14 +1348,14 @@
                        (esc (str/join "\n" lines)) "</code></pre>"))
 
             (= lang "text")
-            (let [[diff figs] (text-panels lines (if @rulings ruling-fig-w fig-w))]
+            (let [[diff figs] (text-panels lines (if @rulings ruling-fig-w fig-w) (= :per-line per-line))]
               (if @record-open
                 (let [diff (str/replace-first diff "<div class=\"diff\">" "")
                       diff (if (str/ends-with? diff "</div>") (subs diff 0 (- (count diff) 6)) diff)]
                   (emit diff)
                   (close-record))
                 (when (not= "" diff) (emit diff)))
-              (run! (comp emit figure-el) figs))
+              (run! (comp emit show-fig) figs))
 
             :else
             (if-let [marked-code (code-lines lines)]
@@ -1256,7 +1370,7 @@
             (str/starts-with? first-line "# ")
             (let [title (strip (subs first-line 2))]
               (append! "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">")
-              (append! (str "<title>" (esc title) "</title>"))
+              (append! (str "<title>" (esc (or datom-title title)) "</title>"))
               (append! (str "<h1 class=\"book-title\">" (esc title) "</h1>")))
 
             (str/starts-with? first-line "### ")
@@ -1267,9 +1381,18 @@
                 (when @in-article (append! "</article>"))
                 (let [m (re-find #"(?U)^### Proposal (\d+): (.*)$" text)]
                   (when-not m (throw (ex-info (str "proposal heading not understood: " (pr-str text)) {})))
-                  (append! (str "<article class=\"proposal\"><header><span class=\"pnum\">" (m 1)
-                                "</span><h2>" (inline (m 2)) "</h2></header>")))
+                  (append! (proposal-header (m 1) (m 2) false)))
                 (vreset! in-article true))
+
+            (re-find #"(?U)^## Proposal (\d+): (.*)$" text)
+            (let [[_ n where] (re-find #"(?U)^## Proposal (\d+): (.*)$" text)]
+              (close-rulings false)
+              (close-record)
+              (vreset! glue false)
+              (vreset! target nil)
+              (when @in-article (append! "</article>"))
+              (append! (proposal-header n (strip where) (not (file-next? i))))
+              (vreset! in-article true))
 
             (str/starts-with? first-line "## ")
             (do (close-rulings false)
@@ -1282,7 +1405,20 @@
             (do (when (and @rulings @pending-close) (close-rulings true))
                 (emit (file-line lines)))
 
+            ;; a File line naming its target in words
+            (and @in-article (str/starts-with? first-line "File: "))
+            (do (when (and @rulings @pending-close) (close-rulings true))
+                (emit (str "<p class=\"target\"><code>" (esc (strip (subs text 6))) "</code></p>")))
+
+            ;; lines removed outside a fence, inside a proposal
+            (and @in-article (every? signed-line? lines))
+            (emit (first (text-panels lines (if @rulings ruling-fig-w fig-w) true)))
+
             (some #(table-at? (vec lines) %) (range (count lines)))
+            (emit (apply str (map body-html (split-chunk lines))))
+
+            ;; a bullet list outside a proposal; inside one, a leading - is a removal line
+            (and (not @in-article) (re-find #"^[-*] " first-line))
             (emit (apply str (map body-html (split-chunk lines))))
 
             :else
@@ -1321,14 +1457,16 @@
   (let [args (vec args)]
     (when (< (count args) 2)
       (binding [*out* *err*]
-        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html]"))
+        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR]"))
       (System/exit 1))
     (let [[src-path out-path] args
           ci (.indexOf args "--code")
           code-path (if (>= ci 0)
                       (get args (inc ci))
-                      (str (fs/path script-dir "book-code.html")))]
-      (spit out-path (build (read-text src-path) (read-text code-path)) :encoding "UTF-8"))))
+                      (str (fs/path script-dir "book-code.html")))
+          fi (.indexOf args "--figures")]
+      (binding [*figures-dir* (when (>= fi 0) (get args (inc fi)))]
+        (spit out-path (build (read-text src-path) (read-text code-path)) :encoding "UTF-8")))))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (apply -main *command-line-args*))

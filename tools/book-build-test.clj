@@ -69,7 +69,9 @@
 (deftest fixture-records-and-figure
   (let [page (book-build/build fixture-md "TAIL\n")
         svg (re-find #"(?s)<svg .*?</svg>" page)]
-    (is (= fixture-expected (str/replace page svg "FIGURE")))
+    (is (= fixture-expected (-> page (str/replace svg "FIGURE")
+                                (str/replace #"(<div class=\"figure\") style=\"min-height:[\d.]+px\"" "$1"))))
+    (is (re-find #"<div class=\"figure\" style=\"min-height:\d+(\.\d+)?px\"><svg " page) "the figure reserves its height")
     (is (str/starts-with? svg (str "<svg viewBox=\"0 0 " book-build/fig-w " ")))
     (is (= 3 (count (re-seq #"<rect [^>]*rx=" svg))) "three boxes")
     (is (= 2 (count (re-seq #"<polygon" svg))) "two arrowheads")
@@ -130,6 +132,105 @@
       (is (str/includes? html (str "<pre><code class=\"language-" lang "\">" esc* "</code></pre>")) file)
       (is (not (str/includes? html "<div class=\"diff\">")))
       (is (not (str/includes? html "<div class=\"ctx\">"))))))
+
+(deftest bullet-list-after-heading
+  (let [html (book-build/build "## Why\n\n- **one** is first.\n- **two** is second,\n  continued.\n\nAfter.\n" "")]
+    (is (str/includes? html "<ul><li><strong>one</strong> is first.</li><li><strong>two</strong> is second, continued.</li></ul>"))
+    (is (not (str/includes? html "**"))))
+  (let [html (book-build/build "### Proposal 1: T\n\nFile: a.md\n\n- old\n+ new\n" "")]
+    (is (not (str/includes? html "<ul>")))))
+
+(def sketch-md
+  (str "```text\n+-------+\n| One   |\n+-------+\n    |\n    | sends\n    v\n+-------+\n| Two   |\n+-------+\n```\n\n"
+       "```text\n+-------+\n| Red   |\n+-------+\n    |\n    v\n+-------+\n| Blue  |\n+-------+\n```\n"))
+
+(def illustration
+  (str "<?xml version=\"1.0\"?><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+       "viewBox=\"0 0 360 520\" width=\"360\" height=\"520\" onload=\"evil()\">"
+       "<script>alert(1)</script><a href=\"https://evil.example/x\"><rect id=\"keep\" width=\"10\" height=\"10\" onclick=\"evil()\"/></a>"
+       "<use xlink:href=\"http://evil.example/y.svg#a\"/><use href=\"#keep\"/>"
+       "<image href=\"data-not-allowed\"/><foreignObject><p>x</p></foreignObject><text>ILLUSTRATED</text></svg>"))
+
+(defn with-figures [files f]
+  (let [dir (fs/create-temp-dir)]
+    (try (doseq [[n body] files] (spit (str (fs/path dir n)) body))
+         (binding [book-build/*figures-dir* (str dir)] (f))
+         (finally (fs/delete-tree dir)))))
+
+(deftest illustration-replaces-the-nth-figure
+  (let [plain (book-build/build sketch-md "")
+        html (with-figures {"fig-1.svg" illustration} #(book-build/build sketch-md ""))
+        figs (re-seq #"(?s)<div class=\"figure\"[^>]*>.*?</div>" html)]
+    (is (= 2 (count (re-seq #"<div class=\"figure\"" plain))))
+    (is (= 2 (count figs)))
+    (is (str/includes? (first figs) "ILLUSTRATED") "figure 1 is the illustration")
+    (is (not (str/includes? (first figs) ">One<")))
+    (is (str/includes? (first figs) "width=\"100%\"") "scaled to the container")
+    (is (str/includes? (first figs) "viewBox=\"0 0 360 520\""))
+    (is (str/includes? (first figs) "padding-bottom:144.44%") "the container holds the aspect height")
+    (is (= (second (re-seq #"(?s)<div class=\"figure\"[^>]*>.*?</div>" plain)) (second figs))
+        "figure 2 has no fig-2.svg and is drawn as before")))
+
+(deftest illustration-is-sanitized
+  (let [html (with-figures {"fig-1.svg" illustration} #(book-build/build sketch-md ""))
+        fig (re-find #"(?s)<div class=\"figure\"[^>]*>.*?</div>" html)]
+    (is (not (re-find #"(?i)<script|alert|onload|onclick|evil|foreignObject|<\?xml" fig)))
+    (is (not (re-find #"https?://[^\"]*evil" fig)))
+    (is (str/includes? fig "xmlns=\"http://www.w3.org/2000/svg\"") "the namespace stays")
+    (is (str/includes? fig "<use href=\"#keep\"/>") "an internal reference stays")
+    (is (str/includes? fig "id=\"keep\""))))
+
+(deftest figure-fallback-without-directory-or-file
+  (let [plain (book-build/build sketch-md "")]
+    (is (= plain (with-figures {} #(book-build/build sketch-md ""))) "empty directory")
+    (is (= plain (with-figures {"fig-3.svg" illustration} #(book-build/build sketch-md ""))) "no fig-1 or fig-2")
+    (is (= 2 (count (re-seq #"<svg viewBox=\"0 0 239 " plain))))))
+
+(deftest figure-title-is-at-the-top-of-its-box
+  (let [g (book-build/ascii-graph (str/split-lines "  any machine\n +--------+\n | body   |\n +--------+\n     |\n     v\n +--------+\n | next   |\n +--------+"))
+        svg (book-build/graph-svg g)
+        ys (fn [t] (Double/parseDouble (second (re-find (re-pattern (str "y=\"([\\d.]+)\"[^>]*>" t "</text>")) svg))))]
+    (is (= "any machine" (:title (first (:nodes g)))))
+    (is (nil? (:note (first (:nodes g)))))
+    (is (< (ys "any machine") (ys "body")) "the title is drawn above the label")))
+
+(deftest section-proposal-says-where-it-lands
+  (let [html (book-build/build (str "## Proposal 2: add to the vision of `books`\n\n+ One line.\n\nRuling: land, amend, or reject.\n\n"
+                                    "## Technical part\n\n- a note\n") "")]
+    (is (str/includes? html (str "<article class=\"proposal\"><header><span class=\"pnum\">2</span>"
+                                 "<h2 class=\"target\"><code style=\"font-size:.95rem\">add to the vision of books</code></h2></header>")))
+    (is (str/includes? html "<p>Ruling: land, amend, or reject.</p>\n</article>\n<h2>Technical part</h2>\n<ul><li>a note</li></ul>")
+        "the next section closes the proposal")))
+
+(deftest section-proposal-with-a-file-line
+  (let [html (book-build/build "## Proposal 1: no noise\n\nFile: the vision of books\n\n+ Plain.\n" "")]
+    (is (str/includes? html "<span class=\"pnum\">1</span><h2>no noise</h2></header>"))
+    (is (str/includes? html "<p class=\"target\"><code>the vision of books</code></p>")))
+  (let [html (book-build/build "## Proposal 1: T\n\nFile: `a/b.md`\n\n+ Plain.\n" "")]
+    (is (str/includes? html "<h2>T</h2>"))
+    (is (str/includes? html "<p class=\"target\"><code>a/b.md</code></p>"))))
+
+(deftest each-signed-line-outside-a-fence-is-its-own-line
+  (let [html (book-build/build "## Proposal 1: x\n\n+ First added.\n+ Second added.\n+ - item one\n+ - item two\n" "")]
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"add\"><ins><p>First added.</p></ins></div>"
+                                 "<div class=\"add\"><ins><p>Second added.</p></ins></div>"
+                                 "<div class=\"add\"><ins><ul><li>item one</li><li>item two</li></ul></ins></div></div>"))))
+  (let [html (book-build/build "## Proposal 1: x\n\n- Gone one.\n- Gone two.\n" "")]
+    (is (str/includes? html "<div class=\"del\"><del><p>Gone one.</p></del></div><div class=\"del\"><del><p>Gone two.</p></del></div>")))
+  (let [html (book-build/build "## Proposal 1: x\n\n- old one\n- old two\n+ new one\n+ new two\n+ three\n" "")]
+    (is (str/includes? html (str "<p><del>old</del><ins>new</ins> one</p><p><del>old</del><ins>new</ins> two</p>"
+                                 "<div class=\"add\"><ins><p>three</p></ins></div>"))
+        "removed lines pair line by line with the added lines after them"))
+  (is (= "<div class=\"diff\"><p>first <del>old</del><ins>new</ins> line second <del>old</del><ins>new</ins> line</p></div>"
+         (change "- first old line\n- second old line\n+ first new line\n+ second new line"))
+      "inside a fence, lines still flow as one paragraph"))
+
+(deftest title-from-presentation-datom
+  (let [html (book-build/build "<!-- c -->\nPresentation.{ «Drawing ideas, 2nd edition» }\n\n# Drawing ideas\n" "")]
+    (is (str/includes? html "<title>Drawing ideas, 2nd edition</title>"))
+    (is (str/includes? html "<h1 class=\"book-title\">Drawing ideas</h1>"))
+    (is (not (str/includes? html "Presentation.{"))))
+  (is (str/includes? (book-build/build "# Plain\n" "") "<title>Plain</title>")))
 
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))

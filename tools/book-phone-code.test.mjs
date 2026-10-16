@@ -102,7 +102,7 @@ try {
         const pre = document.querySelector('#full-code'); const overflow = document.querySelector('#overflow-code'); const body = getComputedStyle(document.body);
         const fig = document.querySelector('#fig');
         const tb = document.querySelector('#tbl'); const tr = [...tb.querySelectorAll('tr')].reduce((h, r) => h + r.getBoundingClientRect().height, 0);
-        return { tblBox: tb.getBoundingClientRect().height, tblRows: tr, tblScrollsY: tb.scrollHeight > tb.clientHeight, figBox: fig.getBoundingClientRect().height, figSvg: fig.querySelector('svg').getBoundingClientRect().height, figScrollsY: fig.scrollHeight > fig.clientHeight,
+        return { tblBottom: tb.getBoundingClientRect().bottom, tblNextTop: tb.nextElementSibling.getBoundingClientRect().top, figBottom: fig.getBoundingClientRect().bottom, figNextTop: fig.nextElementSibling.getBoundingClientRect().top, tblBox: tb.getBoundingClientRect().height, tblRows: tr, tblScrollsX: tb.scrollWidth > tb.clientWidth, tblScrollsY: tb.scrollHeight > tb.clientHeight, figBox: fig.getBoundingClientRect().height, figSvg: fig.querySelector('svg').getBoundingClientRect().height, figScrollsY: fig.scrollHeight > fig.clientHeight,
           width: document.documentElement.clientWidth, pageWidth: document.documentElement.scrollWidth,
           choiceDisplay: getComputedStyle(value).display, value: value.textContent, tokens,
           blockWidth: pre.getBoundingClientRect().width,
@@ -133,6 +133,9 @@ try {
     assert.equal(m.figSvg, 321, 'figure drawn at its height');
     assert.equal(m.figBox, 321, 'figure box shows the whole figure in height');
     assert.ok(m.tblRows > 0 && m.tblBox >= m.tblRows, 'table box shows every row in height');
+    assert.ok(m.tblBottom <= m.tblNextTop + 0.5, 'table ends above the next element');
+    assert.ok(m.figBottom <= m.figNextTop + 0.5, 'figure ends above the next element');
+    assert.ok(width > 400 || m.tblScrollsX, 'a table wider than the screen scrolls sideways');
     assert.ok(!m.tblScrollsY, 'table never scrolls vertically');
     assert.ok(!m.figScrollsY, 'figure never scrolls vertically');
     assert.equal(m.outsideHeadingDisplay, 'block');
