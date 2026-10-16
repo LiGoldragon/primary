@@ -84,6 +84,14 @@ export function modulesFromConfig(config, aspect, placement) {
   return names.map(module => module.name ?? module);
 }
 
+// A role extends its aspect context; it cannot remove the standing defaults.
+export function roleModulesFromConfig(config, metaflow, placement) {
+  if (!['system', 'user'].includes(placement)) throw new Error('unsupported role module placement');
+  const defaults = modulesFromConfig(config, metaflow.aspect, placement);
+  const additions = placement === 'system' ? metaflow.modules ?? [] : metaflow['user-modules'] ?? [];
+  return [...new Set([...defaults, ...additions.map(module => module.name ?? module)])];
+}
+
 export function sourceModulesFromConfig(config, aspect, placement) {
   const modules = config.aspects.find(item => item.aspect === aspect)?.modules?.[placement];
   if (!modules) throw new Error(`no configured ${placement} modules for ${aspect}`);

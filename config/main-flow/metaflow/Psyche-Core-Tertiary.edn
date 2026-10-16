@@ -1,1 +1,1 @@
-{:aspect :Psyche :topic :Core :layer :Tertiary :modules [:spirit-core :intent-main-flow :intent-context-modules :vision-book :compensation-book-crystallization] :user-modules [:compensation-main-flow] :raw-psyche-paths ["flows/33752b/vision/" "flows/d68c82/vision/"]}
+{:aspect :Psyche :topic :Core :layer :Tertiary :modules [:spirit-core :intent-main-flow :intent-context-modules :vision-book :compensation-book-crystallization] :raw-psyche-paths ["flows/33752b/vision/" "flows/d68c82/vision/"]}

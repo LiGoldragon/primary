@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig, firstPromptFromConfig} from './launch-config.mjs';
+import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig, firstPromptFromConfig, roleModulesFromConfig} from './launch-config.mjs';
 import {mainSystemModules} from './spirit-system-prompt.mjs';
 
 const config = loadLaunchConfig(path.resolve(import.meta.dirname, '../..'));
@@ -41,3 +41,15 @@ const badVoice = voice => ({...config, metaflow: {metaflows: [{aspect: 'Field', 
 assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'gpt-6-luna', effort: 'medium'})), /must match its harness/);
 assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'claude-haiku-5-5'})), /effort is unsupported/);
 assert.throws(() => validateLaunchConfig({...config, metaflow: {metaflows: [...config.metaflow.metaflows, config.metaflow.metaflows[0]]}}), /duplicate/);
+
+for (const metaflow of config.metaflow.metaflows.filter(row => row.aspect === 'Psyche')) {
+  const inherited = config.aspects.find(row => row.aspect === 'Psyche').modules.user.map(row => row.name);
+  assert.ok(inherited.every(name => roleModulesFromConfig(config, metaflow, 'user').includes(name)));
+  assert.equal(metaflow['user-modules'], undefined, `${metaflow.topic}.${metaflow.layer} must inherit its aspect roots`);
+}
+const extraRole = {aspect: 'Field', 'user-modules': ['compensation-main-flow', 'compensation-book']};
+const completeRoots = roleModulesFromConfig(config, extraRole, 'user');
+assert.equal(completeRoots.filter(name => name === 'compensation-main-flow').length, 1);
+assert.ok(completeRoots.includes('compensation-truth'));
+assert.ok(completeRoots.includes('compensation-book'));
+assert.ok(roleModulesFromConfig(config, {aspect: 'Psyche', modules: ['vision-nexus']}, 'system').includes('intent-psyche'));
