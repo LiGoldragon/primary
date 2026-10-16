@@ -17,13 +17,13 @@ export function requireTopic(topic) {
 }
 
 // Display the complete flow struct; typed configuration identities stay unchanged.
-// Core is explicit and every human-readable field is lowercase.
+// Core is explicit; only the topic is lowercase, as ruled.
 export function canonicalTitleFor(aspect, _model, flowId, layer, topic = CORE_TOPIC) {
   if (!/^(Psyche|Mind|Field)$/.test(aspect ?? '')) throw new Error('canonical native title requires an exact aspect');
   if (!LAYER.test(layer ?? '')) throw new Error('canonical native title requires an exact layer');
   if (!FLOW_ID.test(flowId ?? '')) throw new Error('canonical native title requires the exact short Flow ID');
   requireTopic(topic);
-  return `{ ${aspect.toLowerCase()} ${topic.toLowerCase()} ${layer.toLowerCase()} ${flowId} }`;
+  return `{ ${aspect} ${topic.toLowerCase()} ${layer} ${flowId} }`;
 }
 
 
