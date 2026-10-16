@@ -268,5 +268,15 @@
     (is (not (str/includes? html "Presentation.{"))))
   (is (str/includes? (book-build/build "# Plain\n" "") "<title>Plain</title>")))
 
+(deftest signed-lines-inside-a-code-fence-stay-code
+  (let [html (book-build/build "## Proposal 1: x\n\n```text\n  ```rust\n  fn a() {}\n+ ## x\n- old\n  ```\n```\n" "")]
+    (is (str/includes? html "<pre data-diff><code class=\"language-rust\">  fn a() {}\n+ ## x\n- old</code></pre>"))
+    (is (not (str/includes? html "<h4>x</h4>")) "+ ## x is a code line, not a heading")))
+
+(deftest proposal-heading-without-a-blank-line-opens-a-proposal
+  (let [html (book-build/build "### Proposal 1: a\n\nsome text\n## Proposal 2: b\nmore\n" "")]
+    (is (str/includes? html "<p>some text</p>\n</article>\n<article class=\"proposal\"><header><span class=\"pnum\">2</span>"))
+    (is (not (str/includes? html "## Proposal 2")))))
+
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))

@@ -699,21 +699,55 @@
         (and (bullet? l) (bullet? line))
         (and (row? l) (row? line)))))
 
+(defn- sign-content
+  "A change line's sign (\"+\", \"-\" or \" \" for context) and its content."
+  [raw]
+  (let [signed (and (#{\+ \-} (first raw))
+                    (or (= 1 (count raw)) (= \space (nth raw 1))))]
+    [(if signed (subs raw 0 1) " ")
+     (cond signed (if (> (count raw) 2) (subs raw 2) "")
+           (str/starts-with? raw "  ") (subs raw 2)
+           :else raw)]))
+
+(defn- code-fence-items
+  "Change lines with each inner code fence whose lines carry more than one sign
+  taken out as [:code lang lines]: its lines stay code, never markdown, each
+  line keeping its sign for the line tint. A fence of one sign stays lines."
+  [lines]
+  (let [lines (vec lines) n (count lines)
+        content #(second (sign-content (lines %)))]
+    (loop [i 0 out []]
+      (if (>= i n)
+        out
+        (let [lang (fence-open (content i))
+              j (when lang (first (filter #(= "```" (rstrip (content %))) (range (inc i) n))))]
+          (if (and j (< 1 (count (set (map #(first (sign-content (lines %))) (range i (inc j)))))))
+            (recur (inc j) (conj out [:code lang (subvec lines (inc i) j)]))
+            (recur (inc i) (conj out (lines i)))))))))
+
+(defn- code-fence-html
+  "An inner code fence of mixed signs: a removed line followed by an added one
+  is marked word by word; otherwise every line is tinted by its sign."
+  [lang lines]
+  (let [cls (get langs lang (if (= "" lang) "text" lang))]
+    (if-let [m (code-lines lines)]
+      (str "<pre><code class=\"language-" cls "\">" m "</code></pre>")
+      (str "<pre data-diff><code class=\"language-" cls "\">" (esc (str/join "\n" lines)) "</code></pre>"))))
+
 (defn text-panels
   "A fenced text block: sign-prefixed lines into stacked panels, and its
   nothing drawn. With per-line, as a change written outside a fence,
   each signed line is its own line: consecutive lines are not one paragraph,
-  and a run of removed lines pairs line by line with the added run after it."
+  and a run of removed lines pairs line by line with the added run after it.
+  A code fence inside whose lines carry different signs stays code."
   ([lines] (text-panels lines false))
   ([lines per-line]
   (let [chunks (reduce
                 (fn [chunks raw]
-                  (let [signed (and (#{\+ \-} (first raw))
-                                    (or (= 1 (count raw)) (= \space (nth raw 1))))
-                        sign (if signed (subs raw 0 1) " ")
-                        content (cond signed (if (> (count raw) 2) (subs raw 2) "")
-                                      (str/starts-with? raw "  ") (subs raw 2)
-                                      :else raw)
+                  (if (vector? raw)
+                    (conj chunks raw)
+                  (let [[sign content] (sign-content raw)
+                        signed (not= " " sign)
                         sketch (if signed content raw)
                         lst (peek chunks)
                         joins? (and lst (= (first lst) sign)
@@ -722,8 +756,8 @@
                       (and lst (= (first lst) sign) (in-fence? lst)) (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
                       (blank? content) (conj chunks nil)
                       joins? (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
-                      :else (conj chunks [sign [content] [sketch]]))))
-                [] lines)
+                      :else (conj chunks [sign [content] [sketch]])))))
+                [] (code-fence-items lines))
         chunks (vec (remove nil? chunks))
         panels (StringBuilder.)
         run (fn [i sign] (count (take-while #(= sign (first %)) (subvec chunks i))))]
@@ -732,6 +766,9 @@
         (let [[sign content] (chunks i)
               [nsign ncontent] (get chunks (inc i))]
           (cond
+            (= :code sign)
+            (do (.append panels (apply code-fence-html (rest (chunks i)))) (recur (inc i)))
+
             (and per-line (= sign "-"))
             (let [nr (run i "-") na (run (+ i nr) "+")]
               (doseq [k (range (max nr na))]
@@ -774,6 +811,8 @@
   [para]
   (if (diff-para? para) [[:fence "text" para :per-line]] (split-para para)))
 
+(def ^:private proposal-heading #"(?U)^#{2,3} Proposal \d+: ")
+
 (defn blocks
   "Split the source into blocks: [:fence lang lines] (a change written outside
   a fence also carries :per-line) or [:para lines]."
@@ -794,6 +833,9 @@
                                          {:bare (= "" (m 1))})) []))
             (cond
               (blank? l) (recur (inc i) (cond-> out (seq para) (into (flush-para para))) [])
+              ;; a proposal heading always opens a new proposal, blank line before it or not
+              (re-find proposal-heading l)
+              (recur (inc i) (-> out (cond-> (seq para) (into (flush-para para))) (conj [:para [l]])) [])
               (re-find skip l) (recur (inc i) out para)
               :else (recur (inc i) out (conj para l)))))))))
 
