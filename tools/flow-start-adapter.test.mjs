@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {startRequest, launchedResponse, decodeFlowResponse, submitStart, launchMain, parseArgs} from './flow-start-adapter.mjs';
+const uuid = '4201a3e4-964c-403e-824c-6f8908023e6f';
+const profile = {requestId:'proof-1',system:['spirit-core','intent-psyche'],user:['compensation-main-flow'],aspect:'Psyche',topic:'core',layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium',session:'default',brief:'Run once: «quoted» \\path\n$(never)'};
+const success = 'Started.{ 4201a3 '+uuid+' Available.{ default child w1:p4E term_123 } Flow.{ 42265e caller-session } }';
+const q = startRequest(profile);
+assert.equal(q, 'Start.{ «proof-1» [ spirit-core intent-psyche ] [ compensation-main-flow ] { Psyche core Tertiary } «claude-sonnet-5-5» «medium» None [  ] «default» None «Run once: «quoted\\» \\\\path\n$(never)» }');
+assert.match(startRequest({...profile,leaveOuts:[]}),/Some\.\[  \]/);
+assert.match(startRequest({...profile,predecessor:'7c89aa',remembered:[{flowId:'abcdef',depth:2}]}),/Some\.«7c89aa» \[ \{ «abcdef» 2 \} \]/);
+for (const invalid of [{system:['/tmp/context']},{user:['intent-psyche']},{system:['spirit-core']},{model:'sonnet'},{leaveOuts:['Unknown']},{remembered:[{flowId:'abcdef',depth:-1}]},{topic:'core } injected'}]) assert.throws(()=>startRequest({...profile,...invalid}));
+assert.deepEqual(launchedResponse(success,'default'),{flowId:'4201a3',nativeSessionId:uuid,route:{session:'default',name:'child',pane:'w1:p4E',terminal:'term_123'},origin:{flowId:'42265e',sessionId:'caller-session'}});
+assert.equal(launchedResponse(success.replace('Flow.{ 42265e caller-session }','Unbound'),'default').origin,null);
+for (const wrong of [success.replace('Started','Launched'),success+' extra',success.replace('default','foreign'),'StartAmbiguous.{ ignored }','StartRejected.NativeLaunchRefused',success.slice(0,-1)]) assert.throws(()=>launchedResponse(wrong,'default'));
+assert.equal(launchedResponse(success.replace(uuid,'native.session'),'default').nativeSessionId,'native.session');
+assert.equal(launchedResponse(success.replace('w1:p4E','pane-anywhere'),'default').route.pane,'pane-anywhere');
+const unavailable=success.replace('Available.{ default child w1:p4E term_123 }','Unavailable');
+assert.equal(launchedResponse(unavailable,'default').flowId,'4201a3');
+assert.equal(launchedResponse(unavailable,'default').route,null);
+assert.equal(launchedResponse(success.replace(uuid,'«»'),'default').nativeSessionId,'');
+const rejectionUnits='CompositionRefused LaunchRequestConflict LaunchPersistenceRefused NativeLaunchRefused RegistrationRefused IntentPersistenceRefused OriginUnavailable AddressAwake AddressEnded'.split(' ');
+for(const reason of rejectionUnits) {
+ const decoded=decodeFlowResponse('StartRejected.'+reason,'default');
+ assert.equal(decoded.kind,'StartRejected');assert.equal(decoded.reason.atom,reason);
+}
+for(const [head,reasons] of Object.entries({ContextRefused:['ComposerUnavailable','ComposerRejected','MetaflowMismatch','PayloadMismatch','ModuleMissing','SystemTooLarge','ModuleTooLarge'],BindingRefused:['PaneMismatch','TerminalMismatch','HarnessMismatch','NotReady','ReservedIdentityMismatch','ClaimUnavailable','ObservationRefused','TransportRefused','Unclassified'],LeaveOutRefused:['Indispensable.ToolSearch','NeedsWorkflowLeftOut.SkillTool','NotForHarness.CodexAgentsMd']})) {
+ for(const reason of reasons) {
+  const text='StartRejected.'+head+'.'+reason;const decoded=decodeFlowResponse(text,'default');
+  assert.equal(decoded.reason.variant,head);assert.equal(decoded.wire,text);
+ }
+}
+assert.deepEqual(decodeFlowResponse('Refused.Locked','default').reason,{atom:'Locked'});
+let calls=[];
+const run=(bin,args,opts)=>{calls.push({bin,args,opts});return bin==='flow'?success:'Registered';};
+assert.equal(submitStart(profile,{run}).flowId,'4201a3');
+assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.deepEqual(calls[0].args,[q]);assert.deepEqual(calls[1].args,['4201a3','child','--session','default','--native-thread',uuid,'--aspect','Psyche','--topic','core','--layer','Tertiary']);
+calls=[];const noRoute=submitStart(profile,{run:bin=>{calls.push(bin);return unavailable;}});assert.equal(noRoute.flowId,'4201a3');assert.equal(noRoute.route,null);assert.deepEqual(calls,['flow']);
+calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);const error=Error('exit1');error.stdout='StartRejected.ContextRefused.SystemTooLarge';throw error;}}),/StartRejected.ContextRefused.SystemTooLarge/);assert.deepEqual(calls,['flow']);
+for (const reply of ['LaunchPending.{ unknown }','StartRejected.AddressAwake','StartAmbiguous.{ unknown }']) {calls=[];assert.throws(()=>submitStart(profile,{run:(bin,args)=>{calls.push(bin);return reply;}}));assert.deepEqual(calls,['flow']);}
+calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);throw Error('transport failed');}}),/inspect LaunchStatus/);assert.deepEqual(calls,['flow']);
+calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);if(bin==='flow')return success;throw Error('register failed');}}),/without starting another flow/);assert.deepEqual(calls,['flow','hm-register']);
+const workspace=fs.mkdtempSync(path.join(os.tmpdir(),'flow-adapter-'));try {
+ fs.mkdirSync(path.join(workspace,'flows','4201a3'),{recursive:true});
+ const brief=path.join(workspace,'task.txt'),meta=path.join(workspace,'declaration.edn');fs.writeFileSync(brief,'READ THIS TASK ONCE');fs.writeFileSync(meta,'{:aspect :Psyche :topic :core :layer :Tertiary}');
+ const config={shared:{'first-response-timeout-seconds':900,'first-prompt-template':'OUTSIDE CONTEXT MUST NOT BE USED'},aspects:[{aspect:'Psyche',harness:'claude',voices:[{layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium'}],modules:{system:['spirit-core','intent-psyche'],user:['compensation-main-flow']}}],metaflow:{metaflows:[{aspect:'Psyche',topic:'Core',layer:'Tertiary',modules:[], 'user-modules':[],'topic-context':'OUTSIDE CONTEXT MUST NOT BE USED'}]}};
+ const o=parseArgs(['--brief',brief,'--layer','Tertiary','--root','--metaflow',meta,'--workspace',workspace,'--topic','core','--launch-request-id','proof-1'],'claude');calls=[];
+ launchMain(o,'claude',{config,run:(bin,args)=>{calls.push({bin,args});return bin==='flow'?success:'registered';},log:()=>{}});
+ assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.match(calls[0].args[0],/Address\.\{ Psyche core Tertiary \}/);assert.match(calls[0].args[0],/READ THIS TASK ONCE/);assert.doesNotMatch(calls[0].args[0],/OUTSIDE CONTEXT/);
+ const continuation=JSON.parse(fs.readFileSync(path.join(workspace,'flows','4201a3','continuation.json')));assert.equal(continuation.topic,'core');assert.equal(continuation.nativeSessionId,uuid);
+ fs.unlinkSync(path.join(workspace,'flows','4201a3','continuation.json'));
+ fs.mkdirSync(path.join(workspace,'flows','abcdef'));
+ config.aspects[0].voices.push({layer:'Primary',model:'claude-fable-5-1',effort:'medium'},{layer:'Secondary',model:'claude-opus-5-5',effort:'medium'});
+ config.metaflow.metaflows.push({aspect:'Psyche',topic:'Core',layer:'Primary',modules:[]},{aspect:'Psyche',topic:'Core',layer:'Secondary',modules:[]});
+ calls=[];
+ launchMain({...o,layer:'Primary'},'claude',{config,run:(bin,args)=>{
+   calls.push({bin,args});
+   if(bin==='herdr')return JSON.stringify({result:{agents:[]}});
+   if(bin==='flow')return args[0].includes('core Secondary')?success.replace('4201a3 '+uuid,'abcdef '+uuid):success;
+   return 'registered';
+ },log:()=>{}});
+ assert.deepEqual(calls.map(c=>c.bin),['herdr','flow','hm-register','flow','hm-register']);
+ assert.match(calls[1].args[0],/proof-1-secondary/);
+ assert.match(calls[1].args[0],/core Secondary/);
+ assert.match(calls[3].args[0],/core Primary/);
+ assert.doesNotMatch(calls[1].args[0],/OUTSIDE CONTEXT/);
+ assert.throws(()=>parseArgs(['--brief',brief,'--layer','Tertiary','--root','--metaflow',meta,'--system-prompt-file',brief],'claude'),/unsupported/);
+} finally {fs.rmSync(workspace,{recursive:true,force:true});}
+console.log('Flow Start adapter request, identity, registration and failure checks passed');

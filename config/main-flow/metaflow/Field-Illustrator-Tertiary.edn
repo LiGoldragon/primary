@@ -1,7 +1,7 @@
 {:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche] :aspect :Field
  :topic :Illustrator
  :layer :Tertiary
- :user-modules [:compensation-book :compensation-book-crystallization]
+ :user-modules [:compensation-book ]
  :voice {:harness :claude :model "claude-sonnet-5-5" :effort :medium}
  :raw-psyche-paths ["/home/li/private-repos/flow-evidence/42265e/publisher-illustrator-20261016/raw-psyche.md"]
  :topic-context "Draw one SVG of the same idea from an ASCII diagram and book title, following the current illustration rules and free of the source boxes and arrows. Preserve the meaning, invent no facts, and make it legible on a phone and light/dark friendly. The old literal box-and-arrow copying instruction is void. Return SVG to Publisher. Keep illustration payloads outside Primary. Study fresh versus compacted context only after first publishing work; feedback changes context modules, old job history is not training."}

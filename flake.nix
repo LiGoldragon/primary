@@ -19,19 +19,19 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/af528cd2dc54d132bc559f96a6b82016bdabaebf";
+      url = "github:LiGoldragon/Curriculum/691852aa07cbfcd1f76dda61422ee73e080c5ebf";
       flake = false;
     };
     psyche-context = {
-      url = "github:LiGoldragon/psyche-context/8bf1b253cd543f9ebec4c41a26f65e3a4b862e4d";
+      url = "github:LiGoldragon/psyche-context/53f68b69c3f9a7628e804dcd69cb47cd5db9bb33";
       flake = false;
     };
     mind-context = {
-      url = "github:LiGoldragon/mind-context/bd5fd6c0e595aeccc6958cdad69f98adf85af657";
+      url = "github:LiGoldragon/mind-context/e3fcd4f36d4f75e8c546e5e9596f5a48a5d8592b";
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context/2eadadd796107388474d2b5ab1e9c97040c4e819";
+      url = "github:LiGoldragon/field-context/8fc10dfb006b1b0b8216492cce6ac1528793e357";
       flake = false;
     };
     flow = {
@@ -149,39 +149,9 @@
         let
           pkgs = import nixpkgs { inherit system; };
           runtime = curriculumRuntimeFor system;
-          wrappedRuntime =
-            appName: description: operation:
-            let
-              script = pkgs.writeShellApplication {
-                name = appName;
-                text = ''
-                  if [ "$#" -ne 0 ]; then
-                    echo "usage: ${appName}" >&2
-                    exit 2
-                  fi
-                  export CURRICULUM_ROLES_FILE="${curriculum}/roles.datom"
-                  export CURRICULUM_WORKSPACE="''${CURRICULUM_WORKSPACE:-$PWD}"
-                  exec "${runtime}/bin/curriculum" "${operation}"
-                '';
-              };
-            in
-            {
-              type = "app";
-              program = "${script}/bin/${appName}";
-              meta.description = description;
-            };
-
-          generateSkills =
-            wrappedRuntime "generate-skills" "Regenerate Curriculum skill and role projections"
-              "RebuildSkills";
-          checkSkills =
-            wrappedRuntime "check-skills" "Check Curriculum projections without writing"
-              "CheckSkills";
           messagingRuntime = messagingRuntimeFor system;
         in
         {
-          generate-skills = generateSkills;
-          check-skills = checkSkills;
           curriculum = {
             type = "app";
             program = "${runtime}/bin/curriculum";
@@ -197,7 +167,7 @@
             program = "${messagingRuntime}/bin/messenger-runtime";
             meta.description = "Run the durable typed messaging runtime";
           };
-          default = generateSkills;
+          default = { type = "app"; program = "${runtime}/bin/curriculum"; };
         }
       );
 
@@ -213,8 +183,8 @@
             filter = path: type: true;
           };
 
-          generatedSkillsCurrent =
-            pkgs.runCommand "primary-generated-skills-current"
+          contextCompositionCurrent =
+            pkgs.runCommand "primary-context-composition-current"
               {
                 nativeBuildInputs = [ pkgs.coreutils ];
               }
@@ -227,10 +197,13 @@
                 chmod -R u+rwX "$workspace"
                 export XDG_RUNTIME_DIR="$runtime_root"
                 export CURRICULUM_PSYCHES_REPOSITORY_DIR="${inputs."psyche-context"}"
-                export CURRICULUM_MIND_SKILLS_DIR="${inputs."mind-context"}/skills"
-                export CURRICULUM_FIELD_SKILLS_DIR="${inputs."field-context"}/skills"
+                export CURRICULUM_CONTEXT_LAYOUT=2
+                export CURRICULUM_PSYCHES_REVISION="${inputs."psyche-context".rev}"
+                export CURRICULUM_MIND_CONTEXT_DIR="${inputs."mind-context"}"
+                export CURRICULUM_MIND_REVISION="${inputs."mind-context".rev}"
+                export CURRICULUM_FIELD_CONTEXT_DIR="${inputs."field-context"}"
+                export CURRICULUM_FIELD_REVISION="${inputs."field-context".rev}"
                 export CURRICULUM_ROLES_FILE="${curriculum}/roles.datom"
-                export CURRICULUM_WORKSPACE="$workspace"
                 ${runtime}/bin/curriculum-nexus > "$TMPDIR/curriculum-nexus.log" 2>&1 &
                 nexus_pid=$!
                 trap 'kill "$nexus_pid" 2>/dev/null || true; wait "$nexus_pid" 2>/dev/null || true' EXIT
@@ -244,7 +217,11 @@
                   attempts=$((attempts + 1))
                   sleep 0.1
                 done
-                ${runtime}/bin/curriculum CheckSkills
+                query=$(${pkgs.babashka}/bin/bb -e '(require (quote [clojure.edn :as edn]) (quote [clojure.string :as str])) (let [m (:modules (edn/read-string (slurp (first *command-line-args*))))] (println (str "ComposeStartup.{ { Psyche core Secondary } Claude [ " (str/join " " (map name (:system m))) " ] [ " (str/join " " (map name (:user m))) " ] }")))' ${self}/config/main-flow/psyche.edn)
+                ${runtime}/bin/curriculum "$query" > "$TMPDIR/composed.datom"
+                grep -q '^StartupComposed' "$TMPDIR/composed.datom"
+                ${runtime}/bin/curriculum 'ComposeRole.{ illustrator ClaudeAgent }' > "$TMPDIR/role.datom"
+                grep -q '^RoleComposed' "$TMPDIR/role.datom"
                 touch "$out"
               '';
           bookPhoneCode = pkgs.runCommand "primary-book-phone-code" {
@@ -338,7 +315,10 @@
               '';
         in
         {
-          generated-skills-current = generatedSkillsCurrent;
+          direct-start-adapter = pkgs.runCommand "primary-direct-start-adapter" { nativeBuildInputs = [ pkgs.nodejs ]; } ''
+            node --test ${self}/tools/claude-main-flow-launch.test.mjs ${self}/tools/codex-main-flow-launch.test.mjs ${self}/tools/flow-start-adapter.test.mjs > "$out"
+          '';
+          context-composition-current = contextCompositionCurrent;
           book-publication-fixtures = bookPublicationFixtures;
           book-phone-code = bookPhoneCode;
           prompt-relay-fixtures = promptRelayFixtures;
@@ -348,7 +328,7 @@
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
           messaging-fixtures = messagingFixtures;
-          default = generatedSkillsCurrent;
+          default = contextCompositionCurrent;
         }
       );
     };
