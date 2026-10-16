@@ -58,3 +58,5 @@ Mind's second type is inquiry: it holds what is unclear, and what an audit finds
 Knowledge modules are audited from time to time for truth and currency against practice; a variation found goes to the type that holds what is unclear.
 
 A subject the living reviews or asks about has a module, on its topic or a broader one, with room to hold it.
+
+A module declares its placement: the system prompt, or loaded on demand. A skill is the harness's interface for an on-demand module.
