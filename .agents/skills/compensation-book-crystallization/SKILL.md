@@ -20,3 +20,5 @@ A proposed statement is drawn from the living's records read whole, with their e
 A proposal to destroy or archive a record renders unmistakably apart from a landing: its own colour and a Destroy or Archive mark on the record it removes.
 
 Before publishing, reconcile the relevant current direction and exclude what the living has voided. A new edition carries only what is unruled or changed since the living last read it; what he approved is landed, not shown again.
+
+When the living's comments leave a topic open, a new book follows with the adaptation, or the inquiry, knowledge or compensation review it needs.
