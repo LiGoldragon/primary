@@ -9,5 +9,3 @@ Realization brings design into reality and proves it there.
 
 Realize only what the round rules. What reality reveals beyond it
 returns to design; it does not become architecture on its own.
-
-Builds go to a remote builder first.
