@@ -1,41 +1,37 @@
 import fs from "node:fs";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+// A proposal names its location in its heading: "Proposal N: <repo> › <path>",
+// optionally after a title and " · ", optionally ending ", a new file".
+const located = /^Proposal \d+: (?:.+ · )?[^\s›·]+ › [^\s,]+(?:, a new file)?$/;
+const change = (line) => /^\+ \S/.test(line) || /^\*\*(?:Archive|Destroy)\*\*/.test(line);
+
 // This checks source structure, not the merits of a proposed crystallization.
-export function checkBook(source, { allowLegacyDistillation = false } = {}) {
+export function checkBook(source) {
   const errors = [];
   const lines = source.replace(/\r\n/g, "\n").split("\n");
-  let fence = null, section = null;
-  let inComment = false;
-  let fileSeen = false, proposed = false;
-  const track = (line) => {
-    if (/^File: \S/.test(line)) fileSeen = true;
-    if (fileSeen && /^\+ \S/.test(line)) proposed = true;
-  };
+  let fence = null, section = null, inComment = false, proposals = 0;
   const finish = () => {
-    if (section) {
-      if (!section.content) errors.push({ line: section.line, reason: "empty-crystallization" });
-      if (!section.legacy && !section.target) errors.push({ line: section.line, reason: "no-target-file" });
-      if (!section.legacy && !section.added) errors.push({ line: section.line, reason: "no-added-line" });
-    }
+    if (section && !section.changed) errors.push({ line: section.line, reason: "no-change-in-proposal" });
     section = null;
+  };
+  const body = (line, number) => {
+    // The location lives in the heading; a File: line in the body is the retired form.
+    if (/^File:/.test(line)) errors.push({ line: number, reason: "file-line-in-body" });
+    if (section && change(line)) section.changed = true;
   };
   lines.forEach((line, i) => {
     const number = i + 1;
     if (fence) {
       if (new RegExp(`^ {0,3}${fence.char}{${fence.size},}\\s*$`).test(line)) {
         fence = null;
-      } else {
+      } else if (fence.code) {
         // A removed line is quoted as it is; the width limit binds proposed code only.
-        if (fence.code && !line.startsWith("- ") && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
-        track(line);
-        if (section && line.trim()) {
-          section.content = true;
-          if (/^File: \S/.test(line)) section.target = true;
-          if (/^\+ \S/.test(line)) section.added = true;
-        }
+        if (!line.startsWith("- ") && [...line].length > 52) errors.push({ line: number, reason: "code-over-52-columns" });
+        if (section && /^\+ \S/.test(line)) section.changed = true;
+      } else {
+        body(line, number);
       }
       return;
     }
@@ -57,25 +53,22 @@ export function checkBook(source, { allowLegacyDistillation = false } = {}) {
     const heading = line.match(/^ {0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (heading) {
       if (section && heading[1].length <= section.level) finish();
-      if (/^(?:\d+[.)]\s+)?crystallization\b/i.test(heading[2]) ||
-          (allowLegacyDistillation && /^(?:\d+[.)]\s+)?distillation\b/i.test(heading[2]))) {
+      if (/^Proposal\b/i.test(heading[2])) {
         finish();
-        section = { line: number, level: heading[1].length, content: false, target: false, added: false, legacy: /distillation\b/i.test(heading[2]) };
+        if (located.test(heading[2])) {
+          proposals++;
+          section = { line: number, level: heading[1].length, changed: false };
+        } else errors.push({ line: number, reason: "proposal-heading-without-location" });
       }
       return;
     }
     if (/^ {0,3}>/.test(line)) errors.push({ line: number, reason: "quote-block-in-book" });
-    track(line);
-    if (section && line.trim() && !/^Presentation\./.test(line)) {
-      section.content = true;
-      if (/^File: \S/.test(line)) section.target = true;
-      if (/^\+ \S/.test(line)) section.added = true;
-    }
+    body(line, number);
   });
   finish();
-  if (!proposed) errors.push({ line: 1, reason: "missing-proposal" });
+  if (!proposals) errors.push({ line: 1, reason: "missing-proposal" });
   if (fence) errors.push({ line: fence.line, reason: "unclosed-code-fence" });
-  return errors;
+  return errors.sort((a, b) => a.line - b.line);
 }
 
 export function main(args) {
@@ -86,10 +79,7 @@ export function main(args) {
   let source;
   try { source = fs.readFileSync(args[0], "utf8"); }
   catch { console.error(JSON.stringify({ errors: [{ reason: "source-unreadable" }] })); return 2; }
-  // Historical tracked sources may retain their original section name. New sources use Crystallization.
-  const prior = spawnSync("git", ["-C", path.dirname(args[0]), "show", `HEAD:./${path.basename(args[0])}`], { encoding: "utf8" });
-  const allowLegacyDistillation = prior.status === 0 && /^ {0,3}#{1,6}\s+(?:\d+[.)]\s+)?Distillation\b/im.test(prior.stdout);
-  const errors = checkBook(source, { allowLegacyDistillation });
+  const errors = checkBook(source);
   if (errors.length) { console.error(JSON.stringify({ errors })); return 1; }
   console.log(JSON.stringify({ checked: true, source: args[0] }));
   return 0;
