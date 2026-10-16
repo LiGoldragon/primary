@@ -102,6 +102,20 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
 .diff .add{color:var(--add-edge);background:var(--hl-add)}
 .del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
 .ctx pre{padding-inline:12px}
 .diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 

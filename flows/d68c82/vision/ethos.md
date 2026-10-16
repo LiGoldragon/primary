@@ -79,3 +79,15 @@ Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 
 > This syntax is wrong because these should be variants so they should be capitalized and never show a [datom] without its ethos specification, which can just use the prefix `type`, right? We can create an inline syntax for an ethos object and an example of it, or more than one example of it.
 
 -- psyche, STT. Transcription corrected: "datum" → "datom".
+
+## White square brackets as sugar; layers; traits as capabilities
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery drain in sleep», Proposal 1.
+
+> I actually want long-term marked ethos. I also want a review that I want to add: the different kind of square bracket. There's another pair. I think it's called a white square bracket. I want to use that as sugar in ethos, as a special syntax at the right layer of interpretation, because we have different layers.
+>
+> I want to review all the layers and all the changes that we've made on ethos, and which layer they're at. I also want to review the concept of traits and how we need to design traits so that we can implement a state where all the traits in the program have to be declared in ethos. Also, all of the implementations have to use one of those traits, so that we can then see the behavior part of everything in terms of the signature and what everything is called: the anatomy of how we think of every feature.
+>
+> Every feature is a [capability], a capability, which is borne by a certain trait, and we need to learn how to name traits. We need to put together the best understanding of the ontology of giving trait names to things and how we want to do it: describe it as a capability, as a feature that a certain type of object has.
+
+-- psyche, STT. Transcription corrected: "capa" → "capability".

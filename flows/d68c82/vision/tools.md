@@ -16,3 +16,11 @@
 > Anything that can be abstracted so that it's reused. If we see a use case repeat itself, then we should try to adapt whatever tool we already have to become more capable and broad. If we're in Clojure we use an EDN payload for everything and if we're in Nexus we use a datom.
 
 -- psyche, STT.
+
+## The Mind tool keeps track of issues
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery drain in sleep», Proposal 1.
+
+> In terms of the proposal itself, I think we need to have a context module. Maybe it's not a context module, but it's the mind tool properly done. The mind tool also keeps track of issues, and they're becoming injectable as user messages. Let's put together a mind prototype.
+
+-- psyche, STT.

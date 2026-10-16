@@ -846,34 +846,61 @@
                    "</tr>"))]
     (str "<table><thead>" (row "th" head) "</thead><tbody>" (apply str (map #(row "td" %) rows)) "</tbody></table>")))
 
+(def ^:private bullet-re #"^(?:[-*] |\d+\. )")
+
+(defn fence-open
+  "The language of a code fence opening line, or nil."
+  [l]
+  (some-> (re-find #"^```(\w*)\s*$" l) second))
+
 (defn split-chunk
-  "A chunk may open with front matter or a heading, kept as text; a table
-  stands as a table."
+  "A chunk's bodies, each [kind body]: :fm (front matter lines between two ---
+  rules, only at the chunk's head), :heading, :list (lines), :code (lang and
+  lines), :table, and :p (a paragraph)."
   [content]
   (let [content (vec content)
         n (count content)
-        rule? #(= "---" (rstrip (content %)))]
+        rule? #(= "---" (rstrip (content %)))
+        stop? (fn [j] (let [l (content j)]
+                        (or (str/starts-with? l "#") (fence-open l)
+                            (re-find bullet-re l) (table-at? content j))))]
     (loop [i 0 bodies []]
       (if (>= i n)
         bodies
         (let [l (content i)]
           (cond
-            (rule? i)
-            (let [j (loop [j (inc i)] (if (and (< j n) (not (rule? j))) (recur (inc j)) j))]
-              (recur (inc j) (conj bodies [:text (str/join "\n" (subvec content i (min n (inc j))))])))
+            (and (zero? i) (rule? i)
+                 (some #(rule? %) (range 1 n)))
+            (let [j (first (filter #(rule? %) (range 1 n)))]
+              (recur (inc j) (conj bodies [:fm (subvec content (inc i) j)])))
 
-            (str/starts-with? l "#")
-            (recur (inc i) (conj bodies [:text l]))
+            (re-find #"^#{1,6} " l)
+            (recur (inc i) (conj bodies [:heading l]))
+
+            (fence-open l)
+            (let [j (loop [j (inc i)] (if (and (< j n) (not= "```" (rstrip (content j)))) (recur (inc j)) j))]
+              (recur (inc j) (conj bodies [:code [(fence-open l) (subvec content (inc i) (min n j))]])))
+
+            (re-find bullet-re l)
+            (let [j (loop [j (inc i)]
+                      (if (and (< j n) (not (str/starts-with? (content j) "#"))
+                               (not (fence-open (content j))))
+                        (recur (inc j)) j))
+                  items (reduce (fn [items x]
+                                  (if (re-find bullet-re x)
+                                    (conj items [(second (re-find #"^([-*]|\d+\.) " x))
+                                                 (str/replace x bullet-re "")])
+                                    (update-in items [(dec (count items)) 1] str " " (strip x))))
+                                [] (subvec content i j))]
+              (recur j (conj bodies [:list items])))
 
             (table-at? content i)
             (let [j (table-end content i)]
               (recur j (conj bodies [:table (subvec content i j)])))
 
             :else
-            (let [j (loop [j i]
-                      (if (and (< j n) (not (str/starts-with? (content j) "#")) (not (rule? j))
-                               (not (table-at? content j)))
-                        (recur (inc j)) j))]
+            (let [j (loop [j (inc i)]
+                      (if (and (< j n) (not (stop? j))) (recur (inc j)) j))]
               (recur j (conj bodies [:p (join-lines (subvec content i j))])))))))))
 
 (defn tokens
@@ -955,26 +982,51 @@
                      (when (seq y) (str "<ins>" (fmt (str/join y)) "</ins>"))))))
        str/join))
 
-(defn paired-body
-  "A removed and an added body, one text; nil when their kinds differ."
-  [[kind-a a] [kind-b b]]
-  (when (and (= kind-a kind-b) (not= kind-a :table))
-    (if (= kind-a :text)
-      (let [la (vec (str/split a #"\n" -1)) lb (vec (str/split b #"\n" -1))
-            rows (for [i (range (max (count la) (count lb)))
-                       :let [x (get la i) y (get lb i)]]
-                   (cond
-                     (and x y) (marked x y esc)
-                     x (str "<del>" (esc x) "</del>")
-                     :else (str "<ins>" (esc y) "</ins>")))]
-        (str "<div class=\"textblock\">" (str/join "\n" rows) "</div>"))
-      (str "<p>" (marked a b inline) "</p>"))))
+(defn- fm-card
+  "Front matter lines as a small labelled card: no YAML syntax, one term per key."
+  [lines]
+  (let [value (fn [v]
+                (let [v (strip v)]
+                  (cond (= "[]" v) "none"
+                        (and (str/starts-with? v "[") (str/ends-with? v "]"))
+                        (str/join ", " (map strip (str/split (subs v 1 (dec (count v))) #",")))
+                        :else v)))
+        rows (for [l lines :when (not (blank? l))]
+               (if-let [m (re-find #"^([A-Za-z][\w-]*):\s*(.*)$" l)]
+                 (str "<dt>" (esc (str/capitalize (str/replace (m 1) "-" " "))) "</dt><dd>" (inline (value (m 2))) "</dd>")
+                 (str "<dd>" (inline l) "</dd>")))]
+    (str "<div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl>" (apply str rows) "</dl></div>")))
 
-(defn panel [sign [kind text]]
-  (let [inner (case kind
-                :text (str "<div class=\"textblock\">" (esc text) "</div>")
-                :table (table-html text)
-                (str "<p>" (inline text) "</p>"))]
+(defn- heading-html [l fmt]
+  (let [[_ hashes t] (re-find #"^(#{1,6}) (.*)$" l)
+        lvl (min 6 (+ 2 (count hashes)))]
+    (str "<h" lvl ">" (fmt t) "</h" lvl ">")))
+
+(defn body-html
+  "One body of a chunk as formatted HTML."
+  [[kind body]]
+  (case kind
+    :fm (fm-card body)
+    :heading (heading-html body inline)
+    :list (let [tag (if (re-find #"^\d" (ffirst body)) "ol" "ul")]
+            (str "<" tag ">" (apply str (map (fn [[_ t]] (str "<li>" (inline t) "</li>")) body)) "</" tag ">"))
+    :code (str "<pre><code class=\"language-" (get langs (first body) (if (= "" (first body)) "text" (first body))) "\">"
+               (esc (str/join "\n" (second body))) "</code></pre>")
+    :table (table-html body)
+    (str "<p>" (inline body) "</p>")))
+
+(defn paired-body
+  "A removed and an added body, one text; nil unless both are paragraphs or headings."
+  [[kind-a a] [kind-b b]]
+  (when (= kind-a kind-b)
+    (case kind-a
+      :p (str "<p>" (marked a b inline) "</p>")
+      :heading (let [[_ ha ta] (re-find #"^(#{1,6}) (.*)$" a) [_ hb tb] (re-find #"^(#{1,6}) (.*)$" b)]
+                 (when (= ha hb) (heading-html (str ha " " (marked ta tb inline)) identity)))
+      nil)))
+
+(defn panel [sign body]
+  (let [inner (body-html body)]
     (case sign
       "+" (str "<div class=\"add\"><ins>" inner "</ins></div>")
       "-" (str "<div class=\"del\"><del>" inner "</del></div>")
@@ -1019,6 +1071,11 @@
                            :else (str "<ins>" (esc a) "</ins>")))]
               (recur (vec r2) (into out rows)))))))))
 
+(defn- in-fence?
+  "The chunk has an open code fence: a fence line without its closing one."
+  [[_ content]]
+  (odd? (count (filter #(re-find #"^```" %) content))))
+
 (defn text-panels
   "A fenced text block: sign-prefixed lines into stacked panels, and its
   figures drawn w wide."
@@ -1035,6 +1092,7 @@
                         sketch (if signed content raw)
                         lst (peek chunks)]
                     (cond
+                      (and lst (= (first lst) sign) (in-fence? lst)) (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
                       (blank? content) (conj chunks nil)
                       (and lst (= (first lst) sign)) (conj (pop chunks) (-> lst (update 1 conj content) (update 2 conj sketch)))
                       :else (conj chunks [sign [content] [sketch]]))))
@@ -1073,6 +1131,17 @@
       [[:para (subvec para 0 k)] [:para (subvec para k)]]
       [[:para para]])))
 
+(defn diff-para?
+  "A paragraph written as a change: every line opens with + or - and a space (or
+  is that sign alone), and it adds a line or removes a front-matter rule."
+  [para]
+  (let [signed (fn [l] (or (#{"+" "-"} l) (re-find #"^[-+] " l)))]
+    (boolean (and (seq para) (every? signed para)
+                  (some #(or (str/starts-with? % "+") (= "- ---" (rstrip %))) para)))))
+
+(defn flush-para [para]
+  (if (diff-para? para) [[:fence "text" para]] (split-para para)))
+
 (defn blocks
   "Split the source into blocks: [:fence lang lines] or [:para lines]."
   [src]
@@ -1082,15 +1151,15 @@
         fence-close #"(?U)^```\s*$"]
     (loop [i 0 out [] para []]
       (if (>= i n)
-        (cond-> out (seq para) (into (split-para para)))
+        (cond-> out (seq para) (into (flush-para para)))
         (let [l (lines i)]
           (if-let [m (re-find #"(?U)^```(\w*)\s*$" l)]
-            (let [out (cond-> out (seq para) (conj [:para para]))
+            (let [out (cond-> out (seq para) (into (flush-para para)))
                   lang (if (= "" (m 1)) "text" (m 1))
                   j (loop [j (inc i)] (if (and (< j n) (not (re-find fence-close (lines j)))) (recur (inc j)) j))]
               (recur (inc j) (conj out [:fence lang (subvec lines (inc i) (min n j))]) []))
             (cond
-              (blank? l) (recur (inc i) (cond-> out (seq para) (into (split-para para))) [])
+              (blank? l) (recur (inc i) (cond-> out (seq para) (into (flush-para para))) [])
               (re-find skip l) (recur (inc i) out para)
               :else (recur (inc i) out (conj para l)))))))))
 
@@ -1191,8 +1260,7 @@
                 (emit (file-line lines)))
 
             (some #(table-at? (vec lines) %) (range (count lines)))
-            (emit (apply str (map (fn [[kind body]] (if (= kind :table) (table-html body) (str "<p>" (inline body) "</p>")))
-                                  (split-chunk lines))))
+            (emit (apply str (map body-html (split-chunk lines))))
 
             :else
             (if-let [m (re-find #"^\*\*(Destroy|Archive)\*\*(?U)\s*(.*)$" text)]

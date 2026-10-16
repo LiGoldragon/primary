@@ -181,3 +181,13 @@ Said to Psyche Core Secondary directly, 2026-10-15.
 > I need new books made when the comments dont finalize the topic. adaptations and or inquiry/knowledge/compensation review
 
 -- psyche, typed.
+
+## A proposal is rendered, never shown as Markdown
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery drain in sleep», Proposal 1, a new module shown as a Markdown code block.
+
+> You're showing me Markdown. The whole point of using a web user interface is to render the data more beautifully, so using a Markdown code block in a rendered web page is completely incorrect. The Markdown change proposal is just shown as properly rendered on the web, right? Even the front matter can be shown nicely. I don't care that it's YAML, and I don't even need to know, right? Just rendering this in a nice user interface. Everything is rendered nicely, basically.
+>
+> We could even find maybe a nice web library or tool to show code changes more beautifully. I don't know. I'm sure somebody has tried some stuff. We could look into it. I don't want to push too hard on this, but the Markdown thing is obvious.
+
+-- psyche, STT.

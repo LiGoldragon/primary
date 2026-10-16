@@ -1478,3 +1478,16 @@ Three shared app-servers 2.8 / 1.0 / 0.25 GiB; active seats 42265e 2.1, 41fa34 (
 The survey compared against stale shared checkouts (Curriculum HEAD 73414b6, Mind HEAD 344f6c), not the immutable pins the generation read. False claims retracted: "uncommitted Curriculum code deployed" and "generated tree mismatches sources". The Context modules book carried the first; corrected in place (no comments on it yet). Cause: no loaded module says a survey of deployed context reads the pinned sources; line sent to Field. Remaining: Home's default resolver still pins an older Field cohort; Field owns re-pinning.
 
 ## 2026-10-16 — Context modules book corrected in place (v2): the vision-folder reader is in production.
+
+## 2026-10-16 — 89fbc1 committed the corrected book and log as 8fd900.
+
+## 2026-10-16 — Comments on «Battery drain in sleep» (via Tertiary)
+Orders: render Markdown proposals as web, look for a code-change display library; a Mind prototype (the Mind tool tracking issues); no Fable ("Don't work with Fable"); a survey of harnesses at peak, now, and realistic capacity, and a plan for which flow and topic to refresh; MVP Flow; Chronos marked glanced and for a prototype, built by Mind with Astra; a new edition with his recent comments and other Ethos designs, long term marked; an Ethos review: white square brackets as sugar, all layers and changes by layer, traits all declared in Ethos, features as capabilities, trait naming; the battery book is an issue, not knowledge: one hardware module for now with a size warning; Field to make the fix a testable goal, or a hardware-keyed variable in cluster data with a lookup library; a small Opus report on Signal versus other chats with good bridges. Vision logged in books, tools, mind, ethos, context-modules, criomos. Fault: the builder showed a new Markdown module as a code block.
+
+## 2026-10-16 — Opus report on Signal vs other chats returned (web, untested): best fit for self-hosted security plus interface is Matrix with Element, bot as an encrypted Matrix client, mautrix-signal to bridge Signal; Telegram has the richest bots but no E2E for bots; Signal has no official bot API.
+
+## 2026-10-16 — Mind Prototyping Secondary accepted Chronos MVP then Ethos review, no Fable; asked Field for a fresh Chronos Astra lane under 128k rather than reuse 5b9075 (which keeps the Clojure context); Ethos review in its own fresh context.
+
+## 2026-10-16 — book-build renders Markdown module proposals as web (front matter card, headings, lists; added green, removed red); 14 tests pass; the commented battery book stays unchanged, the next edition uses it. To 89fbc1.
+
+## 2026-10-16 — Mind Prototyping: Chronos repo clean at 500094, astronomy in src/sky.rs still todo!, no Chronos process; not ready for use. Fresh Astra lane awaited from Field. Clojure freeze returned and being verified for Field.

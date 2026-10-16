@@ -208,3 +208,19 @@ Said to Psyche Core Secondary directly, 2026-10-15, asking for a book on the mod
 > I want to make sure these are all skills, and we don't need any directory called skill. Actually, they're not necessarily all skills because some of them are only for system prompts, but maybe we're not loading system prompts yet, so we're still using skills. I don't know.
 
 -- psyche, STT.
+
+## One hardware module for now; modules visible only to some flows, long term
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery drain in sleep», the whole book.
+
+> This object is not really knowledge. It's an issue, and there is some knowledge in here. We could make some knowledge out of it, but we don't want to blow out this skill ladder too much. ...
+>
+> Eventually, each harness will have a different set of skills that are visible to it because it doesn't need all of them. We will be able to do that and make context modules. Essentially, use them more heavily. ...
+>
+> If we cover all the hardware, it would grow into a really big registry of hardware skills, which is kind of what this is.
+>
+> It should be an optional skill, only visible to certain flows, which we don't really have the capability to do. Let's mark that as a long-term vision. For now, we can hold together a hardware skill that will essentially just be a short-term solution for us until we have a proper way, because not everybody's going to have the same hardware.
+>
+> For now, we could mark this more like: just make it one hardware skill, and when it grows above a certain size, we need to get a warning through a book or something. We need to get a better way for the machine to reach the living.
+
+-- psyche, STT.
