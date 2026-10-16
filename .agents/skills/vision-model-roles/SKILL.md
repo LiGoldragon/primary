@@ -49,21 +49,16 @@ title names the layer, never the model.
 
 Horizontal communication joins aspects at the same layer.
 Vertical communication stays within one aspect and normally advances one layer
-at a time. If the adjacent layer is absent or unavailable, routing advances to
-the next running layer in that direction, so a Tertiary may reach the Primary
-when the Secondary is not running. The missing layer is reported as a gap; it
-does not make the message disappear.
+at a time.
 
 Aspect, topic, layer, exact model identifier, Flow ID, and native binding
 remain separate typed facts. The title grants none of the identity,
 authority, availability, or routing those facts establish.
 
 Horizontal routing selects the unique eligible cell in the target aspect at
-the sender's layer. Vertical routing selects the nearest eligible
-layer in the requested direction within the same aspect. Busy is still
-eligible. Missing or unavailable needs fresh lifecycle and route evidence.
-Multiple bindings for one cell are an unresolved conflict, never fanout. No
-eligible cell yields an explicit undeliverable result. Resolve the binding
-immediately before each attempt. A fallback has succeeded only when the exact
-recipient accepts it; an ambiguous attempt remains attached to that recipient
-and is reconciled instead of being resent to another layer.
+the sender's layer.
+Busy is still
+eligible.
+Multiple bindings for one cell are an unresolved conflict, never fanout.
+Resolve the binding
+immediately before each attempt.

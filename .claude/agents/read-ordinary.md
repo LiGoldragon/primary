@@ -256,6 +256,10 @@ Vision is the psyche's; a crystallized statement never says so of itself.
 
 A book is a proposal into context modules, and the whole of it is its crystallization: a line removed shows in red, a line added in green, and a figure in it is a figure proposed for a module.
 
+A book carries the proposals; it shows no verbatim quote, and the records it draws from are not shown.
+
+The records a proposal draws from live in an unrendered reference file, one per book, in a references/ directory beside the books; they are archived with the landing when some or all of the proposal is accepted.
+
 The first edition of a book is mostly questions.
 
 The book is the center of development: it is the evolution of an idea, and the list of unknowns lives in it.
@@ -426,24 +430,19 @@ title names the layer, never the model.
 
 Horizontal communication joins aspects at the same layer.
 Vertical communication stays within one aspect and normally advances one layer
-at a time. If the adjacent layer is absent or unavailable, routing advances to
-the next running layer in that direction, so a Tertiary may reach the Primary
-when the Secondary is not running. The missing layer is reported as a gap; it
-does not make the message disappear.
+at a time.
 
 Aspect, topic, layer, exact model identifier, Flow ID, and native binding
 remain separate typed facts. The title grants none of the identity,
 authority, availability, or routing those facts establish.
 
 Horizontal routing selects the unique eligible cell in the target aspect at
-the sender's layer. Vertical routing selects the nearest eligible
-layer in the requested direction within the same aspect. Busy is still
-eligible. Missing or unavailable needs fresh lifecycle and route evidence.
-Multiple bindings for one cell are an unresolved conflict, never fanout. No
-eligible cell yields an explicit undeliverable result. Resolve the binding
-immediately before each attempt. A fallback has succeeded only when the exact
-recipient accepts it; an ambiguous attempt remains attached to that recipient
-and is reconciled instead of being resent to another layer.
+the sender's layer.
+Busy is still
+eligible.
+Multiple bindings for one cell are an unresolved conflict, never fanout.
+Resolve the binding
+immediately before each attempt.
 
 
 Launch a subflow through the harness's own flow mechanism. Do not

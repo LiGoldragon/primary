@@ -138,17 +138,17 @@
     "psyche-context": {
       "flake": false,
       "locked": {
-        "lastModified": 1791991553,
-        "narHash": "sha256-Yd1McKNyEVvZV8BugbCxXDBTen3sOTxAc29+HrYchBQ=",
+        "lastModified": 1792108699,
+        "narHash": "sha256-R/HLpMfN6en3zJI0kUEiaVfFKMfhK6HTKNQXaGIAJSE=",
         "owner": "LiGoldragon",
         "repo": "psyche-context",
-        "rev": "67d358d7bb86b7442d8bd8216789dc7bfd77fbef",
+        "rev": "2faca021baec0f6ad72dd3b6ed3ae51bd904e717",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "psyche-context",
-        "rev": "67d358d7bb86b7442d8bd8216789dc7bfd77fbef",
+        "rev": "2faca021baec0f6ad72dd3b6ed3ae51bd904e717",
         "type": "github"
       }
     },
