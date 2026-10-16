@@ -1491,3 +1491,29 @@ Orders: render Markdown proposals as web, look for a code-change display library
 ## 2026-10-16 — book-build renders Markdown module proposals as web (front matter card, headings, lists; added green, removed red); 14 tests pass; the commented battery book stays unchanged, the next edition uses it. To 89fbc1.
 
 ## 2026-10-16 — Mind Prototyping: Chronos repo clean at 500094, astronomy in src/sky.rs still todo!, no Chronos process; not ready for use. Fresh Astra lane awaited from Field. Clojure freeze returned and being verified for Field.
+
+## 2026-10-16 — 89fbc1 committed the builder web rendering and records as a865c3.
+
+## 2026-10-16 — Harness survey returned (Ouranos: 30.8 GiB, Core Ultra 5 125U)
+Peak (lower bounds): Claude Code 12 at once (10-03), Codex 10 (10-07). Now: 10 Claude Code (2.6 GB resident), 3 Codex app-servers (4.0 GB swap, 15-day-old one 2.8), 9 Codex clients (9 GB swap; grows with age, ~2 GB at 13 days), Claude Desktop 0.9, Wispr 0.4, Chrome. Memory pressure low, 20 GB free. Capacity (inferred): ~30 Claude Code, ~15 Codex if restarted weekly. Disk is the bottleneck: IO pressure 72% some / 60–65% full, NVMe 80% busy; top reader a nix profile add for Field's deploy; the writer unnamed (likely nix-daemon). Plan put to the living: refresh old Codex seats; the Mind tool prototype on a fresh Mind Tools pair.
+
+## 2026-10-16 — Field: pinned-source survey rule landed in compensation-skill-designing (field a91644), publication with 89fbc1. Flow 0.28 replaces unactivated 0.27. Sleep design from Mind: reuse the model classification and a chip/model/variant cluster row, exact PCI match, Ethernet wake and WOL off by event; can likely apply while running; not yet applied or measured.
+
+## 2026-10-16 — Sleep fix owners agreed: Mind Core Primary authors the Horizon hardware identity and the Goldragon policy row; Field authors the CriomOS lookup, exact-device wake/WOL policy, checks and activation. Device 8086:550b (subsystem 17aa:2327) at 00:1f.6, model ThinkPad T14 Gen 5 Intel (DMI 21MLS18Y00); no wildcard match; no GPE mask initially; applies while running.
+
+## 2026-10-16 — Field re-pinned the default resolver (Home e5acf7; Primary 62aed8, Curriculum 7c638e, Psyche 67d358d, Mind bd5fd6c, Field a91644); activation pending. Psyche still at 67d358d, missing this seat's landings through 2faca02; asked Field to advance it.
+
+## 2026-10-16 — Psyche pin advanced to psyche-context 2faca02; regenerated (133 modules), 46-path packet with 89fbc1; final Home pin and activation pending.
+
+## 2026-10-16 — Rulings on «Context modules» (via Tertiary)
+P2 "This is good. Land it." — landing dispatched. P1 and P3 amended in his words (folder by type for now, Datom data with hash-locked paths long term; reviewed modules deploy as published, a psyche module needs approval); second edition composed.
+
+## 2026-10-16 — Landed: vision-context-modules, a module declares its placement (psyche-context e1a300e). Field told to carry it in the pending pin.
+
+## 2026-10-16 — Context modules ed. 2 published (DRoRjC4NqtFGw69S1ZyZ7e), replaces ed. 1 in Open books; local index being synced to the live one.
+
+## 2026-10-16 — Local index synced with the live Open books (empty diff). To 89fbc1.
+
+## 2026-10-16 — Field: Psyche pin e1a300e included, regenerated, Primary 8d8026 published; final Home pin and activation in preparation.
+
+## 2026-10-16 — index.html cleaned to source (host wrapper and highlight runtime removed; one-line diff). Cause: a live page read back from the host was copied over the source. Line sent to Field. Paths back to 89fbc1.

@@ -224,3 +224,21 @@ Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery d
 > For now, we could mark this more like: just make it one hardware skill, and when it grows above a certain size, we need to get a warning through a book or something. We need to get a better way for the machine to reach the living.
 
 -- psyche, STT.
+
+## Modules as Datom data, files locked by hash, long term
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Context modules: folders, types, placement», Proposal 1, the folder-by-type figure.
+
+> Well, yeah, we could say that a [folder] names its types for now, but long term, we want to make it so we can keep it that way if we still need to have files. Eventually, we want to go through pure data so that this will all be put together with Datom data, which might reference file paths with a hash, I guess, when they're locked. Without a hash in development, like now, when we're prototyping, we just use local paths, but eventually we can start locking those, so long term ...
+
+-- psyche, typed. Transcription corrected: "photo" → "folder".
+
+## Reviewed modules deploy as published; a psyche module waits for approval
+
+Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Context modules: folders, types, placement», Proposal 3.
+
+> It's better to say that these are deployed as they're published because it's just parallel. It's not a dependency.
+
+> Whereas a psyche module Requires approval before it can land
+
+-- psyche, typed.
