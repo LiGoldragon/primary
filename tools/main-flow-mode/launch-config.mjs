@@ -43,7 +43,14 @@ export function validateLaunchConfig({shared, aspects, metaflow}) {
     for (const placement of PLACEMENTS) { list(config.modules?.[placement], `${config.aspect}.modules.${placement}`); unique(config.modules[placement].map(module => module.name ?? module), `${config.aspect}.modules.${placement}`); }
   }
   if (found.size !== ASPECTS.length * LAYERS.length) throw new Error('every aspect and layer needs exactly one voice');
-  for (const row of list(metaflow?.metaflows, 'metaflows')) { exact(row.aspect, new Set(ASPECTS), 'metaflow aspect'); exact(row.layer, new Set(LAYERS), 'metaflow layer'); if (!row.topic) throw new Error('metaflow topic is required'); unique(row.modules ?? [], `metaflow ${row.aspect}.${row.layer}.modules`); }
+  for (const row of list(metaflow?.metaflows, 'metaflows')) { exact(row.aspect, new Set(ASPECTS), 'metaflow aspect'); exact(row.layer, new Set(LAYERS), 'metaflow layer'); if (!row.topic) throw new Error('metaflow topic is required'); unique(row.modules ?? [], `metaflow ${row.aspect}.${row.layer}.modules`);
+    if (row.voice !== undefined) {
+      exact(row.voice.harness, HARNESS, 'metaflow voice harness');
+      exact(row.voice.effort, new Set(EFFORTS), 'metaflow voice effort');
+      if (!MODELS.has(row.voice.model) || (row.voice.harness === 'claude') !== row.voice.model.startsWith('claude-')) throw new Error('metaflow voice model must match its harness');
+    }
+  }
+  unique(metaflow.metaflows.map(row => `${row.aspect}.${row.topic}.${row.layer}`), 'metaflow identities');
   return true;
 }
 
@@ -60,10 +67,11 @@ export function loadLaunchConfig(root = process.cwd()) {
   return Object.freeze({shared, aspects, metaflow});
 }
 
-export function voiceFromConfig(config, {aspect, layer, harness, model, effort}) {
-  const row = config.aspects.find(item => item.aspect === aspect)?.voices.find(item => item.layer === layer);
+export function voiceFromConfig(config, {aspect, layer, topic, harness, model, effort}) {
+  const override = config.metaflow.metaflows.find(item => item.aspect === aspect && item.layer === layer && item.topic === topic)?.voice;
+  const row = override ?? config.aspects.find(item => item.aspect === aspect)?.voices.find(item => item.layer === layer);
   if (!row) throw new Error(`no configured voice: ${aspect}.${layer}`);
-  const expectedHarness = config.aspects.find(item => item.aspect === aspect).harness;
+  const expectedHarness = override?.harness ?? config.aspects.find(item => item.aspect === aspect).harness;
   if (harness !== undefined && harness !== expectedHarness) throw new Error(`voice harness differs for ${aspect}.${layer}: required ${expectedHarness}, received ${harness}`);
   if (model !== undefined && model !== row.model) throw new Error(`voice model differs for ${aspect}.${layer}: required ${row.model}, received ${model}`);
   if (effort !== undefined && effort !== row.effort) throw new Error(`voice effort differs for ${aspect}.${layer}: required ${row.effort}, received ${effort}`);

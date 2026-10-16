@@ -30,3 +30,14 @@ assert.equal(firstPromptFromConfig(templateConfig, topic, {modules: '/context', 
 assert.throws(() => firstPromptFromConfig(templateConfig, {...topic, 'raw-psyche-paths': []}, {modules: '', handover: 'judgment'}), /raw-psyche-paths/);
 assert.throws(() => firstPromptFromConfig({shared: {}}, topic, {modules: '', handover: 'judgment'}), /first-prompt-template/);
 assert.throws(() => firstPromptFromConfig({shared: {'first-prompt-template': '{{modules}}{{handover}}{{raw-psyche}}{{invented}}'}}, topic, {modules: '', handover: 'judgment'}), /unknown first-prompt field/);
+
+for (const [topic, layer, model] of [['Publisher', 'Quaternary', 'claude-haiku-5-5'], ['Illustrator', 'Tertiary', 'claude-sonnet-5-5']]) {
+  assert.deepEqual(voiceFromConfig(config, {aspect: 'Field', topic, layer}), {status: 'configured', harness: 'claude', model, effort: 'medium'});
+  assert.throws(() => voiceFromConfig(config, {aspect: 'Field', topic, layer, harness: 'codex'}), /harness differs/);
+}
+assert.equal(voiceFromConfig(config, {aspect: 'Field', layer: 'Quaternary'}).harness, 'codex');
+assert.equal(voiceFromConfig(config, {aspect: 'Field', topic: 'Publisher', layer: 'Tertiary'}).harness, 'codex');
+const badVoice = voice => ({...config, metaflow: {metaflows: [{aspect: 'Field', topic: 'Example', layer: 'Quaternary', voice}]}});
+assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'gpt-6-luna', effort: 'medium'})), /must match its harness/);
+assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'claude-haiku-5-5'})), /effort is unsupported/);
+assert.throws(() => validateLaunchConfig({...config, metaflow: {metaflows: [...config.metaflow.metaflows, config.metaflow.metaflows[0]]}}), /duplicate/);

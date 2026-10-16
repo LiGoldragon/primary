@@ -160,10 +160,10 @@ async function launch(o) {
   let step = 'workspace';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
-    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'codex', model: o.model, effort: o.effort});
-    o = {...o, model: profile.model, effort: profile.effort};
     const flowsRoot = path.join(o.workspace, 'flows');
     const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow, topic: o.topic});
+    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, topic: continuation.topic, harness: 'codex', model: o.model, effort: o.effort});
+    o = {...o, model: profile.model, effort: profile.effort};
     releaseDependency = secondaryBeforePrimary(o, continuation);
     if (!fs.statSync(o.workspace).isDirectory()) throw new Error(`workspace is not a directory: ${o.workspace}`);
     fs.accessSync(o.workspace, fs.constants.R_OK | fs.constants.X_OK);

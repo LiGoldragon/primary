@@ -3,7 +3,7 @@ import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {selectVoiceProfile} from './native-voice-profiles.mjs';
-import {requireTopic} from './native-main-flow-launch-shared.mjs';
+import {continuationForLaunch, requireTopic} from './native-main-flow-launch-shared.mjs';
 
 export function parseArgs(argv) {
   const o = {root: false, predecessor: undefined, metaflow: undefined, topic: undefined};
@@ -22,8 +22,9 @@ export function parseArgs(argv) {
   if (!o.root && o.topic !== undefined) throw new Error('--topic is only valid with --root; a continuation inherits its topic');
   return {aspect, layer, brief: path.resolve(o.brief), root: o.root, predecessor: o.predecessor, metaflow: o.metaflow && path.resolve(o.metaflow), topic: o.topic};
 }
-export function dispatchCommand({aspect, layer, brief, root, predecessor, metaflow, topic}) {
-  const profile = selectVoiceProfile({aspect, layer});
+export function dispatchCommand({aspect, layer, brief, root, predecessor, metaflow, topic}, {flowsRoot = path.join(process.cwd(), 'flows')} = {}) {
+  const continuation = continuationForLaunch({flowsRoot, root, predecessor, metaflowFile: metaflow, topic});
+  const profile = selectVoiceProfile({aspect, layer, topic: continuation.topic});
   const here = path.dirname(fileURLToPath(import.meta.url));
   const backend = profile.harness === 'codex' ? 'codex-main-flow-launch.mjs' : 'claude-main-flow-launch.mjs';
   const lineage = root ? ['--root', '--metaflow', metaflow, ...(topic === undefined ? [] : ['--topic', topic])] : ['--predecessor', predecessor];

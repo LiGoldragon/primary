@@ -278,11 +278,11 @@ async function launch(o) {
   let step = 'preflight';
   const done = (msg) => console.log(`${step}: ${msg}`);
   try {
-    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, harness: 'claude', model: o.model, effort: o.effort});
-    o = {...o, model: profile.model, effort: profile.effort};
-    preflightModel(o.model);
     const flowsRoot = path.join(o.workspace, 'flows');
     const continuation = continuationForLaunch({flowsRoot, root: o.root, predecessor: o.predecessor, metaflowFile: o.metaflow, topic: o.topic});
+    const profile = selectVoiceProfile({aspect: o.aspect, layer: o.layer, topic: continuation.topic, harness: 'claude', model: o.model, effort: o.effort});
+    o = {...o, model: profile.model, effort: profile.effort};
+    preflightModel(o.model);
     releaseDependency = secondaryBeforePrimary(o, continuation);
 
     step = 'workspace';

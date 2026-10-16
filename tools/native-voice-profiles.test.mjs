@@ -42,3 +42,7 @@ assert.equal(selectVoiceProfile({aspect: 'Mind', layer: 'Quaternary'}).model, 'g
 assert.equal(selectVoiceProfile({aspect: 'Field', layer: 'Quaternary'}).model, 'gpt-6-luna');
 assert.throws(() => selectStackProfile({aspect: 'Mind', layer: 'Quaternary', stack: 'Codex'}), /no stack correspondence/);
 console.log('native-voice-profiles tests passed');
+
+assert.equal(selectVoiceProfile({aspect: 'Field', layer: 'Quaternary', topic: 'Publisher'}).model, 'claude-haiku-5-5');
+assert.equal(selectVoiceProfile({aspect: 'Field', layer: 'Tertiary', topic: 'Illustrator'}).model, 'claude-sonnet-5-5');
+assert.throws(() => selectVoiceProfile({aspect: 'Field', layer: 'Quaternary', topic: 'Publisher', model: 'claude-sonnet-5-5'}), /model differs/);

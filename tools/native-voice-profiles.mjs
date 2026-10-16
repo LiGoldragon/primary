@@ -22,9 +22,9 @@ export const voiceKey = ({aspect, layer}) => {
 
 // Optional supplied values are assertions, never choices. The returned frozen
 // row is the only source of harness, model, and effort for a native launch.
-export function selectVoiceProfile({aspect, layer, harness, model, effort}) {
+export function selectVoiceProfile({aspect, layer, topic, harness, model, effort}) {
   const key = voiceKey({aspect, layer});
-  const profile = VOICE_PROFILES[key];
+  const profile = topic === undefined ? VOICE_PROFILES[key] : voiceFromConfig(launchConfig, {aspect, layer, topic});
   if (!profile) throw new Error(`no voice correspondence: ${key}`);
   if (profile.status !== 'configured') throw new Error(`voice correspondence is ${profile.status}: ${key}; ${profile.reason}`);
   if (harness !== undefined && harness !== profile.harness) throw new Error(`voice harness differs for ${key}: required ${profile.harness}, received ${harness}`);
