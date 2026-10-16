@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-16T19:12:38Z",
+  "updatedUTC": "2026-10-16T22:48:57.149922+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -10,12 +10,12 @@
     {
       "id": "context-three-repos",
       "work": "Move outside authored context into three aspect repos; role/raw IDs only; fixed-root Curriculum composer; one Flow starter and thin adapters; generated subagent runtime storage must satisfy no composed files.",
-      "state": "Curriculum remote package13tests passed with generatedwire/targetedlock/roles/changedfixture; fullcohort live Nexus checks pending"
+      "state": "published matched source and checked cutover; activation rolled back on retained launch-attempt decode; old production restored; da2038 owns migration; no native production proof yet"
     },
     {
       "id": "context-layout",
       "work": "Publish matching Field v2 child after source corrections; coordinate Mind/Psyche/Curriculum/Primary consumer cohort, regenerate and activate.",
-      "state": "pending-cohort"
+      "state": "published matched source and checked cutover; activation rolled back on retained launch-attempt decode; old production restored; da2038 owns migration; no native production proof yet"
     },
     {
       "id": "spirit-system",
@@ -131,6 +131,21 @@
       "id": "flow-0346",
       "work": "Home pin Flowe8cddd4 title/storedfreshwakebundle; serialcheck/deploy/readback",
       "state": "queued"
+    },
+    {
+      "id": "comment-relay-subagent",
+      "work": "Tertiary delegates book selection; Curriculum composes comment-relay from Field role modules; subflow owns envelope/send/ledger; general sending rule via Mind.",
+      "state": "Field95121c/Curriculumd7bb137 published, remote composition passed; matching Primary pins prepared for publisher; native transport/caller guard and activation remain Flow work"
+    },
+    {
+      "id": "fresh-mind-flow-astra",
+      "work": "Fresh Mind flow Primary Astra finishes Flow: retained-store repair, merged source, production deployment and full system/user/specialized-flow contract; major effort report books to Core; adopt incoming Fable design.",
+      "state": "9896d8 independently passed by Core, task released with Presented; starts rollback defect, adopts Fable design only after ruling; failed7ac3c0 retired/pane closed/native archived"
+    },
+    {
+      "id": "important-topic-heartbeat",
+      "work": "Design six-hour Codex check for Flow/Ethos/Nexus, owners woken when work is unattended, Opus/Fable guidance.",
+      "state": "plain design delivered to Core for book/ruling; no timer enabled"
     }
   ]
 }
