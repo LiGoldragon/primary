@@ -28,6 +28,7 @@
 (def ^:private ws-right (re-pattern (str ws "+$")))
 
 (defn rstrip [s] (str/replace s ws-right ""))
+(defn strip-left [s] (str/replace s ws-left ""))
 (defn strip [s] (-> s (str/replace ws-left "") rstrip))
 (defn blank? [s] (= "" (strip s)))
 
@@ -876,9 +877,10 @@
               (recur j (conj bodies [:p (join-lines (subvec content i j))])))))))))
 
 (defn tokens
-  "Whitespace-separated words, punctuation attached; a `code` span is one word."
+  "Words (letters, digits, _ and -), single punctuation marks, whitespace
+  runs, and `code` spans; joined back with no separator they give the text."
   [s]
-  (vec (re-seq #"(?:`[^`]*`|\S)+" s)))
+  (vec (re-seq #"`[^`]*`|[\p{L}\p{N}_-]+|\s+|[^\s]" s)))
 
 (defn word-diff
   "Longest-common-subsequence diff of two token vectors, as a vector of
@@ -905,19 +907,53 @@
         (< j m) (recur i (inc j) (conj out [:add (b j)]))
         :else out))))
 
+(defn- chunks
+  "A word-diff as chunks: [:same tokens] or [:edit removed added]."
+  [diff]
+  (->> diff
+       (partition-by #(if (= :same (first %)) :same :edit))
+       (mapv (fn [grp]
+               (if (= :same (ffirst grp))
+                 [:same (mapv second grp)]
+                 [:edit (mapv second (filter #(= :del (first %)) grp))
+                  (mapv second (filter #(= :add (first %)) grp))])))))
+
+(defn- joiner?
+  "An unchanged run worth folding into its neighbours: only whitespace, or
+  one punctuation mark."
+  [toks]
+  (let [t (str/join toks)]
+    (boolean (or (re-matches #"\s+" t)
+                 (and (= 1 (count toks)) (re-matches #"[^\p{L}\p{N}\s]" t))))))
+
+(defn- fold-chunks
+  "Fold a joiner lying between two edits into both sides, until none is left."
+  [cs]
+  (loop [cs cs out []]
+    (cond
+      (empty? cs) out
+      (and (seq out) (>= (count cs) 2)
+           (= :edit (first (peek out)))
+           (= :same (first (first cs))) (joiner? (second (first cs)))
+           (= :edit (first (second cs))))
+      (let [[_ d1 a1] (peek out) [_ s] (first cs) [_ d2 a2] (second cs)]
+        (recur (drop 2 cs)
+               (conj (pop out) [:edit (-> d1 (into s) (into d2)) (-> a1 (into s) (into a2))])))
+      :else (recur (rest cs) (conj out (first cs))))))
+
 (defn marked
-  "One text: unchanged words plain, removed words in <del>, added in <ins>;
-  adjacent words of one kind share one span."
+  "One text: unchanged tokens plain, removed in <del>, added in <ins>; spacing
+  is kept as written, and a lone space or mark between two edits joins them."
   [old new fmt]
   (->> (word-diff (tokens old) (tokens new))
-       (partition-by first)
-       (map (fn [grp]
-              (let [words (str/join " " (map (comp fmt second) grp))]
-                (case (ffirst grp)
-                  :del (str "<del>" words "</del>")
-                  :add (str "<ins>" words "</ins>")
-                  words))))
-       (str/join " ")))
+       chunks
+       fold-chunks
+       (map (fn [[kind x y]]
+              (if (= kind :same)
+                (fmt (str/join x))
+                (str (when (seq x) (str "<del>" (fmt (str/join x)) "</del>"))
+                     (when (seq y) (str "<ins>" (fmt (str/join y)) "</ins>"))))))
+       str/join))
 
 (defn paired-body
   "A removed and an added body, one text; nil when their kinds differ."
@@ -978,7 +1014,7 @@
                              :let [r (some-> (get rem i) (subs (min 2 (count (get rem i)))))
                                    a (some-> (get add i) (subs (min 2 (count (get add i)))))]]
                          (cond
-                           (and r a) (str (re-find #"^\s*" a) (marked r a esc))
+                           (and r a) (str (re-find #"^\s*" a) (marked (strip-left r) (strip-left a) esc))
                            r (str "<del>" (esc r) "</del>")
                            :else (str "<ins>" (esc a) "</ins>")))]
               (recur (vec r2) (into out rows)))))))))
