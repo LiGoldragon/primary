@@ -192,3 +192,19 @@ Said to Psyche Core Secondary directly, 2026-10-15, asking for a report on the l
 > I guess when I'm asking a question like that, I'm reviewing a knowledge context module.
 
 -- psyche, STT.
+
+## A request yields something to review; reviewed modules are already deployed
+
+Said to Psyche Core Secondary directly, 2026-10-15.
+
+> When I ask for stuff, I want to review something. Either I'm reviewing compensation or an inquiry and question, meaning these already are going in even if I don't read them, right? They're deployed context modules.
+
+-- psyche, STT.
+
+## No directory called skill; some modules are for system prompts only
+
+Said to Psyche Core Secondary directly, 2026-10-15, asking for a book on the modules kept in a vision directory instead of the skills directory.
+
+> I want to make sure these are all skills, and we don't need any directory called skill. Actually, they're not necessarily all skills because some of them are only for system prompts, but maybe we're not loading system prompts yet, so we're still using skills. I don't know.
+
+-- psyche, STT.

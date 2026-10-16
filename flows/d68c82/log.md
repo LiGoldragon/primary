@@ -1446,3 +1446,18 @@ Ouranos readback (claim): Ethernet GLAN PCI wake enabled, e1000e, wake-on-LAN ma
 
 ## 2026-10-15 — «Battery drain in sleep» published (URVXpeNYZU2phmCRBumr8v), in Open books; three photographs embedded; checks pass at 320/375
 The builder silently leaves a figure as raw text when a box line is one character too wide; it should refuse instead (builder fault, not yet handed). Not watched (watch limit); the Tertiary relays comments.
+
+## 2026-10-15 — 89fbc1 committed the battery book, index and records as 4dbb32.
+
+## 2026-10-15 — The living, directly: stuttering desktop, Wispr Flow unstable, remote Rust builds, a review for every request, a book on the vision-directory modules, new books when comments leave a topic open
+"Something is quite wrong with my desktop. It's quite stuttery. Maybe there are too many [our] harnesses running. It looks like Claude Desktop is taking quite a bit of CPU. ... Anyway, stereo [sic]: that's a problem with my speech-to-text Wispr thing. I want all that investigated, and I want to review." "Iv lost wispr flow reliablity (very unstable atm) on my laptop. very jittery desktop." Transcription corrected: "AR harnesses" → "our harnesses". Vision logged in context-modules (two), books, builds. Investigation and remote-build preference to Field; context-module layout research dispatched for a book.
+
+## 2026-10-15 — Context-module layout research returned
+Witnessed: only psyche-context/vision/ethos.md lies outside skills/; Curriculum reads it as vision-ethos through 280 uncommitted lines in registry.rs, yet its output is deployed. The system prompt route is live, built by the launchers from per-aspect lists in config/main-flow/*.edn; no module declares its placement; every module is also a skill. Generated .claude/skills (132) mismatch sources: inquiry-* and extra knowledge-* without a source, operation-* missing; cause unknown. Curriculum roles.datom names differ from the deployed roles. Sent to Field; book composed.
+
+## 2026-10-15 — Field desktop findings (claims)
+18:41: load 8.7/14.6/11.2, 21 GiB available, 18 GiB swap used; IO pressure some 58% / full 47%, IO wait 31–34%, CPU mostly idle; no rustc running. Niri log: touchpad touch-jump kernel errors, keyd event lag 342 ms. Two Python processes in D state each read 5.2 GB, holding files in a harness-profile icon directory, owner unknown; Field's ask to 44cda5 was Held. An OpenCode process untouched. Wispr: one client (1.6.774), a duplicate had crashed; no restart; needs the living's symptom. Remote Nix builds already active (Prometheus, max-jobs 0); compensation line "Builds go to a remote builder first." and the open-topic book line published in field-context e4ce90b.
+
+## 2026-10-15 — 44cda5 is Field Core Primary (Astra), whose Secretary is 42265e itself; Field's own Held send to it is a route fault. Told Field.
+
+## 2026-10-15 — «Context modules: folders, types, placement» published (6DGnwVoHuRKkNCdWM3NbmB), first in Open books; Subflows P4 marked carried. Builder needs a box around a bare tree to draw it (builder limit). To 89fbc1.

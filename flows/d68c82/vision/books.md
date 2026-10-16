@@ -173,3 +173,11 @@ Relayed by Psyche Core Tertiary, 2026-10-15; the living's comments of 2026-10-14
 > Once we have that tool and technique figured out, that goes in the knowledge skill on how to create our diffs for the book, which also becomes a tool that can live in a book (like a web book or something like that): a tool repository written in Clojure, of course, with the ethos specification for its types.
 
 -- psyche, STT.
+
+## A new book when comments leave the topic open
+
+Said to Psyche Core Secondary directly, 2026-10-15.
+
+> I need new books made when the comments dont finalize the topic. adaptations and or inquiry/knowledge/compensation review
+
+-- psyche, typed.
