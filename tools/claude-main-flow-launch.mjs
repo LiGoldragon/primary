@@ -43,7 +43,6 @@ import {makeContextRefreshBinding} from './main-flow-mode/context-refresh.mjs';
 // Roots are expanded by Curriculum at launch; prompt composition keeps
 // compensation-main-flow first.
 // Claude expands at most six skill commands from one prompt.
-export const MAX_SKILLS_PER_PROMPT = 6;
 export const LAUNCH_CONFIG = defaultLaunchConfig();
 export const BIRTH_SKILLS = birthSkillsFromConfig(LAUNCH_CONFIG);
 // Mind runs on Codex only (living ruling 2026-10-05, flows/bfdae1/log.md):
@@ -125,7 +124,8 @@ export const liveSkillReader = workspace => name =>
   fs.readFileSync(path.join(workspace, '.claude', 'skills', name, 'SKILL.md'), 'utf8');
 
 export function composeSkillPrompt({skillNames, exists}) {
-  if (!Array.isArray(skillNames) || skillNames.length === 0 || skillNames.length > MAX_SKILLS_PER_PROMPT) throw new Error(`one Claude prompt must contain between one and ${MAX_SKILLS_PER_PROMPT} skills`);
+  if (!Array.isArray(skillNames) || skillNames.length === 0) throw new Error('one Claude prompt requires a nonempty skill closure');
+  if (skillNames.some(name => !/^[A-Za-z0-9_-]+$/.test(name))) throw new Error('invalid skill name');
   if (new Set(skillNames).size !== skillNames.length) throw new Error('Claude skill prompt contains duplicate names');
   for (const name of skillNames) if (!exists(name)) throw new Error(`skill input missing or empty: ${name}`);
   return `${skillNames.map(n => `/${n}`).join(' ')}\n`;

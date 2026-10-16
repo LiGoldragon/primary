@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {BIRTH_SKILLS, LAYERS, MAX_SKILLS_PER_PROMPT, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, matchesFirstPrompt, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
+import {BIRTH_SKILLS, LAYERS, assistantResponses, claimFlow, claudeCodeVersion, composeFirstPrompt, composeSkillPrompt, hasCompletedResponseAfter, hasExactRegistrationBinding, liveSkillExists, mainFlowMode, matchesFirstPrompt, parseArgs, preflightModel, readLoadedSkillBlocks, readUserPrompts, titleRecords, transcriptPath, validateLoadedSkillBlocks, writeMainFlowMode} from './claude-main-flow-launch.mjs';
 import {STANDING_SKILLS} from './standing-skill-selection.mjs';
 import {canonicalTitleFor} from './native-main-flow-launch-shared.mjs';
 import {claudeFlowEnvironment} from './claude-main-flow-launch.mjs';
@@ -69,7 +69,7 @@ const fakeClaude = path.join(cliDir, 'claude');
 fs.writeFileSync(fakeClaude, '#!/bin/sh\nprintf "2.1.280 (Claude Code)\\n"\n', {mode: 0o755});
 const brief = path.join(cliDir, 'brief.md');
 fs.writeFileSync(brief, 'unused because preflight must fail first\n');
-const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--layer', 'Tertiary', '--root', '--metaflow', '/tmp/metaflow', '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
+const preflightFailure = spawnSync(process.execPath, [path.join(import.meta.dirname, 'claude-main-flow-launch.mjs'), '--model', 'claude-sonnet-5-5', '--brief', brief, '--layer', 'Tertiary', '--root', '--metaflow', brief, '--workspace', path.join(cliDir, 'not-a-workspace')], {encoding: 'utf8', env: {...process.env, PATH: `${cliDir}:${process.env.PATH}`}});
 assert.equal(preflightFailure.status, 1);
 assert.match(preflightFailure.stderr, /^preflight: FAILED: claude-sonnet-5-5 requires Claude Code 2\.1\.284 or later; installed 2\.1\.280/);
 assert.doesNotMatch(preflightFailure.stderr, /workspace is not a directory/);
@@ -80,11 +80,10 @@ assert.ok(hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'ses
 assert.ok(!hasExactRegistrationBinding({pane_id: 'other', agent_session: {value: 'session'}}, 'p', 'session'));
 assert.ok(!hasExactRegistrationBinding({pane_id: 'p', agent_session: {value: 'other'}}, 'p', 'session'));
 
-// Composition: native Claude loads no more than six selected skills per prompt;
+// Composition preserves the complete selected skill closure in one real prompt.
 // The first native prompt contains the topic work, with no staging turn.
 assert.equal(BIRTH_SKILLS[0], 'compensation-main-flow');
 for (const name of BIRTH_SKILLS.filter(name => !name.startsWith('spirit-') && name !== 'spirit' && !name.startsWith('intent-'))) assert.equal(BIRTH_SKILLS.filter(candidate => candidate === name).length, 1, `${name} loads exactly once`);
-assert.equal(MAX_SKILLS_PER_PROMPT, 6);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['compensation-main-flow', 'spirit-core']}), /only in the main system prompt/);
 const names = ['compensation-main-flow', ...Array.from({length: 5}, (_, i) => `skill-${i + 1}`)];
 const composition = composeFirstPrompt({brief: 'The pending topic judgment.\n', exists: () => true, skillNames: names});
@@ -102,9 +101,11 @@ assert.ok(!matchesFirstPrompt(readUserPrompts(commandRows.slice(1))[0], composit
 assert.ok(!matchesFirstPrompt({...firstReceipts[0], text: `${nativeArgs}\nextra instruction`}, composition.prompt, names));
 assert.equal(readUserPrompts([...commandRows, ...commandRows.map(row => ({...row, promptId: 'duplicate-prompt'}))]).length, 2);
 assert.equal(composeSkillPrompt({skillNames: ['compensation-behavior'], exists: () => true}), '/compensation-behavior\n');
-assert.throws(() => composeFirstPrompt({brief: 'Topic work.', exists: () => true, skillNames: [...names, 'overflow']}), /between one and 6/);
+assert.ok(composeFirstPrompt({brief: 'Topic work.', exists: () => true, skillNames: [...names, 'seventh']}).prompt.startsWith([...names, 'seventh'].map(n => '/' + n).join(' ')));
+assert.throws(() => composeFirstPrompt({brief: 'x'.repeat(120 * 1024), exists: () => true, skillNames: names}), /120 KiB/);
 assert.throws(() => composeSkillPrompt({skillNames: ['same', 'same'], exists: () => true}), /duplicate names/);
-assert.throws(() => composeSkillPrompt({skillNames: Array(7).fill('x'), exists: () => true}), /between one and 6/);
+assert.throws(() => composeSkillPrompt({skillNames: [], exists: () => true}), /nonempty/);
+assert.throws(() => composeSkillPrompt({skillNames: ['bad/name'], exists: () => true}), /invalid skill name/);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: () => true, skillNames: ['spirit-core']}), /only in the main system prompt/);
 assert.throws(() => composeFirstPrompt({brief: 'x', exists: n => n !== 'knowledge-vocabulary'}), /skill input missing or empty: knowledge-vocabulary/);
 assert.throws(() => composeFirstPrompt({brief: ' ', exists: () => true}), /brief is empty/);
