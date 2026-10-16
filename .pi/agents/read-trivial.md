@@ -265,15 +265,19 @@ The book is the center of development: it is the evolution of an idea, and the l
 A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A list in boxes, a tally, or a sentence in a rectangle is not a figure. A diagram in a book's source is ASCII in that grammar, laid out vertically and no wider than 52 characters so a phone shows it; a sketch without arrows is rewritten before it is sent. The published book never shows the ASCII, but a figure drawn from it by a Tertiary or Quaternary subflow that is given the grammar with the sketch, keeps every box, label and arrow, and adds nothing the source does not say; a figure that lost an arrow is returned. A sizable book carries several figures.
 
 
-A book is its crystallizations. Every line it shows is a word removed (red) or added (green) in a psyche module, or the code that line lands. A figure in it is a figure proposed for a psyche module. Nothing else is written.
+A book is its crystallizations. Every line it shows is a word removed (red) or added (green) in a psyche module, or the code that line lands. A figure draws concepts as nodes linked by edges, with the forks, options and joins its subject has, each label a few words; its ASCII source is no wider than 52 characters. Nothing else is written.
+
+A changed figure is shown once, whole, in its new form.
+
+A proposal heading reads `### Proposal N: title`.
+
+A page is built only by the book builder; a source it refuses goes back to its author.
 
 A change is written as a line File: <path>, then each removed line starting with "- ", each added line with "+ ", and unchanged lines around them starting with two spaces. Concise machine results and concrete blockers may be sent outside a book.
 
 Every line inside a book's code block of real code is at most 52 characters; prose proposed for a file renders as text and wraps freely. A code block spans the full page width, outside nested or indented layout columns; the code inside keeps its own indentation, never wraps inside a token, and scrolls sideways. A short code value inside a choice stays inline. Check every book at phone width before publishing.
 
 A proposed statement is drawn from the living's records read whole, with their exceptions and later statements on the same subject. A skill line in the author's brief shows where a statement lands, never what it says; the brief marks machine-skill text as the machine's. A count or date claim about the records is made only when the author has witnessed it.
-
-A book does not restate the living's words. A proposal may cite the record it crystallizes by path and date.
 
 A proposal to destroy or archive a record renders unmistakably apart from a landing: its own colour and a Destroy or Archive mark on the record it removes.
 
@@ -783,6 +787,17 @@ The typed reply is what hm-send itself prints; a flow never waits on or watches 
 Registration validates one exact live Herdr identity and stores its native binding immediately; send readiness is checked separately. Supply qualified `--aspect ASPECT --topic TOPIC --layer LAYER` together through normal `hm-register`; do not infer them from the harness or model. Re-registration without these flags preserves existing metadata. After a route is removed, registration must supply its qualified metadata again. Historical ID-bearing envelopes remain readable evidence, not an origin fallback for new sends.
 
 `FLOW_ID=<self> hm-retire FLOW` takes only the flow id: it reads the route and live Herdr identity itself, writes the evidence file, and prints its path. A refusal prints `RetireRefused.{ FLOW Reason }` and changes nothing.
+
+
+Use `Network topology`, `Network preferred Wi-Fi` and `Network fallback Wi-Fi` for the temporary arrangement. After an interruption, check each host's actual address, route and SSH reachability, then DNS and an internet HTTPS request.
+
+Before switching a host, witness that the preferred access point is visible and that association, DHCP, gateway reachability and internet access work. Use NetworkManager's checkpoint rollback for a remote Wi-Fi change and retain the fallback connection. Confirm the change from the new route before removing the checkpoint. Change one host at a time while another management path remains available.
+
+Measure packet loss and the access point's station signal, retries and failures over a stated interval. A short successful sample establishes that interval; longer stability remains unmeasured. When the preferred access point is not visible, retain the working fallback and report the observed gap.
+
+Two local routes through the same internet router share its upstream outage. Describe the fallback as a local Wi-Fi or access-point fallback, not independent internet redundancy. Preserve saved credentials without displaying them.
+
+Remove the temporary arrangement's values when it ends, and retain reusable network procedure in its owning module.
 
 
 The current network topology is set by the skill variable `Network topology`.

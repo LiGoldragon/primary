@@ -8,12 +8,14 @@ Make one new presentation for each message. A presentation is a new living-messe
 
 Present the source faithfully and simply. The living responds by comment; use no buttons, fields, or other controls.
 
-A drawing starts as a vertical, narrow ASCII specification in the source.
+A figure draws concepts as nodes linked by edges, with the forks, options and joins its subject has, each label a few words; its ASCII source is no wider than 52 characters.
 The book subflow delegates its figure to Quaternary with the surrounding
 text, following its figure procedure; the page carries the resulting
 inline SVG, readable on a phone, never the ASCII or Mermaid.
 
 A presentation renders as a web page, never raw Markdown or prose in a code block. A proposed change shows its additions in green and its removals struck through in red, in one consistent style across books.
+
+A book's reference file is references/<book-source-basename>.md in the directory holding the book's source, written with the source; it lists, per proposal, the records each line draws from. When a proposal lands, its entries move to references/archive/ with the landing commit named.
 
 After publication is complete, return its title and URL to the requester
 with a very short voice answer to the question.
