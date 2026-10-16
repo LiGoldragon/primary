@@ -7,6 +7,7 @@
 (ns book-build-test
   (:require [clojure.test :refer [deftest is run-tests]]
             [clojure.string :as str]
+            [clojure.java.shell]
             [babashka.fs :as fs]))
 
 (def tools-dir (str (fs/parent (fs/absolutize *file*))))
@@ -34,7 +35,7 @@
   (is (no-twice-read? (rebuilt "10-messaging-between-flows"))))
 
 (defn change [md]
-  (first (book-build/text-panels (str/split-lines md))))
+  (book-build/text-panels (str/split-lines md)))
 
 (deftest one-word-changed
   (is (= "<div class=\"diff\"><p>The <del>old</del><ins>new</ins> plan holds, for now.</p></div>"
@@ -66,17 +67,33 @@
 (def fixture-expected
   "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Fixture &amp; &lt;book&gt;</title>\n<h1 class=\"book-title\">Fixture &amp; &lt;book&gt;</h1>\n<h2>Crystallization</h2>\n<p>An opening paragraph with <code>inline &lt;code&gt;</code> and a second line &amp; more.</p>\n<article class=\"proposal\"><header><span class=\"pnum\">1</span><h2>Figures &amp; <code>records</code></h2></header>\n<p class=\"target\"><code>skills/vision-x/SKILL.md</code></p><p>builds on <code>vision-y</code></p>\n<div class=\"diff\"><div class=\"ctx\"><div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl><dt>Name</dt><dd>vision-x</dd></dl></div></div><div class=\"ctx\"><h4>A heading kept as text</h4></div><div class=\"ctx\"><p>Unchanged context line</p></div><p><del>Removed</del><ins>Added</ins> line <del>one removed line two</del><ins>with <code>code</code></ins></p><div class=\"add\"><ins><h3>added heading</h3></ins></div></div>\n<div class=\"figure\">FIGURE</div>\n<div class=\"record destroy\"><p>the record <code>flows/aa/vision/x.md</code> below.</p>\n<p class=\"target\"><code>flows/aa/vision/x.md</code></p>\n<div class=\"del\"><del><p>A working instruction logged as vision.</p></del></div></div>\n<div class=\"record archive\">\n<div class=\"del\"><del><p>An archived line.</p></del></div></div>\n<div class=\"record destroy\"><p>with nothing following.</p>\n<pre data-diff><code class=\"language-javascript\">const x = 1 &lt; 2 &amp;&amp; \"y\";</code></pre>\n<section class=\"rulings\"><ol><li value=\"1\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"1\"><li>Approve.</li><li>Reject:</li></ol><div class=\"add\"><ins><p>inside the ruling card</p></ins></div></div><p>After the card.</p></li></ol></section>\n</article>\n<article class=\"proposal\"><header><span class=\"pnum\">2</span><h2>Second</h2></header>\n<p>Group heading</p>\n<ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Third choice continued here.</li><li>Fourth choice</li></ol>\n<section class=\"rulings\"><ol><li value=\"2\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Yes</li><li>No</li></ol></li></ol></section><pre data-diff><code class=\"language-python\">print(\"tail\")</code></pre><p>Trailing paragraph.</p>\n</article>\nTAIL\n")
 
+(def illustration
+  (str "<?xml version=\"1.0\"?><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+       "viewBox=\"0 0 360 520\" width=\"360\" height=\"520\" onload=\"evil()\">"
+       "<script>alert(1)</script><a href=\"https://evil.example/x\"><rect id=\"keep\" width=\"10\" height=\"10\" onclick=\"evil()\"/></a>"
+       "<use xlink:href=\"http://evil.example/y.svg#a\"/><use href=\"#keep\"/>"
+       "<image href=\"data-not-allowed\"/><foreignObject><p>x</p></foreignObject><text>ILLUSTRATED</text></svg>"))
+
+(defn with-figures [files f]
+  (let [dir (fs/create-temp-dir)]
+    (try (doseq [[n body] files] (spit (str (fs/path dir n)) body))
+         (binding [book-build/*figures-dir* (str dir)] (f))
+         (finally (fs/delete-tree dir)))))
+
+(def drawn
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 239 100\"><text>DRAWN</text></svg>")
+
 (deftest fixture-records-and-figure
-  (let [page (book-build/build fixture-md "TAIL\n")
-        svg (re-find #"(?s)<svg .*?</svg>" page)]
-    (is (= fixture-expected (-> page (str/replace svg "FIGURE")
-                                (str/replace #"(<div class=\"figure\") style=\"min-height:[\d.]+px\"" "$1"))))
-    (is (re-find #"<div class=\"figure\" style=\"min-height:\d+(\.\d+)?px\"><svg " page) "the figure reserves its height")
-    (is (str/starts-with? svg (str "<svg viewBox=\"0 0 " book-build/fig-w " ")))
-    (is (= 3 (count (re-seq #"<rect [^>]*rx=" svg))) "three boxes")
-    (is (= 2 (count (re-seq #"<polygon" svg))) "two arrowheads")
-    (doseq [t ["Flow" "with &quot;two&quot; lines" "Recipient" "Log" "sends it&#x27;s message" "reads"]]
-      (is (str/includes? svg (str ">" t "</text>")) t))))
+  (let [page (with-figures {"fig-1.svg" drawn} #(book-build/build fixture-md "TAIL\n"))
+        fig (re-find #"(?s)<div class=\"figure\"[^>]*>.*?</svg></div>" page)]
+    (is (= fixture-expected (str/replace page fig "<div class=\"figure\">FIGURE</div>")))
+    (is (str/includes? fig ">DRAWN</text>") "the figure is the supplied fig-1.svg")
+    (is (not (str/includes? page "Recipient")) "the sketch is not drawn")))
+
+(deftest fixture-output-has-no-trailing-whitespace
+  (is (nil? (re-find #"(?m)[ \t]+$" (with-figures {"fig-1.svg" drawn} #(book-build/build fixture-md "TAIL\n")))))
+  (is (nil? (re-find #"(?m)[ \t]+$"
+                     (book-build/build "```clj\nx\n- a\n-\n+ a\n+\n```\n" "")))))
 
 (deftest table-in-a-proposal-is-a-table
   (let [html (book-build/build (str "### Proposal 1: x\n\n| a | b |\n|:---|---:|\n| 1 | 2 |\n\n"
@@ -98,11 +115,6 @@
   (is (= "x\n\n<del></del>"
          (book-build/code-lines ["x" "-" "- " "+"])) "unpaired empties stay empty marks")
   (is (= (change "- a\n- \n+ b\n+ ") (change "- a\n-\n+ b\n+"))))
-
-(deftest fixture-output-has-no-trailing-whitespace
-  (is (nil? (re-find #"(?m)[ \t]+$" (book-build/build fixture-md "TAIL\n"))))
-  (is (nil? (re-find #"(?m)[ \t]+$"
-                     (book-build/build "```clj\nx\n- a\n-\n+ a\n+\n```\n" "")))))
 
 (deftest new-module-renders-as-web
   (let [md (str "### Proposal 1: m\n\nFile: `a/b.md`, new\n\n+ ---\n+ description: Does a thing.\n+ dependencies: [x, y]\n+ ---\n+\n"
@@ -144,35 +156,19 @@
   (str "```text\n+-------+\n| One   |\n+-------+\n    |\n    | sends\n    v\n+-------+\n| Two   |\n+-------+\n```\n\n"
        "```text\n+-------+\n| Red   |\n+-------+\n    |\n    v\n+-------+\n| Blue  |\n+-------+\n```\n"))
 
-(def illustration
-  (str "<?xml version=\"1.0\"?><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
-       "viewBox=\"0 0 360 520\" width=\"360\" height=\"520\" onload=\"evil()\">"
-       "<script>alert(1)</script><a href=\"https://evil.example/x\"><rect id=\"keep\" width=\"10\" height=\"10\" onclick=\"evil()\"/></a>"
-       "<use xlink:href=\"http://evil.example/y.svg#a\"/><use href=\"#keep\"/>"
-       "<image href=\"data-not-allowed\"/><foreignObject><p>x</p></foreignObject><text>ILLUSTRATED</text></svg>"))
-
-(defn with-figures [files f]
-  (let [dir (fs/create-temp-dir)]
-    (try (doseq [[n body] files] (spit (str (fs/path dir n)) body))
-         (binding [book-build/*figures-dir* (str dir)] (f))
-         (finally (fs/delete-tree dir)))))
-
 (deftest illustration-replaces-the-nth-figure
-  (let [plain (book-build/build sketch-md "")
-        html (with-figures {"fig-1.svg" illustration} #(book-build/build sketch-md ""))
+  (let [html (with-figures {"fig-1.svg" illustration "fig-2.svg" drawn} #(book-build/build sketch-md ""))
         figs (re-seq #"(?s)<div class=\"figure\"[^>]*>.*?</div>" html)]
-    (is (= 2 (count (re-seq #"<div class=\"figure\"" plain))))
     (is (= 2 (count figs)))
     (is (str/includes? (first figs) "ILLUSTRATED") "figure 1 is the illustration")
-    (is (not (str/includes? (first figs) ">One<")))
+    (is (not (str/includes? html ">One<")))
     (is (str/includes? (first figs) "width=\"100%\"") "scaled to the container")
     (is (str/includes? (first figs) "viewBox=\"0 0 360 520\""))
     (is (str/includes? (first figs) "padding-bottom:144.44%") "the container holds the aspect height")
-    (is (= (second (re-seq #"(?s)<div class=\"figure\"[^>]*>.*?</div>" plain)) (second figs))
-        "figure 2 has no fig-2.svg and is drawn as before")))
+    (is (str/includes? (second figs) "DRAWN") "figure 2 is fig-2.svg")))
 
 (deftest illustration-is-sanitized
-  (let [html (with-figures {"fig-1.svg" illustration} #(book-build/build sketch-md ""))
+  (let [html (with-figures {"fig-1.svg" illustration} #(book-build/build (first (str/split sketch-md #"\n\n")) ""))
         fig (re-find #"(?s)<div class=\"figure\"[^>]*>.*?</div>" html)]
     (is (not (re-find #"(?i)<script|alert|onload|onclick|evil|foreignObject|<\?xml" fig)))
     (is (not (re-find #"https?://[^\"]*evil" fig)))
@@ -180,19 +176,50 @@
     (is (str/includes? fig "<use href=\"#keep\"/>") "an internal reference stays")
     (is (str/includes? fig "id=\"keep\""))))
 
-(deftest figure-fallback-without-directory-or-file
-  (let [plain (book-build/build sketch-md "")]
-    (is (= plain (with-figures {} #(book-build/build sketch-md ""))) "empty directory")
-    (is (= plain (with-figures {"fig-3.svg" illustration} #(book-build/build sketch-md ""))) "no fig-1 or fig-2")
-    (is (= 2 (count (re-seq #"<svg viewBox=\"0 0 239 " plain))))))
+(defn refusal
+  "The message of the refusal, or nil when the build succeeds."
+  [md]
+  (try (book-build/build md "") nil (catch clojure.lang.ExceptionInfo e (ex-message e))))
 
-(deftest figure-title-is-at-the-top-of-its-box
-  (let [g (book-build/ascii-graph (str/split-lines "  any machine\n +--------+\n | body   |\n +--------+\n     |\n     v\n +--------+\n | next   |\n +--------+"))
-        svg (book-build/graph-svg g)
-        ys (fn [t] (Double/parseDouble (second (re-find (re-pattern (str "y=\"([\\d.]+)\"[^>]*>" t "</text>")) svg))))]
-    (is (= "any machine" (:title (first (:nodes g)))))
-    (is (nil? (:note (first (:nodes g)))))
-    (is (< (ys "any machine") (ys "body")) "the title is drawn above the label")))
+(deftest diagram-without-figure-is-refused
+  (let [msg (refusal sketch-md)]
+    (is (some? msg))
+    (is (str/includes? msg "diagram 1"))
+    (is (str/includes? msg "fig-1.svg"))
+    (is (not (str/includes? msg "\n")) "one line"))
+  (is (str/includes? (with-figures {} #(refusal sketch-md)) "diagram 1") "empty directory")
+  (is (str/includes? (with-figures {"fig-2.svg" drawn} #(refusal sketch-md)) "diagram 1") "no fig-1")
+  (is (str/includes? (with-figures {"fig-1.svg" drawn} #(refusal sketch-md)) "diagram 2") "no fig-2")
+  (is (nil? (with-figures {"fig-1.svg" drawn "fig-2.svg" drawn} #(refusal sketch-md))))
+  (is (str/includes? (refusal "### Proposal 1: x\n\n```\n+-------+\n| One   |\n+-------+\n    |\n    v\n+-------+\n| Two   |\n+-------+\n```\n") "diagram 1")
+      "an unlabelled fence is a text fence")
+  (is (str/includes? (refusal "```figure\n{:nodes [{:id 1 :label \"a\"} {:id 2 :label \"b\"}] :edges [{:from 1 :to 2}]}\n```\n") "diagram 1")
+      "a figure fence needs its figure too"))
+
+(deftest refusal-names-the-diagram
+  (is (str/includes? (refusal sketch-md) "+-------+")))
+
+(deftest cli-exits-nonzero-with-one-line
+  (let [dir (fs/create-temp-dir)
+        src (str (fs/path dir "b.md")) out (str (fs/path dir "b.html"))]
+    (try (spit src sketch-md)
+         (let [r (clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out)]
+           (is (= 1 (:exit r)))
+           (is (str/starts-with? (:err r) "book-build: diagram 1"))
+           (is (= 1 (count (str/split-lines (:err r)))))
+           (is (not (fs/exists? out))))
+         (let [fd (fs/create-dirs (fs/path dir "figs"))]
+           (spit (str (fs/path fd "fig-1.svg")) drawn) (spit (str (fs/path fd "fig-2.svg")) drawn)
+           (let [r (clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out "--figures" (str fd))]
+             (is (= 0 (:exit r)) (:err r))
+             (is (str/includes? (slurp out) "DRAWN"))))
+         (finally (fs/delete-tree dir)))))
+
+(deftest code-and-signed-fences-need-no-figure
+  (is (nil? (refusal "### Proposal 1: x\n\n```\nlet a = 1;\nlet b = 2;\n```\n")))
+  (is (nil? (refusal "### Proposal 1: x\n\n```rust\nlet a = 1;\n```\n")))
+  (is (nil? (refusal "### Proposal 1: x\n\n```text\n- +-------+\n- | One   |\n- +-------+\n- |\n- v\n- +-------+\n- | Two   |\n- +-------+\n+ plain\n```\n"))
+      "a proposal's signed lines are code, not a diagram"))
 
 (deftest section-proposal-says-where-it-lands
   (let [html (book-build/build (str "## Proposal 2: add to the vision of `books`\n\n+ One line.\n\nRuling: land, amend, or reject.\n\n"
