@@ -1526,3 +1526,9 @@ P2 "This is good. Land it." — landing dispatched. P1 and P3 amended in his wor
 
 ## 2026-10-16 — Run-on code fixed; Subflows republished (v3)
 Cause witnessed: since a865c3, a bare fence without +/- lines under a File: proposal went to text-panels and was joined into one prose paragraph; also hit P3's datom block and the Clojure values. Fix: such a fence renders as code, language from the File: extension; test added; 15 + 19 tests pass. Books 18–20 unaffected. Behavior cause: the a865c3 change was tested on one book only; line sent to Field. Vision line proposed to the living. To 89fbc1.
+
+## 2026-10-16 — 89fbc1 committed the unsigned-fence fix as 3bc1c0. «Code shown as code» block not found by book-fetch twice; republishing from text given in the brief, cause asked.
+
+## 2026-10-16 — «Code shown as code» published (Vdp9uBau3wPHx9NQcheopL). Index wrongly published to a new URL (8A7fL7Qr5CvGE7ZWuFRprw); republishing to MhfwBH. Fetch cause (claim): book-fetch reads text blocks only; unconfirmed, since the block was in a text block of the message.
+
+## 2026-10-16 — Open books republished at MhfwBH (v135), 120 entries, «Code shown as code» first. To 89fbc1.
