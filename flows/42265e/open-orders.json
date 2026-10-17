@@ -162,6 +162,11 @@
       "id": "flow-awake-idle-queued-briefs",
       "work": "Deliver already queued psyche and brief to fresh Flow17c364 through the supported Flow drain path, without replay or direct alternative transport; preserve explicit Astra profile and qualify model/default leave-out ownership with Flow owner.",
       "state": "Core whole-book order native delivery verified once in both targets. Ethos804eb9 had already received its exact original envelope at19:04:45Z and was working; no operator report/replay there. Flow17c364 had two older Ethos revisions ahead; reconciled actual completed turns6/7/8 only after exact current native/session/pane idle qualification. Older revisions delivered as user turns7/8, Core original Psyche envelope as turn9, each whole envelope identical once; sender/order preserved and Astra medium unchanged. Flow queue empty; two newer Ethos queue entries preserved. No new enqueue or direct prompt. Automatic queue-drain repair remains pending. Evidence idle-drain-17c364/whole-book-delivery.json and ethos-whole-book-delivery.json."
+    },
+    {
+      "id": "flow-three-repair-cohort",
+      "work": "Install owner-accepted coherent combination of leave-out harness0.35.13, Codex drain0.35.14 and Claude paste receipt0.35.15, matching Message/meta25 and migrated defaults; serial Prometheus acceptance, fresh closed-store proof, preserved live records and native witnesses. Adopted hooks and per-flow models remain separate gaps.",
+      "state": "Core integration request native delivered once to17c364 as turn10; owner integration review active, no accepted combined source yet. No merge/test/activation of new cohort. Field book rule sourcef2abe483 also awaits paired source pin/regeneration; Primary checker publication requested separately."
     }
   ]
 }
