@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-17T12:33:00.917000+00:00",
+  "updatedUTC": "2026-10-17T17:16:45.503464+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -150,13 +150,18 @@
     {
       "id": "flow-public-registration-adapter",
       "work": "Pair published Primary b9bb012 public hm-register consumer correction with the next checked Home/Flow retry; actual returned runtime identity stays bootstrap-only.",
-      "state": "Flow 0.35.11 / Home fb66c6 active; Message d6146b and protocols unchanged. All 94 Flow source hashes match, three Flow and five Home checks pass. Fresh actual closed production-store proof preserves every table count, new cleanup table empty, zero quarantine. Six profile entries, priorities, 872 providers, 21 defaults and exact native models preserved; all Nexuses active with zero restarts, Codex controllers unchanged. One Stop of completed dedicated Codex proof 3ff3fe passes strict exact-thread ownership: its pane/TUI gone, metaflow Asleep with empty queue, 24 other bindings preserved. No new model turn, send replay or rollback. Prior accepted fresh wake f36e5e remains asleep and empty. Model-validation and pane-event branches excluded. Production interrupted-birth crash not induced; oversized multipart and legacy adoption still open. Evidence restart-03511-cutover/report.md."
+      "state": "Flow 0.35.11 / Home fb66c6 active; Message d6146b and protocols unchanged. All 94 Flow source hashes match, three Flow and five Home checks pass. Fresh actual closed production-store proof preserves every table count, new cleanup table empty, zero quarantine. Six profile entries, priorities, 872 providers, 21 defaults and exact native models preserved; all Nexuses active with zero restarts, Codex controllers unchanged. One Stop of completed dedicated Codex proof 3ff3fe passes strict exact-thread ownership: its pane/TUI gone, metaflow Asleep with empty queue, 24 other bindings preserved. No new model turn, send replay or rollback. Prior accepted fresh wake f36e5e remains asleep and empty. Model-validation and pane-event branches excluded. Production interrupted-birth crash not induced; oversized multipart and legacy adoption still open. Evidence restart-03511-cutover/report.md. Legacy Claude sender d68c82 now imported from exact native/pane/process and caller-owned Bind; actual sends accepted with Core sender attribution and Ethos804eb9 resumed. Root remote Codex adoption remains unproved. Separate Awake idle Codex drain blocker retains briefs."
     },
     {
       "id": "tighten-ship",
       "work": "Joint Field/Mind cleanup: retire-qualified transcript/evidence trimming, source/worktree consolidation, manual OS state replaced declaratively across hosts; per-host space reports for Core books. Mind41fa34 takes no work.",
       "state": "removed38Rustcachetrees64.23GBallocated plus4retiredcommitted transcripts,3manualunitremnants and2ownerreleasedemptyworkspaces onOuranos. Prometheus/Zeus boundedunit/sysctl inventory no manualoverride; otherhosts inaccessible. Heldsource/judgments preserved. Earlier RuntimeBindingOrStore was Rootnested-envelope misuse, corrected plainbody sends reached owners. Mindsource/declarative disposition available; remainingconsolidation andnetworkmetric parity pending.",
       "evidence": "/home/li/private-repos/flow-evidence/42265e/tighten-ship-20261016/report.md"
+    },
+    {
+      "id": "flow-awake-idle-queued-briefs",
+      "work": "Deliver already queued psyche and brief to fresh Flow17c364 through the supported Flow drain path, without replay or direct alternative transport; preserve explicit Astra profile and qualify model/default leave-out ownership with Flow owner.",
+      "state": "Sender d68c82 adoption complete, address Awake.d68c82; actual sender-attributed requests accepted. 17c364 Awake/idle has only startup native turn, two requests queued, no brief in transcript. Ethos804eb9 resumed, psyche records observed, its brief queued while working. QueueTurnEnd is explicitly unsupported in 0.35.11; no synthetic Stop event, new enqueue, restart or brief replay performed. Routed actionable source gap to Mind flow Primary for Flow owner/pane-event recovery seam. Evidence d68c82-sender-binding/report.md."
     }
   ]
 }
