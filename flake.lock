@@ -88,17 +88,18 @@
     "flow": {
       "flake": false,
       "locked": {
-        "lastModified": 1792202991,
-        "narHash": "sha256-oaZLyoheY8p7Dqt9iyUtF/ag1TGCqwGrUk3TI9yR5Vk=",
+        "__final": true,
+        "lastModified": 1792207682,
+        "narHash": "sha256-F3PnaAGxCZHva3n0wC4r1dIPulymKv32S3DKkRo/oyI=",
         "owner": "LiGoldragon",
         "repo": "flow",
-        "rev": "f624723140907e9a4efbc00453ad13f43fd39f65",
+        "rev": "f111805de99494addb7cb3c3f668723373cfa123",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
         "repo": "flow",
-        "rev": "f624723140907e9a4efbc00453ad13f43fd39f65",
+        "rev": "f111805de99494addb7cb3c3f668723373cfa123",
         "type": "github"
       }
     },
