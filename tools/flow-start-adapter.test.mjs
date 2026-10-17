@@ -31,6 +31,19 @@ for(const [head,reasons] of Object.entries({ContextRefused:['ComposerUnavailable
   assert.equal(decoded.reason.variant,head);assert.equal(decoded.wire,text);
  }
 }
+const spawnRefusals = [
+ 'StartRejected.HarnessSpawnRefused.{ ControlCharacter None }',
+ 'StartRejected.HarnessSpawnRefused.{ CommandTooLong None }',
+ 'StartRejected.HarnessSpawnRefused.{ Herdr.{ Some.invalid_agent_argument «agent arguments cannot be encoded safely for the target shell» } Some.{ native-thread Answered Archived } }',
+ 'StartRejected.HarnessSpawnRefused.{ Herdr.{ None «agent wait timed out» } Some.{ native-thread InProgress ArchiveRefused } }'
+];
+for (const wire of spawnRefusals) {
+ const decoded=decodeFlowResponse(wire,'default');
+ assert.equal(decoded.kind,'StartRejected');assert.equal(decoded.reason.variant,'HarnessSpawnRefused');assert.equal(decoded.wire,wire);
+ let submissions=0;
+ assert.throws(()=>submitStart(profile,{run:()=>{submissions++;const e=Error('refused');e.stdout=wire;throw e;}}),error=>error.response?.wire===wire);
+ assert.equal(submissions,1,'spawn refusal must not retry or register');
+}
 assert.deepEqual(decodeFlowResponse('Refused.Locked','default').reason,{atom:'Locked'});
 let calls=[];
 const run=(bin,args,opts)=>{calls.push({bin,args,opts});return bin==='flow'?success:'Registered';};

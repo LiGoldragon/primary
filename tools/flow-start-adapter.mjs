@@ -89,7 +89,7 @@ export function decodeFlowResponse(text, expectedSession) {
     const reason = tree.value;
     const name = reason?.variant ?? reason?.atom;
     const known = tree.variant === 'StartRejected'
-      ? new Set('CompositionRefused LaunchRequestConflict LaunchPersistenceRefused NativeLaunchRefused BindingRefused RegistrationRefused IntentPersistenceRefused OriginUnavailable AddressAwake AddressEnded ContextRefused LeaveOutRefused'.split(' '))
+      ? new Set('CompositionRefused LaunchRequestConflict LaunchPersistenceRefused NativeLaunchRefused BindingRefused RegistrationRefused IntentPersistenceRefused OriginUnavailable AddressAwake AddressEnded ContextRefused LeaveOutRefused HarnessSpawnRefused'.split(' '))
       : new Set('Locked Held Awake Asleep Lapsed Unknown NoLayer NotConfigured Ended OffRoute NoneAbove NotMessage Taken Unidentified Store'.split(' '));
     if (!known.has(name)) throw new Error('unknown typed Flow refusal: ' + wire);
     return {kind:tree.variant, reason, wire};
