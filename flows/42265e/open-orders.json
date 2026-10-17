@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-17T03:06:02.590970+00:00",
+  "updatedUTC": "2026-10-17T03:25:21.672205+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -151,6 +151,12 @@
       "id": "flow-public-registration-adapter",
       "work": "Pair published Primary b9bb012 public hm-register consumer correction with the next checked Home/Flow retry; actual returned runtime identity stays bootstrap-only.",
       "state": "b9 registration and92 spawn-refusal decoding deployed via Primary330/Home5d29; remote tests pass; native hm-register not reached because upstream starts refused"
+    },
+    {
+      "id": "tighten-ship",
+      "work": "Joint Field/Mind cleanup: retire-qualified transcript/evidence trimming, source/worktree consolidation, manual OS state replaced declaratively across hosts; per-host space reports for Core books. Mind41fa34 takes no work.",
+      "state": "first pass removed38 Rust cache trees64.23GB allocated plus4 retired committed transcripts and3 redundant/inactive manual unit files onOuranos; active declarative limit preserved; Prometheus/Zeus bounded inventory no manual overrides; otherhosts inaccessible; source/heldjudgment cleanup pending; report delivery blocked RuntimeBindingOrStore",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/tighten-ship-20261016/report.md"
     }
   ]
 }
