@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-16T22:48:57.149922+00:00",
+  "updatedUTC": "2026-10-17T01:17:50.911494+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -10,12 +10,12 @@
     {
       "id": "context-three-repos",
       "work": "Move outside authored context into three aspect repos; role/raw IDs only; fixed-root Curriculum composer; one Flow starter and thin adapters; generated subagent runtime storage must satisfy no composed files.",
-      "state": "published matched source and checked cutover; activation rolled back on retained launch-attempt decode; old production restored; da2038 owns migration; no native production proof yet"
+      "state": "paired v2 runtime active Home4263f6/Flow0.35.2/Message640c; fresh closed-store count/decode proof and profile preservation pass; first native Start refused at Herdr spawn, owner repair pending; no native startup/wake completion claim"
     },
     {
       "id": "context-layout",
       "work": "Publish matching Field v2 child after source corrections; coordinate Mind/Psyche/Curriculum/Primary consumer cohort, regenerate and activate.",
-      "state": "published matched source and checked cutover; activation rolled back on retained launch-attempt decode; old production restored; da2038 owns migration; no native production proof yet"
+      "state": "paired v2 runtime active Home4263f6/Flow0.35.2/Message640c; fresh closed-store count/decode proof and profile preservation pass; first native Start refused at Herdr spawn, owner repair pending; no native startup/wake completion claim"
     },
     {
       "id": "spirit-system",
@@ -146,6 +146,11 @@
       "id": "important-topic-heartbeat",
       "work": "Design six-hour Codex check for Flow/Ethos/Nexus, owners woken when work is unattended, Opus/Fable guidance.",
       "state": "plain design delivered to Core for book/ruling; no timer enabled"
+    },
+    {
+      "id": "flow-public-registration-adapter",
+      "work": "Pair published Primary b9bb012 public hm-register consumer correction with the next checked Home/Flow retry; actual returned runtime identity stays bootstrap-only.",
+      "state": "remote adapter tests pass, Primary published; native registration unproved because Herdr spawn refused before binding"
     }
   ]
 }
