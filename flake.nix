@@ -35,7 +35,7 @@
       flake = false;
     };
     flow = {
-      url = "github:LiGoldragon/flow/5d5cc1627faef795dc248be574c5e8cd43a15b6d";
+      url = "github:LiGoldragon/flow/b8a5500bb6fc01fdb6ccfc492ca12201f7f462c8";
       flake = false;
     };
     nixpkgs.url = "github:NixOS/nixpkgs/2d1e72b652ee13fd1297641ce735e06416d22827";
