@@ -1,7 +1,7 @@
 {:schema "main-flow-launch/1"
  :first-prompt-template "{{modules}}\n\n# Handover and topic context\n{{handover}}\n\n# Raw psyche records with context\n{{raw-psyche}}\n\n{{topic-context}}\n\nYour first response is a crystallization proposal on {{metaflow}}, using the raw psyche, topic context and modules carried in this prompt itself. Give that proposal in this reply before dispatching any subflow or fetching further evidence. Ground it in his carried words, name the psyche module and the removed and added lines, and use the handover as judgment. Where the carried context leaves a choice unresolved, name that choice in the proposal. After this first reply, use the referenced records and subflows to assess and refine it. The secretary supplies the next bounded work after Field confirms binding."
- :leave-outs {:claude [:ClaudeAiConnectors :ExplorePlanAgents :WorkflowTool :BundledSkills :ScheduleWakeupTool :ReportFindingsTool :ListAgentsTool :CronTools :DeferredTools :ClaudeMd :GitInstructions]
-              :codex [:CodexAgentsMd :CodexSkillListing]}
+ :leave-outs {:claude [:ClaudeAiConnectors :ExplorePlanAgents :WorkflowTool :SkillTool :BundledSkills :ScheduleWakeupTool :ReportFindingsTool :ListAgentsTool :CronTools :DeferredTools :ClaudeMd :GitInstructions]
+              :codex [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}
  :first-response-timeout-seconds 900
  :secondary-bootstrap-context "You carry this topic as its secretary. Begin from its raw psyche and propose the first crystallization for it; coordinate its next bounded work with the Primary after normal binding."
  :repositories {:psyche {:path "/git/github.com/LiGoldragon/psyche-context"
