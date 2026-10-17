@@ -88,7 +88,6 @@
     "flow": {
       "flake": false,
       "locked": {
-        "__final": true,
         "lastModified": 1792207682,
         "narHash": "sha256-F3PnaAGxCZHva3n0wC4r1dIPulymKv32S3DKkRo/oyI=",
         "owner": "LiGoldragon",
