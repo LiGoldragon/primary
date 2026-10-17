@@ -46,27 +46,42 @@ for (const wire of spawnRefusals) {
 }
 assert.deepEqual(decodeFlowResponse('Refused.Locked','default').reason,{atom:'Locked'});
 let calls=[];
-const run=(bin,args,opts)=>{calls.push({bin,args,opts});return bin==='flow'?success:'Registered';};
+const present = JSON.stringify({result:{agent:{pane_id:'w1:p4E',terminal_id:'term_123'}}});
+const gone = JSON.stringify({error:{code:'agent_not_found',message:'target not found'}});
+const run=(bin,args,opts)=>{calls.push({bin,args,opts});return bin==='flow'?success:bin==='herdr'?present:'Registered';};
 assert.equal(submitStart(profile,{run}).flowId,'4201a3');
-assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.deepEqual(calls[0].args,[q]);assert.deepEqual(calls[1].args,['Psyche core Tertiary','child','--session','default','--native-thread',uuid]);
-assert.equal(calls[1].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
+assert.equal(calls.length,3);assert.equal(calls[0].bin,'flow');assert.deepEqual(calls[0].args,[q]);assert.deepEqual(calls[2].args,['Psyche core Tertiary','child','--session','default','--native-thread',uuid]);
+assert.equal(calls[2].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
 const previousIdentity=process.env.HM_REGISTRATION_FLOW_ID;
 process.env.HM_REGISTRATION_FLOW_ID='foreign-parent-identity';calls=[];submitStart(profile,{run});
-assert.equal(calls[1].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
+assert.equal(calls[2].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
 assert.equal(process.env.HM_REGISTRATION_FLOW_ID,'foreign-parent-identity');
 if(previousIdentity===undefined)delete process.env.HM_REGISTRATION_FLOW_ID;else process.env.HM_REGISTRATION_FLOW_ID=previousIdentity;
 calls=[];const noRoute=submitStart(profile,{run:bin=>{calls.push(bin);return unavailable;}});assert.equal(noRoute.flowId,'4201a3');assert.equal(noRoute.route,null);assert.deepEqual(calls,['flow']);
 calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);const error=Error('exit1');error.stdout='StartRejected.ContextRefused.SystemTooLarge';throw error;}}),/StartRejected.ContextRefused.SystemTooLarge/);assert.deepEqual(calls,['flow']);
 for (const reply of ['LaunchPending.{ unknown }','StartRejected.AddressAwake','StartAmbiguous.{ unknown }']) {calls=[];assert.throws(()=>submitStart(profile,{run:(bin,args)=>{calls.push(bin);return reply;}}));assert.deepEqual(calls,['flow']);}
 calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);throw Error('transport failed');}}),/inspect LaunchStatus/);assert.deepEqual(calls,['flow']);
-calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);if(bin==='flow')return success;throw Error('register failed');}}),/without starting another flow/);assert.deepEqual(calls,['flow','hm-register']);
+calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);if(bin==='flow')return success;if(bin==='herdr')return present;throw Error('register failed');}}),/without starting another flow/);assert.deepEqual(calls,['flow','herdr','hm-register','herdr']);
+
+for (const throws of [false,true]) {
+ calls=[];
+ const result=submitStart(profile,{run:bin=>{calls.push(bin);if(bin==='flow')return success;if(bin==='herdr'){if(!throws)return gone;const e=Error('missing');e.stdout=gone;throw e;}throw Error('dead pane must not register');}});
+ assert.equal(result.flowId,'4201a3');assert.equal(result.route,null);assert.equal(result.reachability,'flow-queue-only');assert.equal(result.registered,false);assert.equal(result.historicalRoute.pane,'w1:p4E');assert.deepEqual(calls,['flow','herdr']);
+}
+calls=[];let inspections=0;
+const raced=submitStart(profile,{run:bin=>{calls.push(bin);if(bin==='flow')return success;if(bin==='herdr')return ++inspections===1?present:gone;throw Error('pane closed during registration');}});
+assert.equal(raced.reachability,'flow-queue-only');assert.deepEqual(calls,['flow','herdr','hm-register','herdr']);
+for (const response of ['not JSON',JSON.stringify({error:{code:'transport_error'}}),JSON.stringify({result:{agent:{pane_id:'other',terminal_id:'term_123'}}}),JSON.stringify({result:{agent:{pane_id:'w1:p4E',terminal_id:'reused'}}})]) {
+ calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);return bin==='flow'?success:response;}}),/without starting another flow/);assert.equal(calls.filter(x=>x==='flow').length,1);assert(!calls.includes('hm-register'));
+}
+
 const workspace=fs.mkdtempSync(path.join(os.tmpdir(),'flow-adapter-'));try {
  fs.mkdirSync(path.join(workspace,'flows','4201a3'),{recursive:true});
  const brief=path.join(workspace,'task.txt'),meta=path.join(workspace,'declaration.edn');fs.writeFileSync(brief,'READ THIS TASK ONCE');fs.writeFileSync(meta,'{:aspect :Psyche :topic :core :layer :Tertiary}');
  const config={shared:{'first-response-timeout-seconds':900,'first-prompt-template':'OUTSIDE CONTEXT MUST NOT BE USED'},aspects:[{aspect:'Psyche',harness:'claude',voices:[{layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium'}],modules:{system:['spirit-core','intent-psyche'],user:['compensation-main-flow']}}],metaflow:{metaflows:[{aspect:'Psyche',topic:'Core',layer:'Tertiary',modules:[], 'user-modules':[],'topic-context':'OUTSIDE CONTEXT MUST NOT BE USED'}]}};
  const o=parseArgs(['--brief',brief,'--layer','Tertiary','--root','--metaflow',meta,'--workspace',workspace,'--topic','core','--launch-request-id','proof-1'],'claude');calls=[];
- launchMain(o,'claude',{config,run:(bin,args)=>{calls.push({bin,args});return bin==='flow'?success:'registered';},log:()=>{}});
- assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.match(calls[0].args[0],/Address\.\{ Psyche core Tertiary \}/);assert.match(calls[0].args[0],/READ THIS TASK ONCE/);assert.doesNotMatch(calls[0].args[0],/OUTSIDE CONTEXT/);
+ launchMain(o,'claude',{config,run:(bin,args)=>{calls.push({bin,args});return bin==='flow'?success:bin==='herdr'?present:'registered';},log:()=>{}});
+ assert.equal(calls.length,3);assert.equal(calls[0].bin,'flow');assert.match(calls[0].args[0],/Address\.\{ Psyche core Tertiary \}/);assert.match(calls[0].args[0],/READ THIS TASK ONCE/);assert.doesNotMatch(calls[0].args[0],/OUTSIDE CONTEXT/);
  const continuation=JSON.parse(fs.readFileSync(path.join(workspace,'flows','4201a3','continuation.json')));assert.equal(continuation.topic,'core');assert.equal(continuation.nativeSessionId,uuid);
  fs.unlinkSync(path.join(workspace,'flows','4201a3','continuation.json'));
  fs.mkdirSync(path.join(workspace,'flows','abcdef'));
@@ -75,14 +90,14 @@ const workspace=fs.mkdtempSync(path.join(os.tmpdir(),'flow-adapter-'));try {
  calls=[];
  launchMain({...o,layer:'Primary'},'claude',{config,run:(bin,args)=>{
    calls.push({bin,args});
-   if(bin==='herdr')return JSON.stringify({result:{agents:[]}});
+   if(bin==='herdr')return args.includes('list')?JSON.stringify({result:{agents:[]}}):present;
    if(bin==='flow')return args[0].includes('core Secondary')?success.replace('4201a3 '+uuid,'abcdef '+uuid):success;
    return 'registered';
  },log:()=>{}});
- assert.deepEqual(calls.map(c=>c.bin),['herdr','flow','hm-register','flow','hm-register']);
+ assert.deepEqual(calls.map(c=>c.bin),['herdr','flow','herdr','hm-register','flow','herdr','hm-register']);
  assert.match(calls[1].args[0],/proof-1-secondary/);
  assert.match(calls[1].args[0],/core Secondary/);
- assert.match(calls[3].args[0],/core Primary/);
+ assert.match(calls[4].args[0],/core Primary/);
  assert.doesNotMatch(calls[1].args[0],/OUTSIDE CONTEXT/);
  assert.throws(()=>parseArgs(['--brief',brief,'--layer','Tertiary','--root','--metaflow',meta,'--system-prompt-file',brief],'claude'),/unsupported/);
 } finally {fs.rmSync(workspace,{recursive:true,force:true});}

@@ -120,6 +120,27 @@ export function launchedResponse(text, expectedSession) {
   const {kind,wire,...launched} = result; return launched;
 }
 
+function returnedPaneGone(launched, run) {
+  const route = launched.route;
+  let raw;
+  try {
+    raw = run('herdr', ['--session', route.session, 'agent', 'get', route.pane], {encoding:'utf8', timeout:15000});
+  } catch (error) {
+    if (!error.stdout) throw error;
+    raw = error.stdout;
+  }
+  const reply = JSON.parse(raw);
+  if (reply.error?.code === 'agent_not_found' && !reply.result) return true;
+  const agent = reply.result?.agent;
+  if (reply.error || !agent || agent.pane_id !== route.pane || agent.terminal_id !== route.terminal) {
+    throw new Error('Started ' + launched.flowId + '; returned pane identity is unavailable or changed');
+  }
+  return false;
+}
+function queueOnly(launched) {
+  return {...launched, historicalRoute:launched.route, route:null, reachability:'flow-queue-only', registered:false};
+}
+
 export function submitStart(profile, {run = execFileSync, timeout = 900000} = {}) {
   const query = startRequest(profile);
   if (Buffer.byteLength(query, 'utf8') > 131071) throw new Error('inline Start exceeds the operating system argument limit; no launch attempted');
@@ -137,10 +158,20 @@ export function submitStart(profile, {run = execFileSync, timeout = 900000} = {}
     if (cause.response) throw cause;
     throw new Error(`Flow Start response for ${profile.requestId} could not be decoded: ${String(raw).trim()}; inspect LaunchStatus before another start`, {cause});
   }
-  if (!launched.route) return launched;
+  if (!launched.route) return queueOnly(launched);
+  try {
+    if (returnedPaneGone(launched, run)) return queueOnly(launched);
+  } catch (cause) {
+    throw new Error(`Flow ${launched.flowId} started; pane binding unknown. Repair this route without starting another flow`, {cause});
+  }
   try {
     run('hm-register', [profile.aspect + ' ' + profile.topic + ' ' + profile.layer, launched.route.name, '--session', launched.route.session, '--native-thread', launched.nativeSessionId], {encoding: 'utf8', timeout: 60000, env: {...process.env, HM_REGISTRATION_FLOW_ID: launched.flowId}});
-  } catch (cause) { throw new Error(`Flow ${launched.flowId} started; messenger registration failed. Repair this route without starting another flow`, {cause}); }
+  } catch (cause) {
+    // The intended Stop may close the pane between the preflight and register.
+    // Check that precise disappearance once; never repeat Start or register.
+    try { if (returnedPaneGone(launched, run)) return queueOnly(launched); } catch {}
+    throw new Error(`Flow ${launched.flowId} started; messenger registration failed. Repair this route without starting another flow`, {cause});
+  }
   return launched;
 }
 
@@ -195,7 +226,7 @@ export function launchMain(o, harness, {run = execFileSync, config = loadLaunchC
   const recordStarted = (result, lineage, requestId) => {
     const dir = path.join(flowsRoot, result.flowId);
     if (!fs.statSync(dir).isDirectory()) throw new Error('Started ' + result.flowId + '; Flow directory missing; repair without relaunch');
-    const record = {flowId: result.flowId, ...lineage, launchRequestId: requestId, nativeSessionId: result.nativeSessionId, route: result.route};
+    const record = {flowId: result.flowId, ...lineage, launchRequestId: requestId, nativeSessionId: result.nativeSessionId, route: result.route, reachability: result.reachability, historicalRoute: result.historicalRoute};
     fs.writeFileSync(path.join(dir, 'continuation.json'), JSON.stringify(record) + '\n', {flag:'wx', mode:0o600});
   };
   if (o.layer === 'Primary') {
@@ -225,6 +256,6 @@ export function launchMain(o, harness, {run = execFileSync, config = loadLaunchC
   log(`Starting ${profile.aspect} ${profile.topic} ${profile.layer}; request ${profile.requestId}`);
   const result = submitStart(profile, {run, timeout: seconds * 1000});
   recordStarted(result,continuation,profile.requestId);
-  log(`Started { ${profile.aspect} ${profile.topic} ${profile.layer} ${result.flowId} }; ${result.route ? 'registered ' + result.route.name : 'route Unavailable; not registered'}`);
+  log(`Started { ${profile.aspect} ${profile.topic} ${profile.layer} ${result.flowId} }; ${result.route ? 'registered ' + result.route.name : 'reachable only through Flow queue; not registered'}`);
   return result;
 }

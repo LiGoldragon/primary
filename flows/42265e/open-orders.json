@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-17T04:13:51.427718+00:00",
+  "updatedUTC": "2026-10-17T05:08:11.734510+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -10,12 +10,12 @@
     {
       "id": "context-three-repos",
       "work": "Move outside authored context into three aspect repos; role/raw IDs only; fixed-root Curriculum composer; one Flow starter and thin adapters; generated subagent runtime storage must satisfy no composed files.",
-      "state": "paired0.35.4 runtime active; all5Homechecks, freshclosedstore counts/decode, sixentryprofile/872providers and21defaultreplacement readback pass. NativeClaude36modules/titleproved but pasted_content wrapper trips receipt; Codex34modules/Lunalowanswer proved but refuses afterRegistrationAcknowledged. Bothfailedattempts retained withoutreplay; Flowowner repairing; freshwake held."
+      "state": "paired0.35.5 active; all5checks/store/profile/21defaults pass. Claude36modulesHaikumedium and Codex34modulesLunalow nativeStarted/answers proved. ClaudeautoSleep outran legacyregistration; adapterexactmissingpane guard remotelytested pendingpublication. Codexlegacyregistration passed. Mindowns sleepingaddressMessagebridge; freshwake held for owner0.35.6 Codexpanecheck. No replay."
     },
     {
       "id": "context-layout",
       "work": "Publish matching Field v2 child after source corrections; coordinate Mind/Psyche/Curriculum/Primary consumer cohort, regenerate and activate.",
-      "state": "paired0.35.4 runtime active; all5Homechecks, freshclosedstore counts/decode, sixentryprofile/872providers and21defaultreplacement readback pass. NativeClaude36modules/titleproved but pasted_content wrapper trips receipt; Codex34modules/Lunalowanswer proved but refuses afterRegistrationAcknowledged. Bothfailedattempts retained withoutreplay; Flowowner repairing; freshwake held."
+      "state": "paired0.35.5 active; all5checks/store/profile/21defaults pass. Claude36modulesHaikumedium and Codex34modulesLunalow nativeStarted/answers proved. ClaudeautoSleep outran legacyregistration; adapterexactmissingpane guard remotelytested pendingpublication. Codexlegacyregistration passed. Mindowns sleepingaddressMessagebridge; freshwake held for owner0.35.6 Codexpanecheck. No replay."
     },
     {
       "id": "spirit-system",
@@ -130,7 +130,7 @@
     {
       "id": "flow-0346",
       "work": "Home pin Flowe8cddd4 title/storedfreshwakebundle; serialcheck/deploy/readback",
-      "state": "superseded by active0.35.3; title/fresh-wake system source included but complete startup and Refresh wake remain unproved"
+      "state": "superseded by active0.35.5; titles andfullstartup nativeproved; freshwake acceptance remains held"
     },
     {
       "id": "comment-relay-subagent",
@@ -150,7 +150,7 @@
     {
       "id": "flow-public-registration-adapter",
       "work": "Pair published Primary b9bb012 public hm-register consumer correction with the next checked Home/Flow retry; actual returned runtime identity stays bootstrap-only.",
-      "state": "b9 registration and92 spawn-refusal decoding deployed via Primary330/Home5d29; remote tests pass; native hm-register not reached because upstream starts refused"
+      "state": "paired0.35.5 active; all5checks/store/profile/21defaults pass. Claude36modulesHaikumedium and Codex34modulesLunalow nativeStarted/answers proved. ClaudeautoSleep outran legacyregistration; adapterexactmissingpane guard remotelytested pendingpublication. Codexlegacyregistration passed. Mindowns sleepingaddressMessagebridge; freshwake held for owner0.35.6 Codexpanecheck. No replay."
     },
     {
       "id": "tighten-ship",
