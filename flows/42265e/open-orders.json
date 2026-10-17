@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-17T01:24:38.451771+00:00",
+  "updatedUTC": "2026-10-17T03:06:02.590970+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -10,12 +10,12 @@
     {
       "id": "context-three-repos",
       "work": "Move outside authored context into three aspect repos; role/raw IDs only; fixed-root Curriculum composer; one Flow starter and thin adapters; generated subagent runtime storage must satisfy no composed files.",
-      "state": "paired v2 runtime active; Claude Herdr raw multiline rejection and Codex attach-readiness timeout block startup; Codex34 whole modules/answer witnessed but developer exclusion fails; Flow owner repairing, no replay or completion claim"
+      "state": "paired0.35.3 runtime active with closed-store/profile proofs; full native acceptance blocked by no-Skill Claude naming, missing Codex session binding and immutable default updates; no replay; Flow owner repairing"
     },
     {
       "id": "context-layout",
       "work": "Publish matching Field v2 child after source corrections; coordinate Mind/Psyche/Curriculum/Primary consumer cohort, regenerate and activate.",
-      "state": "paired v2 runtime active; Claude Herdr raw multiline rejection and Codex attach-readiness timeout block startup; Codex34 whole modules/answer witnessed but developer exclusion fails; Flow owner repairing, no replay or completion claim"
+      "state": "paired0.35.3 runtime active with closed-store/profile proofs; full native acceptance blocked by no-Skill Claude naming, missing Codex session binding and immutable default updates; no replay; Flow owner repairing"
     },
     {
       "id": "spirit-system",
@@ -130,12 +130,12 @@
     {
       "id": "flow-0346",
       "work": "Home pin Flowe8cddd4 title/storedfreshwakebundle; serialcheck/deploy/readback",
-      "state": "queued"
+      "state": "superseded by active0.35.3; title/fresh-wake system source included but complete startup and Refresh wake remain unproved"
     },
     {
       "id": "comment-relay-subagent",
       "work": "Tertiary delegates book selection; Curriculum composes comment-relay from Field role modules; subflow owns envelope/send/ledger; general sending rule via Mind.",
-      "state": "Field95121c/Curriculumd7bb137 published, remote composition passed; matching Primary pins prepared for publisher; native transport/caller guard and activation remain Flow work"
+      "state": "Field951/Curriculumd7 source selected in active runtime; native role transport and actual caller/model/nested guard remain held"
     },
     {
       "id": "fresh-mind-flow-astra",
@@ -150,7 +150,7 @@
     {
       "id": "flow-public-registration-adapter",
       "work": "Pair published Primary b9bb012 public hm-register consumer correction with the next checked Home/Flow retry; actual returned runtime identity stays bootstrap-only.",
-      "state": "remote adapter tests pass, Primary published; native registration unproved because Herdr spawn refused before binding"
+      "state": "b9 registration and92 spawn-refusal decoding deployed via Primary330/Home5d29; remote tests pass; native hm-register not reached because upstream starts refused"
     }
   ]
 }
