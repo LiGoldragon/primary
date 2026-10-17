@@ -139,7 +139,7 @@ export function submitStart(profile, {run = execFileSync, timeout = 900000} = {}
   }
   if (!launched.route) return launched;
   try {
-    run('hm-register', [launched.flowId, launched.route.name, '--session', launched.route.session, '--native-thread', launched.nativeSessionId, '--aspect', profile.aspect, '--topic', profile.topic, '--layer', profile.layer], {encoding: 'utf8', timeout: 60000});
+    run('hm-register', [profile.aspect + ' ' + profile.topic + ' ' + profile.layer, launched.route.name, '--session', launched.route.session, '--native-thread', launched.nativeSessionId], {encoding: 'utf8', timeout: 60000, env: {...process.env, HM_REGISTRATION_FLOW_ID: launched.flowId}});
   } catch (cause) { throw new Error(`Flow ${launched.flowId} started; messenger registration failed. Repair this route without starting another flow`, {cause}); }
   return launched;
 }

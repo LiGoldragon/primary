@@ -35,7 +35,13 @@ assert.deepEqual(decodeFlowResponse('Refused.Locked','default').reason,{atom:'Lo
 let calls=[];
 const run=(bin,args,opts)=>{calls.push({bin,args,opts});return bin==='flow'?success:'Registered';};
 assert.equal(submitStart(profile,{run}).flowId,'4201a3');
-assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.deepEqual(calls[0].args,[q]);assert.deepEqual(calls[1].args,['4201a3','child','--session','default','--native-thread',uuid,'--aspect','Psyche','--topic','core','--layer','Tertiary']);
+assert.equal(calls.length,2);assert.equal(calls[0].bin,'flow');assert.deepEqual(calls[0].args,[q]);assert.deepEqual(calls[1].args,['Psyche core Tertiary','child','--session','default','--native-thread',uuid]);
+assert.equal(calls[1].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
+const previousIdentity=process.env.HM_REGISTRATION_FLOW_ID;
+process.env.HM_REGISTRATION_FLOW_ID='foreign-parent-identity';calls=[];submitStart(profile,{run});
+assert.equal(calls[1].opts.env.HM_REGISTRATION_FLOW_ID,'4201a3');
+assert.equal(process.env.HM_REGISTRATION_FLOW_ID,'foreign-parent-identity');
+if(previousIdentity===undefined)delete process.env.HM_REGISTRATION_FLOW_ID;else process.env.HM_REGISTRATION_FLOW_ID=previousIdentity;
 calls=[];const noRoute=submitStart(profile,{run:bin=>{calls.push(bin);return unavailable;}});assert.equal(noRoute.flowId,'4201a3');assert.equal(noRoute.route,null);assert.deepEqual(calls,['flow']);
 calls=[];assert.throws(()=>submitStart(profile,{run:bin=>{calls.push(bin);const error=Error('exit1');error.stdout='StartRejected.ContextRefused.SystemTooLarge';throw error;}}),/StartRejected.ContextRefused.SystemTooLarge/);assert.deepEqual(calls,['flow']);
 for (const reply of ['LaunchPending.{ unknown }','StartRejected.AddressAwake','StartAmbiguous.{ unknown }']) {calls=[];assert.throws(()=>submitStart(profile,{run:(bin,args)=>{calls.push(bin);return reply;}}));assert.deepEqual(calls,['flow']);}
