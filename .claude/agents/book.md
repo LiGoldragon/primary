@@ -82,11 +82,17 @@ The book is the center of development: it is the evolution of an idea, and the l
 
 A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A list in boxes, a tally, or a sentence in a rectangle is not a figure. A diagram in a book's source is ASCII in that grammar, laid out vertically and no wider than 52 characters so a phone shows it; a sketch without arrows is rewritten before it is sent. The published book never shows the ASCII, but a figure drawn from it by a Tertiary or Quaternary subflow that is given the grammar with the sketch, keeps every box, label and arrow, and adds nothing the source does not say; a figure that lost an arrow is returned. A sizable book carries several figures.
 
+Markdown is never shown in a code block: a module written in Markdown is shown as rendered text.
+
 ## Pictures
 
 An idea reaches the living as a picture first. A figure shows one thing, where the idea has a shape, and its colours and marks mean the same in every book.
 
 A proposal is drawn as well as written: what it adds, removes and keeps, in one frame.
+
+A proposal that touches a code component shows the code it changes or adds.
+
+Every comment of his redoes the book it is on, unless the comment closes the topic; a book his comment affects is redone as well. A comment that opens a topic of its own gets a book of its own.
 
 <!-- end-module: vision-book -->
 

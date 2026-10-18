@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-17T17:16:45.503464+00:00",
+  "updatedUTC": "2026-10-18T19:20:18.287479+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -171,7 +171,7 @@
     {
       "id": "lean-fable-ethos-volume1",
       "work": "Fresh Psyche ethos Primary, configured claude-fable-5-1 medium, own system prompt and WHOLE tools; no stripping. Explicit existing submitStart profile, seven selected SYSTEM roots, USER IDs empty, leaveOuts:[], predecessor:null, remembered:[]. Whole frozen Opus volume1 source plus all cited Ethos vision records as task input. Return book source and ASCII figures only. Later comparable Claude/Codex provider first-request evidence and configurable unruled answerer.",
-      "state": "Wait only Core frozen Opus source path and launch instruction. Installed current cohort Home56d9a9c7/Curriculum2ec286/Field8ef; actual live15SYSTEM/0USER composition verifies all source hashes/whole bodies once and unchanged payload1c9b876112153762a349487940af6820ada1fda8cc971972a8708520af8819c2. Whole tools/leaveOuts[] contract unchanged. No Fable/native Start; actual fresh tool/provider evidence still required.",
+      "state": "Wait only Core frozen Opus source path and launch instruction. Current Home c31c1ce8/Curriculum2ec286/Field8ef/Psycheb938. Fresh live15SYSTEM/0USER source/body hashes verified in psyche-pin-b938-20261018/live-lean-proof.json; historical payload1c9b8761 superseded. No Fable/native Start; whole tools/leaveOuts[] and actual provider evidence still required.",
       "evidence": "/home/li/private-repos/flow-evidence/42265e/lean-proof-handoff-20261018/"
     },
     {
@@ -185,6 +185,24 @@
       "work": "Open Illustrator access, regenerate stale book agent through Curriculum, align current context pin and include compensation-book in Psyche composition; preserve disputed geometry pending Fable.",
       "state": "Installed Home56d9a9c7: live Curriculum2ec286/Field8ef. All5 deployment checks pass, six-entry profile/priorities/872 foreign providers preserved, Flow/Message/three Codex controller PIDs and Flow config unchanged. Illustrator Any policy composed live with unchanged sonnet/medium/tools[] (universal callers, not book-author authentication). .claude/agents/book.md regenerated only from current verified Curriculum stdout; stale flashbook/context-as-figures and Publisher routing absent. Psyche default35-module closure has compensation-book once, no retired flashbook dependency. Existing804eb9 not reloaded. Native Illustrator consumer blocked:17c364 lacks thread capacity, no supported close-thread tool, successor requested; Core instructions delivered once through native21. Disputed geometry blobs unchanged.",
       "evidence": "/home/li/private-repos/flow-evidence/42265e/book-author-route-20261018/"
+    },
+    {
+      "id": "mind-topic-secondaries",
+      "work": "Launch Mind ethos, context, nexus, books, flow Secondaries, in that order, each answering before the next; declared layer model/effort, design/review only, existing authors retained.",
+      "state": "Done: ordered native answers verified before next birth: ethos66f2bb, context877549, nexusa6689e, books3c49f5, flow442bd9. All gpt-6.1-sol medium, whole modules once, scope design/review only. Existing authors and two unknown legacy rows preserved.",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/mind-topic-ownership-20261018/"
+    },
+    {
+      "id": "psyche-main-b938-deploy",
+      "work": "Pin Psyche b938651 in Home, deploy current vision, correct three retired /skills variable paths.",
+      "state": "Done: Home c31c1ce8 published and installed; live Psyche b938651, new Chronos module and lean15SYSTEM/0USER proof verified. Five checks, six entries/priorities/872 providers preserved; only Curriculum restarted. Variables and generated book updated.",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/psyche-pin-b938-20261018/"
+    },
+    {
+      "id": "illustrator-geometry-single-reviewed-change",
+      "work": "Carry proposed line \"A figure uses no dashed or dotted mark unless its sketch has one.\" with keep-every-box ruling in What a book is, 2nd edition, Proposal6; role/illustrator-faithfulness.md changes once.",
+      "state": "Proposed, held with existing disputed geometry. No source edit before combined ruling.",
+      "source": "Psyche Core Secondary Oct18 message, fault observed twice"
     }
   ]
 }
