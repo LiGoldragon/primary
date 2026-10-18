@@ -11,7 +11,7 @@
                        :ref "e3fcd4f36d4f75e8c546e5e9596f5a48a5d8592b"
                        :skills "."}
                 :field {:path "/git/github.com/LiGoldragon/field-context"
-                        :ref "95121c6727052941f7e5f0c1125f8118d737e561"
+                        :ref "8ef1ca40221d948e1364cbe5493d32148c5ad2cd"
                         :skills "."}}
  :tools {:claude [:read :edit :write :bash :web]
          :codex [:read :edit :write :bash :web]
