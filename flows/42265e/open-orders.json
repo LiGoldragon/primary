@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-18T22:09:57.703076+00:00",
+  "updatedUTC": "2026-10-18T23:38:49.679917+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -213,8 +213,9 @@
     {
       "id": "herdr-session-corrections-after-zeus",
       "work": "After Zeus: relabel wK,wT,w11-w15 workspaces to exact flow titles; stop proof75f438 and close workspace; close retired da2038/65f93a panes; qualify current work of chronos984e88/504f11 without retiring either; launch configured Opus successor for Psyche flow Secondary17c364 with log/handover, retire predecessor only after answer.",
-      "state": "READY after completedZeus/auto-open. Read-only Herdr identity snapshot and current Chronos logs collected; no session changes yet. Source17handover file absent; log/openorders retained for qualified successor handover.",
-      "source": "Psyche Core Secondary Oct18 latest session fixes order"
+      "state": "DONE: requested labels corrected;75f438 stopped/workspace removed; retiredda2038/65f93a panes closed. Core authorized984e88 retirement after logcheck, done;504f11 kept. DeclaredOpus medium successor aa034f accepted handover,35modules accounted, exactnative registration/lineage recorded;17c364 pane gone. Replace settles firstassistant/toolrecord before finalanswer: concrete limitation reported.",
+      "source": "Psyche Core Secondary Oct18 latest session fixes order",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/session-corrections-20261018/"
     },
     {
       "id": "claude-artifact-auto-open-disable",
@@ -225,8 +226,9 @@
     {
       "id": "mind-topic-message-identification",
       "work": "After Zeus and auto-open deploy, qualify Unidentified sends involving new Mind topic Secondaries (at least ethos and flow), repair supported bindings/routing and report exact names. Distinguish caller identification from recipient naming; no spoof/adoption guesses.",
-      "state": "READY after completedZeus/auto-open. Recipient identities/fullnativeUUIDs retained; no route mutations yet. Unidentified must be qualified as caller identity, not assumed recipientname failure.",
-      "source": "Psyche Core Secondary latest Oct18 message"
+      "state": "Recipient names resolve. Exact41fa34 failures retained: sharedremoteappserver tools lack supportedper-thread senderattribution; no spoof/whole-serverBind/retry. Sourceowner transition requested throughMindCorePrimary; repair remainsBLOCKED on supportedmechanism. Core original Mindethos queue deliveredonce with sender/body preserved, queueempty.",
+      "source": "Psyche Core Secondary latest Oct18 message",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/session-corrections-20261018/mind-ethos-delivery-proof.json"
     }
   ]
 }
