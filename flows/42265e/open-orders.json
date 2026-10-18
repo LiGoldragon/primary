@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-18T19:20:18.287479+00:00",
+  "updatedUTC": "2026-10-18T22:09:57.703076+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -203,6 +203,30 @@
       "work": "Carry proposed line \"A figure uses no dashed or dotted mark unless its sketch has one.\" with keep-every-box ruling in What a book is, 2nd edition, Proposal6; role/illustrator-faithfulness.md changes once.",
       "state": "Proposed, held with existing disputed geometry. No source edit before combined ruling.",
       "source": "Psyche Core Secondary Oct18 message, fault observed twice"
+    },
+    {
+      "id": "zeus-current-bird-update",
+      "work": "Living ordered current Zeus CriomOS+Home, newCodexserver0.163 asBird, andenableableCloudremotecontrol; preserveClaude/auth, replacement/dropof3Codexrecoveryconnections explicitlyauthorized.",
+      "state": "DONE: Zeus generation79, CriomOS3951255/Home151760, Lojix120Succeeded. Both Bird/Li Home services active/success and currentGCroots match fullprojection. Bird defaultCLI and nextserver0.163 PID258204; matchingnativeproxy verifiedWebSocket initialize+loadedlist passes, no modelturn. Same home/socket/auth/transcripts; 3authorizedrecoveryclients gone; SQLitecoldbackups retained. Messageproducer gate fixed, packagedcheck+fullprojection pass; exactpartial119generatedlinks backedup/removed, legacydaemonuntouched. Legacy stable0.153.4 preserved peracceptedplan. ClaudeRCworking perliving, noFieldlogin/token/Clauderestart.",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/zeus-update-20261018/"
+    },
+    {
+      "id": "herdr-session-corrections-after-zeus",
+      "work": "After Zeus: relabel wK,wT,w11-w15 workspaces to exact flow titles; stop proof75f438 and close workspace; close retired da2038/65f93a panes; qualify current work of chronos984e88/504f11 without retiring either; launch configured Opus successor for Psyche flow Secondary17c364 with log/handover, retire predecessor only after answer.",
+      "state": "READY after completedZeus/auto-open. Read-only Herdr identity snapshot and current Chronos logs collected; no session changes yet. Source17handover file absent; log/openorders retained for qualified successor handover.",
+      "source": "Psyche Core Secondary Oct18 latest session fixes order"
+    },
+    {
+      "id": "claude-artifact-auto-open-disable",
+      "work": "Deploy Mind pending CLAUDE_CODE_ARTIFACT_AUTO_OPEN=0 Home child to Ouranos li immediately, independently of Zeus; include Bird in Zeus Home.",
+      "state": "DONE: Ouranos Home session env and native managedHexis merge accepted; Zeus Bird/Li activated Home151760 declarations value0/modealways. AllOuranos priorenvlines/892executables/6servicestates preserved. Current settings0 onbothhosts, noClaude restart. Existingprocess behavior not inferred fromsource; Core owns liveuser setting.",
+      "source": "Psyche Core Secondary latest Oct18 living order"
+    },
+    {
+      "id": "mind-topic-message-identification",
+      "work": "After Zeus and auto-open deploy, qualify Unidentified sends involving new Mind topic Secondaries (at least ethos and flow), repair supported bindings/routing and report exact names. Distinguish caller identification from recipient naming; no spoof/adoption guesses.",
+      "state": "READY after completedZeus/auto-open. Recipient identities/fullnativeUUIDs retained; no route mutations yet. Unidentified must be qualified as caller identity, not assumed recipientname failure.",
+      "source": "Psyche Core Secondary latest Oct18 message"
     }
   ]
 }
