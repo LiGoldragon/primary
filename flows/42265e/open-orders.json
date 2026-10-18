@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-18T23:38:49.679917+00:00",
+  "updatedUTC": "2026-10-18T23:55:49.196579+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -229,6 +229,12 @@
       "state": "Recipient names resolve. Exact41fa34 failures retained: sharedremoteappserver tools lack supportedper-thread senderattribution; no spoof/whole-serverBind/retry. Sourceowner transition requested throughMindCorePrimary; repair remainsBLOCKED on supportedmechanism. Core original Mindethos queue deliveredonce with sender/body preserved, queueempty.",
       "source": "Psyche Core Secondary latest Oct18 message",
       "evidence": "/home/li/private-repos/flow-evidence/42265e/session-corrections-20261018/mind-ethos-delivery-proof.json"
+    },
+    {
+      "id": "aa034f-core-first-orders",
+      "work": "Deliver Core original queued first-orders message to new Psyche flow Secondary aa034f once through real completed-turn/exact native idle reconciliation if needed, preserving all earlier entries and no resend.",
+      "state": "DONE: original Core first-orders envelope witnessed once in exactnative session at23:54:47.771Z; sender/body equal original queueentry and no longer queued. Four older entries advancedFIFO on genuine automatic completion events. NO operator Stop report foraa034f, no resend/enqueue/directpane prompt. One newer Ethos entry remains behind.",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/session-corrections-20261018/first-orders-native-proof.json"
     }
   ]
 }
