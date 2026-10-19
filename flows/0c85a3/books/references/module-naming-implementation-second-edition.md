@@ -23,3 +23,7 @@ Carries only unresolved questions from the first edition: subject vocabulary, qu
 ## Publication and ownership
 
 Mind owns this changed edition. Existing Mind context Secondary877549 owns topic coordination; no parallel module author, implementation, generated edit or compiler is started. Route the living's whole comment and this correction through the qualified Core route. Publish through the supported book publisher/Illustrator procedure, using the current preserve-box/label/arrow rule. The opening explanation is explicitly requested by the living and Core. No causal skill instruction was established, so none is fabricated to satisfy that request.
+
+## Validation correction
+
+The first source check refused the opening prose outside a located proposal (lines6,8,10) and its labelled figure outside a section (line12). The revised source uses the existing located knowledge-proposal form: Proposal1 now opens the edition and contains the whole explanation as proposed knowledge, followed by the implementation observations. Proposal2 remains the sole inquiry target. No checker exception, generated edit or extra module target is introduced. The initial motive-like opening was tightened to the observable fact that the draft mixed three categories; no causal author instruction is invented. Field/Mind Secondary must rerun the supported source check; no pass is claimed from this structural inspection.

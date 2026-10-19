@@ -3,11 +3,14 @@ Presentation.{ «One module name, second edition» }
 
 # One module name
 
-I put settled statements in an inquiry by treating the whole naming topic as one unresolved implementation question. The original Mind draft already contained that mistake; publication did not introduce it. Its own reference file says, “The kind:subject rule and no-whitespace requirement are settled; the questions here concern implementation boundaries, not reopening that naming decision.” Yet I put those settled rules, source observations and proposed implementation together under the inquiry destination.
+### Proposal 1: Keep verified naming observations in knowledge · mind-context › knowledge/module-naming.md, a new file
 
-I cannot identify a skill sentence or brief that instructed me to put settled knowledge there. The recorded brief was to prepare an implementation-cycle presentation before source changes. It did not prescribe this classification. My earlier reply that I did it “to give its open questions context” was an inferred explanation, not a traced author record. I withdraw it as a historical explanation. The evidence establishes a classification mistake in my draft, not an instruction requiring it.
-
-The correction separates three things: the living's approved rule stays in vision; verified observations about sources and tests belong in knowledge; only what still needs an answer belongs in inquiry. This edition replaces the three competing proposals for the same inquiry file with one knowledge proposal and one inquiry proposal. Neither file was created by the first edition, so this corrects proposed content rather than claiming to repair an already-landed module.
++ The first edition placed settled naming rules, verified observations and open questions together under an inquiry target. That was a classification mistake. The original Mind draft already contained that mistake; publication did not introduce it. Its own reference file says, “The kind:subject rule and no-whitespace requirement are settled; the questions here concern implementation boundaries, not reopening that naming decision.” Yet I put those settled rules, source observations and proposed implementation together under the inquiry destination.
++
++ I cannot identify a skill sentence or brief that instructed me to put settled knowledge there. The recorded brief was to prepare an implementation-cycle presentation before source changes. It did not prescribe this classification. My earlier reply that I did it “to give its open questions context” was an inferred explanation, not a traced author record. I withdraw it as a historical explanation. The evidence establishes a classification mistake in my draft, not an instruction requiring it.
++
++ The correction separates three things: the living's approved rule stays in vision; verified observations about sources and tests belong in knowledge; only what still needs an answer belongs in inquiry. This edition replaces the three competing proposals for the same inquiry file with one knowledge proposal and one inquiry proposal. Neither file was created by the first edition, so this corrects proposed content rather than claiming to repair an already-landed module.
++
 
 ```figure
 +--------------------------+
@@ -38,7 +41,6 @@ The correction separates three things: the living's approved rule stays in visio
 +--------------------------+
 ```
 
-### Proposal 1: Keep verified naming observations in knowledge · mind-context › knowledge/module-naming.md, a new file
 
 + # Module naming
 +
