@@ -2,11 +2,13 @@
 
 This is an operational tracker, not evidence of acceptance or deployment. Older orders not resolved by these entries remain open in their retained packets.
 
-## Immediate priority: production naming-only release
+## Current priority: corrected combined Flow release
 
-Core's living order: preserve existing sessions; rename them in place, and fix the launch tool before further uncorrected launches. Existing Flow authoraa034f is requested through current Psyche core Secondary5dd7e5 to freeze a67b80b3/0.35.11-based naming-only child. Exact canonical visible title { Aspect Topic Layer FLOW_ID }, six-character ID, on Claude remote-control session, Herdr workspace and display-agent. No visible flow-longhash or claude-hash. Keep ordinary20/meta24.0.1/Message/store schema unchanged; exclude7ac24a1 and unrelated0.35.19. Full-launch failing regression and native all-surface readbacks required. Field owns sole acceptance/deploy; Core owns already-ordered in-place renames. No teardown, new replacement flow or duplicate rename. Author acceptance/packet not yet received. Message integration must not gate this release.
+Core now selects combined Flow dcb63e665588db2df853bd86e7418d8170772635 (0.35.21), superseding the earlier unchanged-wire naming-only fast path and stale 6ccb deployment target. Fresh remote aa034f-integration matches; main remains 67b80b3. Signal e6ccbdd / meta efccfb5 remain the family. Existing aa034f is sole Flow author; Field is sole executor.
 
-Current Core address is5dd7e5; formerd68c82 process identification does not make it current sender. Never rebind the address back or spoof the successor. P8's two attempts both refused before enqueue; a single new send is authorized only through a qualified current route.
+Naming must be canonical { Aspect Topic Layer FLOW_ID } on remote-control session, workspace and display-agent. The current source fixes the remote value and preserves topic case, but pre-start show_title_before_agent failures are logged and ignored. Required correction: fail before native start on unsuccessful label setup, with refusal tests and all-three-surface native readbacks. Do not merge 7ac24a1 or tear down existing sessions. Source and native acceptance remain distinct.
+
+Current Core is 5dd7e5 at Psyche core Secondary. Root's one exact managed send refused Unidentified before enqueue; current author-delivery receipts cannot be inferred from legacy Transported results. Lowercase core route normalization preserves bindings but does not give shared-app-server tools a managed identity. P8 remains missing after two pre-enqueue refusals; one new intake is authorized only through a qualified sender.
 
 ## Current audit and refresh authority
 
@@ -24,8 +26,6 @@ Scope: Set intrinsic in ethos-zero, set parsing/composition support in datom-cod
 
 Current status: owner/capacity and existing-source-boundary request sent through Core; no source edit, reservation or compiler. Set<Model> remains labelled NOT YET PARSEABLE; do not substitute Vector or claim supported parsing. Completion requires an accepted author/task receipt, exact implementation cohort, semantic tests, consuming model declaration integration and requested audit.
 
-## Approved context landings and compatible generation
-
 ## Ethos finding: EventTables synchronization
 
 Authority: Core recovered the retired65f93a handoff and assigns Mind a FINDING FOR THE LIVING, not a workaround. Accountable coordinator0c85a3; actual Ethos author/capacity acceptance is still pending through existing66f2bb route. Separate from Set and Message implementation.
@@ -38,18 +38,28 @@ Evidence/finding: /home/li/private-repos/flow-evidence/0c85a3/ethos-eventtables-
 
 ## Approved context landings and compatible generation — current status
 
-Owner877549 is alive according to Field's current readback, with seven queued entries; its authorship is retained. No fallback writer assigned. Supported exact-pane lifecycle delivery remains unresolved; no repeated requests, forced wake or fabricated Stop.
+Owner877549 is alive and retains authorship. Field witnessed all eight original queued entries delivered exactly once; queue empty. This did not include P8, whose sends refused before enqueue. No fallback writer or duplicate request.
 
-Approved landings: inquiry/subflows.md from book91 Proposal8, exactly approved; inquiry/module-naming.md containing only the approved fourth question; knowledge/vocabulary.md Flow definition change from one run of a voice to one run of a metaflow, preserving the rest of the sentence (book89 Proposal33). Read-only exact packets are under /home/li/private-repos/flow-evidence/41fa34/context-owner-landing-20261019/. No landing commits received.
+Approved landings: inquiry/subflows.md from book91 Proposal8, exactly approved; inquiry/module-naming.md containing only the approved fourth question; knowledge/vocabulary.md Flow definition change from one run of a voice to one run of a metaflow, preserving the rest of the sentence (book89 Proposal33). Read-only exact packets are under /home/li/private-repos/flow-evidence/41fa34/context-owner-landing-20261019/. Q4 owner reports 63f8a0; independent full-ref/content confirmation remains pending. P8 and vocabulary landing receipts remain owed.
 
 Separate generator obligation: current ID-only Curriculum has no qualified compatible skills generator. Old RebuildSkills hook remains retired. Owner must supply exact source/input cohort, generation contract and invocation, fixtures and generated-path/publication proof; context source pins do not close this task.
 
 ## Flow usable rollout
 
-Production freshly witnessed by Field:0.35.11/67b80b3, PID727912. Accepted0.35.19/6ccb2ed integration is branch-only and not deployed. Existing Flow source authoraa034f retained; no competing Flow writer. Root owns Message producer/runtime/test family and Message-side thread identity integration; Field owns sole serial acceptance/deployment and Home consumer. Matching ordinary22 e6ccbdd and meta28 efccfb5 family qualification underway. Sender MCP contract/package and trust configuration require exact native support qualification, not mere repins.
+Production Flow 0.35.11 is now tied to 67b80b3 by all 81 derivation-source file hashes; 6fa574d is not production source. Combined dcb63e6 is branch-only, not deployed. Root owns Message, signal-message, meta-message and MCP sender source; no second Flow writer.
+
+Signal-message f51821454aadccd7ccf782e836738d80cd14ebd0 is published after Field test/test-datom/fmt acceptance. Meta f1ddba8488d109d1dbbfb12715953bd26fbe1738 has exact resolved lock and generator parity; remote checks requested. Runtime draft 98b400ad includes actual message-mcp-send, direct socket peer transport, transport-owned thread metadata, precise Flow refusals and tests. Runtime locks/format/compilation/publication remain pending, not repins-only completion. Native selected app-server parent, metadata and configured executable-pair proofs remain Field gates.
+
+Proposed Flow task split e/f/g is NOT an accepted second-writer assignment. e: route check on Lock; f: request-required unknown-metaflow start; g: kernel caller identification for Lock sender and hooks. Root tracks assignment under Core; exact disjoint paths/contracts and aa handoff are missing. Message-side kernel peer/IdentifyThread work does not authorize Flow Lock/hook changes. The pre-start naming blocker remains separate and urgent.
 
 Fresh declared flows/store selected under the living's ruling; preserve original store and occupied flows. Required12 Layer-by-Aspect models, coherent dependency publication, fresh runtime tests and vision audit remain open. Census26 panes and five missing Herdr reports do not establish ghosts. Cleanup requires supported identity/owner qualification.
 
 ## Store-literal first wave
 
-Private producerfe0492 and consumer628cf acceptance retained; Opus clears exact private cohort, independent Sol disposition still pending. Current published Home46a42 context pins must survive integration and combined-cohort requalification. Final committed Home pin, Field native backup/cutover, wider21-line debt and history ruling remain distinct open gates. No history rewrite authorized.
+Private producerfe0492 and consumer628cf acceptance retained; Opus clears exact private cohort, independent Sol disposition still pending. Current published Home fb84abec3216269efe35f2b4920beae5072b2217 context/messenger pins must survive integration and combined-cohort requalification. Final committed Home pin, Field native backup/cutover, wider21-line debt and history ruling remain distinct open gates. No history rewrite authorized.
+
+## Messenger roster and current context
+
+Messenger 48e0450 is published and installed through Home fb84abec; Field native hm-list shows canonical four-field titles. No public internal-name leak or stale aa binding was established; scoped typed read matches live aa identity and no repair was needed. Three-field command targets and receipts remain unchanged.
+
+Live context now Field bc5fa7c and Psyche 6c8e266. Generated book-only publication is separate from skills generation, which remains unavailable. Preserve these pins in later Home source integrations.
