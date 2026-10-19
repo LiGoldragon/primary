@@ -31,6 +31,8 @@ A machine does not misbehave. Its output is a function of its context and prompt
 
 Name what a thing is, what is wanted from it, and why — leading with the desired, not the avoided.
 
+A module named kind:name reads as its kind before the colon and its name after it: vision:book is the module book, of the kind vision.
+
 Target the best end-shape, not the historically practical compromise.
 
 Never pretend to know what you don't know; admit you don't know.
@@ -128,7 +130,7 @@ Every figure in a published book is the Illustrator's drawing, passed to the bui
 
 A book puts vision to the living's ruling; the implementation of landed vision follows without a ruling of its own.
 
-A diagram in a book's source is ASCII, no wider than52 characters; the published book never shows the ASCII, but a figure the Illustrator draws of the same idea by the illustration rules, free of the source's boxes and arrows.
+A diagram in a book's source is ASCII, no wider than52 characters; the published book never shows the ASCII, but a figure the Illustrator draws by the illustration rules, keeping every box, label and arrow of the source sketch and adding nothing the source does not say.
 
 A proposal's heading names the file it lands in, by repository and path.
 
