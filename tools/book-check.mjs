@@ -18,7 +18,9 @@ const validLocation = (repository, relativePath) => repositoryName.test(reposito
   && (contextRepository.test(repository) ? contextModule.test(relativePath)
       : filePath.test(relativePath) && !relativePath.split("/").some(part => part === "." || part === ".."));
 const moduleLocation = /^([A-Za-z0-9][A-Za-z0-9_.-]*) › ([^\s,›·]+)$/;
-const nextSection = /^ {0,3}#{1,6}\s+(?:Proposal\b|[A-Za-z0-9][A-Za-z0-9_.-]* › [^\s,›·]+\s*$)/;
+// The renderer recognizes module views only as level-two headings, and
+// proposal headings only at levels two and three.
+const nextSection = /^ {0,3}(?:##\s+(?:Proposal\b|[A-Za-z0-9][A-Za-z0-9_.-]* › [^\s,›·]+\s*$)|###\s+Proposal\b)/;
 
 // Read a file of one of the living's repositories as origin main has it; a context repository gives only its authored modules, never a generated skill.
 export function readContextModule(repository, relativePath) {
@@ -134,7 +136,7 @@ export function checkBook(source, {readModule = readContextModule} = {}) {
           section = { line: number, level: heading[1].length, changed: false, deleted: /, a deleted file$/.test(heading[2]), comment: false, alternatives: 0, alternative: null };
         } else errors.push({ line: number, reason: "proposal-heading-without-location" });
       } else if (!section) {
-        const location = heading[2].match(moduleLocation);
+        const location = heading[1].length === 2 ? heading[2].match(moduleLocation) : null;
         if (location && validLocation(location[1], location[2])) {
           let end = i + 1;
           let literalFence = null;
@@ -164,7 +166,7 @@ export function checkBook(source, {readModule = readContextModule} = {}) {
             if (shown !== (markdown ? moduleBody(file) : file.replace(/\n+$/, ""))) errors.push({line: number, reason: "context-module-differs"});
           } catch { errors.push({line: number, reason: "context-module-unavailable"}); }
           for (let n = i + 1; n < end; n++) shownModules.add(n);
-        } else if (heading[1].length === 1 && !title && !proposals && !shownModules.size) {
+        } else if (heading[1].length === 1 && !moduleLocation.test(heading[2]) && !title && !proposals && !shownModules.size) {
           title = true;
         } else errors.push({line: number, reason: "heading-outside-proposal-without-module"});
       }

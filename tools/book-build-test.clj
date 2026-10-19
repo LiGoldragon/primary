@@ -266,6 +266,32 @@
          (change "- first old line\n- second old line\n+ first new line\n+ second new line"))
       "inside a fence, lines still flow as one paragraph"))
 
+(deftest a-prose-change-with-unchanged-lines-is-a-change
+  (let [html (book-build/build (str "## Proposal 1: x\n\n"
+                                    "  A kept vision line.\n+\n"
+                                    "+ First added line.\n+ Second added line.\n") "")]
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"ctx\"><p>A kept vision line.</p></div>"
+                                 "<div class=\"add\"><ins><p>First added line.</p></ins></div>"
+                                 "<div class=\"add\"><ins><p>Second added line.</p></ins></div></div>")))
+    (is (not (str/includes? html "+ First"))))
+  (let [html (book-build/build "## Proposal 1: x\n\n  Kept line.\n- Gone line.\n" "")]
+    (is (str/includes? html (str "<div class=\"ctx\"><p>Kept line.</p></div>"
+                                 "<div class=\"del\"><del><p>Gone line.</p></del></div>"))))
+  (let [html (book-build/build "## Proposal 1: x\n\n  - kept item\n+ - added item\n" "")]
+    (is (str/includes? html "<div class=\"add\"><ins><ul><li>added item</li></ul></ins></div>")))
+  (let [html (book-build/build "## Section\n\n- an item\n  its continuation\n" "")]
+    (is (not (str/includes? html "class=\"diff\""))
+        "a list item's indented continuation is not a change")))
+
+(deftest exactly-two-spaces-keep-a-diff-paragraph-open
+  (let [html (book-build/build (str "## Proposal 1: x\n\n"
+                                    "  ## Kept heading\n"
+                                    "  \n"
+                                    "+ Added line.\n") "")]
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"ctx\"><h4>Kept heading</h4></div>"
+                                 "<div class=\"add\"><ins><p>Added line.</p></ins></div></div>")))
+    (is (not (str/includes? html "<p>## Kept heading</p>")))))
+
 (deftest title-from-presentation-datom
   (let [html (book-build/build "<!-- c -->\nPresentation.{ «Drawing ideas, 2nd edition» }\n\n# Drawing ideas\n" "")]
     (is (str/includes? html "<title>Drawing ideas, 2nd edition</title>"))
@@ -346,18 +372,256 @@
   (let [dir (fs/create-temp-dir)
         src (str (fs/path dir "b.md")) out (str (fs/path dir "b.html"))
         fake (str (fs/path dir "ethos-zero"))
-        run #(apply clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out %&)]
-    (try (spit src (str "# B\n\n```ethos\n" accepted-ethos "\n```\n"))
+        run #(apply clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out "--figures" (str dir) %&)]
+    (try (spit src (str "# B\n\n```ethos\n" accepted-ethos "\n```\n\n\n```\n+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n```\n"))
+         (spit (str (fs/path dir "fig-1.svg")) drawn)
          (spit fake "#!/bin/sh\necho \"Rejected.{ ${1#Check.} { 1 1 } Proposed.Syntax }\"\nexit 1\n")
          (fs/set-posix-file-permissions fake "rwxr-xr-x")
          (is (= 0 (:exit (run))) "the pinned ethos-zero accepts it")
-         (let [r (run "--ethos-zero" fake)]
+         (let [r (run "--ethos-zero-real" fake)]
            (is (= 1 (:exit r)))
            (is (= "book-build: ethos block (\"Library\") refused by ethos-zero: Rejected.{ { 1 1 } Proposed.Syntax }\n" (:err r))
                "the named build is the one asked"))
          (let [store (str (fs/parent (fs/parent (book-build/ethos-zero-binary book-build/pinned-ethos-zero))))]
-           (is (= 0 (:exit (run "--ethos-zero" store))) "a store path names a build"))
+           (is (= 0 (:exit (run "--ethos-zero-real" store))) "a store path names a build"))
          (finally (fs/delete-tree dir)))))
+
+(defn- fake-checker
+  "An executable that refuses every file, naming itself in the refusal."
+  [dir name]
+  (let [f (str (fs/path dir name))]
+    (spit f (str "#!/bin/sh\necho \"Rejected.{ ${1#Check.} { 1 1 } " name " }\"\nexit 1\n"))
+    (fs/set-posix-file-permissions f "rwxr-xr-x")
+    f))
+
+(deftest real-and-proposed-ethos-are-checked-apart
+  (let [dir (fs/create-temp-dir)
+        proposed (fake-checker dir "ProposedBuild")
+        real (fake-checker dir "RealBuild")
+        run (fn [md] (binding [book-build/*ethos-zero* proposed book-build/*ethos-zero-real* real]
+                       (refusal md)))]
+    (try
+      (is (str/includes? (run "# B\n\n```ethos\nA\n```\n") "RealBuild")
+          "a quoted fence outside a proposal is real code")
+      (is (str/includes? (run "## mind-context › knowledge/x.md\n\n```ethos\nA\n```\n") "RealBuild"))
+      (is (str/includes? (run "### Proposal 1: x\n\nFile: `r/x.ethos`\n\n```text\n  Library\n+ [ New ]\n```\n") "ProposedBuild")
+          "a fence inside a proposal is proposed code")
+      (is (str/includes? (run "### Proposal 1: x\n\n```ethos\nA\n```\n") "ProposedBuild"))
+      (is (str/includes? (run "# B\n\n```ethos\nLibrary\n- [ Old ]\n+ [ New ]\n```\n") "ProposedBuild")
+          "a fence written as a change is proposed")
+      (is (str/includes? (run "### Proposal 1: x\n\n```ethos\nA\n```\n\n## mind-context › knowledge/y.md\n\n```ethos\nB\n```\n") "RealBuild")
+          "a module quoted after a proposal is real again")
+      (finally (fs/delete-tree dir)))))
+
+(deftest cli-names-both-builds
+  (let [dir (fs/create-temp-dir)
+        src (str (fs/path dir "b.md")) out (str (fs/path dir "b.html"))
+        proposed (fake-checker dir "ProposedBuild")
+        real (fake-checker dir "RealBuild")
+        run #(apply clojure.java.shell/sh "bb" (str (fs/path tools-dir "book-build.clj")) src out "--figures" (str dir) %&)]
+    (try (spit src (str "# B\n\n```ethos\nA\n```\n\n### Proposal 1: x\n\n```ethos\nB\n```\n\n\n```\n+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n```\n"))
+         (spit (str (fs/path dir "fig-1.svg")) drawn)
+         (let [r (run "--ethos-zero" proposed "--ethos-zero-real" real)]
+           (is (= 1 (:exit r)))
+           (is (str/includes? (:err r) "RealBuild"))
+           (is (str/includes? (:err r) "ProposedBuild")))
+         (finally (fs/delete-tree dir)))))
+
+(deftest an-unlabelled-fence-is-code-only-inside-a-module-view
+  (let [render (fn [md] (binding [book-build/*ethos-check* (fn [t] (when-not (str/starts-with? t "Library") "no"))]
+                          (book-build/build md "")))
+        in-module (fn [fence] (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n" fence))
+        datom "```\nLaunch.{ { Psyche Primary } \u00abDraft\u00bb } ; one\nSucceeded\nStarted.7\n```\n"
+        sketch (str "```\n+----------------+\n| a book         |\n+-------+--------+\n        | holds\n        v\n+-------+--------+\n| a section      |\n+----------------+\n```\n")
+        no-figure #"has no figure"]
+    (is (str/includes? (render (in-module "```\nLibrary\n[]\n```\n")) "language-ethos")
+        "in a module view, an unlabelled fence ethos-zero accepts is ethos")
+    (is (str/includes? (render (in-module datom)) "language-datom")
+        "in a module view, an unlabelled fence that reads as a datom is a datom")
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render (str "# B\n\n" datom)))
+        "outside a module view an unlabelled fence is a diagram")
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render "# B\n\n```\nLibrary\n[]\n```\n")))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render (in-module sketch)))
+        "a sketch with edges is a diagram, in a module view too")
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render (str "# B\n\n" sketch))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure
+                          (render (in-module "```\nsome { unbalanced\n```\n"))))))
+
+(deftest sketch-one-of-book-09-is-a-diagram
+  (let [src (slurp (str (fs/path tools-dir "fixtures/what-a-book-is.md")))]
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"diagram 1 \(\"\+-+\+\"\) has no figure"
+          (binding [book-build/*ethos-check* (constantly nil)] (book-build/build src ""))))))
+
+(deftest a-module-view-is-one-framed-sheet
+  (let [html (binding [book-build/*ethos-check* (constantly nil)]
+               (book-build/build (str "# B\n\n## mind-context › knowledge/x.md\n\nIntro.\n\n## Its own heading\n\nBody.\n\n### Deeper\n\nMore.\n\n"
+                                      "### Proposal 1: Land it\n\nProse.\n\n## repo › other.md\n\nAnother.\n") ""))]
+    (is (str/includes? html "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">mind-context › knowledge/x.md</code></h2></header>"))
+    (is (str/includes? html "<h3>Its own heading</h3>") "the module's headings are demoted")
+    (is (str/includes? html "<h4>Deeper</h4>"))
+    (is (= 2 (count (re-seq #"<article class=\"module\">" html))))
+    (is (= 1 (count (re-seq #"<article class=\"proposal\">" html))))
+    (is (< (str/index-of html "Intro.") (str/index-of html "</article>") (str/index-of html "<article class=\"proposal\">"))
+        "a proposal closes the module sheet")
+    (is (= (count (re-seq #"<article" html)) (count (re-seq #"</article>" html))))))
+
+(deftest markdown-is-rendered-as-text-never-a-pre
+  (let [build #(binding [book-build/*ethos-check* (constantly nil)] (book-build/build % ""))
+        body "## Rule\n\nA paragraph with `code`.\n\n- one\n- two\n"
+        shows-text? (fn [html]
+                      (and (str/includes? html "<h3>Rule</h3>") (str/includes? html "<li>one</li>")
+                           (str/includes? html "<p>A paragraph with <code>code</code>.</p>")
+                           (not (str/includes? html "<pre"))))]
+    (doseq [open ["```markdown" "```md" "````markdown" "~~~md" "~~~~markdown"]
+            :let [close (str/replace open #"[a-z]+$" "")]]
+      (is (shows-text? (build (str "# B\n\n" open "\n" body close "\n")))
+          (str "a " open " fence is text")))
+    (is (shows-text? (build (str "# B\n\n## mind-context › knowledge/x.md\n\n```text\n" body "```\n")))
+        "a module view of a .md module, written in a text fence, is text")
+    (is (shows-text? (build (str "# B\n\n## mind-context › knowledge/x.md\n\n~~~~markdown\n" body "~~~~\n")))
+        "a module view in a tilde fence is text")
+    (let [html (build (str "# B\n\n## mind-context › knowledge/x.md\n\n````markdown\n" body "\n```rust\nfn a() {}\n```\n````\n"))]
+      (is (str/includes? html "<h3>Rule</h3>"))
+      (is (= 1 (count (re-seq #"<pre" html))) "the module's own code stays code")
+      (is (str/includes? html "language-rust")))))
+
+(deftest a-code-file-view-is-a-framed-sheet-of-code-never-parsed
+  (let [file "(Types\n  chronos)\n- not a change\n"
+        src (str "# B\n\n## chronos \u203a .ethos/data/chronos.ethos\n\n```ethos\n" file "```\n\n### Proposal 1: x\n\nProse.\n")
+        build (fn [check] (binding [book-build/*ethos-check* check] (book-build/build src "")))
+        refused (build (constantly "Rejected.1:1"))
+        read (build (constantly nil))]
+    (is (str/includes? refused "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">chronos \u203a .ethos/data/chronos.ethos</code></h2></header>"))
+    (is (str/includes? refused "<pre><code class=\"language-ethos\">(Types\n  chronos)\n- not a change</code></pre>")
+        "the file is code in its language, a line opening with - is no change")
+    (is (str/includes? refused "not read by current Ethos") "a file no ethos-zero reads is tagged")
+    (is (not (str/includes? read "not read by current Ethos")))
+    (is (= 1 (count (re-seq #"<article class=\"proposal\">" refused))))
+    (is (str/includes? (binding [book-build/*ethos-check* (constantly nil)]
+                         (book-build/build "# B\n\n## tools \u203a x.mjs\n\n```\nconst a = 1;\n```\n" ""))
+                       "language-javascript") "an unlabelled fence takes the file's language")))
+
+(deftest no-built-page-holds-an-undrawn-drawing
+  (let [render (fn [md] (binding [book-build/*ethos-check* (constantly nil)] (book-build/build md "")))
+        box "+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n"
+        no-figure #"has no figure|undrawn ASCII"]
+    (doseq [md [(str "# B\n\n### Proposal 1: t\n\nFile: a.md\n\n```\n" box "```\n")
+                (str "# B\n\n### Proposal 1: t\n\nFile: a.md\n\n```text\n" box "```\n")
+                (str "# B\n\n```txt\n" box "```\n")
+                (str "# B\n\n```\n+------+\n| a    |\n+------+\n```\n")
+                (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n```text\n" box "```\n")
+                (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n````\n")]]
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render md)) md))
+    (is (not (re-find #"\+---" (render "# B\n\n### Proposal 1: t\n\nFile: a.md\n\n```text\nplain words\n```\n"))))))
+
+(deftest a-book-carries-figures
+  (let [src "# B\n\n### Proposal 1: t\n\nProse.\n"
+        fig "# B\n\n```\n+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n```\n\n### Proposal 1: t\n\nProse.\n"]
+    (binding [book-build/*ethos-check* (constantly nil) book-build/*require-figures* true]
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"a book carries figures" (book-build/build src "")))
+      (is (str/includes? (with-figures {"fig-1.svg" drawn} #(book-build/build fig "")) "figure")))))
+
+(deftest a-diagram-in-a-module-view-is-drawn-in-document-order
+  (let [box "+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n"
+        glyph "┌───┐\n│ a │\n└───┘\n"
+        render #(binding [book-build/*ethos-check* (constantly nil)] (book-build/build % ""))]
+    (doseq [md [(str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n\nMore.\n\n```\n" glyph "```\n````\n")
+                (str "# B\n\n## tools \u203a x.mjs\n\n```\n" glyph "```\n")]]
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"diagram 1 " (render md)))
+      (let [html (with-figures {"fig-1.svg" drawn "fig-2.svg" drawn} #(render md))]
+        (is (not (re-find #"<pre><code[^>]*>(?:[^<]*)[+\u250c]" html)) "no raw drawing")
+        (is (str/includes? html "figure"))))
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"diagram 2 "
+          (with-figures {"fig-1.svg" drawn}
+            #(render (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\n```\n" box "```\n\n```\n" glyph "```\n````\n")))))))
+
+(defn- built [md] (binding [book-build/*ethos-check* (constantly nil)] (book-build/build md "")))
+
+(def ^:private head "# B\n\n### Proposal 1: Replace · psyche-context › vision/book.md\n\n")
+
+(defn- alternative [n added]
+  (str "**Alternative " n "**\n\n  Context before.\n\n- An old line here.\n+ " added "\n\n  Context after.\n\n"))
+
+(deftest a-machine-comment-sits-before-the-proposal-it-explains
+  (let [html (built (str head "**Comment** Proposed because the rule repeats.\n\n- Old.\n+ New.\n"))]
+    (is (str/includes? html "<aside class=\"comment\"><p>Proposed because the rule repeats.</p></aside>"))
+    (is (< (str/index-of html "class=\"comment\"") (str/index-of html "class=\"diff\"")) "the comment comes before the lines")
+    (is (< (str/index-of html "class=\"proposal\"") (str/index-of html "class=\"comment\"")) "inside its proposal"))
+  (is (= (built (str head "**Comment** Why.\n\n- Old.\n+ New.\n"))
+         (built (str head "**Comment** Why.\n- Old.\n+ New.\n")))
+      "a comment followed at once by its change lines is the same comment and change")
+  (is (str/includes? (built (str head "**Comment** Uses `code` and **bold**.\n\n+ New.\n"))
+                     "<p>Uses <code>code</code> and <strong>bold</strong>.</p>"))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"machine comment outside a proposal"
+                        (built "# B\n\n**Comment** Loose.\n"))))
+
+(deftest the-comment-has-its-own-colour-light-and-dark
+  (let [vars (re-seq #"--comment-(?:bg|edge|fg):(#[0-9a-f]{6})" code)
+        colours (set (map second vars))]
+    (is (= 9 (count vars)) "three comment colours in light, dark, and the dark theme")
+    (is (every? #(str/includes? code (str ".comment{" %)) ["border-left:4px solid var(--comment-edge)"]))
+    (doseq [c ["#2f8a46" "#c2372b" "#5cc47a" "#f07a6e" "#1c5f8a" "#7cc0ee"]]
+      (is (not (colours c)) (str "not the green, red or module colour " c)))))
+
+(deftest alternatives-show-the-shared-text-once-then-each-difference
+  (let [one "A proposal may carry the machine's comment, in its own colour, saying why it proposes the line."
+        two "A proposal may show the machine's comment, in a colour of its own, saying why it proposes the line."
+        html (built (str head "**Comment** Two wordings.\n\n" (alternative 1 one) (alternative 2 two)
+                         "Ruling: land 1, land 2, amend, or reject.\n"))
+        group (second (re-find #"(?s)(<div class=\"alternatives\">.*)<p>Ruling" html))
+        count-of (fn [s sub] (count (re-seq (re-pattern (java.util.regex.Pattern/quote sub)) s)))]
+    (is (= 1 (count-of html "class=\"alternatives\"")) "one group")
+    (is (< (str/index-of html "class=\"comment\"") (str/index-of html "class=\"alternatives\"")) "the comment first")
+    (is (= 1 (count-of group "Context before.")) "context shown once")
+    (is (= 1 (count-of group "An old line here")) "the removal shown once")
+    (is (= 1 (count-of group "saying why it proposes the line")) "shared added text shown once")
+    (is (re-find #"<ins>A proposal may <span class=\"alt-gap\">1</span> the machine's comment, in <span class=\"alt-gap\">2</span>, saying why" group))
+    (is (str/includes? group "<div class=\"alt-label\">Alternative 1</div><p class=\"alt-words add\"><span class=\"alt-gap\">1</span> A proposal may <mark>carry</mark> the machine's comment, in</p>"))
+    (is (str/includes? group "in <mark>its own colour</mark>, saying"))
+    (is (str/includes? group "may <mark>show</mark> the"))
+    (is (str/includes? group "in <mark>a colour of its own</mark>, saying"))
+    (is (not (str/includes? group one)) "no alternative shown whole")
+    (is (not (str/includes? group two)) "no alternative shown whole")))
+
+(deftest one-difference-is-an-unnumbered-gap
+  (let [html (built (str head (alternative 1 "Every book carries figures.") (alternative 2 "Every book carries pictures.")))]
+    (is (str/includes? html "<ins>Every book carries <span class=\"alt-gap\">…</span></ins>."))
+    (is (str/includes? html "<p class=\"alt-words add\">Every book carries <mark>figures</mark>.</p>"))
+    (is (str/includes? html "<p class=\"alt-words add\">Every book carries <mark>pictures</mark>.</p>"))))
+
+(deftest an-alternative-that-adds-lines-shows-them-alone
+  (let [html (built (str head "**Alternative 1**\n\n- Old.\n+ New one.\n\n**Alternative 2**\n\n- Old.\n+ New one.\n+ And a second line.\n"))]
+    (is (str/includes? html "<del>Old</del><ins>New one</ins>.") "the shared line once")
+    (is (= 1 (count (re-seq #"And a second line" html))))
+    (is (re-find #"Alternative 1</div><p class=\"alt-words\"><mark class=\"alt-none\"" html) "the first adds nothing there")
+    (is (re-find #"Alternative 2</div><div class=\"diff\"><div class=\"add\"><ins><p>And a second line.</p></ins></div></div>" html))))
+
+(deftest alternatives-of-several-lines-differ-line-by-line
+  (let [html (built (str head "**Alternative 1**\n\n- Old.\n+ Shared first line.\n+ The second line says one thing.\n\n"
+                         "**Alternative 2**\n\n- Old.\n+ Shared first line.\n+ The second line says another thing.\n"))]
+    (is (= 1 (count (re-seq #"Shared first line" html))) "a line every alternative lands, once")
+    (is (str/includes? html "<ins><p>The second line says <span class=\"alt-gap\">\u2026</span> thing.</p></ins>"))
+    (is (str/includes? html "<p class=\"alt-words add\">The second line says <mark>one</mark> thing.</p>"))
+    (is (str/includes? html "<p class=\"alt-words add\">The second line says <mark>another</mark> thing.</p>"))))
+
+(deftest alternatives-are-two-or-more-numbered-and-different
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"alternative 1 stands alone"
+                        (built (str head (alternative 1 "Only one.")))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"alternatives numbered 1, 3"
+                        (built (str head (alternative 1 "One.") (alternative 3 "Three.")))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"do not differ"
+                        (built (str head (alternative 1 "Same.") (alternative 2 "Same.")))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"alternative 2 carries no change"
+                        (built (str head (alternative 1 "One.") "**Alternative 2**\n\n  Context only.\n\n"))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"alternatives outside a proposal"
+                        (built (str "# B\n\n" (alternative 1 "One.") (alternative 2 "Two."))))))
+
+(deftest word-alternatives-keep-every-text
+  (let [texts ["a b c d e f" "a x c d e y" "a b c q e f"]
+        {:keys [segments gaps]} (book-build/word-alternatives texts)]
+    (doseq [[k t] (map-indexed vector texts)]
+      (is (= t (apply str (first segments) (mapcat (fn [g s] [(get-in gaps [g k]) s]) (range) (rest segments))))
+          "shared segments with an alternative's gap words give that alternative back"))))
 
 (let [{:keys [fail error]} (run-tests 'book-build-test)]
   (System/exit (if (zero? (+ fail error)) 0 1)))

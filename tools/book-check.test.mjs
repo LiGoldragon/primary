@@ -68,7 +68,7 @@ test("executable succeeds only for valid source and never edits it", () => {
 });
 test("historical books with independent prose now refuse", () => {
   const read = (p) => fs.readFileSync(new URL(p, import.meta.url), "utf8");
-  assert.ok(checkBook(read("../flows/504f11/books/02-chronos-golden-example-2.md")).length);
+  assert.deepEqual(checkBook(read("../flows/504f11/books/02-chronos-golden-example-2.md")), []); // its context figure is a diagram fence
   assert.ok(checkBook(read("../flows/d68c82/books/50-lean-flows.md")).length);
   assert.ok(reasons(read("../flows/504f11/books/01-chronos-golden-example.md")).includes("file-line-in-body"));
 });
@@ -89,4 +89,76 @@ test("outside proposals only whole current modules under their locations pass", 
   assert.ok(checkBook("## tools › brief.md\nProse.\n" + proposal, {readModule}).length);
   assert.ok(checkBook("## field-context › ../secret.md\nProse.\n" + proposal, {readModule}).length);
   assert.ok(checkBook("# A book\nA paraphrase.\n## What vision says\nMore prose.\n" + proposal).some(e => e.reason === "heading-outside-proposal-without-module"));
+});
+
+test("module-view headings use the builder's level-two contract", () => {
+  const module = "Module line.\n\n### Nested › section\n\nMore module text.\n";
+  const readModule = () => module;
+  const proposal = "## Proposal 1: repo › x.md\n+ Add a line.\n";
+  const valid = "# A book\n\n## repo › x.md\n\n" + module + "\n" + proposal;
+  assert.deepEqual(checkBook(valid, {readModule}), []);
+  for (const level of ["#", "###", "####", "######"]) {
+    const invalid = "# A book\n\n" + level + " repo › x.md\n\n" + module + "\n" + proposal;
+    assert.ok(reasons(invalid).includes("heading-outside-proposal-without-module"), level);
+  }
+  assert.ok(reasons("# repo › x.md\n\n## Proposal 1: repo › x.md\n+ Add a line.\n")
+    .includes("heading-outside-proposal-without-module"), "a level-one module path is not a book title");
+});
+
+test("Markdown in a plain code block is refused; markdown fences are not", () => {
+  const proposal = "## Proposal 1: psyche-context › vision/example.md\n+ A proposal.\n";
+  const md = "## Rule\n\nText.\n";
+  for (const label of ["", "text", "txt", "prose"])
+    assert.ok(reasons(proposal + "```" + label + "\n" + md + "```\n").includes("markdown-in-code-block"), label);
+  assert.ok(!reasons(proposal + "```markdown\n" + md + "```\n").includes("markdown-in-code-block"));
+  assert.ok(!reasons(proposal + "~~~~md\n" + md + "~~~~\n").includes("markdown-in-code-block"));
+  assert.ok(!reasons(proposal + "```sh\n# a comment\n```\n").includes("markdown-in-code-block"));
+  assert.ok(!reasons(proposal + "```text\n+ ## Rule\n```\n").includes("markdown-in-code-block"), "a change is not a code block");
+});
+
+test("a view of any file of any repository matches it to the character", () => {
+  const file = "(Types\n  chronos)\n\n## not a heading\n";
+  const readModule = (repo, p) => {
+    assert.equal(repo, "chronos"); assert.equal(p, ".ethos/data/chronos.ethos");
+    return file;
+  };
+  const proposal = "## Proposal 1: chronos › .ethos/data/chronos.ethos\n- (Types\n";
+  const heading = "## chronos › .ethos/data/chronos.ethos\n\n";
+  assert.deepEqual(checkBook("# B\n" + heading + "```ethos\n" + file.trimEnd() + "\n```\n\n" + proposal, {readModule}), []);
+  assert.deepEqual(checkBook("# B\n" + heading + "````\n" + file.trimEnd() + "\n````\n\n" + proposal, {readModule}), []);
+  assert.equal(checkBook("# B\n" + heading + "```ethos\n" + file.replace("chronos", "kronos").trimEnd() + "\n```\n\n" + proposal, {readModule})[0].reason, "context-module-differs");
+  assert.equal(checkBook("# B\n" + heading + "```ethos\n" + file.trimEnd() + "\n```\n\n" + proposal, {readModule: () => { throw Error(); }})[0].reason, "context-module-unavailable");
+  assert.ok(checkBook("# B\n## chronos › ../x.ethos\n```ethos\nx\n```\n" + proposal, {readModule}).length);
+  assert.ok(checkBook("# B\n## chronos › /etc/passwd\n```ethos\nx\n```\n" + proposal, {readModule}).length);
+  assert.ok(checkBook("# B\n## psyche-context › src/x.rs\n```rust\nx\n```\n" + proposal, {readModule}).length, "context repositories hold only authored modules");
+});
+
+test("a proposal that only removes lines, or deletes the file, passes", () => {
+  assert.deepEqual(reasons("# A book\n## Proposal 1: chronos › a.ethos\n- Old line.\n"), []);
+  assert.deepEqual(reasons("# A book\n## Proposal 1: chronos › a.ethos, a deleted file\nIt goes.\n"), []);
+  assert.ok(reasons("# A book\n## Proposal 1: chronos › a.ethos\nText only.\n").includes("no-change-in-proposal"));
+});
+
+test("an unlabelled diagram fence outside a section is accepted; prose there is refused", () => {
+  const fig = "```\n┌───┐   draws   ┌───┐\n│ a │ ───────▶ │ b │\n└───┘          └───┘\n```\n";
+  assert.deepEqual(reasons("# A book\n" + fig + good.split("\n").slice(1).join("\n")), []);
+  const ascii = "```\n+---+\n| a |\n+---+\n  |\n  v\n+---+\n| b |\n+---+\n```\n";
+  assert.deepEqual(reasons("# A book\n" + ascii + good.split("\n").slice(1).join("\n")), []);
+  assert.deepEqual(reasons("# A book\n```\nJust some prose here.\n```\n" + good.split("\n").slice(1).join("\n")), ["text-outside-proposal-without-module"]);
+});
+const located = "### Proposal 1: Replace · psyche-context › vision/book.md\n";
+const alternative = (n, added) => `**Alternative ${n}**\n\n  Context.\n\n- Old.\n+ ${added}\n\n`;
+test("a machine comment comes first in its proposal, once", () => {
+  assert.deepEqual(checkBook(located + "**Comment** Why it is proposed.\n\n- Old.\n+ New.\n"), []);
+  assert.deepEqual(reasons(located + "- Old.\n+ New.\n\n**Comment** Too late.\n"), ["comment-after-change"]);
+  assert.deepEqual(reasons(located + "**Comment** One.\n\n**Comment** Two.\n\n+ New.\n"), ["second-comment-in-proposal"]);
+  assert.deepEqual(reasons("**Comment** Loose.\n" + located + "+ New.\n"), ["text-outside-proposal-without-module"]);
+});
+test("alternatives come two or more, numbered in order, each with a change, the comment before them", () => {
+  assert.deepEqual(checkBook(located + "**Comment** Two wordings.\n\n" + alternative(1, "One.") + alternative(2, "Two.") + "Ruling: land 1, land 2, amend, or reject.\n"), []);
+  assert.deepEqual(reasons(located + alternative(1, "One.")), ["single-alternative"]);
+  assert.deepEqual(reasons(located + alternative(1, "One.") + alternative(3, "Three.")), ["alternative-out-of-order"]);
+  assert.deepEqual(reasons(located + "**Alternative 1**\n\n  Context only.\n\n" + alternative(2, "Two.")), ["alternative-without-change"]);
+  assert.deepEqual(reasons(located + alternative(1, "One.") + alternative(2, "Two.") + "**Comment** Late.\n"), ["comment-after-change"]);
+  assert.deepEqual(reasons(located + alternative(1, "One.") + "**Alternative 2**\n\n  Context only.\n"), ["alternative-without-change"]);
 });

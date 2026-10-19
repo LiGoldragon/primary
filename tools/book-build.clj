@@ -1,7 +1,7 @@
 #!/usr/bin/env bb
 ;; Build a book page from its Markdown source.
 ;;
-;; usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF]
+;; usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF] [--ethos-zero-real REF]
 ;;
 ;; The source is a book in the to-the-living form: a title, a
 ;; Crystallization heading, proposals (### Proposal N: title), File:
@@ -11,13 +11,20 @@
 ;; diagram; it is never drawn: the n-th diagram needs fig-n.svg in the --figures
 ;; directory, else the build refuses with a one-line error and exit 1. A paragraph opening with
 ;; **Destroy** or **Archive** wraps the record that follows in a
-;; record panel of that class. The page code (tools/book-code.html) is
+;; record panel of that class. Inside a proposal, a paragraph opening with
+;; **Comment** is the machine's comment, in its own colour, before the lines it
+;; explains; lines **Alternative 1**, **Alternative 2**, … each followed by the
+;; exact lines that alternative lands make one group: the shared text once,
+;; then each alternative's differing words alone. The page code (tools/book-code.html) is
 ;; appended whole. Every ```ethos fence, and every fence in a proposal whose
-;; language is ethos, must pass ethos-zero's Check: the pinned build, or the
-;; one --ethos-zero names (a flake reference such as
-;; github:LiGoldragon/ethos-zero/<branch> carrying proposed syntax, a store
-;; path, or a binary); else the build refuses, naming the block's first line
-;; and ethos-zero's error, and exits 1.
+;; language is ethos, must pass ethos-zero's Check; else the build refuses,
+;; naming the block's first line and ethos-zero's error, and exits 1. Real
+;; code is checked as the language is: a fence outside a proposal and without
+;; a change line is quoted source, checked by the pinned main ethos-zero or the
+;; one --ethos-zero-real names. A fence inside a proposal, or written as a
+;; change, is proposed code, checked by the one --ethos-zero names (a flake
+;; reference such as github:LiGoldragon/ethos-zero/ethos-proposals carrying
+;; proposed syntax, a store path, or a binary), else the pinned main.
 (ns book-build
   (:require [clojure.string :as str]
             [clojure.edn]
@@ -414,10 +421,19 @@
 
 (def ^:dynamic *figures-dir* nil)
 
+(def ^:dynamic *module-fig* nil)
+(def ^:dynamic *require-figures* false)
+
 (defn diagram?
   "The lines are an ASCII diagram: a sketch that holds at least one edge."
   [lines]
   (boolean (seq (:edges (try (ascii-graph lines) (catch Exception _ nil))))))
+
+(defn drawing?
+  "The lines are an ASCII drawing: a diagram, or any box border or box-drawing glyph."
+  [lines]
+  (boolean (or (diagram? lines)
+               (some #(re-find #"\+-{2,}\+|[\u2500-\u257f]" %) lines))))
 
 ;; -------------------------------------------------------------- text fences
 
@@ -465,7 +481,12 @@
 (defn fence-open
   "The language of a code fence opening line, or nil."
   [l]
-  (some-> (re-find #"^```(\w*)\s*$" l) second))
+  (some-> (re-find #"^(?:`{3,}|~{3,})(\w*)\s*$" l) second))
+
+(defn fence-close?
+  "A line that closes a code fence of backticks or tildes."
+  [l]
+  (boolean (re-find #"^(?:`{3,}|~{3,})\s*$" l)))
 
 (defn split-chunk
   "A chunk's bodies, each [kind body]: :fm (front matter lines between two ---
@@ -492,7 +513,7 @@
             (recur (inc i) (conj bodies [:heading l]))
 
             (fence-open l)
-            (let [j (loop [j (inc i)] (if (and (< j n) (not= "```" (rstrip (content j)))) (recur (inc j)) j))]
+            (let [j (loop [j (inc i)] (if (and (< j n) (not (fence-close? (rstrip (content j))))) (recur (inc j)) j))]
               (recur (inc j) (conj bodies [:code [(fence-open l) (subvec content (inc i) (min n j))]])))
 
             (re-find bullet-re l)
@@ -616,6 +637,38 @@
         lvl (min 6 (+ 2 (count hashes)))]
     (str "<h" lvl ">" (fmt t) "</h" lvl ">")))
 
+;; Markdown is never shown in a code block: a fence labelled markdown or md, and
+;; the markdown fence a module view of a .md module is written in, render as text.
+(def markdown-languages #{"markdown" "md"})
+
+(declare body-html)
+
+(defn markdown-html
+  "Markdown lines as rendered text: headings (one level below the sheet's),
+  paragraphs, lists and tables; a code fence inside it stays code, except a
+  markdown one, which is text again."
+  [lines]
+  (let [lines (vec lines)
+        chunks (loop [i 0 cur [] out [] fence false]
+                 (if (>= i (count lines))
+                   (cond-> out (seq cur) (conj cur))
+                   (let [l (lines i)
+                         fence' (if fence (not (fence-close? (rstrip l))) (boolean (fence-open l)))]
+                     (if (and (not fence) (not fence') (blank? l))
+                       (recur (inc i) [] (cond-> out (seq cur) (conj cur)) false)
+                       (recur (inc i) (conj cur l) out fence')))))]
+    (apply str
+           (for [chunk chunks
+                 [kind body :as b] (split-chunk chunk)]
+             (case kind
+               :heading (let [[_ hashes t] (re-find #"^(#{1,6}) (.*)$" body)
+                              lvl (min 6 (inc (count hashes)))]
+                          (str "<h" lvl ">" (inline t) "</h" lvl ">"))
+               :code (if (markdown-languages (first body))
+                       (markdown-html (second body))
+                       (body-html b))
+               (body-html b))))))
+
 (defn body-html
   "One body of a chunk as formatted HTML."
   [[kind body]]
@@ -624,8 +677,13 @@
     :heading (heading-html body inline)
     :list (let [tag (if (re-find #"^\d" (ffirst body)) "ol" "ul")]
             (str "<" tag ">" (apply str (map (fn [[_ t]] (str "<li>" (inline t) "</li>")) body)) "</" tag ">"))
-    :code (str "<pre><code class=\"language-" (get langs (first body) (if (= "" (first body)) "text" (first body))) "\">"
-               (esc (str/join "\n" (second body))) "</code></pre>")
+    :code (if (and *module-fig* (drawing? (second body)))
+            (*module-fig* (second body))
+            (str (when (drawing? (second body))
+                 (throw (ex-info (str "undrawn ASCII diagram (" (pr-str (or (first (remove blank? (second body))) ""))
+                                      ") in a markdown view; give it its own fence with a fig-N.svg") {})))
+               "<pre><code class=\"language-" (get langs (first body) (if (= "" (first body)) "text" (first body))) "\">"
+               (esc (str/join "\n" (second body))) "</code></pre>"))
     :table (table-html body)
     (str "<p>" (inline body) "</p>")))
 
@@ -805,16 +863,47 @@
 
 (defn diff-para?
   "A paragraph written as a change: every line opens with + or - and a space (or
-  is that sign alone), and it adds a line or removes a front-matter rule."
+  is that sign alone) or is an unchanged line opening with two spaces, and it
+  adds a line, removes a front-matter rule, or opens on an unchanged line and
+  removes one. A list item's indented continuation is not a change."
   [para]
-  (let [signed (fn [l] (or (#{"+" "-"} l) (re-find #"^[-+] " l)))]
-    (boolean (and (seq para) (every? signed para)
-                  (some #(or (str/starts-with? % "+") (= "- ---" (rstrip %))) para)))))
+  (let [signed (fn [l] (or (#{"+" "-"} l) (re-find #"^[-+] " l)))
+        kept (fn [l] (str/starts-with? l "  "))]
+    (boolean (and (seq para) (every? #(or (signed %) (kept %)) para)
+                  (some signed para)
+                  (or (some #(or (str/starts-with? % "+") (= "- ---" (rstrip %))) para)
+                      (kept (first para)))))))
+
+(def comment-mark
+  "A paragraph opening with **Comment** is the machine's comment on the proposal it sits in."
+  #"^\*\*Comment\*\*(?U)\s*(.*)$")
+
+(def alternative-mark
+  "A line **Alternative N** alone opens the N-th alternative of a proposal."
+  #"^\*\*Alternative (\d+)\*\*\s*$")
+
+(declare flush-para signed-line?)
+
+(defn- marked-para
+  "A comment or alternative mark followed, without a blank line, by change
+  lines: the mark's paragraph, then the change."
+  [para]
+  (let [diff-line? #(or (signed-line? %) (str/starts-with? % "  "))
+        k (first (keep-indexed (fn [k l] (when (and (pos? k) (diff-line? l)
+                                                    (diff-para? (subvec para k))) k))
+                               para))]
+    (if k
+      (into [[:para (subvec para 0 k)]] (flush-para (subvec para k)))
+      [[:para para]])))
 
 (defn flush-para
   "A paragraph written as a change is a text fence read line by line."
   [para]
-  (if (diff-para? para) [[:fence "text" para :per-line]] (split-para para)))
+  (let [para (vec para)]
+    (cond
+      (diff-para? para) [[:fence "text" para :per-line]]
+      (or (re-find comment-mark (first para)) (re-find alternative-mark (first para))) (marked-para para)
+      :else (split-para para))))
 
 (def ^:private proposal-heading #"(?U)^#{2,3} Proposal \d+: ")
 
@@ -825,19 +914,23 @@
   (let [lines (vec (str/split src #"\n" -1))
         n (count lines)
         skip #"(?U)^(<!--.*-->|Presentation\.\{.*\})\s*$"
-        fence-close #"(?U)^```\s*$"]
+        fence-open-re #"(?U)^(`{3,}|~{3,})(\w*)\s*$"]
     (loop [i 0 out [] para []]
       (if (>= i n)
         (cond-> out (seq para) (into (flush-para para)))
         (let [l (lines i)]
-          (if-let [m (re-find #"(?U)^```(\w*)\s*$" l)]
+          (if-let [m (re-find fence-open-re l)]
             (let [out (cond-> out (seq para) (into (flush-para para)))
-                  lang (if (= "" (m 1)) "text" (m 1))
-                  j (loop [j (inc i)] (if (and (< j n) (not (re-find fence-close (lines j)))) (recur (inc j)) j))]
+                  lang (if (= "" (m 2)) "text" (m 2))
+                  close-re (re-pattern (str "(?U)^" (if (= \` (first (m 1))) "`" "~") "{" (count (m 1)) ",}\\s*$"))
+                  j (loop [j (inc i)] (if (and (< j n) (not (re-find close-re (lines j)))) (recur (inc j)) j))]
               (recur (inc j) (conj out (with-meta [:fence lang (subvec lines (inc i) (min n j))]
-                                         {:bare (= "" (m 1))})) []))
+                                         {:bare (= "" (m 2))})) []))
             (cond
-              (blank? l) (recur (inc i) (cond-> out (seq para) (into (flush-para para))) [])
+              ;; Exactly two spaces mark an unchanged line in a diff paragraph;
+              ;; don't mistake that context marker for a paragraph separator.
+              (and (blank? l) (not= "  " l))
+              (recur (inc i) (cond-> out (seq para) (into (flush-para para))) [])
               ;; a proposal heading always opens a new proposal, blank line before it or not
               (re-find proposal-heading l)
               (recur (inc i) (-> out (cond-> (seq para) (into (flush-para para))) (conj [:para [l]])) [])
@@ -879,6 +972,15 @@
   [path]
   (get target-langs (some-> path (str/split #"\.") rest last) "text"))
 
+(def ^:private file-langs
+  (merge target-langs {"js" "javascript" "mjs" "javascript" "py" "python" "nix" "nix" "toml" "toml"
+                       "json" "json" "yaml" "yaml" "yml" "yaml" "html" "html" "ts" "typescript"}))
+
+(defn file-language
+  "The code language a file's path names by extension; \"text\" otherwise."
+  [path]
+  (get file-langs (some-> path (str/split #"\.") rest last) "text"))
+
 (defn presentation-title
   "The title of the Presentation datom on the source's first line that is not
   a comment, or nil."
@@ -896,6 +998,14 @@
          (str "<h2>" (inline title) "</h2>"))
        "</header>"))
 
+(defn module-header
+  "The opening of a module view's sheet: the module's path as a chip under the
+  label \"as it stands\". `heading` is the text of a \"## repo › path\" heading."
+  [heading]
+  (str "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span>"
+       "<h2 class=\"target\"><code style=\"font-size:.95rem\">" (esc (str/replace heading "`" "")) "</code></h2>"
+       "</header>"))
+
 ;; ------------------------------------------------------------- ethos check
 ;;
 ;; Every ```ethos fence, and every fence in a proposal whose language is
@@ -910,13 +1020,20 @@
   "github:LiGoldragon/ethos-zero/07714b0171802787bea1eefe4caa2d826d9c4030")
 
 (def ^:dynamic *ethos-zero*
-  "The ethos-zero to check against: a flake reference, a store path, or an
-  ethos-zero binary."
+  "The ethos-zero that checks proposed code (a fence inside a proposal or
+  written as a change): a flake reference, a store path, or an ethos-zero
+  binary."
+  pinned-ethos-zero)
+
+(def ^:dynamic *ethos-zero-real*
+  "The ethos-zero that checks real code: a fence quoting source outside any
+  proposal."
   pinned-ethos-zero)
 
 (def ^:dynamic *ethos-check*
   "A function of an ethos text giving nil when ethos-zero accepts it, else
-  its refusal; nil means the default, *ethos-zero*'s Check."
+  its refusal; nil means the default: *ethos-zero*'s Check for proposed code,
+  *ethos-zero-real*'s for real code."
   nil)
 
 (defn- sh [& args]
@@ -972,19 +1089,287 @@
                          lines))
     (str/join "\n" lines)))
 
+(defn datom-text?
+  "The lines read as a datom: after `;` comments (outside guillemets) are
+  dropped, delimiters balance and nest ({ } [ ] < >, guillemets with \\\u00bb
+  escaped, parentheses by balance), at least one enclosure is present, and no
+  diagram edge is."
+  [lines]
+  (let [text (str/join "\n" lines)]
+    (boolean
+     (and (not (diagram? lines))
+          (loop [cs (seq text) stack [] opened false]
+            (if-let [c (first cs)]
+              (cond
+                (= c \u00ab) (let [rest* (loop [r (rest cs)]
+                                           (cond (empty? r) nil
+                                                 (= (first r) \\) (recur (drop 2 r))
+                                                 (= (first r) \u00bb) (rest r)
+                                                 :else (recur (rest r))))]
+                                (when rest* (recur rest* stack opened)))
+                (= c \;) (recur (drop-while #(not= % \newline) cs) stack opened)
+                (#{\{ \[ \< \(} c) (recur (rest cs) (conj stack c) true)
+                (#{\} \] \> \)} c) (when (= (peek stack) ({\} \{ \] \[ \> \< \) \(} c))
+                                        (recur (rest cs) (pop stack) opened))
+                :else (recur (rest cs) stack opened))
+              (and (empty? stack) opened)))))))
+
 (defn ethos-refusal
-  "The refusal of an ethos fence, as one line naming its first line, or nil."
-  [lang lines]
-  (when-let [reason ((or *ethos-check* #(ethos-zero-check *ethos-zero* %)) (ethos-text lang lines))]
+  "The refusal of an ethos fence, as one line naming its first line, or nil.
+  Proposed code is checked by *ethos-zero*, real code by *ethos-zero-real*."
+  [lang lines proposed?]
+  (when-let [reason ((or *ethos-check* #(ethos-zero-check (if proposed? *ethos-zero* *ethos-zero-real*) %)) (ethos-text lang lines))]
     (str "ethos block (" (pr-str (strip (or (first (remove blank? lines)) "")))
          ") refused by ethos-zero: " reason)))
+
+(defn bare-code-language
+  "What an unlabelled fence in a module view parses as: \"ethos\" when real ethos-zero (main)
+  or the proposals build accepts it, \"datom\" when it reads as a datom, else
+  nil: a diagram."
+  [lines]
+  (cond
+    (diagram? lines) nil
+    (let [text (str/join "\n" lines)]
+      (if *ethos-check*
+        (nil? (*ethos-check* text))
+        (or (nil? (ethos-zero-check *ethos-zero-real* text))
+            (nil? (ethos-zero-check *ethos-zero* text))))) "ethos"
+    (datom-text? lines) "datom"))
+
+(defn ethos-readable?
+  "Whether some current ethos-zero accepts the text."
+  [text]
+  (if *ethos-check*
+    (nil? (*ethos-check* text))
+    (or (nil? (ethos-zero-check *ethos-zero-real* text))
+        (nil? (ethos-zero-check *ethos-zero* text)))))
+
+;; ------------------------------------------------------------ alternatives
+;;
+;; A proposal may carry two or more alternatives, **Alternative 1**,
+;; **Alternative 2**, …, each followed by the exact lines it would land. They
+;; render as one group: the text every alternative shares, once, with a gap
+;; where they differ; then each alternative alone with its words at each gap,
+;; marked, between a few shared words that place it.
+
+(defn group-alternatives
+  "Blocks with each run of alternatives taken out as one [:alternatives
+  [[n lines] …]] block; an alternative's lines are its change lines, a blank
+  line between two of its paragraphs."
+  [bs]
+  (let [close (fn [out group] (cond-> out group (conj [:alternatives group])))]
+    (loop [bs (seq bs) out [] group nil]
+      (if-let [b (first bs)]
+        (let [mark (when (and (= :para (first b)) (= 1 (count (second b))))
+                     (re-find alternative-mark (first (second b))))
+              change (when group
+                       (cond (and (= :fence (first b)) (= "text" (second b))) (nth b 2)
+                             ;; unchanged lines alone, two spaces in, are context of the alternative
+                             (and (= :para (first b)) (every? #(str/starts-with? % "  ") (second b))) (second b)))]
+          (cond
+            mark (recur (rest bs) out (conj (or group []) [(Long/parseLong (second mark)) []]))
+            change (recur (rest bs) out
+                          (update-in group [(dec (count group)) 1]
+                                     #(into (cond-> % (seq %) (conj "")) change)))
+            :else (recur (rest bs) (conj (close out group) b) nil)))
+        (close out group)))))
+
+(defn- common-of
+  "A longest sequence common to all the sequences, folded pairwise."
+  [seqs]
+  (reduce (fn [c s] (mapv second (filter #(= :same (first %)) (word-diff c s))))
+          (vec (first seqs)) (rest seqs)))
+
+(defn- positions
+  "Where each item of common, a subsequence of s, sits in s."
+  [common s]
+  (loop [d (word-diff common s) i 0 out []]
+    (if-let [[k] (first d)]
+      (case k
+        :same (recur (rest d) (inc i) (conj out i))
+        :add (recur (rest d) (inc i) out)
+        :del (throw (ex-info "alternatives: shared text not found" {})))
+      out)))
+
+(defn- slots
+  "For kept indices ks of common, each sequence's items in the |ks|+1 slots
+  before, between and after them."
+  [ks ps seqs]
+  (mapv (fn [p s]
+          (let [s (vec s)]
+            (mapv (fn [[a b]] (subvec s (inc a) b))
+                  (partition 2 1 (concat [-1] (map p ks) [(count s)])))))
+        ps seqs))
+
+(defn- differs? [gs j] (not (apply = (map #(% j) gs))))
+
+(defn- word-token? [t] (boolean (re-find #"[\p{L}\p{N}]" t)))
+
+(defn- settle
+  "The kept indices of common: a shared run lying between two differences
+  with fewer than three words joins the difference around it."
+  [common ps seqs]
+  (loop [ks (vec (range (count common)))]
+    (let [gs (slots ks ps seqs)
+          real (set (filter #(differs? gs %) (range (inc (count ks)))))
+          runs (loop [r 0 out []]
+                 (if (>= r (count ks))
+                   out
+                   (let [r2 (loop [r2 r]
+                              (if (and (< (inc r2) (count ks)) (not (real (inc r2)))) (recur (inc r2)) r2))]
+                     (recur (inc r2) (conj out [r r2])))))
+          weak (first (filter (fn [[r r2]]
+                                (and (real r) (real (inc r2))
+                                     (> 3 (count (filter word-token?
+                                                         (concat (map common (subvec ks r (inc r2)))
+                                                                 (mapcat #(get-in gs [0 %]) (range (inc r) (inc r2)))))))))
+                              runs))]
+      (if weak
+        (recur (into (subvec ks 0 (first weak)) (subvec ks (inc (second weak)))))
+        ks))))
+
+(defn word-alternatives
+  "Texts differing in words: :segments, the shared text around the gaps (one
+  more than there are gaps), and :gaps, each text's words at each gap."
+  [texts]
+  (let [seqs (mapv tokens texts)
+        common (common-of seqs)
+        ps (mapv #(positions common %) seqs)
+        ks (settle common ps seqs)
+        gs (slots ks ps seqs)
+        [segs gaps] (reduce (fn [[segs gaps] j]
+                              (let [[segs gaps] (if (differs? gs j)
+                                                  [(conj segs "") (conj gaps (mapv #(str/join (% j)) gs))]
+                                                  [(update segs (dec (count segs)) str (str/join (get-in gs [0 j]))) gaps])]
+                                [(cond-> segs (< j (count ks)) (update (dec (count segs)) str (common (ks j))))
+                                 gaps]))
+                            [[""] []] (range (inc (count ks))))]
+    {:segments segs :gaps gaps}))
+
+(defn- gap-char [n] (str (char (+ 0xE000 n))))
+
+(defn- gap-html
+  "The gap marks of a rendered text as numbered (or, alone, unnumbered) chips."
+  [html numbered?]
+  (str/replace html #"[-]"
+               #(str "<span class=\"alt-gap\">" (if numbered? (- (int (first %)) 0xE000) "…") "</span>")))
+
+;; A gap mark stands apart from a word beside it.
+(defn- spaced-gaps
+  "Shared segments with the gap marks between them, a space between a mark
+  and a letter or digit touching it."
+  [segs marks]
+  (let [alnum? #(boolean (and % (re-find #"[\p{L}\p{N}]" (str %))))]
+    (apply str
+           (first segs)
+           (mapcat (fn [mark [left right]]
+                     [(when (alnum? (last left)) " ") mark (when (alnum? (first right)) " ") right])
+                   marks (partition 2 1 segs)))))
+
+(defn- context-words
+  "Up to four words, as spaces part them, of a shared segment beside a gap: its end when it is
+  left of the gap, its start when right; an ellipsis where it is cut."
+  [seg left?]
+  (let [ts (vec (re-seq #"\s+|\S+" seg))
+        ts (if left? (rseq ts) ts)
+        word? #(not (re-matches #"\s+" %))
+        [kept n] (reduce (fn [[kept n] t]
+                           (if (and (word? t) (= n 4)) (reduced [kept n])
+                               [(conj kept t) (cond-> n (word? t) inc)]))
+                         [[] 0] ts)
+        cut? (< (count kept) (count ts))
+        text (str/join (if left? (rseq kept) kept))]
+    (cond (not cut?) (if left? (strip-left text) (rstrip text))
+          left? (str "…" (strip-left text))
+          :else (str (rstrip text) "…"))))
+
+(defn alternatives-html
+  "An alternatives group: the shared text once, its differences as gaps; then
+  each alternative alone, only its words at each gap, marked."
+  [alts]
+  (let [nums (map first alts)]
+    (when (< (count alts) 2)
+      (throw (ex-info (str "alternative " (first nums) " stands alone; alternatives come two or more together") {})))
+    (when (not= nums (range 1 (inc (count alts))))
+      (throw (ex-info (str "alternatives numbered " (str/join ", " nums) "; they are numbered 1, 2, … in order") {})))
+    (doseq [[n ls] alts]
+      (when-not (some signed-line? ls)
+        (throw (ex-info (str "alternative " n " carries no change") {})))))
+  (let [seqs (mapv (fn [[_ ls]] (vec (remove blank? ls))) alts)
+        common (common-of seqs)
+        ps (mapv #(positions common %) seqs)
+        ks (vec (range (count common)))
+        gs (slots ks ps seqs)
+        counter (volatile! 0)
+        ;; a slot where every alternative has as many lines, signed alike, is
+        ;; read line by line: a line they all share stays whole, the others
+        ;; differ in words; any other slot differs in whole lines
+        diffs (vec (for [j (range (inc (count ks))) :when (differs? gs j)
+                         :let [ls (mapv #(% j) gs)
+                               signs (mapv #(mapv (comp first sign-content) %) ls)]
+                         row (if (apply = signs)
+                               (for [i (range (count (first ls)))
+                                     :let [texts (map #(nth % i) ls)]]
+                                 (if (apply = texts)
+                                   {:j j :same (first texts)}
+                                   (let [w (word-alternatives (map #(second (sign-content %)) texts))]
+                                     {:j j :words w :sign (nth (first signs) i)
+                                      :nums (vec (repeatedly (count (:gaps w)) #(vswap! counter inc)))})))
+                               [{:j j :lines ls :nums [(vswap! counter inc)]}])]
+                     row))
+        _ (when (every? :same diffs)
+            (throw (ex-info "alternatives that do not differ: one proposal is enough" {})))
+        numbered? (< 1 @counter)
+        diff-at (group-by :j diffs)
+        shared (vec (mapcat (fn [j]
+                              (concat
+                               (for [{:keys [same words sign nums]} (diff-at j)]
+                                 (cond same same
+                                       words (str sign " " (spaced-gaps (:segments words) (map gap-char nums)))
+                                       :else (str "  " (gap-char (first nums)))))
+                               (when (< j (count ks)) [(common (ks j))])))
+                            (range (inc (count ks)))))
+        badge #(when numbered? (str "<span class=\"alt-gap\">" % "</span> "))
+        alternative
+        (fn [a [n _]]
+          (str "<div class=\"alternative\"><div class=\"alt-label\">Alternative " n "</div>"
+               (apply str
+                      (for [{:keys [words sign lines nums]} (remove :same diffs)]
+                        (if words
+                          (apply str
+                                 (for [[g num] (map vector (range) nums)
+                                       :let [t (get-in words [:gaps g a])
+                                             [_ lead core trail] (re-find #"(?s)^(\s*)(.*?)(\s*)$" t)
+                                             cls ({"+" "add" "-" "del"} sign "ctx")]]
+                                   (str "<p class=\"alt-words " cls "\">" (badge num)
+                                        (inline (str (context-words (get-in words [:segments g]) true) lead))
+                                        (if (= "" core)
+                                          "<mark class=\"alt-none\" title=\"nothing here\">∅</mark>"
+                                          (str "<mark>" (inline core) "</mark>"))
+                                        (inline (str trail (context-words (get-in words [:segments (inc g)]) false)))
+                                        "</p>")))
+                          (let [ls (nth lines a)]
+                            (str (when numbered? (str "<p class=\"alt-words\">" (badge (first nums)) "</p>"))
+                                 (if (seq ls)
+                                   (text-panels ls true)
+                                   "<p class=\"alt-words\"><mark class=\"alt-none\" title=\"nothing here\">∅</mark></p>"))))))
+               "</div>"))]
+    (str "<div class=\"alternatives\"><div class=\"alt-label\">Shared by the " (count alts) " alternatives</div>"
+         (gap-html (text-panels shared true) numbered?)
+         (apply str (map-indexed alternative alts))
+         "</div>")))
+
+(defn comment-html
+  "The machine's comment on the proposal it sits in."
+  [text]
+  (str "<aside class=\"comment\"><p>" (inline text) "</p></aside>"))
 
 (defn build [src code]
   (let [nfig (volatile! 0)
         heading-where (volatile! nil)
         refusals (volatile! [])
         datom-title (presentation-title src)
-        bs (vec (blocks src))
+        bs (vec (group-alternatives (blocks src)))
         file-next? (fn [i] (let [[kind ls] (get bs (inc i))]
                              (and (= :para kind) (str/starts-with? (first ls) "File: "))))
         show-fig (fn [lines]
@@ -998,6 +1383,10 @@
         out (atom [])
         target (volatile! nil)
         in-article (volatile! false)
+        in-module (volatile! false)
+        module-md (volatile! false)
+        module-file (volatile! nil)
+        module-first (volatile! false)
         rulings (volatile! false)
         pending-close (volatile! false)
         record-open (volatile! false)
@@ -1016,18 +1405,60 @@
                          (vreset! record-open false)))
         emit (fn [s] (if (or @rulings @glue) (extend-last! s) (append! s)))]
     (doseq [[i b] (map-indexed vector bs)]
-      (if (= :fence (first b))
-        (let [[_ lang lines per-line] b]
-          (when (and (not per-line)
+      (cond
+        (= :alternatives (first b))
+        (do (when-not @in-article
+              (throw (ex-info "alternatives outside a proposal" {})))
+            (when (and @rulings @pending-close) (close-rulings true))
+            (when (= "ethos" (target-lang (or @target @heading-where)))
+              (doseq [[_ ls] (second b)]
+                (when-let [r (ethos-refusal "text" ls true)] (vswap! refusals conj r))))
+            (emit (alternatives-html (second b))))
+
+        (= :fence (first b))
+        (let [[_ raw-lang lines per-line] b
+              md? (boolean (markdown-languages raw-lang))
+              module-sheet? (and @module-md @module-first (not (:bare (meta b)))
+                                 (or md? (= raw-lang "text")))
+              _ (vreset! module-first false)
+              ;; A module view of a code file holds the file as it stands, in its language.
+              code-file? (and @in-module (not @module-md) (not= raw-lang "figure"))
+              lang (cond md? "text"
+                         (and code-file? (= raw-lang "text")) (file-language @module-file)
+                         :else raw-lang)]
+          (when (and (not per-line) (not code-file?)
                      (or (= lang "ethos")
                          (and @in-article (= lang "text")
                               (= "ethos" (target-lang (or @target @heading-where)))
                               (not (and (not-any? signed-line? lines) (diagram? lines))))))
-            (when-let [r (ethos-refusal lang lines)] (vswap! refusals conj r)))
+            (when-let [r (ethos-refusal lang lines (boolean (or @in-article (some signed-line? lines))))] (vswap! refusals conj r)))
           (when (and @rulings @pending-close) (close-rulings true))
           (cond
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
             (emit (show-fig lines))
+
+            ;; Whatever its label or place, a fence that is an ASCII drawing is drawn: it needs
+            ;; its fig-N.svg, else the build fails. A built page never holds an undrawn drawing.
+            (and (not md?) (not-any? signed-line? lines) (drawing? lines))
+            (emit (show-fig lines))
+
+            ;; Checked only for being the file word for word (book-check); never parsed.
+            ;; An Ethos file no current ethos-zero reads carries a tag.
+            code-file?
+            (emit (str (when (and (= lang "ethos") (not (ethos-readable? (str/join "\n" lines))))
+                         "<p class=\"mlabel\">not read by current Ethos</p>")
+                       "<pre><code class=\"language-" (get langs lang lang) "\">"
+                       (esc (str/join "\n" lines)) "</code></pre>"))
+
+            (or (and module-sheet? (or md? (not (diagram? lines))))
+                (and md? (or (not @in-article) (not-any? signed-line? lines))))
+            (emit (str "<div class=\"markdown\">"
+                       (binding [*module-fig* show-fig] (markdown-html lines)) "</div>"))
+
+            (and (:bare (meta b)) @in-module (not-any? signed-line? lines)
+                 (bare-code-language lines))
+            (emit (str "<pre><code class=\"language-" (bare-code-language lines) "\">"
+                       (esc (str/join "\n" lines)) "</code></pre>"))
 
             (and (= lang "text") (not-any? signed-line? lines) (diagram? lines))
             (emit (show-fig lines))
@@ -1055,7 +1486,9 @@
               (emit (str "<pre><code class=\"language-" (get langs lang lang) "\">" marked-code "</code></pre>"))
               (emit (str "<pre data-diff><code class=\"language-" (get langs lang lang) "\">"
                          (esc (str/join "\n" lines)) "</code></pre>")))))
+        :else
         (let [lines (second b)
+              _ (vreset! module-first false)
               first-line (first lines)
               text (join-lines lines)
               _ (when-let [m (re-find #"^File: `?([^`\s,]+)" text)] (vreset! target (m 1)))]
@@ -1066,8 +1499,12 @@
               (append! (str "<title>" (esc (or datom-title title)) "</title>"))
               (append! (str "<h1 class=\"book-title\">" (esc title) "</h1>")))
 
+            (and @in-module (str/starts-with? first-line "### ") (not (str/starts-with? first-line "### Proposal ")))
+            (append! (str "<h4>" (inline (strip (subs first-line 4))) "</h4>"))
+
             (str/starts-with? first-line "### ")
             (do (close-rulings false)
+                (when @in-module (append! "</article>") (vreset! in-module false))
                 (close-record)
                 (vreset! glue false)
                 (vreset! target nil)
@@ -1085,9 +1522,28 @@
               (vreset! glue false)
               (vreset! target nil)
               (vreset! heading-where (when-not (file-next? i) (str/replace (strip where) "`" "")))
+              (when @in-module (append! "</article>") (vreset! in-module false))
               (when @in-article (append! "</article>"))
               (append! (proposal-header n (strip where) (not (file-next? i))))
               (vreset! in-article true))
+
+            (re-find #"(?U)^## \S+ › .+$" first-line)
+            (do (close-rulings false)
+                (close-record)
+                (vreset! glue false)
+                (when @in-article (append! "</article>") (vreset! in-article false))
+                (when @in-module (append! "</article>"))
+                (append! (module-header (strip (subs first-line 3))))
+                (vreset! module-md (str/ends-with? (strip (subs first-line 3)) ".md"))
+                (vreset! module-file (last (str/split (strip (subs first-line 3)) #" › " 2)))
+                (vreset! module-first true)
+                (vreset! in-module true))
+
+            (and @in-module (str/starts-with? first-line "## "))
+            (do (close-rulings false)
+                (close-record)
+                (vreset! glue false)
+                (append! (str "<h3>" (inline (strip (subs first-line 3))) "</h3>")))
 
             (str/starts-with? first-line "## ")
             (do (close-rulings false)
@@ -1095,6 +1551,12 @@
                 (vreset! glue false)
                 (when @in-article (append! "</article>") (vreset! in-article false))
                 (append! (str "<h2>" (inline (strip (subs first-line 3))) "</h2>")))
+
+            (re-find comment-mark first-line)
+            (do (when-not @in-article
+                  (throw (ex-info (str "machine comment outside a proposal: " (pr-str text)) {})))
+                (when (and @rulings @pending-close) (close-rulings true))
+                (emit (comment-html (second (re-find comment-mark text)))))
 
             (str/starts-with? first-line "File: `")
             (do (when (and @rulings @pending-close) (close-rulings true))
@@ -1141,7 +1603,10 @@
                   (emit (str "<p>" (inline text) "</p>")))))))))
     (close-rulings false)
     (close-record)
+    (when @in-module (append! "</article>"))
     (when @in-article (append! "</article>"))
+    (when (and *require-figures* (zero? @nfig))
+      (throw (ex-info "a book carries figures: this book has no diagram (no ASCII diagram fence and no figure)" {})))
     (when (seq @refusals)
       (throw (ex-info (str/join "\nbook-build: " @refusals) {:refusals @refusals})))
     (str (str/join "\n" @out) "\n" code)))
@@ -1155,7 +1620,7 @@
   (let [args (vec args)]
     (when (< (count args) 2)
       (binding [*out* *err*]
-        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF]"))
+        (println "usage: bb tools/book-build.clj SOURCE.md OUT.html [--code tools/book-code.html] [--figures DIR] [--ethos-zero REF] [--ethos-zero-real REF]"))
       (System/exit 1))
     (let [[src-path out-path] args
           ci (.indexOf args "--code")
@@ -1163,9 +1628,11 @@
                       (get args (inc ci))
                       (str (fs/path script-dir "book-code.html")))
           fi (.indexOf args "--figures")
-          ei (.indexOf args "--ethos-zero")]
+          ei (.indexOf args "--ethos-zero")
+          ri (.indexOf args "--ethos-zero-real")]
       (binding [*figures-dir* (when (>= fi 0) (get args (inc fi)))
-                *ethos-zero* (if (>= ei 0) (get args (inc ei)) pinned-ethos-zero)]
+                *ethos-zero* (if (>= ei 0) (get args (inc ei)) pinned-ethos-zero)
+                *ethos-zero-real* (if (>= ri 0) (get args (inc ri)) pinned-ethos-zero)]
         (try (spit out-path (build (read-text src-path) (read-text code-path)) :encoding "UTF-8")
              (catch clojure.lang.ExceptionInfo e
                (binding [*out* *err*] (println (str "book-build: " (ex-message e))))
