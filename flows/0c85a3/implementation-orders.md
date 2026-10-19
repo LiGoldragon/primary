@@ -2,6 +2,18 @@
 
 This is an operational tracker, not evidence of acceptance or deployment. Older orders not resolved by these entries remain open in their retained packets.
 
+## Immediate priority: production naming-only release
+
+Core's living order: preserve existing sessions; rename them in place, and fix the launch tool before further uncorrected launches. Existing Flow authoraa034f is requested through current Psyche core Secondary5dd7e5 to freeze a67b80b3/0.35.11-based naming-only child. Exact canonical visible title { Aspect Topic Layer FLOW_ID }, six-character ID, on Claude remote-control session, Herdr workspace and display-agent. No visible flow-longhash or claude-hash. Keep ordinary20/meta24.0.1/Message/store schema unchanged; exclude7ac24a1 and unrelated0.35.19. Full-launch failing regression and native all-surface readbacks required. Field owns sole acceptance/deploy; Core owns already-ordered in-place renames. No teardown, new replacement flow or duplicate rename. Author acceptance/packet not yet received. Message integration must not gate this release.
+
+Current Core address is5dd7e5; formerd68c82 process identification does not make it current sender. Never rebind the address back or spoof the successor. P8's two attempts both refused before enqueue; a single new send is authorized only through a qualified current route.
+
+## Current audit and refresh authority
+
+Next source authority psyche6c8e2666d7fcbacde6a6ab73c2f25c9fae6b99b4 includes168d72c/d095d0f rulings. Core reports114 audited statements:28 implemented,57 partial,29 not; these remain attributed audit findings to reconcile against exact source and runtime, not an independently repeated census. Service-in-CriomOS versus Home scope remains a ruling question.
+
+Approved refresh behavior: model-specific configured threshold, no handover, incoming messages reserved for successor. Only qualified numeric values are ephemeral Claude300000 ceiling and250000 wind-down; do not generalize them to all models or restore held15percent/200k/400k values. Other per-model thresholds remain unresolved. Running configuration still has Thresholds[] and four Claude-layer rows, not the new twelve-row family.
+
 ## Ethos Set intrinsic and Datom codec
 
 Authority: the living's ruling that models are a set, relayed by Psyche Core Secondary on 2026-10-19. Source task: /home/li/private-repos/flow-evidence/41fa34/ethos-set-implementation-20261019/task.json.
