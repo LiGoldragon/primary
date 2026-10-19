@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-19T00:56:38.504850+00:00",
+  "updatedUTC": "2026-10-19T00:57:59.698956+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -239,9 +239,10 @@
     {
       "id": "module-naming-reviewed-cohort",
       "work": "After Psyche review and exact Mind-owned source cohort, regenerate and deploy kind:name module naming for Claude/Codex, kind-name for OpenCode, with matching Curriculum registry/startup kind checks/roles and Ethos import-clash handling.",
-      "state": "WAITING on existing Mind Core Primary design/presentation and reviewed immutable implementation cohort. Mind Core Secondary reports Psyche vision f3fbf0; not independently qualified here. No parallel author, moves, generation or activation begun. Existing runtime retained.",
+      "state": "WAITING on existing Mind design/presentation, Psyche review and exact immutable implementation cohort. Original Core contract delivered once to Mind context Secondary877549 at2026-10-19T00:57:13.040Z after actual completedturn/exactsamepane-thread idle reconciliation; fullsender/body equal original queue, queueempty. No resend/newenqueue/directprompt/parallelwriter. Delivery is proved; owner acceptance or implementation not inferred. Reported Psyche f3fbf0 not independently qualified here. No moves/generation/activation.",
       "source": "Mind Core Secondary message, 2026-10-18",
-      "reportedPsycheRef": "f3fbf0"
+      "reportedPsycheRef": "f3fbf0",
+      "evidence": "/home/li/private-repos/flow-evidence/42265e/module-naming-order-20261018/native-delivery-proof.json"
     }
   ]
 }
