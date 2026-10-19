@@ -14,6 +14,18 @@ Current status: owner/capacity and existing-source-boundary request sent through
 
 ## Approved context landings and compatible generation
 
+## Ethos finding: EventTables synchronization
+
+Authority: Core recovered the retired65f93a handoff and assigns Mind a FINDING FOR THE LIVING, not a workaround. Accountable coordinator0c85a3; actual Ethos author/capacity acceptance is still pending through existing66f2bb route. Separate from Set and Message implementation.
+
+Qualified source: Flow6ccb2ed21ca34427726805bb672e816be98c1b6c, crates/flow-nexus/src/store/events.rs132 append_gate: Mutex<()>. record_event, hold_reserved_flow and release_reserved_flow hold the same gate across reading and mutating/retracting the row. This serializes those paths within one EventTables instance, protecting concurrent read-modify-write updates from overwriting one another. It is not by itself proof of cross-process exclusion, fairness, crash durability or every store operation's atomicity.
+
+Inspected ethos-zero07714b0 intrinsic arity cases have no Mutex. That does not prove no user-defined capability can express the required semantics. Finding and questions: should Ethos describe the required indivisible operation/ordering rather than Rust's mechanism; which atomicity/exclusion boundary is intended; where do conflict/failure/poisoning semantics belong; what checked example and generator/engine evidence establish the chosen meaning? No Mutex wrapper, hidden Rust bypass or new intrinsic is authorized by this finding.
+
+Evidence/finding: /home/li/private-repos/flow-evidence/0c85a3/ethos-eventtables-mutex-20261019/finding.md. No source edit, compiler or synchronization change.
+
+## Approved context landings and compatible generation — current status
+
 Owner877549 is alive according to Field's current readback, with seven queued entries; its authorship is retained. No fallback writer assigned. Supported exact-pane lifecycle delivery remains unresolved; no repeated requests, forced wake or fabricated Stop.
 
 Approved landings: inquiry/subflows.md from book91 Proposal8, exactly approved; inquiry/module-naming.md containing only the approved fourth question; knowledge/vocabulary.md Flow definition change from one run of a voice to one run of a metaflow, preserving the rest of the sentence (book89 Proposal33). Read-only exact packets are under /home/li/private-repos/flow-evidence/41fa34/context-owner-landing-20261019/. No landing commits received.
