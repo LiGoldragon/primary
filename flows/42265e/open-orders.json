@@ -1,6 +1,6 @@
 {
   "owner": "42265e",
-  "updatedUTC": "2026-10-19T01:44:04.022614+00:00",
+  "updatedUTC": "2026-10-19T02:12:56.213083+00:00",
   "orders": [
     {
       "id": "opus-topics",
@@ -247,7 +247,7 @@
     {
       "id": "hardcoded-nix-store-elimination",
       "work": "Living orders deep investigation, resolvable declarative replacement of hard-coded Nix store paths, audit, counter-audit and recurrence prevention. Mind Secondary inventory/history, Mind Primary design/source, Core audits; Field endpoint backup/serial acceptance/cutover.",
-      "state": "ACTIVE/AUDIT-HELD: c8fee5 eval0; bird check failed malformed heredoc, independent codex-next build0. Corrected0729 remoteformat unchanged/eval0; unchanged codex-next derivation result retained. New partialc206 source not yet final accepted cohort. Consumer800052 superseded: authoritative Horizon lacks endpoint-policy fields; exact Goldragondc57/Horizona3dd/config74a4/Lojix3fc source/projection qualification delivered Mind with Presented. Core Opus report read/attributed, nixpkgs fork excluded, exhaustive coverage not independently claimed. Bounded metadata-only Nix2.35.1 seam eval0/metadata0 proves exact output mapping and mixed-root negative; Lojix linked materializer/retaineddefinition/store+signal/meta boundary qualified and Presented, generatorc265 sourcequalified but no generation; no compilation/native cutover/publication/history rewrite. Five original Nexus counteraudit orders delivered FIFO wholeonce/queueempty; target acknowledgment not auditpass. Backups/native occupied-client qualification still required before final audited transition.",
+      "state": "ACTIVE/FIRST-WAVE-SOURCE-CHECKS-PASS: exact privateHomefe0492+OSconsumer628cf actualproductionpkgs factory eval0/build0 on Prometheus, realLi T/T/T Bird T/F/T and syntheticunlisted F/F/F fullpolicyprojections0; allkeep-old/assertions/no restartoverride; 299+162postcheckhashes match. Sourceinjection+actualmodulearg witnesses match existing5overlays/licencepolicy. Actualoldc206 two-provider collision25 and correctedone-provider merge0 retained; standaloneAndroid/Aspell fixturefailures retained, no workaround. Core explicitly separates schema/name-debt laterwave; old800052selection reviewedshape retained only innewconsumer. Pending exactcurrentaudit/counteraudit, Homepublication/finalnormalconsumerpin, fullprofileacceptance and freshclients/backups/nativecutover. Currentproduction unchanged; broadremainingliterals/guardlimits/historywork incomplete and historyrewriteheld.",
       "evidence": "/home/li/private-repos/flow-evidence/42265e/nix-store-literals-20261019/",
       "source": "Living direct quoted order via Mind Core Secondary; subsequent explicit ownership/history hold from Mind Core Primary/Secondary."
     }
