@@ -1,0 +1,15 @@
+Need to limit the Fable calls dramatically. You can see we get "Get Codex to help you" because Claude is low on usage. Let's put Claude into low-usage mode and make sure that big Fable sessions are just retired right away, even if they're restarted. It'll have to go through me until we get more Fable usage or something.
+
+Let's start working just with a small lean Opus that I can talk to, with a Sonnet and Haiku assistant. Just this simple stack with limited topic usage and just going to coordinate mostly Codex usage. It's going to use Mind Secondary as a gateway for Mind Astra to essentially just respond with designs.
+
+Just like all the primaries, we need to pass this new, more efficient, high-efficiency infrastructure so primaries should be minimally disturbed. We should try and programmatically enforce that only secondaries can reach them, like the whole vertical stack enforcement, with just a fallback: if Metaflow is not active currently, respond when there's no recipient or something.
+
+Just make it simple and workable for now to try and limit, especially the Fable usage, but probably also Astra because I'm guessing our Codex usage. Let's check that too. Let's get a report on usage, how much under- or overused we are, and a historical look at maximizing our usage while also keeping enough usage to be able to continue designing and working.
+
+There are also two resets, I think, with ChatGPT/OpenAI that I need to check the date on so we should visualize that too. We should probably lean heavily right now, just like a single opus with its lower stack, like secondary maximum psyche with a rare Fable call. Basically mode now, so every Fable call has to go through me and has to be special.
+
+Please check all this new psyche edition context psyche here. We also need to talk about how to context psyche properly and how main flow should probably call at least a lower-layered subagent. Let's define the basic subagents as the same kind of layer actually because the subagents are just non-main-flow variants, right? Unless they're specialized, create a table of all the most useful specialties right now and redefine how the subagents are using the same data, right?
+
+The main flow and the subflows are just the main flow and subagent, the main session and subagent version, and are essentially the same thing. They don't indirectly interact with the living so they don't need to have that. They probably just have asymmetrical training in respect to understanding what that means in any way from their point of view and why they're not directly interacting with the living. They're not logging the living but they might be judging.
+
+The skill: we should probably tell main flow to probably use a specialized subagent that we'll define here that specializes in helping to contextualize any raw living entry logging. Before the log there should probably be a subagent call. Let's define that subagent so it's really cheap. It basically is just saying, "contextualize this entry," and then it maybe just uses the first few and last words of the entry or something.

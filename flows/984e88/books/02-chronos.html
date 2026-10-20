@@ -1,0 +1,495 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chronos, second edition</title>
+<h1 class="book-title">Chronos, second edition</h1>
+<p>Machine: the second edition, after your two comments on the Ethos anatomy. Coordinates and arcs take a type imported from Rust, listed in a hand-kept vector that ethos-zero links against. A position is now an absolute arc on the ecliptic; sign and nakṣatra are derived from any arc, absolute or relative. The choices on count origin and print are settled or re-posed accordingly; the rest are carried unruled.</p>
+<h2>Crystallization</h2>
+<article class="proposal"><header><span class="pnum">1</span><h2>the Chronos module</h2></header>
+<p>Machine: a new module; nothing is removed. Changed since the first edition: the section Positions are arcs, from your comment on signs and nakṣatras.</p>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>(new)</p>
+<div class="diff"><div class="add"><ins><div class="textblock">---
+description: Chronos, the Nexus that tells astrological time, is being designed or judged against what the living wants it to be.
+dependencies: [vision-nexus, vision-ethos]
+---</div></ins></div><div class="add"><ins><div class="textblock">## Chronos tells astrological time</div></ins></div><div class="add"><ins><p>Chronos tells astrological time for the present moment, or for a given time and location.</p></ins></div><div class="add"><ins><div class="textblock">## Solar or lunar</div></ins></div><div class="add"><ins><p>Chronos tells the time in a purely solar or a purely lunar format, and may tell more, the lunar nodes among them.</p></ins></div><div class="add"><ins><div class="textblock">## Tropical, on the ecliptic</div></ins></div><div class="add"><ins><p>Chronos is tropical throughout, the nakṣatras included: Aśvinī begins at 0° Aries. Every position is reckoned on the ecliptic.</p></ins></div><div class="add"><ins><div class="textblock">## Positions are arcs</div></ins></div><div class="add"><ins><p>A position is an absolute arc on the ecliptic. Sign, nakṣatra and the like are derived from an arc, absolute or relative; a relative arc is one body's arc less another's. The lunation is the Moon's arc less the Sun's, and a lunation of 31° reads as Taurus.</p></ins></div><div class="add"><ins><div class="textblock">## A simple, idiomatic Nexus</div></ins></div><div class="add"><ins><p>Chronos is an idiomatic Nexus with a full Ethos specification, and it stays simple.</p></ins></div><div class="add"><ins><div class="textblock">## The test of the Nexus</div></ins></div><div class="add"><ins><p>Short-term vision. Chronos is the simple component on which the Nexus architecture and Ethos are tested.</p></ins></div></div>
+<p>Every statement lands in vision-chronos.</p>
+<p>**Archive, on approval:** the two earlier records this module replaces, and your comment on signs and nakṣatras, each into its archive file. The tropical record stays raw; its other words are not crystallized here.</p>
+<p>**Destroy, on approval:** an impurity, the order to start the rewrite now; this book carries it out.</p>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the module, the archives and the destruction.</li><li>Land the module; the records stay as they are.</li><li>Neither.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>the Ethos anatomy</h2></header>
+<p>Machine: Library, ordinary Signal, Operation and Memory in one file; the meta Signal in its own repository. Changed since the first edition: <code>Arc</code> is the imported <code>Rational</code> of Proposal 5, in degrees; <code>Location</code> is two arcs; <code>Position</code> and its stored sign and nakṣatra are gone; a <code>Reading</code> asks for a body's absolute arc or one body's arc relative to another; <code>Sign</code> and <code>Naksatra</code> are named enums, yielded only by the <code>Zodiacal</code> trait on <code>Arc</code>.</p>
+<p>Machine: the Ethos of Chronos.</p>
+<p class="target"><code>chronos/chronos.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Library                        ; shared by all
++ []                             ; imports: none
++ [ Instant.Integer              ; types: Unix sec
++   Arc.Rational                 ;   degrees, exact
++   Location.{ Latitude.Arc      ;   on Earth
++              Longitude.Arc }
++   Moment.{ Instant Location }  ;   when and where
++   Body.[ Sun                   ;   a light or a
++          Moon                  ;   lunar point
++          NorthNode
++          SouthNode
++          Apogee ]
++   Reading.[ Absolute.Body      ;   what is asked:
++             Relative.{ Body    ;   second's arc
++                        Body } ] ; less first's
++   Placement.{ Reading Arc }    ;   a reading's arc
++   Sign.[ Aries                 ;   derived, never
++          Taurus                ;   stored or
++          Gemini                ;   answered
++          Cancer
++          Leo
++          Virgo
++          Libra
++          Scorpio
++          Sagittarius
++          Capricorn
++          Aquarius
++          Pisces ]
++   Naksatra.[ Asvini            ;   derived: the 27
++              Bharani           ;   from 0° Aries
++              Krttika
++              Rohini
++              Mrgasira
++              Ardra
++              Punarvasu
++              Pusya
++              Aslesa
++              Magha
++              PurvaPhalguni
++              UttaraPhalguni
++              Hasta
++              Citra
++              Svati
++              Visakha
++              Anuradha
++              Jyestha
++              Mula
++              PurvaAsadha
++              UttaraAsadha
++              Sravana
++              Dhanistha
++              Satabhisaj
++              PurvaBhadrapada
++              UttaraBhadrapada
++              Revati ]
++   InSign.{ Sign Arc }          ;   arc gone in
++   InNaksatra.{ Naksatra Arc }
++   Subscription.Integer         ;   a watch's id
++   Step.[ BySign                ;   what counts as
++          ByNaksatra            ;   a change
++          ByDegree ]
++   Configuration.{ Option&lt;Location&gt; } ] ; meta
++ [ Zodiacal.[ sign.[ InSign ]   ; kinds: derived
++              naksatra.[ InNaksatra ] ] ]
++ [ Arc.[ Zodiacal ] ]           ; associations
++
++ Signal                         ; ordinary socket
++ [ chronos:[ Moment             ; imports
++             Reading
++             Placement
++             Step
++             Subscription ] ]
++ [ Tell.{ Vector&lt;Reading&gt;       ; queries: arcs
++          Option&lt;Moment&gt; }      ;   None: now, here
++   Watch.{ Vector&lt;Reading&gt;      ;   subscribe
++           Step }
++   Unwatch.Subscription ]       ;   unsubscribe
++ [ Told.Vector&lt;Placement&gt;       ; responses
++   Watching.{ Subscription      ;   arcs now
++              Vector&lt;Placement&gt; }
++   Moved.{ Subscription         ;   at each step
++           Vector&lt;Placement&gt; }
++   Unwatched.Subscription
++   Refused.[ NoLocation         ;   typed refusals
++             BeyondEphemeris.Instant
++             NoSuchWatch.Subscription ] ]
++ []                             ; types
++
++ Operation                      ; one per effect
++ [ chronos:[ Moment             ; imports
++             Reading
++             Placement
++             Step
++             Subscription
++             Configuration ] ]
++ [ Reckon.{ Vector&lt;Reading&gt;     ; operations
++            Option&lt;Moment&gt; }    ;   compute arcs
++   Open.{ Vector&lt;Reading&gt;       ;   start a watch
++          Step }
++   Wake.Subscription            ;   at a crossing
++   Close.Subscription           ;   end a watch
++   Store.Configuration ]        ;   from meta
++ [ Reckoned.Vector&lt;Placement&gt;   ; outcomes
++   Opened.{ Subscription        ;   watch and now
++            Vector&lt;Placement&gt; }
++   Woke.{ Subscription          ;   the new arcs
++          Vector&lt;Placement&gt; }
++   Closed.Subscription
++   Stored.Configuration
++   Failed.[ NoLocation          ;   each refusal
++            BeyondEphemeris.Instant
++            NoSuchWatch.Subscription
++            StoreRefused ] ]
++ []                             ; types
++
++ Memory                         ; what it keeps
++ [ chronos:[ Configuration      ; imports
++             Subscription
++             Reading
++             Step ] ]
++ [ Configuration                ; record types
++   Watcher.{ Subscription       ;   an open watch
++             Vector&lt;Reading&gt;
++             Step } ]</code></pre>
+<p>Machine: <code>Rational</code> needs no import line; it is known from the vector of Proposal 4, as a built-in is. A relative arc is reduced to 0° up to 360°, so the Sun at 350° and the Moon at 21° make a lunation of 31°. <code>Zodiacal</code> is a Chronos trait borne by a Rust type from another crate, which Rust allows because the trait is Chronos's own. Sign and nakṣatra are taken the same way on an absolute and a relative arc.</p>
+<p>Machine: the Ethos of the meta socket, unchanged.</p>
+<p class="target"><code>meta-signal-chronos/meta-signal-chronos.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Signal                         ; meta socket
++ [ chronos:[ Location           ; imports
++             Configuration ] ]
++ [ Configure.Configuration ]    ; queries
++ [ Configured.Configuration     ; responses
++   Refused.[ OutOfRange.Location ] ] ; refusal
++ []                             ; types</code></pre>
+<p>Machine: the trait as the generator would write it.</p>
+<pre data-diff><code class="language-rust">pub trait Zodiacal {
+    fn sign(&amp;self) -&gt; InSign;
+    fn naksatra(&amp;self) -&gt; InNaksatra;
+}</code></pre>
+<p>Machine: how one relative arc yields its derivations.</p>
+<div class="figure"><svg viewBox="0 0 239 241" width="239" height="241" style="display:block" role="img" aria-label="Moon at 151°, Sun at 120° lunation arc, 31° Taurus, 1° Kṛttikā, 4°20′ subtracts into reads as nakṣatra reads as sign" xmlns="http://www.w3.org/2000/svg"><path d="M120 46 L120 79" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="116,79 124,79 120,87" style="fill:var(--fg,currentColor)"/><path d="M120 123 L120 131 L188 131 L188 179" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="184,179 192,179 188,187" style="fill:var(--fg,currentColor)"/><path d="M120 123 L120 131 L85 131 L85 179" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="81,179 89,179 85,187" style="fill:var(--fg,currentColor)"/><rect x="66.6" y="51" width="106.8" height="15" style="fill:var(--sheet,Canvas)"/><text x="120" y="62" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">subtracts into</text><rect x="156.2" y="136" width="63.6" height="30" style="fill:var(--sheet,Canvas)"/><text x="188" y="147" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">reads as</text><text x="188" y="162" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">nakṣatra</text><rect x="35.2" y="143.5" width="99.6" height="15" style="fill:var(--sheet,Canvas)"/><text x="85" y="154.5" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">reads as sign</text><rect x="11" y="10" width="218" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="120" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Moon at 151°, Sun at 120°</text><rect x="43" y="87" width="154" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="120" y="109" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">lunation arc, 31°</text><rect x="36" y="187" width="98" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="85" y="209" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Taurus, 1°</text><rect x="147" y="187" width="82" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="188" y="209" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Kṛttikā,</text><text x="188" y="227" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">4°20′</text></svg></div>
+<p>Machine: <code>Wake</code> is the operation the Nexus gives itself at the next crossing it has reckoned; nothing polls, and between crossings Chronos is quiet.</p>
+<div class="figure"><svg viewBox="0 0 239 410" width="239" height="410" style="display:block" role="img" aria-label="chronos CLI Chronos Memory chronos CLI clock Chronos chronos CLI sends Watch to answers Watching to writes Watcher sets the wake on wakes sends Moved to" xmlns="http://www.w3.org/2000/svg"><path d="M117 46 L117 79" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="113,79 121,79 117,87" style="fill:var(--fg,currentColor)"/><path d="M117 123 L117 131 L194 131 L194 194" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="190,194 198,194 194,202" style="fill:var(--fg,currentColor)"/><path d="M117 123 L117 131 L42 131 L42 194" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="38,194 46,194 42,202" style="fill:var(--fg,currentColor)"/><path d="M117 123 L117 131 L116 131 L116 194" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="112,194 120,194 116,202" style="fill:var(--fg,currentColor)"/><path d="M116 238 L116 289" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="112,289 120,289 116,297" style="fill:var(--fg,currentColor)"/><path d="M116 333 L116 366" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="112,366 120,366 116,374" style="fill:var(--fg,currentColor)"/><rect x="63.6" y="51" width="106.8" height="15" style="fill:var(--sheet,Canvas)"/><text x="117" y="62" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">sends Watch to</text><rect x="162.2" y="136" width="63.6" height="45" style="fill:var(--sheet,Canvas)"/><text x="194" y="147" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">answers</text><text x="194" y="162" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">Watching</text><text x="194" y="177" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">to</text><rect x="13.8" y="143.5" width="56.4" height="30" style="fill:var(--sheet,Canvas)"/><text x="42" y="154.5" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">writes</text><text x="42" y="169.5" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">Watcher</text><rect x="87.8" y="136" width="56.4" height="45" style="fill:var(--sheet,Canvas)"/><text x="116" y="147" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">sets</text><text x="116" y="162" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">the</text><text x="116" y="177" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">wake on</text><rect x="95" y="261" width="42" height="15" style="fill:var(--sheet,Canvas)"/><text x="116" y="272" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">wakes</text><rect x="62.6" y="338" width="106.8" height="15" style="fill:var(--sheet,Canvas)"/><text x="116" y="349" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">sends Moved to</text><rect x="64" y="10" width="106" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="117" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">chronos CLI</text><rect x="80" y="87" width="74" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="117" y="109" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Chronos</text><rect x="9" y="202" width="66" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="42" y="224" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Memory</text><rect x="87" y="202" width="58" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="116" y="224" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">clock</text><rect x="157" y="202" width="74" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="194" y="224" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">chronos</text><text x="194" y="242" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">CLI</text><rect x="79" y="297" width="74" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="116" y="319" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">Chronos</text><rect x="63" y="374" width="106" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="116" y="396" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">chronos CLI</text></svg></div>
+<p>Machine: the trace of one watch on the lunation, end to end, its arcs written as in option 1 of Proposal 6. Lands nowhere; the values are illustrative.</p>
+<pre data-diff><code class="language-datom">Watch.{ [ Relative.{ Sun Moon } ] ; 1 query, CLI
+        BySign }
+Open.{ [ Relative.{ Sun Moon } ]  ; 2 operation
+       BySign }
+Watcher.{ 1                       ; 3 to Memory
+          [ Relative.{ Sun Moon } ]
+          BySign }
+Succeeded                         ; 4 Memory answers
+Opened.{ 1                        ; 5 outcome: 31°,
+  [ { Relative.{ Sun Moon } 31 } ] } ; Taurus
+Watching.{ 1                      ; 6 response
+  [ { Relative.{ Sun Moon } 31 } ] }
+Wake.1                            ; 7 at crossing
+Woke.{ 1                          ; 8 outcome: 60°,
+  [ { Relative.{ Sun Moon } 60 } ] } ; Gemini
+Moved.{ 1                         ; 9 response
+  [ { Relative.{ Sun Moon } 60 } ] }</code></pre>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the anatomy as shown, the choices below filling its open places.</li><li>Neither; it is redesigned.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>types imported from Rust</h2></header>
+<p>Machine: two paragraphs added to vision-ethos, after the intrinsic names; nothing is removed.</p>
+<p class="target"><code>&lt;Psyche context&gt;/vision-ethos.md</code></p><p>under Imports</p>
+<div class="diff"><div class="ctx"><p>An import names a source and a type: <code>protos:String</code> or <code>protos:[ String Integer ]</code>. An explicit import and an intrinsic name mean the same thing. Intrinsic names known without import: String, Integer, Decimal, Boolean, Meaning, Vector, Option, Result, Self.</p></div><div class="add"><ins><p>Types taken directly from Rust are listed in a vector, specified and kept by hand; the Ethos-to-Rust compiler reads it to know what each links to. A listed type is known without import, as a built-in is.</p></ins></div><div class="add"><ins><p>In time, the feedback on code says where each type comes from.</p></ins></div></div>
+<p>Both statements land in vision-ethos.</p>
+<p>**Archive, on approval:** your comment on fraction and angle types, into its archive file.</p>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land both paragraphs and the archive.</li><li>Land the first paragraph only.</li><li>Neither.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2>the import vector's shape</h2></header>
+<p>Machine: a proposal for the vector itself, in ethos-zero's repository; it lands no vision. Each entry names the type as Ethos reads it, the Rust path the generator writes, and the rkyv adapter for it. None of the candidates in Proposal 5 archives with rkyv, and every generated type derives the rkyv archive, Eq and Hash; so the generator writes the adapter on each field of an imported type, and the adapters live in a small crate of their own, since the Nexus compiles without datom-codec; the datom impl of an imported type is hand-written beside the intrinsics in datom-codec. The crate the path names is a dependency in the generated crate's manifest, never versioned in the vector.</p>
+<p class="target"><code>ethos-zero/ethos-zero.ethos</code></p><p>its Library</p>
+<pre data-diff><code class="language-ethos">+ [ Import.{ Name.String         ; types: as read
++            Path.String         ;   Rust path
++            Adapter.String } ]  ;   rkyv adapter</code></pre>
+<p class="target"><code>ethos-zero/imports.datom</code></p><p>(new)</p>
+<pre data-diff><code class="language-datom">+ [ { Rational                   ; the vector of
++     «num_rational::Rational64» ;   Proposal 5's
++     «ethos_imports::Ratio» } ] ;   default</code></pre>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the shape and the file: ethos-zero reads the vector when it is built.</li><li>Land the shape; the vector is a constant in ethos-zero's code instead of a file.</li><li>Neither; the shape is redesigned.</li></ol>
+</article>
+<h2>Choices</h2>
+<p>Machine: each choice states the shared text once, with the open words in braces; each option gives only those words. The default is marked; a choice you leave unruled lands its default. Of the first edition's choices, where the count starts is gone: signs and nakṣatras are named, and an arc is degrees gone from 0°. How a position prints is re-posed as Proposal 6.</p>
+<article class="proposal"><header><span class="pnum">5</span><h2>the imported angle type</h2></header>
+<p>Machine: no crate Chronos depends on, anise, hifitime or solar-positioning, has an angle type; anise and solar-positioning carry angles as bare floating-point degrees, which bear neither Eq nor Hash. The options are the crates found that do; each takes its own adapter.</p>
+<p class="target"><code>ethos-zero/imports.datom</code></p>
+<div class="diff"><div class="add"><ins><p>[ { {name} {path} {adapter} } ]</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: <code>Rational</code>, <code>«num_rational::Rational64»</code>. num-rational 0.4.2, already in Chronos's lock: an exact fraction, here of degrees, bearing Eq and Hash; a float from the ephemeris is rounded into it once.</li><li><code>Angle</code>, <code>«turns::Angle64»</code>. turns 0.1.2: an angle as a wrapping unsigned integer, one full range one turn, bearing Eq and Hash; very new and little used, and latitude is read off a full circle.</li><li><code>PlaneAngle</code>, uom 0.38.0's plane angle over its rational storage: an angle with its unit in the type; the heaviest of the three.</li><li>None; <code>Decimal</code> stays, and no vector is kept yet.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2>how an arc is written</h2></header>
+<p>Machine: the datom of the imported type, hand-written in datom-codec; shown for 21°30′ into the lunation.</p>
+<p class="target"><code>datom-codec</code></p><p>the datom of <code>Rational</code></p>
+<div class="diff"><div class="add"><ins><p>Told.[ { Relative.{ Sun Moon } {arc} } ]</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: <code>43/2</code>: a bare fraction of degrees, a whole number when whole.</li><li><code>{ 43 2 }</code>: numerator and denominator as a struct.</li><li><code>21°30′</code>: bare degrees, minutes and seconds, the seconds shown when not zero.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">7</span><h2>how a derivation is reached</h2></header>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>under Positions are arcs</p>
+<div class="diff"><div class="add"><ins><p>A derivation is reached {by the trait methods of the Library, which any client calls on an arc it holds}.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: by the trait methods of the Library, which any client calls on an arc it holds. Chronos answers arcs only.</li><li>by the trait methods, and by a request carrying an arc and what to derive, <code>Derive.{ Arc Derivation.[ ToSign ToNaksatra ] }</code> answered <code>Derived.[ InSign InNaksatra ]</code>.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">8</span><h2>the purely solar and purely lunar formats</h2></header>
+<p>Machine: re-posed for arcs. The lunar day is the lunation in twelfths of 12°, a derivation like the sign.</p>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>under Solar or lunar</p>
+<div class="diff"><div class="add"><ins><p>The purely solar format tells {the Sun's arc}; the purely lunar format tells {the lunation, the Moon's arc less the Sun's}.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: the Sun's arc; the lunation, the Moon's arc less the Sun's.</li><li>the Sun's arc; the Moon's arc.</li><li>the solar month and its day; the lunation and its lunar day. Chronos then derives time from the arcs, and the Library gains those derivations.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">9</span><h2>mean or true nodes and apogee</h2></header>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>under Solar or lunar</p>
+<div class="diff"><div class="add"><ins><p>The lunar nodes and the apogee are {the true points}.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: the true points.</li><li>the mean points.</li><li>both, the true and the mean, each its own body.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">10</span><h2>where the location comes from</h2></header>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>under Chronos tells astrological time</p>
+<div class="diff"><div class="add"><ins><p>The location is {the one a request carries, else the standing location set over the meta socket}.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: the one a request carries, else the standing location set over the meta socket. This is what the anatomy does.</li><li>only the one a request carries; the meta Configure and Configuration drop out.</li><li>only the standing location; Tell carries a time and no location.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">11</span><h2>what Memory keeps</h2></header>
+<p class="target"><code>chronos/chronos.ethos</code></p><p>the Memory root</p>
+<pre data-diff><code class="language-ethos">  Memory                         ; what it keeps
+  [ chronos:[ Configuration      ; imports
+              Subscription
+              Reading
+              Step ] ]
+  [ Configuration                ; record types
+    {records} ]</code></pre>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li><code>Watcher.{ Subscription Vector&lt;Reading&gt; Step }</code>: a watch outlives a restart, as the anatomy has it.</li><li>Default: nothing more, and <code>Watcher</code> with its imports is removed. A watch lives with its connection, and a restart ends both.</li><li>as 2, plus <code>Place.{ Name.String Location }</code>: named places kept for requests.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">12</span><h2>the ephemeris and its span</h2></header>
+<p class="target"><code>&lt;Psyche context&gt;/vision-chronos.md</code></p><p>a new section</p>
+<div class="diff"><div class="add"><ins><div class="textblock">## The ephemeris</div></ins></div><div class="add"><ins><p>Chronos reckons from {JPL's DE440 ephemeris, and answers for the years it covers, 1550 to 2650}.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: JPL's DE440 ephemeris, and answers for the years it covers, 1550 to 2650. The Rust crate anise reads it.</li><li>analytic series computed in its own code, and answers for some thousands of years around the present, less precisely.</li><li>the Swiss Ephemeris, and answers for 13201 BC to 17191 AD.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">13</span><h2>the aphelion</h2></header>
+<p class="target"><code>chronos/chronos.ethos</code></p><p>the Library's Body</p>
+<pre data-diff><code class="language-ethos">  Body.[ Sun                     ;   a light or a
+         Moon                    ;   lunar point
+         NorthNode
+         SouthNode
+         {apogees} ]</code></pre>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li><code>Apogee</code>: no aphelion, as the anatomy has it.</li><li>Default: <code>LunarApogee</code> and <code>SolarApogee</code>. Seen from the Earth on the ecliptic, the Earth's aphelion is the Sun's apogee, the Sun's place when it is farthest.</li><li>as 2, plus the heliocentric aphelia of the planets, which takes Chronos beyond the geocentric frame.</li></ol>
+</article>
+<article class="proposal"><header><span class="pnum">14</span><h2>where everything is tropical lands</h2></header>
+<p class="target"><code>&lt;Psyche context&gt;/{modules}</code></p>
+<div class="diff"><div class="add"><ins><p>Everything is tropical.</p></ins></div></div>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Default: in vision-chronos only, as the module proposes; a wider statement waits for its own book.</li><li>in vision-chronos and in spirit-core.</li></ol>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways. */
+.figure{overflow-x:auto;max-width:100%;min-width:0}
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:8.93px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

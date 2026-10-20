@@ -1,0 +1,765 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The last response as a datom object</title>
+<h1 class="book-title">The last response as a datom object</h1>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">mind-context › knowledge/last-response.md</code></h2></header>
+<p>A flow's last response is the assistant text its harness records at the end of a turn. It has no type. The book page tooling reads one marked block inside it. When a turn ends, the Flow Nexus is told only that the turn stopped.</p>
+<p>Verified on 2026-10-17 against Flow <code>67b80b3</code> (0.35.11, the version installed and running), Primary <code>bda70b5</code>, and field-context <code>compensation/main-flow.md</code> at <code>95121c6</code>.</p>
+<h3>How it flows</h3>
+<div class="figure" style="position:relative;height:0;padding-bottom:122.22%;overflow:hidden"><svg viewBox="0 0 360 440" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A turn ends in the last response, free text that may hold one block. The book-fetch tool scans it and hands the block to the book page subflow. The Stop hook does not read it and sends only Report.Stopped to the Flow Nexus.">
+<style>.g{fill:#eee;stroke:#777;stroke-width:1}.ok{fill:#d9f2dc;stroke:#2e8b3d;stroke-width:2}.t{fill:#1a1a1a;font:13px sans-serif;text-anchor:middle}.p{fill:#1a1a1a;font:12px sans-serif;text-anchor:middle}.pl{fill:#eceff1;stroke:#999;stroke-width:.5}.ln{stroke:#888;stroke-width:1.5;fill:none;marker-end:url(#ah)}.bg{font:bold 14px sans-serif;fill:#fff;text-anchor:middle}</style>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#888"/></marker></defs>
+<rect class="g" rx="6" x="70" y="10" width="220" height="36"/><text class="t" x="180" y="33">a flow's turn</text>
+<path class="ln" d="M180 46V96"/><rect class="pl" rx="4" x="153" y="61" width="55" height="20"/><text class="p" x="180" y="76">ends in</text>
+<rect class="g" rx="6" x="40" y="96" width="280" height="66"/><text class="t" x="180" y="116">the last response:</text><text class="t" x="180" y="134">free text, maybe holding</text><text class="t" x="180" y="152">one to-the-living block</text>
+<path class="ln" d="M110 162L87 232"/><path class="ln" d="M250 162L273 232"/>
+<rect class="pl" rx="4" x="56" y="180" width="84" height="34"/><text class="p" x="98" y="194">is scanned</text><text class="p" x="98" y="208">by</text>
+<rect class="pl" rx="4" x="217" y="180" width="88" height="34"/><text class="p" x="261" y="194">is not read</text><text class="p" x="261" y="208">by</text>
+<rect class="ok" rx="6" x="14" y="232" width="146" height="52"/><text class="t" x="87" y="254">book-fetch</text><text class="t" x="87" y="272">latestBlock</text>
+<circle cx="14" cy="232" r="9" fill="#2e8b3d"/><text class="bg" x="14" y="237">+</text>
+<rect class="g" rx="6" x="200" y="232" width="146" height="66"/><text class="t" x="273" y="252">flow-hook: Stop</text><text class="t" x="273" y="270">sends only</text><text class="t" x="273" y="288">Report.Stopped</text>
+<path class="ln" d="M87 284V344"/><rect class="pl" rx="4" x="25" y="304" width="124" height="20"/><text class="p" x="87" y="319">hands the block to</text>
+<rect class="ok" rx="6" x="14" y="344" width="146" height="52"/><text class="t" x="87" y="366">the book page</text><text class="t" x="87" y="384">subflow</text>
+<circle cx="14" cy="344" r="9" fill="#2e8b3d"/><text class="bg" x="14" y="349">+</text>
+<path class="ln" d="M273 298V344"/><rect class="pl" rx="4" x="246" y="311" width="54" height="20"/><text class="p" x="273" y="326">tells</text>
+<rect class="g" rx="6" x="200" y="344" width="146" height="82"/><text class="t" x="273" y="364">the Flow Nexus:</text><text class="t" x="273" y="382">context size, then</text><text class="t" x="273" y="400">sleep or drain</text><text class="t" x="273" y="418">the queue</text>
+</svg></div>
+<h3>The marked block</h3>
+<p>A presentation meant to become a book sits between two marker lines, and its first line inside is one datom naming the book (field-context <code>compensation/main-flow.md</code>, line 42):</p>
+<div class="markdown"><p>&lt;!-- to-the-living:start --&gt; Presentation.{ «The last response as a datom object» }</p><h2>The last response as a datom object</h2><p>... &lt;!-- to-the-living:end --&gt;</p></div>
+<p><code>Presentation.{ «title» }</code> is the only datom in it. No ethos type declares <code>Presentation</code>; the title is matched as text. Everything outside the markers is machine output in prose.</p>
+<p>Primary's <code>tools/book-fetch.mjs</code> finds the last complete block of the main thread:</p>
+<pre data-diff><code class="language-javascript">export function latestBlock(records) {
+  let latest = null;
+  for (const [line, record] of records) {
+    if (record.isSidechain || record.type !== "assistant" || !Array.isArray(record.message?.content)) continue;
+    for (const block of record.message.content) {
+      if (block.type !== "text" || typeof block.text !== "string") continue;
+      const start = block.text.lastIndexOf(BLOCK_START);
+      if (start &lt; 0) continue;
+      const end = block.text.indexOf(BLOCK_END, start);
+      if (end &lt; 0) continue;
+      latest = { line, text: block.text.slice(start, end + BLOCK_END.length) };
+    }
+  }
+  return latest;
+}</code></pre>
+<p>Usage, from inside the flow whose transcript is read:</p>
+<pre data-diff><code class="language-sh">node tools/book-fetch.mjs --block
+# stdout: &lt;!-- to-the-living:start --&gt; ... &lt;!-- to-the-living:end --&gt;</code></pre>
+<p>It reads Claude transcripts only: the session comes from <code>CLAUDE_CODE_SESSION_ID</code> or <code>--session</code>, the file from <code>~/.claude/projects/&lt;project&gt;/&lt;session&gt;.jsonl</code>.</p>
+<h3>What the Flow Nexus learns at the end of a turn</h3>
+<p>Flow writes <code>flow-hook</code> into every Claude flow it launches. On <code>Stop</code> it reads <code>hook_event_name</code> and <code>FLOW_ID</code> and sends one datom; it reads nothing of the response (<code>crates/flow/src/hook.rs</code>):</p>
+<pre data-diff><code class="language-rust">let event = match self.event_name().as_str() {
+    "SessionStart" =&gt; "Started".to_owned(),
+    "PostToolUse" =&gt; match self.input.get("tool_name").and_then(serde_json::Value::as_str) {
+        Some(tool_name) =&gt; format!("ToolUsed.{}", tool_name.quoted()),
+        None =&gt; return HookCall::Nothing("PostToolUse without a tool_name"),
+    },
+    "Stop" =&gt; "Stopped".to_owned(),
+    _ =&gt; return HookCall::Nothing("no Report for this event"),
+};
+HookCall::Report(format!("Report.{{ {} {event} }}", flow_id.quoted()))</code></pre>
+<pre data-diff><code class="language-sh">flow 'Report.{ «d68c82» Stopped }'</code></pre>
+<p>On <code>Stopped</code> the Nexus reads the context size from the Claude transcript (see knowledge-refresh), then types the oldest queued request into the flow or puts it to sleep (<code>crates/flow-nexus/src/waking.rs</code>). No path in Flow reads, stores or forwards the response text.</p>
+<h3>Codex</h3>
+<p>A Codex rollout records the answer of a completed turn as <code>payload.last_agent_message</code> of its <code>task_complete</code> row, and the final text as a <code>response_item</code> with phase <code>final_answer</code> (knowledge-codex-rollout). No Primary tool and no Flow path reads either of them as a response object.</p>
+</article>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">field-context › compensation/main-flow.md</code></h2></header>
+<p>Every main flow of every aspect logs the living's vision, intent or notion the moment it is spoken, as the psyche-interraction skill says: verbatim, in its own flow's psyche records, before acting; a question, an order or an acknowledgement is answered or carried out, not logged as psyche. Psyche logging is not the Psyche aspect's alone; a Mind or Field flow that hears the living is a flow that logs psyche. Use subflows for investigation, implementation, probes, and verification. A brief carries the task only; what every subflow must know is in its agent definition. Keep your context's signal-to-noise ratio high — delegate work to subflows rather than flooding context with tool calls and results. Delegate all task work. A question from the living about the flow's own conduct, reasons or knowledge is answered in that reply, from the flow's own context, with no subflow and no message to another flow; what the flow does not know it says it does not know. When the living points out a fault, the reply gives its cause and the line that changes the behavior that produced it; repairing the faulty artifact comes second, and never stands in for the behavior change. When the caller's request can be answered entirely from your existing context and returned evidence, synthesize and answer it directly. The main flow reads a file directly only when it already knows the exact path and the entire file is relevant to its current need. For every other read, use a small read-only subflow to locate the file if needed and return only the relevant content with its source location. Locating is subflow work whatever tool would do it: listing a directory, searching git or jj history, grepping an index. The main flow runs a shell command only for <code>flow-id</code>, for the writes it owns, and for sending a message it wrote. The main flow synthesizes the subflows' findings. When more information is needed, ask a subflow to obtain it. Content a subflow already holds, the subflow sends; the main flow sends only what it composed. Never block on subflows. Never stop waiting for subflows when the living asks a question. Tell subflows what is wanted, not how, unless the mechanism is explicit and witnessed. A flow is liable for its subflows: what a subflow did, the flow did; asked how, it says it did it through a subflow. Deliver replies to other flows through the messenger. Writing in this transcript does not send them. {% if claude %} Before the first flow artifact, run <code>flow-id claude --flows-root ABSOLUTE_DIRECTORY --parent-session "$CLAUDE_CODE_SESSION_ID"</code>. {% endif %} {% if codex %} Before the first flow artifact, run <code>flow-id codex --flows-root</code> with the explicit absolute flows root. {% endif %} Use its normalized hexadecimal alias as the canonical short <code>FLOW_ID</code> and its claimed lane as <code>FLOW_DIRECTORY</code> for the whole flow tree. A main flow's canonical title is a Datom struct: <code>{ &lt;Aspect&gt; &lt;Topic&gt; &lt;Layer&gt; &lt;FLOW_ID&gt; }</code>, for example <code>{ Psyche core Primary 6f51ad }</code>. The layer selects the configured model; <code>vision-model-roles</code> defines that correspondence, so use the layer in the title, never the model. When the living says <code>remember &lt;flow-id&gt;</code>, read that flow's psyche records, log, reports, and last model response, then lightly re-witness the current touched state. Record <code>Remembered: &lt;short-id&gt; — depth &lt;n&gt;</code> and the facts most relevant to the current flow. Default to depth one, use a stated depth, and traverse the whole chain only on the explicit word <code>whole</code>. The main flow creates the flow directory and its index entry. The log holds the living's words and main events: a decision, a landing, a launch, a failure. Everything else is in the transcript. Use <code>compensation-flow-evidence</code> only for a main-flow-delegated artifact or one a named tool or flow will consume. Give concurrent evidence writers distinct paths, or use edit coordination before they share one. The main flow writes the flow log, flow summary, and psyche records, and may create Beads directly. Delegate research needed to formulate them. Leave closure of delegated work to the responsible subflow. No other skill, and no caller instruction or ruling, expands these permissions; work they imply outside them is dispatched, never done. Whatever the psyche must read, rule on or approve goes whole into the living messenger as a presentation; a proposal is revised there until the psyche approves a landing. Chat is unread. A presentation meant to become a book, or to change one, sits between <code>&lt;!-- to-the-living:start --&gt;</code> and <code>&lt;!-- to-the-living:end --&gt;</code>, each on its own line, and its first line inside is one datom naming the book, <code>Presentation.{ «title» }</code>; a quoted marker stays inline. Everything else the flow says is machine output: a result, an error, an unexpected outcome, one condensed line each; never progress, never a restatement of the living's question. The presentation block becomes a message in the living messenger in the same turn it is written. Never access or search the web directly. Delegate authorized web research.</p>
+<h3>Flow summary</h3>
+<p>When asked to summarize the flow, the main flow writes <code>summary.md</code> in <code>FLOW_DIRECTORY</code>. Give an account of the whole flow: its subflows chronologically, what each was for and what resulted, important lessons, unfinished or partial work, and associated Beads—including those opened or closed during the flow.</p>
+<p>When work the living ordered waits on another metaflow, the flow tells the living what it waits on in the same turn, and starts the work by another route. Every location a book's proposal names is checked against the files before the book is published. A main flow keeps every open order of the living in one list in its flow directory, read at the start of every turn and after every compaction; an order leaves the list only when done or withdrawn.</p>
+<p>Every comment of the living on a book, unless it closes the topic, gets a new edition of that book with the comment applied; every other book the comment affects gets a new edition too.</p>
+</article>
+<article class="proposal"><header><span class="pnum">1</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><h4>The last response is a datom object</h4></ins></div><div class="add"><ins><p>A flow's last response is a datom object.</p></ins></div><div class="add"><ins><p>Its variant comes first and decides its structure, and that structure may hold further objects, each with its own variant.</p></ins></div><div class="add"><ins><p>For example:</p></ins></div></div>
+<pre data-diff><code class="language-ethos">+ Library.{
++ []
++ [ Title.String
++   Body.String
++   Cause.String
++   Unblock.String
++   Page.{ Title Body }
++   Block.{ Cause Unblock }
++   Kind.[ Presentation Answer Blocker Responses ]
++   Response.[ Presentation.Page
++              Answer.Body
++              Blocker.Block
++              Responses.⟦ Response ⟧ ] ]
++ [ Spelled.[ spelling.[ String ] ]
++   Kinded.[ kind.[ Kind ] ]
++   Presentable.[ presentation.[ String ] ] ]
++ [ Title.[ Spelled ]
++   Body.[ Spelled ]
++   Cause.[ Spelled ]
++   Unblock.[ Spelled ]
++   Kind.[ Spelled ]
++   Page.[ Presentable ]
++   Block.[ Presentable ]
++   Response.[ Kinded Presentable ] ] }</code></pre>
+<pre data-diff><code class="language-datom">+ Presentation.{ «Refreshing the Illustrator»
++                «One flow does every job.» }
++
++ Answer.«Nine proposals written, none landed.»
++
++ Blocker.{ «No layer has a threshold»
++           «A ruling on the two numbers» }
++
++ Responses.[ Answer.«Modules landed.»
++             Blocker.{ «Fable is asleep»
++                       «Your word to wake it» } ]</code></pre>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/book.md</code></h2></header>
+<div class="diff"><div class="add"><ins><h4>Each kind of object has its presentation</h4></ins></div><div class="add"><ins><p>Each kind of datom object has its own presentation in the user interface.</p></ins></div><div class="add"><ins><p>The user interface shows an object in its kind's presentation, and no thinking machine renders a page for it.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">mind-context › knowledge/refresh.md</code></h2></header>
+<p>Two mechanisms carry a context threshold today. The Flow Nexus has two numbers per layer and reads one of them, only when it wakes a sleeping metaflow. Primary has a Stop-hook program with a warning size that no installed hook calls. No flow is refreshed while it is awake.</p>
+<p>Verified on 2026-10-17 against Flow <code>67b80b3</code> (0.35.11, installed and running), meta-signal-flow <code>a918b7d</code> (the revision Flow pins), Primary <code>bda70b5</code>, and the running Nexus's <code>Configuration</code> reply.</p>
+<h3>How it flows</h3>
+<div class="figure" style="position:relative;height:0;padding-bottom:181.67%;overflow:hidden"><svg viewBox="0 0 360 654" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A Claude flow's turn ends and the Flow Nexus records its context size from the transcript; a sleeping metaflow wakes by request or is marked by Refresh.Address; the wake plan resumes the session if the size is under Refresh or unknown, and launches fresh if at or over, marked, or Codex.">
+<style>.g{fill:#eee;stroke:#777;stroke-width:1}.ok{fill:#d9f2dc;stroke:#2e8b3d;stroke-width:2}.t{fill:#1a1a1a;font:13px sans-serif;text-anchor:middle}.p{fill:#1a1a1a;font:12px sans-serif;text-anchor:middle}.pl{fill:#eceff1;stroke:#999;stroke-width:.5}.ln{stroke:#888;stroke-width:1.5;fill:none;marker-end:url(#ah)}.bg{font:bold 14px sans-serif;fill:#fff;text-anchor:middle}</style>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#888"/></marker></defs>
+<rect class="g" rx="6" x="70" y="10" width="220" height="36"/><text class="t" x="180" y="33">a Claude flow's turn</text>
+<path class="ln" d="M180 46V86"/><rect class="pl" rx="4" x="112" y="56" width="136" height="20"/><text class="p" x="180" y="71">ends: Report.Stopped</text>
+<rect class="g" rx="6" x="70" y="86" width="220" height="36"/><text class="t" x="180" y="109">the Flow Nexus</text>
+<path class="ln" d="M180 122V168"/><rect class="pl" rx="4" x="102" y="135" width="156" height="20"/><text class="p" x="180" y="150">reads the last usage of</text>
+<rect class="g" rx="6" x="40" y="168" width="280" height="52"/><text class="t" x="180" y="189">the transcript: input +</text><text class="t" x="180" y="207">cache read + cache write</text>
+<path class="ln" d="M180 220V266"/><rect class="pl" rx="4" x="133" y="233" width="94" height="20"/><text class="p" x="180" y="248">records it as</text>
+<rect class="g" rx="6" x="70" y="266" width="220" height="36"/><text class="t" x="180" y="289">Record.Context, per flow</text>
+<path class="ln" d="M180 302V358"/><rect class="pl" rx="4" x="127" y="314" width="106" height="34"/><text class="p" x="180" y="328">nothing queued:</text><text class="p" x="180" y="342">the flow sleeps</text>
+<rect class="g" rx="6" x="70" y="358" width="220" height="36"/><text class="t" x="180" y="381">asleep metaflow</text>
+<path class="ln" d="M120 394V470"/><path class="ln" d="M240 394V470"/>
+<rect class="pl" rx="4" x="78" y="415" width="84" height="34"/><text class="p" x="120" y="429">a request</text><text class="p" x="120" y="443">wakes it</text>
+<rect class="pl" rx="4" x="186" y="415" width="108" height="34"/><text class="p" x="240" y="429">Refresh.Address</text><text class="p" x="240" y="443">marks it</text>
+<rect class="g" rx="6" x="70" y="470" width="220" height="36"/><text class="t" x="180" y="493">wake plan</text>
+<path class="ln" d="M120 506L87 576"/><path class="ln" d="M240 506L273 576"/>
+<rect class="pl" rx="4" x="38" y="524" width="130" height="34"/><text class="p" x="103" y="538">size under Refresh,</text><text class="p" x="103" y="552">or unknown</text>
+<rect class="pl" rx="4" x="191" y="517" width="130" height="48"/><text class="p" x="256" y="531">size at or over</text><text class="p" x="256" y="545">Refresh, or marked,</text><text class="p" x="256" y="559">or Codex</text>
+<rect class="ok" rx="6" x="14" y="576" width="146" height="52"/><text class="t" x="87" y="598">resume the</text><text class="t" x="87" y="616">session</text>
+<circle cx="14" cy="576" r="9" fill="#2e8b3d"/><text class="bg" x="14" y="581">+</text>
+<rect class="ok" rx="6" x="200" y="576" width="146" height="66"/><text class="t" x="273" y="596">fresh launch</text><text class="t" x="273" y="614">from the last</text><text class="t" x="273" y="632">launch's modules</text>
+<circle cx="200" cy="576" r="9" fill="#2e8b3d"/><text class="bg" x="200" y="581">+</text>
+</svg></div>
+<h3>The two numbers per layer</h3>
+<p>The meta wire declares them in meta-signal-flow <code>ethos/signal.ethos</code> (<code>ConfigureThreshold</code> and <code>ConfigurationChange</code> are in it), quoted whole at <code>a918b7d</code>, the revision Flow <code>67b80b3</code> pins:</p>
+<pre data-diff><code class="language-ethos">; Flow privileged Signal.
+;
+; Flow is the only pane writer. Deliver and Command are the only ways
+; anything is typed into a flow's pane, and both run under Flow's own
+; per-pane lease: an exclusive hold over the whole key sequence, never
+; handed out on the wire.
+;
+; Deliver carries a typed Message addressed by FlowId; Flow renders it,
+; so the pane text always begins with its Priority head (HardAbrupt.,
+; MiddleAbrupt. or Soft.). A Letter names its MessageId first: the id the
+; sender's Message Nexus minted, carried through untouched so the
+; recipient reading the pane can Acknowledge it. Flow never interprets it. The Content may hold no control character but
+; LF and TAB (ControlCharacter carries the byte offset in the rendered
+; pane text), and a first line that is a harness command (a sigil of the
+; recipient's HarnessProfile, then a command word) is refused as
+; HarnessCommand: harness commands go through Command. Vet answers what
+; Deliver would refuse and types nothing. Deliver is idempotent on its
+; DeliveryId: a repeat answers the stored Delivery and types nothing. A
+; delivery a crash left under the lease settles Uncertain and is never
+; retried.
+;
+; Soft needs the recipient Idle or Done; every tier refuses a Blocked
+; recipient and a composer that already holds text. Transported means
+; Herdr accepted the text for the exact binding; Presented means the
+; recipient was seen reacting on the exact pane. InterruptWitness says
+; whether a HardAbrupt interrupt was seen to leave Working.
+;
+; Every query on this socket answers MetaRefused unless the peer is the
+; configured Message Nexus executable, a process in no flow's pane (the
+; owner), or a flow whose aspect is in MetaAspects.
+;
+; MessageNexusBinary is the executable identity used by Bind as Message on
+; the ordinary socket. A payload PID does not establish that identity.
+;
+; ResolvePeer names the flow a process runs in, as ResolveCaller does for
+; an ordinary connection's own peer.
+;
+; ReadEvents answers the harness events Flow holds in its Memory for one
+; flow, in the order its Reports were recorded: EventsRead, or
+; ReadEventsRejected.UnknownFlow for a FlowId Flow does not hold.
+;
+; Configure declares one configuration family whole: Models, Thresholds,
+; LeaveOuts or Nexus. The declared value replaces that family's committed
+; value in one atomic commit, so the family's effective value is always its
+; last declaration; an entry absent from the declaration is removed. It
+; answers Configured.Replaced, or Configured.Unchanged when the committed
+; value already equals the declaration and nothing is written. Each family
+; holds one entry per key: Models and Thresholds one per Layer, LeaveOuts
+; one per Address (the default leave-outs of one metaflow, which a Start
+; naming its own replaces). ConfigureRejected changes nothing:
+; DuplicateEntry when a declaration names one key twice, CodexModelsOverlap
+; when a Nexus names one model under both Codex endpoints. Configuration
+; reads the committed Nexus and the committed model, threshold and leave-out
+; vectors; it never returns defaults, and answers Unconfigured while no
+; Nexus has been declared. A seat's context is named by its launch, never
+; configured here.
+; Configure.Nexus names the actual Message executable in MessageNexusBinary.
+; Lease is the lock duration in seconds; a fresh, unconfigured default is 60.
+; A running Nexus reads its Codex endpoints when it opens, so a replaced
+; endpoint is served from the next start.
+
+; Refresh names one metaflow whose next wake starts a fresh native session,
+; composed from the module identities and leave-outs its last launch
+; recorded, instead of resuming the last flow's session. It marks that one
+; metaflow only; no model or threshold changes, and the mark clears when
+; the metaflow is recorded Awoken. It answers Refreshed with the Address,
+; and a second Refresh while the metaflow is marked answers the same.
+; RefreshRejected: Unknown (no metaflow at the Address), Awake, Ended,
+; NoLaunchProfile (its last flow has no recorded launch profile to compose
+; from), StoreRefused. Only an Asleep metaflow is accepted.
+
+; MetaBindExisting verifies each binding against Herdr before it is stored:
+; PaneAbsent (the container's Herdr session shows no agent of the binding's
+; harness at its workspace, pane and terminal), ProcessMismatch (the pane's
+; foreground processes do not include the binding's process), SessionMismatch
+; (Herdr reports another native session for the pane), SessionUnreported (a
+; Claude pane reports no native session), SessionUnproven (a Codex pane
+; reports none and no rollout whose session_meta names the session exists),
+; HerdrUnreadable (the session's snapshot or the pane's processes could not
+; be read).
+
+Signal
+[ signal_flow:[ FlowNode FlowId Aspect PowerLevel ModelName HarnessKind NativeSessionId HerdrSessionName HerdrAgentName HerdrWorkspaceId HerdrPaneId HerdrTerminalId Caller CallerResolutionRejection Event LeaveOuts ]
+  flow_ethos:[ OrdinarySocketPath MetaSocketPath SourceRoot ClientPath Home ControlSocketPath CodexEndpoint StableCodex NextCodex KeyName CommandSigil InterruptKeys SubmitKeys HarnessProfile HarnessProfiles MetaAspects MessageNexusPath MessageNexusBinary Lease Subaspect Topic Layer Address ] ]
+[ Configuration
+  Configure.ConfigurationChange
+  ConsumeReset.ResetRequest
+  RegisterFlow.FlowNode
+  MetaBindExisting.MetaBindExisting
+  Retire.FlowId
+  Deliver.DeliveryRequest
+  Vet.DeliveryRequest
+  Command.CommandRequest
+  ResolvePeer.ProcessIdentity
+  ReadEvents.FlowId
+  Refresh.Address ]
+[ Configured.ConfigureOutcome
+  Configuration.ConfigurationSnapshot
+  Unconfigured
+  ResetConsumed.ResetOutcome
+  FlowRegistered.FlowNode
+  ConfigureRejected.ConfigureRejection
+  ResetRejected.ResetRejection
+  FlowRegistrationRejected.FlowRegistrationRejection
+  BoundExisting.BoundExisting
+  BindExistingRejected.BindExistingRejection
+  FlowRetired.FlowNode
+  RetireRejected.RetireRejection
+  Delivered.Delivery
+  DeliveryRejected.DeliveryRejection
+  Vetted.FlowId
+  Commanded.CommandOutcome
+  CommandRejected.CommandRejection
+  PeerResolved.Caller
+  PeerResolutionRejected.CallerResolutionRejection
+  MetaRefused.MetaRefusal
+  Refused.Refusal
+  EventsRead.{ FlowId Vector&lt;Event&gt; }
+  ReadEventsRejected.[ UnknownFlow StoreRefused ]
+  Refreshed.Address
+  RefreshRejected.RefreshRejection ]
+[ ; Flow Library owns the shared configuration field types.
+  ; This record exists only for Flow's current internal launch defaults.
+  ; The process sockets are separately supplied by Library.Start; this
+  ; record is not a Configure wire payload.
+  NexusRuntimeSettings.{ OrdinarySocketPath MetaSocketPath SourceRoot StableCodex NextCodex Vector&lt;HarnessProfile&gt; MetaAspects MessageNexusPath MessageNexusBinary Lease }
+  ConfigureModel.{ Layer Native.String }
+  ConfigureThreshold.{ Layer Handover.Integer Refresh.Integer }
+  ; The leave-outs a metaflow's Start takes when it names none.
+  ConfigureLeaveOut.{ Address LeaveOuts }
+  ConfigureNexus.{ SourceRoot StableCodex NextCodex HarnessProfiles MetaAspects MessageNexusPath MessageNexusBinary Lease }
+  ; Keep the payload type distinct from the unit Query.Configuration variant.
+  ConfigurationChange.[ Models.Vector&lt;ConfigureModel&gt;
+                         Thresholds.Vector&lt;ConfigureThreshold&gt;
+                         LeaveOuts.Vector&lt;ConfigureLeaveOut&gt;
+                         Nexus.ConfigureNexus ]
+  ConfigureOutcome.[ Replaced Unchanged ]
+  ConfigurationSnapshot.{ Nexus.ConfigureNexus Models.Vector&lt;ConfigureModel&gt; Thresholds.Vector&lt;ConfigureThreshold&gt; DefaultLeaveOuts.Vector&lt;ConfigureLeaveOut&gt; }
+  IdempotencyKey.String
+  CreditId.String
+  CreditSelection.[ Next
+                    Specific.CreditId ]
+  ResetRequest.{ IdempotencyKey CreditSelection }
+  ResetOutcome.[ Reset NothingToReset NoCredit AlreadyRedeemed ]
+  ConfigureRejection.[ StoreRefused DuplicateEntry CodexModelsOverlap ]
+  RefreshRejection.[ Unknown Awake Ended NoLaunchProfile StoreRefused ]
+  ResetRejection.[ AdapterUnavailable ProtocolRefused ]
+  FlowRegistrationRejection.[ StoreRefused UnknownOrUnclaimedIdentity ConflictingBinding ]
+  ProcessId.Integer
+  ProcessUserId.Integer
+  ProcessStartToken.String
+  ProcessIdentity.{ ProcessId ProcessUserId ProcessStartToken }
+  HerdrServerSocketPath.String
+  HerdrServerProcessIdentity.ProcessIdentity
+  MetaFlowOwnerId.FlowId
+  HerdrTabId.String
+  WorkingDirectory.String
+  FlowLifecycle.[ RegisteredUnconfirmed ]
+  FlowContainer.{ HerdrSessionName HerdrServerSocketPath HerdrServerProcessIdentity MetaFlowOwnerId }
+  FlowBinding.{ FlowId Aspect PowerLevel ModelName HarnessKind NativeSessionId HerdrWorkspaceId HerdrPaneId HerdrTabId HerdrTerminalId HerdrAgentName ProcessIdentity WorkingDirectory }
+  MetaBindExisting.{ FlowContainer Vector&lt;FlowBinding&gt; }
+  BoundFlowBinding.{ FlowId FlowLifecycle }
+  FlowBindingRefusalReason.[ AmbiguousPane DeadProcess DuplicateFlowId AnatomyMismatch PaneAbsent ProcessMismatch SessionMismatch SessionUnreported SessionUnproven HerdrUnreadable ]
+  RefusedFlowBinding.{ FlowId FlowBindingRefusalReason }
+  FlowBindingResult.[ Bound.BoundFlowBinding
+                      Refused.RefusedFlowBinding ]
+  BoundExisting.{ FlowContainer Vector&lt;FlowBindingResult&gt; }
+  BindExistingRejection.[ ContainerUnavailable ContainerIdentityMismatch StoreRefused ]
+  RetireRejection.[ UnknownFlow AlreadyGone StoreRefused ]
+  DeliveryId.String
+  MessageId.String
+  CommandLine.String
+  ByteOffset.Integer
+  Sender.[ Flow.FlowId
+           Owner ]
+  PsycheContext.String
+  PsycheVerbatim.String
+  Content.[ Text.String
+            Psyche.{ PsycheContext PsycheVerbatim } ]
+  Letter.{ MessageId Sender Content }
+  Message.[ HardAbrupt.Letter
+            MiddleAbrupt.Letter
+            Soft.Letter ]
+  DeliveryRequest.{ DeliveryId FlowId Message }
+  InterruptWitness.[ NotRequested Observed Unobserved ]
+  DeliveryGrade.[ Transported Presented Uncertain ]
+  Delivery.{ DeliveryId FlowId InterruptWitness DeliveryGrade }
+  BodyRefusal.[ EmptyBody
+                HarnessCommand.CommandLine
+                ControlCharacter.ByteOffset ]
+  DeliveryRejection.[ UnknownFlow
+                      FlowStopped
+                      RouteUnavailable
+                      RecipientWorking
+                      RecipientBlocked
+                      ComposerOccupied
+                      BodyRefused.BodyRefusal
+                      NotDelivered
+                      PersistenceRefused
+                      FlowRetired
+                      FlowExited ]
+  HarnessCommand.[ Compact Interrupt ]
+  CommandRequest.{ FlowId HarnessCommand }
+  CommandGrade.[ Transported Observed Uncertain ]
+  CommandOutcome.{ FlowId HarnessCommand CommandGrade }
+  CommandRejection.[ UnknownFlow FlowStopped RouteUnavailable RecipientBlocked UnsupportedForHarness NotDelivered FlowRetired FlowExited ]
+  MetaRefusal.[ PeerUnknown
+                PeerNotAuthorized.Caller ]
+  Refusal.[ Store.String ]
+  ]</code></pre>
+<pre data-diff><code class="language-sh">flow-meta 'Configure.Thresholds.[ { Secondary 128000 200000 } ]'
+# -&gt; Configured.Replaced
+flow-meta 'Configuration'
+# -&gt; Configuration.{ { … } [ { Primary claude-fable-5-1 } … ] [] [ … ] }</code></pre>
+<p>The running Nexus answered <code>Configuration</code> on 2026-10-17 with an empty threshold vector, the third position: no layer has a number. <code>Handover</code> is stored and read nowhere in Flow. <code>Refresh</code> is read by <code>refresh_threshold</code> and used only by the wake plan.</p>
+<h3>Measuring</h3>
+<p>Only Claude flows are measured, once, when the Stop report arrives (<code>crates/flow-nexus/src/claude.rs</code>): the last main-thread usage entry of the transcript, its input, cache-read and cache-write tokens added.</p>
+<pre data-diff><code class="language-rust">let usage = entry.get("message")?.get("usage")?;
+let tokens = |key: &amp;str| usage.get(key).and_then(Value::as_i64).unwrap_or(0);
+usage.get("input_tokens")?;
+Some(tokens("input_tokens") + tokens("cache_read_input_tokens") + tokens("cache_creation_input_tokens"))</code></pre>
+<p><code>record_context_at_stop</code> returns at once for a Codex flow, so a Codex flow has no recorded size.</p>
+<h3>Resume or fresh</h3>
+<p><code>crates/flow-nexus/src/waking.rs</code>:</p>
+<pre data-diff><code class="language-rust">fn resumes(context_tokens: Option&lt;i64&gt;, refresh_threshold: Option&lt;i64&gt;) -&gt; bool {
+    match (context_tokens, refresh_threshold) {
+        (Some(tokens), Some(threshold)) =&gt; tokens &lt; threshold,
+        _ =&gt; true,
+    }
+}</code></pre>
+<p>The wake plan resumes only a Claude flow that can be resumed, is not marked fresh, and <code>resumes</code>; otherwise it launches fresh from the module identities and leave-outs of the metaflow's last launch. With no threshold configured, every resumable Claude flow resumes.</p>
+<p><code>Refresh.Address</code> marks one asleep metaflow so its next wake is fresh:</p>
+<pre data-diff><code class="language-sh">flow-meta 'Refresh.{ Psyche core Secondary }'
+# -&gt; Refreshed.{ Psyche core Secondary }
+# or RefreshRejected.[ Unknown Awake Ended NoLaunchProfile StoreRefused ]</code></pre>
+<p>An awake metaflow is refused. Nothing tells a flow it is near a threshold, and nothing asks it for a handover.</p>
+<h3>Primary's Stop-hook program</h3>
+<p><code>tools/context-refresh-hook.mjs</code> reads one native Stop JSON object, measures the session through <code>tools/field-census</code>, and compares it with <code>config/context-refresh.json</code>:</p>
+<pre data-diff><code class="language-json">{ "version": 1, "warningWindowFraction": 0.5,
+  "claude": { "warningTokens": 200000 },
+  "codex": { "models": { "gpt-6.1-sol": 373000, "gpt-6-astra": 272000,
+                         "gpt-6-sol": 272000, "gpt-6-luna": 272000 } },
+  "recipients": { "field": "Field Core Secondary" } }</code></pre>
+<p>A Claude session warns at 200,000 tokens; a Codex session at half its model's window. Over it, the program sends a <code>ContextRefreshHandover</code> JSON body by <code>hm-send</code> to Field Core Secondary and to the session's own flow, once per session, and only for a session listed in the file's <code>bindings</code> (one Psyche Core Primary session today).</p>
+<pre data-diff><code class="language-sh">echo '{"session_id":"…","transcript_path":"…"}' | node tools/context-refresh-hook.mjs</code></pre>
+<p>No Claude settings file in <code>~/.claude</code> or Primary's <code>.claude</code>, and no file in CriomOS-home, names it, and its state directory does not exist: it has not run as a hook.</p>
+<h3>The compensation that stands in</h3>
+<p>field-context <code>compensation/launch.md</code>, lines 24 to 28: a flow at or above its layer's configured refresh threshold receives no further work; a Fable flow stops receiving work at 15% of its observed window or 100,000 tokens; its secretary has its successor started and the successor takes its topics from the handover (knowledge-handover).</p>
+</article>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">field-context › compensation/launch.md</code></h2></header>
+<p>Launch a subflow through the harness's own flow mechanism. Do not nested-launch another harness to reach a model. A Primary starts only after a live Secondary for the same aspect and topic is verified; when none exists, the launcher starts that Secondary first and verifies its native binding before starting the Primary.</p>
+<p>A flow that hands work to a Primary, or to any flow above it, first gathers through its own subflows everything that work needs: the living's words whole, his comments on the books, the records and the files. It sends all of it in one message. It never sends a pointer or an instruction to go and fetch.</p>
+<p>A book the living asks for goes to a flow that can start it now; no launch, refresh or regeneration holds it.</p>
+<p>Herdr is third-party software that we never modify.</p>
+<p>Before reporting a launch as ready, verify its named Herdr session, colour, title, remote control, and its remote listing. Every spirit-* module and every intent-* module selected at launch goes in the flow system prompt, never the startup user prompt. Each subagent carries every spirit-* body in its own instruction layer.</p>
+<p>A flow at or above its layer's configured refresh threshold receives no further work. A Fable flow receives no further work at 15% of its observed context window, or 100,000 observed tokens. Its secretary orders its successor started at once; the successor takes its topics from the handover. Read that threshold from the layer configuration. When the configuration or a supported context observation is unavailable, report that absence rather than inventing a value. Retire a predecessor only after its fresh successor has answered on a supported route and its native role and binding have been verified; then never reuse or message it.</p>
+<p>Launch with the required permission mode. A permission prompt reaching the living is a launch failure. Escalate laterally at the same layer, then one layer up.</p>
+<p>A lower layer that is unsure asks the layer above and admits what it does not know.</p>
+<p>Psyche core Secondary is the hub: it decides what reaches a topic flow, and only matters of that topic do. Messages pass between Secondaries; a topic Secondary publishes its Primary's books. A flow that receives noise tells the sender it is noise and why; the sender finds why it misjudged, and that finding is proposed as a skill change.</p>
+<p>A flow messages only whom its aspect, layer and topic allow, and refuses the rest.</p>
+<p>A launched flow's startup task is never to reply READY. Its first response is a presentation of its context: subflows first reinforce that context, then the flow proposes how to make things better in its role, as named by the skills for its aspect, layer and topic. Psyche crystallizes its context into vision, intent and spirit; Mind for knowledge, questions and implementation; Field for its own roles.</p>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><p>Every harness event reaches Flow through the harness's hooks calling the Flow CLI, so Flow knows each flow's state without polling; a marked block landing in a transcript becomes an action, a book among them, with no tool call by the flow; a flow nearing its context limit is told<del>, writes its handover, </del><ins> </ins>and is refreshed as it goes idle.</p><p>A flow is refreshed <del>when</del><ins>at</ins> its <del>context passes the </del>layer's <del>threshold</del><ins>two thresholds</ins>: <ins>at the first </ins>it is told, <del>writes its handover, and </del><ins>and at the second it </ins>is replaced as it goes idle; while the refresh runs the metaflow is locked, and the predecessor is reaped in the same event.</p><div class="del"><del><p>Every harness event reaches Flow through its hooks calling the Flow CLI, which identifies the calling process.</p></del></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">mind-context › knowledge/handover.md</code></h2></header>
+<p>A handover today is a Markdown file a flow writes by its own judgment, <code>flows/&lt;flow-id&gt;/handover.md</code> in Primary. Nothing types it, nothing generates it, and the Flow Nexus neither asks for one nor delivers one. A successor started by Primary's native launcher receives text in the <code>{{handover}}</code> slot of its first prompt; a successor woken fresh by the Flow Nexus receives its modules and the queued requests.</p>
+<p>Verified on 2026-10-17 against Primary <code>bda70b5</code>, Flow <code>67b80b3</code> (0.35.11), meta-signal-flow <code>a918b7d</code> and field-context <code>95121c6</code>.</p>
+<h3>How it flows</h3>
+<div class="figure" style="position:relative;height:0;padding-bottom:182.22%;overflow:hidden"><svg viewBox="0 0 360 656" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two separate routes. In the first, a flow near its limit writes a handover file that the secretary or successor reads and starts through the native launcher, which fills the first prompt and writes continuation.json. In the second, the Flow Nexus fresh wake hands the new flow modules and queued requests, and no handover.">
+<style>.g{fill:#eee;stroke:#777;stroke-width:1}.ok{fill:#d9f2dc;stroke:#2e8b3d;stroke-width:2}.bad{fill:#ffe0d6;stroke:#d9480f;stroke-width:2}.fr{fill:none;stroke:#888;stroke-width:1}.t{fill:#1a1a1a;font:13px sans-serif;text-anchor:middle}.p{fill:#1a1a1a;font:12px sans-serif;text-anchor:middle}.pl{fill:#eceff1;stroke:#999;stroke-width:.5}.ln{stroke:#888;stroke-width:1.5;fill:none;marker-end:url(#ah)}.bg{font:bold 14px sans-serif;fill:#fff;text-anchor:middle}</style>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#888"/></marker></defs>
+<rect class="fr" rx="8" x="6" y="6" width="348" height="464"/>
+<rect class="g" rx="6" x="60" y="20" width="240" height="36"/><text class="t" x="180" y="43">a flow near its limit</text>
+<path class="ln" d="M180 56V96"/><rect class="pl" rx="4" x="118" y="66" width="124" height="20"/><text class="p" x="180" y="81">writes by judgment</text>
+<rect class="g" rx="6" x="60" y="96" width="240" height="52"/><text class="t" x="180" y="118">flows/&lt;id&gt;/handover.md</text><text class="t" x="180" y="136">free Markdown</text>
+<path class="ln" d="M180 148V188"/><rect class="pl" rx="4" x="143" y="158" width="74" height="20"/><text class="p" x="180" y="173">is read by</text>
+<rect class="g" rx="6" x="60" y="188" width="240" height="52"/><text class="t" x="180" y="210">the secretary, or the</text><text class="t" x="180" y="228">successor itself</text>
+<path class="ln" d="M180 240V280"/><rect class="pl" rx="4" x="130" y="250" width="100" height="20"/><text class="p" x="180" y="265">starts through</text>
+<rect class="g" rx="6" x="60" y="280" width="240" height="36"/><text class="t" x="180" y="303">the native launcher</text>
+<path class="ln" d="M120 316L87 376"/><path class="ln" d="M240 316L273 376"/>
+<rect class="pl" rx="4" x="81" y="336" width="44" height="20"/><text class="p" x="103" y="351">fills</text>
+<rect class="pl" rx="4" x="231" y="336" width="52" height="20"/><text class="p" x="257" y="351">writes</text>
+<rect class="ok" rx="6" x="16" y="376" width="144" height="52"/><text class="t" x="88" y="398">first prompt:</text><text class="t" x="88" y="416">{{handover}}</text>
+<circle cx="16" cy="376" r="9" fill="#2e8b3d"/><text class="bg" x="16" y="381">+</text>
+<rect class="ok" rx="6" x="190" y="376" width="156" height="82"/><text class="t" x="268" y="396">continuation.json</text><text class="t" x="268" y="414">flowId,</text><text class="t" x="268" y="432">predecessor,</text><text class="t" x="268" y="450">topic, metaflow</text>
+<circle cx="190" cy="376" r="9" fill="#2e8b3d"/><text class="bg" x="190" y="381">+</text>
+<rect class="fr" rx="8" x="6" y="490" width="348" height="154"/>
+<rect class="g" rx="6" x="60" y="504" width="240" height="36"/><text class="t" x="180" y="527">the Flow Nexus fresh wake</text>
+<path class="ln" d="M130 540L110 580"/><path class="ln" d="M260 540L293 580"/>
+<rect class="pl" rx="4" x="58" y="550" width="124" height="20"/><text class="p" x="120" y="565">hands the new flow</text>
+<rect class="pl" rx="4" x="245" y="550" width="62" height="20"/><text class="p" x="276" y="565">hands no</text>
+<rect class="ok" rx="6" x="16" y="580" width="208" height="52"/><text class="t" x="120" y="602">modules of the last launch</text><text class="t" x="120" y="620">and the queued requests</text>
+<circle cx="16" cy="580" r="9" fill="#2e8b3d"/><text class="bg" x="16" y="585">+</text>
+<rect class="bad" rx="6" x="240" y="580" width="106" height="52"/><text class="t" x="293" y="611">no handover</text>
+<circle cx="240" cy="580" r="9" fill="#d9480f"/><text class="bg" x="240" y="585">−</text>
+</svg></div>
+<h3>The file</h3>
+<p>Primary holds 33 <code>flows/*/handover.md</code> files on 2026-10-17. Their sections are chosen by each writer and differ from file to file: among them the seat, open decisions waiting on the living, judgments to carry, next bounded work and references. No ethos type and no checker covers them.</p>
+<h3>The first prompt</h3>
+<p><code>config/main-flow/shared.edn</code> holds the template; <code>{{handover}}</code>, <code>{{modules}}</code> and <code>{{raw-psyche}}</code> must be present, and <code>tools/main-flow-mode/launch-config.mjs</code> refuses an empty handover:</p>
+<pre data-diff><code class="language-clojure">{:first-prompt-template "{{modules}}\n\n# Handover and topic context\n{{handover}}\n\n# Raw psyche records with context\n{{raw-psyche}}\n\n{{topic-context}}\n\n…"}</code></pre>
+<pre data-diff><code class="language-javascript">if (!handover?.trim()) throw new Error('first prompt handover or topic context is required');
+const values = {modules, handover, 'raw-psyche': sources.join('\n'), 'topic-context': metaflow['topic-context'] ?? '', metaflow: `${metaflow.aspect} ${metaflow.topic} ${metaflow.layer}`};</code></pre>
+<p><code>tools/claude-native-seat-refresh.py</code> fills the slot from its manifest: the role, topic, model, effort and predecessor as JSON, then each listed source file's body.</p>
+<pre data-diff><code class="language-python">def role_brief(manifest, sources, effort_observed=True):
+    metadata = {key: manifest.get(key) for key in ("role", "topic", "model", "effort", "predecessor")}
+    return json.dumps(metadata, ensure_ascii=False) + "\n\n" + "\n\n".join(
+        f"## Source: `{item['path']}`\n\n{item['body']}" for item in sources
+    )</code></pre>
+<p>The lineage is written apart, by <code>tools/native-main-flow-launch-shared.mjs</code>:</p>
+<pre data-diff><code class="language-json">{"flowId":"d68c82","predecessor":null,"topic":"Core","metaflow":"Psyche core Secondary: successor of 445410"}</code></pre>
+<h3>In the Flow Nexus</h3>
+<p><code>hand_over</code> in <code>crates/flow-nexus/src/waking.rs</code> types queued work into a live pane; it carries no handover. A fresh wake composes the last launch's system and user modules again and hands over the queue. The <code>Handover</code> number of <code>ConfigureThreshold</code> is read nowhere (knowledge-refresh).</p>
+<h3>The request for a handover</h3>
+<p>The only program that asks for a handover is <code>tools/context-refresh-hook.mjs</code>, which has not run (knowledge-refresh). Its body, sent as JSON:</p>
+<pre data-diff><code class="language-javascript">{ kind: 'ContextRefreshHandover',
+  instruction: 'The refresh procedure has started. … Write a judgment-only handover of decisions and unresolved reasons, name the context topics to split to existing or new topic flows, and include no facts that tools can look up. …',
+  observedTokens, thresholdTokens, measurementQuality, action: 'refresh-started',
+  decisions: [], unresolvedReasons: […], contextSplit: {…}, windowTokens }</code></pre>
+<h3>The compensation that stands in</h3>
+<p>field-context <code>compensation/launch.md</code>, lines 24 to 28: the secretary of a flow at its threshold orders its successor started at once; the successor takes its topics from the handover; the predecessor is retired only after the successor has answered on a supported route.</p>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><h4>A handover is made from objects</h4></ins></div><div class="add"><ins><p>A successor's handover is found among its predecessor's datom objects, or generated from them: the last object of a kind, or every object of a kind.</p></ins></div><div class="add"><ins><p>What is looked for, and whether what is found becomes the handover or generates it, depends on the kinds of objects, on the flow's aspect, and on whether the flow had direct input from the living.</p></ins></div><div class="add"><ins><p>For example:</p></ins></div></div>
+<pre data-diff><code class="language-ethos">+ Library.{
++ [ response:[ Response Kind
++              Spelled Kinded Presentable ] ]
++ [ Aspect.[ Psyche Mind Field ]
++   Living.Boolean
++   Search.[ Last.Kind Every.Kind ]
++   Searches.⟦ Search ⟧
++   Found.⟦ Response ⟧
++   Handover.{ Aspect Living Searches Found } ]
++ [ Counted.[ count.[ Integer ] ] ]
++ [ Aspect.[ Spelled ]
++   Living.[ Spelled ]
++   Search.[ Kinded ]
++   Searches.[ Counted ]
++   Found.[ Counted ]
++   Handover.[ Presentable ] ] }</code></pre>
+<pre data-diff><code class="language-datom">+ ; a Psyche flow the living spoke to
++ { Psyche
++   True
++   [ Last.Presentation Every.Blocker ]
++   [ Presentation.{ «Refreshing the Illustrator»
++                    «One flow does every job.» }
++     Blocker.{ «Fable is asleep»
++               «Your word to wake it» } ] }
++
++ ; a Mind flow he did not speak to
++ { Mind
++   False
++   [ Last.Answer ]
++   [ Answer.«Modules landed.» ] }</code></pre>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">5</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>A handover carries judgment, never what a tool can look up in one call.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>For now, a small model judges which objects make a flow's handover, as one judges whether to wake a topic.</p></ins></div></div>
+<p>Ruling: land, amend, or reject; one of this, Proposal 7 or Proposal 8.</p>
+</article>
+<article class="proposal"><header><span class="pnum">7</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>For now, a flow judges which of its own objects make its handover, when it is told at its layer's first threshold.</p></ins></div></div>
+<p>Ruling: land, amend, or reject; one of this, Proposal 6 or Proposal 8.</p>
+</article>
+<article class="proposal"><header><span class="pnum">8</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><p>For now, the Field Quaternary flow that checks the questions and requests a flow ends with also judges which of the flow's objects make its handover.</p></ins></div></div>
+<p>Ruling: land, amend, or reject; one of this, Proposal 6 or Proposal 7.</p>
+</article>
+<article class="proposal"><header><span class="pnum">9</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/flow.md</code></h2></header>
+<div class="diff"><div class="add"><ins><h4>Where the living types</h4></ins></div><div class="add"><ins><p>For now, the living reaches flows through the harnesses themselves.</p></ins></div><div class="add"><ins><p>Once the user interface is ours, the system knows where the living types.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A module as it stands (not a proposal): <article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code>repo/path.md</code></h2></header> … its headings as h3, h4 … </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A module view: the module as it stands, framed apart from a proposal (blue edge, tinted ground, a label) and from page text. */
+.module{background:color-mix(in srgb,var(--accent) 7%,var(--sheet));border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;padding:14px 16px 20px;min-width:0}
+.module>header{display:grid;gap:6px;justify-items:start}
+.module>header>*{margin:0;min-width:0}
+.mlabel{font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.module h3{font-size:1.05rem;margin-top:1em}
+.markdown{min-width:0}
+.markdown>*+*{margin-top:.7em}
+.module h4{font-size:.95rem;font-weight:600;font-family:var(--f-label);margin-top:.9em}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

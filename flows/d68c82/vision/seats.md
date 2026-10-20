@@ -57,3 +57,10 @@ Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 
 > All these model numbers are obsolete. Plus we shouldn't make the user interface expose the model number by default. Most users will be oblivious to the model number. It'll just be whatever is the default at that moment. We will at some point specify model numbers of course and then we might even have aliases sometimes when we want to keep some versions because it's interesting.
 
 -- psyche, STT.
+
+## 2026-10-16 10:56 Fable, the most expensive model
+
+"I still want to be really careful about how much we use Fable. It's our most expensive model so we kind of need to treat it differently. Maybe we need some kind of general rule on how to treat Fable more carefully."
+
+Context: said to the Tertiary while ending Fable's low-power mode ("today is the last day and there's about a day's usage left").
+-- psyche, typed.

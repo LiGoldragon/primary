@@ -1,0 +1,25 @@
+file:///home/li/primary/tools/flow-start-adapter.mjs:118
+    const error = new Error('Flow refused: ' + result.wire); error.response = result; throw error;
+                  ^
+
+Error: Flow refused: StartRejected.LeaveOutRefused.NotForHarness.ClaudeAiConnectors
+    at launchedResponse (file:///home/li/primary/tools/flow-start-adapter.mjs:118:19)
+    at submitStart (file:///home/li/primary/tools/flow-start-adapter.mjs:156:20)
+    at file:///home/li/primary/flows/d68c82/launch/flow-ethos-2026-10-17/start.mjs:22:18
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  response: {
+    kind: 'StartRejected',
+    reason: {
+      variant: 'LeaveOutRefused',
+      value: {
+        variant: 'NotForHarness',
+        value: { atom: 'ClaudeAiConnectors' }
+      }
+    },
+    wire: 'StartRejected.LeaveOutRefused.NotForHarness.ClaudeAiConnectors'
+  }
+}
+
+Node.js v24.19.0

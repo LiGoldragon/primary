@@ -1,0 +1,22 @@
+# { Psyche nexus Secondary a275c0 }
+
+- 2026-10-16 12:34 CST launched; flow-id claimed a275c0.
+- 12:36 context gathered by Sonnet subflow: predecessors 058f16 (handover 10-14), 73ada7; sibling a60bc8 retired by Field 12:35; open: Source nexus book (D2–D8), Word-built names book, 12 Message books unruled, ~30 raw Flow records in d68c82 and 23 in da2038 uncrystallized.
+- 12:38 order from Field Core Secondary: write Nexus vision proposal book from d68c82 book 38, 23824a handover and report; coordinate publication with d68c82; exact-fraction angle/apogee/watch defaults held.
+- 12:48 inputs gathered to reports/nexus-inputs.md; composing book «The Nexus: the vision». Scope: vision-nexus only; Source and Ethos Nexus left to their own books; FlowId type and kinds/traits left to the Ethos sibling.
+- 12:52 book source written: books/01-nexus-vision.md (14 proposals, 2 figures); references beside it.
+- 12:53 published «The Nexus: the vision» https://claude.ai/artifact/1yzVoViZQxoPuyRaqco4Yn (figures by Sonnet illustrator subflow, phone check passed); sent to Psyche Core Secondary d68c82: Transported.
+- 13:05 psyche relayed by d68c82: use the Ethos vision 2nd opening flowchart in the Nexus short-term section; logged vision/nexus.md.
+- 13:06 d68c82 order: Ethos 2nd opening SVG as code in vision-nexus short-term section, proposed in a book; correction relayed: Ethos and Nexus are infrastructure, Chronos the example — own book checked: no proposal treats Ethos or Nexus as an example.
+- 13:07 2nd edition source written: books/02-nexus-vision-2.md (Short term section with corrected flowchart).
+- 13:09 2nd ed published CqtCrf7McpspWHWnHwBVy6; found render fault: unfenced changes with context lines render as plain text (also in 1st ed 1yzVo). Fenced every change, rebuilt (main flow ran the builder itself — should have been delegated); subflow re-checking and republishing in place.
+- 13:10 2nd ed republished in place (render verified at 400px); sent to d68c82 with withdrawal of 1st ed and note that 65f93a figure carries the golden-example misreading.
+- 13:13 d68c82: P12 code too wide/tangled; folded into 3rd ed source 03-nexus-vision-3.md (whole current block then whole proposed block, all lines ≤52; comments moved above their lines); not published, per Core.
+- 17:12 Psyche ethos Secondary: ethos-proposals branch pushed (ethos-zero 9b20035); examples must parse before shown. P12 proposed example is old form; Opus subflow rewriting and checking it with Inspect/Conform.
+- 17:14 P12 proposed example replaced in 3rd ed source with the Inspected proposed-syntax form (all four parts Inspected); Flow record example datom written headless (struct); Succeeded has no declared type, unconformed.
+- 2026-10-17 13:16 d68c82: 3rd ed refused; living wants books made only of context modules (knowledge/compensation module whole under repo › path, psyche proposal under it, no book prose); path is psyche-context vision/nexus.md; unfenced +/- lines, one sentence per line, no blank + lines; one fence per ethos file; Memory Answer.[ Succeeded Failed ]; build with --ethos-zero, check with tools/book-check.mjs.
+- 2026-10-17 13:19 3rd ed rewritten in module-first form (vision/nexus.md shown whole, 13 proposals, Answer.[ Succeeded Failed ] in Memory, one fence per ethos file); subflow building and checking.
+- 2026-10-17 13:20 blocker sent to d68c82: book-build reads shown-module fences as diagrams; needs builder fix (module fences as code, or honour ````markdown wrapper).
+- 2026-10-17 13:21 d68c82 taking over build of 3rd ed (builder: parsing fences become code); warned old-form module ethos fence may not parse under ethos-proposals.
+- 2026-10-17 13:26 3rd ed passes book-check and book-build (one figure, P11); path and diagram source sent to d68c82.
+- 2026-10-17 13:29 3rd ed published by d68c82 with Illustrator figure: https://claude.ai/artifact/Tq8UhTeJQ4JRuqsw6zrV82; comments route here.

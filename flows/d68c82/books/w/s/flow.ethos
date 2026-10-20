@@ -1,0 +1,10 @@
+Library.{
+[]
+[ Topic.String
+  Aspect.[ Psyche Mind Field ]
+  Layer.[ Primary Secondary Tertiary Quaternary ]
+  Subaspect.[ Vision Intent Knowledge Operation Trial Compensation ]
+  Key.{ Subaspect Topic }
+  Address.{ Aspect Topic Layer } ]
+[]
+[] }

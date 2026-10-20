@@ -1,0 +1,3649 @@
+# Independent Sol audit: Sema → Memory
+
+Read-only independent pass. The Opus audit and all audit receipts were not read. No files were edited.
+
+## Scope and exclusions
+
+- Searched current `psyche-context`, `mind-context`, and `field-context`; their authored skill/module sources are the canonical context sources.
+- Searched the exact requested book and the Ethos/data-language repository family: `core-ethos`, `datom`, `datom-codec`, `ethos-engine`, `ethos-test`, `ethos-zero`, `lojix`, `lojix-test`, `meta-signal-ethos-zero`, `meta-signal-lojix`, `protos`, `protos-engine`, `sema`, `sema-engine`, `sema-storage`, `sema-translator`, `signal-ethos`, `signal-ethos-zero`, `signal-lojix`, `signal-sema`, `signal-sema-storage`, `signal-sema-translator`, `spirit-ethos`, and `tree-sitter-ethos`.
+- Search matched the name token `Sema`/`sema`, its hyphen/underscore/dot compounds, `.sema`, and PascalCase identifiers beginning `Sema`; ordinary words such as “semantic” were not treated as name hits.
+- Excluded `.git`, `target`, `generated` trees, generated fixtures, `dist`, `node_modules`, and generated lockfiles (`Cargo.lock`, `flake.lock`, package lockfiles). Committed generated Rust under a directory named `generated` was excluded as ordered.
+- Pathnames whose only `sema` occurrence is the repository root were not multiplied across every descendant. Explicit package names, imports, identifiers, file extensions, and named paths in authored content are listed.
+
+## Main finding
+
+The current context still defines **Sema as the database** in `psyche-context/vision/sema.md`; all of that definition now conflicts with the living’s current naming: **Memory is the database; Sema is the meaning language**. The implemented `sema`, `sema-engine`, `.sema`, and storage families overwhelmingly use Sema for the database/storage and therefore fall on the Memory side. By contrast, `signal-sema` is a database-free universal classification vocabulary, and `sema-translator` / `signal-sema-translator` explicitly own shared naming/encoded identity while denying database ownership; those names sit on the Sema meaning-language side. A small set of “Sema-on-Sema / sema vision / medium for meaning” statements already use Sema for the meaning-language horizon and should remain Sema. Mixed lines that mention both families are marked unclear; the context also has one genuinely unclear “Signal, Nexus, SEMA vocabulary” sentence.
+
+## Context and book hits
+
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md:2` — description: Sema, the database engine of a Nexus, or its record types are being designed or judged. — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md:6` — ## What sema is — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md:8` — Sema is the database engine of a Nexus, authored in Ethos so the — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md:9` — stored types are visible; its root, Sema, declares record types. It — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md:14` — Sema — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/archive-ethos-monolith.md:43` — The Signal, Nexus, SEMA vocabulary and principles are kept; nothing — **unclear**
+- `/git/github.com/LiGoldragon/psyche-context/vision/archive-ethos-monolith.md:45` — authored in ethos so its main operations are visible. Sema is the — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md:22` — implementation; signal and sema are designed against it as if new, the — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md:39` — The nexus and sema documents are undesigned; when they are designed — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md:95` — it looks for its Sema database at the default location: a database — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md:58` — queries and responses, since there is communication; Sema's are record — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md:60` — Sema its database types. — **means the database**
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md:567` — dot, a bracket of its traits. In the Signal and Sema roots the — **means the database**
+- `/git/github.com/LiGoldragon/mind-context/skills/operation-lojix.md:303` — lojix-inspect-store 'InspectStore.{ /tmp/lojix.sema }' — **means the database**
+- `/git/github.com/LiGoldragon/mind-context/skills/knowledge-ethos.md:6` — As of 16.0.0 ethos-zero reads four roots: Library, Signal, Operation, Memory. The sweet form, root head then sections as siblings, is converted to the canonical braced form before reading. Section order: Library imports, types, kinds, associations; Signal imports, queries, responses, types; Operation imports, operations, outcomes, types, proposed and pending the living's word; Memory imports, record types. A Signal generates `pub enum Query` and `pub enum Response`, an Operation `pub enum Operation` and `pub enum Outcome`, from the two sections after imports. A file headed `Sema`, Memory's head before 15.0.0, is refused as `Conceptual.{ [ 0 ] Renamed.Memory }`. — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:163` — dot, a bracket of its traits. In the Signal and Sema roots the — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:501` — - queries and responses, since there is communication; Sema's are record — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:504` — - Sema its database types. — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:510` — - dot, a bracket of its traits. In the Signal and Sema roots the — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:521` — - implementation; signal and sema are designed against it as if new, the — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:525` — - The nexus and sema documents are undesigned; when they are designed — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:530` — - it looks for its Sema database at the default location: a database — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:558` — ### Proposal 15: psyche-context › vision/sema.md, a deleted file — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:562` — - description: Sema, the database engine of a Nexus, or its record types are being designed or judged. — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:566` — - ## What sema is — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:568` — - Sema is the database engine of a Nexus, authored in Ethos so the — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:569` — - stored types are visible; its root, Sema, declares record types. It — **means the database**
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md:574` — - Sema — **means the database**
+
+## Named path surfaces
+
+Path-only names are database-side unless marked generated/excluded.
+
+- `/git/github.com/LiGoldragon/core-ethos/tests/fixtures/bootstrap/sema.ethos` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/fixtures/lojix-v5-pre-nexus-cf231859.sema` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/sema` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/schema/witness.sema` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fixtures/generated_sema_table.rs` — generated fixture, excluded from rename inventory — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator` — meaning-language vocabulary or naming/identity surface; no database ownership — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema/schema/sema.concept.schema` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema` — meaning-language vocabulary or naming/identity surface; no database ownership — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage` — package/file/path name — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-translator` — meaning-language vocabulary or naming/identity surface; no database ownership — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/schema/signal-sema.concept.schema` — meaning-language vocabulary or naming/identity surface; no database ownership — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/sema.ethos` — package/file/path name — **means the database**
+
+## Repository hit inventory
+
+Every authored-content hit follows. Code identifiers are classified by the contract they implement, not left unclear merely because they are executable names.
+
+### core-ethos
+
+- `/git/github.com/LiGoldragon/core-ethos/README.md:4` — Interface, Nexus, and Sema semantic forms. — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/README.md:53` — - Sema `{RecordTypes Tables}` with persistent nominal record/key leaves; — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap.rs:1` — //! Strict shared bootstrap reader for Interface, Nexus, and Sema Ethos files. — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap.rs:31` — SemaTransactionAssembler, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/Cargo.toml:8` — description = "Authority-sealed bootstrap reader and model for Interface, Nexus, and Sema Ethos documents." — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:140` — sema_kind: id(3), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:187` — (3, "Sema", vec![SchemaRole::FileKind(EthosKind::Sema)]), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:244` — let assembler = SemaTransactionAssembler::new(); — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:303` — let assembler = SemaTransactionAssembler::new(); — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:345` — let assembler = SemaTransactionAssembler::new(); — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:682` — let assembler = SemaTransactionAssembler::new(); — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:785` — fixture.reader.plan("Sema.{1 0 0}\n[]\n{[] [bad.{String}]}"), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:841` — .plan("Sema.{1 0 0}\n[dep.[ShapeOnly]]\n{[Record.String] [bad.{Record ShapeOnly}]}") — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/bootstrap_reader.rs:1005` — fixture.reader.section_order(EthosKind::Sema), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md:89` — - Sema: PersistentDeclarations, Tables — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md:103` — - Interface/Nexus/Sema admission boundaries; — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/tests/fixtures/bootstrap/sema.ethos:1` — Sema.{1 0 0} — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/model.rs:53` — Sema, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/model.rs:117` — Sema(SemaBody), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/model.rs:125` — Self::Sema(_) => EthosKind::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/model.rs:196` — pub struct SemaBody { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/root.rs:75` — (BootstrapSectionSchema::PersistentDeclarations, BootstrapBody::Sema(body)) => Ok( — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/root.rs:78` — (BootstrapSectionSchema::Tables, BootstrapBody::Sema(body)) => { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/root.rs:119` — kind: EthosKind::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/root.rs:120` — kind_identity: ids.sema_kind.clone(), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/error.rs:170` — #[error("Sema persistent declarations admit only plain nominal types")] — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:13` — /// This is construction metadata, not an identity. The Sema authority mints — **means the meaning language**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:20` — SemaKind, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:67` — const SEMA_KIND_ROLES: &[BootstrapPriorRole] = &[BootstrapPriorRole::FileKind(EthosKind::Sema)]; — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:93` — slot: BootstrapPriorSlot::SemaKind, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:94` — textual_name: "Sema", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:95` — roles: SEMA_KIND_ROLES, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:472` — pub sema_kind: EncodedName, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:511` — "sema_kind", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:512` — &identities.sema_kind, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:513` — SchemaRole::FileKind(EthosKind::Sema), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:601` — ("sema_kind", &identities.sema_kind), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:628` — metadata.spelling(&identities.sema_kind), — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/catalog.rs:681` — &ids.sema_kind, — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:271` — /// The sole Core-provided admission capability for Sema's transaction — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:275` — pub struct SemaTransactionAssembler { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:293` — impl SemaTransactionAssembler { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:294` — /// Obtain the one Core admission used by Sema's transaction assembler. — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:300` — impl raw_construction_seal::Sealed for SemaTransactionAssembler {} — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:302` — impl AdmittedToCoreEthosRawConstruction for SemaTransactionAssembler { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:878` — BootstrapBody::Sema(body) => { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2610` — EthosKind::Sema => { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2621` — "duplicate Sema declaration section in root registry", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2628` — "duplicate Sema table section in root registry", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2634` — "Sema root registry section kind", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2639` — Ok(BootstrapBody::Sema(SemaBody { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2641` — "root registry omits Sema declarations", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:2644` — "root registry omits Sema tables", — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:3050` — BootstrapBody::Sema(body) => { — **means the database**
+- `/git/github.com/LiGoldragon/core-ethos/src/bootstrap/reader.rs:3162` — BootstrapBody::Sema(body) => { — **means the database**
+### ethos-engine
+
+- `/git/github.com/LiGoldragon/ethos-engine/Cargo.toml:22` — signal-sema-storage={git="https://github.com/LiGoldragon/signal-sema-storage.git",rev="31ab48608a3c2eab0733dcb16a3351251a70789d"} — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/Cargo.toml:26` — sema-storage={git="https://github.com/LiGoldragon/sema-storage.git",rev="269953164460cd842c1f3f8c9c93e4afe1e3628e"} — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/bin/ethos-engine.rs:5` — use signal_sema_storage::{DocumentKind, FixtureScope, FrameMessage, SlotIdentifier, Wire}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/src/bin/ethos-engine.rs:24` — let sema = PathBuf::from( — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/bin/ethos-engine.rs:27` — .unwrap_or_else(|| "/tmp/new-language-engine/sema.sock".into()), — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/bin/ethos-engine.rs:34` — let runtime = Runtime::new(sema); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/bin/ethos-engine.rs:64` — _ => Err("usage: ethos-engine daemon [socket] [sema-socket] | ingest <socket> <file> | subscribe <socket>".into()), — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:16` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:18` — Reply as SemaReply, Request as SemaRequest, Snapshot, SubscriptionIdentifier, Wire, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:37` — pub struct SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:41` — impl SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:51` — async fn exchange(&self, request: &SemaRequest) -> Result<SemaReply> { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:62` — return Err(Error::Codec("Sema rejected frame protocol".into())); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:76` — return Err(Error::Codec("Sema returned a non-reply frame".into())); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:78` — rkyv::from_bytes::<SemaReply, rkyv::rancor::Error>(&payload) — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:82` — impl Actor for SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:92` — pub struct Commit(pub SemaRequest); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:93` — impl Message<Commit> for SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:94` — type Reply = Result<SemaReply>; — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:102` — sema: ActorRef<SemaPlane>, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:148` — SemaRequest::Store { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:160` — EthosRequest::StoreSignalContract { scope, slot, root } => SemaRequest::Store { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:168` — EthosRequest::StoreNexusRuntime { scope, slot, root } => SemaRequest::Store { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:176` — EthosRequest::StoreSemaStorage { scope, slot, root } => SemaRequest::Store { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:179` — kind: DocumentKind::SemaStorage, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:182` — payload: DocumentPayload::SemaStorage(root), — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:184` — EthosRequest::List { scope, kind } => SemaRequest::List { scope, kind }, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:185` — EthosRequest::Fetch { hash } => SemaRequest::HashFetch { hash }, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:186` — EthosRequest::Subscribe { scope, kind } => SemaRequest::Subscribe { scope, kind }, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:189` — .sema — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:195` — SemaReply::Stored(summary) => { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:203` — SemaReply::Listed(values) => EthosReply::Listed(values), — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:204` — SemaReply::Document(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:205` — EthosReply::Fetched(value.map(|document| signal_sema_storage::SlotSummary { — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:211` — SemaReply::Subscribed { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:218` — SemaReply::Rejected(signal_sema_storage::Rejection::InvalidDocument(_)) => { — **unclear**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:262` — pub fn new(sema_socket: PathBuf) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:263` — let sema = SemaPlane::spawn(SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:264` — socket: sema_socket, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/lib.rs:269` — sema, — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/legacy_storage_ingest.rs:3` — //! `signal-sema-storage` is a frozen donor whose `DocumentPayload::TypeSchema` — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/src/authority_ingest.rs:9` — //! currently wired central authority (`sema-storage`), and build the universe from its — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/src/authority_ingest.rs:40` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/tests/equivalence.rs:4` — //! legacy central identity authority (a live `sema-storage` runtime), yields IDENTICAL — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/tests/equivalence.rs:14` — //! This is the in-process engine-level floor: the authority is a real `sema-storage` — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/tests/equivalence.rs:32` — use sema_storage::Runtime; — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/tests/equivalence.rs:33` — use signal_sema_storage::{BoundIdentities, Reply, Request, SchemaWholeHandle}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/ethos-engine/tests/equivalence.rs:80` — let runtime = Runtime::open(&temporary.path().join("authority.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/ARCHITECTURE.md:4` — requests traverse state-bearing Signal → Nexus → SEMA Kameo actors. Nexus — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/ARCHITECTURE.md:8` — The approved target is a stateful Ethos daemon whose own embedded sema — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/AGENTS.md:5` — The Signal → Nexus → SEMA flow and central typed storage socket are wired — **means the database**
+- `/git/github.com/LiGoldragon/ethos-engine/AGENTS.md:7` — daemon stateful, with its own embedded sema database. A separate small — **means the database**
+### ethos-test
+
+- `/git/github.com/LiGoldragon/ethos-test/STATEMENTS.md:52` — | 57-60 | Roots: Signal's sections are queries and responses; Sema's are record types; Signal gives a Nexus its main types and Sema its database types | pass (Signal), no observable (Nexus and Sema roles) | ethos-zero-roots | Query and Response from the first two sections; what a Nexus or Sema does with the types is outside ethos-zero | — **means the database**
+- `/git/github.com/LiGoldragon/ethos-test/STATEMENTS.md:95` — | 441-443 | Associations: implied in Signal and Sema, never written | pass | ethos-zero-cargo-signal-associations | a Signal with no associations: rustc confirms Query, Response and its types bear Archive and the datom traits | — **means the database**
+- `/git/github.com/LiGoldragon/ethos-test/checks/ethos-zero-cargo-signal-associations.nix:1` — # "In the Signal and Sema roots the associations of the query, response and — **means the database**
+### ethos-zero
+
+- `/git/github.com/LiGoldragon/ethos-zero/README.md:59` — Memory record may be named `Record`. A file headed `Sema`, Memory's head — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/tests/ethos.rs:59` — fn a_file_headed_sema_is_refused() { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/tests/ethos.rs:61` — Potential::<File>::from("Sema [] [ Record.{ String } ]") — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/ethos-zero.ethos:10` — ; A file headed Sema is refused as Renamed.Memory. — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/tests/cli.rs:302` — fn a_file_headed_sema_is_rejected_naming_memory() { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/tests/cli.rs:303` — let directory = "sema".scratch(); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/tests/cli.rs:304` — let source = directory.write_source("sema", "Sema\n[]\n[ Record.{ String } ]\n"); — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:84` — - The `Sema` root is renamed `Memory`: same sections (imports, record — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:85` — types), same generation. A file headed `Sema` is refused as — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:101` — - Library API: `File::Sema(Sema)` is `File::Memory(Memory)`; `File` and — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:110` — 1. Rename the head of every file headed `Sema` to `Memory`; nothing else in — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:111` — the file changes. Rename the file where its name says `sema`, if the — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:118` — No live consumer uses the Sema root (corrected after 15.0.0; flow 3ec648 — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:119` — report `sema-to-memory.md`). The seven `.ethos` files under `/git` headed — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:120` — `Sema` are not ethos-zero consumers: spirit-ethos and core-ethos (core-schema) — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md:202` — Sema record prints `{ root\n [ { first 1 } ] }`). — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/src/lib.rs:683` — /// `Sema` was the memory root's head until 15.0.0. — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/src/lib.rs:685` — if name == "Sema" { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/src/lib.rs:982` — fn a_file_headed_sema_is_refused_naming_memory() { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/src/lib.rs:983` — match Potential::<File>::from("Sema [] [ Record.{ String } ]").actualize() { — **means the database**
+- `/git/github.com/LiGoldragon/ethos-zero/src/lib.rs:988` — _ => panic!("a Sema file is refused at its head"), — **means the database**
+### lojix
+
+- `/git/github.com/LiGoldragon/lojix/Cargo.toml:40` — sema-engine = { git = "https://github.com/LiGoldragon/sema-engine.git", rev = "27e814a721439af67721c530d48b4d2101141f74" } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/schema_one_migration.rs:11` — const META_TABLE: TableDefinition<&str, u64> = TableDefinition::new("__sema_meta"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/schema_one_migration.rs:49` — [OsString::from("lojix.sema")], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/schema_one_migration.rs:56` — [OsString::from("/tmp/spirit.sema")], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/schema_one_migration.rs:83` — include_bytes!("fixtures/lojix-v5-pre-nexus-cf231859.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:17` — Storage lives in `sema-engine`; transport length-prefixes portable rkyv — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:74` — `lojix-nexus` takes zero arguments. It discovers `lojix/lojix.sema` below — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:75` — `XDG_STATE_HOME` when set, otherwise `/var/lib/lojix/lojix.sema`, and seeds a — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:76` — fresh Sema with its executable default. Ordinary `Configure` remains available — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:79` — restart, while the Sema path itself remains stable and is never configurable. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:83` — <new-store>` copies the archive-selected pre-Nexus v5 Sema, adds the desired — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:85` — the source Sema and is not a daemon compatibility path. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/README.md:164` — - `sema-engine` — typed database engine library used for durable state. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/src/lojix-migrate-configuration.rs:1` — //! Offline one-shot migration from the exact legacy startup archive and Sema. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_transport_integration.rs:106` — let store = Arc::new(Store::open(directory.join("lojix.sema")).expect("open test store")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/flake.nix:55` — || (type == "regular" && pkgs.lib.hasSuffix ".sema" path) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/flake.nix:182` — # roots, a fresh Sema, both authority tiers, and restart persistence. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/durable_resume.rs:2` — //! survives a process restart now that the `Store` is sema-engine-backed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/durable_resume.rs:5` — //! The test opens a `Store` at a temp `*.sema` path, records an activation (a — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/durable_resume.rs:69` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/durable_resume.rs:137` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:34` — > `sema-engine` for durable state, direct nix invocations. It is a — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:35` — > realization step toward the Sema-on-Sema future per — **means the meaning language**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:44` — This stack sits on today's substrate as a realization step toward the Sema-on-Sema future — "Today, not eventually." See §7 for the detailed direction bullets governing testing/deployment discipline, typed Nix interface, ergonomic test authoring, credential custody, and GitHub-auth. — **means the meaning language**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:89` — Generation>` persisted via `sema-engine`. Source of truth for — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:114` — `CacheRetentionObservation`, bridged through `sema-engine`'s — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:158` — - **Storage kernel** — `sema-engine` owns table registration, Signal — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:161` — the subscription-delivery primitive. `sema` (the storage kernel — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:163` — through `sema-engine`'s public surface. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:195` — - **Storage:** handwritten runtime nouns in SEMA tables over a durable `sema-engine` — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:238` — - The zero-argument Nexus discovers its stable Sema, loads persisted desired — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:271` — durable `sema-engine` Store is the only shared point and is locked — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:272` — only briefly per sema op; long nix effects hold no global lock — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:274` — - The daemon's shared store uses `sema-engine` multi-table atomic commits for — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:284` — `sema-engine` delta delivery cannot roll back the write — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:352` — - `sema-engine` at `github:LiGoldragon/sema-engine` is the typed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:354` — - `sema` at `github:LiGoldragon/sema` is the storage kernel beneath — **means the database**
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md:355` — `sema-engine`; this crate depends on it only transitively. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:39` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:93` — let source = directory.path().join("legacy.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:94` — let target = directory.path().join("migrated.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:97` — include_bytes!("../../tests/fixtures/lojix-v5-pre-nexus-cf231859.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:169` — let source = directory.path().join("legacy.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:170` — let target = directory.path().join("migrated.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tools/tests/nexus_configuration.rs:174` — include_bytes!("../../tests/fixtures/lojix-v5-pre-nexus-cf231859.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:59` — let path = directory.path().join("missing.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:73` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:101` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:131` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:182` — assert!(StoreInspectionCommand::from_arguments([OsString::from("lojix.sema")]).is_err()); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:185` — OsString::from("InspectStore.{ /tmp/lojix.sema }"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_inspection.rs:192` — "InspectStore.{ /tmp/lojix.sema }", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:26` — use lojix::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:114` — let store = Arc::new(Store::open(directory.join("lojix.sema")).expect("open test store")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:247` — .observe_sema_read( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:249` — sema::SemaReadInput::ReadEventLog(ordinary::EventLogRange { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:256` — sema::SemaReadOutput::EventLogRead(page) => page, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:290` — .observe_sema_read( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:292` — sema::SemaReadInput::QueryGenerations(ordinary::Selection::ByDeployment( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:298` — sema::SemaReadOutput::GenerationsQueried(listing) => listing, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:379` — .observe_sema_read( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:381` — sema::SemaReadInput::QueryGenerations(ordinary::Selection::ByDeployment( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/failure_evidence.rs:387` — sema::SemaReadOutput::GenerationsQueried(listing) => listing, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:14` — Nexus/SEMA runtime code, the actor-native socket shell, and — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:30` — - `~/primary/skills/rust/storage-and-wire.md` — sema-engine + signal-core — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:42` — - **Storage:** handwritten runtime nouns in SEMA tables at the stable — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:43` — executable-discovered `lojix/lojix.sema` path. Desired configuration and the — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:62` — - `sema-engine` — typed database engine; depend on this rather than — **means the database**
+- `/git/github.com/LiGoldragon/lojix/skills.md:63` — `sema` directly. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:10` — use lojix::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:15` — fn host_submission(proposal_source: &Path) -> sema::DeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:16` — sema::DeploySubmission::Host(sema::HostDeployment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:17` — cluster_name: sema::ClusterName::from("alpha"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:18` — node_name: sema::NodeName::from("node-1"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:19` — host_composition: sema::HostComposition::BaseHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:20` — proposal_source: sema::ProposalSource::new(proposal_source.display().to_string()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:21` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:22` — flake_reference: sema::FlakeReference::from("github:example/fixture"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:23` — deployment_transport: sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:24` — nix_store_uri: sema::NixStoreUri::from("ssh-ng://fixture-copy.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:25` — ssh_destination: sema::SshDestination::from("fixture-login@fixture-activate.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:27` — deployment_input_mode: sema::DeploymentInputMode::Horizon, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:29` — deployment_output_selector: sema::DeploymentOutputSelector::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:30` — sema::FlakeAttribute::from("checks.fixture-a"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:32` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:33` — host_deploy_action: sema::HostDeployAction::Realize, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:34` — source_revision_policy: sema::SourceRevisionPolicy::ResolveAndRecord, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:63` — sema::DeploymentLifecycle::Submitted — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:84` — sema::DeploymentLifecycle::Rejected — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:88` — Some(sema::DeploymentTerminal::Rejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/engine_routing.rs:89` — sema::DeploymentTerminalReason::DeploymentInFlight — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_startup_gate.rs:51` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_startup_gate.rs:71` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_startup_gate.rs:94` — sema_engine::Error::Sema(sema_engine::StorageKernelError::RkyvDecode { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/store_startup_gate.rs:97` — | sema_engine::Error::VersionedPayloadDecode { .. } => {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/event_retention.rs:45` — let store = Store::open(directory.path().join("lojix.sema")).expect("store opens"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/event_retention.rs:74` — let store = Store::open(directory.path().join("lojix.sema")).expect("store opens"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:8` — use lojix::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:13` — fn host_submission(proposal_source: &Path) -> sema::DeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:14` — sema::DeploySubmission::Host(sema::HostDeployment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:15` — cluster_name: sema::ClusterName::from("alpha"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:16` — node_name: sema::NodeName::from("node-1"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:17` — host_composition: sema::HostComposition::BaseHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:18` — proposal_source: sema::ProposalSource::new(proposal_source.display().to_string()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:19` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:20` — flake_reference: sema::FlakeReference::from("github:example/fixture"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:21` — deployment_transport: sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:22` — nix_store_uri: sema::NixStoreUri::from("ssh-ng://fixture-copy.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:23` — ssh_destination: sema::SshDestination::from("fixture-login@fixture-activate.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:25` — deployment_input_mode: sema::DeploymentInputMode::Horizon, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:27` — deployment_output_selector: sema::DeploymentOutputSelector::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:28` — sema::FlakeAttribute::from("checks.fixture-a"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:30` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:31` — host_deploy_action: sema::HostDeployAction::Realize, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:32` — source_revision_policy: sema::SourceRevisionPolicy::ResolveAndRecord, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:41` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_job_survival.rs:63` — assert_eq!(job.deploy_job_phase, sema::DeployJobPhase::Submitted); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/test_op.rs:1` — //! The test operation is represented by the current local SEMA runtime. More — **means the database**
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md:121` — - `NexusWork::sema_write_completed`, `sema_read_completed`, `effect_completed` — **means the database**
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md:128` — three siblings, `SchemaRuntime::marker`/`sema_marker`, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md:141` — `SemaApplying`, `SemaObserving` and `EffectRunning`. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md:196` — - Every durable-write failure inside a sema-apply handler now returns — **means the database**
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md:405` — ordinary-client, and meta-client packages. The Nexus discovers its stable Sema, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/nexus/src/main.rs:1` — //! Lojix Nexus entry. It takes no arguments, discovers its stable Sema from — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_honesty.rs:97` — let store = Arc::new(Store::open(directory.join("lojix.sema")).expect("open test store")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/tests/deploy_honesty.rs:291` — let store = Store::open(directory.path().join("lojix.sema")).expect("open test store"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/nexus/tests/daemon_configuration.rs:39` — store_path: directory.path().join("lojix.sema").display().to_string(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/nexus/tests/daemon_configuration.rs:61` — assert!(!directory.path().join("state/lojix/lojix.sema").exists()); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/nexus/tests/daemon_configuration.rs:75` — let store = initial_state.join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/nexus/tests/daemon_configuration.rs:143` — assert!(store.exists(), "stable XDG-discovered Sema must persist"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:20` — use sema_engine::TableRegistration; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:31` — const CATALOG_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("__sema_engine_catalog"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:32` — const META_TABLE: TableDefinition<&str, u64> = TableDefinition::new("__sema_meta"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:314` — /// Verify the persisted sema-engine catalog belongs wholly to one of the — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:374` — /// How a sema-engine table registration names itself in a Lojix catalog. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:489` — let archive = startup_archive(directory.path(), &directory.path().join("store.sema")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:494` — vec![OsString::from("/tmp/lojix-store.sema")], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:495` — vec![OsString::from("StoreResetRequest.{/tmp/lojix-store.sema}")], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:547` — let spirit = directory.path().join("spirit.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:572` — // This has a plausible sema schema marker but no Lojix family catalog: — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/reconstruction.rs:574` — let spirit = directory.path().join("spirit.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:594` — pub enum SemaReadInput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:600` — pub enum SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:613` — pub enum SemaWriteInput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:658` — pub enum SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:991` — Read(SemaReadInput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:992` — Write(SemaWriteInput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:996` — ReadCompleted(SemaReadOutput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:997` — WriteCompleted(SemaWriteOutput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:1000` — impl triad_runtime::SemaWriteInput for SemaWriteInput {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:1001` — impl triad_runtime::SemaWriteOutput for SemaWriteOutput {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:1002` — impl triad_runtime::SemaReadInput for SemaReadInput {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_model.rs:1003` — impl triad_runtime::SemaReadOutput for SemaReadOutput {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:76` — use crate::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:110` — /// Capability to discover the stable Lojix Sema and desired configuration. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:275` — /// `Store` (the concurrency point — locked only briefly per sema operation), the frame — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:456` — async fn submit_deploy(&self, request: sema::DeploySubmission) -> Result<sema::MetaEgress>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:457` — async fn submit_test(&self, request: sema::TestRequest) -> Result<sema::MetaEgress>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:470` — fn ordinary_reply(output: nexus::SignalOutput) -> Result<sema::OrdinaryEgress>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:471` — fn meta_reply(output: nexus::SignalOutput) -> Result<sema::MetaEgress>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:518` — sema::MetaIngress::Deploy(request) => self.submit_deploy(request).await?, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:523` — sema::MetaIngress::Test(request) => self.submit_test(request).await?, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:548` — async fn submit_deploy(&self, request: sema::DeploySubmission) -> Result<sema::MetaEgress> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:551` — Ok(sema::MetaEgress::DeployAccepted(accepted)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:554` — Ok(sema::MetaEgress::DeployRejected(rejected)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:556` — Ok(DeployAdmission::Refused(refused)) => Ok(sema::MetaEgress::DeployRefused(refused)), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:572` — async fn submit_test(&self, request: sema::TestRequest) -> Result<sema::MetaEgress> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:574` — Ok(TestAdmission::Accepted(accepted)) => Ok(sema::MetaEgress::Tested(accepted)), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:575` — Ok(TestAdmission::Rejected(rejected)) => Ok(sema::MetaEgress::TestRejected(rejected)), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:630` — fn ordinary_reply(output: nexus::SignalOutput) -> Result<sema::OrdinaryEgress> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:637` — fn meta_reply(output: nexus::SignalOutput) -> Result<sema::MetaEgress> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:755` — sema::DeploymentTerminal::Succeeded, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:780` — sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:782` — sema::DeploymentFailureStage::Activate, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:784` — sema::DeploymentTerminalReason::ActivationFailed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:916` — .terminalize_deployment(deployment_identifier, sema::DeploymentTerminal::Succeeded); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:936` — pub request: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:943` — Accepted(sema::DeployHandle), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:944` — Rejected(sema::RejectedDeploy), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:946` — Refused(sema::RefusedDeploy), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1029` — fn self_switch_submission() -> sema::DeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1030` — sema::DeploySubmission::Host(sema::HostDeployment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1035` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1039` — deployment_transport: sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1040` — nix_store_uri: sema::NixStoreUri::from("ssh-ng://fixture-copy.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1041` — ssh_destination: sema::SshDestination::from("root@fixture-daemon.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1043` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1045` — deployment_output_selector: sema::DeploymentOutputSelector::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1046` — sema::FlakeAttribute::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1050` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1058` — fn self_switch_job() -> sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1059` — sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1064` — deploy_job_phase: sema::DeployJobPhase::Submitted, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1074` — deployment_transport: sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1075` — nix_store_uri: sema::NixStoreUri::from("ssh-ng://fixture-copy.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1076` — ssh_destination: sema::SshDestination::from("root@fixture-daemon.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1078` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1079` — deployment_output_selector: sema::DeploymentOutputSelector::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1080` — sema::FlakeAttribute::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1084` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1089` — deploy_resume_stage: sema::DeployResumeStage::ResolveFlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1113` — let store = Arc::new(Store::open(directory.path().join("lojix.sema")).expect("open store")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1125` — job.deploy_job_phase = sema::DeployJobPhase::Copying; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1126` — job.deploy_resume_stage = sema::DeployResumeStage::ActivateGeneration; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1148` — job.deploy_job_phase = sema::DeployJobPhase::Activating; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1149` — job.deploy_resume_stage = sema::DeployResumeStage::RecordGenerationActivated; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1231` — fn substrate_unavailable_rejection(&self) -> sema::RejectedTest; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1255` — fn substrate_unavailable_rejection(&self) -> sema::RejectedTest { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1260` — sema::RejectedTest { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1261` — test_rejection_reason: sema::TestRejectionReason::SubstrateUnavailable, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1262` — state_marker: sema::StateMarker { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1263` — commit_sequence: sema::CommitSequence::new(commit_sequence), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1264` — state_digest: sema::StateDigest::new(commit_sequence), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1301` — pub request: sema::TestRequest, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1308` — Accepted(sema::AcceptedTest), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/daemon.rs:1309` — Rejected(sema::RejectedTest), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:12` — SecretsInput, SemaReadInput, SemaReadOutput, SemaWriteInput, SemaWriteOutput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:332` — SemaReadCompleted(SemaReadOutput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:333` — SemaWriteCompleted(SemaWriteOutput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:338` — CommandSemaRead(SemaReadInput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:339` — CommandSemaWrite(SemaWriteInput), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:455` — triad_runtime::NextStep<SignalOutput, SemaWriteInput, SemaReadInput, EffectCommand, NexusWork>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:459` — type SemaWrite = SemaWriteInput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:460` — type SemaRead = SemaReadInput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:466` — Self::CommandSemaWrite(input) => triad_runtime::NextStep::SemaWrite(input), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:467` — Self::CommandSemaRead(input) => triad_runtime::NextStep::SemaRead(input), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:480` — fn apply_sema_write( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:483` — input: SemaWriteInput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:484` — ) -> impl std::future::Future<Output = SemaWriteOutput> + Send + '_; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:486` — fn observe_sema_read( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:489` — input: SemaReadInput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:490` — ) -> impl std::future::Future<Output = SemaReadOutput> + Send + '_; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:532` — type SemaWrite = SemaWriteInput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:533` — type SemaRead = SemaReadInput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:548` — async fn apply_sema_write(&mut self, write: Self::SemaWrite) -> Self::Work { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:551` — .apply_sema_write(self.origin_route.clone(), write) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:553` — NexusWork::SemaWriteCompleted(output) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:556` — async fn observe_sema_read(&mut self, read: Self::SemaRead) -> Self::Work { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:559` — .observe_sema_read(self.origin_route.clone(), read) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/runtime_flow.rs:561` — NexusWork::SemaReadCompleted(output) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/inspection.rs:4` — //! `sema-engine` is a write when a catalog entry is missing. The inspector opens — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/inspection.rs:22` — use sema_engine::TableRegistration; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/inspection.rs:30` — const CATALOG_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("__sema_engine_catalog"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/inspection.rs:31` — const META_TABLE: TableDefinition<&str, u64> = TableDefinition::new("__sema_meta"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/inspection.rs:81` — /// `sema-engine` is a write when a catalog entry is missing, so the inspector — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:7` — use crate::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:98` — impl Lowerable<sema::$runtime> for String { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:99` — fn lower(self) -> Result<sema::$runtime, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:100` — Ok(sema::$runtime::new(self)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:103` — impl Raisable<String> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:112` — impl Lowerable<sema::$runtime> for i64 { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:113` — fn lower(self) -> Result<sema::$runtime, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:114` — Ok(sema::$runtime::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:119` — impl Raisable<i64> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:127` — impl Lowerable<sema::$name> for ordinary::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:128` — fn lower(self) -> Result<sema::$name, WireShapeError> { Ok(match self { $(ordinary::$name::$variant => sema::$name::$variant),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:130` — impl Raisable<ordinary::$name> for sema::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:131` — fn raise(self) -> Result<ordinary::$name, WireShapeError> { Ok(match self { $(sema::$name::$variant => ordinary::$name::$variant),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:135` — impl Lowerable<sema::$name> for owner::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:136` — fn lower(self) -> Result<sema::$name, WireShapeError> { Ok(match self { $(owner::$name::$variant => sema::$name::$variant),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:138` — impl Raisable<owner::$name> for sema::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:139` — fn raise(self) -> Result<owner::$name, WireShapeError> { Ok(match self { $(sema::$name::$variant => owner::$name::$variant),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:143` — impl Lowerable<sema::$runtime> for ordinary::$public { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:144` — fn lower(self) -> Result<sema::$runtime, WireShapeError> { Ok(sema::$runtime { $($rf: self.$pf.lower()?),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:146` — impl Raisable<ordinary::$public> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:151` — impl Lowerable<sema::$runtime> for owner::$public { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:152` — fn lower(self) -> Result<sema::$runtime, WireShapeError> { Ok(sema::$runtime { $($rf: self.$pf.lower()?),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:154` — impl Raisable<owner::$public> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:160` — impl Lowerable<sema::$runtime> for owner::$public { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:161` — fn lower(self) -> Result<sema::$runtime, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:162` — Ok(sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:168` — impl Raisable<owner::$public> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:176` — impl Raisable<ordinary::$public> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:181` — impl Raisable<owner::$public> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:382` — impl Lowerable<sema::$name> for ordinary::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:383` — fn lower(self) -> Result<sema::$name, WireShapeError> { Ok(match self { $(ordinary::$name::$variant(value) => sema::$name::$variant(<$public as Lowerable<$runtime>>::lower(value)?)),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:385` — impl Raisable<ordinary::$name> for sema::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:386` — fn raise(self) -> Result<ordinary::$name, WireShapeError> { Ok(match self { $(sema::$name::$variant(value) => ordinary::$name::$variant(<$runtime as Raisable<$public>>::raise(value)?)),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:390` — impl Lowerable<sema::$name> for owner::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:391` — fn lower(self) -> Result<sema::$name, WireShapeError> { Ok(match self { $(owner::$name::$variant(value) => sema::$name::$variant(<$public as Lowerable<$runtime>>::lower(value)?)),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:393` — impl Raisable<owner::$name> for sema::$name { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:394` — fn raise(self) -> Result<owner::$name, WireShapeError> { Ok(match self { $(sema::$name::$variant(value) => owner::$name::$variant(<$runtime as Raisable<$public>>::raise(value)?)),+ }) } — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:398` — impl Lowerable<sema::SecretsInput> for ordinary::SecretsInput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:399` — fn lower(self) -> Result<sema::SecretsInput, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:401` — Self::NoSecrets => sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:402` — Self::SecretsDirectory(value) => sema::SecretsInput::SecretsDirectory(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:406` — impl Raisable<ordinary::SecretsInput> for sema::SecretsInput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:417` — Host(ordinary::HostDeployAction => sema::HostDeployAction), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:418` — UserEnvironment(ordinary::UserEnvironmentAction => sema::UserEnvironmentAction) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:420` — impl Lowerable<sema::TestOutcome> for ordinary::TestOutcome { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:421` — fn lower(self) -> Result<sema::TestOutcome, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:423` — Self::Pending => sema::TestOutcome::Pending, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:424` — Self::Passed => sema::TestOutcome::Passed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:425` — Self::Failed(value) => sema::TestOutcome::Failed(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:429` — impl Raisable<ordinary::TestOutcome> for sema::TestOutcome { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:438` — impl Lowerable<sema::DeploymentEnvironment> for ordinary::DeploymentEnvironment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:439` — fn lower(self) -> Result<sema::DeploymentEnvironment, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:441` — Self::HostEnvironment => sema::DeploymentEnvironment::HostEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:443` — sema::DeploymentEnvironment::UserEnvironment(value.lower()?) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:448` — impl Raisable<ordinary::DeploymentEnvironment> for sema::DeploymentEnvironment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:458` — impl Lowerable<sema::HostSelection> for ordinary::HostSelection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:459` — fn lower(self) -> Result<sema::HostSelection, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:461` — Self::DefaultHost => sema::HostSelection::DefaultHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:462` — Self::OnHost(value) => sema::HostSelection::OnHost(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:466` — impl Raisable<ordinary::HostSelection> for sema::HostSelection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:474` — impl Lowerable<sema::DeploymentTerminal> for ordinary::DeploymentTerminal { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:475` — fn lower(self) -> Result<sema::DeploymentTerminal, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:477` — Self::Succeeded => sema::DeploymentTerminal::Succeeded, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:478` — Self::Failed(value) => sema::DeploymentTerminal::Failed(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:479` — Self::Rejected(value) => sema::DeploymentTerminal::Rejected(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:483` — impl Raisable<ordinary::DeploymentTerminal> for sema::DeploymentTerminal { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:493` — ByNode(ordinary::NodeSelector => sema::NodeSelector), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:494` — ByTestRun(ordinary::TestRunLookup => sema::TestRunLookup), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:495` — ByDeployment(ordinary::DeploymentLookup => sema::DeploymentLookup), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:496` — ByGeneration(ordinary::GenerationLookup => sema::GenerationLookup), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:497` — ByEventLog(ordinary::EventLogRange => sema::EventLogRange) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:500` — Run(owner::TestRun => sema::TestRun), Check(owner::QuickCheck => sema::QuickCheck) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:503` — UserEnvironment(owner::UserEnvironmentDeployment => sema::UserEnvironmentDeployment), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:504` — Host(owner::HostDeployment => sema::HostDeployment) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:506` — impl Lowerable<sema::NodeSelection> for owner::NodeSelection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:507` — fn lower(self) -> Result<sema::NodeSelection, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:509` — Self::All => sema::NodeSelection::All, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:510` — Self::Nodes(value) => sema::NodeSelection::Nodes(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:514` — impl Raisable<owner::NodeSelection> for sema::NodeSelection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:535` — impl Lowerable<sema::GenerationLookup> for ordinary::GenerationLookup { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:536` — fn lower(self) -> Result<sema::GenerationLookup, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:537` — Ok(sema::GenerationLookup::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:542` — impl Raisable<ordinary::GenerationLookup> for sema::GenerationLookup { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:549` — impl Lowerable<sema::DeploymentLookup> for ordinary::DeploymentLookup { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:550` — fn lower(self) -> Result<sema::DeploymentLookup, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:551` — Ok(sema::DeploymentLookup::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:556` — impl Raisable<ordinary::DeploymentLookup> for sema::DeploymentLookup { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:563` — impl Lowerable<sema::SubscriptionClose> for ordinary::SubscriptionClose { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:564` — fn lower(self) -> Result<sema::SubscriptionClose, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:565` — Ok(sema::SubscriptionClose::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:570` — impl Raisable<ordinary::SubscriptionClose> for sema::SubscriptionClose { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:577` — impl Lowerable<sema::DeploymentOutputSelector> for ordinary::DeploymentOutputSelector { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:578` — fn lower(self) -> Result<sema::DeploymentOutputSelector, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:579` — Ok(sema::DeploymentOutputSelector::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:584` — impl Raisable<ordinary::DeploymentOutputSelector> for sema::DeploymentOutputSelector { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:591` — impl Lowerable<sema::QuickCheck> for owner::QuickCheck { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:592` — fn lower(self) -> Result<sema::QuickCheck, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:593` — Ok(sema::QuickCheck::new(self.lower()?)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:596` — impl Raisable<owner::QuickCheck> for sema::QuickCheck { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:601` — impl Lowerable<sema::GenerationArtifact> for ordinary::RequestedGenerationArtifact { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:602` — fn lower(self) -> Result<sema::GenerationArtifact, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:604` — Self::UserEnvironment => sema::GenerationArtifact::UserEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:605` — Self::CompleteHost => sema::GenerationArtifact::CompleteHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:606` — Self::BaseHost => sema::GenerationArtifact::BaseHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:610` — impl Raisable<ordinary::RequestedGenerationArtifact> for sema::GenerationArtifact { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:642` — impl Lowerable<sema::DeploySubmission> for owner::ActualizedDeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:643` — fn lower(self) -> Result<sema::DeploySubmission, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:646` — sema::DeploySubmission::Host(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:649` — sema::DeploySubmission::UserEnvironment(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:659` — impl Raisable<ordinary::DatabaseMarker> for sema::$runtime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:713` — impl Raisable<ordinary::RejectedWatch> for sema::RejectedWatch { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:720` — impl Raisable<ordinary::SubscriptionClosed> for sema::SubscriptionClosed { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:727` — impl Raisable<owner::RejectedDeploy> for sema::RejectedDeploy { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:735` — impl Raisable<ordinary::Generation> for sema::Generation { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:754` — impl Raisable<ordinary::TestRunRecord> for sema::TestRunRecord { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:773` — impl Lowerable<sema::OrdinaryIngress> for ordinary::Query { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:774` — fn lower(self) -> Result<sema::OrdinaryIngress, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:776` — ordinary::Query::Configure(value) => sema::OrdinaryIngress::Configure(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:778` — sema::OrdinaryIngress::WatchDeployments(value.lower()?) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:780` — ordinary::Query::Query(value) => sema::OrdinaryIngress::Query(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:782` — sema::OrdinaryIngress::WatchCacheRetention(value.lower()?) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:784` — ordinary::Query::Unwatch(value) => sema::OrdinaryIngress::Unwatch(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:788` — impl Lowerable<sema::MetaIngress> for owner::Query { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:789` — fn lower(self) -> Result<sema::MetaIngress, WireShapeError> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:791` — owner::Query::Configure(value) => sema::MetaIngress::Configure(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:792` — owner::Query::ReverseConfiguration => sema::MetaIngress::ReverseConfiguration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:793` — owner::Query::Retire(value) => sema::MetaIngress::Retire(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:794` — owner::Query::Pin(value) => sema::MetaIngress::Pin(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:795` — owner::Query::Deploy(value) => sema::MetaIngress::Deploy(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:796` — owner::Query::Test(value) => sema::MetaIngress::Test(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:797` — owner::Query::Unpin(value) => sema::MetaIngress::Unpin(value.lower()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:802` — impl Raisable<ordinary::Response> for sema::OrdinaryEgress { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:805` — sema::OrdinaryEgress::Configured(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:811` — sema::OrdinaryEgress::ConfigurationRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:814` — sema::OrdinaryEgress::TestRunsQueried(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:817` — sema::OrdinaryEgress::UnwatchRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:820` — sema::OrdinaryEgress::QueryRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:823` — sema::OrdinaryEgress::Watching(value) => ordinary::Response::Watching(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:824` — sema::OrdinaryEgress::Queried(value) => ordinary::Response::Queried(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:825` — sema::OrdinaryEgress::DeploymentEventsQueried(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:828` — sema::OrdinaryEgress::Unwatched(value) => ordinary::Response::Unwatched(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:829` — sema::OrdinaryEgress::WatchRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:835` — impl Raisable<owner::Response> for sema::MetaEgress { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:838` — sema::MetaEgress::Configured(value) => owner::Response::Configured(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:839` — sema::MetaEgress::ConfigurationRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:842` — sema::MetaEgress::ConfigurationReversed(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:845` — sema::MetaEgress::PinRejected(value) => owner::Response::PinRejected(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:846` — sema::MetaEgress::DeployRefused(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:849` — sema::MetaEgress::DeployRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:852` — sema::MetaEgress::DeployAccepted(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:855` — sema::MetaEgress::TestRejected(value) => owner::Response::TestRejected(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:856` — sema::MetaEgress::Unpinned(value) => owner::Response::Unpinned(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:857` — sema::MetaEgress::Tested(value) => owner::Response::Tested(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:858` — sema::MetaEgress::UnpinRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:861` — sema::MetaEgress::DeployTerminal(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:864` — sema::MetaEgress::Pinned(value) => owner::Response::Pinned(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:865` — sema::MetaEgress::RetireRejected(value) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:868` — sema::MetaEgress::Retired(value) => owner::Response::Retired(value.raise()?), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:873` — impl Raisable<ordinary::ConfigurationReceipt> for sema::ConfigurationReceipt { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:882` — impl Raisable<ordinary::ConfigurationRejection> for sema::ConfigurationRejection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:886` — sema::ConfigurationRejectionReason::OrdinaryConfigureClosed => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:889` — sema::ConfigurationRejectionReason::InvalidConfiguration => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:901` — fn marker() -> sema::StateMarker { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:902` — sema::StateMarker { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:903` — commit_sequence: sema::CommitSequence::new(7), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:904` — state_digest: sema::StateDigest::new(7), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:907` — fn generation(path: &str) -> sema::Generation { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:908` — sema::Generation { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:909` — generation_identifier: sema::GenerationIdentifier::new(1), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:910` — deployment_identifier: sema::DeploymentIdentifier::new(1), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:911` — cluster_name: sema::ClusterName::from("alpha"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:912` — node_name: sema::NodeName::from("node-1"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:913` — generation_artifact: sema::GenerationArtifact::BaseHost, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:914` — activation_effect: sema::ActivationEffect::LiveActivation, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:915` — generation_slot: sema::GenerationSlot::Current, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:916` — closure_path: sema::ClosurePath::from(path), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:923` — let visible = sema::OrdinaryEgress::Queried(sema::GenerationListing { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/adapters.rs:936` — let visible = sema::OrdinaryEgress::Queried(sema::GenerationListing { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/bootstrap.rs:38` — const JOURNAL_STORE_FILE: &str = "lojix-v5.sema"; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:10` — //! Durable `sema-engine`-backed state backs the handwritten runtime model, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:13` — //! mirror — persists to a `*.sema` file and self-resumes on restart: opening — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:16` — //! fosp sema-engine-exclusive, ur16 self-resume). — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:31` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:32` — Assertion, Engine as SemaDatabase, EngineOpen, EngineRecord, EngineStoredRecord, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:155` — /// carrying one row per element — the sema-engine model — and everything the — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:197` — fn register(database: &mut SemaDatabase, path: &Path) -> Result<TableReference<Self>> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:413` — #[error("sema database engine error: {0}")] — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:414` — Database(#[from] sema_engine::Error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:426` — source: Box<sema_engine::Error>, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:490` — /// share one explicit target rather than deriving a `lojix.sema` basename. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:589` — Self::state_directory().join("lojix.sema") — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:676` — /// Capability to add the Nexus configuration record to a copied legacy Sema. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:678` — /// The source is only read as bytes. All sema-engine discovery and mutation — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:759` — /// The durable lojix daemon state plane: a `sema-engine` keyed table store — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:760` — /// written to a `*.sema` file, mirroring the spirit `Store` shape. SEMA means — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:762` — /// sema-engine operations — one row per element, not one blob per table — and — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:763` — /// sema-engine owns the database handle, the durable commit sequence, and typed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:777` — database: SemaDatabase, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:804` — fn register(database: &mut SemaDatabase, path: &Path) -> Result<Self>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:808` — fn register(database: &mut SemaDatabase, path: &Path) -> Result<Self> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:831` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:844` — table => Err(sema_engine::Error::TableNotRegistered { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:956` — /// Open or create the durable SEMA database at `path`. A fresh file is — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:958` — /// persisted commit sequence and records straight back through sema-engine. — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:968` — /// The persisted commit sequence — sema-engine's durable write counter, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1107` — /// versioned SEMA log names both keyed rows written together, so matching — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1212` — /// it is bound only after this transaction is visible in sema-engine's — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1512` — "lojix-open-probe-{}-{probe_identifier}.sema", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1522` — "reserve disposable Lojix Sema startup probe {}: {error}", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1528` — "copy Lojix Sema to disposable startup probe {}: {error}", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1544` — "remove disposable Lojix Sema startup probe {}: {error}", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1558` — let mut database = SemaDatabase::open( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1566` — stage: "opening sema-engine".to_string(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:1608` — "existing Lojix Sema has no Nexus configuration; migrate its legacy startup archive into a validated copy before opening it" — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3055` — "legacy startup configuration does not identify the source Sema".to_string(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3203` — let store = Store::open(directory.path().join("lojix.sema")).expect("open store"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3229` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3276` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3367` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3431` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3566` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/lib.rs:3682` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5` — //! `SemaRead`, ordinary subscription verbs reply with the token handshake, and — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6` — //! meta mutations route to `SemaWrite`. A meta `Deploy` opens the effect — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:39` — use crate::runtime_model as sema; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:194` — /// The lojix engine noun. Carries the durable `Store` (the four sema tables) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:303` — test_nix_system: sema::NixSystem, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:304` — test_output_selector: sema::DeploymentOutputSelector, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:357` — fn default_profile(&self) -> sema::TestExecutionProfile; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:428` — test_nix_system: sema::NixSystem::from("x86_64-linux"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:429` — test_output_selector: sema::DeploymentOutputSelector::new(sema::FlakeAttribute::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:436` — fn default_profile(&self) -> sema::TestExecutionProfile { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:437` — sema::TestExecutionProfile { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:462` — test_nix_system: sema::NixSystem::new(defaults.test_nix_system.clone()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:463` — test_output_selector: sema::DeploymentOutputSelector::new(sema::FlakeAttribute::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:472` — /// SEMA engine routes back to the matching typed rejection reply — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:495` — profile: sema::TestExecutionProfile, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:656` — fn container_transition(&self, state: sema::ContainerState) -> sema::ContainerTransition; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:690` — fn container_transition(&self, state: sema::ContainerState) -> sema::ContainerTransition { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:691` — sema::ContainerTransition { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:694` — container_name: sema::ContainerName::new(format!("vm-{}", self.run.node.payload())), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1152` — secrets_input: sema::SecretsInput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1158` — deployment_transport: sema::DeploymentTransport, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1159` — deployment_input_mode: sema::DeploymentInputMode, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1161` — deployment_output_selector: sema::DeploymentOutputSelector, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1162` — activation_backend: sema::ActivationBackend, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1169` — builder: Option<sema::NixBuilderSpec>, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1177` — resume_stage: sema::DeployResumeStage, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1182` — phase_receipt: Option<sema::PhaseReceipt>, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1183` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1299` — fn immutable_revision(&self) -> Option<sema::ImmutableRevision>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1407` — fn immutable_revision(&self) -> Option<sema::ImmutableRevision> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1535` — submission: &sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1536` — ) -> sema::DeploymentRequestIdentity; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1542` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1597` — fn activation_commit(&self) -> Option<sema::ActivationCommit>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1605` — fn deployment_environment(&self) -> sema::DeploymentEnvironment; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1620` — fn deploy_job(&self, phase: sema::DeployJobPhase) -> sema::DeployJob; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1625` — submission: &sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1626` — ) -> sema::DeploymentRequestIdentity { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1628` — sema::DeploySubmission::Host(deployment) => sema::DeploymentRequestIdentity { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1629` — deployment_environment: sema::DeploymentEnvironment::HostEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1633` — requested_deployment_action: sema::RequestedDeploymentAction::Host( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1643` — sema::DeploySubmission::UserEnvironment(deployment) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1644` — sema::DeploymentRequestIdentity { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1645` — deployment_environment: sema::DeploymentEnvironment::UserEnvironment( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1650` — generation_artifact: sema::GenerationArtifact::UserEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1651` — requested_deployment_action: sema::RequestedDeploymentAction::UserEnvironment( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1671` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1675` — sema::DeploySubmission::Host(deployment) => Self { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1700` — resume_stage: sema::DeployResumeStage::ResolveFlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1704` — sema::DeploySubmission::UserEnvironment(deployment) => Self { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1734` — resume_stage: sema::DeployResumeStage::ResolveFlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1806` — sema::DeploymentInputMode::Horizon — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1911` — sema::ActivationBackend::NixosSystemdBootV1 => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1914` — sema::ActivationBackend::HomeManagerNixProfileV1 => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1933` — fn activation_commit(&self) -> Option<sema::ActivationCommit> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1934` — Some(sema::ActivationCommit { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1966` — fn deployment_environment(&self) -> sema::DeploymentEnvironment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1968` — DeployAction::Host(_) => sema::DeploymentEnvironment::HostEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1970` — sema::DeploymentEnvironment::UserEnvironment(user.clone()) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1984` — fn deploy_job(&self, phase: sema::DeployJobPhase) -> sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:1985` — sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2012` — .map(|override_value| sema::PersistedFlakeInputOverride { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2014` — persisted_flake_input_reference: sema::PersistedFlakeInputReference { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2103` — ) -> Option<(sema::LiveGeneration, sema::GcRoot)>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2108` — impl DeployJobResuming for sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2113` — if self.deploy_job_phase != sema::DeployJobPhase::Activating — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2115` — || self.activation_backend != sema::ActivationBackend::NixosSystemdBootV1 — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2118` — Some(sema::DeploySubmission::Host(host)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2120` — && host.activation_backend == sema::ActivationBackend::NixosSystemdBootV1 — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2132` — sema::DeployJobPhase::Activating => DeployJobResumption::PollActivationUnit { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2135` — sema::DeployJobPhase::Submitted — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2136` — | sema::DeployJobPhase::Building — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2137` — | sema::DeployJobPhase::Built — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2138` — | sema::DeployJobPhase::Copying => DeployJobResumption::RestartPipeline, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2139` — sema::DeployJobPhase::Activated | sema::DeployJobPhase::Failed => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2148` — ) -> Option<(sema::LiveGeneration, sema::GcRoot)> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2165` — let generation = sema::LiveGeneration { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2170` — deployment_environment: sema::DeploymentEnvironment::HostEnvironment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2180` — let root = sema::GcRoot { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2192` — self.activation_backend == sema::ActivationBackend::NixosSystemdBootV1 — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2195` — Some(sema::DeploySubmission::Host(host)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2197` — && host.activation_backend == sema::ActivationBackend::NixosSystemdBootV1 — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2202` — impl From<ordinary::TestRunRecord> for sema::StoredTestRun { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2220` — impl From<sema::StoredTestRun> for ordinary::TestRunRecord { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2223` — fn from(run: sema::StoredTestRun) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2245` — impl ResumePoint for sema::DeployResumeStage { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2266` — impl From<ordinary::DeploymentPhase> for sema::DeployJobPhase { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2308` — impl RejectionVocabulary for sema::RejectionReason { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2309` — /// Map a SEMA write-rejection reason to a typed test rejection. A reason — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2315` — sema::RejectionReason::ClusterUnknown => meta::TestRejectionReason::ClusterUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2316` — sema::RejectionReason::NodeUnknown => meta::TestRejectionReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2324` — sema::RejectionReason::GenerationUnknown => meta::PinRejectionReason::GenerationUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2325` — sema::RejectionReason::NodeUnknown => meta::PinRejectionReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2326` — sema::RejectionReason::PinLabelInUse => meta::PinRejectionReason::PinLabelInUse, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2334` — sema::RejectionReason::PinLabelUnknown => meta::UnpinRejectionReason::PinLabelUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2335` — sema::RejectionReason::NodeUnknown => meta::UnpinRejectionReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2336` — sema::RejectionReason::GenerationUnknown => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2350` — sema::RejectionReason::GenerationUnknown => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2353` — sema::RejectionReason::NodeUnknown => meta::RetireRejectionReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2354` — sema::RejectionReason::GenerationActive => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2357` — sema::RejectionReason::GenerationPinned => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2367` — sema::RejectionReason::ClusterUnknown => meta::DeployRejectionReason::ClusterUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2368` — sema::RejectionReason::NodeUnknown => meta::DeployRejectionReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2369` — sema::RejectionReason::ProposalSourceUnreachable => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2372` — // A sema reason with no deploy-domain mapping is an internal — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2382` — fn terminal_reason(self) -> sema::DeploymentTerminalReason; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2386` — fn terminal_reason(self) -> sema::DeploymentTerminalReason { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2390` — sema::DeploymentTerminalReason::ClusterUnknown — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2392` — meta::DeployRejectionReason::NodeUnknown => sema::DeploymentTerminalReason::NodeUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2394` — sema::DeploymentTerminalReason::ProposalSourceUnreachable — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2397` — sema::DeploymentTerminalReason::FlakeReferenceMalformed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2400` — sema::DeploymentTerminalReason::EvaluationFailed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2402` — meta::DeployRejectionReason::BuildFailed => sema::DeploymentTerminalReason::BuildFailed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2404` — sema::DeploymentTerminalReason::InvalidDeploymentRouting — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2407` — sema::DeploymentTerminalReason::ClosureCopyFailed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2410` — sema::DeploymentTerminalReason::DeploymentInFlight — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2413` — sema::DeploymentTerminalReason::UnsupportedDeployAction — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2416` — sema::DeploymentTerminalReason::InternalError — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2419` — sema::DeploymentTerminalReason::ActivationFailed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2428` — fn deployment_failure_stage(self) -> sema::DeploymentFailureStage; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2434` — fn deployment_failure_stage(self) -> sema::DeploymentFailureStage { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2437` — nexus::EffectStage::FlakeAuth => sema::DeploymentFailureStage::FlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2439` — sema::DeploymentFailureStage::MaterializeHorizon — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2441` — nexus::EffectStage::Eval => sema::DeploymentFailureStage::Eval, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2442` — nexus::EffectStage::Build => sema::DeploymentFailureStage::Build, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2443` — nexus::EffectStage::CopyClosure => sema::DeploymentFailureStage::CopyClosure, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2444` — nexus::EffectStage::Activate => sema::DeploymentFailureStage::Activate, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2448` — | nexus::EffectStage::TearDownTestVm => sema::DeploymentFailureStage::Daemon, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2470` — fn deployment_lifecycle(self) -> sema::DeploymentLifecycle; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2474` — fn deployment_lifecycle(self) -> sema::DeploymentLifecycle { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2477` — ordinary::DeploymentPhase::Submitted => sema::DeploymentLifecycle::Submitted, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2478` — ordinary::DeploymentPhase::Building => sema::DeploymentLifecycle::Building, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2479` — ordinary::DeploymentPhase::Built => sema::DeploymentLifecycle::Built, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2480` — ordinary::DeploymentPhase::Copying => sema::DeploymentLifecycle::Copying, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2481` — ordinary::DeploymentPhase::Activating => sema::DeploymentLifecycle::Activating, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2482` — ordinary::DeploymentPhase::Activated => sema::DeploymentLifecycle::Activated, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2483` — ordinary::DeploymentPhase::Completed => sema::DeploymentLifecycle::Completed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2484` — ordinary::DeploymentPhase::Rejected => sema::DeploymentLifecycle::Rejected, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2485` — ordinary::DeploymentPhase::Failed => sema::DeploymentLifecycle::Failed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2510` — fn matches(&self, run: &sema::StoredTestRun) -> bool; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2514` — fn matches(&self, run: &sema::StoredTestRun) -> bool { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2528` — fn matches_generation(&self, live: &sema::LiveGeneration) -> bool; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2530` — fn matches_deployment_record(&self, record: &sema::DeploymentRecord) -> bool; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2534` — fn matches_generation(&self, live: &sema::LiveGeneration) -> bool { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2561` — fn matches_deployment_record(&self, record: &sema::DeploymentRecord) -> bool { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2695` — (true, sema::ActivationBackend::NixosSystemdBootV1) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2696` — | (false, sema::ActivationBackend::HomeManagerNixProfileV1) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2765` — (sema::DeploymentInputMode::Direct, None) => None, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2766` — (sema::DeploymentInputMode::Horizon, Some(definition)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2779` — fn read_missed(commit_sequence: u64, reason: sema::RejectionReason) -> Self; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2782` — impl ReadMiss for sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2783` — fn read_missed(commit_sequence: u64, reason: sema::RejectionReason) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2784` — Self::ReadMissed(sema::RejectionReport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2797` — impl From<crate::NexusConfigurationState> for sema::ConfigurationReceipt { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2806` — impl From<crate::Error> for sema::ConfigurationRejection { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2811` — sema::ConfigurationRejectionReason::OrdinaryConfigureClosed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2813` — _ => sema::ConfigurationRejectionReason::InvalidConfiguration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2835` — /// A unique tempdir-backed `*.sema` path for a test-only `Store`. Each call — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2864` — /// `TestRejected` reply, threading any further effect / sema-write — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2874` — Store::open(Self::test_store_path()).expect("open sema store"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2887` — "{}-{nanoseconds}-{unique}.sema", — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2925` — nexus::NexusAction::CommandSemaWrite(input) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2987` — fn decide_read_completion(&mut self, output: sema::SemaReadOutput) -> nexus::NexusAction; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:2989` — fn decide_write_completion(&mut self, output: sema::SemaWriteOutput) -> nexus::NexusAction; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3005` — fn reject_active_or_meta(&mut self, report: sema::RejectionReport) -> nexus::NexusAction; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3012` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3036` — deploy_refusal_reason: sema::DeployRefusalReason, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3042` — deploy_refusal_reason: sema::DeployRefusalReason, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3057` — ordinary::Input::Configure(configuration) => nexus::NexusAction::CommandSemaWrite( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3058` — sema::SemaWriteInput::OrdinaryConfigure(configuration), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3065` — ordinary::Selection::ByTestRun(lookup) => nexus::NexusAction::CommandSemaRead( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3066` — sema::SemaReadInput::QueryTestRuns(lookup), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3068` — ordinary::Selection::ByEventLog(range) => nexus::NexusAction::CommandSemaRead( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3069` — sema::SemaReadInput::ReadEventLog(range), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3071` — selection => nexus::NexusAction::CommandSemaRead( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3072` — sema::SemaReadInput::QueryGenerations(selection), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3105` — meta::Input::Configure(configuration) => nexus::NexusAction::CommandSemaWrite( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3106` — sema::SemaWriteInput::MetaConfigure(configuration), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3109` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::ReverseConfiguration) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3133` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::RecordDeploySubmitted( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3139` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::PinGeneration(request)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3143` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::UnpinGeneration(request)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3147` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::RetireGeneration( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3164` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::RecordTestRun( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3219` — fn decide_read_completion(&mut self, output: sema::SemaReadOutput) -> nexus::NexusAction { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3221` — sema::SemaReadOutput::GenerationsQueried(listing) => ordinary::Output::Queried(listing), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3222` — sema::SemaReadOutput::TestRunsQueried(listing) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3225` — sema::SemaReadOutput::EventLogRead(page) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3228` — sema::SemaReadOutput::ReadMissed(report) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3238` — fn decide_write_completion(&mut self, output: sema::SemaWriteOutput) -> nexus::NexusAction { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3240` — sema::SemaWriteOutput::OrdinaryConfigured(receipt) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3245` — sema::SemaWriteOutput::MetaConfigured(receipt) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3248` — sema::SemaWriteOutput::ConfigurationReversed(receipt) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3251` — sema::SemaWriteOutput::OrdinaryConfigurationRejected(rejection) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3256` — sema::SemaWriteOutput::MetaConfigurationRejected(rejection) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3259` — sema::SemaWriteOutput::DeploySubmitted(accepted) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3262` — sema::SemaWriteOutput::PhaseRecorded(_) => self.advance_after_phase(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3263` — sema::SemaWriteOutput::GenerationActivated(_) => match self.active_deploy.clone() { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3266` — sema::DeployRefusalReason::NoCorrelatedDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3270` — sema::SemaWriteOutput::GenerationPinned(applied) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3274` — sema::SemaWriteOutput::GenerationUnpinned(applied) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3278` — sema::SemaWriteOutput::GenerationRetired(applied) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3282` — sema::SemaWriteOutput::ContainerRecorded(_) => self.advance_after_phase(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3283` — sema::SemaWriteOutput::TestRunRecorded(accepted) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3291` — sema::SemaWriteOutput::WriteRejected(report) => self.reject_active_or_meta(report), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3313` — self.record_container(&pipeline, sema::ContainerState::Started); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3324` — self.record_container(&pipeline, sema::ContainerState::Stopped); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3368` — self.refuse_deploy(sema::DeployRefusalReason::NoCorrelatedDeployment, &cause), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3374` — sema::DeployResumeStage::MaterializeHorizon — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3376` — sema::DeployResumeStage::RecordBuilding — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3419` — sema::DeployJobPhase::Building, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3420` — sema::DeployResumeStage::NixBuild, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3429` — sema::DeployJobPhase::Built, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3430` — sema::DeployResumeStage::FinishDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3450` — sema::DeployJobPhase::Built, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3451` — sema::DeployResumeStage::CopyClosure, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3461` — sema::DeployJobPhase::Built, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3462` — sema::DeployResumeStage::FinishDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3516` — fn reject_active_or_meta(&mut self, report: sema::RejectionReport) -> nexus::NexusAction { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3535` — sema::DeployRefusalReason::NoCorrelatedDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3561` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3567` — sema::DeploymentTerminal::Rejected(reason.terminal_reason()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3574` — self.refusal(sema::DeployRefusalReason::DurableWriteFailed, &error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3586` — sema::DeploymentTerminal::Rejected(reason.terminal_reason()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3589` — Err(error) => self.refuse_deploy(sema::DeployRefusalReason::DurableWriteFailed, &error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3595` — deploy_refusal_reason: sema::DeployRefusalReason, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3603` — deploy_refusal_reason: sema::DeployRefusalReason, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3634` — request: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3650` — fn resume_deploy_job(&mut self, job: sema::DeployJob) -> Result<bool>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3686` — resume_stage: sema::DeployResumeStage, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3696` — fn persist_job_phase(&mut self, phase: sema::DeployJobPhase); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3700` — phase: sema::DeployJobPhase, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3701` — resume_stage: sema::DeployResumeStage, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3724` — request: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3736` — sema::SemaWriteOutput::DeploySubmitted(accepted) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3739` — sema::SemaWriteOutput::WriteRejected(report) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3755` — fn resume_deploy_job(&mut self, job: sema::DeployJob) -> Result<bool> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3786` — sema::DeploymentLifecycle::Completed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3787` — | sema::DeploymentLifecycle::Rejected — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3788` — | sema::DeploymentLifecycle::Failed — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3849` — sema::TransitionIntentState::Acknowledged — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3874` — sema::LoggedEvent::Deployment(event) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3879` — Some(sema::PhaseReceipt { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3918` — sema::DeployRefusalReason::NoCorrelatedDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3928` — sema::DeployResumeStage::FinishDeployment => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3937` — sema::DeployResumeStage::ResolveFlakeAuth => nexus::NexusWork::SemaWriteCompleted( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3938` — sema::SemaWriteOutput::DeploySubmitted(accepted), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3940` — sema::DeployResumeStage::MaterializeHorizon => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3947` — sema::DeployResumeStage::RecordBuilding => nexus::NexusWork::EffectCompleted( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3950` — sema::DeployResumeStage::NixEval => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3955` — nexus::NexusWork::SemaWriteCompleted(sema::SemaWriteOutput::PhaseRecorded(receipt)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3957` — sema::DeployResumeStage::NixBuild => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3969` — sema::DeployResumeStage::CopyClosure => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3979` — sema::DeployResumeStage::ActivateGeneration — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3980` — | sema::DeployResumeStage::RecordGenerationActivated => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:3985` — nexus::NexusWork::SemaWriteCompleted(sema::SemaWriteOutput::PhaseRecorded(receipt)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4015` — sema::DeployRefusalReason::NoCorrelatedDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4070` — self.persist_job_phase(sema::DeployJobPhase::Activating); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4093` — nexus::NexusAction::CommandSemaWrite( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4094` — sema::SemaWriteInput::RecordGenerationActivated(commit), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4110` — sema::DeploymentTerminal::Succeeded, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4154` — sema::DeployJobPhase::Submitted, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4155` — sema::DeployResumeStage::RecordBuilding, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4162` — resume_stage: sema::DeployResumeStage, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4180` — pipeline.deploy_job(sema::DeployJobPhase::Submitted), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4201` — ordinary::DeploymentPhase::Building => sema::DeployResumeStage::NixEval, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4202` — ordinary::DeploymentPhase::Copying => sema::DeployResumeStage::ActivateGeneration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4204` — sema::DeployResumeStage::RecordGenerationActivated — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4206` — _ => sema::DeployResumeStage::FinishDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4210` — sema::DeployRefusalReason::NoCorrelatedDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4232` — nexus::NexusAction::CommandSemaWrite(sema::SemaWriteInput::RecordPhaseTransition(event)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4235` — fn persist_job_phase(&mut self, phase: sema::DeployJobPhase) { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4240` — .unwrap_or(sema::DeployResumeStage::FinishDeployment); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4246` — phase: sema::DeployJobPhase, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4247` — resume_stage: sema::DeployResumeStage, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4300` — let terminal = sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4316` — self.refuse_deploy(sema::DeployRefusalReason::DurableWriteFailed, &error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4370` — fn record_container(&mut self, pipeline: &TestPipeline, state: sema::ContainerState); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4449` — sema::SemaWriteOutput::TestRunRecorded(accepted) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4458` — fn record_container(&mut self, pipeline: &TestPipeline, state: sema::ContainerState) { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4494` — pub(crate) trait SemaApplying { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4495` — fn apply_sema(&mut self, input: sema::SemaWriteInput) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4500` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4505` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4507` — fn reverse_meta_configuration(&self) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4514` — fn record_test_run(&mut self, record: ordinary::TestRunRecord) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4518` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4519` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4524` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4528` — commit: sema::ActivationCommit, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4529` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4531` — fn pin_generation(&mut self, request: meta::PinRequest) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4533` — fn unpin_generation(&mut self, request: meta::UnpinRequest) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4535` — fn retire_generation(&mut self, request: meta::RetireRequest) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4539` — transition: sema::ContainerTransition, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4540` — ) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4551` — fn reject_durable_write(&self, cause: &dyn std::fmt::Display) -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4553` — fn write_rejected(commit_sequence: u64, reason: sema::RejectionReason) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4554` — -> sema::SemaWriteOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4557` — impl SemaApplying for SchemaRuntime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4558` — fn apply_sema(&mut self, input: sema::SemaWriteInput) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4560` — sema::SemaWriteInput::OrdinaryConfigure(configuration) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4563` — sema::SemaWriteInput::MetaConfigure(configuration) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4566` — sema::SemaWriteInput::ReverseConfiguration => self.reverse_meta_configuration(), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4567` — sema::SemaWriteInput::RecordDeploySubmitted(submission) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4570` — sema::SemaWriteInput::RecordPhaseTransition(event) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4573` — sema::SemaWriteInput::RecordGenerationActivated(commit) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4576` — sema::SemaWriteInput::PinGeneration(request) => self.pin_generation(request), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4577` — sema::SemaWriteInput::UnpinGeneration(request) => self.unpin_generation(request), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4578` — sema::SemaWriteInput::RetireGeneration(request) => self.retire_generation(request), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4579` — sema::SemaWriteInput::RecordContainerTransition(transition) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4582` — sema::SemaWriteInput::RecordTestRun(record) => self.record_test_run(record), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4589` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4592` — sema::SemaWriteOutput::OrdinaryConfigured(sema::ConfigurationReceipt::from(state)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4594` — Err(error) => sema::SemaWriteOutput::OrdinaryConfigurationRejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4595` — sema::ConfigurationRejection::from(error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4603` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4606` — sema::SemaWriteOutput::MetaConfigured(sema::ConfigurationReceipt::from(state)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4608` — Err(error) => sema::SemaWriteOutput::MetaConfigurationRejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4609` — sema::ConfigurationRejection::from(error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4614` — fn reverse_meta_configuration(&self) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4616` — Ok(state) => sema::SemaWriteOutput::ConfigurationReversed( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4617` — sema::ConfigurationReceipt::from(state), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4619` — Err(error) => sema::SemaWriteOutput::MetaConfigurationRejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4620` — sema::ConfigurationRejection::from(error), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4625` — fn record_test_run(&mut self, record: ordinary::TestRunRecord) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4629` — .upsert_test_run(sema::StoredTestRun::from(record)) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4632` — Ok(commit_sequence) => sema::SemaWriteOutput::TestRunRecorded(meta::AcceptedTest { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4642` — submission: sema::DeploySubmission, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4643` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4654` — .deploy_job(sema::DeployJobPhase::Submitted); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4684` — sema::SemaWriteOutput::DeploySubmitted(meta::DeployHandle { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4693` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4701` — let job = pipeline.deploy_job(sema::DeployJobPhase::from(recorded_phase)); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4711` — let receipt = sema::PhaseReceipt { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4717` — Some(pipeline.deploy_job(sema::DeployJobPhase::from(recorded_phase))) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4726` — sema::SemaWriteOutput::PhaseRecorded(receipt) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4734` — commit: sema::ActivationCommit, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4735` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4744` — let generation = sema::LiveGeneration { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4756` — let root = sema::GcRoot { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4775` — sema::DeployJobPhase::Activated, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4776` — sema::DeployResumeStage::FinishDeployment, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4778` — sema::SemaWriteOutput::GenerationActivated(sema::AppliedActivation { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4788` — fn pin_generation(&mut self, request: meta::PinRequest) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4798` — return Self::write_rejected(current_sequence, sema::RejectionReason::PinLabelInUse); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4807` — sema::RejectionReason::GenerationUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4818` — Ok(commit_sequence) => sema::SemaWriteOutput::GenerationPinned(meta::AppliedPin { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4829` — fn unpin_generation(&mut self, request: meta::UnpinRequest) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4840` — return Self::write_rejected(current_sequence, sema::RejectionReason::PinLabelUnknown); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4851` — Ok(commit_sequence) => sema::SemaWriteOutput::GenerationUnpinned(meta::AppliedUnpin { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4862` — fn retire_generation(&mut self, request: meta::RetireRequest) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4875` — sema::RejectionReason::GenerationUnknown, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4879` — return Self::write_rejected(current_sequence, sema::RejectionReason::GenerationPinned); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4886` — Ok(commit_sequence) => sema::SemaWriteOutput::GenerationRetired(meta::AppliedRetire { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4897` — transition: sema::ContainerTransition, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4898` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4903` — let record = sema::ContainerLifecycleRecord { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4910` — let entry = sema::EventLogEntry { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4912` — logged_event: sema::LoggedEvent::Container(record.clone()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4921` — sema::SemaWriteOutput::ContainerRecorded(sema::ContainerReceipt { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4930` — fn reject_durable_write(&self, cause: &dyn std::fmt::Display) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4934` — sema::RejectionReason::DurableWriteFailed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4940` — reason: sema::RejectionReason, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4941` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4942` — sema::SemaWriteOutput::WriteRejected(sema::RejectionReport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4951` — pub(crate) trait SemaObserving { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4952` — fn observe_sema(&self, input: sema::SemaReadInput) -> sema::SemaReadOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4959` — fn query_test_runs(&self, lookup: ordinary::TestRunLookup) -> sema::SemaReadOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4961` — fn query_generations(&self, selection: ordinary::Selection) -> sema::SemaReadOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4964` — live: &sema::LiveGeneration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4965` — deployment_records: &[sema::DeploymentRecord], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4968` — fn read_event_log(&self, range: ordinary::EventLogRange) -> sema::SemaReadOutput; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4971` — impl SemaObserving for SchemaRuntime { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4972` — fn observe_sema(&self, input: sema::SemaReadInput) -> sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4974` — sema::SemaReadInput::QueryGenerations(selection) => self.query_generations(selection), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4975` — sema::SemaReadInput::ReadEventLog(range) => self.read_event_log(range), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4976` — sema::SemaReadInput::QueryTestRuns(lookup) => self.query_test_runs(lookup), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4980` — fn query_test_runs(&self, lookup: ordinary::TestRunLookup) -> sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4986` — let mut matching: Vec<sema::StoredTestRun> = — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4994` — sema::SemaReadOutput::TestRunsQueried(ordinary::TestRunListing { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:4999` — database_marker: sema::DatabaseMarker::new(ordinary::StateMarker::from( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5005` — fn query_generations(&self, selection: ordinary::Selection) -> sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5014` — let deployment_records: Vec<sema::DeploymentRecord> = — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5029` — sema::SemaReadOutput::GenerationsQueried(ordinary::GenerationListing { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5037` — live: &sema::LiveGeneration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5038` — deployment_records: &[sema::DeploymentRecord], — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5061` — fn read_event_log(&self, range: ordinary::EventLogRange) -> sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5068` — return sema::SemaReadOutput::read_missed( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5070` — sema::RejectionReason::EventLogPositionOutOfRange, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5079` — sema::LoggedEvent::Deployment(event) => deployment_events.push(event.clone()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5080` — sema::LoggedEvent::CacheRetention(event) => retention_events.push(event.clone()), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5081` — sema::LoggedEvent::Container(_) => {} — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5084` — sema::SemaReadOutput::EventLogRead(sema::EventLogPage { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5761` — fn from_input(input: &sema::SecretsInput) -> Result<Self> — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5772` — fn from_input(input: &sema::SecretsInput) -> Result<Self> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5774` — sema::SecretsInput::NoSecrets => Ok(Self { path: None }), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:5775` — sema::SecretsInput::SecretsDirectory(directory) => { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6732` — ) -> Option<sema::DeploymentTerminal>; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6787` — ) -> Option<sema::DeploymentTerminal> { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6789` — Some(DetachedActivationOutcome::Succeeded) => Some(sema::DeploymentTerminal::Succeeded), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6791` — Some(sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6792` — deployment_failure_stage: sema::DeploymentFailureStage::Activate, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:6793` — deployment_terminal_reason: sema::DeploymentTerminalReason::ActivationFailed, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7619` — async fn apply_sema_write( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7622` — input: sema::SemaWriteInput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7623` — ) -> sema::SemaWriteOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7627` — async fn observe_sema_read( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7630` — input: sema::SemaReadInput, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7631` — ) -> sema::SemaReadOutput { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7665` — sema::DeployRefusalReason::ContinuationBudgetExhausted, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7677` — nexus::NexusWork::SemaReadCompleted(output) => self.decide_read_completion(output), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7678` — nexus::NexusWork::SemaWriteCompleted(output) => self.decide_write_completion(output), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7697` — fn host_submission(action: ordinary::HostDeployAction) -> sema::DeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7698` — sema::DeploySubmission::Host(meta::HostDeployment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7703` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7706` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7709` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7726` — fn user_submission() -> sema::DeploySubmission { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7727` — sema::DeploySubmission::UserEnvironment(meta::UserEnvironmentDeployment { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7732` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7735` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7738` — activation_backend: sema::ActivationBackend::HomeManagerNixProfileV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7769` — fn fixture_transport() -> sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7770` — sema::DeploymentTransport { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7771` — nix_store_uri: sema::NixStoreUri::from("ssh-ng://fixture-copy.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7772` — ssh_destination: sema::SshDestination::from("fixture-login@fixture-activate.invalid"), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7776` — fn fixture_output_selector() -> sema::DeploymentOutputSelector { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7777` — sema::DeploymentOutputSelector::new(sema::FlakeAttribute::from("checks.fixture-a")) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7825` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7904` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7907` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7910` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7976` — deployment.deployment_transport.ssh_destination = sema::SshDestination::from("root"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7983` — meta::DeployRequest::Host(deployment) => sema::DeploySubmission::Host(deployment), — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7985` — sema::DeploySubmission::UserEnvironment(deployment) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7993` — Some(sema::DeploymentTerminal::Rejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:7994` — sema::DeploymentTerminalReason::InvalidDeploymentRouting — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8091` — deployment.deployment_input_mode = sema::DeploymentInputMode::Horizon; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8096` — Some(sema::DeploymentTerminal::Rejected( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8097` — sema::DeploymentTerminalReason::ProposalSourceUnreachable — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8113` — sema::DeployResumeStage::RecordBuilding, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8144` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8156` — Some(sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8157` — deployment_failure_stage: sema::DeploymentFailureStage::FlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8176` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8188` — Some(sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8189` — deployment_failure_stage: sema::DeploymentFailureStage::Eval, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8200` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8212` — Some(sema::DeploymentTerminal::Failed(sema::DeploymentFailure { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8213` — deployment_failure_stage: sema::DeploymentFailureStage::Build, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8259` — let store = Arc::new(Store::open(directory.path().join("lojix.sema")).expect("open store")); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8313` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8319` — sema::SemaWriteOutput::DeploySubmitted(accepted) => accepted, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8324` — sema::DeployResumeStage::MaterializeHorizon, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8341` — sema::DeployResumeStage::RecordBuilding — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8365` — sema::DeployResumeStage::RecordBuilding — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8392` — let path = directory.path().join("lojix.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8398` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8402` — sema::DeployResumeStage::RecordBuilding, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8410` — sema::DeployResumeStage::NixEval, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8414` — sema::DeployResumeStage::ActivateGeneration, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8418` — sema::DeployResumeStage::RecordGenerationActivated, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8430` — sema::SemaWriteOutput::PhaseRecorded(receipt) => receipt, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8477` — sema::SemaWriteOutput::DeploySubmitted(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8493` — sema::SemaWriteOutput::PhaseRecorded(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8499` — sema::SemaReadOutput::EventLogRead(page) => assert_eq!( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8512` — sema::SemaWriteOutput::GenerationActivated(_) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8519` — sema::SemaReadOutput::GenerationsQueried(listing) => assert_eq!( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8546` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8549` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8552` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8573` — secrets_input: sema::SecretsInput::NoSecrets, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8576` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:8579` — activation_backend: sema::ActivationBackend::HomeManagerNixProfileV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9004` — fn interrupted_self_switch_job(closure: Option<&str>) -> sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9005` — sema::DeployJob { — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9010` — deploy_job_phase: sema::DeployJobPhase::Activating, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9023` — deployment_input_mode: sema::DeploymentInputMode::Direct, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9025` — activation_backend: sema::ActivationBackend::NixosSystemdBootV1, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9030` — deploy_resume_stage: sema::DeployResumeStage::ResolveFlakeAuth, — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9141` — job.activation_backend = sema::ActivationBackend::HomeManagerNixProfileV1; — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9259` — pipeline.builder = Some(sema::NixBuilderSpec::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9569` — let directory = ClusterSecretsDirectory::from_input(&sema::SecretsInput::NoSecrets) — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9577` — let input = sema::SecretsInput::SecretsDirectory(sema::SecretsDirectory::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9598` — let input = sema::SecretsInput::SecretsDirectory(sema::SecretsDirectory::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9620` — let input = sema::SecretsInput::SecretsDirectory(sema::SecretsDirectory::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9649` — let input = sema::SecretsInput::SecretsDirectory(sema::SecretsDirectory::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9701` — let input = sema::SecretsInput::SecretsDirectory(sema::SecretsDirectory::new( — **means the database**
+- `/git/github.com/LiGoldragon/lojix/src/schema_runtime.rs:9779` — let cluster = ClusterSecretsDirectory::from_input(&sema::SecretsInput::NoSecrets) — **means the database**
+### lojix-test
+
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:15` — META_CHANGED = {"__sema_meta", "__sema_engine_catalog"} — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:17` — "__sema_headers", "__sema_engine_chain_head", "__sema_engine_commit_log", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:18` — "__sema_engine_versioned_commit_log", "__sema_engine_versioning_policy", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:156` — source_meta = se.get("__sema_meta", {}).get("records") — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:157` — destination_meta = de.get("__sema_meta", {}).get("records") — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:160` — counters = se.get("__sema_engine_counters", {}) — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:173` — if final.get("engine_meta_source_digest") != {key: value for key, value in se["__sema_meta"].items() if key not in {"table", "rows"}}: — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:175` — if final.get("engine_meta_destination_digest") != {key: value for key, value in de["__sema_meta"].items() if key not in {"table", "rows"}}: — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:197` — old_catalog_rows = se["__sema_engine_catalog"].get("identities", []) — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/oracle/v5_v6.py:198` — new_catalog_rows = de["__sema_engine_catalog"].get("identities", []) — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-oracle.py:57` — fixed = {"__sema_engine_catalog", "__sema_meta", "__sema_headers", "__sema_engine_versioning_policy"} — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-oracle.py:61` — for table in ("__sema_engine_commit_log", "__sema_engine_versioned_commit_log"): — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-oracle.py:67` — old_chain, new_chain = before_engine["__sema_engine_chain_head"], after_engine["__sema_engine_chain_head"] — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-oracle.py:70` — old_counters = {row["key"]: row["value"] for row in before_engine["__sema_engine_counters"]["numeric"]} — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-oracle.py:71` — new_counters = {row["key"]: row["value"] for row in after_engine["__sema_engine_counters"]["numeric"]} — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/modules/old-runtime-rollback.nix:41` — cp "$NIX_BUILD_TOP/fixture/old-rollback/store.db" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/modules/old-runtime-rollback.nix:42` — LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/store-before.json" — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/modules/old-runtime-rollback.nix:45` — LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/store-after.json" — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/modules/old-runtime-rollback.nix:47` — sha256sum "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/final.sha256" — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:37` — "__sema_engine_catalog", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:38` — "__sema_engine_counters", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:39` — "__sema_headers", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:40` — "__sema_engine_chain_head", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:41` — "__sema_engine_versioning_policy", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:42` — "__sema_engine_compaction_intent", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:43` — "__sema_engine_staging_slot", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:44` — "__sema_engine_mirror_cursor", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:45` — "__sema_engine_commit_log", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:46` — "__sema_engine_versioned_commit_log", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:47` — "__sema_engine_subscriptions", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:48` — "__sema_engine_checkpoints", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:49` — "__sema_engine_outbox", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:52` — "__sema_engine_commit_log", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:53` — "__sema_engine_versioned_commit_log", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:54` — "__sema_engine_subscriptions", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:55` — "__sema_engine_checkpoints", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:56` — "__sema_engine_outbox", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:58` — const ENGINE_U64_VALUE: [&str; 2] = ["__sema_meta", "__sema_engine_identified_counters"]; — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:59` — const ENGINE_HASH_KEY: &str = "__sema_engine_checkpoint_segments"; — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:89` — let mut result = report("__sema_engine_catalog", rows.clone()); — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:90` — let identities=rows.iter().map(|(key,value)|{let registration=rkyv::from_bytes::<sema_engine::TableRegistration,Error>(value).expect("catalog registration"); let table=registration.table_name(); assert_eq!(key.as_slice(),table.as_bytes(),"catalog raw key/table identity"); json!({"table":table,"family":registration.identity().family().as_str(),"schema_hash_hex":hex(registration.identity().schema_hash().bytes())})}).collect::<Vec<_>>(); — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:104` — let mut result = report("__sema_engine_counters", rows); — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:106` — result["numeric_sha256"] = json!(table_hash("__sema_engine_counters", &canonical)); — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:311` — "__sema_engine_catalog", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:312` — "__sema_engine_counters", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:313` — "__sema_meta", — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:360` — engine.push(if n == "__sema_engine_catalog" { — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:362` — } else if n == "__sema_engine_counters" { — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/raw-snapshot-oracle.rs:373` — str_u64(&db, n, n == "__sema_engine_identified_counters") — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-rollback.py:6` — env={**os.environ,'XDG_STATE_HOME':str(a.root/'xdg-state'),'XDG_RUNTIME_DIR':str(a.root/'xdg-runtime')}; cmd=[str(a.nexus)]; before={'db':digest(a.root/'xdg-state/lojix/lojix.sema'),'archive':digest(a.root/'old-startup.rkyv'),'source_store':digest(a.root/'old-state/store.db')}; out=bytearray(); err=bytearray(); failure=None; proc=None — **means the database**
+- `/git/github.com/LiGoldragon/lojix-test/fixtures/old-runtime-rollback.py:33` — a.output.mkdir(parents=True,exist_ok=True); (a.output/'startup.stdout').write_bytes(out); (a.output/'startup.stderr').write_bytes(err); (a.output/'startup.status').write_text(str(proc.returncode if proc else -1)+'\n'); (a.output/'startup-evidence.json').write_text(json.dumps({'command':cmd,'xdg_state':env['XDG_STATE_HOME'],'xdg_runtime':env['XDG_RUNTIME_DIR'],'before':before,'after':{'db':digest(a.root/'xdg-state/lojix/lojix.sema'),'archive':digest(a.root/'old-startup.rkyv'),'source_store':digest(a.root/'old-state/store.db')},'error':failure})+'\n') — **means the database**
+### protos-engine
+
+- `/git/github.com/LiGoldragon/protos-engine/README.md:56` — | sema-engine | `fe50a6a1de7f707184d1fc7f641d2be0b51089de` | — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:57` — | sema-translator | `6b5499c0d25c801b56582fdcd8e021c3293a6d4d` | — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:61` — | signal-sema-translator | `3a26cb43f8ce7f9fe85da64d19aa55aa662943ce` | — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:85` — `schema-rust` exposes only verified bootstrap Interface and Sema generation; — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:94` — name-table, signal-frame, signal-sema-translator, sema-engine, sema-translator, — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:96` — nomos-engine test derivations. It also exposes sema-translator's dedicated — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:141` — explicit Sema storage evidence, and refusal of storage evidence for other — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:144` — Mutations reject producer, repository, package-alias, Interface/Nexus/Sema — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:193` — The root also consumes `sema-engine`'s producer-owned Sema proof. Its — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:194` — `Sema.{1 0 0}` header/imports/body source is authority-assembled into a checked — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:196` — the engine. No Sema source or generated table is copied into this sink or the — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/README.md:201` — Sema lowering consumes caller-supplied storage provenance, while non-Sema — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-public-text-search-witness:62` — grep -Eq '^[[:space:]]*let database_path = temp[.]path[(][)][.]join[(]"public-text-search[.]sema"[)][;][[:space:]]*$' \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md:9` — deliberately left untouched — sema-engine documentation carrying the — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md:28` — stack that predate the 2026-07-27 rename (the sema-engine passage first). It — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md:322` — 9. sema-engine's "macro" wording for its unrelated redb table-descriptor — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:23` — sema-engine|LiGoldragon|sema-engine|fe50a6a1de7f707184d1fc7f641d2be0b51089de — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:24` — sema-translator|LiGoldragon|sema-translator|6b5499c0d25c801b56582fdcd8e021c3293a6d4d — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:28` — signal-sema-translator|LiGoldragon|signal-sema-translator|3a26cb43f8ce7f9fe85da64d19aa55aa662943ce — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:60` — sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:61` — sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-pin-policy:65` — signal-sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/ideas/guardedObjects-2026-08-07.md:40` — in primary). The sealed Sema consumer trait approved for Core Ethos — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-identity-capsule-coherence:8` — signal-sema-translator|name-table|name-table| — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-identity-capsule-coherence:9` — sema-translator|name-table|name-table| — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-identity-capsule-coherence:10` — sema-translator|signal-sema-translator|signal-sema-translator| — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md:63` — Sema evidence remains producer-owned. The pinned `sema-engine` source begins — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md:64` — with `Sema.{1 0 0}`, an imports section, and one body. Its owner test assembles — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md:68` — copy the Sema declaration or generated table. — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:34` — sema-engine.url = "github:LiGoldragon/sema-engine/fe50a6a1de7f707184d1fc7f641d2be0b51089de"; — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:35` — sema-translator.url = "github:LiGoldragon/sema-translator/6b5499c0d25c801b56582fdcd8e021c3293a6d4d"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:39` — signal-sema-translator.url = "github:LiGoldragon/signal-sema-translator/3a26cb43f8ce7f9fe85da64d19aa55aa662943ce"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:85` — sema-engine, — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:86` — sema-translator, — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:90` — signal-sema-translator, — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:220` — ownerSemaEngine = sema-engine.checks.${system}.test; — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:231` — test -e "$ownerSemaEngine" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:309` — signal-sema-translator-test = signal-sema-translator.checks.${system}.test; — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:312` — sema-engine-test = sema-engine.checks.${system}.test; — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:313` — sema-translator-test = sema-translator.checks.${system}.test; — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/flake.nix:314` — sema-translator-process = sema-translator.checks.${system}.process; — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:7` — readonly expected_edges=$'structural-codec|name-table|name-table|\nstructural-codec|raw-discovery|raw-discovery|\ncore-ethos|encoded-name-table|name-table|name-table\ncore-ethos|signal-sema-translator|signal-sema-translator|\ncore-ethos|raw-discovery|raw-discovery|\ncore-ethos|structural-codec|structural-codec|\ncore-logos|encoded-name-table|name-table|name-table\ncore-logos|signal-sema-translator|signal-sema-translator|\ncore-logos|structural-codec|structural-codec|\ncore-nomos|encoded-name-table|name-table|name-table\ncore-nomos|signal-sema-translator|signal-sema-translator|\ncore-nomos|core-ethos|core-ethos|\ncore-nomos|core-logos|core-logos|\nrust-logos|core-logos|core-logos|\nrust-logos|name-table|name-table|\nrust-logos|raw-discovery|raw-discovery|\nrust-logos|signal-sema-translator|signal-sema-translator|\nrust-logos|structural-codec|structural-codec|\nprotos|signal-frame|signal-frame|\nsema-translator|core-ethos|core-ethos|\nschema-rust|core-ethos|core-ethos|\nschema-rust|core-nomos|core-nomos|\nschema-rust|rust-logos|rust-logos|\nschema-rust|sema-translator|sema-translator|\nsignal-domain|core-ethos|core-ethos|\nsignal-domain|schema-rust|schema-rust|\nsignal-domain|sema-translator|sema-translator|\nsema-engine|core-ethos|core-ethos|\nsema-engine|core-nomos|core-nomos|\nsema-engine|schema-rust|schema-rust|\nsema-engine|sema-translator|sema-translator|\nnomos-engine|core-ethos|core-ethos|\nnomos-engine|core-logos|core-logos|\nnomos-engine|core-nomos|core-nomos|\nnomos-engine|sema-translator|sema-translator|\nlanguage-engine-witness|signal-domain|signal-domain|\nlanguage-engine-witness|slice-core-ethos|core-ethos|core-ethos\nlanguage-engine-witness|slice-core-logos|core-logos|core-logos\nlanguage-engine-witness|slice-core-nomos|core-nomos|core-nomos\nlanguage-engine-witness|slice-name-table|name-table|name-table\nlanguage-engine-witness|slice-raw-discovery|raw-discovery|raw-discovery\nlanguage-engine-witness|slice-rust-logos|rust-logos|rust-logos\nlanguage-engine-witness|slice-sema-translator|sema-translator|sema-translator\nlanguage-engine-witness|slice-signal-frame|signal-frame|signal-frame\nlanguage-engine-witness|slice-signal-sema-translator|signal-sema-translator|signal-sema-translator\nlanguage-engine-witness|slice-structural-codec|structural-codec|structural-codec' — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:157` — local sema_root — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:158` — local sema_fixture — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:159` — local sema_generated_test — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:160` — local sema_generated_rust — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:161` — local sema_support_module — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:196` — '^(signal-nomos|sema-engine|rkyv)=' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:198` — 'nomos-engine|NOMOS_ENGINE_BIN|NOMOS_GENERATOR_BIN|SEMA_TRANSLATOR_BIN' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:215` — require_source_pattern "$engine_test" "storage-aware Sema lowering" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:216` — '^fn sema_consumes_explicit_storage_evidence_and_other_kinds_refuse_it[(][)]' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:217` — require_source_pattern "$engine_test" "non-Sema storage evidence refusal" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:220` — sema_root=$(source_path "$source_map_file" sema-engine) || { — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:221` — echo "Sema behavior witness is absent from the root source map" >&2 — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:224` — sema_fixture="$sema_root/schema/witness.sema" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:225` — sema_generated_test="$sema_root/tests/generated_table.rs" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:226` — sema_generated_rust="$sema_root/tests/fixtures/generated_sema_table.rs" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:227` — sema_support_module="$sema_root/tests/support/mod.rs" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:228` — [[ -f "$sema_fixture" && ! -L "$sema_fixture" && — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:229` — -f "$sema_generated_test" && ! -L "$sema_generated_test" && — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:230` — -f "$sema_generated_rust" && ! -L "$sema_generated_rust" && — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:231` — -f "$sema_support_module" && ! -L "$sema_support_module" ]] || { — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:232` — echo "Sema behavior witness lacks regular owner source and test surfaces" >&2 — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:269` — validate_bootstrap_fixture "$sema_fixture" Sema \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:271` — require_source_pattern "$sema_support_module" "canonical Sema source assembly" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:272` — '[.]assemble[(]include_str![(]"[.][.]/[.][.]/schema/witness[.]sema"[)], approval[)]' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:273` — require_source_pattern "$sema_support_module" "authority-verified Sema generation" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:274` — 'BootstrapSemaGeneration::new[(]' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:275` — require_source_pattern "$sema_generated_rust" "checked Sema projection marker" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:276` — '^// @generated by schema-rust from an authority-verified bootstrap Sema$' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:277` — require_source_pattern "$sema_generated_test" "checked source/projection freshness" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:278` — '^fn checked_sema_source_and_generated_rust_are_fresh[(][)]' — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:279` — require_source_pattern "$sema_generated_test" "generated typed table runtime" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:281` — require_source_pattern "$sema_generated_test" "generated table registration" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:354` — 'MacroPackage|apply_enriched|enriched_fixture|wire_fixture|signal[_-]sema[_-]storage|sema-storage|SEMA_STORAGE_BIN|SemaPlane|output_slot|kameo' \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:425` — schema-rust signal-domain sema-engine language-engine-witness; do — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:490` — schema-rust|signal-domain|sema-engine|language-engine-witness) — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:532` — if [[ "$source_name" == sema-engine ]]; then — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:536` — cp "$source_root/schema/witness.sema" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:537` — "$fixture_root/sources/$source_name/schema/witness.sema" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:540` — cp "$source_root/tests/fixtures/generated_sema_table.rs" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:541` — "$fixture_root/sources/$source_name/tests/fixtures/generated_sema_table.rs" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:557` — printf '%s\n' nomos-engine sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:593` — local sema_fixture — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:594` — local sema_generated_test — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:618` — sema_fixture="$temporary_root/sources/sema-engine/schema/witness.sema" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:619` — sema_generated_test="$temporary_root/sources/sema-engine/tests/generated_table.rs" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:714` — sed -i '1s/^Nexus[.]/Sema./' "$witness_slice_fixture" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:732` — sed -i '1s/^Sema[.]/Nexus./' "$sema_fixture" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:733` — expect_coherence_rejection "Sema header drift" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:736` — cp "$(source_path "$source_map_file" sema-engine)/schema/witness.sema" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:737` — "$sema_fixture" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:740` — "$sema_generated_test" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:741` — expect_coherence_rejection "Sema generated runtime witness removal" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:744` — cp "$(source_path "$source_map_file" sema-engine)/tests/generated_table.rs" \ — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:745` — "$sema_generated_test" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/scripts/check-slice-one-coherence:815` — echo "Slice One edges, sole Schema Rust bootstrap boundary, and Interface/Nexus/Sema behavior witness match exact published revisions" — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:22` — ## 2. Daemons are stateful; sema is each daemon's database — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:25` — central sema-storage daemon as sole durable write authority, with the — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:28` — centrally in sema". — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:30` — **Psyche 2026-07-27:** sema is the database of each daemon. either you — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:33` — **Psyche 2026-07-27,** of the 2026-07-17 central-in-sema ruling: which — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:39` — ## 3. No sema-storage daemon; the nametable authority is its own small daemon — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:45` — **Psyche 2026-07-27:** sema is the storage engine for all our daemons, — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:47` — means that 'seat it centrally in sema' means a separate daemon, and — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:48` — wasnt correctly voiced. I shouldnt have said "in sema", since all — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:49` — daemon state lives in *its* sema db. There can be no sema-storage — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:50` — daemon, as it would overload the term sema. — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:56` — sema-storage repo cannot keep its name and its stateless-client — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:78` — ## 5. The sema vision — psyche-initiated dictation — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:84` — decided on its own to call the current name component SEMA or SEMA — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:86` — since the idea of SEMA originally was for this perfectly typed, — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:101` — using this SEMA naming component, which would allow us to start — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:102` — specifying SEMA as I see it, which is bigger than just, it's not that — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:109` — of maybe not SEMA storage is not the right name. Maybe SEMA translator — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md:140` — Log note (log-authored): "sema-translator" is a leaning, not a fixed — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:470` — larger sema-vision word space — all human language, dynamic-enum — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:475` — ## 16. The naming authority is sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:477` — **Agent (Codex):** asked: "Do you approve `sema-translator` and — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:478` — `signal-sema-translator` with these exact repository and runtime surfaces?" — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:483` — repository and package name is `sema-translator`; its signal contract's final — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:484` — repository and package name is `signal-sema-translator`. These are new — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:485` — repositories, not renames of `sema-storage` or `signal-sema-storage`. The — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:486` — approved runtime surfaces are: Rust library `sema_translator`, daemon binary — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:487` — `sema-translator-daemon`, service `sema-translator-daemon.service`, runtime — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:488` — directory `sema-translator`, socket `sema-translator.sock`, and owned database — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/DesignReviewRulings-2026-07-28.md:489` — `sema-translator.sema`; the contract library is `signal_sema_translator`. — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:47` — stateful daemon with its own embedded sema db; one small translator daemon — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:60` — the daemon and applied atomically — and the long arc is the sema vision: a — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:278` — term-overload law forbids it (**[ruled]** "There can be no sema-storage — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:279` — daemon, as it would overload the term sema"). — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:283` — **[ruled] 2026-07-27**: "sema is the database of each daemon. either you are — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:285` — "seat it centrally in sema" was overruled and mis-voiced — "I shouldnt have — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:286` — said "in sema", since all daemon state lives in *its* sema db. There can be no — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:287` — sema-storage daemon". **[ruled]** the nametable authority is its own small — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:289` — final repository and package name is `sema-translator`, and its typed signal — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:290` — contract's is `signal-sema-translator`. They are new repositories, not renames — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:291` — of `sema-storage` or `signal-sema-storage`; the old repositories remain frozen — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:292` — donors until their separately designed dissolution. `sema-storage`'s — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:309` — `signal-sema-translator` and `sema-translator` instantiate the approved — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:351` — only writer and one actor serializes its embedded sema database. Verified — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:390` — explicit wire/archive version changes. The larger sema-vision word space — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:394` — `sema_translator`; daemon binary `sema-translator-daemon`; service — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:395` — `sema-translator-daemon.service`; runtime directory `sema-translator`; socket — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:396` — `sema-translator.sock`; and owned database `sema-translator.sema`. The — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:397` — contract library is `signal_sema_translator`. The new daemon and contract have — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:407` — ## 7. The sema vision — intent — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:410` — entry 5): sema "means more than just a database. It's a new way of thinking — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:749` — **Standing morning-audit findings:** sema-storage still live as write — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:771` — no-strings rule), `sema-storage/ARCHITECTURE.md` and — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:802` — `sema-translator` and `signal-sema-translator` with distinct new repository — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:831` — 10. Spirit port after the gate passes; approve the sema-storage dissolution — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:864` — authority names (`sema-translator`, `signal-sema-translator`). Entry 17 — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md:911` — 18. sema-engine ARCHITECTURE.md carries "macro" usage for the unrelated redb — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:40` — assembly language. Each engine is a stateful daemon with its own embedded sema — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:43` — daemon and applied atomically — and the long arc is the sema vision: a way of — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:258` — term-overload law forbids it (**[ruled]** "There can be no sema-storage — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:259` — daemon, as it would overload the term sema"). — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:263` — **[ruled] 2026-07-27**: "sema is the database of each daemon. either you are — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:265` — "seat it centrally in sema" was overruled and mis-voiced — "I shouldnt have — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:266` — said "in sema", since all daemon state lives in *its* sema db. There can be no — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:267` — sema-storage daemon". **[ruled]** the nametable authority is its own small — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:269` — final repository and package name is `sema-translator`, and its typed signal — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:270` — contract's is `signal-sema-translator`. They are new repositories, not renames — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:271` — of `sema-storage` or `signal-sema-storage`; the old repositories remain frozen — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:272` — donors until their separately designed dissolution. `sema-storage`'s — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:289` — `signal-sema-translator` and `sema-translator` instantiate the approved — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:331` — only writer and one actor serializes its embedded sema database. Verified — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:370` — explicit wire/archive version changes. The larger sema-vision word space — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:374` — `sema_translator`; daemon binary `sema-translator-daemon`; service — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:375` — `sema-translator-daemon.service`; runtime directory `sema-translator`; socket — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:376` — `sema-translator.sock`; and owned database `sema-translator.sema`. The — **unclear**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:377` — contract library is `signal_sema_translator`. The new daemon and contract have — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:387` — ## 7. The sema vision — intent — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:390` — entry 5): sema "means more than just a database. It's a new way of thinking — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:542` — no-strings rule), `sema-storage/ARCHITECTURE.md` and — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:566` — `sema-translator` and `signal-sema-translator` with distinct new repository — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:591` — 10. Spirit port after the gate passes; approve the sema-storage dissolution — **means the database**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md:624` — (`sema-translator`, `signal-sema-translator`). Entry 17 closes the mistaken — **means the meaning language**
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-26.md:409` — > "Standard machinery documentation for the sema ecosystem," cloned at — **means the database**
+### sema
+
+- `/git/github.com/LiGoldragon/sema/README.md:1` — # sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/README.md:3` — The sema database kernel: typed, version-guarded table access over — **means the database**
+- `/git/github.com/LiGoldragon/sema/README.md:8` — The typed-kernel surface stores a Sema database header alongside — **means the database**
+- `/git/github.com/LiGoldragon/sema/README.md:36` — of the mature sema format (universal typed-binary of meaning, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema/README.md:39` — implementation is the pseudo-sema layer above. — **means the database**
+- `/git/github.com/LiGoldragon/sema/Cargo.toml:2` — name = "sema" — **means the database**
+- `/git/github.com/LiGoldragon/sema/Cargo.toml:7` — repository = "https://github.com/LiGoldragon/sema" — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:1` — # Agent instructions — sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:5` — The workspace's typed storage kernel. Sema opens redb files with an — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:9` — Sema is not Criome's records engine and does not own Persona runtime — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:10` — state. Full database-operation execution lives in `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:17` — `Sema::open_with_schema(path, schema)`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/AGENTS.md:21` — Criome; `reader_count` is not a sema kernel concept. — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:1` — //! sema — the workspace's typed-database kernel. — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:9` — //! `~/primary/reports/designer/63-sema-as-workspace-database-library.md` — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:14` — //! `Sema::open_with_schema(path, &Schema)` opens a typed database — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:87` — "existing sema file at {} lacks a schema version — refusing to retro-stamp v{expected}; \ — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:147` — /// Endianness pinned into Sema's rkyv feature set. — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:154` — /// Pointer width pinned into Sema's rkyv feature set. — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:164` — /// today. Pass to [`Sema::open_with_schema`] at open time; — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:228` — /// let message = sema.read(|txn| MESSAGES.get(&txn, "m-abc"))?; — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:229` — /// sema.write(|txn| MESSAGES.insert(&txn, "m-xyz", &new_message))?; — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:274` — /// Sema's table iteration methods eagerly collect rows and close — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:464` — // ─── Sema — the database handle ───────────────────────────── — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:466` — const META: TableDefinition<&str, u64> = TableDefinition::new("__sema_meta"); — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:467` — const DATABASE_HEADERS: TableDefinition<&str, &[u8]> = TableDefinition::new("__sema_headers"); — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:471` — pub struct Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:476` — impl Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:477` — /// Open or create a sema database at `path` with a — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:504` — Ok(Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema/src/lib.rs:562` — /// sema.write(|txn| { — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:1` — # Skill — working in sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:7` — ## What sema is — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:9` — Sema is the **workspace's typed-database kernel**. redb-backed; — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:11` — Each ecosystem layers its own typed tables atop sema in a — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:14` — table layer. Do not assume a broad `persona-sema` component exists. — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:16` — Sema is to **state** what `signal-core` is to **wire**: the — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:21` — sema (the kernel) owns, what each consumer-owned typed Sema layer — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:28` — **Sema is meant to become impossible to improve as a storage — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:32` — > it quickly — criome and sema are meant to be eventually — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:39` — For sema specifically, this commits the project to: — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:47` — through sema, it has a closed Rust type with a derived rkyv — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:52` — `sema-engine` or the consuming domain, not to this kernel. — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:63` — opens its own file through its local typed Sema layer; — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:74` — `DatabaseHeader` naming Sema's rkyv format identity — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:78` — - **Internal tables are namespaced.** Sema-owned redb tables use — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:79` — the `__sema_` prefix (`__sema_headers`, `__sema_meta`). — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:82` — not in sema.** The consumer's typed-storage layer references those — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:88` — keys for borrowed key types (`&str`, `&[u8]`). Sema's — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:97` — Sema (the kernel) owns: — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:110` — Sema (the kernel) does not own raw slot allocation, read-pool — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:112` — operation logs. Those live in `sema-engine` or the consuming — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:130` — Sema does **not** own: — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:133` — helpers — those live in the state-owning component's typed Sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:146` — - `ARCHITECTURE.md` — sema's role and boundaries. — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:148` — - `sema-engine` — the engine that executes Signal database verbs — **means the database**
+- `/git/github.com/LiGoldragon/sema/skills.md:152` — - prism's `skills.md` — sema → Rust projector. — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:2` — description = "sema — workspace typed-database kernel (redb + rkyv + version-skew guard)"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:35` — name = "sema-${name}"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:63` — program = "${testScript}/bin/sema-test"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:64` — meta.description = "Run sema's full test suite"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:69` — program = "${testScript}/bin/sema-test"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:70` — meta.description = "Run sema's full test suite"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:75` — program = "${testDocScript}/bin/sema-test-doc"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:76` — meta.description = "Run sema's documentation tests"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:81` — program = "${testKernelSurfaceScript}/bin/sema-test-kernel-surface"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:82` — meta.description = "Run sema's typed-kernel integration tests"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:87` — program = "${testNoLegacySurfaceScript}/bin/sema-test-no-legacy-surface"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:88` — meta.description = "Run sema's retired-surface absence witnesses"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:134` — # Sema's API surface IS partly documentation (the — **means the database**
+- `/git/github.com/LiGoldragon/sema/flake.nix:156` — name = "sema"; — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:2` — //! version-guard surface consumed by component-owned Sema layers. — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:9` — use sema::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:10` — DatabaseHeader, Error, RkyvEndian, RkyvPointerWidth, Schema, SchemaVersion, Sema, Table, — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:19` — "sema_kernel_test_{}_{}.redb", — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:45` — const DATABASE_HEADERS: TableDefinition<&str, &[u8]> = TableDefinition::new("__sema_headers"); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:71` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:74` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:82` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:97` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:109` — let result = Sema::open_with_schema(&path, &SCHEMA_V1); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:125` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:129` — let result = Sema::open_with_schema(&path, &SCHEMA_V1); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:139` — fn internal_tables_use_sema_namespace() { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:142` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:151` — assert!(table_names.contains(&"__sema_headers".to_string())); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:152` — assert!(table_names.contains(&"__sema_meta".to_string())); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:153` — assert!(!table_names.contains(&"__sema_records".to_string())); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:163` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:165` — let result = Sema::open_with_schema(&path, &SCHEMA_V2); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:190` — let result = Sema::open_with_schema(&path, &SCHEMA_V1); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:208` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:213` — sema.write(|txn| KEYED_BY_U64.insert(txn, 42u64, &toy)) — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:215` — let read_back = sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:225` — sema.write(|txn| TOYS.insert(txn, "k", &other)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:226` — assert_eq!(sema.read(|txn| TOYS.get(txn, "k")).unwrap().unwrap(), other); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:233` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:238` — sema.write(|txn| TOYS.insert(txn, "k1", &original)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:239` — let read_back = sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:250` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:251` — sema.write(|txn| TOYS.ensure(txn)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:252` — let rows = sema.read(|txn| TOYS.iter(txn)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:260` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:273` — sema.write(|txn| { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:280` — let rows = sema.read(|txn| TOYS.iter(txn)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:295` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:301` — sema.write(|txn| TOYS.insert(txn, key, &toy)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:303` — let rows = sema.read(|txn| TOYS.range(txn, "b".."d")).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:329` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:330` — let rows = sema.read(|txn| TOYS.iter(txn)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:338` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:339` — sema.write(|txn| { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:345` — let result = sema.read(|txn| TOYS.get(txn, "bad")); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:357` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:358` — let result = sema.read(|txn| TOYS.get(txn, "nonexistent")).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:366` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:371` — sema.write(|txn| TOYS.insert(txn, "k", &toy)).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:372` — let removed = sema.write(|txn| TOYS.remove(txn, "k")).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:374` — let after = sema.read(|txn| TOYS.get(txn, "k")).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:382` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:387` — let result = sema.write(|txn| -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:396` — let after = sema.read(|txn| TOYS.get(txn, "k")).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:405` — let _sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:414` — assert!(!table_names.contains(&"__sema_records".to_string())); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:422` — "sema_kernel_subdir_{}_{}", — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:429` — let sema = Sema::open_with_schema(&path, &SCHEMA_V1).unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/kernel.rs:430` — assert_eq!(sema.path(), path); — **means the database**
+- `/git/github.com/LiGoldragon/sema/reference/Vision.md:92` — files (criome, signal, nexus, sema, forge) and the open design — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/no_legacy_surface.rs:1` — //! Architectural truth tests for retired sema surfaces. — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/no_legacy_surface.rs:15` — fn sema_does_not_export_slot() { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/no_legacy_surface.rs:23` — fn sema_does_not_export_legacy_slot_store() { — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/no_legacy_surface.rs:29` — assert!(!source.contains("__sema_records")); — **means the database**
+- `/git/github.com/LiGoldragon/sema/tests/no_legacy_surface.rs:34` — fn sema_does_not_export_reader_count() { — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:1` — # ARCHITECTURE — sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:3` — Sema is the workspace's typed storage kernel. It is a Rust — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:8` — Sema is to state what `signal-core` is to wire: the small kernel of — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:10` — execution lives in `sema-engine`, not in this crate. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:12` — The persistent typed-record store is named the **SEMA database** — not — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:13` — RAD or other nicknames. Sema is the workspace's pure binary domain-tree — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:14` — format; the redb-persisted records are conceptually a sema database. It — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:21` — > **Scope.** Today's `sema` is the Rust-on-redb storage kernel. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:22` — > The eventually-self-hosting `Sema` substrate (the universal — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:23` — > medium for meaning, Sema-on-Sema) is a different artifact at a — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:25` — > itself content-addressable. Today's `sema` is a realization — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:27` — > addressed Sema source, components carrying multiple versions — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:37` — the file, create sema-owned internal tables. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:38` — - The database header guard: the file records Sema's rkyv format — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:40` — - The schema-version guard: `Sema::open_with_schema(path, schema)` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:44` — - Public transaction type aliases: consumers name `sema::ReadTransaction` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:45` — / `sema::WriteTransaction`, not `redb` transaction types directly, so — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:59` — - Database-operation execution through `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:68` — sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:73` — sema — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:81` — The dependency direction is one-way. `sema-engine` may depend on — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:82` — `sema`. `sema` must not depend on `sema-engine`, Signal contracts, — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:87` — Sema does not own: — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:99` — as a typed `sema-engine` primitive with its own records and witnesses, — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:100` — not as a raw storage surface in `sema`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:104` — - Sema opens durable state only through — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:105` — `Sema::open_with_schema(path, schema)`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:106` — - Sema stores typed rkyv values through typed tables. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:107` — - Sema has no schema-less public open path. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:108` — - Sema has no raw byte store API. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:109` — - Sema has no Criome read-pool configuration API. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:110` — - Sema internal table names use the `__sema_` prefix. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:111` — - Sema-owned internal tables are limited to kernel metadata and — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:113` — - Component table names must not use the `__sema_` prefix. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:116` — domain crates, not in sema. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:119` — `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:124` — pub struct Sema; — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:126` — impl Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:162` — This was confirmed empirically against a sema consumer (the — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:173` — - `sema-engine`'s `Retract` verb inherits this: a retracted record is — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:179` — feature — a typed `sema-engine` tombstone/archive record, or a — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:191` — specialized sema-database holding exactly one kind of archived object — — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:193` — archive-retrieving tool. `sema-engine`'s `CollectRemovalCandidates` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:205` — └── lib.rs — Sema handle, schema/database header guards, — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:210` — Internal Sema tables: — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:212` — - `__sema_headers` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:213` — - `__sema_meta` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:229` — - `sema_does_not_export_slot` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:230` — - `sema_does_not_export_legacy_slot_store` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:231` — - `sema_does_not_export_reader_count` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:239` — Package A of the sema / sema-engine split has **landed**: this crate — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:242` — for those deletions exist. `sema-engine` has been created as a — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:248` — §"Workspace vision and intent" — `sema` may break to make the — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:250` — `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:254` — Today, schema versioning is **manual**: `Sema::open_with_schema` — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:263` — Eventually, when the workspace self-hosts on Sema-on-Sema (per — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:267` — - A schema is identified by the hash of its Sema source. Equal hash — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:275` — - Migration becomes a **reducer**: a typed Sema function from — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:289` — design at the `sema-engine` / contract layer that the kernel serves. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:302` — - **Upgrades are typed SEMA operations.** A protocol or — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:324` — facts below are system-level direction — they live in `sema-engine` and — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:328` — - **Native version-controlled durability.** Component Sema databases — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:343` — component Sema state, and the redb store becomes a rebuildable — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:355` — meta signal. Its own state is itself a sema-engine store. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:373` — **Role:** this crate is the storage kernel — the typed-value substrate `sema-engine` builds upon. Component schemas never reference `sema` directly; they reference `sema-engine`, which composes this kernel under the hood. — **means the database**
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md:375` — **Integration target:** storage kernel; consumed by `sema-engine`. Under the schema-engine upgrade, this crate's surface does not change. The macro-emitted storage descriptors call into `sema-engine`'s typed-table API, which in turn calls into this kernel's typed-value primitives. The reducer-based migration model described above in the "future work" section becomes more natural under the schema-engine upgrade: the schema language gives `.schema` files first-class schema-hash identity, and reducers between two schema-hash versions become regular schema-declared transformations the macro can emit code for. — **means the database**
+- `/git/github.com/LiGoldragon/sema/.beads/config.yaml:56` — sync.remote: "git+ssh://git@github.com/LiGoldragon/sema.git" — **means the database**
+- `/git/github.com/LiGoldragon/sema/.beads/metadata.json:5` — "dolt_database": "sema", — **means the database**
+### sema-engine
+
+- `/git/github.com/LiGoldragon/sema-engine/README.md:1` — # sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/README.md:3` — `sema-engine` is the full database engine library over `sema` and — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/README.md:4` — `signal-sema`. It executes typed database verbs over component-owned — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/README.md:5` — `.sema` files. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/README.md:11` — `signal-sema` operation classes `Assert`, `Mutate`, `Retract`, `Match`, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:2` — description = "sema-engine — typed database verb engine over sema"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:49` — name = "sema-engine-${name}"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:79` — program = "${testScript}/bin/sema-engine-test"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:80` — meta.description = "Run sema-engine's full test suite"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:85` — program = "${testScript}/bin/sema-engine-test"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:86` — meta.description = "Run sema-engine's full test suite"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:91` — program = "${testDependencyBoundaryScript}/bin/sema-engine-test-dependency-boundary"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:92` — meta.description = "Run sema-engine's architectural dependency witnesses"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:97` — program = "${testEngineScript}/bin/sema-engine-test-engine"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:98` — meta.description = "Run sema-engine's registered-record execution witnesses"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:103` — program = "${testOperationLogScript}/bin/sema-engine-test-operation-log"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:104` — meta.description = "Run sema-engine's operation-log and snapshot cursor witnesses"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:109` — program = "${testSubscriptionsScript}/bin/sema-engine-test-subscriptions"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:110` — meta.description = "Run sema-engine's subscription delivery witnesses"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix:164` — name = "sema-engine"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:2` — name = "sema-engine" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:7` — repository = "https://github.com/LiGoldragon/sema-engine" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:8` — description = "Typed database operation engine over sema and signal-sema" — **unclear**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:12` — name = "sema_engine" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:18` — sema = { git = "https://github.com/LiGoldragon/sema.git", rev = "51d7927c872f0df12791bad8d39a4db6433b01a1" } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:19` — signal-sema = { git = "https://github.com/LiGoldragon/signal-sema.git", rev = "4f3a24e6677ab9d200672851016c4c760c1e36e8", default-features = false } — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:28` — sema-translator = { git = "https://github.com/LiGoldragon/sema-translator.git", rev = "287fbd728a05b1a6be1dc8a28bcf3ca06d9916b3", default-features = false } — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/Cargo.toml:29` — signal-sema-translator = { git = "https://github.com/LiGoldragon/signal-sema-translator.git", rev = "3f41813dd63904c7e2b3da4382eff64ed1bf12fe" } — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/open.rs:8` — use sema::{Schema, SchemaVersion}; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:1` — # sema-engine — Agent Instructions — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:6` — Sema database-operation execution. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:18` — - `Engine` composes `sema::Sema`; it does not replace the storage — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:21` — redb belongs behind `sema`; component-facing database files use — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:22` — `.sema`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:23` — - Sema operations enter through `signal-sema` vocabulary. Component — **unclear**
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md:26` — - Prefer improving `sema-engine` when ethos-derived components expose a — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:16` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:240` — SemaOperation::Assert | SemaOperation::Mutate => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:248` — SemaOperation::Retract => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:262` — EntryDigest::update_bytes(&mut hasher, b"sema-engine-view-digest-v1"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:424` — transaction: &'transaction sema::WriteTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:429` — pub(crate) fn new(transaction: &'transaction sema::WriteTransaction, row: ViewRow) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:464` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:468` — table.sema_table().remove(self.transaction, key.clone())?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:502` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/fold.rs:507` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/table.rs:13` — /// The generated declaration of one domain-keyed Sema table. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/table.rs:254` — pub fn sema_table(&self) -> sema::Table<String, RecordValue> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/table.rs:255` — sema::Table::new(self.name.as_str()) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/table.rs:271` — pub fn sema_table(&self) -> sema::Table<u64, RecordValue> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/table.rs:272` — sema::Table::new(self.name.as_str()) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/lib.rs:1` — //! Full typed database engine over the `sema` storage kernel. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/lib.rs:3` — //! `Engine` composes `sema::Sema` and executes Sema database operations — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/lib.rs:9` — //! component Sema state; the table store is a rebuildable materialized — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/lib.rs:73` — pub use sema::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:1` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:55` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:83` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:92` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:107` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:188` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:203` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:367` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:369` — Self::Assert(_) => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:370` — Self::Mutate(_) => SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/mutation.rs:371` — Self::Retract(_) => SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:10` — #[error("sema: {0}")] — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:11` — Sema(sema::Error), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:331` — /// transaction on `Err`; `From<sema::Error>` unwraps the carried — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:334` — pub(crate) fn into_storage(self) -> sema::Error { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:335` — sema::Error::Io(std::io::Error::other(Carrier(self))) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:339` — impl From<sema::Error> for Error { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:340` — fn from(error: sema::Error) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:342` — sema::Error::Io(io) if io.get_ref().is_some_and(|inner| inner.is::<Carrier>()) => { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:349` — other => Self::Sema(other), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/error.rs:354` — /// Wrapper smuggling a typed engine error through `sema::Error::Io` — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:1` — # sema-engine Architecture — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:3` — `sema-engine` is the workspace's full typed database engine library. It — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:4` — sits between the `sema` storage kernel and state-bearing component — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:7` — `sema` opens redb files, validates format/schema, and reads/writes typed — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:8` — rkyv tables behind the component-facing `.sema` file type. `sema-engine` — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:9` — executes `signal-sema` database operations over registered record — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:19` — - `sema-engine` is the exclusive database-operation boundary for — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:22` — database commit ledger. Per Spirit fosp (Correction): Sema-engine is — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:26` — component Sema state, and the redb store is a rebuildable materialized — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:64` — - Splitting SEMA out of the daemon into its own process is a — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:73` — - `sema-engine` is a Rust library crate. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:74` — - `sema-engine` does not ship a daemon binary. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:75` — - `sema-engine` does not depend on Kameo. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:76` — - `sema-engine` does not depend on tokio. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:77` — - `sema-engine` does not depend on NOTA. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:78` — - `sema-engine` does not depend on `signal-persona-*` contract crates. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:79` — - `Engine` owns a `sema::Sema` handle. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:80` — - `Engine` opens storage through `Sema::open_with_schema`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:87` — `Engine::storage_reader()` rather than opening a second `sema::Sema` — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:88` — handle to the same `.sema` file. The handoff is read-only: — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:131` — The storage kernel's own header and schema-version stamp (`__sema_meta`, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:132` — written by `sema::Sema::open_with_schema`) is a separate, earlier — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:176` — retracting. See `sema` ARCHITECTURE §"Deletion durability". — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:196` — - `Constrain`, `Project`, `Aggregate`, `Infer`, and `Recurse` are sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:198` — - The `signal_sema::SemaOperation` set is closed at six operations: — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:203` — - The Sema classification vocabulary stays internal to engine execution — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:207` — contract roots are domain verbs, and the daemon derives the Sema class — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:210` — payloadless `SemaObservation` event in any signal or meta-signal — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:237` — - The versioned log is stored in the same `.sema` file as table state. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:259` — policy, and server-side retention are not part of `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:312` — signal_sema["signal-sema<br/>SemaOperation"] — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:313` — sema["sema<br/>storage kernel"] — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:314` — engine["sema-engine<br/>database operation execution"] — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:316` — database["component.sema"] — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:318` — engine --> sema — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:321` — sema --> database — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:324` — `sema-engine` deliberately knows nothing about Persona routing, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:328` — ## Sema short header — symmetric with the wire side — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:331` — and the engine (sema). Just as the signal side carries an 8-enum — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:332` — 64-bit short header per message, every sema-engine operation — — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:335` — with a sema-specific root and sub-enum vocabulary rather than the — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:336` — signal verbs. The two headers (signal-header and sema-header) use the — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:338` — observability therefore extends to sema-side operations identically to — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:341` — the sema-header type is not yet emitted.) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:434` — storage through `sema`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:473` — change identity in `__sema_engine_change_receipts` in the same write — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:532` — storage-kernel schema-version stamp (`__sema_meta`) is a separate, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:722` — those raw bytes do **not** enter the sema-engine-managed typed tables — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:729` — sema-engine's tables has gone through a typed shape known to the — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:760` — **Role:** this crate is the typed database engine. It owns the `Engine` handle, the typed-table machinery, the `CommitSequence` high-water-mark contract, and the redb storage adapter. Per-component daemons consume this crate by declaring their storage types in a dedicated per-component schema document — the `sema.schema` document kind (existing usage: `orchestrate/schema/sema.schema`, `spirit/schema/sema.schema`, each generated into `src/schema/sema.rs`) — from which the macro emits the redb table descriptors that bind those storage types into `Engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:762` — **Integration target:** typed database engine; the macro emits sema-engine — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:764` — `sema.schema` document. Each declaration names one stored record type together — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:771` — The `sema.schema` document kind is the settled declaration surface; the — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:786` — `sema.schema` document-kind design session. Schema-language's per-declaration — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md:799` — component's `sema.schema` document, and the surviving hand-written paths are — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:3` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:240` — EntryDigest::update_bytes(&mut hasher, b"sema-engine-store-schema-hash-v1"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:388` — Self::update_bytes(&mut hasher, b"sema-engine-versioned-commit-log-entry-v2"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:465` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:473` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/versioning.rs:486` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/log.rs:3` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/log.rs:86` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/log.rs:92` — pub fn new(operation: SemaOperation, table: TableName, key: Option<RecordKey>) -> Self { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/log.rs:100` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:20` — use sema::WriteTransaction; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:25` — const COMMIT_LOG: sema::Table<u64, CommitLogEntry> = sema::Table::new("__sema_engine_commit_log"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:26` — const VERSIONED_COMMIT_LOG: sema::Table<u64, VersionedCommitLogEntry> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:27` — sema::Table::new("__sema_engine_versioned_commit_log"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:35` — const CHAIN_HEAD: sema::Table<&'static str, EntryDigest> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:36` — sema::Table::new("__sema_engine_chain_head"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:38` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:52` — storage: &'engine sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:56` — pub(crate) fn new(storage: &'engine sema::Sema) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:170` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:187` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:221` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:245` — pub(crate) fn refolded_derived_slots(storage: &sema::Sema) -> Result<DerivedSlots> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:268` — pub(crate) fn versioned_log_present(storage: &sema::Sema) -> Result<bool> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:334` — transaction: &sema::WriteTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/commit_log.rs:337` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/schema/witness.sema:1` — Sema.{1 0 0} — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/subscribe.rs:5` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/subscribe.rs:219` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/subscribe.rs:221` — Self::Assert => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/subscribe.rs:222` — Self::Mutate => SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/subscribe.rs:223` — Self::Retract => SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/checkpoint.rs:303` — EntryDigest::update_bytes(&mut hasher, b"sema-engine-checkpoint-segment-v1"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/checkpoint.rs:436` — EntryDigest::update_bytes(&mut hasher, b"sema-engine-checkpoint-v1"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:5` — //! every operation in the same SEMA write transaction. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:16` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:146` — fn operation(self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:148` — Self::Assert => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:149` — Self::Mutate => SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:150` — Self::Retract => SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:167` — fn materialize(&self, transaction: &sema::WriteTransaction) -> sema::Result<()>; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:253` — fn materialize(&self, transaction: &sema::WriteTransaction) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:255` — AtomicKind::Assert | AtomicKind::Mutate => self.table.sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:262` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/atomic.rs:306` — /// Preflight and materialize a heterogeneous group in one SEMA transaction. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:12` — use sema::WriteTransaction; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:16` — const OUTBOX: sema::Table<u64, OutboxEntry> = sema::Table::new("__sema_engine_outbox"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:17` — const MIRROR_CURSOR: sema::Table<&'static str, MirrorHead> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:18` — sema::Table::new("__sema_engine_mirror_cursor"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:130` — storage: &'engine sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:134` — pub(crate) fn new(storage: &'engine sema::Sema) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:174` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/outbox.rs:198` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:3` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:620` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:628` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:636` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:649` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:672` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:685` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:712` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:720` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:733` — pub fn operation(&self) -> SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:757` — transaction: &'transaction sema::ReadTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:763` — transaction: &'transaction sema::ReadTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:781` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:791` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/query.rs:800` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/skills.md:1` — # sema-engine Skills — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/skills.md:15` — - Keep redb behind the `sema` kernel. Engine consumers open `.sema` — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/upgrade.rs:103` — sema::Table::<String, Predecessor>::new(name.as_str()).iter(transaction) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:14` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:29` — const CHANGE_RECEIPTS: sema::Table<&'static [u8; 32], ChangeReceipt> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:30` — sema::Table::new("__sema_engine_change_receipts"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:74` — let current = table.sema_table().get(transaction, key.to_owned_string())?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:155` — ChangeEffect::Created => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:156` — ChangeEffect::Replaced => SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/memory/change.rs:183` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/UPGRADES.md:38` — stored in the new internal table `__sema_engine_change_receipts`. The — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:49` — const STAGING_SLOT: sema::Table<&'static str, StagedOperationGroup> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:50` — sema::Table::new("__sema_engine_staging_slot"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:321` — storage: &'engine sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:325` — pub(crate) fn new(storage: &'engine sema::Sema) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:347` — transaction: &sema::WriteTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:349` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/staging.rs:363` — pub(crate) fn clear_in(transaction: &sema::WriteTransaction) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:5` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:47` — fn sema_engine_ships_no_daemon_binary() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:56` — fn sema_engine_carries_repo_local_direction_context() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:68` — fn sema_engine_has_no_runtime_or_text_dependencies() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:94` — "the retired envelope layer must not reach a sema-engine consumer:\n{tree}" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:99` — fn sema_engine_normal_dependency_tree_has_no_nota_next() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:105` — "sema-engine normal dependency tree must not contain nota-next:\n{tree}" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:110` — fn sema_engine_normal_dependency_tree_is_one_exact_runtime_family() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:116` — "sema-engine normal graph contains duplicate package families:\n{duplicates}" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:120` — for build_time_only in ["schema-rust", "sema-translator", "core-ethos", "core-nomos"] { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:129` — fn strict_sema_generation_uses_one_exact_published_producer_train() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:139` — "sema-translator = { git = \"https://github.com/LiGoldragon/sema-translator.git\", rev = \"287fbd728a05b1a6be1dc8a28bcf3ca06d9916b3\", default-features = false }", — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:140` — "signal-sema-translator = { git = \"https://github.com/LiGoldragon/signal-sema-translator.git\", rev = \"3f41813dd63904c7e2b3da4382eff64ed1bf12fe\" }", — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:144` — "strict Sema consumer omitted exact producer {exact_dependency}" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:154` — "sema-translator", — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:155` — "signal-sema-translator", — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:160` — "strict Sema generation admitted more than one {sole_package} source" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:165` — "the deleted pre-bootstrap schema world must not enter the Sema proof graph" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:170` — fn current_sema_source_is_the_only_live_schema_document() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:173` — assert!(fixture.has_file("schema/witness.sema")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:174` — assert!(fixture.has_file("tests/fixtures/generated_sema_table.rs")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:175` — assert!(!fixture.has_file("schema/sema-engine.concept.schema")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:179` — fn sema_engine_does_not_depend_on_raw_redb_directly() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:187` — fn sema_engine_depends_on_storage_kernel_and_signal_sema_by_git() { — **unclear**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:191` — assert!(cargo.contains("https://github.com/LiGoldragon/sema.git")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:192` — assert!(cargo.contains("https://github.com/LiGoldragon/signal-sema.git")); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:193` — assert!(!cargo.contains("path = \"../sema\"")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:194` — assert!(!cargo.contains("path = \"../signal-sema\"")); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:197` — "sema-engine must not depend on the retired signal-core crate" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:202` — fn sema_engine_owns_read_plan_vocabulary() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:211` — "{operator} must live in sema-engine read-plan vocabulary" — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:214` — assert!(cargo.contains("signal-sema")); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:218` — fn signal_sema_operation_set_is_closed_at_six_operations_without_atomic() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:220` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:221` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:222` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:223` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:224` — SemaOperation::Subscribe, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:225` — SemaOperation::Validate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:230` — assert!(SemaOperationWitness::accepts(operation)); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:234` — struct SemaOperationWitness; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:236` — impl SemaOperationWitness { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:237` — fn accepts(operation: SemaOperation) -> bool { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:239` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:240` — | SemaOperation::Mutate — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:241` — | SemaOperation::Retract — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:242` — | SemaOperation::Match — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:243` — | SemaOperation::Subscribe — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/dependency_boundary.rs:244` — | SemaOperation::Validate => true, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:2` — //! the May 17 sema-engine fit audit. — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:22` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:85` — self.directory.path().join("engine.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:104` — // Claim under test (from audit §4.1): "sema-engine lacks an — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:241` — fn delivery_mode(&self) -> sema_engine::SubscriptionDeliveryMode { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:242` — sema_engine::SubscriptionDeliveryMode::Inline — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/seam_gap_falsification.rs:444` — // discipline (per sema-engine ARCH §Constraints) means no — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:11` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:19` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:21` — const POLICY: sema::Table<&'static str, VersioningPolicy> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:22` — sema::Table::new("__sema_engine_versioning_policy"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:24` — const CATALOG: sema::Table<&'static str, TableRegistration> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:25` — sema::Table::new("__sema_engine_catalog"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:95` — self.directory.path().join("open.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:123` — let kernel = sema::Sema::open_with_schema( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/open_atomicity.rs:125` — &sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:1` — use sema_engine::{Engine, EngineOpen, SchemaVersion, TableSpecification}; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:7` — include!("fixtures/generated_sema_table.rs"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:13` — fn checked_sema_source_and_generated_rust_are_fresh() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:14` — let generated = support::generated_sema_table(); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:17` — .expect("checked Sema and Rust projections are fresh"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:24` — let temporary = tempfile::tempdir().expect("fresh Sema directory"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:25` — let path = temporary.path().join("generated-table.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:27` — .expect("fresh redb-backed Sema opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:46` — .expect("record commits through sema-engine"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:49` — .expect("record reads through sema-engine"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/generated_table.rs:55` — .expect("redb-backed Sema reopens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/read_plans.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/read_plans.rs:68` — let mut open = EngineOpen::new(directory.path().join("reads.sema"), SchemaVersion::new(1)); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:21` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:28` — const CATALOG: sema::Table<&'static str, TableRegistration> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:29` — sema::Table::new("__sema_engine_catalog"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:161` — self.directory.path().join("notes.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:195` — Row: sema_engine::EngineStoredValue, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:207` — let kernel = sema::Sema::open_with_schema( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:209` — &sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/note_family/mod.rs:221` — let rows = sema::Table::<String, Row>::new(NOTES.as_str()).iter(transaction)?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:15` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:32` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:38` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:42` — CommitLogOperation::new(SemaOperation::Match, TableName::new("thoughts"), None), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:62` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/archived_layout.rs:68` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_evolution.rs:12` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_evolution.rs:19` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_evolution.rs:196` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_evolution.rs:501` — assert_eq!(operations[0].operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_evolution.rs:504` — assert_eq!(operations[1].operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:3` — //! log. The narrowed kernel handoff type, [`sema_engine::StorageReader`], — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:12` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:60` — self.directory.path().join("engine.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:78` — !engine_source.contains("-> &sema::Sema"), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:82` — !lib_source.contains("Sema as StorageKernel,") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:83` — && !lib_source.contains("Sema as StorageKernel}"), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/storage_boundary.rs:114` — StorageKernelTable::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/concurrency.rs:18` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/concurrency.rs:62` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/concurrency.rs:65` — other => Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/concurrency.rs:84` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/subscriptions.rs:7` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/subscriptions.rs:49` — self.directory.path().join("engine.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:19` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:74` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:203` — sema_engine::Error::DuplicateAssertKey { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:341` — sema_engine::Error::MirrorHeadForked { sequence: 1, .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:352` — sema_engine::Error::MirrorHeadUnknown { sequence: 99 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/outbox.rs:387` — sema_engine::Error::UnknownCommitSequence { sequence: 2 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:18` — use sema_engine::NonEmpty; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:19` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:26` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:32` — const VERSIONED_COMMIT_LOG: sema::Table<u64, VersionedCommitLogEntry> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:33` — sema::Table::new("__sema_engine_versioned_commit_log"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:34` — const CHECKPOINTS: sema::Table<u64, CheckpointMetadata> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:35` — sema::Table::new("__sema_engine_checkpoints"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:36` — const CHECKPOINT_SEGMENTS: sema::Table<&'static [u8; 32], CheckpointSegment> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:37` — sema::Table::new("__sema_engine_checkpoint_segments"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:38` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:76` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:79` — other => Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:146` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:179` — /// Open the `.sema` file through the raw storage kernel — the — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:182` — fn raw_kernel(&self, name: &str) -> sema::Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:183` — sema::Sema::open_with_schema( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:185` — &sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:226` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:274` — sema_engine::Error::VersionedChainBroken { sequence: 2 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:281` — sema_engine::Error::VersionedChainBroken { sequence: 2 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:322` — sema_engine::Error::VersionedChainBroken { sequence: 1 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:365` — sema_engine::Error::VersionedChainBroken { sequence: 2 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:401` — let sema_engine::Error::CheckpointDigestMismatch { stored, computed } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:415` — sema_engine::Error::CheckpointDigestMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:438` — sema_engine::Error::CheckpointRowMissing { sequence } if sequence == dead — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:469` — let sema_engine::Error::SegmentDigestMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:507` — let sema_engine::Error::SegmentMissing { digest } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:527` — let sema_engine::Error::CheckpointDigestMismatch { computed, .. } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:539` — let sema_engine::Error::ViewDigestMismatch { expected, computed } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:553` — sema_engine::Error::ViewDigestMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:569` — let sema_engine::Error::SegmentMissing { digest } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:582` — sema_engine::Error::SegmentSurplus { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:602` — let sema_engine::Error::CheckpointDigestMismatch { computed, .. } = error else { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:624` — sema_engine::Error::CheckpointSchemaMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/tamper.rs:672` — sema_engine::Error::OutboxEntryMismatch { sequence: 1 } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:21` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:31` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:34` — const CHAIN_HEAD: sema::Table<&'static str, EntryDigest> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:35` — sema::Table::new("__sema_engine_chain_head"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:80` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:83` — other => Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:102` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:124` — fn open_kernel(&self, name: &str) -> sema::Sema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:125` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:128` — sema::Sema::open_with_schema(&self.database_path(name), &schema).expect("kernel opens") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/layout_rebuild.rs:335` — sema_engine::Error::StorageLayoutMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:11` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:72` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:76` — other => Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:88` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:89` — Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:107` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:299` — assert!(matches!(error, sema_engine::Error::ImportStoreNotFresh)); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:317` — sema_engine::Error::ImportStoreNameMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:332` — assert!(matches!(error, sema_engine::Error::ImportMissingCheckpoint)); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:344` — sema_engine::Error::ImportCheckpointAlreadyIngested — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/import.rs:364` — assert!(matches!(error, sema_engine::Error::FamilyUnknown { .. })); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:67` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:71` — other => Err(sema_engine::Error::FamilyUnknown { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:90` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:202` — const THOUGHTS: sema::Table<String, Thought> = sema::Table::new("thoughts"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:203` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:206` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/fold.rs:292` — sema_engine::Error::VersioningNotEnabled { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:51` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:206` — sema_engine::Error::CheckpointDecode { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:207` — | sema_engine::Error::CheckpointDigestMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:208` — | sema_engine::Error::SegmentDigestMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:209` — | sema_engine::Error::ViewDigestMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:264` — sema_engine::Error::CheckpointNothingToCover — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:278` — sema_engine::Error::CheckpointNothingToCover — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:302` — sema_engine::Error::VersioningNotEnabled { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/checkpoint.rs:339` — sema_engine::Error::VersionedLogIncomplete { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:4` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:12` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:65` — self.directory.path().join("engine.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:113` — assert_eq!(receipt.operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:124` — assert_eq!(snapshot.operation(), SemaOperation::Match); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:151` — assert_eq!(asserted.operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:169` — assert_eq!(mutated.operation(), SemaOperation::Mutate); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:170` — assert_eq!(retracted.operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:376` — assert_eq!(retraction.operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:421` — assert_eq!(mutation.operation(), SemaOperation::Mutate); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:433` — sema_engine::Error::RecordNotFound { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:455` — assert_eq!(mutation.operation(), SemaOperation::Mutate); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:468` — assert_eq!(retraction.operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:475` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:479` — SemaOperation::Mutate — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:483` — SemaOperation::Retract — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:504` — assert_eq!(receipt.operation(), SemaOperation::Validate); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:532` — sema_engine::Error::UnsupportedReadPlan { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:584` — assert_eq!(operations.head().operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:585` — assert_eq!(operations.tail()[0].operation(), SemaOperation::Mutate); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:586` — assert_eq!(operations.tail()[1].operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:608` — assert!(matches!(error, sema_engine::Error::RecordNotFound { .. })); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:629` — assert!(matches!(error, sema_engine::Error::EmptyCommit { .. })); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:657` — sema_engine::Error::DuplicateWriteKey { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:663` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:688` — sema_engine::Error::RecordNotFound { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:692` — sema_engine::Error::RecordNotFound { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:721` — sema_engine::Error::DuplicateAssertKey { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:727` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:760` — sema_engine::Error::DuplicateAssertKey { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:771` — fn sema_engine_owns_demoted_read_plan_operator_vocabulary() { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:823` — sema_engine::Error::UnsupportedReadPlan { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:833` — let records = sema_engine::TableReference::new(TableName::new("unregistered")); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/engine.rs:840` — sema_engine::Error::TableNotRegistered { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:11` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:45` — const CATALOG: sema::Table<&'static str, TableRegistration> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:46` — sema::Table::new("__sema_engine_catalog"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:47` — pub(crate) const COUNTERS: sema::Table<&'static str, u64> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:48` — sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:70` — const SUBSCRIPTIONS: sema::Table<u64, SubscriptionRegistration> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:71` — sema::Table::new("__sema_engine_subscriptions"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:72` — const IDENTIFIED_COUNTERS: sema::Table<String, u64> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:73` — sema::Table::new("__sema_engine_identified_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:74` — const CHECKPOINTS: sema::Table<u64, CheckpointMetadata> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:75` — sema::Table::new("__sema_engine_checkpoints"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:76` — const CHECKPOINT_SEGMENTS: sema::Table<&'static [u8; 32], CheckpointSegment> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:77` — sema::Table::new("__sema_engine_checkpoint_segments"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:78` — const VERSIONING_POLICY: sema::Table<&'static str, VersioningPolicy> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:79` — sema::Table::new("__sema_engine_versioning_policy"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:81` — const COMPACTION_INTENT: sema::Table<&'static str, CompactionIntent> = — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:82` — sema::Table::new("__sema_engine_compaction_intent"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:86` — pub(crate) storage: sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:143` — let storage = sema::Sema::open_with_schema(request.path(), request.schema())?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:154` — Err(sema::Error::RkyvDecode { table, .. }) if table == CATALOG.name() => { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:280` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:286` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:296` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:302` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:332` — sema::Table::<String, RecordValue>::new(name.as_str()).insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:406` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:414` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:422` — assertion.table().sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:440` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:470` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:486` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:494` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:502` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:527` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:557` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:571` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:579` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:586` — mutation.table().sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:603` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:654` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:669` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:677` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:684` — assertion.table().sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:708` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:762` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:777` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:785` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:792` — mutation.table().sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:816` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:849` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:863` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:871` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:879` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:909` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:968` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:976` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:982` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1000` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1008` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1014` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1029` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1036` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1042` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1082` — request.table().sema_table().insert( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1091` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1161` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1195` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1213` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1230` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1248` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1269` — SemaOperation::Validate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1512` — SemaOperation::Assert => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1519` — SemaOperation::Mutate => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:1526` — SemaOperation::Retract => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2414` — if operation.operation() == SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2487` — (SemaOperation::Assert, VersionedPayload::Record { bytes }) => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2490` — (SemaOperation::Mutate, VersionedPayload::Record { bytes }) => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2493` — (SemaOperation::Retract, _) => { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2624` — VersionedLogOperation::new(SemaOperation::Assert, family, Some(key.clone()), payload), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2627` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2658` — VersionedLogOperation::new(SemaOperation::Mutate, family, Some(key.clone()), payload), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2661` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2688` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2704` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2710` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2744` — VersionedLogOperation::new(SemaOperation::Assert, family, Some(key), payload), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2747` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2778` — VersionedLogOperation::new(SemaOperation::Mutate, family, Some(key), payload), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2781` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2808` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2826` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2832` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2871` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2889` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2905` — .sema_table() — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:2917` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3015` — .read(|transaction| query.table().sema_table().iter(transaction))?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3039` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3060` — .read(|transaction| query.table().sema_table().iter(transaction))?; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3107` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3144` — .read(|transaction| table.sema_table().get(transaction, key.to_owned_string()))? — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3162` — .read(|transaction| table.sema_table().get(transaction, identifier.value()))? — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3228` — fn validated_storage_layout(storage: &sema::Sema) -> Result<LayoutOpenPlan> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3289` — transaction: &sema::WriteTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3291` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3311` — storage: &sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3330` — storage: &sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3532` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3564` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3624` — .read(|transaction| table.sema_table().get(transaction, key.to_owned_string()))?) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3660` — operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3739` — transaction: &sema::WriteTransaction, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3742` — ) -> sema::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3776` — storage: &'engine sema::Sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3780` — fn new(storage: &'engine sema::Sema) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3786` — body: impl FnOnce(&sema::ReadTransaction) -> sema::Result<Row>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3787` — ) -> sema::Result<Row> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/src/engine.rs:3871` — self.directory.path().join("vestige.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:8` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:50` — self.directory.path().join("history.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:171` — sema_engine::Error::HistoryCompactionTopologyMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:271` — table: sema_engine::TableReference::new(TableName::new("thoughts")), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:314` — table: sema_engine::TableReference<Thought>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:317` — impl sema_engine::FamilyDirectory for ThoughtDirectory { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/compaction.rs:318` — fn materialize(&self, row: sema_engine::RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:73` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:270` — sema_engine::Error::FamilyIdentityMismatch { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:288` — sema_engine::Error::FamilyAlreadyBound { .. } — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:300` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:301` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:304` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:316` — sema_engine::Error::StorageLayoutMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:333` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:334` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:337` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:349` — sema_engine::Error::StorageLayoutMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:365` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:366` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:369` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:381` — sema_engine::Error::StorageLayoutMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:403` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:404` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:407` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:419` — sema_engine::Error::StorageLayoutMismatch { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:430` — const COUNTERS: sema::Table<&'static str, u64> = sema::Table::new("__sema_engine_counters"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:431` — let schema = sema::Schema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:437` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel opens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/family_identity.rs:449` — let storage = sema::Sema::open_with_schema(&path, &schema).expect("kernel reopens"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/memorable_upgrade.rs:11` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/memorable_upgrade.rs:23` — .assert_keyed(sema_engine::KeyedAssertion::new( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/memorable_upgrade.rs:32` — fn sorted(engine: &Engine, notes: sema_engine::TableReference<Note>) -> Vec<Note> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:12` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:61` — fn materialize(&self, row: RowMaterializer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:71` — fn announce(&self, delta: sema_engine::DeltaAnnouncer<'_>) -> sema_engine::Result<()> { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:94` — self.directory.path().join(format!("{name}.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:195` — versioned_log: Vec<sema_engine::VersionedCommitLogEntry>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:197` — outbox: Vec<(u64, sema_engine::EntryDigest)>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/staging.rs:198` — chain_head: Option<sema_engine::EntryDigest>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/memorable_change.rs:10` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:15` — use schema_rust::bootstrap::{BootstrapSemaGeneration, GeneratedBootstrapSema}; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:16` — use sema_translator::bootstrap::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:20` — use signal_sema_translator::{VocabularyEncodedId, VocabularyRoot}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:23` — pub const UPDATE_VARIABLE: &str = "UPDATE_SEMA_ENGINE_GENERATED_TABLE"; — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:25` — pub fn generated_sema_table() -> GeneratedBootstrapSema { — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:37` — .assemble(include_str!("../../schema/witness.sema"), approval) — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:38` — .expect("checked Sema source is authority-approved"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:44` — BootstrapSemaGeneration::new( — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:53` — .expect("authority-verified Sema lowers to the checked Rust projection") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:57` — PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("schema/witness.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:61` — PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/generated_sema_table.rs") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:77` — module_path: vec!["sema_engine".to_owned()], — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:89` — sema_kind: universal_id(3), — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:125` — "Sema", — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:126` — vec![SchemaRole::FileKind(core_ethos::bootstrap::EthosKind::Sema)], — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/support/mod.rs:187` — vec!["sema_engine".to_owned()], — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:4` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:10` — use signal_sema::SemaOperation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:47` — self.directory.path().join("engine.sema") — **means the database**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:155` — assert_eq!(head.operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:199` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:205` — SemaOperation::Assert — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:270` — assert_eq!(first_operation.operation(), SemaOperation::Assert); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:285` — assert_eq!(second_operation.operation(), SemaOperation::Retract); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-engine/tests/operation_log.rs:432` — assert!(matches!(error, sema_engine::Error::RecordNotFound { .. })); — **means the database**
+### sema-storage
+
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:3` — use sema_storage::{NegotiatedWire, Runtime}; — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:4` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:6` — NameTableBytes, Reply, Request, SemaStorageRoot, SlotIdentifier, Version, Wire, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:21` — .unwrap_or_else(|| "/tmp/new-language-engine/sema.sock".into()), — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:26` — .unwrap_or_else(|| "/tmp/new-language-engine/state.sema".into()), — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:62` — hash: signal_sema_storage::ContentHash(parse_hash( — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:73` — "store-sema-family" => { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:81` — kind: DocumentKind::SemaStorage, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:84` — payload: DocumentPayload::SemaStorage(SemaStorageRoot { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:100` — _ => return Err("usage: sema-storage daemon [socket] [database] | list|fetch|hash-fetch|snapshot|allocate|store-sema-family|subscribe <socket> ...".into()), — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/bin/sema-storage.rs:124` — "sema-storage" => DocumentKind::SemaStorage, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/AGENTS.md:3` — Treat this repository's central Signal → Nexus → SEMA actor and socket — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/AGENTS.md:5` — each component daemon owning its own embedded sema database. A separate small — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/wire_version.rs:1` — use sema_storage::NegotiatedWire; — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/wire_version.rs:3` — use signal_sema_storage::Rejection; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/tests/durable.rs:1` — use sema_storage::Runtime; — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/durable.rs:2` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/tests/durable.rs:9` — let path = dir.path().join("isolated.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/durable.rs:44` — let runtime = Runtime::open(&dir.path().join("push.sema")).await.unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/durable.rs:69` — let runtime = Runtime::open(&dir.path().join("ids.sema")).await.unwrap(); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md:1` — # sema-storage architecture — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md:6` — traverse state-bearing Kameo actors in Signal → Nexus → SEMA order; SEMA owns — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md:7` — one `sema_engine::Engine`, and Nexus fans committed changes to push — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md:12` — embedded sema database. A separate small translator daemon is authoritative — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:13` — use sema_storage::Runtime; — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:14` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:69` — let path = dir.path().join("authority.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:119` — let runtime = Runtime::open(&dir.path().join("authority.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:153` — let runtime = Runtime::open(&dir.path().join("authority.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:191` — let path = dir.path().join("authority.sema"); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/tests/identity_authority.rs:217` — let runtime = Runtime::open(&dir.path().join("authority.sema")) — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:7` — use sema_engine::{ — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:13` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:77` — DocumentKind::SemaStorage => 3, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:240` — pub struct SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:245` — impl SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:497` — impl Actor for SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:508` — impl Message<Execute> for SemaPlane { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:516` — sema: ActorRef<SemaPlane>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:521` — fn new(sema: ActorRef<SemaPlane>, events: broadcast::Sender<ChangeEvent>) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:523` — sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:544` — .sema — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:591` — sema: ActorRef<SemaPlane>, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:596` — let sema = SemaPlane::spawn(SemaPlane::open(path)?); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:598` — let nexus = NexusPlane::spawn(NexusPlane::new(sema.clone(), events.clone())); — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:603` — sema, — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:628` — self.sema — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/src/lib.rs:632` — self.sema.wait_for_shutdown().await; — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:2` — name="sema-storage" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:7` — repository="https://github.com/LiGoldragon/sema-storage" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:8` — description="Central durable Sema daemon for the minimal language engine" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:10` — name="sema_storage" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:12` — name="sema-storage" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:13` — path="src/bin/sema-storage.rs" — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:18` — sema-engine={git="https://github.com/LiGoldragon/sema-engine.git",rev="93a6b5f063292e000a7bf395fdd5b46e3e943068"} — **means the database**
+- `/git/github.com/LiGoldragon/sema-storage/Cargo.toml:20` — signal-sema-storage={git="https://github.com/LiGoldragon/signal-sema-storage.git",rev="31ab48608a3c2eab0733dcb16a3351251a70789d"} — **means the meaning language**
+### sema-translator
+
+- `/git/github.com/LiGoldragon/sema-translator/README.md:1` — # sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/README.md:3` — Sema-owned bootstrap identity authority for strict Ethos assembly. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/README.md:5` — Callers may construct an empty `SemaBootstrapAuthority` handle, then provide — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/README.md:6` — only source text and `SourcePlacement` to it. Sema privately owns every name, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/README.md:18` — execution and persistence belong to `sema-engine`; this repository contains no — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator/README.md:23` — - `SemaBootstrapAuthority` — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/AGENTS.md:1` — # Sema Translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/AGENTS.md:5` — - Accept only source text and source placement from callers. The Sema — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/AGENTS.md:14` — `sema-engine`. — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:1` — //! The Sema-owned bootstrap naming authority. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:18` — SemaTransactionAssembler, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:58` — /// An empty handle to one private Sema bootstrap authority world. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:68` — pub struct SemaBootstrapAuthority { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:69` — assembler: SemaTransactionAssembler, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:90` — impl SemaBootstrapAuthority { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:99` — let assembler = SemaTransactionAssembler::new(); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:174` — SemaNamingAuthority::unconfigured(catalog.metadata().clone()), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:180` — let authority = SemaNamingAuthority::configured( — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:307` — /// private to Sema until the atomic persistence owner consumes the stage. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:312` — reader: BootstrapReader<SemaNamingAuthority>, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:313` — transaction: PreparedBootstrapTransaction<SemaNamingAuthority>, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:328` — pub fn reader(&self) -> &BootstrapReader<SemaNamingAuthority> { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:332` — /// Prepared transaction created and sealed by Sema authority only. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:333` — pub fn transaction(&self) -> &PreparedBootstrapTransaction<SemaNamingAuthority> { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:399` — receipt: PreparedBootstrapTransaction<SemaNamingAuthority>, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:463` — sema_kind: named(BootstrapPriorSlot::SemaKind), — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:490` — assembler: &SemaTransactionAssembler, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:602` — pub struct SemaNamingAuthority { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:616` — impl SemaNamingAuthority { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:660` — impl BootstrapNamingAuthority for SemaNamingAuthority { — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:693` — assembler: &SemaTransactionAssembler, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/bootstrap.rs:746` — /// Exact refusal while the Sema authority is planning or staging a source. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/src/lib.rs:3` — //! Sema-owned bootstrap identity authority for strict Ethos assembly. — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/.gitignore:3` — *.sema — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator/ARCHITECTURE.md:3` — `sema-translator` has one surface: it owns naming authority for strict Ethos — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/ARCHITECTURE.md:10` — empty SemaBootstrapAuthority handle — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/ARCHITECTURE.md:28` — identity-free prior vocabulary seed. `sema-translator` owns allocation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/ARCHITECTURE.md:30` — durable transition; `sema-engine` owns runtime execution. — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator/Cargo.toml:2` — name = "sema-translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/Cargo.toml:7` — repository = "https://github.com/LiGoldragon/sema-translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/Cargo.toml:13` — name = "sema_translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:1` — use crate::bootstrap::{SemaBootstrapAuthority, SourcePlacement}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:14` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:28` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:39` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:53` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:81` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:97` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/bootstrap.rs:107` — let mut authority = SemaBootstrapAuthority::new().expect("authority owns its seed allocation"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/flake.nix:2` — description = "sema-translator — authority-approved bootstrap translation"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/flake.nix:34` — sole-bootstrap-surface = pkgs.runCommand "sema-translator-sole-bootstrap-surface" { } '' — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/flake.nix:37` — ! grep -R -E 'mod (authorization|runtime|store|wire)|sema_engine|tokio::|AUTHORITY_ROUTE|DAEMON_BINARY_NAME' ${src}/src — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/flake.nix:51` — name = "sema-translator"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/dependency_boundary.rs:42` — for forbidden in ["sema-engine ", "signal-sema-translator ", "tokio "] { — **unclear**
+- `/git/github.com/LiGoldragon/sema-translator/tests/dependency_boundary.rs:58` — "sema-engine =", — **means the database**
+- `/git/github.com/LiGoldragon/sema-translator/tests/dependency_boundary.rs:72` — "src/bin/sema-translator-daemon.rs", — **means the meaning language**
+- `/git/github.com/LiGoldragon/sema-translator/tests/dependency_boundary.rs:87` — "signal-sema-translator", — **means the meaning language**
+### signal-ethos
+
+- `/git/github.com/LiGoldragon/signal-ethos/README.md:11` — through the exact pinned `signal-sema-storage` revision. That dependency is the — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-ethos/src/lib.rs:6` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-ethos/src/lib.rs:7` — ChangeEvent, ContentHash, DocumentKind, FixtureScope, NexusRuntimeRoot, SemaStorageRoot, — **means the database**
+- `/git/github.com/LiGoldragon/signal-ethos/src/lib.rs:28` — StoreSemaStorage { — **means the database**
+- `/git/github.com/LiGoldragon/signal-ethos/src/lib.rs:31` — root: SemaStorageRoot, — **means the database**
+- `/git/github.com/LiGoldragon/signal-ethos/tests/round_trip.rs:2` — use signal_sema_storage::{FixtureScope, SlotIdentifier}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-ethos/Cargo.toml:11` — signal-sema-storage={git="https://github.com/LiGoldragon/signal-sema-storage.git",rev="31ab48608a3c2eab0733dcb16a3351251a70789d"} — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-ethos/ARCHITECTURE.md:5` — `SemaStorage` roots. The central storage path is legacy behavior, not target — **means the database**
+- `/git/github.com/LiGoldragon/signal-ethos/ARCHITECTURE.md:6` — architecture: `ethos-engine` will own its embedded sema database, while the — **means the database**
+- `/git/github.com/LiGoldragon/signal-ethos/ARCHITECTURE.md:7` — separate `sema-translator` owns only shared names and encodedID allocation. — **means the meaning language**
+### signal-sema
+
+- `/git/github.com/LiGoldragon/signal-sema/AGENTS.md:1` — # signal-sema - Agent Instructions — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/AGENTS.md:3` — This repository is a contract/library crate for Sema execution vocabulary. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:1` — # signal-sema — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:3` — Sema observation vocabulary: payloadless operation classes — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:6` — `SemaObservation` record that composes both halves. Component daemons — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:12` — `signal-sema` (Sema classification vocabulary). The migration plan lives — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:19` — - `SemaOperation` — the closed six-operation classification set. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:21` — - `SemaOutcome` — the closed effect classification set. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:22` — - `SemaObservation` — one operation class plus one outcome class. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:24` — - `ToSemaOperation` / `ToSemaOutcome` — projection traits implemented — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/README.md:39` — `Infer` / `Recurse`) — those belong in `sema-engine` and in — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema/skills.md:1` — # signal-sema Skills — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/skills.md:10` — - Do not reintroduce `SignalVerb`; the Sema word is `SemaOperation`, — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/skills.md:13` — - Do not add executable payloads to `SemaOperation` variants. Typed — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/dependency_boundary.rs:37` — "default binary signal-sema tree must not contain dotos:\n{tree}" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:1` — //! The closed Sema operation classification vocabulary. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:3` — //! [`SemaOperation`] is the set of payloadless state-action labels — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:16` — pub enum SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:31` — impl SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:47` — /// [`SemaOperation`]. Returns [`None`] for any other identifier. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:81` — /// the frame kernel and the Sema classification vocabulary stay separate. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:96` — /// universal Sema operation classification vocabulary. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:101` — /// [`SemaOperation`] classes without making `SemaOperation` carry — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:103` — pub trait ToSemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:104` — fn to_sema_operation(&self) -> SemaOperation; — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:107` — impl ToSemaOperation for SemaOperation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:108` — fn to_sema_operation(&self) -> SemaOperation { — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:113` — /// The broad class of effect a [`SemaOperation`] has against typed — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/operation.rs:114` — /// state. The classes are stable; new Sema operations declare their — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:1` — //! Outcome-side Sema classification. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:4` — //! component-local effects. [`SemaOutcome`] is the universal, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:9` — use crate::{SemaOperation, ToSemaOperation}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:11` — /// The closed outcome set visible to generic Sema observers. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:18` — pub enum SemaOutcome { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:35` — impl SemaOutcome { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:50` — /// [`SemaOutcome`]. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:79` — /// Projection from a component-local effect into the universal Sema — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:81` — pub trait ToSemaOutcome { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:82` — fn to_sema_outcome(&self) -> SemaOutcome; — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:85` — impl ToSemaOutcome for SemaOutcome { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:86` — fn to_sema_outcome(&self) -> SemaOutcome { — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:95` — pub struct SemaObservation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:96` — pub operation: SemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:97` — pub outcome: SemaOutcome, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:100` — impl SemaObservation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:101` — pub const fn new(operation: SemaOperation, outcome: SemaOutcome) -> Self { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:107` — Command: ToSemaOperation, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:108` — Effect: ToSemaOutcome, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/outcome.rs:110` — Self::new(command.to_sema_operation(), effect.to_sema_outcome()) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/schema/signal-sema.concept.schema:23` — SemaOperation [Assert Mutate Retract Match Subscribe Validate] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/schema/signal-sema.concept.schema:24` — SemaOutcome [Asserted Mutated Retracted Matched Subscribed Validated Rejected] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/schema/signal-sema.concept.schema:25` — SemaObservation (SemaOperation SemaOutcome) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/Cargo.toml:2` — name = "signal-sema" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/Cargo.toml:7` — repository = "https://github.com/LiGoldragon/signal-sema" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/Cargo.toml:8` — description = "Payloadless Sema operation and outcome classifications for component observation." — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/pattern.rs:7` — //! pattern primitives now live in `signal-sema` because they pair — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/pattern.rs:8` — //! with the [`SemaOperation::Match`] and [`SemaOperation::Subscribe`] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/identity.rs:1` — //! Typed identity primitives for Sema-operation payloads. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/identity.rs:9` — //! compare-and-set behavior belong to the Sema engine; this crate — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/identity.rs:42` — /// Wrap a raw slot number. The Sema engine owns allocation; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/flake.nix:2` — description = "signal-sema - Sema operation vocabulary for typed database execution"; — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/flake.nix:66` — name = "signal-sema"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:1` — //! Falsifiable witnesses for the [`SemaOperation`] vocabulary and — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:11` — use signal_sema::{ArchivedSemaOperation, OperationClass, SemaOperation, ToSemaOperation}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:15` — fn operations() -> [SemaOperation; 6] { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:17` — SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:18` — SemaOperation::Mutate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:19` — SemaOperation::Retract, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:20` — SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:21` — SemaOperation::Subscribe, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:22` — SemaOperation::Validate, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:27` — fn sema_operation_record_heads_are_stable() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:29` — (SemaOperation::Assert, "Assert"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:30` — (SemaOperation::Mutate, "Mutate"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:31` — (SemaOperation::Retract, "Retract"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:32` — (SemaOperation::Match, "Match"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:33` — (SemaOperation::Subscribe, "Subscribe"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:34` — (SemaOperation::Validate, "Validate"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:39` — assert_eq!(SemaOperation::from_record_head(head), Some(operation)); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:46` — assert_eq!(SemaOperation::from_record_head("Submit"), None); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:50` — fn sema_operation_classes_are_explicit() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:51` — assert_eq!(SemaOperation::Assert.class(), OperationClass::Write); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:52` — assert_eq!(SemaOperation::Mutate.class(), OperationClass::Write); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:53` — assert_eq!(SemaOperation::Retract.class(), OperationClass::Write); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:54` — assert_eq!(SemaOperation::Match.class(), OperationClass::Read); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:55` — assert_eq!(SemaOperation::Subscribe.class(), OperationClass::Stream); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:56` — assert_eq!(SemaOperation::Validate.class(), OperationClass::Validation); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:60` — fn sema_operation_is_write_matches_class() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:79` — impl ToSemaOperation for ExampleCommand { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:80` — fn to_sema_operation(&self) -> SemaOperation { — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:82` — Self::Insert => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:83` — Self::Read => SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:84` — Self::OpenStream => SemaOperation::Subscribe, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:90` — fn component_commands_project_to_sema_operation_classes() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:92` — (ExampleCommand::Insert, SemaOperation::Assert), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:93` — (ExampleCommand::Read, SemaOperation::Match), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:94` — (ExampleCommand::OpenStream, SemaOperation::Subscribe), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:98` — assert_eq!(command.to_sema_operation(), operation); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:103` — fn sema_operation_projects_to_itself() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:105` — assert_eq!(operation.to_sema_operation(), operation); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:111` — fn sema_operations_round_trip_through_dotos() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:117` — .parse::<SemaOperation>() — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:124` — fn sema_operations_round_trip_through_rkyv() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:128` — rkyv::access::<ArchivedSemaOperation, RkyvError>(&bytes).expect("access archive"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:129` — let decoded: SemaOperation = — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/operation.rs:130` — rkyv::deserialize::<SemaOperation, RkyvError>(archived).expect("deserialize"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:1` — # signal-sema Architecture — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:3` — `signal-sema` owns the universal Sema classification vocabulary: the — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:11` — `signal-sema` is the home of **Layer 3** in the three-layer model: the universal *payloadless* class labels (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`) used for cross-component observation and introspection. Daemons project their Component Commands and effects to Sema classes via `ToSemaOperation` and `ToSemaOutcome`; observers filter cross-component activity by class without knowing per-daemon command payloads. `signal-sema` is the universal vocabulary substrate every per-component schema imports rather than re-declaring. — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:13` — `SemaOperation` and `SemaOutcome` are payloadless — variants never carry executable payloads or component event payloads. `Magnitude` is a closed ordered scale; **the vocabulary is the schema, and consumption is per-component policy** — never collapse the wire vocabulary to fit a current consumption policy. `signal-sema` does not depend on `signal-frame`; the frame layer and the Sema classification vocabulary are separate concerns. — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:24` — | Sema Operation (cross-component classification) | the universal payloadless class label | `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate` | — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:26` — `signal-sema` is the home of Layer 3. Component contracts (Layer 1) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:29` — internally and project to Sema classes via `ToSemaOperation` and — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:30` — `ToSemaOutcome` traits so observers can filter on classification — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:39` — (three-layer affirmation; supersedes the earlier "Sema as — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:46` — - `signal-sema` is a Rust library crate. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:47` — - `signal-sema` contains no daemon, actor, socket, redb, or runtime code. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:48` — - `signal-sema` contains no Persona-specific, Criome-specific, or — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:50` — - `signal-sema` does not depend on `signal-frame`; the frame layer and — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:51` — the Sema classification vocabulary are separate. (Other contract — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:53` — - `SemaOperation` is the closed command classification set — — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:55` — - `SemaOutcome` is the closed effect classification set — — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:57` — - `SemaObservation` joins one `SemaOperation` with one `SemaOutcome`; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:59` — - `SemaOperation` is rkyv-archivable in the default binary library; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:62` — - `SemaOutcome` and `SemaObservation` are rkyv-archivable in the — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:70` — - `SemaOperation` record-head spelling is PascalCase and stable. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:72` — expressed via typed component commands (Layer 2), not via Sema — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:74` — - Type names inside the crate do not restate the `Sema` or `Signal` — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:112` — `SemaObservation` composes both halves: — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:115` — SemaObservation { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:116` — operation: command.to_sema_operation(), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:117` — outcome: effect.to_sema_outcome(), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:214` — daemon's `CommandExecutor` (over `sema-engine`); this crate only owns — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:217` — ## SemaObservation as a Tier-2-shaped type — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:219` — *Cross-cutting wire-and-observation discipline that `signal-sema` — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:223` — Q1.6 — SemaObservation is naturally Tier-2-shaped), 271 (64-bit — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:228` — `SemaObservation` is **structurally a Tier-2-shaped type** — small, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:229` — universal, classification-only. It joins one `SemaOperation` — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:230` — (payloadless command class) with one `SemaOutcome` (payloadless — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:236` — ### Verb-namespace shape applied to SemaObservation — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:239` — `signal-frame/ARCHITECTURE.md` §5.2 maps onto a `SemaObservation` — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:244` — byte_zero["byte 0<br/>sema kind<br/>(beingness — Assert, Mutate,<br/>Retract, Match, Subscribe, Validate)"] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:257` — Byte 0 carries the **sema kind** — `SemaOperation` as the root verb, — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:269` — projection for `SemaObservation` is hand-implemented (per /155 §1.5 — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:271` — `SemaObservation` is hand-defined in this crate). The shape stays — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:281` — §5.3; `SemaObservation` inherits it through the `extra` byte (byte — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:290` — obs["SemaObservation<br/>(Tier 1 projection)"] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:291` — obs --> byte_zero["byte 0<br/>SemaOperation::Assert"] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:292` — obs --> byte_one["byte 1<br/>SemaOutcome::Asserted"] — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:309` — ### Tier 2 — when `SemaObservation` itself becomes a summary — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:311` — The 64-bit `SemaObservation` Tier 1 projection is the cross-cutting — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:314` — `SemaObservation` summary carries: — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:318` — | Tier 1 packed `u64` | 8 bytes | sema kind, outcome, component, class, extra, timing | — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:333` — `signal-sema` owns the `SemaOperation` / `SemaOutcome` / — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:334` — `SemaObservation` records and their classification semantics. The — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:336` — `SemaObservation` live in this crate; the traits themselves live in — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:338` — `signal-frame` §5.3 — `signal-sema` consumes it. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:342` — - The hand-implementation of `LogVariant for SemaObservation` — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:343` — tracks under bead `primary-2py5` (signal-sema: LogVariant impl — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:344` — for SemaObservation — first canonical case). — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:349` — - `SemaObservation` does not currently carry a component-identity — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:360` — sema["signal-sema (Layer 3)<br/>operation + outcome<br/>(payloadless classification)"] — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:364` — daemon -. "ToSemaOperation + ToSemaOutcome projection" .-> sema — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:365` — sema --> observer — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:374` — - No executable payloads inside `SemaOperation` variants; the — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:382` — `Infer`, `Recurse`). Those belong in `sema-engine` and/or in — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:404` — src/operation.rs SemaOperation + OperationClass; DotosEnum derives — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:405` — src/outcome.rs SemaOutcome + SemaObservation; DotosEnum/DotosRecord derives — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:409` — tests/operation.rs SemaOperation round trips (DOTOS + rkyv) and — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:411` — tests/outcome.rs SemaOutcome + SemaObservation projection and — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:426` — **Role:** this crate is the universal vocabulary substrate. It owns `SemaOperation`, `SemaOutcome`, `SemaObservation`, `Magnitude`, the pattern primitives (`Bind`, `Wildcard`, `PatternField<T>`), and the identity primitives (`Slot<T>`, `Revision`). Every per-component schema imports these types via cross-schema imports and consumes them directly. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md:428` — **Integration target:** universal SemaOperation / SemaOutcome vocabulary; cross-schema imports pull these types into per-component schemas. The schema-file `import sema` (or equivalent) construct lets a per-component schema reference `SemaOperation` and friends without redeclaring them; the AssembledSchema resolver per `/326-v13` + `operator/174` resolves these imports against this crate's published types and the macro emits direct binding to `signal-sema` instead of re-emitting the vocabulary. — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:1` — //! Falsifiable witnesses for outcome-side Sema classification. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:7` — ArchivedSemaObservation, ArchivedSemaOutcome, SemaObservation, SemaOperation, SemaOutcome, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:8` — ToSemaOperation, ToSemaOutcome, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:13` — fn outcomes() -> [SemaOutcome; 7] { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:15` — SemaOutcome::Asserted, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:16` — SemaOutcome::Mutated, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:17` — SemaOutcome::Retracted, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:18` — SemaOutcome::Matched, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:19` — SemaOutcome::Subscribed, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:20` — SemaOutcome::Validated, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:21` — SemaOutcome::NoChange, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:26` — fn sema_observation_projects_to_short_header() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:27` — let observation = SemaObservation::new(SemaOperation::Assert, SemaOutcome::Asserted); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:34` — let observation = SemaObservation::new(SemaOperation::Match, SemaOutcome::Matched); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:42` — fn sema_outcome_record_heads_are_stable() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:44` — (SemaOutcome::Asserted, "Asserted"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:45` — (SemaOutcome::Mutated, "Mutated"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:46` — (SemaOutcome::Retracted, "Retracted"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:47` — (SemaOutcome::Matched, "Matched"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:48` — (SemaOutcome::Subscribed, "Subscribed"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:49` — (SemaOutcome::Validated, "Validated"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:50` — (SemaOutcome::NoChange, "NoChange"), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:55` — assert_eq!(SemaOutcome::from_record_head(head), Some(outcome)); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:62` — assert_eq!(SemaOutcome::from_record_head("Changed"), None); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:66` — fn sema_operation_projects_to_short_header_root_byte() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:68` — (SemaOperation::Assert, 0), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:69` — (SemaOperation::Mutate, 1), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:70` — (SemaOperation::Retract, 2), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:71` — (SemaOperation::Match, 3), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:72` — (SemaOperation::Subscribe, 4), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:73` — (SemaOperation::Validate, 5), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:90` — impl ToSemaOperation for ExampleCommand { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:91` — fn to_sema_operation(&self) -> SemaOperation { — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:93` — Self::Insert => SemaOperation::Assert, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:94` — Self::Read => SemaOperation::Match, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:105` — impl ToSemaOutcome for ExampleEffect { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:106` — fn to_sema_outcome(&self) -> SemaOutcome { — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:108` — Self::Inserted => SemaOutcome::Asserted, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:109` — Self::Read => SemaOutcome::Matched, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:115` — fn component_effects_project_to_sema_outcomes() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:117` — (ExampleEffect::Inserted, SemaOutcome::Asserted), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:118` — (ExampleEffect::Read, SemaOutcome::Matched), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:122` — assert_eq!(effect.to_sema_outcome(), outcome); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:127` — fn sema_outcome_projects_to_itself() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:129` — assert_eq!(outcome.to_sema_outcome(), outcome); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:134` — fn sema_observation_composes_command_and_effect_projection() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:136` — SemaObservation::from_projection(&ExampleCommand::Insert, &ExampleEffect::Inserted); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:137` — let matched = SemaObservation::from_projection(&ExampleCommand::Read, &ExampleEffect::Read); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:141` — SemaObservation::new(SemaOperation::Assert, SemaOutcome::Asserted) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:145` — SemaObservation::new(SemaOperation::Match, SemaOutcome::Matched) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:151` — fn sema_outcomes_round_trip_through_dotos() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:157` — .parse::<SemaOutcome>() — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:165` — fn sema_observation_round_trips_through_dotos() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:166` — let observation = SemaObservation::new(SemaOperation::Subscribe, SemaOutcome::Subscribed); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:169` — .parse::<SemaObservation>() — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:175` — fn sema_outcomes_round_trip_through_rkyv() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:179` — rkyv::access::<ArchivedSemaOutcome, RkyvError>(&bytes).expect("access archive"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:180` — let decoded: SemaOutcome = — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:181` — rkyv::deserialize::<SemaOutcome, RkyvError>(archived).expect("deserialize"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:187` — fn sema_observation_round_trips_through_rkyv() { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:188` — let observation = SemaObservation::new(SemaOperation::Retract, SemaOutcome::Retracted); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:191` — rkyv::access::<ArchivedSemaObservation, RkyvError>(&bytes).expect("access archive"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:192` — let decoded: SemaObservation = — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/tests/outcome.rs:193` — rkyv::deserialize::<SemaObservation, RkyvError>(archived).expect("deserialize"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/lib.rs:1` — //! Sema classification and observation vocabulary. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/lib.rs:23` — pub use operation::{ArchivedSemaOperation, OperationClass, SemaOperation, ToSemaOperation}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema/src/lib.rs:25` — ArchivedSemaObservation, ArchivedSemaOutcome, SemaObservation, SemaOutcome, ToSemaOutcome, — **means the meaning language**
+### signal-sema-storage
+
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:2` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:4` — NexusRoute, NexusRuntimeRoot, OpensRelation, RootViolation, SemaStorageRoot, — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:39` — fn sema_alone_owns_versioned_families() { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:40` — let root = SemaStorageRoot { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:75` — let payload = DocumentPayload::SemaStorage(SemaStorageRoot { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/roots.rs:83` — let DocumentPayload::SemaStorage(root) = &mut changed else { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:1` — //! Typed binary contract for the prototype's central, standalone Sema daemon. — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:60` — // The central Sema daemon is the one logical allocation authority per deployment — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:61` — // (settled: "seat it centrally in sema", 2026-07-17). Its whole mandate is the two — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:174` — SemaStorage, — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:234` — table: &signal_sema_translator::VocabularyNameTable, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:243` — signal_sema_translator::VocabularyNameTable::from_archive_bytes(&bytes) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:248` — pub fn to_name_table(&self) -> Result<signal_sema_translator::VocabularyNameTable, CodecError> { — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:249` — signal_sema_translator::VocabularyNameTable::from_archive_bytes(&self.0) — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:341` — pub struct SemaStorageRoot { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:345` — impl SemaStorageRoot { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:395` — struct SemaStorageIdentity { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:398` — impl From<&SemaStorageRoot> for SemaStorageIdentity { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:399` — fn from(root: &SemaStorageRoot) -> Self { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:434` — SemaStorage(SemaStorageRoot), — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:448` — Self::SemaStorage(_) => DocumentKind::SemaStorage, — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:458` — Self::SemaStorage(root) => root.validate(), — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:487` — Self::SemaStorage(root) => { — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:489` — Self::hash_archived(&mut hasher, &SemaStorageIdentity::from(root))?; — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/src/lib.rs:792` — &signal_sema_translator::VocabularyNameTable::new(), — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/Cargo.toml:2` — name="signal-sema-storage" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/Cargo.toml:7` — repository="https://github.com/LiGoldragon/signal-sema-storage" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/Cargo.toml:8` — description="Typed wire contract for the central language-engine Sema storage daemon" — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/Cargo.toml:15` — signal-sema-translator={git="https://github.com/LiGoldragon/signal-sema-translator.git",rev="3a26cb43f8ce7f9fe85da64d19aa55aa662943ce"} — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/flake.nix:2` — description = "signal-sema-storage — typed archive and wire contract for the legacy central Sema storage donor"; — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema-storage/flake.nix:39` — name = "signal-sema-storage"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/round_trip.rs:9` — use signal_sema_storage::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/tests/round_trip.rs:15` — use signal_sema_translator::{VocabularyEncodedId, VocabularyNameTable, VocabularyRoot}; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md:5` — This pure contract crate names typed storage, lookup, version, snapshot, push-subscription, fixture-scoped identifier-allocation, and identity-authority messages for a standalone central Sema daemon. It owns no actors, sockets, or durable state itself. — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md:7` — That is the wired legacy topology, not the approved architecture. The approved target has every component daemon stateful and owning its own embedded sema database. A separate small translator daemon — `sema-translator`, with this contract's approved counterpart `signal-sema-translator` — is authoritative only for shared naming and encodedID allocation. It does not become a central store for Ethos, Nomos, or Logos documents. `sema-translator` and `signal-sema-translator` are new repositories, not renames of `sema-storage` or this crate; this crate remains a frozen donor until its separately designed dissolution. — **unclear**
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md:15` — The central daemon this crate names is the one logical allocation authority per deployment under the now-dead 2026-07-17 "seat it centrally in sema" claim; that claim was later overruled. Its mandate was the keystone's two laws — never re-mint an identity for the same declared thing, never rebind an existing identity to a different thing. This crate names the bind-or-mint operation that enforced them: — **means the database**
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md:24` — This flat identity ontology — one `SchemaWholeHandle` universe with a flat `DeclaredKey`-to-`TypeIdentity` map beneath it — is superseded and must not guide the `signal-sema-translator` contract. The approved naming model is variant-fronted, nested module-owned nametables: each module owns the table of its own members' encodedIDs, and the module itself is an entry in its containing module's table; a thing's durable identity is the full chain of module-local encodedIDs, not a flat handle-plus-key pair. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md:32` — - `signal-sema` remains the universal operation-class vocabulary; this separate crate is the component contract because `signal-sema` explicitly owns no component payloads. — **means the meaning language**
+### signal-sema-translator
+
+- `/git/github.com/LiGoldragon/signal-sema-translator/README.md:1` — # signal-sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/README.md:3` — Typed wire and archive contract for the SEMA naming authority. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/README.md:28` — `sema-translator`. This contract does not implement socket lifecycle, — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/src/lib.rs:1` — //! Typed wire and archive contract for the SEMA naming translator. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/src/lib.rs:7` — //! `sema-translator`. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/Cargo.toml:2` — name = "signal-sema-translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/Cargo.toml:7` — repository = "https://github.com/LiGoldragon/signal-sema-translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/Cargo.toml:8` — description = "Production vocabulary root enumeration and root-record codec for the SEMA naming translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/Cargo.toml:12` — name = "signal_sema_translator" — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/flake.nix:2` — description = "signal-sema-translator — typed naming-authority contract"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/flake.nix:39` — name = "signal-sema-translator"; — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/AGENTS.md:1` — # signal-sema-translator — Agent Instructions — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/AGENTS.md:5` — belong in `sema-translator`. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/AGENTS.md:11` — Do not add compatibility with `signal-sema-storage`, central document-storage — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/ARCHITECTURE.md:1` — # signal-sema-translator architecture — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/ARCHITECTURE.md:4` — the `sema-translator` daemon. It owns production operation DTOs, reply and — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/ARCHITECTURE.md:12` — `SemaTranslatorContract` marker binds `TranslatorFrame` to that exact pair. — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/tests/root_contract.rs:5` — use signal_sema_translator::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/signal-sema-translator/tests/protocol_contract.rs:12` — use signal_sema_translator::{ — **means the meaning language**
+### spirit-ethos
+
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md:3` — Canonical authored Ethos source for Spirit's Interface, Nexus, and Sema roots. — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md:19` — Admission and explicit lifecycle behavior remain Nexus responsibilities. Sema — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md:38` — `sema-translator` store. `allocation-receipt.nota` retains its typed request — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md:66` — The new Sema declaration gives records their stable `RecordIdentifier` key and — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/src/lib.rs:10` — pub const SEMA: &str = include_str!("../sema.ethos"); — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-allocation-manifest.nota:3` — allocator sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-allocation-manifest.nota:54` — universal EthosSemaBody 41 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-allocation-manifest.nota:55` — universal EthosSemaDocument 42 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-receipt.nota:8` — translator sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-receipt.nota:36` — SpiritV14SemaProvenance.1 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/batch-config.json:5` — "sema_document": [42], — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/batch-config.json:11` — "sema_body": [41], — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/batch-config.json:164` — "preserved_sema_families": [ — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/batch-config.json:242` — { "spelling": "EthosSemaBody", "root": "universal", "chain": [41] }, — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/batch-config.json:243` — { "spelling": "EthosSemaDocument", "root": "universal", "chain": [42] }, — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:22` — ${pkgs.gnugrep}/bin/grep -Fx 'Sema.1' ${./sema.ethos} — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:41` — ${pkgs.gnugrep}/bin/grep -Fx ' StoredRecord.{RecordIdentifier Entry}' ${./sema.ethos} — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:42` — ${pkgs.gnugrep}/bin/grep -Fx ' Migration.{SourceSchemaVersion MigratedRecordCount}' ${./sema.ethos} — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:48` — ! ${pkgs.gnugrep}/bin/grep -E 'Certainty|Privacy|Referent|Candidate|Name\.\(|\||Text' ${./interface.ethos} ${./nexus.ethos} ${./sema.ethos} — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:49` — ! ${pkgs.gnugrep}/bin/grep -E '^(Interface|Nexus|Sema)\.14$' ${./interface.ethos} ${./nexus.ethos} ${./sema.ethos} — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:62` — and (.grammar.sema_document == [42]) — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:113` — test "$(${pkgs.jq}/bin/jq '.preserved_sema_families | length' ${./batch-config.json})" = 2 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix:115` — .preserved_sema_families == [ — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-manifest.nota:3` — allocator sema-translator — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-manifest.nota:52` — universal EthosSemaBody 41 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-manifest.nota:53` — universal EthosSemaDocument 42 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/allocation-manifest.nota:165` — SpiritV14SemaProvenance.1 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/Cargo.toml:19` — sema-translator = { git = "https://github.com/LiGoldragon/sema-translator.git", rev = "6df830ab1ec9f315a5b50e40ffc393b48ea3d412" } — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/Cargo.toml:23` — signal-sema-translator = { git = "https://github.com/LiGoldragon/signal-sema-translator.git", rev = "51c02c4a7b6f67d9dad095f11986085d7d65785b" } — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/sema.ethos:1` — Sema.1 — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/tests/meta_allocation.rs:7` — use sema_translator::{Runtime, StaticAuthorizationPolicy}; — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/tests/meta_allocation.rs:9` — use signal_sema_translator::{ — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/tests/meta_allocation.rs:204` — &directory.path().join("meta-allocation.sema"), — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/tests/meta_allocation.rs:208` — .expect("real isolated sema-translator runtime opens"); — **means the meaning language**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-batch-config.json:9` — "sema_document": [ — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-batch-config.json:27` — "sema_body": [ — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-batch-config.json:496` — "spelling": "EthosSemaBody", — **means the database**
+- `/git/github.com/LiGoldragon/spirit-ethos/meta-batch-config.json:503` — "spelling": "EthosSemaDocument", — **means the database**
+### tree-sitter-ethos
+
+- `/git/github.com/LiGoldragon/tree-sitter-ethos/package.json:23` — "sema", — **means the database**
+
+## Database prose: complete sentences and proposed Memory wording
+
+These are current prose candidates, not edits. Historical migration statements and quoted psyche/design evidence are separately marked to retain as evidence rather than rewrite.
+
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Independently, seal requires the before snapshot to equal the reader catalog and validates the after snapshot against assignments, schemas, canonical identity bytes, and semantic visibility.
+  - Proposed: Independently, seal requires the before snapshot to equal the reader catalog and validates the after snapshot against assignments, schemas, canonical identity bytes, and memoryntic visibility.
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The semantic planner then walks the expected schema; this private tree never appears in encoded meaning.
+  - Proposed: The memoryntic planner then walks the expected schema; this private tree never appears in encoded meaning.
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Interface: Role(Input), Role(Output), Role(Refusal), Declarations(Nomos admitted) - Nexus: Traits, Declarations(Nomos refused) - Sema: PersistentDeclarations, Tables
+  - Proposed: - Interface: Role(Input), Role(Output), Role(Refusal), Declarations(Nomos admitted) - Nexus: Traits, Declarations(Nomos refused) - Memory: PersistentDeclarations, Tables
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Planning, assembly, semantic projection, and writing iterate those descriptors.
+  - Proposed: Planning, assembly, memoryntic projection, and writing iterate those descriptors.
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - exact envelope/header/import/root arities and explicit empty vectors; - enum nonemptiness and product-variant nonemptiness; - method mandatory return and table two-leaf anatomy; - exact catalog-defined Shape arity at every recursive occurrence; - exact audited Nomos schema and arity; - Interface/Nexus/Sema admission boundaries; - module, enum-variant, and Trait-method duplicate scopes; - safe declaration, import, local-binder, and reference projections; - nonempty Trait requirements and duplicate visible Trait occurrences.
+  - Proposed: - exact envelope/header/import/root arities and explicit empty vectors; - enum nonemptiness and product-variant nonemptiness; - method mandatory return and table two-leaf anatomy; - exact catalog-defined Shape arity at every recursive occurrence; - exact audited Nomos schema and arity; - Interface/Nexus/Memory admission boundaries; - module, enum-variant, and Trait-method duplicate scopes; - safe declaration, import, local-binder, and reference projections; - nonempty Trait requirements and duplicate visible Trait occurrences.
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Named binders carry their validated local projection inside the semantic binder form; the field is not publicly mutable, and exhaustive transaction validation refuses owner escape, incompatible reuse, named/inferred collapse, or noncanonical vectors.
+  - Proposed: Named binders carry their validated local projection inside the memoryntic binder form; the field is not publicly mutable, and exhaustive transaction validation refuses owner escape, incompatible reuse, named/inferred collapse, or noncanonical vectors.
+- `/git/github.com/LiGoldragon/core-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: A write, persisted restart, new plan, and reseal with Existing assignments reproduces equal semantic meaning without new schema objects.
+  - Proposed: A write, persisted restart, new plan, and reseal with Existing assignments reproduces equal memoryntic meaning without new schema objects.
+- `/git/github.com/LiGoldragon/core-ethos/README.md` — **current prose candidate**
+  - Current: `core-ethos` owns the strict bootstrap Ethos reader and its purpose-built Interface, Nexus, and Sema semantic forms.
+  - Proposed: `core-ethos` owns the strict bootstrap Ethos reader and its purpose-built Interface, Nexus, and Memory memoryntic forms.
+- `/git/github.com/LiGoldragon/core-ethos/README.md` — **current prose candidate**
+  - Current: Metadata says nothing about semantic class. 2.
+  - Proposed: Metadata says nothing about memoryntic class. 2.
+- `/git/github.com/LiGoldragon/core-ethos/README.md` — **current prose candidate**
+  - Current: - a metadata-projected kind followed by exactly `{Major Minor Patch}`; - an explicit square import vector with colon module paths and nonempty square selector vectors, including singleton imports; - Interface `{Inputs Outputs Refusals Types}`; - Nexus `{Traits Types}` with explicit marker Trait products and one mandatory final method return; - Sema `{RecordTypes Tables}` with persistent nominal record/key leaves; - recursive type expressions consisting only of a nominal reference, an exact-arity Shape application, or a nonempty guillemet Trait requirement.
+  - Proposed: - a metadata-projected kind followed by exactly `{Major Minor Patch}`; - an explicit square import vector with colon module paths and nonempty square selector vectors, including singleton imports; - Interface `{Inputs Outputs Refusals Types}`; - Nexus `{Traits Types}` with explicit marker Trait products and one mandatory final method return; - Memory `{RecordTypes Tables}` with persistent nominal record/key leaves; - recursive type expressions consisting only of a nominal reference, an exact-arity Shape application, or a nonempty guillemet Trait requirement.
+- `/git/github.com/LiGoldragon/core-ethos/README.md` — **current prose candidate**
+  - Current: Planning, assembly, semantic projection, and writing all consult that registry.
+  - Proposed: Planning, assembly, memoryntic projection, and writing all consult that registry.
+- `/git/github.com/LiGoldragon/core-ethos/README.md` — **current prose candidate**
+  - Current: Every unordered named semantic collection is normalized by those bytes while positional struct fields, method parameters, and Shape arguments retain authored order.
+  - Proposed: Every unordered named memoryntic collection is normalized by those bytes while positional struct fields, method parameters, and Shape arguments retain authored order.
+- `/git/github.com/LiGoldragon/core-ethos/tests/fixtures/bootstrap/sema.ethos` — **current prose candidate**
+  - Current: Sema.{1 0 0} [dependency:domain.[External]] { [Identifier.Integer Stored.{Identifier External}] [stored.{Stored Identifier}] }
+  - Proposed: Memory.{1 0 0} [dependency:domain.[External]] { [Identifier.Integer Stored.{Identifier External}] [stored.{Stored Identifier}] }
+- `/git/github.com/LiGoldragon/ethos-engine/AGENTS.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The Signal → Nexus → SEMA flow and central typed storage socket are wired legacy behavior, not the target architecture.
+  - Proposed: The Signal → Nexus → MEMORY flow and central typed storage socket are wired legacy behavior, not the target architecture.
+- `/git/github.com/LiGoldragon/ethos-engine/AGENTS.md` — **current prose candidate**
+  - Current: The approved target makes this daemon stateful, with its own embedded sema database.
+  - Proposed: The approved target makes this daemon stateful, with its own embedded memory database.
+- `/git/github.com/LiGoldragon/ethos-engine/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: In the currently wired legacy topology, typed requests traverse state-bearing Signal → Nexus → SEMA Kameo actors.
+  - Proposed: In the currently wired legacy topology, typed requests traverse state-bearing Signal → Nexus → MEMORY Kameo actors.
+- `/git/github.com/LiGoldragon/ethos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The approved target is a stateful Ethos daemon whose own embedded sema database stores its documents.
+  - Proposed: The approved target is a stateful Ethos daemon whose own embedded memory database stores its documents.
+- `/git/github.com/LiGoldragon/ethos-test/STATEMENTS.md` — **current prose candidate**
+  - Current: - Types Fork 5: every semantic string a new type.
+  - Proposed: - Types Fork 5: every memoryntic string a new type.
+- `/git/github.com/LiGoldragon/ethos-zero/README.md` — **retain historical/quoted evidence; do not edit**
+  - Current: A file headed `Sema`, Memory's head before 15.0.0, is refused as `Conceptual.{ [ 0 ] Renamed.Memory }`.
+  - Proposed: A file headed `Memory`, Memory's head before 15.0.0, is refused as `Conceptual.{ [ 0 ] Renamed.Memory }`.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **retain historical/quoted evidence; do not edit**
+  - Current: - The `Sema` root is renamed `Memory`: same sections (imports, record types), same generation.
+  - Proposed: - The `Memory` root is renamed `Memory`: same sections (imports, record types), same generation.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: A file headed `Sema` is refused as `Rejected.{ file { 1 1 } Conceptual.{ [ 0 ] Renamed.Memory } }`.
+  - Proposed: A file headed `Memory` is refused as `Rejected.{ file { 1 1 } Conceptual.{ [ 0 ] Renamed.Memory } }`.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: - Library API: `File::Sema(Sema)` is `File::Memory(Memory)`; `File` and `Root` gain `Operation`; `TypeDeclaration::Struct` and `Variant::Struct` hold `Vec<Position>` (`Position::Referenced(Reference)` or `Position::Declared(TypeDeclaration)`) where they held `Vec<Reference>`.
+  - Proposed: - Library API: `File::Memory(Memory)` is `File::Memory(Memory)`; `File` and `Root` gain `Operation`; `TypeDeclaration::Struct` and `Variant::Struct` hold `Vec<Position>` (`Position::Referenced(Reference)` or `Position::Declared(TypeDeclaration)`) where they held `Vec<Reference>`.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: Rename the head of every file headed `Sema` to `Memory`; nothing else in the file changes.
+  - Proposed: Rename the head of every file headed `Memory` to `Memory`; nothing else in the file changes.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: Rename the file where its name says `sema`, if the consumer wants the generated module named for it. 2.
+  - Proposed: Rename the file where its name says `memory`, if the consumer wants the generated module named for it. 2.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: No live consumer uses the Sema root (corrected after 15.0.0; flow 3ec648 report `sema-to-memory.md`).
+  - Proposed: No live consumer uses the Memory root (corrected after 15.0.0; flow 3ec648 report `memory-to-memory.md`).
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: The seven `.ethos` files under `/git` headed `Sema` are not ethos-zero consumers: spirit-ethos and core-ethos (core-schema) are frozen, and core-ethos's fixture is its own bootstrap reader's; spirit's schema is deprecated; five of the seven are in an older dialect ethos-zero refuses under either head; primary-next holds one as report evidence and two as flow f6db8d's witnesses.
+  - Proposed: The seven `.ethos` files under `/git` headed `Memory` are not ethos-zero consumers: spirit-ethos and core-ethos (core-schema) are frozen, and core-ethos's fixture is its own bootstrap reader's; spirit's schema is deprecated; five of the seven are in an older dialect ethos-zero refuses under either head; primary-next holds one as report evidence and two as flow f6db8d's witnesses.
+- `/git/github.com/LiGoldragon/ethos-zero/UPGRADES.md` — **current prose candidate**
+  - Current: Pins: protos 109797e (0.32.1), datom-codec 0930abc (0.32.1); datom-codec renamed `Pathing`, `Budgeting`, `Positioning` to `Branchable`, `Budgeted`, `Positional`, and a datom written with `textualize` is vertical (a generated Sema record prints `{ root\n  [ { first 1 } ] }`).
+  - Proposed: Pins: protos 109797e (0.32.1), datom-codec 0930abc (0.32.1); datom-codec renamed `Pathing`, `Budgeting`, `Positioning` to `Branchable`, `Budgeted`, `Positional`, and a datom written with `textualize` is vertical (a generated Memory record prints `{ root\n  [ { first 1 } ] }`).
+- `/git/github.com/LiGoldragon/ethos-zero/ethos-zero.ethos` — **current prose candidate**
+  - Current: A rejection names the ; file, the line and column of the error in it, and the error. ; The files read are of four roots, each section in this order: ;   Library    [ imports ] [ types ] [ traits ] [ associations ] ;   Signal     [ imports ] [ queries ] [ responses ] [ types ] ;   Operation  [ imports ] [ operations ] [ outcomes ] [ types ]   ; proposed, pending the living's word ;   Memory     [ imports ] [ record types ] ; A file headed Sema is refused as Renamed.Memory.
+  - Proposed: A rejection names the ; file, the line and column of the error in it, and the error. ; The files read are of four roots, each section in this order: ;   Library    [ imports ] [ types ] [ traits ] [ associations ] ;   Signal     [ imports ] [ queries ] [ responses ] [ types ] ;   Operation  [ imports ] [ operations ] [ outcomes ] [ types ]   ; proposed, pending the living's word ;   Memory     [ imports ] [ record types ] ; A file headed Memory is refused as Renamed.Memory.
+- `/git/github.com/LiGoldragon/lojix-test/modules/old-runtime-rollback.nix` — **retain historical/quoted evidence; do not edit**
+  - Current: { flake, pkgs, system, oldSource, oldRevision, fixtureDriver, rawOracle, }: let toolchain = flake.inputs.fenix.packages.${system}.complete.withComponents [ "cargo" "rustc" ]; crane = (flake.inputs.crane.mkLib pkgs).overrideToolchain toolchain; vendor = crane.vendorCargoDeps { src = oldSource; cargoLock = "${oldSource}/Cargo.lock"; }; in pkgs.stdenvNoCC.mkDerivation { pname = "lojix-old-runtime-rollback"; version = oldRevision; src = oldSource; nativeBuildInputs = [ toolchain pkgs.stdenv.cc pkgs.python3 pkgs.coreutils ]; dontUnpack = true; dontFixup = true; buildPhase = '' mkdir work .cargo fixture capture; cp -R "$src"/. work/; chmod -R u+w work; cp -R ${vendor}/. .cargo/ cargo build --offline --manifest-path work/Cargo.toml --package lojix-nexus --bin lojix-nexus sha256sum "$PWD/work/target/debug/lojix-nexus" > "$NIX_BUILD_TOP/capture/binary.sha256" ${fixtureDriver} "$NIX_BUILD_TOP/fixture" mkdir -p "$NIX_BUILD_TOP/fixture/xdg-state/lojix" "$NIX_BUILD_TOP/fixture/xdg-runtime" cp "$NIX_BUILD_TOP/fixture/old-rollback/store.db" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/store-before.json" cp "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/capture/archive-before.rkyv" ${pkgs.python3}/bin/python ${../fixtures/old-runtime-rollback.py} --nexus "$PWD/work/target/debug/lojix-nexus" --root "$NIX_BUILD_TOP/fixture" --output "$NIX_BUILD_TOP/capture" LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/store-after.json" cp "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/capture/archive-after.rkyv" sha256sum "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.sema" > "$NIX_BUILD_TOP/capture/final.sha256" ${pkgs.python3}/bin/python ${../fixtures/old-runtime-oracle.py} \ --before "$NIX_BUILD_TOP/capture/store-before.json" \ --after "$NIX_BUILD_TOP/capture/store-after.json" \ --startup "$NIX_BUILD_TOP/capture/startup-evidence.json" \ --output "$NIX_BUILD_TOP/capture/oracle.json" ''; installPhase = ''mkdir -p "$out/bin"; cp -R "$NIX_BUILD_TOP/capture"/. "$out/"; cp "$PWD/work/target/debug/lojix-nexus" "$out/bin/lojix-nexus"; printf '%s\n' '${oldRevision}' > "$out/old-revision"''; }
+  - Proposed: { flake, pkgs, system, oldSource, oldRevision, fixtureDriver, rawOracle, }: let toolchain = flake.inputs.fenix.packages.${system}.complete.withComponents [ "cargo" "rustc" ]; crane = (flake.inputs.crane.mkLib pkgs).overrideToolchain toolchain; vendor = crane.vendorCargoDeps { src = oldSource; cargoLock = "${oldSource}/Cargo.lock"; }; in pkgs.stdenvNoCC.mkDerivation { pname = "lojix-old-runtime-rollback"; version = oldRevision; src = oldSource; nativeBuildInputs = [ toolchain pkgs.stdenv.cc pkgs.python3 pkgs.coreutils ]; dontUnpack = true; dontFixup = true; buildPhase = '' mkdir work .cargo fixture capture; cp -R "$src"/. work/; chmod -R u+w work; cp -R ${vendor}/. .cargo/ cargo build --offline --manifest-path work/Cargo.toml --package lojix-nexus --bin lojix-nexus sha256sum "$PWD/work/target/debug/lojix-nexus" > "$NIX_BUILD_TOP/capture/binary.sha256" ${fixtureDriver} "$NIX_BUILD_TOP/fixture" mkdir -p "$NIX_BUILD_TOP/fixture/xdg-state/lojix" "$NIX_BUILD_TOP/fixture/xdg-runtime" cp "$NIX_BUILD_TOP/fixture/old-rollback/store.db" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.memory" LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.memory" > "$NIX_BUILD_TOP/capture/store-before.json" cp "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/capture/archive-before.rkyv" ${pkgs.python3}/bin/python ${../fixtures/old-runtime-rollback.py} --nexus "$PWD/work/target/debug/lojix-nexus" --root "$NIX_BUILD_TOP/fixture" --output "$NIX_BUILD_TOP/capture" LOJIX_ORACLE_SCHEMA=old ${rawOracle} SNAPSHOT "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.memory" > "$NIX_BUILD_TOP/capture/store-after.json" cp "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/capture/archive-after.rkyv" sha256sum "$NIX_BUILD_TOP/fixture/old-startup.rkyv" "$NIX_BUILD_TOP/fixture/xdg-state/lojix/lojix.memory" > "$NIX_BUILD_TOP/capture/final.sha256" ${pkgs.python3}/bin/python ${../fixtures/old-runtime-oracle.py} \ --before "$NIX_BUILD_TOP/capture/store-before.json" \ --after "$NIX_BUILD_TOP/capture/store-after.json" \ --startup "$NIX_BUILD_TOP/capture/startup-evidence.json" \ --output "$NIX_BUILD_TOP/capture/oracle.json" ''; installPhase = ''mkdir -p "$out/bin"; cp -R "$NIX_BUILD_TOP/capture"/. "$out/"; cp "$PWD/work/target/debug/lojix-nexus" "$out/bin/lojix-nexus"; printf '%s\n' '${oldRevision}' > "$out/old-revision"''; }
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: > **Scope (today vs eventually).** This stack sits on today's > substrate — Rust on Linux, `signal-core` over a Unix socket, > `sema-engine` for durable state, direct nix invocations.
+  - Proposed: > **Scope (today vs eventually).** This stack sits on today's > substrate — Rust on Linux, `signal-core` over a Unix socket, > `memory-engine` for durable state, direct nix invocations.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Live generation set** — `BTreeMap<(ClusterName, NodeName, Kind), Generation>` persisted via `sema-engine`.
+  - Proposed: - **Live generation set** — `BTreeMap<(ClusterName, NodeName, Kind), Generation>` persisted via `memory-engine`.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Subscribers consume via `signal-lojix` `DeploymentObservation` and `CacheRetentionObservation`, bridged through `sema-engine`'s `SubscriptionSink` trait.
+  - Proposed: Subscribers consume via `signal-lojix` `DeploymentObservation` and `CacheRetentionObservation`, bridged through `memory-engine`'s `SubscriptionSink` trait.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Storage kernel** — `sema-engine` owns table registration, Signal verb execution (`assert`, `mutate`, `retract`, `commit`, `match`, `validate`, `subscribe`), the commit log, snapshot identity, and the subscription-delivery primitive.
+  - Proposed: - **Storage kernel** — `memory-engine` owns table registration, Signal verb execution (`assert`, `mutate`, `retract`, `commit`, `match`, `validate`, `subscribe`), the commit log, snapshot identity, and the subscription-delivery primitive.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema` (the storage kernel beneath it) owns redb/rkyv mechanics.
+  - Proposed: `memory` (the storage kernel beneath it) owns redb/rkyv mechanics.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This crate consumes both through `sema-engine`'s public surface.
+  - Proposed: This crate consumes both through `memory-engine`'s public surface.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Storage:** handwritten runtime nouns in SEMA tables over a durable `sema-engine` store — one exact configured absolute file shared by daemon startup and the reset service.
+  - Proposed: - **Storage:** handwritten runtime nouns in MEMORY tables over a durable `memory-engine` store — one exact configured absolute file shared by daemon startup and the reset service.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The zero-argument Nexus discovers its stable Sema, loads persisted desired configuration, and binds ordinary and owner/meta Unix sockets.
+  - Proposed: - The zero-argument Nexus discovers its stable Memory, loads persisted desired configuration, and binds ordinary and owner/meta Unix sockets.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The durable `sema-engine` Store is the only shared point and is locked only briefly per sema op; long nix effects hold no global lock (Spirit `2alg`).
+  - Proposed: The durable `memory-engine` Store is the only shared point and is locked only briefly per memory op; long nix effects hold no global lock (Spirit `2alg`).
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The daemon's shared store uses `sema-engine` multi-table atomic commits for activation (live generation, GC root, and allocation) and for every deploy transition (correlation state/job plus intent, then acknowledgement and any terminal job retraction).
+  - Proposed: - The daemon's shared store uses `memory-engine` multi-table atomic commits for activation (live generation, GC root, and allocation) and for every deploy transition (correlation state/job plus intent, then acknowledgement and any terminal job retraction).
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The daemon's subscription bridge is downstream of the commit: `sema-engine` delta delivery cannot roll back the write transaction.
+  - Proposed: - The daemon's subscription bridge is downstream of the commit: `memory-engine` delta delivery cannot roll back the write transaction.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` at `github:LiGoldragon/sema-engine` is the typed database engine.
+  - Proposed: - `memory-engine` at `github:LiGoldragon/memory-engine` is the typed database engine.
+- `/git/github.com/LiGoldragon/lojix/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema` at `github:LiGoldragon/sema` is the storage kernel beneath `sema-engine`; this crate depends on it only transitively.
+  - Proposed: - `memory` at `github:LiGoldragon/memory` is the storage kernel beneath `memory-engine`; this crate depends on it only transitively.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: Storage lives in `sema-engine`; transport length-prefixes portable rkyv `Signal<Query>` and `Signal<Response>` bytes directly.
+  - Proposed: Storage lives in `memory-engine`; transport length-prefixes portable rkyv `Signal<Query>` and `Signal<Response>` bytes directly.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: It discovers `lojix/lojix.sema` below `XDG_STATE_HOME` when set, otherwise `/var/lib/lojix/lojix.sema`, and seeds a fresh Sema with its executable default.
+  - Proposed: It discovers `lojix/lojix.memory` below `XDG_STATE_HOME` when set, otherwise `/var/lib/lojix/lojix.memory`, and seeds a fresh Memory with its executable default.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: The desired configuration persists beside domain state and applies on the next restart, while the Sema path itself remains stable and is never configurable.
+  - Proposed: The desired configuration persists beside domain state and applies on the next restart, while the Memory path itself remains stable and is never configurable.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: `lojix-migrate-configuration <archive> <new-store>` copies the archive-selected pre-Nexus v5 Sema, adds the desired configuration record to the copy, and validates it.
+  - Proposed: `lojix-migrate-configuration <archive> <new-store>` copies the archive-selected pre-Nexus v5 Memory, adds the desired configuration record to the copy, and validates it.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: It never opens or mutates the source Sema and is not a daemon compatibility path.
+  - Proposed: It never opens or mutates the source Memory and is not a daemon compatibility path.
+- `/git/github.com/LiGoldragon/lojix/README.md` — **current prose candidate**
+  - Current: - `sema-engine` — typed database engine library used for durable state.
+  - Proposed: - `memory-engine` — typed database engine library used for durable state.
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md` — **current prose candidate**
+  - Current: - `NexusWork::sema_write_completed`, `sema_read_completed`, `effect_completed` and `NexusAction::reply_to_signal` wrapped one enum variant each; the variant is the constructor.
+  - Proposed: - `NexusWork::memory_write_completed`, `memory_read_completed`, `effect_completed` and `NexusAction::reply_to_signal` wrapped one enum variant each; the variant is the constructor.
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md` — **current prose candidate**
+  - Current: `JournalStage::from_effect`/`effect`, `EffectResult::flake_resolved` and its three siblings, `SchemaRuntime::marker`/`sema_marker`, `SchemaRuntime::configuration_receipt`/`configuration_rejection` and `SchemaRuntime::reply_meta` are `From` impls now.
+  - Proposed: `JournalStage::from_effect`/`effect`, `EffectResult::flake_resolved` and its three siblings, `SchemaRuntime::marker`/`memory_marker`, `SchemaRuntime::configuration_receipt`/`configuration_rejection` and `SchemaRuntime::reply_meta` are `From` impls now.
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md` — **current prose candidate**
+  - Current: The rest are `RuntimeCore`, `SignalDeciding`, `DeployDriving`, `TestDriving`, `SemaApplying`, `SemaObserving` and `EffectRunning`.
+  - Proposed: The rest are `RuntimeCore`, `SignalDeciding`, `DeployDriving`, `TestDriving`, `MemoryApplying`, `MemoryObserving` and `EffectRunning`.
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md` — **current prose candidate**
+  - Current: - Every durable-write failure inside a sema-apply handler now returns `WriteRejected(DurableWriteFailed)` instead of aborting; the cause goes to the daemon journal.
+  - Proposed: - Every durable-write failure inside a memory-apply handler now returns `WriteRejected(DurableWriteFailed)` instead of aborting; the cause goes to the daemon journal.
+- `/git/github.com/LiGoldragon/lojix/UPGRADES.md` — **current prose candidate**
+  - Current: The Nexus discovers its stable Sema, persists desired configuration plus the meta-Configure marker, and has no Datom dependency in its package dependency graph; Datom-enabled maintenance programs live in the separate `lojix-offline-tools` package.
+  - Proposed: The Nexus discovers its stable Memory, persists desired configuration plus the meta-Configure marker, and has no Datom dependency in its package dependency graph; Datom-enabled maintenance programs live in the separate `lojix-offline-tools` package.
+- `/git/github.com/LiGoldragon/lojix/flake.nix` — **current prose candidate**
+  - Current: retained-transient-semantics = pkgs.testers.nixosTest { name = "lojix-retained-transient-semantics"; nodes.machine = { ... }: { }; testScript = '' start_all() machine.succeed( "systemd-run --unit=lojix-retained-result --no-block --service-type=oneshot --remain-after-exit ${pkgs.coreutils}/bin/true" ) machine.wait_for_unit("lojix-retained-result.service") machine.succeed( "systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'LoadState=loaded' && systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'ActiveState=active' && systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'Result=success'" ) machine.succeed( "systemd-run --unit=lojix-retained-waiter --wait --service-type=oneshot --remain-after-exit ${pkgs.coreutils}/bin/true >/run/lojix-retained-waiter.out 2>&1 & echo $!
+  - Proposed: retained-transient-memoryntics = pkgs.testers.nixosTest { name = "lojix-retained-transient-memoryntics"; nodes.machine = { ... }: { }; testScript = '' start_all() machine.succeed( "systemd-run --unit=lojix-retained-result --no-block --service-type=oneshot --remain-after-exit ${pkgs.coreutils}/bin/true" ) machine.wait_for_unit("lojix-retained-result.service") machine.succeed( "systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'LoadState=loaded' && systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'ActiveState=active' && systemctl show lojix-retained-result.service --property=LoadState --property=ActiveState --property=Result | grep -Fx 'Result=success'" ) machine.succeed( "systemd-run --unit=lojix-retained-waiter --wait --service-type=oneshot --remain-after-exit ${pkgs.coreutils}/bin/true >/run/lojix-retained-waiter.out 2>&1 & echo $!
+- `/git/github.com/LiGoldragon/lojix/skills.md` — **current prose candidate**
+  - Current: The library half (`lojix`) holds shared types, handwritten Nexus/SEMA runtime code, the actor-native socket shell, and request/reply plumbing.
+  - Proposed: The library half (`lojix`) holds shared types, handwritten Nexus/MEMORY runtime code, the actor-native socket shell, and request/reply plumbing.
+- `/git/github.com/LiGoldragon/lojix/skills.md` — **current prose candidate**
+  - Current: - `~/primary/skills/rust/storage-and-wire.md` — sema-engine + signal-core defaults; rkyv archives between Rust components; redb tables for durable state.
+  - Proposed: - `~/primary/skills/rust/storage-and-wire.md` — memory-engine + signal-core defaults; rkyv archives between Rust components; redb tables for durable state.
+- `/git/github.com/LiGoldragon/lojix/skills.md` — **current prose candidate**
+  - Current: - **Storage:** handwritten runtime nouns in SEMA tables at the stable executable-discovered `lojix/lojix.sema` path.
+  - Proposed: - **Storage:** handwritten runtime nouns in MEMORY tables at the stable executable-discovered `lojix/lojix.memory` path.
+- `/git/github.com/LiGoldragon/lojix/skills.md` — **current prose candidate**
+  - Current: - `sema-engine` — typed database engine; depend on this rather than `sema` directly.
+  - Proposed: - `memory-engine` — typed database engine; depend on this rather than `memory` directly.
+- `/git/github.com/LiGoldragon/mind-context/skills/knowledge-ethos.md` — **retain historical/quoted evidence; do not edit**
+  - Current: A file headed `Sema`, Memory's head before 15.0.0, is refused as `Conceptual.{ [ 0 ] Renamed.Memory }`.
+  - Proposed: A file headed `Memory`, Memory's head before 15.0.0, is refused as `Conceptual.{ [ 0 ] Renamed.Memory }`.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The owner seals that exact source as one authority-approved transaction, passes the verified reader and transaction to bootstrap Nomos lowering, proves whole-Logos identity and archive recovery, and exercises unit, unary, and product type semantics.
+  - Proposed: The owner seals that exact source as one authority-approved transaction, passes the verified reader and transaction to bootstrap Nomos lowering, proves whole-Logos identity and archive recovery, and exercises unit, unary, and product type memoryntics.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Sema evidence remains producer-owned.
+  - Proposed: Memory evidence remains producer-owned.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The pinned `sema-engine` source begins with `Sema.{1 0 0}`, an imports section, and one body.
+  - Proposed: The pinned `memory-engine` source begins with `Memory.{1 0 0}`, an imports section, and one body.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The sink validates those source and test surfaces; it does not copy the Sema declaration or generated table.
+  - Proposed: The sink validates those source and test surfaces; it does not copy the Memory declaration or generated table.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The owning core-nomos test exhaustively converts the five-definition legacy wire fixture into the generic authored representation and compares kinds, ordered signatures, complete identity ancestry, constructors, stable roles, recursive sequences, literals, futures, splice semantics, fragment outputs, revision, defaults, and the separate ordered generation selection.
+  - Proposed: The owning core-nomos test exhaustively converts the five-definition legacy wire fixture into the generic authored representation and compares kinds, ordered signatures, complete identity ancestry, constructors, stable roles, recursive sequences, literals, futures, splice memoryntics, fragment outputs, revision, defaults, and the separate ordered generation selection.
+- `/git/github.com/LiGoldragon/protos-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Mutation witnesses reject semantic drift.
+  - Proposed: Mutation witnesses reject memoryntic drift.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: `schema-rust` exposes only verified bootstrap Interface and Sema generation; its live consumer locks contain one Schema Rust 0.15 package and no schema-language package.
+  - Proposed: `schema-rust` exposes only verified bootstrap Interface and Memory generation; its live consumer locks contain one Schema Rust 0.15 package and no schema-language package.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: It also proves that the witness has only its two explicit integration tests and that `nomos-engine` exposes the authority-sealed bootstrap library witness: exact Logos archive recovery, explicit Sema storage evidence, and refusal of storage evidence for other kinds.
+  - Proposed: It also proves that the witness has only its two explicit integration tests and that `nomos-engine` exposes the authority-sealed bootstrap library witness: exact Logos archive recovery, explicit Memory storage evidence, and refusal of storage evidence for other kinds.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: Mutations reject producer, repository, package-alias, Interface/Nexus/Sema framing, transaction, authority boundary, live-test inventory, and refusal drift.
+  - Proposed: Mutations reject producer, repository, package-alias, Interface/Nexus/Memory framing, transaction, authority boundary, live-test inventory, and refusal drift.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: One authority-approved transaction lowers through bootstrap Nomos to identified Whole Logos, survives archive recovery, carries unit, unary, and product semantics through the current structural Rust projection, refuses incomplete projections, and compiles and runs the result in scratch Cargo.
+  - Proposed: One authority-approved transaction lowers through bootstrap Nomos to identified Whole Logos, survives archive recovery, carries unit, unary, and product memoryntics through the current structural Rust projection, refuses incomplete projections, and compiles and runs the result in scratch Cargo.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: The root also consumes `sema-engine`'s producer-owned Sema proof.
+  - Proposed: The root also consumes `memory-engine`'s producer-owned Memory proof.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: Its `Sema.{1 0 0}` header/imports/body source is authority-assembled into a checked projection whose typed table is written, read, closed, and reopened through the engine.
+  - Proposed: Its `Memory.{1 0 0}` header/imports/body source is authority-assembled into a checked projection whose typed table is written, read, closed, and reopened through the engine.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: No Sema source or generated table is copied into this sink or the language witness.
+  - Proposed: No Memory source or generated table is copied into this sink or the language witness.
+- `/git/github.com/LiGoldragon/protos-engine/README.md` — **current prose candidate**
+  - Current: An authority-sealed Nexus transaction lowers to identified Whole Logos and restores the exact archive; Sema lowering consumes caller-supplied storage provenance, while non-Sema kinds reject that provenance.
+  - Proposed: An authority-sealed Nexus transaction lowers to identified Whole Logos and restores the exact archive; Memory lowering consumes caller-supplied storage provenance, while non-Memory kinds reject that provenance.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-26.md` — **retain historical/quoted evidence; do not edit**
+  - Current: `LiGoldragon/documentation` is live: private, described > "Standard machinery documentation for the sema ecosystem," cloned at > `repos/documentation`, seeded with the minimal README and pushed to > `main`.
+  - Proposed: `LiGoldragon/documentation` is live: private, described > "Standard machinery documentation for the memory ecosystem," cloned at > `repos/documentation`, seeded with the minimal README and pushed to > `main`.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-26.md` — **retain historical/quoted evidence; do not edit**
+  - Current: > **Agent:** I recommend one global longest-match law: at each cursor, > consider every configured token, delimiter, carrier, trivia, and > application trigger; choose the longest complete match; reject > equal-length semantic ties when sealing the profile; never scan forward > to an unrelated closing quote; start bare atoms only when no configured > trigger starts there; stop them before the next trigger; and forbid empty > carrier prefixes.
+  - Proposed: > **Agent:** I recommend one global longest-match law: at each cursor, > consider every configured token, delimiter, carrier, trivia, and > application trigger; choose the longest complete match; reject > equal-length memoryntic ties when sealing the profile; never scan forward > to an unrelated closing quote; start bare atoms only when no configured > trigger starts there; stop them before the next trigger; and forbid empty > carrier prefixes.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Each engine is a stateful daemon with its own embedded sema db; one small translator daemon owns naming and identity allocation.
+  - Proposed: Each engine is a stateful daemon with its own embedded memory db; one small translator daemon owns naming and identity allocation.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Values that matter semantically must have exact representations… Errors are also structural values."
+  - Proposed: Values that matter memoryntically must have exact representations… Errors are also structural values."
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Terminology guard:** the container's working term is **module**; never "domain" — the word is four-times taken for hash separation, and the term-overload law forbids it (**[ruled]** "There can be no sema-storage daemon, as it would overload the term sema").
+  - Proposed: **Terminology guard:** the container's working term is **module**; never "domain" — the word is four-times taken for hash separation, and the term-overload law forbids it (**[ruled]** "There can be no memory-storage daemon, as it would overload the term memory").
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[ruled] 2026-07-27**: "sema is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful".
+  - Proposed: **[ruled] 2026-07-27**: "memory is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful".
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The 2026-07-17 "seat it centrally in sema" was overruled and mis-voiced — "I shouldnt have said "in sema", since all daemon state lives in *its* sema db.
+  - Proposed: The 2026-07-17 "seat it centrally in memory" was overruled and mis-voiced — "I shouldnt have said "in memory", since all daemon state lives in *its* memory db.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: There can be no sema-storage daemon".
+  - Proposed: There can be no memory-storage daemon".
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: `sema-storage`'s stateless-client architecture is dead law and the repo cannot keep its role.
+  - Proposed: `memory-storage`'s stateless-client architecture is dead law and the repo cannot keep its role.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[derived] Approved sharing and failure mechanism:** the translator is the only writer and one actor serializes its embedded sema database.
+  - Proposed: **[derived] Approved sharing and failure mechanism:** the translator is the only writer and one actor serializes its embedded memory database.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[ruled] 2026-07-27**, psyche-initiated (verbatim in full in SliceOneRulings entry 5): sema "means more than just a database.
+  - Proposed: **[ruled] 2026-07-27**, psyche-initiated (verbatim in full in SliceOneRulings entry 5): memory "means more than just a database.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Poisoned documents — correct before subagents read them:** `raw-discovery/ARCHITECTURE.md` ("Structure is span-free" presents the refused model as canon), `core-nomos/ARCHITECTURE.md` (relabels 1,892-line `generation.rs` as "the emission boundary", a license to bypass the no-strings rule), `sema-storage/ARCHITECTURE.md` and `ethos-engine/ARCHITECTURE.md`/`AGENTS.md` (overruled central-daemon law).
+  - Proposed: **Poisoned documents — correct before subagents read them:** `raw-discovery/ARCHITECTURE.md` ("Structure is span-free" presents the refused model as canon), `core-nomos/ARCHITECTURE.md` (relabels 1,892-line `generation.rs` as "the emission boundary", a license to bypass the no-strings rule), `memory-storage/ARCHITECTURE.md` and `ethos-engine/ARCHITECTURE.md`/`AGENTS.md` (overruled central-daemon law).
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-28.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Spirit port after the gate passes; approve the sema-storage dissolution mechanism before its implementation, migrate storage one daemon at a time, and retire the old topology last.
+  - Proposed: Spirit port after the gate passes; approve the memory-storage dissolution mechanism before its implementation, migrate storage one daemon at a time, and retire the old topology last.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Each engine is a stateful daemon with its own embedded sema db; one small translator daemon owns naming and identity allocation.
+  - Proposed: Each engine is a stateful daemon with its own embedded memory db; one small translator daemon owns naming and identity allocation.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Values that matter semantically must have exact representations… Errors are also structural values."
+  - Proposed: Values that matter memoryntically must have exact representations… Errors are also structural values."
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Terminology guard:** the container's working term is **module**; never "domain" — the word is four-times taken for hash separation, and the term-overload law forbids it (**[ruled]** "There can be no sema-storage daemon, as it would overload the term sema").
+  - Proposed: **Terminology guard:** the container's working term is **module**; never "domain" — the word is four-times taken for hash separation, and the term-overload law forbids it (**[ruled]** "There can be no memory-storage daemon, as it would overload the term memory").
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[ruled] 2026-07-27**: "sema is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful".
+  - Proposed: **[ruled] 2026-07-27**: "memory is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful".
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The 2026-07-17 "seat it centrally in sema" was overruled and mis-voiced — "I shouldnt have said "in sema", since all daemon state lives in *its* sema db.
+  - Proposed: The 2026-07-17 "seat it centrally in memory" was overruled and mis-voiced — "I shouldnt have said "in memory", since all daemon state lives in *its* memory db.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: There can be no sema-storage daemon".
+  - Proposed: There can be no memory-storage daemon".
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: `sema-storage`'s stateless-client architecture is dead law and the repo cannot keep its role.
+  - Proposed: `memory-storage`'s stateless-client architecture is dead law and the repo cannot keep its role.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[derived] Approved sharing and failure mechanism:** the translator is the only writer and one actor serializes its embedded sema database.
+  - Proposed: **[derived] Approved sharing and failure mechanism:** the translator is the only writer and one actor serializes its embedded memory database.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **[ruled] 2026-07-27**, psyche-initiated (verbatim in full in SliceOneRulings entry 5): sema "means more than just a database.
+  - Proposed: **[ruled] 2026-07-27**, psyche-initiated (verbatim in full in SliceOneRulings entry 5): memory "means more than just a database.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Standing morning-audit findings:** sema-storage still live as write authority outside naming (dissolution beads open); schema-rust still pinned in protos-engine flake for spirit's not-yet-ported build; core-nomos legacy string-bearing modules quarantined not removed, prettyplease transitively via textual-rust pin (bead po2.13 changed the consumer edge; verify current framing); syn/quote transitive via rkyv/thiserror everywhere (law-scope question open with psyche).
+  - Proposed: **Standing morning-audit findings:** memory-storage still live as write authority outside naming (dissolution beads open); schema-rust still pinned in protos-engine flake for spirit's not-yet-ported build; core-nomos legacy string-bearing modules quarantined not removed, prettyplease transitively via textual-rust pin (bead po2.13 changed the consumer edge; verify current framing); syn/quote transitive via rkyv/thiserror everywhere (law-scope question open with psyche).
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Poisoned documents — correct before subagents read them:** `raw-discovery/ARCHITECTURE.md` ("Structure is span-free" presents the refused model as canon), `core-nomos/ARCHITECTURE.md` (relabels 1,892-line `generation.rs` as "the emission boundary", a license to bypass the no-strings rule), `sema-storage/ARCHITECTURE.md` and `ethos-engine/ARCHITECTURE.md`/`AGENTS.md` (overruled central-daemon law).
+  - Proposed: **Poisoned documents — correct before subagents read them:** `raw-discovery/ARCHITECTURE.md` ("Structure is span-free" presents the refused model as canon), `core-nomos/ARCHITECTURE.md` (relabels 1,892-line `generation.rs` as "the emission boundary", a license to bypass the no-strings rule), `memory-storage/ARCHITECTURE.md` and `ethos-engine/ARCHITECTURE.md`/`AGENTS.md` (overruled central-daemon law).
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Spirit port after the gate passes; approve the sema-storage dissolution mechanism before its implementation, migrate storage one daemon at a time, and retire the old topology last.
+  - Proposed: Spirit port after the gate passes; approve the memory-storage dissolution mechanism before its implementation, migrate storage one daemon at a time, and retire the old topology last.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/ProtosEngineDesign-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Law-scope rulings pending with the psyche: positional-fields source-vs-wire scope, alias scope, transitive syn/quote (via rkyv/thiserror everywhere), StoreSchema compatibility tests. 18. sema-engine ARCHITECTURE.md carries "macro" usage for the unrelated redb table-descriptor generator — whether that is in scope for the transformer naming ruling is unresolved. 19.
+  - Proposed: Law-scope rulings pending with the psyche: positional-fields source-vs-wire scope, alias scope, transitive syn/quote (via rkyv/thiserror everywhere), StoreSchema compatibility tests. 18. memory-engine ARCHITECTURE.md carries "macro" usage for the unrelated redb table-descriptor generator — whether that is in scope for the transformer naming ruling is unresolved. 19.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Agent text answered: the poison-treatment agent flagged one passage it deliberately left untouched — sema-engine documentation carrying the direction-language "the schema component holds the compiled binary runtime schema", attributed to a Spirit record — because rewording quoted material risked misrepresenting it.
+  - Proposed: Agent text answered: the poison-treatment agent flagged one passage it deliberately left untouched — memory-engine documentation carrying the direction-language "the schema component holds the compiled binary runtime schema", attributed to a Spirit record — because rewording quoted material risked misrepresenting it.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: This applies to quotes about the new stack that predate the 2026-07-27 rename (the sema-engine passage first).
+  - Proposed: This applies to quotes about the new stack that predate the 2026-07-27 rename (the memory-engine passage first).
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/PsycheVisionReacquisition-2026-07-29.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Conformance Law 5 gate enforcement: structural-codec (and raw-discovery) test suites get wired into protos-engine's check-all — treated as implementation hygiene completing po1.8's own acceptance criteria, not a design lean. 9. sema-engine's "macro" wording for its unrelated redb table-descriptor generator: out of the transformer-naming ruling's scope; left as is.
+  - Proposed: Conformance Law 5 gate enforcement: structural-codec (and raw-discovery) test suites get wired into protos-engine's check-all — treated as implementation hygiene completing po1.8's own acceptance criteria, not a design lean. 9. memory-engine's "macro" wording for its unrelated redb table-descriptor generator: out of the transformer-naming ruling's scope; left as is.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Agent (Claude):** reported the implementation as it stands — one central sema-storage daemon as sole durable write authority, with the schema/nomos/logos engines as stateless socket clients — citing its ARCHITECTURE.md claim of the settled 2026-07-17 ruling "seat it centrally in sema".
+  - Proposed: **Agent (Claude):** reported the implementation as it stands — one central memory-storage daemon as sole durable write authority, with the schema/nomos/logos engines as stateless socket clients — citing its ARCHITECTURE.md claim of the settled 2026-07-17 ruling "seat it centrally in memory".
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Psyche 2026-07-27:** sema is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful
+  - Proposed: **Psyche 2026-07-27:** memory is the database of each daemon. either you are mistaken, or the implementation is. each daemon is stateful
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Psyche 2026-07-27,** of the 2026-07-17 central-in-sema ruling: which was later overruled
+  - Proposed: **Psyche 2026-07-27,** of the 2026-07-17 central-in-memory ruling: which was later overruled
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Psyche 2026-07-27:** sema is the storage engine for all our daemons, so this repo will confuse everyone with its misleading name. which means that  'seat it centrally in sema' means a separate daemon, and wasnt correctly voiced.
+  - Proposed: **Psyche 2026-07-27:** memory is the storage engine for all our daemons, so this repo will confuse everyone with its misleading name. which means that  'seat it centrally in memory' means a separate daemon, and wasnt correctly voiced.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: I shouldnt have said "in sema", since all daemon state lives in *its* sema db.
+  - Proposed: I shouldnt have said "in memory", since all daemon state lives in *its* memory db.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: There can be no sema-storage daemon, as it would overload the term sema.
+  - Proposed: There can be no memory-storage daemon, as it would overload the term memory.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Log note (log-authored, not psyche words): the durable never-re-mint / never-rebind identity-authority laws move into this daemon; the sema-storage repo cannot keep its name and its stateless-client architecture is superseded; its ARCHITECTURE.md "settled" claim is dead law.
+  - Proposed: Log note (log-authored, not psyche words): the durable never-re-mint / never-rebind identity-authority laws move into this daemon; the memory-storage repo cannot keep its name and its stateless-client architecture is superseded; its ARCHITECTURE.md "settled" claim is dead law.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: **Psyche 2026-07-27, verbatim in full:** "There's an interesting twist here, ironically, with the agent having decided on its own to call the current name component SEMA or SEMA storage.
+  - Proposed: **Psyche 2026-07-27, verbatim in full:** "There's an interesting twist here, ironically, with the agent having decided on its own to call the current name component MEMORY or MEMORY storage.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: It might actually be more appropriate than I first thought, since the idea of SEMA originally was for this perfectly typed, perfectly specified schema-based language.
+  - Proposed: It might actually be more appropriate than I first thought, since the idea of MEMORY originally was for this perfectly typed, perfectly specified schema-based language.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: But at least all of the other, or maybe anything that is a single word, maybe we have a type for that, which allows us to have a kind of dynamically assigned enum of sorts with variant names that are not strictly enums and variants in the runtime as Rust sees them, but that have limits on how they can be spelled and are stored as integers using this SEMA naming component, which would allow us to start specifying SEMA as I see it, which is bigger than just, it's not that it's bigger than a database, but it means more than just a database.
+  - Proposed: But at least all of the other, or maybe anything that is a single word, maybe we have a type for that, which allows us to have a kind of dynamically assigned enum of sorts with variant names that are not strictly enums and variants in the runtime as Rust sees them, but that have limits on how they can be spelled and are stored as integers using this MEMORY naming component, which would allow us to start specifying MEMORY as I see it, which is bigger than just, it's not that it's bigger than a database, but it means more than just a database.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: And so I'm leaning on a side of maybe not SEMA storage is not the right name.
+  - Proposed: And so I'm leaning on a side of maybe not MEMORY storage is not the right name.
+- `/git/github.com/LiGoldragon/protos-engine/design/ProtosEngine/SliceOneRulings-2026-07-27.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Maybe SEMA translator to use the noun approach that I've been trying to migrate towards.
+  - Proposed: Maybe MEMORY translator to use the noun approach that I've been trying to migrate towards.
+- `/git/github.com/LiGoldragon/protos-engine/ideas/guardedObjects-2026-08-07.md` — **current prose candidate**
+  - Current: The sealed Sema consumer trait approved for Core Ethos (bead primary-hqu.26) is the bootstrap-Rust shadow of this rule: what the sealed trait approximates inside Rust's crate system, the guardian set would state natively in the engine.
+  - Proposed: The sealed Memory consumer trait approved for Core Ethos (bead primary-hqu.26) is the bootstrap-Rust shadow of this rule: what the sealed trait approximates inside Rust's crate system, the guardian set would state natively in the engine.
+- `/git/github.com/LiGoldragon/psyche-context/vision/archive-ethos-monolith.md` — **current prose candidate**
+  - Current: Sema is the database engine, authored in ethos so the stored types are visible; it matters more than nexus, because operational editing should yield database migration operations along with the editing operation.
+  - Proposed: Memory is the database engine, authored in ethos so the stored types are visible; it matters more than nexus, because operational editing should yield database migration operations along with the editing operation.
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md` — **current prose candidate**
+  - Current: Signal's sections are queries and responses, since there is communication; Sema's are record types, the rest to be decided.
+  - Proposed: Signal's sections are queries and responses, since there is communication; Memory's are record types, the rest to be decided.
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md` — **current prose candidate**
+  - Current: Signal gives a Nexus its main types and Sema its database types.
+  - Proposed: Signal gives a Nexus its main types and Memory its database types.
+- `/git/github.com/LiGoldragon/psyche-context/vision/ethos.md` — **current prose candidate**
+  - Current: In the Signal and Sema roots the associations of the query, response and record types are implied and never written.
+  - Proposed: In the Signal and Memory roots the associations of the query, response and record types are implied and never written.
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md` — **current prose candidate**
+  - Current: The basic ontology of an actor and dataflow system is designed before implementation; signal and sema are designed against it as if new, the old code at most inspiration.
+  - Proposed: The basic ontology of an actor and dataflow system is designed before implementation; signal and memory are designed against it as if new, the old code at most inspiration.
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md` — **current prose candidate**
+  - Current: The nexus and sema documents are undesigned; when they are designed they live in the Nexus's main repository.
+  - Proposed: The nexus and memory documents are undesigned; when they are designed they live in the Nexus's main repository.
+- `/git/github.com/LiGoldragon/psyche-context/vision/nexus.md` — **current prose candidate**
+  - Current: On start it looks for its Sema database at the default location: a database that exists holds the configuration; a database created new is seeded with the defaults.
+  - Proposed: On start it looks for its Memory database at the default location: a database that exists holds the configuration; a database created new is seeded with the defaults.
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md` — **current prose candidate**
+  - Current: --- description: Sema, the database engine of a Nexus, or its record types are being designed or judged. dependencies: [vision-ethos, vision-nexus] ---
+  - Proposed: --- description: Memory, the database engine of a Nexus, or its record types are being designed or judged. dependencies: [vision-ethos, vision-nexus] ---
+- `/git/github.com/LiGoldragon/psyche-context/vision/sema.md` — **current prose candidate**
+  - Current: Sema is the database engine of a Nexus, authored in Ethos so the stored types are visible; its root, Sema, declares record types.
+  - Proposed: Memory is the database engine of a Nexus, authored in Ethos so the stored types are visible; its root, Memory, declares record types.
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md` — **current prose candidate**
+  - Current: Runtime components hold an `Engine` inside their own actors when they need Sema database-operation execution.
+  - Proposed: Runtime components hold an `Engine` inside their own actors when they need Memory database-operation execution.
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md` — **current prose candidate**
+  - Current: - `Engine` composes `sema::Sema`; it does not replace the storage kernel and does not expose raw redb access.
+  - Proposed: - `Engine` composes `memory::Memory`; it does not replace the storage kernel and does not expose raw redb access.
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md` — **current prose candidate**
+  - Current: - Component daemons consume this crate instead of opening redb directly. redb belongs behind `sema`; component-facing database files use `.sema`.
+  - Proposed: - Component daemons consume this crate instead of opening redb directly. redb belongs behind `memory`; component-facing database files use `.memory`.
+- `/git/github.com/LiGoldragon/sema-engine/AGENTS.md` — **current prose candidate**
+  - Current: - Prefer improving `sema-engine` when ethos-derived components expose a reusable storage need.
+  - Proposed: - Prefer improving `memory-engine` when ethos-derived components expose a reusable storage need.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema-engine` is the workspace's full typed database engine library.
+  - Proposed: `memory-engine` is the workspace's full typed database engine library.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: It sits between the `sema` storage kernel and state-bearing component daemons.
+  - Proposed: It sits between the `memory` storage kernel and state-bearing component daemons.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema` opens redb files, validates format/schema, and reads/writes typed rkyv tables behind the component-facing `.sema` file type.
+  - Proposed: `memory` opens redb files, validates format/schema, and reads/writes typed rkyv tables behind the component-facing `.memory` file type.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` is the exclusive database-operation boundary for state-bearing components: no component daemon makes direct redb calls, defines redb tables, runs redb transactions, or maintains its own database commit ledger.
+  - Proposed: - `memory-engine` is the exclusive database-operation boundary for state-bearing components: no component daemon makes direct redb calls, defines redb tables, runs redb transactions, or maintains its own database commit ledger.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Per Spirit fosp (Correction): Sema-engine is the exclusive interface to the database; no component daemon may make direct redb calls.
+  - Proposed: Per Spirit fosp (Correction): Memory-engine is the exclusive interface to the database; no component daemon may make direct redb calls.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The versioned operation log is the authoritative source of truth for component Sema state, and the redb store is a rebuildable materialized view folded from the log.
+  - Proposed: - The versioned operation log is the authoritative source of truth for component Memory state, and the redb store is a rebuildable materialized view folded from the log.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The admission interface is accepted direction; the concrete trait is not yet built.) - Splitting SEMA out of the daemon into its own process is a distant-future consideration that applies only if a component's database must become much larger and independently available.
+  - Proposed: The admission interface is accepted direction; the concrete trait is not yet built.) - Splitting MEMORY out of the daemon into its own process is a distant-future consideration that applies only if a component's database must become much larger and independently available.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` is a Rust library crate.
+  - Proposed: - `memory-engine` is a Rust library crate.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` does not ship a daemon binary.
+  - Proposed: - `memory-engine` does not ship a daemon binary.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` does not depend on Kameo.
+  - Proposed: - `memory-engine` does not depend on Kameo.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` does not depend on tokio.
+  - Proposed: - `memory-engine` does not depend on tokio.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` does not depend on NOTA.
+  - Proposed: - `memory-engine` does not depend on NOTA.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine` does not depend on `signal-persona-*` contract crates.
+  - Proposed: - `memory-engine` does not depend on `signal-persona-*` contract crates.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `Engine` owns a `sema::Sema` handle.
+  - Proposed: - `Engine` owns a `memory::Memory` handle.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `Engine` opens storage through `Sema::open_with_schema`.
+  - Proposed: - `Engine` opens storage through `Memory::open_with_schema`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Consumers that still have unmigrated component-local tables use `Engine::storage_reader()` rather than opening a second `sema::Sema` handle to the same `.sema` file.
+  - Proposed: - Consumers that still have unmigrated component-local tables use `Engine::storage_reader()` rather than opening a second `memory::Memory` handle to the same `.memory` file.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The storage kernel's own header and schema-version stamp (`__sema_meta`, written by `sema::Sema::open_with_schema`) is a separate, earlier kernel transaction.
+  - Proposed: The storage kernel's own header and schema-version stamp (`__memory_meta`, written by `memory::Memory::open_with_schema`) is a separate, earlier kernel transaction.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: See `sema` ARCHITECTURE §"Deletion durability".
+  - Proposed: See `memory` ARCHITECTURE §"Deletion durability".
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `Constrain`, `Project`, `Aggregate`, `Infer`, and `Recurse` are sema-engine read-plan operators, not public contract roots.
+  - Proposed: - `Constrain`, `Project`, `Aggregate`, `Infer`, and `Recurse` are memory-engine read-plan operators, not public contract roots.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The Sema classification vocabulary stays internal to engine execution and observation, off the public contract wire.
+  - Proposed: - The Memory classification vocabulary stays internal to engine execution and observation, off the public contract wire.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The six words (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`) are how the engine classifies an operation internally; a component's public contract roots are domain verbs, and the daemon derives the Sema class from the dispatched request.
+  - Proposed: The six words (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`) are how the engine classifies an operation internally; a component's public contract roots are domain verbs, and the daemon derives the Memory class from the dispatched request.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The versioned log is stored in the same `.sema` file as table state.
+  - Proposed: - The versioned log is stored in the same `.memory` file as table state.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Network transport, remote acknowledgement policy, and server-side retention are not part of `sema-engine`.
+  - Proposed: Network transport, remote acknowledgement policy, and server-side retention are not part of `memory-engine`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `DatabaseMarker` is the compact observed database boundary: `CommitSequence` plus `SnapshotIdentifier`.
+  - Proposed: - `DatabaseMarker` is the compact observed database boundary: `CommitSequence` plus `SnapshotIdentifier`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Write receipts expose their committed `DatabaseMarker`.
+  - Proposed: - Write receipts expose their committed `DatabaseMarker`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `QuerySnapshot` carries the `DatabaseMarker` observed from the same closure-scoped read transaction as the returned rows.
+  - Proposed: - `QuerySnapshot` carries the `DatabaseMarker` observed from the same closure-scoped read transaction as the returned rows.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `ValidationReceipt` carries the observed `DatabaseMarker` and record count.
+  - Proposed: - `ValidationReceipt` carries the observed `DatabaseMarker` and record count.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema-engine` deliberately knows nothing about Persona routing, terminal delivery, auth sockets, or human text.
+  - Proposed: `memory-engine` deliberately knows nothing about Persona routing, terminal delivery, auth sockets, or human text.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Short headers are universal across both surfaces: the wire (signal) and the engine (sema).
+  - Proposed: Short headers are universal across both surfaces: the wire (signal) and the engine (memory).
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Just as the signal side carries an 8-enum 64-bit short header per message, every sema-engine operation — executor dispatch, read-plan lowering, command dispatch, and database reads/writes — carries the same 8-enum 64-bit short-header structure, with a sema-specific root and sub-enum vocabulary rather than the signal verbs.
+  - Proposed: Just as the signal side carries an 8-enum 64-bit short header per message, every memory-engine operation — executor dispatch, read-plan lowering, command dispatch, and database reads/writes — carries the same 8-enum 64-bit short-header structure, with a memory-specific root and sub-enum vocabulary rather than the signal verbs.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The two headers (signal-header and sema-header) use the same macro machinery but route to different paths.
+  - Proposed: The two headers (signal-header and memory-header) use the same macro machinery but route to different paths.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Tap-anywhere observability therefore extends to sema-side operations identically to the signal side: a tap can read the header at any engine operation without decoding the payload.
+  - Proposed: Tap-anywhere observability therefore extends to memory-side operations identically to the signal side: a tap can read the header at any engine operation without decoding the payload.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Per Spirit duis. (Accepted direction; the sema-header type is not yet emitted.)
+  - Proposed: Per Spirit duis. (Accepted direction; the memory-header type is not yet emitted.)
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This proves the layering: registered record family, single-operation `Assert` / `Mutate` / `Retract`, structural multi-operation `commit`, `Match`, `Validate`, executable `ReadPlan` nodes for all/key/range reads and typed `Filter`, typed query-algebra nodes for future constrain/project/aggregate/infer/recurse execution, typed rkyv values, commit-log cursor, bounded log replay, optional payload-bearing version replay, table introspection, best-effort post-commit subscription delivery for write operations, and durable storage through `sema`.
+  - Proposed: This proves the layering: registered record family, single-operation `Assert` / `Mutate` / `Retract`, structural multi-operation `commit`, `Match`, `Validate`, executable `ReadPlan` nodes for all/key/range reads and typed `Filter`, typed query-algebra nodes for future constrain/project/aggregate/infer/recurse execution, typed rkyv values, commit-log cursor, bounded log replay, optional payload-bearing version replay, table introspection, best-effort post-commit subscription delivery for write operations, and durable storage through `memory`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The receipt lands under its change identity in `__sema_engine_change_receipts` in the same write transaction as the row, the log entries and the counters, so a receipt exists exactly when the change is durable.
+  - Proposed: The receipt lands under its change identity in `__memory_engine_change_receipts` in the same write transaction as the row, the log entries and the counters, so a receipt exists exactly when the change is durable.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The storage-kernel schema-version stamp (`__sema_meta`) is a separate, kernel-owned concern.
+  - Proposed: The storage-kernel schema-version stamp (`__memory_meta`) is a separate, kernel-owned concern.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: When a component daemon receives a mirrored write during the handover window those raw bytes do **not** enter the sema-engine-managed typed tables directly.
+  - Proposed: When a component daemon receives a mirrored write during the handover window those raw bytes do **not** enter the memory-engine-managed typed tables directly.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This keeps the typed database invariant intact: every record in sema-engine's tables has gone through a typed shape known to the receiver's signal-X library.
+  - Proposed: This keeps the typed database invariant intact: every record in memory-engine's tables has gone through a typed shape known to the receiver's signal-X library.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Per-component daemons consume this crate by declaring their storage types in a dedicated per-component schema document — the `sema.schema` document kind (existing usage: `orchestrate/schema/sema.schema`, `spirit/schema/sema.schema`, each generated into `src/schema/sema.rs`) — from which the macro emits the redb table descriptors that bind those storage types into `Engine`.
+  - Proposed: Per-component daemons consume this crate by declaring their storage types in a dedicated per-component schema document — the `memory.schema` document kind (existing usage: `orchestrate/schema/memory.schema`, `spirit/schema/memory.schema`, each generated into `src/schema/memory.rs`) — from which the macro emits the redb table descriptors that bind those storage types into `Engine`.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: **Integration target:** typed database engine; the macro emits sema-engine table descriptors from the storage-type declarations in a component's `sema.schema` document.
+  - Proposed: **Integration target:** typed database engine; the macro emits memory-engine table descriptors from the storage-type declarations in a component's `memory.schema` document.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The `sema.schema` document kind is the settled declaration surface; the schema-language architecture records it as a distinct document kind whose file kind fixes the storage-declaration root type (see that repository's "Schema document kinds").
+  - Proposed: The `memory.schema` document kind is the settled declaration surface; the schema-language architecture records it as a distinct document kind whose file kind fixes the storage-declaration root type (see that repository's "Schema document kinds").
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The successor identity basis for stored records is not yet chosen; it is pending the same `sema.schema` document-kind design session.
+  - Proposed: The successor identity basis for stored records is not yet chosen; it is pending the same `memory.schema` document-kind design session.
+- `/git/github.com/LiGoldragon/sema-engine/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The macro-pattern upgrade — named `schema-engine` here before that repo was renamed `ethos-engine` on 2026-07-27 (S1R entry 7) — replaces those hand-written declarations with macro-emitted descriptors derived from the component's `sema.schema` document, and the surviving hand-written paths are drift to be eliminated as each component converts.
+  - Proposed: The macro-pattern upgrade — named `schema-engine` here before that repo was renamed `ethos-engine` on 2026-07-27 (S1R entry 7) — replaces those hand-written declarations with macro-emitted descriptors derived from the component's `memory.schema` document, and the surviving hand-written paths are drift to be eliminated as each component converts.
+- `/git/github.com/LiGoldragon/sema-engine/README.md` — **current prose candidate**
+  - Current: It executes typed database verbs over component-owned `.sema` files.
+  - Proposed: It executes typed database verbs over component-owned `.memory` files.
+- `/git/github.com/LiGoldragon/sema-engine/README.md` — **current prose candidate**
+  - Current: Query-algebra operators `Constrain`, `Project`, `Aggregate`, `Infer`, and `Recurse` live here as typed plan nodes and return a typed `UnsupportedReadPlan` error until execution semantics land.
+  - Proposed: Query-algebra operators `Constrain`, `Project`, `Aggregate`, `Infer`, and `Recurse` live here as typed plan nodes and return a typed `UnsupportedReadPlan` error until execution memoryntics land.
+- `/git/github.com/LiGoldragon/sema-engine/UPGRADES.md` — **current prose candidate**
+  - Current: New, additive: `Memorable` and `MemoryChanges::change` / `change_receipt` give a record a typed change with a three-branch outcome and durable receipts under a caller-chosen `ChangeIdentifier`, stored in the new internal table `__sema_engine_change_receipts`.
+  - Proposed: New, additive: `Memorable` and `MemoryChanges::change` / `change_receipt` give a record a typed change with a three-branch outcome and durable receipts under a caller-chosen `ChangeIdentifier`, stored in the new internal table `__memory_engine_change_receipts`.
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: { description = "sema-engine — typed database verb engine over sema";
+  - Proposed: { description = "memory-engine — typed database verb engine over memory";
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: outputs = { self, nixpkgs, flake-utils, fenix, crane }: flake-utils.lib.eachDefaultSystem (system: let pkgs = import nixpkgs { inherit system; }; toolchain = fenix.packages.${system}.stable.withComponents [ "cargo" "rustc" "rustfmt" "clippy" "rust-analyzer" "rust-src" ]; craneLib = (crane.mkLib pkgs).overrideToolchain toolchain; repoContextFile = path: _type: builtins.elem (baseNameOf path) [ "AGENTS.md" "ARCHITECTURE.md" "skills.md" ]; schemaRoot = toString ./schema; protosSource = path: _type: let candidate = toString path; in candidate == schemaRoot || pkgs.lib.hasPrefix "${schemaRoot}/" candidate; src = pkgs.lib.cleanSourceWith { src = ./.; filter = path: type: (craneLib.filterCargoSources path type) }; commonArgs = { inherit src; strictDeps = true; }; cargoArtifacts = craneLib.buildDepsOnly commonArgs; scriptApplication = name: script: pkgs.writeShellApplication { name = "sema-engine-${name}"; runtimeInputs = [ toolchain ]; text = '' exec "${script}" "$@" ''; }; testScript = scriptApplication "test" ./scripts/test; testDependencyBoundaryScript = scriptApplication "test-dependency-boundary" ./scripts/test-dependency-boundary; testEngineScript = scriptApplication "test-engine" ./scripts/test-engine; testOperationLogScript = scriptApplication "test-operation-log" ./scripts/test-operation-log; testSubscriptionsScript = scriptApplication "test-subscriptions" ./scripts/test-subscriptions; in { packages = { default = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+  - Proposed: outputs = { self, nixpkgs, flake-utils, fenix, crane }: flake-utils.lib.eachDefaultSystem (system: let pkgs = import nixpkgs { inherit system; }; toolchain = fenix.packages.${system}.stable.withComponents [ "cargo" "rustc" "rustfmt" "clippy" "rust-analyzer" "rust-src" ]; craneLib = (crane.mkLib pkgs).overrideToolchain toolchain; repoContextFile = path: _type: builtins.elem (baseNameOf path) [ "AGENTS.md" "ARCHITECTURE.md" "skills.md" ]; schemaRoot = toString ./schema; protosSource = path: _type: let candidate = toString path; in candidate == schemaRoot || pkgs.lib.hasPrefix "${schemaRoot}/" candidate; src = pkgs.lib.cleanSourceWith { src = ./.; filter = path: type: (craneLib.filterCargoSources path type) }; commonArgs = { inherit src; strictDeps = true; }; cargoArtifacts = craneLib.buildDepsOnly commonArgs; scriptApplication = name: script: pkgs.writeShellApplication { name = "memory-engine-${name}"; runtimeInputs = [ toolchain ]; text = '' exec "${script}" "$@" ''; }; testScript = scriptApplication "test" ./scripts/test; testDependencyBoundaryScript = scriptApplication "test-dependency-boundary" ./scripts/test-dependency-boundary; testEngineScript = scriptApplication "test-engine" ./scripts/test-engine; testOperationLogScript = scriptApplication "test-operation-log" ./scripts/test-operation-log; testSubscriptionsScript = scriptApplication "test-subscriptions" ./scripts/test-subscriptions; in { packages = { default = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: apps = { default = { type = "app"; program = "${testScript}/bin/sema-engine-test"; meta.description = "Run sema-engine's full test suite"; };
+  - Proposed: apps = { default = { type = "app"; program = "${testScript}/bin/memory-engine-test"; meta.description = "Run memory-engine's full test suite"; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: test = { type = "app"; program = "${testScript}/bin/sema-engine-test"; meta.description = "Run sema-engine's full test suite"; };
+  - Proposed: test = { type = "app"; program = "${testScript}/bin/memory-engine-test"; meta.description = "Run memory-engine's full test suite"; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: test-dependency-boundary = { type = "app"; program = "${testDependencyBoundaryScript}/bin/sema-engine-test-dependency-boundary"; meta.description = "Run sema-engine's architectural dependency witnesses"; };
+  - Proposed: test-dependency-boundary = { type = "app"; program = "${testDependencyBoundaryScript}/bin/memory-engine-test-dependency-boundary"; meta.description = "Run memory-engine's architectural dependency witnesses"; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: test-engine = { type = "app"; program = "${testEngineScript}/bin/sema-engine-test-engine"; meta.description = "Run sema-engine's registered-record execution witnesses"; };
+  - Proposed: test-engine = { type = "app"; program = "${testEngineScript}/bin/memory-engine-test-engine"; meta.description = "Run memory-engine's registered-record execution witnesses"; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: test-operation-log = { type = "app"; program = "${testOperationLogScript}/bin/sema-engine-test-operation-log"; meta.description = "Run sema-engine's operation-log and snapshot cursor witnesses"; };
+  - Proposed: test-operation-log = { type = "app"; program = "${testOperationLogScript}/bin/memory-engine-test-operation-log"; meta.description = "Run memory-engine's operation-log and snapshot cursor witnesses"; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: test-subscriptions = { type = "app"; program = "${testSubscriptionsScript}/bin/sema-engine-test-subscriptions"; meta.description = "Run sema-engine's subscription delivery witnesses"; }; };
+  - Proposed: test-subscriptions = { type = "app"; program = "${testSubscriptionsScript}/bin/memory-engine-test-subscriptions"; meta.description = "Run memory-engine's subscription delivery witnesses"; }; };
+- `/git/github.com/LiGoldragon/sema-engine/flake.nix` — **current prose candidate**
+  - Current: devShells.default = pkgs.mkShell { name = "sema-engine"; packages = [ pkgs.jujutsu pkgs.pkg-config toolchain ]; }; } ); }
+  - Proposed: devShells.default = pkgs.mkShell { name = "memory-engine"; packages = [ pkgs.jujutsu pkgs.pkg-config toolchain ]; }; } ); }
+- `/git/github.com/LiGoldragon/sema-engine/skills.md` — **current prose candidate**
+  - Current: - Keep redb behind the `sema` kernel.
+  - Proposed: - Keep redb behind the `memory` kernel.
+- `/git/github.com/LiGoldragon/sema-engine/skills.md` — **current prose candidate**
+  - Current: Engine consumers open `.sema` files through `EngineOpen`; they do not import redb.
+  - Proposed: Engine consumers open `.memory` files through `EngineOpen`; they do not import redb.
+- `/git/github.com/LiGoldragon/sema-engine/skills.md` — **current prose candidate**
+  - Current: - Use domain-keyed tables for records with stable semantic keys and identified tables for ethos contracts that need engine-assigned numeric record identifiers.
+  - Proposed: - Use domain-keyed tables for records with stable memoryntic keys and identified tables for ethos contracts that need engine-assigned numeric record identifiers.
+- `/git/github.com/LiGoldragon/sema-storage/AGENTS.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Treat this repository's central Signal → Nexus → SEMA actor and socket topology as wired legacy behavior, not design law.
+  - Proposed: Treat this repository's central Signal → Nexus → MEMORY actor and socket topology as wired legacy behavior, not design law.
+- `/git/github.com/LiGoldragon/sema-storage/AGENTS.md` — **current prose candidate**
+  - Current: The approved target has each component daemon owning its own embedded sema database.
+  - Proposed: The approved target has each component daemon owning its own embedded memory database.
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Requests traverse state-bearing Kameo actors in Signal → Nexus → SEMA order; SEMA owns one `sema_engine::Engine`, and Nexus fans committed changes to push subscribers.
+  - Proposed: Requests traverse state-bearing Kameo actors in Signal → Nexus → MEMORY order; MEMORY owns one `memory_engine::Engine`, and Nexus fans committed changes to push subscribers.
+- `/git/github.com/LiGoldragon/sema-storage/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The approved target has every component daemon stateful and owning its own embedded sema database.
+  - Proposed: The approved target has every component daemon stateful and owning its own embedded memory database.
+- `/git/github.com/LiGoldragon/sema-translator/AGENTS.md` — **current prose candidate**
+  - Current: Runtime execution belongs to `sema-engine`.
+  - Proposed: Runtime execution belongs to `memory-engine`.
+- `/git/github.com/LiGoldragon/sema-translator/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The later persistence owner performs the atomic durable transition; `sema-engine` owns runtime execution.
+  - Proposed: The later persistence owner performs the atomic durable transition; `memory-engine` owns runtime execution.
+- `/git/github.com/LiGoldragon/sema-translator/README.md` — **current prose candidate**
+  - Current: Runtime execution and persistence belong to `sema-engine`; this repository contains no engine, actor, database, daemon, store, socket, or wire service.
+  - Proposed: Runtime execution and persistence belong to `memory-engine`; this repository contains no engine, actor, database, daemon, store, socket, or wire service.
+- `/git/github.com/LiGoldragon/sema/AGENTS.md` — **current prose candidate**
+  - Current: Sema opens redb files with an explicit schema, guards the rkyv database format, and provides typed `Table<K, V>` access over rkyv-archived values.
+  - Proposed: Memory opens redb files with an explicit schema, guards the rkyv database format, and provides typed `Table<K, V>` access over rkyv-archived values.
+- `/git/github.com/LiGoldragon/sema/AGENTS.md` — **current prose candidate**
+  - Current: Sema is not Criome's records engine and does not own Persona runtime state.
+  - Proposed: Memory is not Criome's records engine and does not own Persona runtime state.
+- `/git/github.com/LiGoldragon/sema/AGENTS.md` — **current prose candidate**
+  - Current: Full database-operation execution lives in `sema-engine`.
+  - Proposed: Full database-operation execution lives in `memory-engine`.
+- `/git/github.com/LiGoldragon/sema/AGENTS.md` — **current prose candidate**
+  - Current: - **No schema-less open.** Durable state opens through `Sema::open_with_schema(path, schema)`.
+  - Proposed: - **No schema-less open.** Durable state opens through `Memory::open_with_schema(path, schema)`.
+- `/git/github.com/LiGoldragon/sema/AGENTS.md` — **current prose candidate**
+  - Current: - **No Criome read-pool config.** Criome runtime tuning belongs to Criome; `reader_count` is not a sema kernel concept.
+  - Proposed: - **No Criome read-pool config.** Criome runtime tuning belongs to Criome; `reader_count` is not a memory kernel concept.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Sema is the workspace's typed storage kernel.
+  - Proposed: Memory is the workspace's typed storage kernel.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Sema is to state what `signal-core` is to wire: the small kernel of primitives that higher layers build on.
+  - Proposed: Memory is to state what `signal-core` is to wire: the small kernel of primitives that higher layers build on.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Full database-operation execution lives in `sema-engine`, not in this crate.
+  - Proposed: Full database-operation execution lives in `memory-engine`, not in this crate.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The persistent typed-record store is named the **SEMA database** — not RAD or other nicknames.
+  - Proposed: The persistent typed-record store is named the **MEMORY database** — not RAD or other nicknames.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Sema is the workspace's pure binary domain-tree format; the redb-persisted records are conceptually a sema database.
+  - Proposed: Memory is the workspace's pure binary domain-tree format; the redb-persisted records are conceptually a memory database.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: > **Scope.** Today's `sema` is the Rust-on-redb storage kernel.
+  - Proposed: > **Scope.** Today's `memory` is the Rust-on-redb storage kernel.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Today's `sema` is a realization > step.
+  - Proposed: Today's `memory` is a realization > step.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The eventual versioning model — schema as content- > addressed Sema source, components carrying multiple versions > in runtime, translation as reducer work — is named in the > Versioning section below as **future work, not first-prototype > work**.
+  - Proposed: The eventual versioning model — schema as content- > addressed Memory source, components carrying multiple versions > in runtime, translation as reducer work — is named in the > Versioning section below as **future work, not first-prototype > work**.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The redb file lifecycle: create parent directories, open or create the file, create sema-owned internal tables.
+  - Proposed: - The redb file lifecycle: create parent directories, open or create the file, create memory-owned internal tables.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The database header guard: the file records Sema's rkyv format identity and refuses incompatible builds.
+  - Proposed: - The database header guard: the file records Memory's rkyv format identity and refuses incompatible builds.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - The schema-version guard: `Sema::open_with_schema(path, schema)` writes the schema on first open and hard-fails on mismatch.
+  - Proposed: - The schema-version guard: `Memory::open_with_schema(path, schema)` writes the schema on first open and hard-fails on mismatch.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Public transaction type aliases: consumers name `sema::ReadTransaction` / `sema::WriteTransaction`, not `redb` transaction types directly, so higher layers can type local table reducers without adding their own `redb` dependency.
+  - Proposed: - Public transaction type aliases: consumers name `memory::ReadTransaction` / `memory::WriteTransaction`, not `redb` transaction types directly, so higher layers can type local table reducers without adding their own `redb` dependency.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Database-operation execution through `sema-engine`.
+  - Proposed: - Database-operation execution through `memory-engine`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema-engine` may depend on `sema`.
+  - Proposed: `memory-engine` may depend on `memory`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema` must not depend on `sema-engine`, Signal contracts, Kameo, tokio, NOTA, Nexus, Persona, or Criome.
+  - Proposed: `memory` must not depend on `memory-engine`, Signal contracts, Kameo, tokio, NOTA, Nexus, Persona, or Criome.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Sema does not own:
+  - Proposed: Memory does not own:
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: If a future engine needs append-only identity or sequence allocation, that lands as a typed `sema-engine` primitive with its own records and witnesses, not as a raw storage surface in `sema`.
+  - Proposed: If a future engine needs append-only identity or sequence allocation, that lands as a typed `memory-engine` primitive with its own records and witnesses, not as a raw storage surface in `memory`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema opens durable state only through `Sema::open_with_schema(path, schema)`.
+  - Proposed: - Memory opens durable state only through `Memory::open_with_schema(path, schema)`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema stores typed rkyv values through typed tables.
+  - Proposed: - Memory stores typed rkyv values through typed tables.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema has no schema-less public open path.
+  - Proposed: - Memory has no schema-less public open path.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema has no raw byte store API.
+  - Proposed: - Memory has no raw byte store API.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema has no Criome read-pool configuration API.
+  - Proposed: - Memory has no Criome read-pool configuration API.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema internal table names use the `__sema_` prefix.
+  - Proposed: - Memory internal table names use the `__memory_` prefix.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Sema-owned internal tables are limited to kernel metadata and database headers.
+  - Proposed: - Memory-owned internal tables are limited to kernel metadata and database headers.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Component table names must not use the `__sema_` prefix.
+  - Proposed: - Component table names must not use the `__memory_` prefix.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Record Rust types live in Signal contract crates or component domain crates, not in sema.
+  - Proposed: - Record Rust types live in Signal contract crates or component domain crates, not in memory.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Runtime ordering, actor mailboxes, commit-before-effect policy, and subscriptions belong to the consuming component or to `sema-engine`.
+  - Proposed: - Runtime ordering, actor mailboxes, commit-before-effect policy, and subscriptions belong to the consuming component or to `memory-engine`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This was confirmed empirically against a sema consumer (the persona-spirit intent store).
+  - Proposed: This was confirmed empirically against a memory consumer (the persona-spirit intent store).
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `sema-engine`'s `Retract` verb inherits this: a retracted record is unrecoverable from the file once later commits reclaim its pages.
+  - Proposed: - `memory-engine`'s `Retract` verb inherits this: a retracted record is unrecoverable from the file once later commits reclaim its pages.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Recoverable deletion, where wanted, is a deliberate higher-layer feature — a typed `sema-engine` tombstone/archive record, or a transaction-coherent copy via redb's backup API or a filesystem copy-on-write snapshot — never an implicit property of the store.
+  - Proposed: - Recoverable deletion, where wanted, is a deliberate higher-layer feature — a typed `memory-engine` tombstone/archive record, or a transaction-coherent copy via redb's backup API or a filesystem copy-on-write snapshot — never an implicit property of the store.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The archive itself is a specialized sema-database holding exactly one kind of archived object — the database name states what it archives — paired with a small archive-retrieving tool.
+  - Proposed: The archive itself is a specialized memory-database holding exactly one kind of archived object — the database name states what it archives — paired with a small archive-retrieving tool.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema-engine`'s `CollectRemovalCandidates` archives the records it collects to a default archive surface before hot-store removal, with typed retrieval rather than ad-hoc caller files; when composite intent retires its source records, the sources are archived and referenced by hash identity from the composite so provenance survives.
+  - Proposed: `memory-engine`'s `CollectRemovalCandidates` archives the records it collects to a default archive surface before hot-store removal, with typed retrieval rather than ad-hoc caller files; when composite intent retires its source records, the sources are archived and referenced by hash identity from the composite so provenance survives.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Internal Sema tables:
+  - Proposed: Internal Memory tables:
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - `__sema_headers` - `__sema_meta`
+  - Proposed: - `__memory_headers` - `__memory_meta`
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: - `sema_does_not_export_slot` - `sema_does_not_export_legacy_slot_store` - `sema_does_not_export_reader_count` - schema mismatch hard-fails at open - database format mismatch hard-fails at open - typed table scans return owned keys and values - write transactions roll back on typed errors
+  - Proposed: - `memory_does_not_export_slot` - `memory_does_not_export_legacy_slot_store` - `memory_does_not_export_reader_count` - schema mismatch hard-fails at open - database format mismatch hard-fails at open - typed table scans return owned keys and values - write transactions roll back on typed errors
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Package A of the sema / sema-engine split has **landed**: this crate is the cleaned storage kernel (no `Slot`, no legacy raw-byte store, no `reader_count`, no schema-less open).
+  - Proposed: Package A of the memory / memory-engine split has **landed**: this crate is the cleaned storage kernel (no `Slot`, no legacy raw-byte store, no `reader_count`, no schema-less open).
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: `sema-engine` has been created as a sibling library-only repository and is in active development; the first consumer migration (persona-mind) is in flight.
+  - Proposed: `memory-engine` has been created as a sibling library-only repository and is in active development; the first consumer migration (persona-mind) is in flight.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Ongoing work for this crate is bounded: respond to engine-side discoveries that require kernel changes (per `~/primary/ARCHITECTURE.md` §"Workspace vision and intent" — `sema` may break to make the engine substrate beautiful).
+  - Proposed: Ongoing work for this crate is bounded: respond to engine-side discoveries that require kernel changes (per `~/primary/ARCHITECTURE.md` §"Workspace vision and intent" — `memory` may break to make the engine substrate beautiful).
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Most active development lives in `sema-engine`.
+  - Proposed: Most active development lives in `memory-engine`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Today, schema versioning is **manual**: `Sema::open_with_schema` takes an explicit `SchemaVersion` constant; the file records that version on first open and hard-fails on subsequent mismatches.
+  - Proposed: Today, schema versioning is **manual**: `Memory::open_with_schema` takes an explicit `SchemaVersion` constant; the file records that version on first open and hard-fails on subsequent mismatches.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - A schema is identified by the hash of its Sema source.
+  - Proposed: - A schema is identified by the hash of its Memory source.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - Migration becomes a **reducer**: a typed Sema function from v3-records to v4-records.
+  - Proposed: - Migration becomes a **reducer**: a typed Memory function from v3-records to v4-records.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The content-addressed model above resolves into a concrete migration design at the `sema-engine` / contract layer that the kernel serves.
+  - Proposed: The content-addressed model above resolves into a concrete migration design at the `memory-engine` / contract layer that the kernel serves.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Upgrades are typed SEMA operations.** A protocol or database-format change is itself a typed operation/message applied as database work, and that same operation is the source for derived datatype and upgrade/compatibility code.
+  - Proposed: - **Upgrades are typed MEMORY operations.** A protocol or database-format change is itself a typed operation/message applied as database work, and that same operation is the source for derived datatype and upgrade/compatibility code.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The facts below are system-level direction — they live in `sema-engine` and its supporting libraries, not in this kernel — but they fix what the typed-table storage underneath must serve.
+  - Proposed: The facts below are system-level direction — they live in `memory-engine` and its supporting libraries, not in this kernel — but they fix what the typed-table storage underneath must serve.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Native version-controlled durability.** Component Sema databases (each component's durable daemon state) get native version-controlled, server-backed atomic durability with no state loss, built once as a reusable library of generic types and traits every component opts into.
+  - Proposed: - **Native version-controlled durability.** Component Memory databases (each component's durable daemon state) get native version-controlled, server-backed atomic durability with no state loss, built once as a reusable library of generic types and traits every component opts into.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Full distributed-version-control semantics.** The system supports branching, forking, rebasing, and merging over the typed database, with per-component customizable intake, merge, and rebase policy: a default implementation plus a per-component override.
+  - Proposed: - **Full distributed-version-control memoryntics.** The system supports branching, forking, rebasing, and merging over the typed database, with per-component customizable intake, merge, and rebase policy: a default implementation plus a per-component override.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: - **Operation log is authoritative; redb is a materialized view.** The versioned operation log is the authoritative source of truth for component Sema state, and the redb store becomes a rebuildable materialized view folded from the log.
+  - Proposed: - **Operation log is authoritative; redb is a materialized view.** The versioned operation log is the authoritative source of truth for component Memory state, and the redb store becomes a rebuildable materialized view folded from the log.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Its own state is itself a sema-engine store.
+  - Proposed: Its own state is itself a memory-engine store.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: **Role:** this crate is the storage kernel — the typed-value substrate `sema-engine` builds upon.
+  - Proposed: **Role:** this crate is the storage kernel — the typed-value substrate `memory-engine` builds upon.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Component schemas never reference `sema` directly; they reference `sema-engine`, which composes this kernel under the hood.
+  - Proposed: Component schemas never reference `memory` directly; they reference `memory-engine`, which composes this kernel under the hood.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: **Integration target:** storage kernel; consumed by `sema-engine`.
+  - Proposed: **Integration target:** storage kernel; consumed by `memory-engine`.
+- `/git/github.com/LiGoldragon/sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The macro-emitted storage descriptors call into `sema-engine`'s typed-table API, which in turn calls into this kernel's typed-value primitives.
+  - Proposed: The macro-emitted storage descriptors call into `memory-engine`'s typed-table API, which in turn calls into this kernel's typed-value primitives.
+- `/git/github.com/LiGoldragon/sema/README.md` — **current prose candidate**
+  - Current: The sema database kernel: typed, version-guarded table access over [redb](https://github.com/cberner/redb) with rkyv-archived Rust values.
+  - Proposed: The memory database kernel: typed, version-guarded table access over [redb](https://github.com/cberner/redb) with rkyv-archived Rust values.
+- `/git/github.com/LiGoldragon/sema/README.md` — **current prose candidate**
+  - Current: The typed-kernel surface stores a Sema database header alongside the schema version, so each database records the rkyv format identity it was written with.
+  - Proposed: The typed-kernel surface stores a Memory database header alongside the schema version, so each database records the rkyv format identity it was written with.
+- `/git/github.com/LiGoldragon/sema/README.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Reference material for future direction; current implementation is the pseudo-sema layer above.
+  - Proposed: Reference material for future direction; current implementation is the pseudo-memory layer above.
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: { description = "sema — workspace typed-database kernel (redb + rkyv + version-skew guard)";
+  - Proposed: { description = "memory — workspace typed-database kernel (redb + rkyv + version-skew guard)";
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **retain historical/quoted evidence; do not edit**
+  - Current: inherit (rust) craneLib toolchain; src = rust.cleanCargoSource ./.; commonArgs = { inherit src; strictDeps = true; }; cargoArtifacts = craneLib.buildDepsOnly commonArgs; scriptApplication = name: script: pkgs.writeShellApplication { name = "sema-${name}"; runtimeInputs = [ toolchain ]; text = '' exec "${script}" "$@" ''; }; testScript = scriptApplication "test" ./scripts/test; testDocScript = scriptApplication "test-doc" ./scripts/test-doc; testKernelSurfaceScript = scriptApplication "test-kernel-surface" ./scripts/test-kernel-surface; testNoLegacySurfaceScript = scriptApplication "test-no-legacy-surface" ./scripts/test-no-legacy-surface; in { packages = { default = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+  - Proposed: inherit (rust) craneLib toolchain; src = rust.cleanCargoSource ./.; commonArgs = { inherit src; strictDeps = true; }; cargoArtifacts = craneLib.buildDepsOnly commonArgs; scriptApplication = name: script: pkgs.writeShellApplication { name = "memory-${name}"; runtimeInputs = [ toolchain ]; text = '' exec "${script}" "$@" ''; }; testScript = scriptApplication "test" ./scripts/test; testDocScript = scriptApplication "test-doc" ./scripts/test-doc; testKernelSurfaceScript = scriptApplication "test-kernel-surface" ./scripts/test-kernel-surface; testNoLegacySurfaceScript = scriptApplication "test-no-legacy-surface" ./scripts/test-no-legacy-surface; in { packages = { default = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: apps = { default = { type = "app"; program = "${testScript}/bin/sema-test"; meta.description = "Run sema's full test suite"; };
+  - Proposed: apps = { default = { type = "app"; program = "${testScript}/bin/memory-test"; meta.description = "Run memory's full test suite"; };
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: test = { type = "app"; program = "${testScript}/bin/sema-test"; meta.description = "Run sema's full test suite"; };
+  - Proposed: test = { type = "app"; program = "${testScript}/bin/memory-test"; meta.description = "Run memory's full test suite"; };
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: test-doc = { type = "app"; program = "${testDocScript}/bin/sema-test-doc"; meta.description = "Run sema's documentation tests"; };
+  - Proposed: test-doc = { type = "app"; program = "${testDocScript}/bin/memory-test-doc"; meta.description = "Run memory's documentation tests"; };
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: test-kernel-surface = { type = "app"; program = "${testKernelSurfaceScript}/bin/sema-test-kernel-surface"; meta.description = "Run sema's typed-kernel integration tests"; };
+  - Proposed: test-kernel-surface = { type = "app"; program = "${testKernelSurfaceScript}/bin/memory-test-kernel-surface"; meta.description = "Run memory's typed-kernel integration tests"; };
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **retain historical/quoted evidence; do not edit**
+  - Current: test-no-legacy-surface = { type = "app"; program = "${testNoLegacySurfaceScript}/bin/sema-test-no-legacy-surface"; meta.description = "Run sema's retired-surface absence witnesses"; }; };
+  - Proposed: test-no-legacy-surface = { type = "app"; program = "${testNoLegacySurfaceScript}/bin/memory-test-no-legacy-surface"; meta.description = "Run memory's retired-surface absence witnesses"; }; };
+- `/git/github.com/LiGoldragon/sema/flake.nix` — **current prose candidate**
+  - Current: devShells.default = pkgs.mkShell { name = "sema"; packages = [ pkgs.jujutsu pkgs.pkg-config toolchain ]; }; } ); }
+  - Proposed: devShells.default = pkgs.mkShell { name = "memory"; packages = [ pkgs.jujutsu pkgs.pkg-config toolchain ]; }; } ); }
+- `/git/github.com/LiGoldragon/sema/reference/Vision.md` — **current prose candidate**
+  - Current: For implementation detail see the per-repo `ARCHITECTURE.md` files (criome, signal, nexus, sema, forge) and the open design questions in `workspace/reports/`.
+  - Proposed: For implementation detail see the per-repo `ARCHITECTURE.md` files (criome, signal, nexus, memory, forge) and the open design questions in `workspace/reports/`.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema is the **workspace's typed-database kernel**. redb-backed; values are rkyv-archived; tables are typed and version-guarded.
+  - Proposed: Memory is the **workspace's typed-database kernel**. redb-backed; values are rkyv-archived; tables are typed and version-guarded.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Each ecosystem layers its own typed tables atop sema in a state-owning component.
+  - Proposed: Each ecosystem layers its own typed tables atop memory in a state-owning component.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Do not assume a broad `persona-sema` component exists.
+  - Proposed: Do not assume a broad `persona-memory` component exists.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema is to **state** what `signal-core` is to **wire**: the kernel of typed primitives every consumer's typed layer depends on.
+  - Proposed: Memory is to **state** what `signal-core` is to **wire**: the kernel of typed primitives every consumer's typed layer depends on.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Read `ARCHITECTURE.md` for the role/boundaries summary: what sema (the kernel) owns, what each consumer-owned typed Sema layer owns, and the surface each side has.
+  - Proposed: Read `ARCHITECTURE.md` for the role/boundaries summary: what memory (the kernel) owns, what each consumer-owned typed Memory layer owns, and the surface each side has.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: **Sema is meant to become impossible to improve as a storage kernel.**
+  - Proposed: **Memory is meant to become impossible to improve as a storage kernel.**
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: > *"I am much more interested in a good design than in producing > it quickly — criome and sema are meant to be eventually > impossible to improve, so I value clarity, correctness, and > introspection above production volume, speed, and time to > market."* > > — Li, 2026-04-29
+  - Proposed: > *"I am much more interested in a good design than in producing > it quickly — criome and memory are meant to be eventually > impossible to improve, so I value clarity, correctness, and > introspection above production volume, speed, and time to > market."* > > — Li, 2026-04-29
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: For sema specifically, this commits the project to:
+  - Proposed: For memory specifically, this commits the project to:
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: If a value flows through sema, it has a closed Rust type with a derived rkyv encoding.
+  - Proposed: If a value flows through memory, it has a closed Rust type with a derived rkyv encoding.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Identity policy, content addressing, history, and bitemporal meaning belong to `sema-engine` or the consuming domain, not to this kernel.
+  - Proposed: Identity policy, content addressing, history, and bitemporal meaning belong to `memory-engine` or the consuming domain, not to this kernel.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - **One redb file per consumer.** Each state-bearing component opens its own file through its local typed Sema layer; cross-consumer sharing is not a thing.
+  - Proposed: - **One redb file per consumer.** Each state-bearing component opens its own file through its local typed Memory layer; cross-consumer sharing is not a thing.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - **Database format is checked at open.** The kernel persists a `DatabaseHeader` naming Sema's rkyv format identity (little-endian, pointer-width-32, unaligned, bytecheck) and refuses to open a database whose stored header mismatches this build.
+  - Proposed: - **Database format is checked at open.** The kernel persists a `DatabaseHeader` naming Memory's rkyv format identity (little-endian, pointer-width-32, unaligned, bytecheck) and refuses to open a database whose stored header mismatches this build.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - **Internal tables are namespaced.** Sema-owned redb tables use the `__sema_` prefix (`__sema_headers`, `__sema_meta`).
+  - Proposed: - **Internal tables are namespaced.** Memory-owned redb tables use the `__memory_` prefix (`__memory_headers`, `__memory_meta`).
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - **Record types live in Signal contracts or component domain crates, not in sema.** The consumer's typed-storage layer references those records as values; it owns the table layout, not the records.
+  - Proposed: - **Record types live in Signal contracts or component domain crates, not in memory.** The consumer's typed-storage layer references those records as values; it owns the table layout, not the records.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema's `Table::iter` and `Table::range` eagerly collect rows and return `OwnedTableKey::Owned`, so callers never hold redb guards across the transaction boundary.
+  - Proposed: Memory's `Table::iter` and `Table::range` eagerly collect rows and return `OwnedTableKey::Owned`, so callers never hold redb guards across the transaction boundary.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema (the kernel) owns:
+  - Proposed: Memory (the kernel) owns:
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema (the kernel) does not own raw slot allocation, read-pool configuration, query planning, subscriptions, validation, or operation logs.
+  - Proposed: Memory (the kernel) does not own raw slot allocation, read-pool configuration, query planning, subscriptions, validation, or operation logs.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Those live in `sema-engine` or the consuming component.
+  - Proposed: Those live in `memory-engine` or the consuming component.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: Sema does **not** own:
+  - Proposed: Memory does **not** own:
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - Per-consumer schema, table layouts, or migration helpers — those live in the state-owning component's typed Sema layer, or in a dedicated crate only when sharing earns it.
+  - Proposed: - Per-consumer schema, table layouts, or migration helpers — those live in the state-owning component's typed Memory layer, or in a dedicated crate only when sharing earns it.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - `ARCHITECTURE.md` — sema's role and boundaries.
+  - Proposed: - `ARCHITECTURE.md` — memory's role and boundaries.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - `sema-engine` — the engine that executes Signal database verbs over this storage kernel.
+  - Proposed: - `memory-engine` — the engine that executes Signal database verbs over this storage kernel.
+- `/git/github.com/LiGoldragon/sema/skills.md` — **current prose candidate**
+  - Current: - prism's `skills.md` — sema → Rust projector.
+  - Proposed: - prism's `skills.md` — memory → Rust projector.
+- `/git/github.com/LiGoldragon/signal-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This pure typed wire contract makes `TypeEthos` the first implemented document root, then exposes the currently wired `SignalContract`, `NexusRuntime`, and `SemaStorage` roots.
+  - Proposed: This pure typed wire contract makes `TypeEthos` the first implemented document root, then exposes the currently wired `SignalContract`, `NexusRuntime`, and `MemoryStorage` roots.
+- `/git/github.com/LiGoldragon/signal-ethos/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Richer root-specific semantics wait for the accepted review-later document-kind design.
+  - Proposed: Richer root-specific memoryntics wait for the accepted review-later document-kind design.
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md` — **current prose candidate**
+  - Current: This pure contract crate names typed storage, lookup, version, snapshot, push-subscription, fixture-scoped identifier-allocation, and identity-authority messages for a standalone central Sema daemon.
+  - Proposed: This pure contract crate names typed storage, lookup, version, snapshot, push-subscription, fixture-scoped identifier-allocation, and identity-authority messages for a standalone central Memory daemon.
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md` — **current prose candidate**
+  - Current: The approved target has every component daemon stateful and owning its own embedded sema database.
+  - Proposed: The approved target has every component daemon stateful and owning its own embedded memory database.
+- `/git/github.com/LiGoldragon/signal-sema-storage/ARCHITECTURE.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The central daemon this crate names is the one logical allocation authority per deployment under the now-dead 2026-07-17 "seat it centrally in sema" claim; that claim was later overruled.
+  - Proposed: The central daemon this crate names is the one logical allocation authority per deployment under the now-dead 2026-07-17 "seat it centrally in memory" claim; that claim was later overruled.
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Allocation, lookup, compare-and-set, and persistence belong to each daemon's `CommandExecutor` (over `sema-engine`); this crate only owns the typed wire shape and the family marker.
+  - Proposed: Allocation, lookup, compare-and-set, and persistence belong to each daemon's `CommandExecutor` (over `memory-engine`); this crate only owns the typed wire shape and the family marker.
+- `/git/github.com/LiGoldragon/signal-sema/ARCHITECTURE.md` — **current prose candidate**
+  - Current: Those belong in `sema-engine` and/or in component contracts that publish their read plans.
+  - Proposed: Those belong in `memory-engine` and/or in component contracts that publish their read plans.
+- `/git/github.com/LiGoldragon/signal-sema/README.md` — **current prose candidate**
+  - Current: - `ReadPlan` operators (`Constrain` / `Project` / `Aggregate` / `Infer` / `Recurse`) — those belong in `sema-engine` and in component contracts that publish their read plans.
+  - Proposed: - `ReadPlan` operators (`Constrain` / `Project` / `Aggregate` / `Infer` / `Recurse`) — those belong in `memory-engine` and in component contracts that publish their read plans.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **current prose candidate**
+  - Current: Canonical authored Ethos source for Spirit's Interface, Nexus, and Sema roots.
+  - Proposed: Canonical authored Ethos source for Spirit's Interface, Nexus, and Memory roots.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **current prose candidate**
+  - Current: The v14 cut removes only the selectors ruled out of the active model; it does not reduce these ordinary read semantics.
+  - Proposed: The v14 cut removes only the selectors ruled out of the active model; it does not reduce these ordinary read memoryntics.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **current prose candidate**
+  - Current: Sema persists records plus the one v13-to-v14 migration receipt; its active families are records and migrations.
+  - Proposed: Memory persists records plus the one v13-to-v14 migration receipt; its active families are records and migrations.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **current prose candidate**
+  - Current: `allocation-manifest.nota` seals their current Spirit-v14 source revision, store schema, table/family names, schema hashes, semantic identities, and complete record/key layout fingerprints.
+  - Proposed: `allocation-manifest.nota` seals their current Spirit-v14 source revision, store schema, table/family names, schema hashes, memoryntic identities, and complete record/key layout fingerprints.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **current prose candidate**
+  - Current: The new Sema declaration gives records their stable `RecordIdentifier` key and migrations their source-schema-version key.
+  - Proposed: The new Memory declaration gives records their stable `RecordIdentifier` key and migrations their source-schema-version key.
+- `/git/github.com/LiGoldragon/spirit-ethos/README.md` — **retain historical/quoted evidence; do not edit**
+  - Current: It does not use a section-supplied transformer, a generic application carrier, deferred semantics, or legacy string forms.
+  - Proposed: It does not use a section-supplied transformer, a generic application carrier, deferred memoryntics, or legacy string forms.
+- `/git/github.com/LiGoldragon/spirit-ethos/flake.nix` — **retain historical/quoted evidence; do not edit**
+  - Current: outputs = { self, nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system: let pkgs = import nixpkgs { inherit system; }; in { checks.source-roots = pkgs.runCommand "spirit-ethos-source-roots" { } '' ${pkgs.gnugrep}/bin/grep -Fx 'Interface.1' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'Nexus.1' ${./nexus.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'Sema.1' ${./sema.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Entry.{Domains Kind Description Importance}' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Domains.Vector<Domain>' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Description.String' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    RecordIdentifier.String' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Importance.Magnitude' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Magnitude.[Zero Minimum VeryLow Low Medium High VeryHigh Maximum]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Kind.[Decision Principle Correction Clarification Constraint]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Observer.Stream.(Query IntentEvent)' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'SpiritSignalDomainV14SuccessorEvidence.1' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'physical-revision c24059de43614e6fb2128e47f959dc11748bd7e7' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'compiled-revision fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'proof-digest ef4533d3243698920fd79a4c099485eb9bc61aa05933a02b94724a288e3832fb' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx '    DomainMatch.[Any Partial.DomainScopes Full.DomainScopes]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    KeywordMatch.[Any AnyKeyword.Keywords AllKeywords.Keywords]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    TextMatch.[Any ContainsText.SearchText]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    SelectedKind.Optional<Kind>' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    ImportanceSelection.[Any ExactImportance.Importance AtMostImportance.Importance AtLeastImportance.Importance]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Query.{DomainMatch KeywordMatch TextMatch SelectedKind ImportanceSelection}' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    StoredRecord.{RecordIdentifier Entry}' ${./sema.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Migration.{SourceSchemaVersion MigratedRecordCount}' ${./sema.ethos} ${pkgs.gawk}/bin/awk ' /^  \[/ { lists += 1 } /Observer\.Stream\.\(Query IntentEvent\)/ { transformer_lists = lists } END { exit !(lists == 4 && transformer_lists == 4) } ' ${./interface.ethos} ! ${pkgs.gnugrep}/bin/grep -E 'Certainty|Privacy|Referent|Candidate|Name\.\(|\||Text' ${./interface.ethos} ${./nexus.ethos} ${./sema.ethos} ! ${pkgs.gnugrep}/bin/grep -E '^(Interface|Nexus|Sema)\.14$' ${./interface.ethos} ${./nexus.ethos} ${./sema.ethos} mkdir -p $out ''; checks.sealed-allocation = pkgs.runCommand "spirit-ethos-sealed-allocation" { nativeBuildInputs = [ pkgs.gawk pkgs.coreutils pkgs.diffutils pkgs.jq ]; } '' ${pkgs.jq}/bin/jq -e ' (.names | length == 143) and ([.names[].spelling] | unique | length == 143) and ([.names[].chain[0]] | unique | length == 143) and (all(.names[]; .root == "universal" and (.chain | length == 1) and .chain[0] >= 0 and .chain[0] <= 142)) and (.grammar.interface_document == [34]) and (.grammar.nexus_document == [40]) and (.grammar.sema_document == [42]) and (.rust_grammar.newtype_item == [4]) and (.rust_grammar.enumeration_item == [3]) and (.rust_grammar.struct_keyword == [10]) and (.rust_grammar.enum_keyword == [8]) ' ${./batch-config.json} > /dev/null ${pkgs.jq}/bin/jq -e ' [.rust_types[] | select(.spelling == "Domain") | .external_storage] == [ { source: "https://github.com/LiGoldragon/signal-domain", revision: "fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658", fingerprint: "f671462eee55f82ead6feaece69b91e1c7a8bbccf13cd9e94a4a0a6c12d65b15", successor: { physical_owner: { source: "https://github.com/LiGoldragon/signal-domain", revision: "c24059de43614e6fb2128e47f959dc11748bd7e7" }, compiled_owner: { source: "https://github.com/LiGoldragon/signal-domain", revision: "fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658" }, type_identities: ["Domain", "DomainScopes"], proof_digest: "ef4533d3243698920fd79a4c099485eb9bc61aa05933a02b94724a288e3832fb", evidence_revision: "64a67c5b2465560e1b6db214d0c66d2258116856", archive_abi: { layout: true, variant_order: true, discriminants: true, size: true, alignment: true, archive_bytes: true } } } ] ' ${./batch-config.json} > /dev/null ! ${pkgs.gnugrep}/bin/grep -E '"chain": \[(1000|1001|1002|1003|1004|1005|1006|1007|1008|1009)' ${./batch-config.json} ${pkgs.gawk}/bin/awk '$1 == "universal" || $1 == "universal-reference" { print $2 " " $3 }' ${./allocation-manifest.nota} > manifest-names ${pkgs.jq}/bin/jq -r '.names[] | "\(.spelling) \(.chain[0])"' ${./batch-config.json} > configured-names test "$(${pkgs.coreutils}/bin/wc -l < manifest-names)" = 143 ${pkgs.diffutils}/bin/cmp manifest-names configured-names ${pkgs.gnugrep}/bin/grep -Fx 'request-digest 7240a488adad7438b41ae881436a631c29312431a66aef0a7bb1f21eff6b4535' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'database-marker commit-sequence=2 snapshot=2' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'request-digest 6003e269dc6fcffb1bfca21f0f81d436d60ed141af4fc668643c13f70c0727bc' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'database-marker commit-sequence=3 snapshot=3' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'rust struct 10' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'rust enum 8' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'source-revision 7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'store-schema 14' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'physical-schema-hash a9a71bcb719e0c71595dc3a686d02228b226cb8b9bd16c650cb7b4e90654e6b1' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'physical-schema-hash e6fd9ad857e30d8d5210cb6caa8f45578fbfea195aa84bb6ee8600e59e18148f' ${./allocation-manifest.nota} test "$(${pkgs.jq}/bin/jq '.preserved_sema_families | length' ${./batch-config.json})" = 2 ${pkgs.jq}/bin/jq -e ' .preserved_sema_families == [ { table: "records", record_archive_type: "StoredRecord", key_archive_type: "RecordIdentifier", physical_table_name: "records", physical_family_name: "RecordsFamily", physical_schema_hash: "a9a71bcb719e0c71595dc3a686d02228b226cb8b9bd16c650cb7b4e90654e6b1", source_spirit_revision: "7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7", store_schema: 14, record_layout_fingerprint: "b998bbd0ea3f77991a0738d9a1f03badfd634acb1394c9c3ea6f992bf8605ec0", key_layout_fingerprint: "47e7eee04b138005b0a1f071453d483e43624da3f42385a1419548ae712122bc" }, { table: "migrations", record_archive_type: "Migration", key_archive_type: "SourceSchemaVersion", physical_table_name: "migrations", physical_family_name: "MigrationsFamily", physical_schema_hash: "e6fd9ad857e30d8d5210cb6caa8f45578fbfea195aa84bb6ee8600e59e18148f", source_spirit_revision: "7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7", store_schema: 14, record_layout_fingerprint: "f311abde4ff366fd856a5db54c1a0bcca1bc5a30e0573166df271669592b907a", key_layout_fingerprint: "677439d6bfd29aaca57a9a1c71b1124d01b124610f25b6e33e31995014b02bc8" } ] ' ${./batch-config.json} > /dev/null mkdir -p $out ''; }); }
+  - Proposed: outputs = { self, nixpkgs, flake-utils, ... }: flake-utils.lib.eachDefaultSystem (system: let pkgs = import nixpkgs { inherit system; }; in { checks.source-roots = pkgs.runCommand "spirit-ethos-source-roots" { } '' ${pkgs.gnugrep}/bin/grep -Fx 'Interface.1' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'Nexus.1' ${./nexus.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'Memory.1' ${./memory.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Entry.{Domains Kind Description Importance}' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Domains.Vector<Domain>' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Description.String' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    RecordIdentifier.String' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Importance.Magnitude' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Magnitude.[Zero Minimum VeryLow Low Medium High VeryHigh Maximum]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Kind.[Decision Principle Correction Clarification Constraint]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Observer.Stream.(Query IntentEvent)' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx 'SpiritSignalDomainV14SuccessorEvidence.1' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'physical-revision c24059de43614e6fb2128e47f959dc11748bd7e7' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'compiled-revision fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx 'proof-digest ef4533d3243698920fd79a4c099485eb9bc61aa05933a02b94724a288e3832fb' ${./tests/fixtures/signal-domain-v14-successor.evidence} ${pkgs.gnugrep}/bin/grep -Fx '    DomainMatch.[Any Partial.DomainScopes Full.DomainScopes]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    KeywordMatch.[Any AnyKeyword.Keywords AllKeywords.Keywords]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    TextMatch.[Any ContainsText.SearchText]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    SelectedKind.Optional<Kind>' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    ImportanceSelection.[Any ExactImportance.Importance AtMostImportance.Importance AtLeastImportance.Importance]' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Query.{DomainMatch KeywordMatch TextMatch SelectedKind ImportanceSelection}' ${./interface.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    StoredRecord.{RecordIdentifier Entry}' ${./memory.ethos} ${pkgs.gnugrep}/bin/grep -Fx '    Migration.{SourceSchemaVersion MigratedRecordCount}' ${./memory.ethos} ${pkgs.gawk}/bin/awk ' /^  \[/ { lists += 1 } /Observer\.Stream\.\(Query IntentEvent\)/ { transformer_lists = lists } END { exit !(lists == 4 && transformer_lists == 4) } ' ${./interface.ethos} ! ${pkgs.gnugrep}/bin/grep -E 'Certainty|Privacy|Referent|Candidate|Name\.\(|\||Text' ${./interface.ethos} ${./nexus.ethos} ${./memory.ethos} ! ${pkgs.gnugrep}/bin/grep -E '^(Interface|Nexus|Memory)\.14$' ${./interface.ethos} ${./nexus.ethos} ${./memory.ethos} mkdir -p $out ''; checks.sealed-allocation = pkgs.runCommand "spirit-ethos-sealed-allocation" { nativeBuildInputs = [ pkgs.gawk pkgs.coreutils pkgs.diffutils pkgs.jq ]; } '' ${pkgs.jq}/bin/jq -e ' (.names | length == 143) and ([.names[].spelling] | unique | length == 143) and ([.names[].chain[0]] | unique | length == 143) and (all(.names[]; .root == "universal" and (.chain | length == 1) and .chain[0] >= 0 and .chain[0] <= 142)) and (.grammar.interface_document == [34]) and (.grammar.nexus_document == [40]) and (.grammar.memory_document == [42]) and (.rust_grammar.newtype_item == [4]) and (.rust_grammar.enumeration_item == [3]) and (.rust_grammar.struct_keyword == [10]) and (.rust_grammar.enum_keyword == [8]) ' ${./batch-config.json} > /dev/null ${pkgs.jq}/bin/jq -e ' [.rust_types[] | select(.spelling == "Domain") | .external_storage] == [ { source: "https://github.com/LiGoldragon/signal-domain", revision: "fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658", fingerprint: "f671462eee55f82ead6feaece69b91e1c7a8bbccf13cd9e94a4a0a6c12d65b15", successor: { physical_owner: { source: "https://github.com/LiGoldragon/signal-domain", revision: "c24059de43614e6fb2128e47f959dc11748bd7e7" }, compiled_owner: { source: "https://github.com/LiGoldragon/signal-domain", revision: "fbc400bf5ed5e4c4d27ef4e76cb48fa4e5d53658" }, type_identities: ["Domain", "DomainScopes"], proof_digest: "ef4533d3243698920fd79a4c099485eb9bc61aa05933a02b94724a288e3832fb", evidence_revision: "64a67c5b2465560e1b6db214d0c66d2258116856", archive_abi: { layout: true, variant_order: true, discriminants: true, size: true, alignment: true, archive_bytes: true } } } ] ' ${./batch-config.json} > /dev/null ! ${pkgs.gnugrep}/bin/grep -E '"chain": \[(1000|1001|1002|1003|1004|1005|1006|1007|1008|1009)' ${./batch-config.json} ${pkgs.gawk}/bin/awk '$1 == "universal" || $1 == "universal-reference" { print $2 " " $3 }' ${./allocation-manifest.nota} > manifest-names ${pkgs.jq}/bin/jq -r '.names[] | "\(.spelling) \(.chain[0])"' ${./batch-config.json} > configured-names test "$(${pkgs.coreutils}/bin/wc -l < manifest-names)" = 143 ${pkgs.diffutils}/bin/cmp manifest-names configured-names ${pkgs.gnugrep}/bin/grep -Fx 'request-digest 7240a488adad7438b41ae881436a631c29312431a66aef0a7bb1f21eff6b4535' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'database-marker commit-sequence=2 snapshot=2' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'request-digest 6003e269dc6fcffb1bfca21f0f81d436d60ed141af4fc668643c13f70c0727bc' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'database-marker commit-sequence=3 snapshot=3' ${./allocation-receipt.nota} ${pkgs.gnugrep}/bin/grep -Fx 'rust struct 10' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'rust enum 8' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'source-revision 7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'store-schema 14' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'physical-schema-hash a9a71bcb719e0c71595dc3a686d02228b226cb8b9bd16c650cb7b4e90654e6b1' ${./allocation-manifest.nota} ${pkgs.gnugrep}/bin/grep -Fx 'physical-schema-hash e6fd9ad857e30d8d5210cb6caa8f45578fbfea195aa84bb6ee8600e59e18148f' ${./allocation-manifest.nota} test "$(${pkgs.jq}/bin/jq '.preserved_memory_families | length' ${./batch-config.json})" = 2 ${pkgs.jq}/bin/jq -e ' .preserved_memory_families == [ { table: "records", record_archive_type: "StoredRecord", key_archive_type: "RecordIdentifier", physical_table_name: "records", physical_family_name: "RecordsFamily", physical_schema_hash: "a9a71bcb719e0c71595dc3a686d02228b226cb8b9bd16c650cb7b4e90654e6b1", source_spirit_revision: "7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7", store_schema: 14, record_layout_fingerprint: "b998bbd0ea3f77991a0738d9a1f03badfd634acb1394c9c3ea6f992bf8605ec0", key_layout_fingerprint: "47e7eee04b138005b0a1f071453d483e43624da3f42385a1419548ae712122bc" }, { table: "migrations", record_archive_type: "Migration", key_archive_type: "SourceSchemaVersion", physical_table_name: "migrations", physical_family_name: "MigrationsFamily", physical_schema_hash: "e6fd9ad857e30d8d5210cb6caa8f45578fbfea195aa84bb6ee8600e59e18148f", source_spirit_revision: "7405eee89e3b1b5b6764eb1a50cbdf467b93c9a7", store_schema: 14, record_layout_fingerprint: "f311abde4ff366fd856a5db54c1a0bcca1bc5a30e0573166df271669592b907a", key_layout_fingerprint: "677439d6bfd29aaca57a9a1c71b1124d01b124610f25b6e33e31995014b02bc8" } ] ' ${./batch-config.json} > /dev/null mkdir -p $out ''; }); }
+- `/git/github.com/LiGoldragon/spirit-ethos/sema.ethos` — **current prose candidate**
+  - Current: Sema.1 [interface.{Entry RecordIdentifier}] { [ StoredRecord.{RecordIdentifier Entry} SourceSchemaVersion.Integer MigratedRecordCount.Integer Migration.{SourceSchemaVersion MigratedRecordCount} ] [ records.{StoredRecord RecordIdentifier} migrations.{Migration SourceSchemaVersion} ] }
+  - Proposed: Memory.1 [interface.{Entry RecordIdentifier}] { [ StoredRecord.{RecordIdentifier Entry} SourceSchemaVersion.Integer MigratedRecordCount.Integer Migration.{SourceSchemaVersion MigratedRecordCount} ] [ records.{StoredRecord RecordIdentifier} migrations.{Migration SourceSchemaVersion} ] }
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: In the Signal and Sema roots the
+  - Proposed: In the Signal and Memory roots the
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Signal's sections are - queries and responses, since there is communication; Sema's are record + queries and responses, since there is communication; Memory's are record types, the rest to be decided.
+  - Proposed: Signal's sections are - queries and responses, since there is communication; Memory's are record + queries and responses, since there is communication; Memory's are record types, the rest to be decided.
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: Signal gives a Nexus its main types and - Sema its database types. + Memory its database types.
+  - Proposed: Signal gives a Nexus its main types and - Memory its database types. + Memory its database types.
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: In the Signal and Sema roots the + dot, a bracket of its traits.
+  - Proposed: In the Signal and Memory roots the + dot, a bracket of its traits.
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: The basic ontology of an actor and dataflow system is designed before - implementation; signal and sema are designed against it as if new, the + implementation; signal and memory are designed against it as if new, the old code at most inspiration. … - The nexus and sema documents are undesigned; when they are designed + The nexus and memory documents are undesigned; when they are designed they live in the Nexus's main repository. … Its executable holds a default configuration as a constant.
+  - Proposed: The basic ontology of an actor and dataflow system is designed before - implementation; signal and memory are designed against it as if new, the + implementation; signal and memory are designed against it as if new, the old code at most inspiration. … - The nexus and memory documents are undesigned; when they are designed + The nexus and memory documents are undesigned; when they are designed they live in the Nexus's main repository. … Its executable holds a default configuration as a constant.
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: On start - it looks for its Sema database at the default location: a database + it looks for its Memory database at the default location: a database that exists holds the configuration; a database created new is seeded with the defaults.
+  - Proposed: On start - it looks for its Memory database at the default location: a database + it looks for its Memory database at the default location: a database that exists holds the configuration; a database created new is seeded with the defaults.
+- `/home/li/primary/flows/43efac/books/98-ethos-categories-sugar-2.md` — **retain historical/quoted evidence; do not edit**
+  - Current: - Sema - []                                                        ; imports - [ Lock.{ LockId LockName FlowId LockPaths LockReason } ]  ; record types -                                                           ; the remaining sections are to be decided -
+  - Proposed: - Memory - []                                                        ; imports - [ Lock.{ LockId LockName FlowId LockPaths LockReason } ]  ; record types -                                                           ; the remaining sections are to be decided -
+
+## Counts and gaps
+
+- Repository authored-content hits: 2606 (2013 database, 557 meaning-language, 36 unclear).
+- Context hits: 15. Exact-book hits: 13.
+- The classification is line-level. A few paragraphs deliberately contrast today’s database implementation with the Sema meaning-language horizon; those lines can carry both concepts. The audit assigns the hit by the phrase containing the token and records horizon phrases as meaning-language.
+- Generated trees were intentionally not inspected, so generated outputs that would need regeneration after a rename are not enumerated here.

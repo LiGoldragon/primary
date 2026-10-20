@@ -22,3 +22,30 @@ Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery d
 > It should be a method, like `is this this type of chip right on hardware` [sic], which can then look up a table. We make a list of the hardware that we have, and it can answer all of these questions depending on what kind of processor it has and stuff. We can have a library that uses this data and can check if certain things need certain fixes, depending on what the computer model is and what variant it is, etc.
 
 -- psyche, STT.
+
+## Nothing opens tabs in the desktop browser on its own
+
+> We have a constraint: we need to determine whatever it is that's opening all of the [Claude] artifacts in my web browser on my desktop while I'm away. It's just opening a new tab every time, so it's going to chew up all of the RAM in Chrome tabs. Let's get a specification, and then let's get that through with a [CriomOS] vision review. Does it even exist? Let's create it.
+
+-- psyche, STT. Transcription corrected: "Clojure" → "[Claude]"; "Creo OS" → "[CriomOS]".
+
+## Never a hard-coded Nix path
+
+> "There can never be a hard-coded Nix path in Nix code. That's insane. It has to resolve to something. The first part, with all these variables being set: should these variables belong in modules and imports at the top there? This is very badly written code, there for sure. We cannot have a hardwired Nix path. I don't even know how this came to be but it's an aberration. I want a deep deep deep deep investigation with a fix, an audit, and a counter-audit. I want to exterminate every single trace of this bad pattern: out of history, forever, future and back, behavior change, everything, hard."
+
+Context: comment on «CriomOS: the desktop opens nothing on its own», on CriomOS-home codex-remote-control.nix (occupiedCodex and occupiedNextCodex store-path literals), 2026-10-19 01:07.
+-- psyche, STT.
+
+## A new artifact does not open a tab on its own
+
+> "No I didn't say that I don't want things to open tabs. I said I didn't want [Claude] Desktop to always open a new tab every time there's a new artifact. That's different and that's what it is because we're automating things. Sometimes I have [Claude] Desktop or whatever it is that opens (it might be the [Claude] Harness) open a tab when there's a new artifact. I don't want that."
+
+Context: comment on the same book, Proposal 1, line "Nothing opens a tab in the desktop browser on its own.", 2026-10-19 01:05. Transcription corrected: "Cloud" → "[Claude]".
+-- psyche, STT.
+
+## Librem 5
+
+> "Librem 5"
+
+Context: correction of "Libre M5 Linux smartphone" in the same book's hardware line, 2026-10-19 01:00.
+-- psyche, STT.

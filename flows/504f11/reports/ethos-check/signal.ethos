@@ -1,0 +1,22 @@
+Signal                      ; ordinary socket
+[ chronos:[ Instant         ; imports
+            Moment
+            Reading
+            Placement
+            Step
+            SubscriptionId ] ]
+[ Tell.{ Vector<Reading>    ; queries: arcs
+         Option<Moment> }   ;   none: now, here
+  Subscribe.{ Vector<Reading>
+              Step }        ;   then each change
+  Unsubscribe.SubscriptionId ]
+[ Told.Vector<Placement>    ; responses
+  Subscribed.{ SubscriptionId
+               Vector<Placement> } ; arcs now
+  Changed.{ SubscriptionId  ;   at each step
+            Vector<Placement> }
+  Unsubscribed.SubscriptionId
+  Refused.[ NoLocation      ;   typed refusals
+            BeyondEphemeris.Instant
+            NoSuchSubscription.SubscriptionId ] ]
+[]                          ; types

@@ -1,0 +1,22 @@
+# { Psyche ethos Secondary 43efac }
+
+- 2026-10-19T12:52 CST Launched as the Ethos topic for Psyche. Inherited from d68c82: books 81, 87/92, 88/96, 90/95; Set type; 804eb9 ethos-v1-3 asks.
+- Takeover presentation refused by book-build (no figure, no proposals): a work plan is not a book. Proceeding on the standing order instead: publish 92, 96, 81.
+- Book 81 already published: https://claude.ai/artifact/A2guf77ZxBLHLapzkgEop2 (no comments).
+- Published 92: https://claude.ai/artifact/VDTg9DtLQiXtsrq1ZFWsUZ. Location doubt: mind-context modules live under skills/, but 92 P19–23 and 96 P4 name knowledge/ and inquiry/; psyche-context has no inquiry/ (92 P2).
+- Layout: vision/context-modules.md (folder per type, no skills/) governs; mind-context still uses skills/ per its README — unimplemented vision, Mind's. 92 P2 moved to mind-context › inquiry/ (inquiry is Mind's type); republishing 92 to the same URL (no comments).
+- Republished 92 v2 in place (P2 → mind-context). Heading on built page not witnessed.
+- Published 96: https://claude.ai/artifact/SxaBUqst3BMvbhgRdRsciD. Next: Set book (semantics), then Flow ethos 3rd ed. answering the 18:37 comment.
+- Set records gathered: living ruled only 'models is a set' (17:49, 18:37). No 66f2bb message or reply witnessed; ethos-zero has no Set. Drafting book 97 «Ethos: a set» (P1 Set intrinsic, P2 section, P3 datom wire form).
+- Published 97 «Ethos: a set»: https://claude.ai/artifact/5J4EAtmctRc5UsmvP5vdqm. Phone-width label fit unchecked.
+- Queued order from Psyche core Secondary: which package goes to the living — «Ethos categories and sugar» (804eb9, 12 proposals) or whole-flow-ethos.md (21)? Comparing both against landed and published books.
+- Answered Psyche core: Ethos categories and sugar stays the Ethos book, rebuilt by me as 2nd ed (book 98); whole-flow-ethos (23 proposals) is Flow's and should drop its P10–14. Transported. Rebuilding 98.
+- Book 98 draft passes book-check (11 proposals). Before publishing: reading SuDGmo comments; building/testing P6–11 on a clean origin/main copy; then fix P5 referent, P3/P4 leftover contradicting text, and apply the 2026-10-18 17:25 Sema→Memory comment.
+- SuDGmo has one comment, thread 66f125 (2026-10-18T17:25, Roots): Sema→Memory, with an Opus pass and a Sol pass. Opus pass launched. Sol pass send refused: TargetNotRegistered 'Mind Ethos Secondary'; looking up the Mind route.
+- Sol pass sent to 'Mind ethos Secondary' (topic lowercase; earlier refusal was my capitalized target). Reply: Queued (route state done).
+- Opus Sema pass done: psyche-context hits ethos.md 58,60,567; nexus.md 22,39,95; whole vision/sema.md (→ memory.md). mind-context: knowledge-ethos:6 correct; lojix .sema extension unclear (code uses it). Crates sema, sema-engine, sema-storage, signal-sema(-storage) are the database; sema-translator unclear. Psyche-context hits go into book 98 as proposals; code and crates are Mind's.
+- 98 P6–11 tested on prometheus: applies to 07714b0, build/test/fmt/clippy green, 36 passed; two new tests discriminate, two are regression guards. Revising 98: P5 referent, P3 sweet-form example, P4 Associations, add P12–15 Sema→Memory.
+- 98 build refused: four Library blocks rejected by pinned ethos-zero (Role.Prompt, Yield, Role.Sink, ⟦). Sorting each into: parses with P6–11 / ruled but unimplemented (label not parseable) / wrong (correct).
+- 98 builds with --ethos-zero path:(patched worktree): P1, P3 parse with P6–11; P2 yield set to [ String ] (machine choice; vision says a yield bracket holds one type); P4 labelled not parseable, import corrected to :flow:. Gaps (⟦⟧, ⦃⦄, colon import, trait heads) sent to Mind ethos Secondary: Queued.
+- Published 98 «Ethos categories and sugar, second edition»: https://claude.ai/artifact/F274EhySjsozwRG5XNai5Z. Order 2 done.
+- Psyche core: route re-registered to w2G:p1 / 43efac95. Owner of protos.ethos and datom-codec.ethos: Mind ethos Secondary (closes the 804eb9 ask). Ethos volume 1 edition 2 held unpublished until the living's word on a fresh Fable.

@@ -1,0 +1,20 @@
+; what the three parts share
+Library.
+{
+; imports: none
+[]
+; types
+[ FlowId.Integer
+  ; who a flow is
+  Metaflow.{ Aspect Topic Layer }
+  Aspect.[ Psyche Mind Field ]
+  ; core is the default
+  Topic.String
+  Layer.[ Primary Secondary Tertiary Quaternary ]
+  Event.[ Started Stopped ] ]
+; traits
+[]
+; associations
+[] }
+
+; what Flow says, on its ordinary socket

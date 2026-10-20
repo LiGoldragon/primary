@@ -1,0 +1,10 @@
+Library.{
+[ flow:[ Key ] ]                      ; imports
+[ SystemPrompt.⟦ Key ⟧                ; types
+  StartupPrompt.⟦ Key ⟧
+  Placements.⦃ SystemPrompt
+               StartupPrompt ⦄ ]
+[ Prompting.[ text.[ String ] ] ]     ; traits
+[ SystemPrompt.[ Prompting ]          ; associations
+  StartupPrompt.[ Prompting ]
+  Placements.[ Prompting ] ] }

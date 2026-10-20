@@ -1,0 +1,10 @@
+; what Flow remembers
+Memory.
+{
+; imports
+[ flow:[ FlowId Metaflow Event ] ]
+; record types
+[ Flow.{ FlowId
+         Metaflow
+         State.[ Running Ended ]
+         ⟦ Event ⟧ } ] }

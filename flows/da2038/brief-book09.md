@@ -1,0 +1,5 @@
+His comments on book 09 «Flow: CLI, deployment, long term» (https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA) are in the psyches just sent. After the Clojure-migration book, revise and republish this book to the same URL, with the word-level diff:
+- The two approved proposals are landed (green into their psyche modules); they leave the book, not shown again.
+- The undelivered-request proposal carries obsolete vision conflicting with the current: find the older records it drew on and the later ones, and rewrite it to the current long-term line: a needed flow is started whether or not it is running; with no transcript to reawaken, it is fed its metaflow's context modules and its current prompt. Any superseded line already in a psyche module is shown struck. Cite the comment by date.
+- Behavior fix with it: the stale vision reached the book because older records were not weighed against later ones on the same subject. Propose, in the book, the line for the owning skill that prevents this (your judgment where, preferring psyche), if no existing line already says it; if one does, tell me which line was missed.
+Link to me when published; I audit before Core.

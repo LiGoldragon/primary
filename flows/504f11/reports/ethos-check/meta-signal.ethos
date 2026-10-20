@@ -1,0 +1,6 @@
+Signal                      ; meta socket
+[ chronos:Location ]        ; imports
+[ Configure.Location ]      ; queries: the place
+[ Configured.Location       ; responses
+  Refused.[ OutOfRange.Location ] ]
+[]                          ; types

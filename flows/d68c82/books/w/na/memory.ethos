@@ -1,0 +1,10 @@
+Memory.
+{
+; imports
+[ flow:[ FlowId Metaflow Event ] ]
+; record types
+[ Answer.[ Succeeded Failed ]
+  Flow.{ FlowId
+         Metaflow
+         State.[ Running Ended ]
+         ⟦ Event ⟧ } ] }

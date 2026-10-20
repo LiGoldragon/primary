@@ -24,3 +24,19 @@ Relayed by Psyche Core Tertiary, 2026-10-15; the living's comment of 2026-10-14 
 > Eventually we could even have, maybe next week when we have more usage, let's put in a notion of bringing [Clojure] generation into ethos. This could also be done by switching to a Nexus implementation of Nexus of Ethos, which I think would simplify some things like keeping the library in memory. That way we have a clean system for code module access: index, like canonical namespace from the running Nexus, which can load it from multiple repos as we describe with the incremental configuration approach.
 
 -- psyche, STT. Transcription corrected: "closure generation" → "Clojure generation".
+
+## The memory type and its traits
+
+Context: exploring whether an Ethos memory type declares traits.
+
+> I'm not sure that I said that the memory type, Ethos type, needed to be able to declare traits. I'm not saying they don't but I think the memory type is essentially an object that implies that each type defined in here bears the traits that make it a memory type. In other words, the traits make it possible for it to be stored in the database.
+>
+> I'm not sure if we need to explicitly put traits there, or if we make all the traits explicit or if we have these special objects. I'd like to explore the pros and cons of each approach.
+
+-- psyche, typed.
+
+## A non-standard library, a non-standard runtime object
+
+> I guess instead of "library" (or "library" is just "standard library"), later on if we want long term, we can define new objects like "non-standard library." Maybe try and do a "non-standard runtime object" later on but that's long term and it's just a notion.
+
+-- psyche, book comment, 2026-10-19T18:03, input mode not shown.

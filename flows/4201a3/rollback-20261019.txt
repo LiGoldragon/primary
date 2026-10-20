@@ -1,0 +1,13 @@
+flow-nexus.service -> /nix/store/lrny0ds008hkj0ln6vm0kw6g2b86xpdc-flow-deployment/share/systemd/user/flow-nexus.service
+message-nexus.service -> /nix/store/sayzzaq6nlywb76v1x3am2c013hnncfb-message-deployment/share/systemd/user/message-nexus.service
+profile -> .nix-profile-31-link
+hm-deregister -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-deregister
+hm-heartbeat-state -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-heartbeat-state
+hm-list -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-list
+hm-move -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-move
+hm-rebind -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-rebind
+hm-register -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-register
+hm-repair -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-repair
+hm-retire -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-retire
+hm-send -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-send
+hm-send-abrupt -> /nix/store/0xpig0g70iry9w2jx4cqbaa4gkd230v5-messenger-clj-0.4.0/bin/hm-send-abrupt

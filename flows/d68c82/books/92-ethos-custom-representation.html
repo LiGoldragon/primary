@@ -1,0 +1,1720 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ethos: the open enum, second edition — a custom representation</title>
+<h1 class="book-title">Ethos: the open enum, second edition — a custom representation</h1>
+<article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code style="font-size:.95rem">psyche-context › vision/ethos.md</code></h2></header>
+<div class="markdown"><h3>Ethos and Nexus are infrastructure</h3><p>Ethos and Nexus are basic infrastructure, not examples: the wood houses are built from. Chronos is the example project built with them, short term.</p><h3>Where the golden ethos lives</h3><div class="figure" style="position:relative;height:0;padding-bottom:111.11%;overflow:hidden"><svg viewBox="0 0 360 400" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="vision-ethos encloses the ethos of ethos; an example arrow leads to vision-flow-ethos">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="15" y="15" width="330" height="210" rx="6" fill="#f2f2f2" stroke="#555" stroke-width="1.5"/>
+  <text x="30" y="40" font-family="sans-serif" font-size="13" font-weight="bold" fill="#222">vision-ethos</text>
+  <text x="30" y="70" font-family="sans-serif" font-size="11" fill="#222">what ethos is · its layout</text>
+  <text x="30" y="88" font-family="sans-serif" font-size="11" fill="#222">its two anatomies: types and traits</text>
+  <rect x="30" y="105" width="300" height="100" rx="5" fill="#e4e4e4" stroke="#555" stroke-width="1"/>
+  <text x="42" y="132" font-family="sans-serif" font-size="11" fill="#222">the ethos of ethos</text>
+  <text x="42" y="156" font-family="sans-serif" font-size="11" fill="#222">the types an ethos file is made of</text>
+  <text x="42" y="180" font-family="sans-serif" font-size="11" fill="#222">the first golden ethos</text>
+  <line x1="180" y1="225" x2="180" y2="298" stroke="#555" stroke-width="1.5" marker-end="url(#ah)"/>
+  <text x="192" y="264" text-anchor="start" font-family="sans-serif" font-size="11" fill="#222">example</text>
+  <rect x="90" y="300" width="180" height="76" rx="6" fill="#f2f2f2" stroke="#555" stroke-width="1.5"/>
+  <text x="104" y="324" font-family="sans-serif" font-size="13" font-weight="bold" fill="#222">vision-flow-ethos</text>
+  <text x="104" y="344" font-family="sans-serif" font-size="11" fill="#222">the Flow Nexus, in</text>
+  <text x="104" y="362" font-family="sans-serif" font-size="11" fill="#222">ethos; its own skill</text>
+</svg></div><p>The anatomy of ethos lives in vision-ethos itself, as the first golden ethos; Flow's ethos is one example, in its own skill.</p><h3>What Ethos is</h3><p>Ethos is the schema language. Of the two main syntaxes most agents will face, Ethos specifies the types and Datom fills them with data.</p><p>Ethos is central. The anatomy of the system, every type and every trait it uses, is read in its ethos; an implementation is mostly the hand-written bodies.</p><h3>Why Ethos</h3><p>All the legacy languages have a high noise ratio. Some lisps came close but lacked the correctness of Rust or Haskell; those have the correctness but allow no higher layer of abstraction that keeps the correctness of the whole. Ethos writes the mental model and the code in one swoop.</p><h3>Roots</h3><p>Library, Signal, Operation, Memory. No version in a file. Signal's sections are queries and responses, since there is communication; Sema's are record types, the rest to be decided. Signal gives a Nexus its main types and Sema its database types.</p><p>Four roots: Library, Signal, Operation, Memory. Signal declares what a Nexus says; Operation what it does, one operation type for every effect; Memory what it remembers; Library what they share. A memory trait carries a standard successful-or-unsuccessful change and, for each version, the upgrade from the previous format; that upgrade is the very edit the type needs.</p><h3>Non-repetition</h3><p>Any repetition in ethos syntax is an implementation failure. Ethos aims to be the most terse, non-repetitive syntax ever made.</p><p>Terseness is in the low amount of noise, never in shortened words.</p><h3>Self-description</h3><p>A datom object's basic CLI help emits the Ethos that describes its anatomy. The wanted mechanism extends this: point at any object — CLI now, Mentci later — and its Ethos prints, self-describing and self-evident. The schema syntax serves two audiences: it trains agents to use things properly, and it shows where the design is lacking.</p><h3>Horizon</h3><p>Ethos will eventually replace everything, Rustlang becoming its assembly layer. Designs are chosen for that horizon; what it enables — generator emission among it — comes in its time.</p><h3>Trait</h3><p>Trait is the word for the bearer of capabilities, the same word in ethos and in Rust; kind might be used to also mean traits. In ethos there are no generics, only traits. Declaring a new trait declares a new trait in the Rust world and might imply more in the ethos world.</p><p>A capability speaks in Self, the trait's own parameters and other traits; a concrete type in an input is a trait not yet named.</p><h3>Naming</h3><p>Traits are qualifier-named: Runnable, Textualizable, Structural, Embodied. Run is not a trait. The verbs Rust imposes, Write and Read among them, are tolerated as legacy, for cognitive ease while Rust and ethos code are switched between so often; once ethos is the authored language that debt is removed.</p><h3>Identity</h3><p>A trait is identified as a Rust trait is, by its name and its constraints, written as one head: Processable&lt;[Clonable Sendable] Serializable&gt;. A constraint is a trait, or a bracket of traits: what Rust writes as a generic parameter with its bounds, ethos writes as the bounds alone, since in ethos there are no generics, only traits; a constraint in a trait declaration is a trait, never a type. Two heads that differ in a constraint are two traits. Which constraints belong to the identity is not a decision to make: the ethos compiles to Rust, and what identifies the trait identifies the trait. What else a trait declares, its supertraits, its associated types and constants, its capabilities, is its definition. Angle brackets hold the constraints; they are a protos delimiter, recycled from Rust as Result and Self are.</p><pre><code class="language-text">Library
+[ std:[ Clonable Sendable Serializable ] ]                  ; imports: where the three constraint traits come from
+[]                                                          ; types
+[ Processable&lt;[Clonable Sendable] Serializable&gt;.[ … ] ]     ; traits: the head is the identity, the name and two
+                                                            ;   constraints, the first a bracket of two traits, the
+                                                            ;   second one trait; the bracket after the dot holds
+                                                            ;   its capabilities, its definition
+[]                                                          ; associations</code></pre><pre><code class="language-rust">// The trait's identity: its name and its constraints, two generic parameters with their bounds.
+// What ethos writes as the bounds alone, Rust writes as a named parameter carrying them;
+// the parameter names are Rust's need, not the trait's.
+pub trait Processable&lt;A: Clone + Send, B: Serialize&gt; { /* … */ }</code></pre><h3>Declaration: File</h3><p>The unit is File: one file, one Rust module. No namespace inside a file. An ethos file is written in the sweet form: the root's head, then the sections as siblings, the outer braces omitted. The braced form — the root's head opening braces that hold every section — is the canonical form. The sweet form is kept out of the main logic run: before the text is read as ethos at all, the file is converted mechanically to the canonical form, so the ethos reader sees only proper ethos.</p><p>An ethos file carries no version; datom has no versions. What is versioned is versioned in a manifest of some kind, never in the file.</p><p>A Library's sections, in order, are imports, types, traits and associations. Every root's first section is its imports; its own sections follow.</p><pre><code class="language-text">; the sweet form, as a file is written: the head, then the sections as siblings
+Library
+[ protos:String ]               ; imports
+[ Record.{ String Integer } ]   ; types
+[]                              ; traits
+[]                              ; associations
+
+; the canonical form the reader sees, after the mechanical conversion
+Library.{
+  [ protos:String ]
+  [ Record.{ String Integer } ]
+  []
+  []
+}</code></pre><h3>The type ethos</h3><p><code>Type</code> is a single-field variant carrying one declaration, so its payload is the declaration's own form, as any single-field variant's is; it is no exception to the datom.</p><pre><code class="language-text">Type.CommitMessage.[ Landing.⟦String⟧
+                     Fix.String ]</code></pre><h3>Imports</h3><p>An import starts with a colon, followed by uncapitalized namespace segments separated by colons, ending in the type: <code>:namespace:sub:Type</code>. It is usable inline in a type declaration or a field, and the import section uses the same syntax: <code>:protos:String</code>, or <code>:protos:[ String Integer ]</code> for several. An explicit import and an intrinsic name mean the same thing. The names known without import depend on the Ethos object type; a Library, the standard library, knows String, Integer, Decimal, Boolean, Meaning, Vector, Option, Result, Self and Sized.</p><pre><code class="language-text">Library
+[ :protos:[ String Textualizable ]   ; imports
+  :datom:Datom ]
+[ Record.{ String Datom } ]          ; types: Datom, imported
+[]                                   ; traits
+[ Record.[ Textualizable ] ]         ; associations: Textualizable, imported</code></pre><p>The generated code carries no <code>use</code> statements; each imported name is written fully qualified: <code>:protos:String</code> appears as <code>protos::String</code>, <code>:datom:Datom</code> as <code>datom::Datom</code>.</p><p>An import may stand where the type is used, with no entry in the imports section. In a declaration the colon replaces the dot: <code>Topic:custom:Name</code> declares <code>Topic</code> over the type <code>Name</code> from the namespace <code>custom</code>. A field takes the import with its leading colon: <code>Failure.{ :protos:Error String }</code>. The colon marks the import; the namespace segments are uncapitalized and the type is capitalized.</p><pre><code class="language-text">Library
+[]                              ; imports
+[ Topic:custom:Name             ; an alias, inline
+  Failure.{ :protos:Error       ; a field, inline
+            String } ]
+[]                              ; traits
+[]                              ; associations</code></pre><div class="figure" style="position:relative;height:0;padding-bottom:105.56%;overflow:hidden"><svg viewBox="0 0 360 380" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Ethos registry segments and types</title>
+  <desc id="d">The registry holds uncapitalized segments :namespace:sub. :namespace:sub ends in the type :namespace:sub:Type. :namespace:sub:Type is listed in the import section and is written in a declaration or a field, inline.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <g font-family="sans-serif" font-size="15" text-anchor="middle">
+    <g fill="#f4f4f4" stroke="#555" stroke-width="1.5">
+      <rect x="20" y="10" width="320" height="40" rx="4"/>
+      <rect x="20" y="110" width="320" height="40" rx="4"/>
+      <rect x="20" y="210" width="320" height="40" rx="4"/>
+      <rect x="20" y="310" width="150" height="55" rx="4"/>
+      <rect x="190" y="310" width="150" height="55" rx="4"/>
+    </g>
+    <g fill="#222" stroke="none">
+      <text x="180" y="35">the registry</text>
+      <text x="180" y="135">:namespace:sub</text>
+      <text x="180" y="235">:namespace:sub:Type</text>
+      <text x="95" y="342" font-size="14">the import</text>
+      <text x="95" y="358" font-size="14">section</text>
+      <text x="265" y="342" font-size="14">a declaration or</text>
+      <text x="265" y="358" font-size="14">a field, inline</text>
+    </g>
+    <g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#ah)">
+      <line x1="40" y1="50" x2="40" y2="110"/>
+      <line x1="40" y1="150" x2="40" y2="210"/>
+      <line x1="95" y1="250" x2="95" y2="310"/>
+      <line x1="250" y1="250" x2="250" y2="310"/>
+    </g>
+    <g fill="#222" font-size="13" text-anchor="start">
+      <text x="52" y="85">holds uncapitalized segments</text>
+      <text x="52" y="185">ends in the type</text>
+      <text x="105" y="285">listed in</text>
+      <text x="260" y="285">written in</text>
+    </g>
+  </g>
+</svg></div><h3>What a declaration turns into</h3><p>A declaration turns into the Rust type with named fields, bearing the datom traits through the derive, which Ethos Zero emits with the type. A field is named after its type in snake case; a constructed type type-first, <code>string_vector</code>, <code>lock_option</code>; a repeated type as first and second.</p><pre><code class="language-text">Library
+[]                                            ; imports
+[ LockId.Integer                              ; types
+  LockName.String
+  Lock.{ LockId LockName Vector&lt;String&gt; Option&lt;Lock&gt; }
+  Generation.{ String String } ]
+[]                                            ; traits
+[]                                            ; associations</code></pre><pre><code class="language-rust">pub type LockId = Integer;
+pub type LockName = String;
+#[derive(Datomizable, Compositional)]
+pub struct Lock { pub lock_id: LockId, pub lock_name: LockName, pub string_vector: Vec&lt;String&gt;, pub lock_option: Option&lt;Lock&gt; }
+#[derive(Datomizable, Compositional)]
+pub struct Generation { pub first_string: String, pub second_string: String }</code></pre><h3>Inline types</h3><p>A type may be declared where it is used. The inline struct or enum is a full type whose derived name carries an underscore, non-idiomatic for a Rust type, so it never collides and reads at a glance as inferred from the sugar.</p><pre><code class="language-text">Library
+[]                                                       ; imports
+[ LockId.Integer                                         ; types
+  LockName.String
+  Lock.{ LockId LockName }
+  LockRejection.[ DuplicateName.Lock                     ;   an enum: one variant naming a defined type,
+                  PathOverlap.{ Lock Lock } ] ]          ;   one declaring its payload inline
+[]                                                       ; traits
+[]                                                       ; associations</code></pre><pre><code class="language-rust">pub type LockId = Integer;
+pub type LockName = String;
+#[derive(Datomizable, Compositional)]
+pub struct Lock { pub lock_id: LockId, pub lock_name: LockName }
+#[derive(Datomizable, Compositional)]
+pub struct PathOverlap_Data { pub first_lock: Lock, pub second_lock: Lock }
+#[derive(Datomizable, Compositional)]
+pub enum LockRejection { DuplicateName(Lock), PathOverlap(PathOverlap_Data) }</code></pre><p>Everything is a type; there is no key-value. A type used once is declared inline where it is used; a type used in more than one place is declared once and named. A variant's payload is written in the variant and bears the variant's name; no second type is invented to hold it. Inline nesting goes about three deep; past that, the type comes from a Library.</p><h3>White braces define a struct</h3><p>White braces define a struct, so a struct definition looks different from a struct value. The definition, in ethos, names the types of its positions inside white braces; the value, in datom, fills them inside plain braces.</p><pre><code class="language-text">Library
+[]                              ; imports
+[ LockId.Integer                ; types
+  LockName.String
+  Lock.⦃ LockId LockName ⦄ ]    ; a definition
+[]                              ; traits
+[]                              ; associations</code></pre><pre><code class="language-text">{ 7 renew }</code></pre><div class="figure" style="position:relative;height:0;padding-bottom:75%;overflow:hidden"><svg viewBox="0 0 360 270" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">A struct is defined in white braces in ethos, and filled in plain braces in datom</title>
+  <desc id="d">A box "a struct" has two arrows down: "is defined in" to "white braces, in ethos", and "is filled in" to "plain braces, in datom".</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="20" y="20" width="320" height="50" rx="4" fill="#f2f2f2" stroke="#777" stroke-width="1.5"/>
+  <text x="180" y="51" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#222">a struct</text>
+
+  <line x1="60" y1="70" x2="60" y2="188" stroke="#555" stroke-width="1.5" marker-end="url(#ah)"/>
+  <line x1="300" y1="70" x2="300" y2="188" stroke="#555" stroke-width="1.5" marker-end="url(#ah)"/>
+
+  <text x="70" y="135" font-family="sans-serif" font-size="12" fill="#555" style="fill:#666">is defined in</text>
+  <text x="290" y="135" font-family="sans-serif" font-size="12" text-anchor="end" fill="#666">is filled in</text>
+
+  <rect x="15" y="190" width="155" height="60" rx="4" fill="#f2f2f2" stroke="#777" stroke-width="1.5"/>
+  <text x="92" y="216" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#222">white braces,</text>
+  <text x="92" y="236" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#222">in ethos</text>
+
+  <rect x="190" y="190" width="155" height="60" rx="4" fill="#f2f2f2" stroke="#777" stroke-width="1.5"/>
+  <text x="267" y="216" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#222">plain braces,</text>
+  <text x="267" y="236" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#222">in datom</text>
+</svg></div><h3>A variant named as a defined type carries that type</h3><p>When a variant's name is a type already defined in the library, that type is the data the variant carries. Nothing further is written.</p><pre><code class="language-text">Library
+[]                                         ; imports
+[ FilePath.String                          ; types: FilePath is an alias of String
+  SyntaxError.Vector&lt;FilePath&gt;             ;        SyntaxError is a vector of FilePath
+  GenerationFailure.[ SyntaxError          ;        an enum: the variant SyntaxError is bare here,
+                      Unwritable ] ]       ;        but SyntaxError is a defined type, so it carries one
+[]                                         ; traits
+[]                                         ; associations</code></pre><pre><code class="language-rust">pub type FilePath = String;
+pub type SyntaxError = Vec&lt;FilePath&gt;;
+#[derive(Datomizable, Compositional)]
+pub enum GenerationFailure { SyntaxError(SyntaxError), Unwritable }</code></pre><pre><code class="language-text">GenerationFailure.SyntaxError.[ /abs/orchestrate.ethos ]     ; the datom</code></pre><h3>A variant may declare its payload inline</h3><p>Instead of naming a defined type, a variant may declare what it carries in place: a vector, a struct, or an enum, each a full type with a derived name, recursively.</p><pre><code class="language-text">Library
+[]                                                        ; imports
+[ FilePath.String                                         ; types
+  GenerationFailure.[ SyntaxError.Vector&lt;FilePath&gt;        ;   the payload declared inline: a vector
+                      Unwritable.{ FilePath String } ] ]  ;   declared inline: a struct, derived name
+[]                                                        ; traits
+[]                                                        ; associations</code></pre><pre><code class="language-rust">pub type FilePath = String;
+#[derive(Datomizable, Compositional)]
+pub struct Unwritable_Data { pub file_path: FilePath, pub string: String }
+#[derive(Datomizable, Compositional)]
+pub enum GenerationFailure { SyntaxError(Vec&lt;FilePath&gt;), Unwritable(Unwritable_Data) }</code></pre><h3>An open enum</h3><p>An open enum is an Ethos object whose capitalized words are its fixed variants. A word that is not capitalized is its implied extensible variant, a camel ID: a word-based camel-case identifier, written bare, with no variant head before it. The name camel ID is temporary. A check that a word is a word-based camel-case identifier comes long term; short term, none is made.</p><p>The metaflow topic is an open enum: its fixed variants are a constant set, such as the core topic, and the users or the machine extend it with camel IDs as they need topics.</p><p>The same mechanism carries an object that is represented unconventionally, such as a word-based hash.</p><div class="figure" style="position:relative;height:0;padding-bottom:147.22%;overflow:hidden"><svg viewBox="0 0 360 530" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="13">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+<path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+</marker>
+</defs>
+<rect width="360" height="530" fill="#ffffff"/>
+<g fill="#f4f4f4" stroke="#555" stroke-width="1.5">
+<rect x="20" y="20" width="320" height="50" rx="4"/>
+<rect x="20" y="150" width="134" height="50" rx="4"/>
+<rect x="206" y="150" width="134" height="50" rx="4"/>
+<rect x="206" y="300" width="134" height="80" rx="4"/>
+<rect x="20" y="460" width="320" height="50" rx="4"/>
+</g>
+<g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#a)">
+<line x1="87" y1="70" x2="87" y2="150"/>
+<line x1="273" y1="70" x2="273" y2="150"/>
+<line x1="273" y1="200" x2="273" y2="300"/>
+<line x1="87" y1="200" x2="87" y2="460"/>
+<line x1="273" y1="380" x2="273" y2="460"/>
+</g>
+<g fill="#ffffff" stroke="none">
+<rect x="35" y="95" width="104" height="26" rx="13"/>
+<rect x="213" y="95" width="120" height="26" rx="13"/>
+<rect x="221" y="230" width="104" height="40" rx="12"/>
+<rect x="65" y="407" width="44" height="26" rx="13"/>
+<rect x="251" y="407" width="44" height="26" rx="13"/>
+</g>
+<g fill="#222" text-anchor="middle">
+<text x="180" y="50">a word in an open enum's position</text>
+<text x="87" y="180">fixed variant</text>
+<text x="273" y="180">camel ID</text>
+<text x="273" y="326">word-based</text>
+<text x="273" y="344">camel-case</text>
+<text x="273" y="362">identifier</text>
+<text x="180" y="490">value of the open enum</text>
+<text x="87" y="112">capitalized</text>
+<text x="273" y="112">uncapitalized</text>
+<text x="273" y="247">is checked</text>
+<text x="273" y="263">long term as</text>
+<text x="87" y="425">is a</text>
+<text x="273" y="425">is a</text>
+</g>
+</svg></div><h3>Every declared type bears both traits</h3><p>Ethos Zero emits <code>Datomizable</code> and <code>Compositional</code> on every struct and enum it generates, so every ethos-declared type always bears both traits and no declared type can exist without them. An alias bears them through the type it names: an alias is not a new type and cannot carry a derive.</p><pre><code class="language-rust">pub type FilePath = String;                  // an alias: String already bears both
+pub type SyntaxError = Vec&lt;FilePath&gt;;        // an alias: Vec&lt;T&gt; bears both for any T that does
+#[derive(Datomizable, Compositional)]        // a type: always derived
+pub enum GenerationFailure { SyntaxError(SyntaxError), Unwritable }</code></pre><h3>The datom traits are compiled in only where text is spoken</h3><p>A generated signal library bears <code>Datomizable</code> and <code>Compositional</code> conditionally, under a feature the CLI and client enable and the Nexus does not. The Nexus compiles the same types without any textualization capability and without datom-codec as a dependency.</p><pre><code class="language-rust">// emitted by Ethos Zero into the signal crate
+#[cfg_attr(feature = "datom", derive(Datomizable, Compositional))]
+pub enum Query { Lock(LockRequest), Release(LockId) }</code></pre><pre><code class="language-toml"># the CLI's manifest
+signal-orchestrate = { version = "…", features = ["datom"] }
+# the Nexus's manifest
+signal-orchestrate = { version = "…" }</code></pre><h3>Shapes and placement</h3><p>Each section has its own parsing context; placement carries the meaning. Head then symbol is a variant of <code>Query</code> or <code>Response</code> in a Signal's first two sections, an alias in the types section. An enum declaration is a vector of its variants, and uses the vector's delimiters. Ethos may generate default implementations for Query and Response, which is why Signal is its own root.</p><pre><code class="language-text">Signal
+[]                                                     ; imports
+[ Lock.LockRequest  Release.LockId ]                   ; queries
+[ Locked.Lock  Released.Lock ]                         ; responses
+[ LockId.Integer                                       ; types
+  LockName.String
+  FlowId.String
+  LockRequest.{ LockName FlowId }
+  Lock.{ LockId LockName } ]</code></pre><pre><code class="language-rust">pub enum Query    { Lock(LockRequest), Release(LockId) }
+pub enum Response { Locked(Lock), Released(Lock) }
+pub type LockId = Integer;
+pub type LockName = String;
+pub type FlowId = String;</code></pre><h3>White square brackets define a vector</h3><p>White square brackets around an item type define a vector type, replacing the word Vector, which is so common: <code>⟦String⟧</code> is the vector of String. The vector value keeps its plain brackets in datom.</p><div class="figure" style="position:relative;height:0;padding-bottom:83.33%;overflow:hidden"><svg viewBox="0 0 360 300" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A vector type was written as the word Vector and angle brackets; it is written as white square brackets around the item type">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#808690"/>
+    </marker>
+  </defs>
+  <rect x="20" y="20" width="320" height="50" rx="6" fill="#f1f2f4" stroke="#9ca3af" stroke-width="1"/>
+  <text x="180" y="50" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#1f2937">a vector type</text>
+
+  <line x1="60" y1="70" x2="60" y2="168" stroke="#808690" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="210" y1="70" x2="210" y2="168" stroke="#808690" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="68" y="124" font-family="sans-serif" font-size="13" fill="#808690">was written as</text>
+  <text x="218" y="124" font-family="sans-serif" font-size="13" fill="#808690">is written as</text>
+
+  <rect x="15" y="172" width="157" height="110" rx="6" fill="#f1f2f4" stroke="#9ca3af" stroke-width="1.5"/>
+  <text font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">
+    <tspan x="93" y="228">the word Vector</tspan>
+    <tspan x="93" y="246">and angle</tspan>
+    <tspan x="93" y="264">brackets</tspan>
+  </text>
+
+  <rect x="188" y="172" width="157" height="110" rx="6" fill="#f1f2f4" stroke="#9ca3af" stroke-width="1.5"/>
+  <text font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">
+    <tspan x="266" y="228">white square</tspan>
+    <tspan x="266" y="246">brackets around</tspan>
+    <tspan x="266" y="264">the item type</tspan>
+  </text>
+</svg></div><h3>Traits are explicit; bodies are hand-written</h3><p>A trait is declared, never inferred; an association asserts the type bears it. The generated Rust carries a compile-time assertion that the type bears the trait; the interaction body is hand-written Rust.</p><pre><code class="language-text">Library
+[]                                                ; imports
+[ Record.{ String Integer } ]                     ; types
+[ Summarizable.[ summarize.[ String ] ] ]         ; traits
+[ Record.[ Summarizable ] ]                       ; associations</code></pre><pre><code class="language-rust">#[derive(Datomizable, Compositional)]
+pub struct Record { pub string: String, pub integer: Integer }
+pub trait Summarizable { fn summarize(&amp;self) -&gt; String; }
+// Compile-time assertion: Record bears Summarizable.
+const _: () = {
+    fn assert_record_summarizable&lt;T: Summarizable&gt;() {}
+    let _ = assert_record_summarizable::&lt;Record&gt;;
+};</code></pre><h3>Trait syntax</h3><p>A simple trait opens with a bracket after the dot. Its capabilities sit inside. The receiver after a capability's head names who is called: <code>.</code> takes self, <code>!</code> takes mutable self, <code>:</code> takes no self. A capability with inputs is a headed brace: inputs in a bracket, yield in a bracket. A yield bracket holds one type.</p><pre><code class="language-text">Library
+[]                                                            ; imports
+[ SinkError.[ Closed Full ] ]                                 ; types
+[ Fillable.[ push!{ [ String ] [ Result&lt;Integer SinkError&gt; ] } ; traits
+             drain![ Vector&lt;String&gt; ]
+             create:[ Self ] ] ]
+[]                                                            ; associations</code></pre><pre><code class="language-rust">#[derive(Datomizable, Compositional)]
+pub enum SinkError { Closed, Full }
+pub trait Fillable {
+    fn push(&amp;mut self, input: String) -&gt; Result&lt;Integer, SinkError&gt;;
+    fn drain(&amp;mut self) -&gt; Vec&lt;String&gt;;
+    fn create() -&gt; Self;
+}</code></pre><p>A complex trait opens with a brace after the dot. Inside: supertraits in a bracket, associated types with their constraints in a bracket, associated constants in a bracket — upper case, each the name, a dot, and its type — and capabilities in a bracket.</p><pre><code class="language-text">Library
+[ std:Serializable ]                                ; imports
+[]                                                  ; types
+[ Fillable.[ create:[ Self ] ]                      ; traits
+  Streamable.{ [ Fillable ]
+               [ Item&lt;Serializable&gt; ]
+               [ CAPACITY.Integer ]
+               [ next![ Option&lt;Item&gt; ] ] } ]
+[]                                                  ; associations</code></pre><pre><code class="language-rust">pub trait Fillable { fn create() -&gt; Self; }
+pub trait Streamable: Fillable {
+    type Item: Serializable;
+    const CAPACITY: Integer;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+}</code></pre><p>A trait's identity is its name and its constraints, as stated in the Identity section above.</p><h3>Associations</h3><p>An association declares that a type bears a trait: the type's name, a dot, a bracket of its traits. In the Signal and Sema roots the associations of the query, response and record types are implied and never written. In a Library they are the fourth section, after the traits.</p><pre><code class="language-text">Library
+[]                                                       ; imports
+[ Sink.{ String Integer } ]                              ; types
+[ Summarizable.[ summarize.[ String ] ]                  ; traits
+  Fillable.[ create:[ Self ] ] ]
+[ Sink.[ Summarizable Fillable ] ]                       ; associations</code></pre><pre><code class="language-rust">// Compile-time assertion: Sink bears Summarizable and Fillable.
+const _: () = {
+    fn assert_sink_summarizable&lt;T: Summarizable&gt;() {}
+    let _ = assert_sink_summarizable::&lt;Sink&gt;;
+    fn assert_sink_fillable&lt;T: Fillable&gt;() {}
+    let _ = assert_sink_fillable::&lt;Sink&gt;;
+};</code></pre><p>Interactions — the term for trait implementations — use the type itself in all cases.</p><p>No tuple in the code we design; if some parts require it (standard traits, dependencies), then it is allowed at that contact point only.</p><h3>Spacing</h3><p>Space the delimiters and the inner content. Ethos follows the canonical protos print: a space inside every bracket and brace at both ends when non-empty.</p><p>Ethos expands vertically: a structure with more than one element opens on its line and its elements hang beneath the first, aligned; the closing delimiter ends the last element's line. Nothing that has a next layer sits on one line.</p><p>Ethos carries a comment on every section and on every line that has a next layer, saying in plain words what the machine reads there; a comment runs from ; to the end of the line.</p><h3>Zero</h3><p>Ethos Zero was first named Ethos Monolith; the two are the same thing. Zero as in version 0: no daemon yet, no Nexus. The ethos repository is for the ethos nexus that follows.</p><h3>Generation</h3><p>By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.</p><pre><code class="language-text">ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'</code></pre></div>
+</article>
+<article class="proposal"><header><span class="pnum">1</span><h2>psyche-context › vision/ethos.md</h2></header>
+<div class="diff"><p>An open enum is an Ethos <del>object</del><ins>enum</ins> whose <del>capitalized words</del><ins>fixed variants</ins> are <del>its fixed variants</del><ins>capitalized, with one more variant, the custom variant, that takes a String</ins>. A word that is not capitalized is <del>its implied extensible</del><ins>that custom</ins> variant, a camel ID: a word-based camel-case identifier, written bare, with no variant head before it. The name camel ID is temporary. A check that a word is a word-based camel-case identifier comes long term; short term, none is made.</p></div>
+<p>The metaflow topic is an open enum: its fixed variants are a constant set, such as the core topic, and the users or the machine extend it with camel IDs as they need topics.</p>
+<div class="diff"><p>The same mechanism carries an object that is represented unconventionally, such as a word-based hash<ins>, through a trait</ins>.</p><div class="add"><ins><h4>An unusually represented type</h4></ins></div><div class="add"><ins><p>A type may write and read its own datom form in place of the generated one; it is unusually represented. A trait says so. It is declared in Ethos like any trait and associated with the type, and the logic is hand-written Rust. The trait's working name is UnusuallyRepresented.</p></ins></div><div class="add"><ins><p>When the type is made into a datom, the generated code asks the trait first: the trait gives the datom form, or declines, and the generated code writes what it declines. When a datom is read as the type, the generated code offers the trait the datom first: the trait gives the value or a refusal, or declines, and the generated code reads what it declines. A type with fixed variants keeps the generated form of its fixed variants, and the trait holds only the rest.</p></ins></div><div class="add"><ins><p>The trait refuses the generated form of the values it writes, so a value has one spelling. The trait is the one place where a rule on a form is kept, such as that a word is a camel ID.</p></ins></div><div class="add"><ins><p>The custom variant of an open enum is the first use: the trait writes it as its bare word and reads a bare uncapitalized word as that variant. A flow id kept as the first bits of its harness id and written as three words is another. A digest or a revision written as its hexadecimal digits, a latitude read only within its range, and bytes written as hexadecimal digits are others.</p></ins></div></div>
+<div class="figure" style="position:relative;height:0;padding-bottom:144.44%;overflow:hidden"><svg viewBox="0 0 360 520" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">How a value becomes its datom form</title>
+  <desc id="d">A value of a type that bears the trait is offered first to the type's own writing. The type's own writing gives its own form, or declines to the generated writing. Its own form becomes the datom form; the generated writing yields the datom form.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <g font-family="sans-serif" font-size="14" text-anchor="middle">
+    <g fill="#f2f2f2" stroke="#666" stroke-width="1.5">
+      <rect x="20" y="20" width="320" height="50" rx="4"/>
+      <rect x="20" y="150" width="320" height="50" rx="4"/>
+      <rect x="20" y="290" width="150" height="60" rx="4"/>
+      <rect x="190" y="290" width="150" height="60" rx="4"/>
+      <rect x="20" y="450" width="320" height="50" rx="4"/>
+    </g>
+    <g stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#a)">
+      <line x1="180" y1="70" x2="180" y2="148"/>
+      <line x1="95" y1="200" x2="95" y2="288"/>
+      <line x1="265" y1="200" x2="265" y2="288"/>
+      <line x1="95" y1="350" x2="95" y2="448"/>
+      <line x1="265" y1="350" x2="265" y2="448"/>
+    </g>
+    <g fill="#222">
+      <text x="180" y="50">a value of a type that bears the trait</text>
+      <text x="180" y="180">the type's own writing</text>
+      <text x="95" y="325">its own form</text>
+      <text x="265" y="316">the generated</text>
+      <text x="265" y="334">writing</text>
+      <text x="180" y="480">the datom form</text>
+    </g>
+    <g fill="#f2f2f2" stroke="none">
+      <rect x="110" y="98" width="140" height="24" rx="12"/>
+      <rect x="103" y="232" width="56" height="24" rx="12"/>
+      <rect x="273" y="232" width="74" height="24" rx="12"/>
+      <rect x="103" y="386" width="70" height="24" rx="12"/>
+      <rect x="273" y="386" width="52" height="24" rx="12"/>
+    </g>
+    <g fill="#222" font-size="13">
+      <text x="180" y="115">is offered first to</text>
+      <text x="131" y="249">gives</text>
+      <text x="310" y="249">declines</text>
+      <text x="138" y="403">becomes</text>
+      <text x="299" y="403">yields</text>
+    </g>
+  </g>
+</svg></div>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>psyche-context › inquiry/ethos-representation-trait-name.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>The name of the trait through which a type writes and reads its own datom form is unresolved.</dd></dl></div></ins></div><div class="add"><ins><h4>The name of the trait</h4></ins></div><div class="add"><ins><p>What is the trait named, through which a type writes and reads its own datom form? The living's working name is unusually represented. Ethos names a trait by a quality of the type that bears it: Runnable, Textualizable, Structural, Embodied. What would settle it: the living choosing one name, then the vision, the Ethos file and the Rust trait all using it; the Rust name and the Ethos name are one. Every proposal of this book uses the working name, and a ruling renames it everywhere. The alternatives:</p></ins></div><div class="add"><ins><ul><li>Alternative a: UnusuallyRepresented, the working name. It says that the type's representation is the exception to the generated one.</li><li>Alternative b: SelfRepresenting. It says that the type represents itself: it holds the logic of its own writing and reading.</li><li>Alternative c: CustomDatomizable. It says that the type is a Datomizable with custom logic, naming the datom step it replaces.</li><li>Alternative d: RepresentationOverriding. It says that the type overrides the representation Ethos generates for it.</li><li>Alternative e: SelfSpelling. It says that the type spells itself, the way a camel ID or a word-based hash is spelled.</li></ul></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>datom-codec › datom-codec-unusual.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; What a datom shows to a type that reads it, and
++ ; the type that writes and reads its own datom.
++ Library
++ [ crate:[ Datom Form ErrorKind ] ] ; imports
++ [] ; types
++ [ Formed.[ form.[ Form ] ] ; the form of a datom
++   UnusuallyRepresented.[
++     unusual_form.[ Option&lt;Form&gt; ] ; to write
++     from_unusual_form:{ ; to read
++       [ Formed ]
++       [ Option&lt;Result&lt;Self ErrorKind&gt;&gt; ] } ] ]
++ [ Datom.[ Formed ] ] ; associations</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2>datom-codec › src/unusual.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ //! A type that writes and reads its own datom.
++
++ use crate::{Datom, ErrorKind, Form};
++
++ /// What a datom shows to a type that reads it.
++ pub trait Formed {
++     fn form(&amp;self) -&gt; Form;
++ }
++
++ /// A type whose datom is not the generated one.
++ /// The derive asks it first, both ways; a `None`
++ /// hands the datom to the generated code.
++ pub trait UnusuallyRepresented {
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt;;
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt;
++     where
++         Self: Sized;
++ }
++
++ impl Formed for Datom {
++     fn form(&amp;self) -&gt; Form {
++         self.form.clone()
++     }
++ }
++
++ impl Formed for &amp;Datom {
++     fn form(&amp;self) -&gt; Form {
++         self.form.clone()
++     }
++ }
++
++ /// How a type's own reading refuses.
++ pub trait Refusing {
++     fn refused_value(
++         expected: &amp;str,
++         text: String,
++     ) -&gt; Self;
++     fn refused_form(
++         expected: &amp;str,
++         found: &amp;Form,
++     ) -&gt; Self;
++ }
++
++ impl Refusing for ErrorKind {
++     fn refused_value(
++         expected: &amp;str,
++         text: String,
++     ) -&gt; Self {
++         Self::Value {
++             expected: expected.into(),
++             value: text,
++         }
++     }
++
++     fn refused_form(
++         expected: &amp;str,
++         found: &amp;Form,
++     ) -&gt; Self {
++         let found = match found {
++             Form::Struct(_) =&gt; "Struct",
++             Form::Vector(_) =&gt; "Vector",
++             Form::Variant(..) =&gt; "Variant",
++             Form::Bare(_) =&gt; "Bare",
++             Form::String(_) =&gt; "String",
++             Form::Meaning(_) =&gt; "Meaning",
++         };
++         Self::Form {
++             expected: expected.into(),
++             found: found.into(),
++         }
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">5</span><h2>datom-codec › src/lib.rs</h2></header>
+<pre data-diff><code class="language-rust">  mod projection;
++ mod unusual;
+
+  pub use protos::Symbol;
++ pub use unusual::{
++     Formed, Refusing, UnusuallyRepresented,
++ };</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2>datom-codec › crates/datom-codec-derive/src/unusual.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ //! The statements a type marked
++ //! `#[datom(unusually_represented)]` is given.
++ //! `reading` is spliced first in each generated
++ //! `compose`, `writing` first in each `datomize`;
++ //! for an unmarked type each is empty.
++
++ use proc_macro2::TokenStream;
++ use quote::quote;
++ use syn::DeriveInput;
++
++ const MARK: &amp;str = "unusually_represented";
++
++ fn marked(input: &amp;DeriveInput) -&gt; bool {
++     input.attrs.iter().any(|attribute| {
++         attribute.path().is_ident("datom")
++             &amp;&amp; attribute
++                 .parse_nested_meta(|meta| {
++                     match meta.path.is_ident(MARK)
++                     {
++                         true =&gt; Ok(()),
++                         false =&gt; {
++                             Err(meta.error("?"))
++                         }
++                     }
++                 })
++                 .is_ok()
++     })
++ }
++
++ /// First in `compose`: ask the type to read.
++ pub fn reading(
++     input: &amp;DeriveInput,
++ ) -&gt; TokenStream {
++     if !marked(input) {
++         return quote!();
++     }
++     quote! {
++         if let Some(read) = &lt;Self as
++             ::datom_codec::UnusuallyRepresented&gt;
++             ::from_unusual_form(datom)
++         {
++             use ::datom_codec::Budgeted;
++             budget.spend(&amp;datom.path)?;
++             return read.map_err(|kind| {
++                 &lt;::datom_codec::Error as
++                     ::datom_codec::ErrorRaising&gt;
++                     ::composition(
++                         datom.path.clone(), kind)
++             });
++         }
++     }
++ }
++
++ /// First in `datomize`: ask the type to write.
++ pub fn writing(
++     input: &amp;DeriveInput,
++ ) -&gt; TokenStream {
++     if !marked(input) {
++         return quote!();
++     }
++     quote! {
++         if let Some(form) =
++             ::datom_codec::UnusuallyRepresented
++                 ::unusual_form(self)
++         {
++             return ::datom_codec::Datom {
++                 path: at,
++                 form,
++             };
++         }
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">7</span><h2>datom-codec › crates/datom-codec-derive/src/lib.rs</h2></header>
+<pre><code class="language-rust"><ins>mod unusual;</ins>
+
+#[proc_macro_derive(<del>Composing)]</del>
+<ins>    Composing,</ins>
+<ins>    attributes(datom)</ins>
+<ins>)]</ins>
+
+      let name = &amp;input.ident;
+<ins>    let asked = unusual::reading(&amp;input);</ins>
+
+<ins>                    #asked</ins>
+                      match &amp;datom.form {
+
+<ins>                #asked</ins>
+
+#[proc_macro_derive(<del>Datomizable)]</del>
+<ins>    Datomizable,</ins>
+<ins>    attributes(datom)</ins>
+<ins>)]</ins>
+
+      let name = &amp;input.ident;
+<ins>    let asked = unusual::writing(&amp;input);</ins>
+
+<ins>                    #asked</ins>
+                      match self { #(#arms),* }
+
+<ins>                #asked</ins></code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">8</span><h2>ethos-zero › src/generation.rs</h2></header>
+<pre><code class="language-rust">      ) -&gt; TokenStream;
+  }
+
+<ins>/// The trait whose association marks a type as</ins>
+<ins>/// unusually represented: its datom derives ask</ins>
+<ins>/// that trait first, both ways.</ins>
+<ins>const UNUSUALLY_REPRESENTED: &amp;str =</ins>
+<ins>    "UnusuallyRepresented";</ins>
+<ins></ins>
+<ins>/// Whether a trait reference names the trait</ins>
+<ins>/// called [`UNUSUALLY_REPRESENTED`]: qualified in</ins>
+<ins>/// place, imported by the name its source gives</ins>
+<ins>/// it, or declared in the file.</ins>
+<ins>trait Representing {</ins>
+<ins>    fn names_unusual_representation(</ins>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; bool;</ins>
+<ins>}</ins>
+<ins></ins>
+<ins>impl Representing for Reference {</ins>
+<ins>    fn names_unusual_representation(</ins>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; bool {</ins>
+<ins>        let named = match (</ins>
+<ins>            &amp;self.source,</ins>
+<ins>            file.resolve(&amp;self.name),</ins>
+<ins>        ) {</ins>
+<ins>            (Some(_), _) =&gt; self.name.clone(),</ins>
+<ins>            (</ins>
+<ins>                None,</ins>
+<ins>                Resolution::Imported(_, emitted),</ins>
+<ins>            ) =&gt; emitted,</ins>
+<ins>            (None, Resolution::Trait(name)) =&gt; {</ins>
+<ins>                name</ins>
+<ins>            }</ins>
+<ins>            (None, _) =&gt; return false,</ins>
+<ins>        };</ins>
+<ins>        named.as_ref() == UNUSUALLY_REPRESENTED</ins>
+<ins>    }</ins>
+<ins>}</ins>
+<ins></ins>
+<ins>/// Whether a Library associates a type with the</ins>
+<ins>/// trait called [`UNUSUALLY_REPRESENTED`].</ins>
+<ins>trait UnusuallyRepresenting {</ins>
+<ins>    fn unusually_represented(</ins>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; bool;</ins>
+<ins>}</ins>
+<ins></ins>
+<ins>impl UnusuallyRepresenting for Identity {</ins>
+<ins>    fn unusually_represented(</ins>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; bool {</ins>
+<ins>        let File::Library(library) = file else {</ins>
+<ins>            return false;</ins>
+<ins>        };</ins>
+<ins>        for association in &amp;library.associations {</ins>
+<ins>            if association.identity.name</ins>
+<ins>                != self.name</ins>
+<ins>            {</ins>
+<ins>                continue;</ins>
+<ins>            }</ins>
+<ins>            for trait_reference in</ins>
+<ins>                &amp;association.traits</ins>
+<ins>            {</ins>
+<ins>                if trait_reference</ins>
+<ins>                    .names_unusual_representation(</ins>
+<ins>                        file,</ins>
+<ins>                    )</ins>
+<ins>                {</ins>
+<ins>                    return true;</ins>
+<ins>                }</ins>
+<ins>            }</ins>
+<ins>        }</ins>
+<ins>        false</ins>
+<ins>    }</ins>
+<ins>}</ins>
+<ins></ins>
+  trait DatomDeriving {
+    fn datom_derives(<del>&amp;self) -&gt; TokenStream;</del>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; TokenStream;</ins>
+  }
+
+  /// while violating the schema's invariants.
+<ins>///</ins>
+<ins>/// A type its Library associates with</ins>
+<ins>/// `UnusuallyRepresented` also bears</ins>
+<ins>/// `datom(unusually_represented)` behind the same</ins>
+<ins>/// feature: the datom derives ask that trait</ins>
+<ins>/// first.</ins>
+  impl DatomDeriving for Identity {
+    fn datom_derives(<del>&amp;self) -&gt; TokenStream {</del>
+<ins>        &amp;self,</ins>
+<ins>        file: &amp;File,</ins>
+<ins>    ) -&gt; TokenStream {</ins>
+<ins>        let unusual = if self</ins>
+<ins>            .unusually_represented(file)</ins>
+<ins>        {</ins>
+<ins>            quote! {</ins>
+<ins>                #[cfg_attr(</ins>
+<ins>                    feature = "datom",</ins>
+<ins>                    datom(unusually_represented)</ins>
+<ins>                )]</ins>
+<ins>            }</ins>
+<ins>        } else {</ins>
+<ins>            TokenStream::new()</ins>
+<ins>        };</ins>
+          quote! {
+              #[rustfmt::skip]
+<ins>            #unusual</ins>
+          }
+      }
+  }
+
+          }
+          let fields =
+              references.field_names(owner);
+        let derive =<del> identity.datom_derives();</del>
+<ins>            identity.datom_derives(scope.file);</ins>
+          let bounds = if recursive {
+              identity.recursion_bounds()
+          } else {
+
+          let name = identity.name.tokens();
+          let parameters =
+              identity.parameters(scope);
+        let derive =<del> identity.datom_derives();</del>
+<ins>            identity.datom_derives(scope.file);</ins>
+          let mut definitions =
+              Vec::with_capacity(self.len());
+          let mut nested = Vec::new();</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">9</span><h2>datom-codec › examples/unusual/topic.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; A Topic that is open: fixed variants, and a
++ ; Custom variant that holds a camel ID.
++ Library
++ [ datom_codec:UnusuallyRepresented ] ; imports
++ [ Aspect.[ Psyche ; sees: the living's side
++            Mind ; implements what Psyche sees
++            Field ] ; the tools, via Mind
++   Topic.[ Core ; the permanent topic
++           Ethos ; the topic about Ethos
++           Custom.String ] ; any other: camel ID
++   Layer.[ Primary Secondary Tertiary
++           Quaternary ] ; decides the model
++   Address.{ Aspect Topic Layer } ] ; types
++ [] ; traits: the one used is imported
++ [ Topic.[ UnusuallyRepresented ] ] ; associations</code></pre>
+<pre data-diff><code class="language-datom">+ ; without the trait
++ ; read, and written back the same
++ { Psyche Core Secondary }
++ ; read, and written back the same
++ { Psyche Custom.flowDesign Secondary }
++ ; refused: flowDesign is no variant of Topic
++ { Psyche flowDesign Secondary }</code></pre>
+<pre data-diff><code class="language-datom">+ ; with the trait
++ ; read, and written back the same
++ { Psyche Core Secondary }
++ ; read as Custom, written back the same
++ { Psyche flowDesign Secondary }
++ ; refused: the head Custom is not written
++ { Psyche Custom.flowDesign Secondary }
++ ; refused: not a camel ID
++ { Psyche flow_design Secondary }
++ ; refused: FlowDesign is no variant
++ { Psyche FlowDesign Secondary }</code></pre>
+<div class="figure" style="position:relative;height:0;padding-bottom:86.11%;overflow:hidden"><svg viewBox="0 0 360 310" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">A word in a Topic's position</title>
+  <desc id="d">A word in a Topic's position: capital is read as a fixed variant, lowercase is read as a Custom camel ID, headed Custom is refused.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <g font-family="sans-serif" font-size="13" text-anchor="middle">
+    <rect x="20" y="20" width="320" height="50" rx="4" fill="#fff" stroke="#666" stroke-width="1.2"/>
+    <text x="180" y="50" fill="#222">a word in a Topic's position</text>
+
+    <line x1="70" y1="70" x2="70" y2="228" stroke="#666" stroke-width="1.2" marker-end="url(#ah)"/>
+    <line x1="180" y1="70" x2="180" y2="228" stroke="#666" stroke-width="1.2" marker-end="url(#ah)"/>
+    <line x1="290" y1="70" x2="290" y2="228" stroke="#666" stroke-width="1.2" marker-end="url(#ah)"/>
+
+    <rect x="22" y="122" width="96" height="46" rx="3" fill="#fff"/>
+    <text x="70" y="142" fill="#222">capital</text>
+    <text x="70" y="159" fill="#222">is read as</text>
+
+    <rect x="132" y="122" width="96" height="46" rx="3" fill="#fff"/>
+    <text x="180" y="142" fill="#222">lowercase</text>
+    <text x="180" y="159" fill="#222">is read as</text>
+
+    <rect x="242" y="122" width="96" height="46" rx="3" fill="#fff"/>
+    <text x="290" y="142" fill="#222">headed Custom</text>
+    <text x="290" y="159" fill="#222">is</text>
+
+    <rect x="20" y="230" width="100" height="56" rx="4" fill="#fff" stroke="#666" stroke-width="1.2"/>
+    <text x="70" y="254" fill="#222">fixed</text>
+    <text x="70" y="271" fill="#222">variant</text>
+
+    <rect x="130" y="230" width="100" height="56" rx="4" fill="#fff" stroke="#666" stroke-width="1.2"/>
+    <text x="180" y="254" fill="#222">Custom</text>
+    <text x="180" y="271" fill="#222">camel ID</text>
+
+    <rect x="240" y="230" width="100" height="56" rx="4" fill="#fff" stroke="#666" stroke-width="1.2"/>
+    <text x="290" y="263" fill="#222">refused</text>
+  </g>
+</svg></div>
+</article>
+<article class="proposal"><header><span class="pnum">10</span><h2>datom-codec › examples/unusual/topic/represented.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ use datom_codec::{
++     ErrorKind, Form, Formed, Refusing, Symbol,
++     UnusuallyRepresented,
++ };
++
++ use super::generated::Topic;
++
++ impl Topic {
++     // A word that begins with a lowercase letter.
++     fn is_lowercase(word: &amp;str) -&gt; bool {
++         word.chars().next().is_some_and(|c| {
++             c.is_ascii_lowercase()
++         })
++     }
++
++     // A camel ID: that, then letters and digits.
++     // The first check; the long-term check, of
++     // words, would replace it here.
++     fn is_camel_id(word: &amp;str) -&gt; bool {
++         Topic::is_lowercase(word)
++             &amp;&amp; word.chars().all(|c| {
++                 c.is_ascii_alphanumeric()
++             })
++     }
++
++     fn from_word(
++         word: String,
++     ) -&gt; Result&lt;Self, ErrorKind&gt; {
++         match Topic::is_camel_id(&amp;word) {
++             true =&gt; Ok(Topic::Custom(word)),
++             false =&gt; {
++                 let kind = "camel ID";
++                 Err(ErrorKind::refused_value(
++                     kind, word,
++                 ))
++             }
++         }
++     }
++ }
++
++ impl UnusuallyRepresented for Topic {
++     // Written: a Custom topic is its camel ID.
++     // Core and Ethos stay generated.
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt; {
++         match self {
++             Topic::Custom(word)
++                 if Topic::is_camel_id(word) =&gt;
++             {
++                 Some(Form::Bare(word.clone()))
++             }
++             _ =&gt; None,
++         }
++     }
++
++     // Read: a lowercase bare word is Custom.
++     // The old head, Custom.word, is refused. Any
++     // other form is left to the generated code.
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt; {
++         match input.form() {
++             Form::Bare(word)
++                 if Topic::is_lowercase(&amp;word) =&gt;
++             {
++                 Some(Topic::from_word(word))
++             }
++             Form::Variant(Symbol(head), _)
++                 if head == "Custom" =&gt;
++             {
++                 Some(Err(ErrorKind::Variant {
++                     expected: "Topic".into(),
++                     found: head,
++                 }))
++             }
++             _ =&gt; None,
++         }
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">11</span><h2>datom-codec › examples/unusual/flow_id.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; A flow id kept as the first 33 bits of its
++ ; harness id, and written as three words.
++ Library
++ [ datom_codec:UnusuallyRepresented ] ; imports
++ [ Layer.[ Primary Secondary Tertiary
++           Quaternary ] ; decides the model
++   FlowId.{ Integer } ; the 33 bits, as an integer
++   Seat.{ Layer FlowId } ] ; a flow's layer, id
++ [] ; traits: the one used is imported
++ [ FlowId.[ UnusuallyRepresented ] ] ; associations</code></pre>
+<pre data-diff><code class="language-datom">+ ; without the trait
++ ; read: a struct holds the integer
++ { Secondary { 2050 } }
++ ; refused: words are no struct
++ { Secondary abandonAbilityAble }</code></pre>
+<pre data-diff><code class="language-datom">+ ; with the trait
++ ; read: 2050, the indexes 0, 1 and 2
++ { Secondary abandonAbilityAble }
++ ; read: 2^33 - 1, the greatest id
++ { Secondary zooZooZoo }
++ ; refused: the struct form
++ { Secondary { 2050 } }
++ ; refused: two words
++ { Secondary abandonAbility }
++ ; refused: four words
++ { Secondary abandonAbilityAbleAbout }
++ ; refused: notAWord is not in the list
++ { Secondary notAWord }
++ ; refused: it begins with a capital
++ { Secondary AbandonAbilityAble }</code></pre>
+<div class="figure" style="position:relative;height:0;padding-bottom:126.67%;overflow:hidden"><svg viewBox="0 0 360 456" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">From 33 bits to a three-word name</title>
+  <desc id="d">33 bits are split in 11-bit groups into three indexes. Three indexes select from the 2048-word list three words. Three words are joined, as camel case, into abandonAbilityAble.</desc>
+  <defs>
+    <marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="20" y="20" width="320" height="44" rx="4"/>
+    <rect x="20" y="144" width="320" height="44" rx="4"/>
+    <rect x="20" y="268" width="320" height="44" rx="4"/>
+    <rect x="20" y="392" width="320" height="44" rx="4"/>
+    <line x1="70" y1="64" x2="70" y2="142" marker-end="url(#h)"/>
+    <line x1="70" y1="188" x2="70" y2="266" marker-end="url(#h)"/>
+    <line x1="70" y1="312" x2="70" y2="390" marker-end="url(#h)"/>
+  </g>
+  <g fill="currentColor" font-family="sans-serif" font-size="16" text-anchor="middle">
+    <text x="180" y="48">33 bits</text>
+    <text x="180" y="172">three indexes</text>
+    <text x="180" y="296">three words</text>
+    <text x="180" y="420" font-family="monospace">abandonAbilityAble</text>
+  </g>
+  <g fill="currentColor" font-family="sans-serif" font-size="13">
+    <text x="84" y="108">are split in 11-bit groups into</text>
+    <text x="84" y="232">select from the 2048-word list</text>
+    <text x="84" y="356">are joined, as camel case, into</text>
+  </g>
+</svg></div>
+</article>
+<article class="proposal"><header><span class="pnum">12</span><h2>datom-codec › examples/unusual/flow_id/represented.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ use std::sync::OnceLock;
++
++ use datom_codec::{
++     ErrorKind, Form, Formed, Refusing,
++     UnusuallyRepresented,
++ };
++
++ use super::generated::FlowId;
++
++ // BIP-39 English, 2048 words, one a line;
++ // SHA-256 2f5eed53...b24dbda.
++ const LIST: &amp;str =
++     include_str!("bip39-english.txt");
++
++ impl FlowId {
++     const BITS: u32 = 33;
++
++     fn words() -&gt; &amp;'static Vec&lt;&amp;'static str&gt; {
++         static WORDS: OnceLock&lt;Vec&lt;&amp;str&gt;&gt; =
++             OnceLock::new();
++         WORDS.get_or_init(|| {
++             LIST.lines().collect()
++         })
++     }
++
++     // Three 11-bit groups, high bits first, as
++     // camel case: abandonAbilityAble is 2050.
++     fn spell(&amp;self) -&gt; Option&lt;String&gt; {
++         let bits =
++             u64::try_from(self.integer).ok()?;
++         if bits &gt;&gt; Self::BITS != 0 {
++             return None;
++         }
++         let mut spelled = String::new();
++         for shift in [22, 11, 0] {
++             let index = (bits &gt;&gt; shift) &amp; 0x7ff;
++             let word =
++                 Self::words()[index as usize];
++             if spelled.is_empty() {
++                 spelled.push_str(word);
++             } else {
++                 spelled.push_str(
++                     &amp;word[..1].to_uppercase(),
++                 );
++                 spelled.push_str(&amp;word[1..]);
++             }
++         }
++         Some(spelled)
++     }
++
++     // The reverse: split at each capital, look
++     // each word up, and join the three indexes.
++     fn unspell(text: &amp;str) -&gt; Option&lt;Self&gt; {
++         let mut words: Vec&lt;String&gt; = Vec::new();
++         for letter in text.chars() {
++             if letter.is_ascii_uppercase()
++                 || words.is_empty()
++             {
++                 words.push(String::new());
++             }
++             words.last_mut()?.push(
++                 letter.to_ascii_lowercase(),
++             );
++         }
++         let list = Self::words();
++         let first = text.chars().next()?;
++         if words.len() != 3
++             || !first.is_ascii_lowercase()
++         {
++             return None;
++         }
++         let mut bits = 0i64;
++         for word in &amp;words {
++             let index = list
++                 .binary_search(&amp;word.as_str())
++                 .ok()?;
++             bits = bits &lt;&lt; 11 | index as i64;
++         }
++         Some(FlowId { integer: bits })
++     }
++ }
++
++ impl UnusuallyRepresented for FlowId {
++     // Written: the words, if the integer is 33
++     // bits. Otherwise the generated form, which
++     // cannot be read back.
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt; {
++         self.spell().map(Form::Bare)
++     }
++
++     // Read: only three known words. Any other
++     // form, the generated struct, is refused.
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt; {
++         Some(match input.form() {
++             Form::Bare(text) =&gt; FlowId::unspell(
++                 &amp;text,
++             )
++             .ok_or(ErrorKind::refused_value(
++                 "three BIP-39 words",
++                 text,
++             )),
++             other =&gt; {
++                 Err(ErrorKind::refused_form(
++                     "Bare", &amp;other,
++                 ))
++             }
++         })
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">13</span><h2>datom-codec › examples/unusual/revision.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; A git revision, written as its 40 lowercase
++ ; hex digits and read only if it is one.
++ Library
++ [ datom_codec:UnusuallyRepresented ] ; imports
++ [ Revision.{ String } ; the 40 hex digits
++   Pin.{ Name.String Revision } ] ; types
++ [] ; traits: the one used is imported
++ [ Revision.[ UnusuallyRepresented ] ]</code></pre>
+<pre data-diff><code class="language-datom">+ ; without the trait
++ ; read: a struct holds the digits
++ { datomCodec
++   { 4dff16b4f7412febc3b71aac8b49680cd20988cb } }
++ ; refused: digits are no struct
++ { datomCodec
++   4dff16b4f7412febc3b71aac8b49680cd20988cb }</code></pre>
+<pre data-diff><code class="language-datom">+ ; with the trait
++ ; read, and written back the same
++ { datomCodec
++   4dff16b4f7412febc3b71aac8b49680cd20988cb }
++ ; refused: the struct form
++ { datomCodec
++   { 4dff16b4f7412febc3b71aac8b49680cd20988cb } }
++ ; refused: uppercase digits
++ { datomCodec
++   4DFF16B4F7412FEBC3B71AAC8B49680CD20988CB }
++ ; refused: seven digits, not forty
++ { datomCodec 4dff16b }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">14</span><h2>datom-codec › examples/unusual/revision/represented.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ use datom_codec::{
++     ErrorKind, Form, Formed, Refusing,
++     UnusuallyRepresented,
++ };
++
++ use super::generated::Revision;
++
++ impl Revision {
++     // Forty lowercase hexadecimal digits.
++     fn is_revision(text: &amp;str) -&gt; bool {
++         text.len() == 40
++             &amp;&amp; text.chars().all(|c| {
++                 c.is_ascii_digit()
++                     || ('a'..='f').contains(&amp;c)
++             })
++     }
++ }
++
++ impl UnusuallyRepresented for Revision {
++     // Written: the digits, bare, if a revision.
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt; {
++         Revision::is_revision(&amp;self.string).then(
++             || Form::Bare(self.string.clone()),
++         )
++     }
++
++     // Read: only a bare revision. The generated
++     // struct form is refused.
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt; {
++         Some(match input.form() {
++             Form::Bare(text)
++                 if Revision::is_revision(
++                     &amp;text,
++                 ) =&gt;
++             {
++                 Ok(Revision { string: text })
++             }
++             Form::Bare(text) =&gt; {
++                 Err(ErrorKind::refused_value(
++                     "Revision", text,
++                 ))
++             }
++             other =&gt; {
++                 Err(ErrorKind::refused_form(
++                     "Bare", &amp;other,
++                 ))
++             }
++         })
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">15</span><h2>datom-codec › examples/unusual/latitude.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; A latitude in degrees, read only inside the
++ ; range -90 to 90.
++ Library
++ [ datom_codec:UnusuallyRepresented ] ; imports
++ [ Latitude.{ Decimal } ; degrees north
++   Place.{ Name.String Latitude } ] ; types
++ [] ; traits: the one used is imported
++ [ Latitude.[ UnusuallyRepresented ] ]</code></pre>
+<pre data-diff><code class="language-datom">+ ; without the trait
++ ; read: a struct holds the decimal
++ { Greenwich { 51.5 } }
++ ; refused: a bare decimal is no struct
++ { Greenwich 51.5 }
++ ; read: nothing bounds the range
++ { Nowhere { 123.4 } }</code></pre>
+<pre data-diff><code class="language-datom">+ ; with the trait
++ ; read, and written back the same
++ { Greenwich 51.5 }
++ ; read, negative
++ { Wellington -41.3 }
++ ; read: the pole is inside the range
++ { Pole 90.0 }
++ ; refused: 123.4 is outside -90 to 90
++ { Nowhere 123.4 }
++ ; refused: the struct form
++ { Greenwich { 51.5 } }
++ ; refused: 51 is no decimal
++ { Greenwich 51 }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">16</span><h2>datom-codec › examples/unusual/latitude/represented.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ use datom_codec::{
++     Decimal, Decimating, ErrorKind, Form, Formed,
++     Refusing, Symbol, UnusuallyRepresented,
++ };
++
++ use super::generated::Latitude;
++
++ impl Latitude {
++     fn in_range(decimal: &amp;Decimal) -&gt; bool {
++         (-90.0..=90.0).contains(&amp;decimal.float())
++     }
++
++     fn read(
++         text: String,
++     ) -&gt; Result&lt;Self, ErrorKind&gt; {
++         match text.parse::&lt;Decimal&gt;() {
++             Ok(decimal)
++                 if Self::in_range(&amp;decimal) =&gt;
++             {
++                 Ok(Latitude { decimal })
++             }
++             _ =&gt; Err(ErrorKind::refused_value(
++                 "Latitude, -90 to 90",
++                 text,
++             )),
++         }
++     }
++
++     // 51.5 is the head 51 over the bare 5.
++     fn text(
++         form: &amp;Form,
++     ) -&gt; Result&lt;String, ErrorKind&gt; {
++         match form {
++             Form::Bare(text) =&gt; Ok(text.clone()),
++             Form::Variant(
++                 Symbol(whole),
++                 part,
++             ) =&gt; match &amp;part.form {
++                 Form::Bare(rest) =&gt; {
++                     Ok(format!("{whole}.{rest}"))
++                 }
++                 other =&gt; {
++                     Err(ErrorKind::refused_form(
++                         "Bare", other,
++                     ))
++                 }
++             },
++             other =&gt; {
++                 Err(ErrorKind::refused_form(
++                     "Decimal", other,
++                 ))
++             }
++         }
++     }
++ }
++
++ impl UnusuallyRepresented for Latitude {
++     // Written: the decimal, bare, if in range.
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt; {
++         let decimal = &amp;self.decimal;
++         if Latitude::in_range(decimal) {
++             Some(Form::Bare(decimal.to_string()))
++         } else {
++             None
++         }
++     }
++
++     // Read: join the text, read the decimal, then
++     // check the range. Other forms are refused.
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt; {
++         Some(
++             Latitude::text(&amp;input.form())
++                 .and_then(Latitude::read),
++         )
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">17</span><h2>datom-codec › examples/unusual/octets.ethos, a new file</h2></header>
+<pre data-diff><code class="language-ethos">+ ; Bytes, written as hex digits, two to a byte,
++ ; and read only if each pair is one byte.
++ Library
++ [ datom_codec:UnusuallyRepresented ] ; imports
++ [ Octets.{ Vector&lt;Integer&gt; } ; each integer a byte
++   Keypress.{ Name.String Octets } ] ; types
++ [] ; traits: the one used is imported
++ [ Octets.[ UnusuallyRepresented ] ] ; associations</code></pre>
+<pre data-diff><code class="language-datom">+ ; without the trait
++ ; read, and written back the same
++ { UpArrow { [ 27 91 65 ] } }
++ ; read: nothing bounds a byte
++ { Bad { [ 27 300 65 ] } }
++ ; refused: hex digits are no struct
++ { UpArrow 1b5b41 }</code></pre>
+<pre data-diff><code class="language-datom">+ ; with the trait
++ ; read: 27, 91 and 65, written back
++ { UpArrow 1b5b41 }
++ ; read: no bytes at all
++ { Empty «» }
++ ; refused: the struct form
++ { UpArrow { [ 27 91 65 ] } }
++ ; refused: an odd number of digits
++ { Odd 1b5 }
++ ; refused: zz are no hex digits
++ { NotHex zz }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">18</span><h2>datom-codec › examples/unusual/octets/represented.rs, a new file</h2></header>
+<pre data-diff><code class="language-rust">+ use datom_codec::{
++     ErrorKind, Form, Formed, Refusing,
++     UnusuallyRepresented,
++ };
++
++ use super::generated::Octets;
++
++ impl Octets {
++     // One byte as two hex digits, or None.
++     fn hex(byte: i64) -&gt; Option&lt;String&gt; {
++         u8::try_from(byte)
++             .ok()
++             .map(|byte| format!("{byte:02x}"))
++     }
++
++     // Two hex digits to a byte, all through.
++     fn unhex(text: &amp;str) -&gt; Option&lt;Vec&lt;i64&gt;&gt; {
++         if text.len() % 2 != 0 || !text.is_ascii()
++         {
++             return None;
++         }
++         (0..text.len())
++             .step_by(2)
++             .map(|at| {
++                 let pair = &amp;text[at..at + 2];
++                 i64::from_str_radix(pair, 16).ok()
++             })
++             .collect()
++     }
++
++     fn read(
++         text: String,
++     ) -&gt; Result&lt;Self, ErrorKind&gt; {
++         match Octets::unhex(&amp;text) {
++             Some(bytes) =&gt; Ok(Octets {
++                 integer_vector: bytes,
++             }),
++             None =&gt; {
++                 let kind = "hex bytes";
++                 Err(ErrorKind::refused_value(
++                     kind, text,
++                 ))
++             }
++         }
++     }
++ }
++
++ impl UnusuallyRepresented for Octets {
++     // Written: hex, bare; no bytes at all is «».
++     fn unusual_form(&amp;self) -&gt; Option&lt;Form&gt; {
++         let digits: String = self
++             .integer_vector
++             .iter()
++             .map(|byte| Octets::hex(*byte))
++             .collect::&lt;Option&lt;_&gt;&gt;()?;
++         Some(if digits.is_empty() {
++             Form::String(digits)
++         } else {
++             Form::Bare(digits)
++         })
++     }
++
++     // Read: a bare even run of hex digits, or «».
++     fn from_unusual_form&lt;N: Formed&gt;(
++         input: N,
++     ) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt; {
++         Some(match input.form() {
++             Form::String(text)
++                 if text.is_empty() =&gt;
++             {
++                 Ok(Octets {
++                     integer_vector: vec![],
++                 })
++             }
++             Form::Bare(text) =&gt; {
++                 Octets::read(text)
++             }
++             other =&gt; {
++                 Err(ErrorKind::refused_form(
++                     "Bare", &amp;other,
++                 ))
++             }
++         })
++     }
++ }</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">19</span><h2>mind-context › knowledge/ethos-layers.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>The layers Ethos is made of, and how each reads an enum, a variant and a capital letter today, is needed to place a change.</dd><dt>Dependencies</dt><dd>knowledge-ethos, knowledge-datom, knowledge-protos</dd></dl></div></ins></div><div class="add"><ins><h4>The layers, as the code stands</h4></ins></div><div class="add"><ins><p>Witnessed in protos main 15b41da (0.32.2), ethos-zero main 07714b0 (17.0.0) and datom-codec main 4dff16b, read, not run, except where a line says it was run.</p></ins></div><div class="add"><ins><p>Ethos text is read by ethos-zero and becomes a Rust type; the type's derive, from datom-codec, reads and writes datom text through protos. Ethos-zero is the bootstrap and the generator in one crate: canonicalization, protosization, conception, checking and generation are its passes. Datom-codec is the Datom reader and writer. No registry of types exists in these repositories; the only registry in code is Curriculum's registry of skills.</p></ins></div></div>
+<div class="figure" style="position:relative;height:0;padding-bottom:122.22%;overflow:hidden"><svg viewBox="0 0 360 440" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="12" role="img" aria-label="Two chains lead to a Rust type with its derive">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#777"/>
+    </marker>
+  </defs>
+
+  
+  <g stroke="#777" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <line x1="60" y1="52" x2="60" y2="358"/>
+    <line x1="230" y1="52" x2="230" y2="118"/>
+    <line x1="230" y1="152" x2="230" y2="218"/>
+    <line x1="230" y1="252" x2="230" y2="358"/>
+  </g>
+
+  
+  <g fill="#f2f2f2" stroke="none">
+    <rect x="70" y="189" width="86" height="34" rx="10"/>
+    <rect x="240" y="69" width="60" height="34" rx="10"/>
+    <rect x="240" y="169" width="93" height="34" rx="10"/>
+    <rect x="240" y="289" width="90" height="34" rx="10"/>
+  </g>
+  <g fill="#222">
+    <text x="78" y="204">ethos-zero</text>
+    <text x="78" y="218">generates</text>
+    <text x="248" y="84">protos</text>
+    <text x="248" y="98">reads</text>
+    <text x="248" y="184">datom-codec</text>
+    <text x="248" y="198">forms</text>
+    <text x="248" y="304">the derive</text>
+    <text x="248" y="318">composes</text>
+  </g>
+
+  
+  <g fill="#f2f2f2" stroke="#777" stroke-width="1">
+    <rect x="10" y="20" width="100" height="32" rx="3"/>
+    <rect x="170" y="20" width="120" height="32" rx="3"/>
+    <rect x="170" y="120" width="120" height="32" rx="3"/>
+    <rect x="170" y="220" width="120" height="32" rx="3"/>
+    <rect x="10" y="360" width="340" height="40" rx="3"/>
+  </g>
+  <g fill="#222" text-anchor="middle">
+    <text x="60" y="40">ethos file</text>
+    <text x="230" y="40">datom text</text>
+    <text x="230" y="140">Protos</text>
+    <text x="230" y="240">Datom form</text>
+    <text x="180" y="384">a Rust type, with its derive</text>
+  </g>
+</svg></div>
+<div class="diff"><div class="add"><ins><h4>Capital letters today</h4></ins></div><div class="add"><ins><p>Protos has no test of case: a run with a separator becomes a headed structure, any other run a bare one. Datom-codec's step from Protos to the Datom form is case-blind too. Case is read only by the type that composes the form: a derived enum matches a bare form against its unit variants by their exact spelling, and routes any other form to its payload variants by spelling.</p></ins></div><div class="add"><ins><p>Ethos-zero requires a capital letter on the name of a declared type or trait, and on no variant. Run against ethos-zero 07714b0: an enum <code>Topic.[ core ethos ]</code> is checked and accepted; a type named <code>topic</code> is rejected with Case.topic.</p></ins></div><div class="add"><ins><p>An alias is a Rust alias, transparent, never a new type: <code>Topic.String</code> is a <code>String</code>. A type reaches a custom text form through a hand-written reader and writer of its own, as Decimal has, or through an import of a Rust type that has one.</p></ins></div><div class="add"><ins><h4>Topic and flow id today</h4></ins></div><div class="add"><ins><p>Flow's library declares <code>Topic.String</code>; the camel-case check on a topic is a comment there ("check camelCase at input"), and no check in Rust was found. A flow id is <code>FlowId.String</code>; the title code accepts six characters, each a hexadecimal digit. A word-based id is a design in the records and in no code on main.</p></ins></div><div class="add"><ins><h4>Syntax on a branch</h4></ins></div><div class="add"><ins><p>The white braces and white square brackets are landed in vision/ethos.md; ethos-zero main does not parse them. They are on the branch ethos-proposals of ethos-zero, protos and datom-codec. The Ethos code of this book uses the brackets and braces that main parses.</p></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">20</span><h2>mind-context › knowledge/ethos-datomization.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>How a type becomes a datom and a datom a type, and where a type's own representation hooks in, is needed to place or judge a custom datom form.</dd><dt>Dependencies</dt><dd>knowledge-ethos, knowledge-datom, knowledge-protos</dd></dl></div></ins></div><div class="add"><ins><h4>Witnessed</h4></ins></div><div class="add"><ins><p>datom-codec main 4dff16b, protos main 15b41da, ethos-zero main 07714b0 (17.0.0). Read, except the hook, which was built and run in scratch copies: datom-codec with the hook, 48 existing tests passing; ethos-zero with the hook, its tests, clippy and no-free-function checks passing.</p></ins></div><div class="add"><ins><h4>Reading</h4></ins></div><div class="add"><ins><ul><li>Datom text is read by Protos, formed into a Datom, then composed into the type: <code>Composing::compose(datom, budget)</code>. A Datom is a path and a Form. A Form is Struct, Vector, Variant(Symbol, Datom), Bare(String), String(String) or Meaning.</li><li>A period-headed run is a Variant. <code>51.5</code> arrives as Variant(51, Bare 5); <code>Core</code> as Bare; <code>Custom.flowDesign</code> as Variant(Custom, Bare flowDesign). The Datom form refuses angle enclosures and qualified heads.</li><li>A derived struct checks its arity, then reads its positions in order. A one-position struct is not transparent: <code>{ hello }</code>.</li><li>A derived enum matches a Bare form against its unit variants by exact spelling, and any other form against its payload variants by head. The last arm refuses with ErrorKind::Variant. A unit variant written with a payload, and a payload variant written bare, are refused.</li><li>Leaf types are read by hand in datom-codec: String (Bare, or guillemets when empty, spaced or delimited), i64 (no plus sign, no leading zero), bool (True, False), Vec, Option (Some., None), Result, Box, tuples to twelve, Meaning, Decimal (a point is required; joined from Variant(whole, Bare fraction)). The protos types Extent, Symbol, ReaderBudget, Separator, Problem and Error are written by hand too.</li></ul></ins></div><div class="add"><ins><h4>Writing</h4></ins></div><div class="add"><ins><ul><li>A value is datomized to a Datom, protosized, then textualized. A unit variant is Bare(name), a payload variant Variant(name, body), a struct Struct of its positions.</li><li>Writing cannot fail: <code>datomize</code> returns a Datom, not a Result.</li></ul></ins></div><div class="add"><ins><h4>Where a representation is decided</h4></ins></div><div class="add"><ins><ul><li>In the two derives of datom-codec-derive, Datomizable and Composing. Ethos-zero emits the types and one derive attribute and emits no impl of either trait. Before the hook, no attribute, trait or registry changed a representation: the derives declared no helper attribute.</li><li>An alias is a Rust alias: it takes its target's form and carries no derive. The live Ethos files on main declare 689 intrinsic aliases, none checked by its type (String 481, Integer 181, Boolean 14, Decimal 5, Vector&lt;Integer&gt; 7, Vector&lt;String&gt; 1). A check sits in a comment or in a consumer's code. Counted by a scan of origin main of about 220 repositories, not compiled.</li><li>One way to a hand-written form exists: import a Rust type that has its own impls, as Decimal and Meaning are intrinsics and protos:Extent is imported. Ethos then cannot show the type's variants.</li><li>The traits Datomizable and Composing declared in datom-codec-kinds.ethos are an anatomy: the crate's own traits take concrete Path, Datom and Budget, and its generated kinds file is not compiled.</li></ul></ins></div><div class="add"><ins><h4>The hook</h4></ins></div><div class="add"><ins><ul><li>UnusuallyRepresented has <code>unusual_form(&amp;self) -&gt; Option&lt;Form&gt;</code> and <code>from_unusual_form(Formed) -&gt; Option&lt;Result&lt;Self, ErrorKind&gt;&gt;</code>. Formed gives the Form of a Datom. A None declines to the generated code.</li><li>A type is marked <code>#[cfg_attr(feature = "datom", datom(unusually_represented))]</code>. Ethos-zero emits it for a type its Library associates with the trait. The two derives then add one statement first in <code>compose</code> and one first in <code>datomize</code>.</li><li>Run: Topic, FlowId, Revision, Latitude and Octets, each read and written with and without the trait.</li><li>Seen: a value the trait declines is written in the generated form, which the trait's reader then refuses, such as a FlowId of 2^33 written <code>{ 8589934592 }</code>. The trait is consulted for every datom of its type, so a reader returns None for forms it does not own. The trait is per type, not per position. A marked type without the impl does not compile.</li></ul></ins></div></div>
+<div class="figure" style="position:relative;height:0;padding-bottom:122.22%;overflow:hidden"><svg viewBox="0 0 360 440" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+  <title id="t">Reading datom text</title>
+  <desc id="d">Datom text is read by Protos into the Datom form. The Datom form is offered first to the type's own reading, which either declines, passing to the generated reading, or claims, giving its value or its refusal.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a8a8a"/>
+    </marker>
+  </defs>
+  <g font-family="sans-serif" font-size="15" text-anchor="middle">
+    <g fill="#f2f2f2" stroke="#8a8a8a" stroke-width="2">
+      <rect x="60" y="20" width="240" height="50" rx="6"/>
+      <rect x="60" y="130" width="240" height="50" rx="6"/>
+      <rect x="60" y="240" width="240" height="50" rx="6"/>
+      <rect x="20" y="350" width="160" height="60" rx="6"/>
+      <rect x="190" y="350" width="150" height="60" rx="6"/>
+    </g>
+    <g fill="#111">
+      <text x="180" y="50">datom text</text>
+      <text x="180" y="160">the Datom form</text>
+      <text x="180" y="270">the type's own reading</text>
+      <text x="100" y="385">generated reading</text>
+      <text x="265" y="376">its value, or</text>
+      <text x="265" y="396">its refusal</text>
+    </g>
+    <g stroke="#8a8a8a" stroke-width="2" fill="none" marker-end="url(#a)">
+      <line x1="180" y1="70" x2="180" y2="128"/>
+      <line x1="180" y1="180" x2="180" y2="238"/>
+      <line x1="100" y1="290" x2="100" y2="348"/>
+      <line x1="265" y1="290" x2="265" y2="348"/>
+    </g>
+    <g fill="#8a8a8a" font-size="12" text-anchor="start" font-style="italic">
+      <text x="192" y="104">is read by Protos into</text>
+      <text x="192" y="214">is offered first to</text>
+      <text x="108" y="324">declines</text>
+      <text x="273" y="324">claims</text>
+    </g>
+  </g>
+</svg></div>
+</article>
+<article class="proposal"><header><span class="pnum">21</span><h2>mind-context › inquiry/ethos-open-enum-layer.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>Whether the open enum is a convention of the custom variant and the trait or a kind of enum that Ethos declares, and whether a registry is a layer, is unresolved.</dd></dl></div></ins></div><div class="add"><ins><h4>At which layer the open enum lands</h4></ins></div><div class="add"><ins><p>This book lands the open enum in the derive: an enum with a custom variant that takes a String, and a trait that the derive asks first, so that a bare word is the custom variant. Nothing in the Ethos object says that the enum is open or which variant is the custom one; that is the name Custom by convention and the logic of the trait's implementation. What would settle it: one open enum, the Topic of the metaflow address, taken through each alternative to the datom <code>{ Psyche flowDesign Secondary }</code> and back, and the work each needed counted. Alternative c was taken so, in scratch, in proposals 3 to 9. The alternatives:</p></ins></div><div class="add"><ins><ul><li>Alternative a, the reader. Protos or the Datom form tells a capitalized word from another, so the Datom form gains a kind for an identifier. It touches the Datom form and every composition that reads a bare form, and protos, which several dialects share, would learn the Ethos rule of case.</li><li>Alternative b, the type system. Ethos-zero's declaration gains a kind of enum that is open and names its custom variant, so that the definition says in Ethos what the enum is. Its model, conception, checking and generation change.</li><li>Alternative c, the derive asking the trait, as this book proposes. The custom variant is an ordinary variant; the Ethos object does not say that it is open.</li><li>Alternative d, an imported type. A Rust type with its own reader and writer is imported into the library, as Decimal is. Ethos cannot show the fixed variants of the type.</li></ul></ins></div><div class="add"><ins><h4>The registry as a layer</h4></ins></div><div class="add"><ins><p>The living counts a registry among the layers. In the code read, it is not a layer of Ethos. Does a camel ID need a registry: the set of topics a user or the machine has created, kept somewhere, so that a topic is checked when it is created? Alternative a: the check is of form only, and the set of live topics is Flow's memory. Alternative b: the open enum's extensions are recorded in the registry the library is addressed by.</p></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">22</span><h2>mind-context › inquiry/ethos-open-enum.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>The name of the camel ID, how a word is checked, the constant topics, and what a hash is to an open enum are unresolved.</dd></dl></div></ins></div><div class="add"><ins><h4>The final name of the camel ID</h4></ins></div><div class="add"><ins><p>What is the final name of the camel ID? The living calls it temporary. Three names for one idea stand in the context today: a camelCase identifier (vision flow), a camelCaseExpression of the type core:Name (vision flow), and camel ID. What would settle it: the living choosing one name, then every module using it. The alternatives:</p></ins></div><div class="add"><ins><ul><li>Alternative a: keep camel ID.</li><li>Alternative b: word ID, which names what it is made of, as the word-based hash does.</li><li>Alternative c: open variant, which names the place it takes in the enum.</li><li>Alternative d: camelCaseExpression, the name already in the Flow vision.</li></ul></ins></div><div class="add"><ins><h4>How a word is checked</h4></ins></div><div class="add"><ins><p>The landed vision says that short term no check is made. The trait is where the check lives, and the Topic example carries a first one: a lowercase first letter, then letters and digits. Which words, from which list; whether a digit or an acronym is allowed; whether the check is a form only or a membership of a word list. Alternative a: no check beyond a lowercase first letter, which tells a camel ID from a fixed variant. Alternative b: the first check of the example. Alternative c: the long-term check of words.</p></ins></div><div class="add"><ins><h4>The constant topics: Core or core</h4></ins></div><div class="add"><ins><p>The living wrote the constant topic as <code>core</code>, uncapitalized, and defined a fixed variant as capitalized. Run against the Topic example, <code>Core</code> is the fixed variant and a bare <code>core</code> is read as the custom topic <code>core</code>: one name, two values. Alternative a: the constants are fixed variants, and the trait refuses a camel ID that spells a fixed variant in lowercase, so that <code>core</code> is refused. Alternative b: the constants are fixed variants and <code>core</code> is a second spelling the set accepts as the custom topic. Alternative c: no fixed variant; every topic is custom and <code>core</code> is a reserved word of the set.</p></ins></div><div class="add"><ins><h4>What a hash is to an open enum</h4></ins></div><div class="add"><ins><p>A word-based hash has no fixed variant and no custom variant. With the trait it is not an open enum but a type that the trait represents, as FlowId is. Is that the end of the idea of a hash as an open enum with an empty set of fixed variants? And does a fixed variant of an open enum ever carry a payload? The derive reads it, as Labelled.Point; the trait declines the forms it does not own.</p></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">23</span><h2>mind-context › inquiry/ethos-custom-representation.md, a new file</h2></header>
+<div class="diff"><div class="add"><ins><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>Whether an unusual form can refuse in writing, and the choices of the word-based flow id and of each usage are unresolved.</dd></dl></div></ins></div><div class="add"><ins><h4>Whether writing can refuse</h4></ins></div><div class="add"><ins><p>Writing gives a form or declines; it cannot fail. A value the trait declines, such as a flow id of 2^33 or more, a byte of 300 or a Custom topic that holds Core, is written in the generated form, which the trait's reader refuses. What would settle it: a case where such a value arises. The alternatives:</p></ins></div><div class="add"><ins><ul><li>Alternative a: unusual_form returns Option&lt;Result&lt;Form, ErrorKind&gt;&gt; and Datomizable gains a fallible twin, touching every writer.</li><li>Alternative b: a value is valid at construction, by a constructor that checks and a field that is not public, which Ethos cannot declare on main.</li><li>Alternative c: leave it. The generated form is written, and the reader refuses it, so no wrong value is read silently.</li></ul></ins></div><div class="add"><ins><h4>When the trait is consulted</h4></ins></div><div class="add"><ins><p>Every datom of a marked type is offered to the trait first. Alternative a: that, so the old spelling Custom.flowDesign is refused. Alternative b: the trait is consulted only after the generated reading refuses, which accepts Custom.flowDesign as a second spelling of the same topic.</p></ins></div><div class="add"><ins><h4>Where the trait is declared</h4></ins></div><div class="add"><ins><p>The trait is declared in a new Ethos file of datom-codec, and its Rust is written by hand from the generated text, as the kinds file's Rust is not compiled. Alternative a: the new file. Alternative b: the trait joins datom-codec-kinds.ethos. Alternative c: the trait is generated into the crate by ethos-zero.</p></ins></div><div class="add"><ins><h4>The word-based flow id</h4></ins></div><div class="add"><ins><ul><li>The words: the example runs BIP-39 English, 2048 words, 11 bits a word, the list pinned by its SHA-256. The living asked for a denser list; a 1024-word list of single-token words was researched and not built, giving 10 bits a word. No ruling is recorded.</li><li>The count: three words make 33 bits. The living said maybe two.</li><li>The representation: the example holds the 33 bits as an Integer in a struct. The living said the id is a hash, not an integer. Alternative a: the integer in a struct. Alternative b: bytes. Alternative c: an opaque hash intrinsic.</li><li>The bits: for Claude the first 33 bits of the session UUID, for Codex the random tail from hex index 23; for OpenCode, unruled.</li><li>A clash: two sessions with the same words are an Ambiguous reply, never a guess, and are no part of the datom form.</li><li>The six-hex alias: the words replace it wherever a flow is named, or stand beside it.</li></ul></ins></div><div class="add"><ins><h4>The other usages</h4></ins></div><div class="add"><ins><ul><li>Digests and revisions: 29 hash and digest aliases are Strings with at most a check in a consumer, most of them 64 hexadecimal digits. The example shows a 40-digit revision, as a 64-digit digest does not fit a phone. Which of the aliases become unusually represented types?</li><li>Latitude: chronos holds a hand-written Latitude on an older datom pin, and horizon declares Latitude as an unchecked Decimal. Which hosts the checked type?</li><li>Bytes: eleven alias names carry bytes as Vector&lt;Integer&gt;, written <code>[ 27 91 65 ]</code>, with no range check. The hex form changes the terminal wire.</li><li>Not drawn here: timestamps in four representations, session UUIDs, keys and signatures of unknown encoding, version numbers, and paging cursors. What would settle it: the living naming which of these to draw.</li></ul></ins></div></div>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A module as it stands (not a proposal): <article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code>repo/path.md</code></h2></header> … its headings as h3, h4 … </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       The machine's comment on the proposal it sits in, before its lines (indigo, labelled "Why" by the class):
+         <aside class="comment"><p>…</p></aside>
+       Alternatives of one proposal, one group:
+         <div class="alternatives"><div class="alt-label">Shared by the 2 alternatives</div>
+           <div class="diff">…</div>                 the shared text once; <span class="alt-gap">1</span> (or …) where they differ
+           <div class="alternative"><div class="alt-label">Alternative 1</div>
+             <p class="alt-words add">shared words <mark>its words</mark> shared words</p>   one per gap; class add, del or ctx by the line's sign
+           </div>
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --comment-bg:#e8ebfa;--comment-edge:#3f51b5;--comment-fg:#1f2756;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A module view: the module as it stands, framed apart from a proposal (blue edge, tinted ground, a label) and from page text. */
+.module{background:color-mix(in srgb,var(--accent) 7%,var(--sheet));border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;padding:14px 16px 20px;min-width:0}
+.module>header{display:grid;gap:6px;justify-items:start}
+.module>header>*{margin:0;min-width:0}
+.mlabel{font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.module h3{font-size:1.05rem;margin-top:1em}
+.markdown{min-width:0}
+.markdown>*+*{margin-top:.7em}
+.module h4{font-size:.95rem;font-weight:600;font-family:var(--f-label);margin-top:.9em}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* The machine's comment: why it proposes the lines that follow; its own colour (indigo), never module text, green or red. */
+.comment{border-left:4px solid var(--comment-edge);background:var(--comment-bg);color:var(--comment-fg);border-radius:8px;padding:8px 12px 10px;min-width:0;font-family:var(--f-label);font-size:.95rem;line-height:1.5}
+.comment::before{content:"Why";display:inline-block;margin-bottom:.35em;padding:1px 9px;border-radius:999px;background:var(--comment-edge);color:var(--sheet);font-weight:600;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase}
+.comment>p{margin:0;overflow-wrap:anywhere}
+
+/* Alternatives: the shared text once, a gap chip where they differ, then each alternative's words at each gap, marked. */
+.alternatives{display:grid;gap:10px;min-width:0}
+.alternatives>*{margin:0;min-width:0}
+.alt-label{font-family:var(--f-label);font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.alt-gap{display:inline-block;min-width:1.4em;padding:0 .35em;border:1.5px dashed currentColor;border-radius:6px;font-family:var(--f-label);font-weight:600;font-size:.85em;line-height:1.3;text-align:center;text-decoration:none}
+.alternative{display:grid;gap:6px;border:1px solid var(--line);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.alternative>*{margin:0;min-width:0}
+.alt-words{color:var(--muted);overflow-wrap:anywhere}
+.alt-words mark{background:none;color:var(--fg);font-weight:600;border-radius:3px;padding:0 .12em}
+.alt-words.add mark{color:var(--add-edge);background:var(--hl-add)}
+.alt-words.del mark{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through}
+.alt-words mark.alt-none{color:var(--muted);background:var(--chip);font-weight:400}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

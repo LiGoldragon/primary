@@ -3,14 +3,13 @@
 <h1 class="book-title">Flow: identity and naming, second edition</h1>
 <h2>Crystallization</h2>
 <article class="proposal"><header><span class="pnum">1</span><h2>a flow id is a hash</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «A topic's name is a camelCase identifier». As it stands:</p>
-<div class="diff"><div class="ctx"><p>A topic's name is a camelCase identifier, uncapitalized. A flow's id is the hash of the harness's session id, so a transcript is found from the flow id. Where the harness lets Flow choose the session id, Flow chooses it before the flow starts and the flow reads it in its prompt; where the harness assigns it, Flow learns it when the flow binds. No flow declares its id: every call to Flow is identified by the calling process.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «A topic's name is a camelCase identifier». As it stands:</p>
+<p>"A topic's name is a camelCase identifier, uncapitalized. A flow's id is the hash of the harness's session id, so a transcript is found from the flow id. Where the harness lets Flow choose the session id, Flow chooses it before the flow starts and the flow reads it in its prompt; where the harness assigns it, Flow learns it when the flow binds. No flow declares its id: every call to Flow is identified by the calling process."</p>
 <p>"Binds": the moment Flow ties a flow's record to the live process that runs it.</p>
 <p>Sources: flow 692df8, 2026-09-15; flow edf227, 2026-10-03.</p>
 <p>Removed: none.</p>
 <p>Added, after «so a transcript is found from the flow id.»:</p>
-<div class="diff"><div class="add"><ins><p>A flow id is a hash, never a string; its written forms are its serialization, made where it leaves Flow, and Flow itself holds only the hash.</p></ins></div></div>
+<p>+ A flow id is a hash, never a string; its written forms are its serialization, made where it leaves Flow, and Flow itself holds only the hash.</p>
 <p>Lands in the short-term tools, as Clojure run by Babashka (a program that runs Clojure scripts at once, without starting a full Java system). Today a flow id is claimed by <code>flow-id</code>, a Rust program in the harness repository (<code>src/flow_id.rs</code>): it takes the harness's session id, a UUID of 32 hex digits, takes six digits of it as the flow's id, one digit more at each collision, and creates that flow's directory. The six and the place where the digits start are written into its code:</p>
 <pre data-diff><code class="language-rust">- const FIRST_CANDIDATE_LENGTH: usize = 6;
 - const CODEX_CANDIDATE_START: usize = 23;</code></pre>
@@ -80,28 +79,24 @@
 + (defn short-hex [{:keys [bits width]}]
 +   (format (str "%0" width "x") bits))</code></pre>
 <p>The messenger keeps a flow id as text today, <code>messenger-clj/src/messenger_clj/core.clj</code>, line 17:</p>
-<pre data-diff><code class="language-clojure">- (def FlowId
--   [:and [:string {:min 1 :max 96}]
--    [:re #"^[A-Za-z0-9][A-Za-z0-9_-]*$"]])
-+ (def FlowId
-+   [:fn #(instance? messenger_clj.flow_id.FlowId
-+                    %)])</code></pre>
+<pre><code class="language-clojure">(def FlowId
+  <del>[:and [:string {:min 1 :max 96}]</del> <ins>[:fn #(instance? messenger_clj.flow_id.FlowId</ins>
+                   <del>[:re #"^[A-Za-z0-9][A-Za-z0-9_-]*$"]])</del> <ins>%)])</ins></code></pre>
 <p>and its database, Datalevin (the database the messenger keeps all its records in), keys a flow by that text, <code>messenger-clj/src/messenger_clj/typed_store.clj</code>, line 60:</p>
-<pre data-diff><code class="language-clojure">-  {:flow/id {:db/unique :db.unique/identity}
-+  {:flow/id {:db/unique :db.unique/identity
-+             :db/valueType :db.type/bigint}
-+   :flow/start {} :flow/width {}</code></pre>
+<pre><code class="language-clojure"> {:flow/id {:db/unique <del>:db.unique/identity}</del> <ins>:db.unique/identity</ins>
+<ins>            :db/valueType :db.type/bigint}</ins>
+<ins>  :flow/start {} :flow/width {}</ins></code></pre>
 <p>Whether Datalevin keeps a large integer as a unique key is not yet witnessed.</p>
-<section class="rulings"><ol><li value="1"><p>Ruling:</p><ol class="choices" type="a"><li>Land the sentence, and the record as the whole session id.</li><li>Land the sentence, and the record as the claimed digits only; six digits carry 24 bits, so the word form of Proposal 2 (33 bits) cannot then be written from the id alone.</li><li>Land the sentence; the code waits.</li><li>Neither.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the sentence, and the record as the whole session id.</li><li>Land the sentence, and the record as the claimed digits only; six digits carry 24 bits, so the word form of Proposal 2 (33 bits) cannot then be written from the id alone.</li><li>Land the sentence; the code waits.</li><li>Neither.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">2</span><h2>the word form of a flow id</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «A topic's name is a camelCase identifier». As it stands:</p>
-<div class="diff"><div class="ctx"><p>A topic's name is a camelCase identifier, uncapitalized. A flow's id is the hash of the harness's session id, so a transcript is found from the flow id. Where the harness lets Flow choose the session id, Flow chooses it before the flow starts and the flow reads it in its prompt; where the harness assigns it, Flow learns it when the flow binds. No flow declares its id: every call to Flow is identified by the calling process.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «A topic's name is a camelCase identifier». As it stands:</p>
+<p>"A topic's name is a camelCase identifier, uncapitalized. A flow's id is the hash of the harness's session id, so a transcript is found from the flow id. Where the harness lets Flow choose the session id, Flow chooses it before the flow starts and the flow reads it in its prompt; where the harness assigns it, Flow learns it when the flow binds. No flow declares its id: every call to Flow is identified by the calling process."</p>
 <p>Sources: flow 05c604, 2026-09-15; flow dea0ba, 2026-10-03; flow d4ae97 and flow f5a6e9, 2026-10-07; flow 0c85a3 and flow ebbe30, 2026-10-09.</p>
 <p>Removed: none.</p>
 <p>Added, after «so a transcript is found from the flow id.» (after Proposal 1's sentence, if it lands), under choices 1 to 3:</p>
-<div class="diff"><div class="add"><ins><p>A flow id is also written as words: the first 33 bits of the harness's session id, as words from a published word list, and read back into those bits so the transcript is found from the words. When two flows' words match, the collision is brought to the living.</p></ins></div></div>
+<p>+ A flow id is also written as words: the first 33 bits of the harness's session id, as words from a published word list, and read back into those bits so the transcript is found from the words. When two flows' words match, the collision is brought to the living.</p>
 <p>A published word list: BIP-39 is one, 2048 words, each carrying 11 bits, so three words carry 33 bits; two words need a denser list.</p>
 <p>Lands as data and as Clojure. The list is a new file, <code>primary/config/main-flow/flow-words.edn</code>, the BIP-39 English list copied whole as one vector; its first and last words:</p>
 <pre data-diff><code class="language-clojure">+ ["abandon" "ability" "able" "about"
@@ -195,19 +190,19 @@
 +           (when (pos? r)
 +             (format "[%x-%x]" lo hi))))))</code></pre>
 <p>A search that finds more than one transcript for one pattern has found a collision, which is brought to the living.</p>
-<section class="rulings"><ol><li value="2"><p>Ruling:</p><ol class="choices" type="a"><li>Land now; three words joined as one uncapitalized camelCase word, like <code>wordWordWord</code>, as shown (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07; flow 0c85a3, 2026-10-09).</li><li>Land now; three words apart, with a separator of their own (flow 05c604, 2026-09-15); <code>:separator</code> names it and <code>:capitalize-rest</code> is false.</li><li>Land now; two words from a denser published list (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07); <code>:file</code> names that list and <code>:length</code> is 2.</li><li>Wait until after a minimum viable product; no line now (flow dea0ba, 2026-10-03).</li><li>With choice 1, 2 or 3, the machine's design: the 33 bits are taken from <code>:start</code> (digit 24 for Codex), because the Codex id's leading digits are not random.</li><li>With choice 1, 2 or 3, his phrase literally: <code>:start</code> is 0 for both harnesses, so the first 33 bits are the first digits; Codex's hex short id then differs in origin from its words.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land now; three words joined as one uncapitalized camelCase word, like <code>wordWordWord</code>, as shown (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07; flow 0c85a3, 2026-10-09).</li><li>Land now; three words apart, with a separator of their own (flow 05c604, 2026-09-15); <code>:separator</code> names it and <code>:capitalize-rest</code> is false.</li><li>Land now; two words from a denser published list (flow 05c604, 2026-09-15; flow d4ae97, 2026-10-07); <code>:file</code> names that list and <code>:length</code> is 2.</li><li>Wait until after a minimum viable product; no line now (flow dea0ba, 2026-10-03).</li><li>With choice 1, 2 or 3, the machine's design: the 33 bits are taken from <code>:start</code> (digit 24 for Codex), because the Codex id's leading digits are not random.</li><li>With choice 1, 2 or 3, his phrase literally: <code>:start</code> is 0 for both harnesses, so the first 33 bits are the first digits; Codex's hex short id then differs in origin from its words.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">3</span><h2>flow ids are for the ledger</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «Flow manages metaflows». As it stands:</p>
-<div class="diff"><div class="ctx"><p>Flow manages metaflows. A metaflow is one address, { Aspect Topic Layer }, that continues through several flows one after another; the flow is its current run, and what is addressed is always the metaflow, never a flow. The default topic is core: the permanent topic, the thing that keeps the machine going, the last topic to stand.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «Flow manages metaflows». As it stands:</p>
+<p>"Flow manages metaflows. A metaflow is one address, { Aspect Topic Layer }, that continues through several flows one after another; the flow is its current run, and what is addressed is always the metaflow, never a flow. The default topic is core: the permanent topic, the thing that keeps the machine going, the last topic to stand."</p>
 <p>The ledger: the record of every flow that has run.</p>
 <p>Sources: flow 01e496, 2026-10-02; flow 4ddfe1, 2026-10-07; flow 7c89aa, 2026-10-13.</p>
 <p>Removed: none.</p>
 <p>Added, after «never a flow.»:</p>
-<div class="diff"><div class="add"><ins><p>A flow id is for the ledger: it finds a flow's transcript and its place among its metaflow's past flows. Flows name one another, and the living, by metaflow.</p></ins></div></div>
+<p>+ A flow id is for the ledger: it finds a flow's transcript and its place among its metaflow's past flows. Flows name one another, and the living, by metaflow.</p>
 <p>Lands in <code>messenger-clj/src/messenger_clj/core.clj</code>. A send names its target either by flow id or by metaflow, <code>target-flow!</code>, line 533, as it stands (<code>m/validate</code> checks a value against a shape written in Malli, the library the messenger describes its data shapes with):</p>
-<pre><code class="language-clojure">(defn target-flow! [target]
+<pre data-diff><code class="language-clojure">(defn target-flow! [target]
   (if (m/validate FlowId target)
     target
     (do
@@ -217,37 +212,32 @@
         ...
         (first matches)))))</code></pre>
 <p>Under choices 1 and 2, a target is a metaflow only:</p>
-<pre data-diff><code class="language-clojure">- (defn target-flow! [target]
--   (if (m/validate FlowId target)
--     target
--     (do
--       (valid! Metaflow target
--         "TARGET metaflow (aspect topic layer)")
--       (let [matches ...] ...))))
-+ (defn target-flow! [target]
-+   (valid! Metaflow target
-+     "TARGET metaflow (aspect topic layer)")
-+   (let [matches ...] ...))</code></pre>
+<pre><code class="language-clojure">(defn target-flow! [target]
+  <del>(if (m/validate FlowId target)</del> <ins>(valid! Metaflow target</ins>
+    <del>target</del> <ins>"TARGET metaflow (aspect topic layer)")</ins>
+  <del>(do</del> <ins>(let [matches ...] ...))</ins>
+<del>      (valid! Metaflow target</del>
+<del>        "TARGET metaflow (aspect topic layer)")</del>
+<del>      (let [matches ...] ...))))</del></code></pre>
 <p>The receipt a send prints names the flow id, <code>record-sent!</code>, line 939:</p>
-<pre><code class="language-clojure">(str (name grade) ".{ " flow " "
+<pre data-diff><code class="language-clojure">(str (name grade) ".{ " flow " "
      (or (:agent_status live) "unknown")
      " }")</code></pre>
 <p>Under choice 1, the machine's proposal, it names the metaflow:</p>
-<pre data-diff><code class="language-clojure">- (str (name grade) ".{ " flow " "
-+ (str (name grade) ".{ "
-+      (metaflow! (load-route (registry) flow))
-+      " "
+<pre><code class="language-clojure">(str (name grade) ".{ " <del>flow " "</del>
+<ins>     (metaflow! (load-route (registry) flow))</ins>
+<ins>     " "</ins>
        (or (:agent_status live) "unknown")
        " }")</code></pre>
-<section class="rulings"><ol><li value="3"><p>Ruling:</p><ol class="choices" type="a"><li>Land the sentence, the target change and the receipt change.</li><li>Land the sentence and the target change; receipts keep the flow id.</li><li>Land the sentence; the code keeps taking flow ids.</li><li>Neither.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the sentence, the target change and the receipt change.</li><li>Land the sentence and the target change; receipts keep the flow id.</li><li>Land the sentence; the code keeps taking flow ids.</li><li>Neither.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">4</span><h2>the caller is found, never declared</h2></header>
-<p class="target"><code>messenger-clj/src/messenger_clj/core.clj</code></p>
-<p>. The sentence it carries already stands in <code>psyche-context/skills/vision-flow.md</code>, at the end of the paragraph that begins «A topic's name is a camelCase identifier»:</p>
-<div class="diff"><div class="ctx"><p>No flow declares its id: every call to Flow is identified by the calling process.</p></div></div>
+<p class="target"><code>messenger-clj/src/messenger_clj/core.clj</code></p><p>. The sentence it carries already stands in <code>psyche-context/skills/vision-flow.md</code>, at the end of the paragraph that begins «A topic's name is a camelCase identifier»:</p>
+<p>"No flow declares its id: every call to Flow is identified by the calling process."</p>
 <p>Source: flow 875960, 2026-10-11.</p>
 <p>The messenger takes a sender from the id the flow declares in its environment, <code>sender-origin!</code>, line 524, as it stands:</p>
-<pre><code class="language-clojure">(defn sender-origin! []
+<pre data-diff><code class="language-clojure">(defn sender-origin! []
   (let [sender (flow-id!
                 (or *flow-id*
                     (System/getenv "FLOW_ID")
@@ -257,11 +247,10 @@
       ...
       (metaflow! route))))</code></pre>
 <p>A route is the messenger's record of where a flow is reached: its pane in herdr (herdr: the third-party terminal program the flows run in; a pane: one terminal area in it) and its aspect, topic and layer. Herdr marks every process it starts with the pane it runs in, in the variable <code>HERDR_PANE_ID</code>. Removed and added:</p>
-<pre data-diff><code class="language-clojure">- (let [sender (flow-id!
--                (or *flow-id*
--                    (System/getenv "FLOW_ID")
--                    (fail "Set FLOW_ID ...")))]
-+ (let [sender (or *flow-id* (pane-flow!))]</code></pre>
+<pre><code class="language-clojure">(let [sender <del>(flow-id!</del> <ins>(or *flow-id* (pane-flow!))]</ins>
+<del>               (or *flow-id*</del>
+<del>                   (System/getenv "FLOW_ID")</del>
+<del>                   (fail "Set FLOW_ID ...")))]</del></code></pre>
 <p><code>pane-flow!</code> is new, above it, the machine's design:</p>
 <pre data-diff><code class="language-clojure">+ (defn pane-flow! []
 +   (let [pane (or (System/getenv "HERDR_PANE_ID")
@@ -275,25 +264,23 @@
 +       (fail (str "CallerUnknown: " pane)))))</code></pre>
 <p><code>HERDR_PANE_ID</code> stays in the code: the variable name is the contract with herdr, read as the bootstrap of the pane.</p>
 <p>The same replacement in three more places that read the declared id. <code>reserve!</code>, line 451:</p>
-<pre data-diff><code class="language-clojure">- (or *flow-id* (System/getenv "FLOW_ID") flow)
-+ (or *flow-id* (pane-flow!))</code></pre>
+<pre><code class="language-clojure">(or *flow-id* <del>(System/getenv "FLOW_ID") flow)</del> <ins>(pane-flow!))</ins></code></pre>
 <p>and the <code>:retired_by</code> of a retirement record, in <code>import-retirement!</code>, line 705, and <code>retire!</code>, line 760:</p>
-<pre data-diff><code class="language-clojure">- (or *flow-id* (System/getenv "FLOW_ID") "")
-+ (or *flow-id* (pane-flow!))</code></pre>
+<pre><code class="language-clojure">(or *flow-id* <del>(System/getenv "FLOW_ID") "")</del> <ins>(pane-flow!))</ins></code></pre>
 <p>A pane id is unique within one herdr session; two sessions can hold the same one, and <code>pane-flow!</code> then refuses as unknown. A subflow running in its main flow's pane is found as that main flow, as it is today through the inherited declared id. The launchers keep setting <code>FLOW_ID</code>, which a flow reads to find its own directory; the messenger no longer reads it.</p>
-<section class="rulings"><ol><li value="4"><p>Ruling:</p><ol class="choices" type="a"><li>Land all four changes.</li><li>Land <code>sender-origin!</code> and <code>pane-flow!</code>; the other three keep the declared id.</li><li>Neither.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land all four changes.</li><li>Land <code>sender-origin!</code> and <code>pane-flow!</code>; the other three keep the declared id.</li><li>Neither.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">5</span><h2>the title names aspect, topic, layer and id</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «Every flow has a topic». As it stands:</p>
-<div class="diff"><div class="ctx"><p>Every flow has a topic; a flow with no special topic has the topic core, the heart of its aspect. A topic is a core:Name, a camelCaseExpression checked when created. A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary &lt;id&gt; }.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «Every flow has a topic». As it stands:</p>
+<p>"Every flow has a topic; a flow with no special topic has the topic core, the heart of its aspect. A topic is a core:Name, a camelCaseExpression checked when created. A flow's title names its aspect, topic, layer and flow id: { Psyche core Secondary &lt;id&gt; }."</p>
 <p>Sources: flow 5578cc, 2026-10-03; flow d4ae97 and flow f5a6e9, 2026-10-07; flow 445410, 2026-10-09; flow ebbe30, 2026-10-09.</p>
 <p>Under choice 1 the paragraph stands, and the data and code below land.</p>
 <p>Under choice 2:</p>
 <p>Removed:</p>
-<div class="diff"><div class="del"><del><p>flow id: { Psyche core Secondary &lt;id&gt; }.</p></del></div></div>
+<p>- flow id: { Psyche core Secondary &lt;id&gt; }.</p>
 <p>Added:</p>
-<div class="diff"><div class="add"><ins><p>flow id in its word form: { Psyche core Secondary &lt;words&gt; }.</p></ins></div></div>
+<p>+ flow id in its word form: { Psyche core Secondary &lt;words&gt; }.</p>
 <p>Lands as data and as Clojure, the machine's design. The order of the title's parts is data, added to <code>primary/config/main-flow/shared.edn</code> with the default topic and the topic's pattern (EDN has no regex literal, so it is a string the code compiles):</p>
 <pre data-diff><code class="language-clojure">+  :title [:aspect :topic :layer :flow]
 +  :default-topic :core
@@ -301,11 +288,10 @@
 <p>Under choice 2 the last part is <code>:words</code>, the word form of Proposal 2:</p>
 <pre data-diff><code class="language-clojure">+  :title [:aspect :topic :layer :words]</code></pre>
 <p>The metaflow files in <code>primary/config/main-flow/metaflow/</code> write the topic capitalized; in each of the five:</p>
-<pre data-diff><code class="language-clojure">- {:aspect :Psyche :topic :Core :layer :Primary
-+ {:aspect :Psyche :topic :core :layer :Primary</code></pre>
+<pre><code class="language-clojure">{:aspect :Psyche :topic <del>:Core</del> <ins>:core</ins> :layer :Primary</code></pre>
 <p>and <code>:Flow</code> becomes <code>:flow</code> in the two Psyche Flow files. The same in <code>primary/config/context-refresh.json</code>, <code>"topic": "Core"</code> and the recipient <code>"Field Core Secondary"</code>. Every metaflow's address then reads <code>Psyche core Secondary</code>; the skills and routes that write <code>Core</code> follow.</p>
 <p>The launchers' shared code builds the title today, <code>primary/tools/native-main-flow-launch-shared.mjs</code>, lines 10 to 27, capitalizing the topic and leaving core out:</p>
-<pre data-diff><code class="language-js">- // A topic is a dense PascalCase short name:
+<pre data-diff><code class="language-javascript">- // A topic is a dense PascalCase short name:
 - // letters only, leading capital.
 - export const TOPIC = /^[A-Z][A-Za-z]*$/;
 - export const CORE_TOPIC = 'Core';
@@ -337,18 +323,18 @@
 +                  (map #(name (get flow %))
 +                       (:title config)))
 +        " }"))</code></pre>
-<section class="rulings"><ol><li value="5"><p>Ruling:</p><ol class="choices" type="a"><li>The title carries the hex id (flow dea0ba, 2026-10-03: the word id after a minimum viable product); land the data and code with <code>:flow</code>.</li><li>The title carries the word id (flow 5578cc, 2026-10-03; flow d4ae97, 2026-10-07; flow ebbe30, 2026-10-09); land the sentence, and the data and code with <code>:words</code>.</li><li>Neither.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>The title carries the hex id (flow dea0ba, 2026-10-03: the word id after a minimum viable product); land the data and code with <code>:flow</code>.</li><li>The title carries the word id (flow 5578cc, 2026-10-03; flow d4ae97, 2026-10-07; flow ebbe30, 2026-10-09); land the sentence, and the data and code with <code>:words</code>.</li><li>Neither.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">6</span><h2>a flow knows where it was asked for</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «A layer is Primary, Secondary, Tertiary or Quaternary». As it stands:</p>
-<div class="diff"><div class="ctx"><p>A layer is Primary, Secondary, Tertiary or Quaternary, in every aspect; the layer decides the model, declared once in Flow as configuration and changed only over its meta socket. A launch names the metaflow, the context modules composed into its prompts, and a brief of a small paragraph; the Nexus composes the prompt from its module registry, checking each module's hash against its source.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «A layer is Primary, Secondary, Tertiary or Quaternary». As it stands:</p>
+<p>"A layer is Primary, Secondary, Tertiary or Quaternary, in every aspect; the layer decides the model, declared once in Flow as configuration and changed only over its meta socket. A launch names the metaflow, the context modules composed into its prompts, and a brief of a small paragraph; the Nexus composes the prompt from its module registry, checking each module's hash against its source."</p>
 <p>Source: flow 9993b5, 2026-09-17.</p>
 <p>Removed: none.</p>
 <p>Added, at the end:</p>
-<div class="diff"><div class="add"><ins><p>Every flow carries where it was asked for: the flow, session and turn that requested it, found by Flow, so why it was started is read in that transcript.</p></ins></div></div>
+<p>+ Every flow carries where it was asked for: the flow, session and turn that requested it, found by Flow, so why it was started is read in that transcript.</p>
 <p>Lands in the launchers' continuation record: the small file in each flow's directory that names its predecessor, topic and metaflow, so a successor inherits them. It is written today by <code>primary/tools/native-main-flow-launch-shared.mjs</code>, <code>writeContinuationRecord</code>, line 74, as JSON:</p>
-<pre data-diff><code class="language-js">- const record = {flowId,
+<pre data-diff><code class="language-javascript">- const record = {flowId,
 -   predecessor: continuation.predecessor,
 -   topic: continuation.topic,
 -   metaflow: continuation.metaflow};</code></pre>
@@ -367,18 +353,19 @@
 +                        :flow flow
 +                        :origin (caller-origin)))))</code></pre>
 <p>with <code>[messenger-clj.core :as core]</code> and <code>[babashka.fs :as fs]</code> added to its requires, and the reader of a predecessor's record reading <code>continuation.edn</code>. The file name stays in the code: it is the bootstrap pointer to the record, and data cannot name its own file. The turn that asked is not visible to a launcher; the record carries the flow and its session (<code>:thread</code>) only.</p>
-<section class="rulings"><ol><li value="6"><p>Ruling:</p><ol class="choices" type="a"><li>Land the sentence and the code; the turn waits.</li><li>Land the sentence only.</li><li>Neither.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land the sentence and the code; the turn waits.</li><li>Land the sentence only.</li><li>Neither.</li></ol>
 </article>
 <article class="proposal"><header><span class="pnum">7</span><h2>why the word flow</h2></header>
-<p class="target"><code>psyche-context/skills/vision-flow.md</code></p>
-<p>the paragraph that begins «Flow is the Nexus that manages flows». As it stands:</p>
-<div class="diff"><div class="ctx"><p>Flow is the Nexus that manages flows. A flow is one run of a voice; the component is named for what it manages. A flow the living asks for is launched, properly and surely. Flow holds the lock on flows.</p></div></div>
+<p class="target"><code>psyche-context/skills/vision-flow.md</code></p><p>the paragraph that begins «Flow is the Nexus that manages flows». As it stands:</p>
+<p>"Flow is the Nexus that manages flows. A flow is one run of a voice; the component is named for what it manages. A flow the living asks for is launched, properly and surely. Flow holds the lock on flows."</p>
 <p>Source: flow 4ddc321d, 2026-08-26.</p>
 <p>Removed: none.</p>
 <p>Added, after «A flow is one run of a voice;»:</p>
-<div class="diff"><div class="add"><ins><p>a flow is a flow of thought, and an intelligence is many of them, so agent, a word that carries one subject, names none of them;</p></ins></div></div>
+<p>+ a flow is a flow of thought, and an intelligence is many of them, so agent, a word that carries one subject, names none of them;</p>
 <p>Lands in no code.</p>
-<section class="rulings"><ol><li value="7"><p>Ruling:</p><ol class="choices" type="a"><li>Land it.</li><li>Not in vision-flow.</li></ol></li></ol></section>
+<p>Ruling:</p>
+<ol class="choices" start="1"><li>Land it.</li><li>Not in vision-flow.</li></ol>
 </article>
 <!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
      Markup, all optional except what the source has:
@@ -392,6 +379,11 @@
            <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
          </div>
        </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
        <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
          <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
        </ol></section>
@@ -410,6 +402,7 @@
   --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
   --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
   --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
   --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
   --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
   --f-prose:"Literata",Georgia,"Times New Roman",serif;
@@ -421,6 +414,7 @@
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
 :root[data-theme="dark"]{
@@ -428,6 +422,7 @@
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
@@ -457,7 +452,7 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 
 /* A change: stacked panels, each with a sign gutter. */
 .diff{display:grid;gap:6px;min-width:0}
-.diff>*{margin:0}
+.diff>*{margin:0;min-width:0}
 .ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
 .ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
 .ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
@@ -471,8 +466,18 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 /* Fallback for publishers that emit prose panels instead of inline marks. */
 .diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
 .diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
 .ctx pre{padding-inline:12px}
 .diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
 
 /* Rulings: one card per ruling, numbered choices. */
 .rulings{display:grid;gap:12px}

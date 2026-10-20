@@ -1,0 +1,1084 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Flow is used</title>
+<h1 class="book-title">How Flow is used</h1>
+<p>Machine: production runs Flow 0.35.10; version 0.35.11 is published and awaits cutover. Everything here is read from Flow's main branch (0.35.11, whose wire is unchanged from 0.35.10) and from production records of 0.35.10. Nothing here is on a development branch.</p>
+<div class="figure" style="position:relative;height:0;padding-bottom:166.67%;overflow:hidden"><svg viewBox="0 0 360 600" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A living person and a running flow each send requests through Flow to a metaflow, a standing address with a queue, which a flow in a terminal pane runs one at a time.">
+  <defs>
+    <linearGradient id="f1-panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f4ec"/>
+      <stop offset="1" stop-color="#e8f2ef"/>
+    </linearGradient>
+    <linearGradient id="f1-box" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef2f4"/>
+    </linearGradient>
+    <linearGradient id="f1-flow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d6f1ec"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="f1-pane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3a4a"/>
+      <stop offset="1" stop-color="#18222d"/>
+    </linearGradient>
+    <linearGradient id="f1-env" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dff4f1"/>
+    </linearGradient>
+    <marker id="f1-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#0e9c90"/>
+    </marker>
+    <filter id="f1-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1d2630" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  
+  <rect x="0" y="0" width="360" height="600" rx="14" fill="url(#f1-panel)"/>
+  <path d="M-20 430 C60 400 110 470 200 440 S330 410 380 450 L380 620 L-20 620 Z" fill="#0e9c90" opacity="0.07"/>
+  <circle cx="335" cy="30" r="60" fill="#0e9c90" opacity="0.06"/>
+
+  
+  <rect x="12" y="20" width="160" height="56" rx="16" fill="url(#f1-box)" stroke="#9aa6b2" stroke-width="1.2" filter="url(#f1-shadow)"/>
+  <circle cx="32" cy="40" r="6" fill="#0e9c90"/>
+  <path d="M20 66 Q32 44 44 66 Z" fill="#0e9c90" opacity="0.85"/>
+  <text x="58" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16" fill="#1d2630">the living</text>
+
+  <rect x="188" y="20" width="160" height="56" rx="16" fill="url(#f1-box)" stroke="#9aa6b2" stroke-width="1.2" filter="url(#f1-shadow)"/>
+  <rect x="198" y="34" width="24" height="22" rx="4" fill="url(#f1-pane)"/>
+  <rect x="198" y="34" width="24" height="5" rx="2" fill="#0e9c90"/>
+  <rect x="202" y="44" width="10" height="2" rx="1" fill="#cfe9e5"/>
+  <text x="232" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16" fill="#1d2630">a running flow</text>
+
+  
+  <path d="M66 78 C58 110 74 130 66 170" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f1-arrow)"/>
+  <path d="M294 78 C302 110 286 130 294 170" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f1-arrow)"/>
+  <g font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16" fill="#1d2630">
+    <text x="80" y="98"><tspan x="80" y="98">sends a</tspan><tspan x="80" y="118">request</tspan><tspan x="80" y="138">(through</tspan><tspan x="80" y="158">Message)</tspan></text>
+    <text x="280" y="98" text-anchor="end"><tspan x="280" y="98">sends a</tspan><tspan x="280" y="118">request</tspan><tspan x="280" y="138">(command</tspan><tspan x="280" y="158">or tool)</tspan></text>
+  </g>
+  <g transform="translate(66 121)">
+    <rect x="-8" y="-6" width="16" height="12" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M-8 -6 L0 1 L8 -6" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+  </g>
+  <g transform="translate(294 121)">
+    <rect x="-8" y="-6" width="16" height="12" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M-8 -6 L0 1 L8 -6" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+  </g>
+
+  
+  <rect x="20" y="170" width="320" height="88" rx="18" fill="url(#f1-flow)" stroke="#0e9c90" stroke-width="1.6" filter="url(#f1-shadow)"/>
+  <g font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" fill="#1d2630">
+    <text x="36" y="196" font-size="18" font-weight="bold">Flow</text>
+    <text x="36" y="220" font-size="16">starts, wakes, sleeps and</text>
+    <text x="36" y="242" font-size="16">addresses flows</text>
+  </g>
+  <rect x="254" y="182" width="78" height="66" rx="10" fill="#0e9c90" opacity="0.12"/>
+  <path d="M266 196 Q276 232 300 230" fill="none" stroke="#0e9c90" stroke-width="1.8"/>
+  <path d="M286 196 Q300 214 322 230" fill="none" stroke="#0e9c90" stroke-width="1.8"/>
+  <circle cx="266" cy="196" r="4" fill="#ffffff" stroke="#0b5f58" stroke-width="1.4"/>
+  <circle cx="286" cy="196" r="4" fill="#ffffff" stroke="#0b5f58" stroke-width="1.4"/>
+  <circle cx="306" cy="196" r="4" fill="#ffffff" stroke="#0b5f58" stroke-width="1.4"/>
+  <circle cx="300" cy="230" r="3.5" fill="#0e9c90"/>
+  <circle cx="322" cy="230" r="3.5" fill="#0e9c90"/>
+
+  
+  <path d="M60 258 C56 272 64 286 60 302" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f1-arrow)"/>
+  <text x="74" y="284" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16" fill="#1d2630">keeps one per address</text>
+  <g transform="translate(60 280)">
+    <rect x="-8" y="-6" width="16" height="12" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M-8 -6 L0 1 L8 -6" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+  </g>
+
+  
+  <rect x="20" y="302" width="320" height="154" rx="18" fill="url(#f1-box)" stroke="#9aa6b2" stroke-width="1.4" filter="url(#f1-shadow)"/>
+  <g font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" fill="#1d2630">
+    <text x="36" y="326" font-size="18" font-weight="bold">metaflow</text>
+    <text x="36" y="350" font-size="16">address { Field publisher</text>
+    <text x="36" y="370" font-size="16">Quaternary }</text>
+    <text x="36" y="394" font-size="16">state: Awake, Asleep or Ended</text>
+    <text x="36" y="418" font-size="16">queue of requests,</text>
+    <text x="36" y="438" font-size="16">each with its sender</text>
+  </g>
+  <rect x="264" y="382" width="66" height="66" rx="10" fill="#0e9c90" opacity="0.12"/>
+  <g>
+    <rect x="270" y="390" width="30" height="19" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M270 390 L285 400 L300 390" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+    <rect x="280" y="405" width="30" height="19" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M280 405 L295 415 L310 405" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+    <rect x="290" y="420" width="30" height="19" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M290 420 L305 430 L320 420" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+  </g>
+
+  
+  <path d="M60 456 C56 470 64 486 60 506" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f1-arrow)"/>
+  <text x="74" y="484" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16" fill="#1d2630">is run, one at a time, by</text>
+  <g transform="translate(60 481)">
+    <rect x="-8" y="-6" width="16" height="12" rx="2" fill="url(#f1-env)" stroke="#0e9c90" stroke-width="1.2"/>
+    <path d="M-8 -6 L0 1 L8 -6" fill="none" stroke="#0e9c90" stroke-width="1.2"/>
+  </g>
+
+  
+  <rect x="20" y="506" width="320" height="76" rx="18" fill="url(#f1-box)" stroke="#9aa6b2" stroke-width="1.4" filter="url(#f1-shadow)"/>
+  <g font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" fill="#1d2630">
+    <text x="36" y="530" font-size="18" font-weight="bold">flow&#160;&#160;3ff3fe</text>
+    <text x="36" y="556" font-size="16">one session in a terminal pane</text>
+  </g>
+  <rect x="284" y="520" width="50" height="44" rx="6" fill="url(#f1-pane)" stroke="#0b5f58" stroke-width="1"/>
+  <path d="M284 526 Q284 520 290 520 L328 520 Q334 520 334 526 L334 530 L284 530 Z" fill="#0e9c90"/>
+  <circle cx="291" cy="525" r="1.6" fill="#cfe9e5"/>
+  <circle cx="297" cy="525" r="1.6" fill="#cfe9e5"/>
+  <rect x="290" y="540" width="16" height="3" rx="1.5" fill="#cfe9e5"/>
+  <rect x="290" y="549" width="28" height="3" rx="1.5" fill="#7fd3c8"/>
+  <rect x="290" y="556" width="10" height="3" rx="1.5" fill="#cfe9e5"/>
+</svg></div>
+<p>Machine: Flow is the program that starts model sessions, keeps track of them and carries requests to them. A metaflow is one standing address: an aspect (Psyche, Mind or Field), a topic (a camelCase word; <code>core</code> when nothing special) and a layer (Primary, Secondary, Tertiary or Quaternary). A flow is one run of a metaflow: one model session, Claude or Codex, in one terminal pane. Herdr is the program that holds those panes. A seat is a running flow in its metaflow. A flow's id is six characters, such as <code>3ff3fe</code>, and its pane is titled with its address and id: <code>{ Field send-proof-03510 Quaternary 3ff3fe }</code>.</p>
+<div class="figure" style="position:relative;height:0;padding-bottom:138.89%;overflow:hidden"><svg viewBox="0 0 360 500" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flow has two doors: the ordinary wire, spoken with the flow command, and the meta wire, spoken with the flow-meta command, both reach one building called Flow.">
+  <defs>
+    <linearGradient id="f2-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf8f1"/>
+      <stop offset="1" stop-color="#efe9dc"/>
+    </linearGradient>
+    <linearGradient id="f2-doorT" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2f7f3"/>
+      <stop offset="1" stop-color="#9fdcd3"/>
+    </linearGradient>
+    <linearGradient id="f2-doorG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3f4f7"/>
+      <stop offset="1" stop-color="#d2d6dd"/>
+    </linearGradient>
+    <linearGradient id="f2-wireT" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eefaf8"/>
+      <stop offset="1" stop-color="#b8e7df"/>
+    </linearGradient>
+    <linearGradient id="f2-wireG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f5f8"/>
+      <stop offset="1" stop-color="#d0d5dd"/>
+    </linearGradient>
+    <radialGradient id="f2-light" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="f2-bld" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cdd4de"/>
+    </linearGradient>
+    <marker id="f2-aT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#0e9c90"/>
+    </marker>
+    <marker id="f2-aG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#7d838d"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="0" y="0" width="360" height="500" rx="14" fill="url(#f2-panel)"/>
+  <circle cx="332" cy="462" r="58" fill="#0e9c90" opacity="0.06"/>
+  <circle cx="24" cy="262" r="40" fill="#7d838d" opacity="0.07"/>
+
+  <text x="180" y="36" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="bold" fill="#1d232b">Flow has two doors</text>
+
+  
+  <path d="M8 180 V88 Q8 56 91 56 Q174 56 174 88 V180 Z" fill="url(#f2-doorT)" stroke="#0e9c90" stroke-width="2"/>
+  <ellipse cx="91" cy="158" rx="54" ry="30" fill="url(#f2-light)"/>
+  <line x1="8" y1="180" x2="174" y2="180" stroke="#0e9c90" stroke-width="4"/>
+  <text x="91" y="100" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#1d232b">flow command</text>
+  <text x="91" y="124" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">anyone can run</text>
+
+  
+  <path d="M186 180 V96 Q186 72 269 72 Q352 72 352 96 V180 Z" fill="url(#f2-doorG)" stroke="#7d838d" stroke-width="2"/>
+  <circle cx="269" cy="84" r="4" fill="#7d838d"/>
+  <text x="269" y="102" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#1d232b">flow-meta command</text>
+  <text x="269" y="122" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">the owner, Message</text>
+  <text x="269" y="142" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">or a flow of an</text>
+  <text x="269" y="162" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">allowed aspect</text>
+
+  
+  <path d="M91 180 C96 192 86 204 91 218" fill="none" stroke="#0e9c90" stroke-width="3" marker-end="url(#f2-aT)"/>
+  <text x="100" y="204" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">speaks on</text>
+  <path d="M269 180 C274 192 264 204 269 218" fill="none" stroke="#7d838d" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#f2-aG)"/>
+  <text x="278" y="204" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">speaks on</text>
+
+  
+  <rect x="8" y="218" width="166" height="124" rx="18" fill="url(#f2-wireT)" stroke="#0e9c90" stroke-width="2"/>
+  <text x="91" y="244" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#1d232b">ordinary wire</text>
+  <text x="91" y="266" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Start Stop</text>
+  <text x="91" y="288" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Current Metaflows</text>
+  <text x="91" y="310" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Report</text>
+
+  
+  <rect x="186" y="218" width="166" height="124" rx="18" fill="url(#f2-wireG)" stroke="#7d838d" stroke-width="2"/>
+  <text x="269" y="244" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" fill="#1d232b">meta wire</text>
+  <text x="269" y="266" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Configure Refresh</text>
+  <text x="269" y="288" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Deliver Command</text>
+  <text x="269" y="310" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">Retire</text>
+
+  
+  <path d="M91 342 C91 358 120 366 180 368" fill="none" stroke="#0e9c90" stroke-width="3"/>
+  <path d="M269 342 C269 358 240 366 180 368" fill="none" stroke="#7d838d" stroke-width="3" stroke-dasharray="6 5"/>
+  <line x1="180" y1="368" x2="180" y2="396" stroke="#0e9c90" stroke-width="3" marker-end="url(#f2-aT)"/>
+  <text x="192" y="388" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d232b">both reach</text>
+
+  
+  <polygon points="100,432 180,398 260,432" fill="url(#f2-bld)" stroke="#3a4350" stroke-width="2"/>
+  <rect x="100" y="432" width="160" height="40" fill="url(#f2-bld)" stroke="#3a4350" stroke-width="2"/>
+  <rect x="112" y="436" width="8" height="32" fill="#9aa3b0"/>
+  <rect x="130" y="436" width="8" height="32" fill="#9aa3b0"/>
+  <rect x="222" y="436" width="8" height="32" fill="#9aa3b0"/>
+  <rect x="240" y="436" width="8" height="32" fill="#9aa3b0"/>
+  <rect x="92" y="472" width="176" height="8" rx="2" fill="#3a4350"/>
+  <text x="180" y="461" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1d232b">Flow</text>
+</svg></div>
+<p>Machine: Flow has two doors, each a typed channel (a wire) written as datoms on a Unix socket, a local file that programs connect through. The <code>flow</code> command speaks the ordinary wire; the <code>flow-meta</code> command speaks the meta wire, which answers only the owner, the Message program, or a flow whose aspect the configuration allows.</p>
+<div class="figure" style="position:relative;height:0;padding-bottom:177.78%;overflow:hidden"><svg viewBox="0 0 360 640" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A flowchart of seat states: a running seat that finishes its turn with nothing queued goes Asleep; a queued Order or Question wakes it, resuming the old session when context is small or starting a fresh one when context is large or Refresh is asked, and the queue is handed over oldest first back to Awake.">
+  <defs>
+    <linearGradient id="f3-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbfaf5"/>
+      <stop offset="1" stop-color="#eaf2f1"/>
+    </linearGradient>
+    <linearGradient id="f3-awake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8dc"/>
+      <stop offset="1" stop-color="#fde6a0"/>
+    </linearGradient>
+    <linearGradient id="f3-asleep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1f3f8"/>
+      <stop offset="1" stop-color="#d5dce8"/>
+    </linearGradient>
+    <linearGradient id="f3-teal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e2f6f3"/>
+      <stop offset="1" stop-color="#bfe9e3"/>
+    </linearGradient>
+    <radialGradient id="f3-glow" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#fffdf0"/>
+      <stop offset="0.6" stop-color="#ffd76a"/>
+      <stop offset="1" stop-color="#f2b53a"/>
+    </radialGradient>
+    <filter id="f3-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1d2430" flood-opacity="0.18"/>
+    </filter>
+    <filter id="f3-halo" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <marker id="f3-arr-teal" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#0e9c90"/>
+    </marker>
+    <marker id="f3-arr-grey" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#7d838d"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="0" y="0" width="360" height="640" rx="14" fill="url(#f3-panel)"/>
+
+  
+  <g filter="url(#f3-shadow)">
+    <rect x="24" y="24" width="312" height="96" rx="20" fill="url(#f3-awake)" stroke="#3a4150" stroke-width="1.5"/>
+  </g>
+  <circle cx="304" cy="66" r="34" fill="#ffe27a" opacity="0.45" filter="url(#f3-halo)"/>
+  <rect x="286" y="40" width="36" height="52" rx="4" fill="url(#f3-glow)" stroke="#8a6512" stroke-width="1.5"/>
+  <line x1="304" y1="40" x2="304" y2="92" stroke="#8a6512" stroke-width="1"/>
+  <line x1="286" y1="66" x2="322" y2="66" stroke="#8a6512" stroke-width="1"/>
+  <rect x="280" y="92" width="48" height="4" rx="2" fill="#8a6512"/>
+  <text x="44" y="56" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">metaflow Awake</text>
+  <text x="44" y="82" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">a seat is running in a</text>
+  <text x="44" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">terminal pane</text>
+
+  
+  <path d="M180 120 C172 134 188 152 180 166" fill="none" stroke="#0e9c90" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M180 120 C172 134 188 152 180 166" fill="none" stroke="#0e9c90" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f3-arr-teal)"/>
+  <text x="198" y="140" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">turn ends,</text>
+  <text x="198" y="158" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">nothing queued</text>
+
+  
+  <g filter="url(#f3-shadow)">
+    <rect x="24" y="166" width="312" height="96" rx="20" fill="url(#f3-asleep)" stroke="#3a4150" stroke-width="1.5"/>
+  </g>
+  <rect x="288" y="186" width="32" height="42" rx="4" fill="#fffdf7" stroke="#3a4150" stroke-width="1.5"/>
+  <rect x="288" y="186" width="7" height="42" rx="3" fill="#5b6270"/>
+  <line x1="302" y1="200" x2="314" y2="200" stroke="#9aa1ad" stroke-width="1.2"/>
+  <line x1="302" y1="210" x2="314" y2="210" stroke="#9aa1ad" stroke-width="1.2"/>
+  <line x1="302" y1="220" x2="314" y2="220" stroke="#9aa1ad" stroke-width="1.2"/>
+  <text x="44" y="202" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">metaflow Asleep</text>
+  <text x="44" y="228" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">pane closed, transcript kept</text>
+
+  
+  <path d="M180 262 C188 276 172 290 180 306" fill="none" stroke="#0e9c90" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M180 262 C188 276 172 290 180 306" fill="none" stroke="#0e9c90" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f3-arr-teal)"/>
+  <text x="198" y="282" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">an Order or</text>
+  <text x="198" y="300" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">Question is queued</text>
+
+  
+  <rect x="24" y="306" width="312" height="52" rx="26" fill="url(#f3-teal)" stroke="#0e9c90" stroke-width="2"/>
+  <path d="M56 319 C50 319 47 324 47 330 L45 337 L67 337 L65 330 C65 324 62 319 56 319 Z" fill="#3a4150"/>
+  <circle cx="56" cy="317" r="2" fill="#3a4150"/>
+  <circle cx="56" cy="341" r="3" fill="#3a4150"/>
+  <path d="M74 326 Q78 332 74 338" fill="none" stroke="#3a4150" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M80 321 Q87 332 80 343" fill="none" stroke="#3a4150" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="180" y="338" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">wake</text>
+
+  
+  <path d="M48 358 L48 420" fill="none" stroke="#0e9c90" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M48 358 L48 420" fill="none" stroke="#0e9c90" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f3-arr-teal)"/>
+  <path d="M312 358 L312 420" fill="none" stroke="#7d838d" stroke-width="2.5" stroke-dasharray="7 6" stroke-linecap="round" marker-end="url(#f3-arr-grey)"/>
+  <text x="60" y="386" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">context is small</text>
+  <text x="300" y="386" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">context is large,</text>
+  <text x="300" y="406" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">or Refresh was asked</text>
+
+  <g filter="url(#f3-shadow)">
+    <rect x="24" y="420" width="148" height="74" rx="16" fill="url(#f3-teal)" stroke="#0e9c90" stroke-width="2"/>
+    <rect x="188" y="420" width="148" height="74" rx="16" fill="#ffffff" stroke="#7d838d" stroke-width="2" stroke-dasharray="7 5"/>
+  </g>
+  <text x="98" y="449" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#1d2430">resumed</text>
+  <text x="98" y="473" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">the old session</text>
+  <text x="262" y="449" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#1d2430">started fresh</text>
+  <text x="262" y="473" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">from its modules</text>
+
+  
+  <path d="M98 494 C98 512 180 500 180 524" fill="none" stroke="#0e9c90" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M98 494 C98 512 180 500 180 524" fill="none" stroke="#0e9c90" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M262 494 C262 512 180 500 180 524" fill="none" stroke="#7d838d" stroke-width="2.5" stroke-dasharray="7 6" stroke-linecap="round"/>
+  <path d="M180 524 L180 560" fill="none" stroke="#0e9c90" stroke-opacity="0.18" stroke-width="9" stroke-linecap="round"/>
+  <path d="M180 524 L180 560" fill="none" stroke="#0e9c90" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f3-arr-teal)"/>
+  <text x="196" y="536" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">hands over the queue,</text>
+  <text x="196" y="554" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">oldest first</text>
+
+  
+  <g filter="url(#f3-shadow)">
+    <rect x="24" y="560" width="312" height="60" rx="20" fill="url(#f3-awake)" stroke="#3a4150" stroke-width="1.5"/>
+  </g>
+  <rect x="290" y="574" width="22" height="32" rx="3" fill="url(#f3-glow)" stroke="#8a6512" stroke-width="1.2"/>
+  <text x="170" y="596" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">metaflow Awake</text>
+</svg></div>
+<p>Machine: an idle topic costs no running program. A seat that finishes its turn with nothing queued is put to sleep, and a queued request of the right kind wakes the metaflow with its whole queue.</p>
+<h2>1. What Flow is to its users</h2>
+<p>Machine: a metaflow is what people and flows address; its flows come one after another. It has a state, Awake as one flow, Asleep or Ended; a list of its earlier flows, Past; and a Queue of the requests that reached it, each kept with its sender.</p>
+<ul><li>A request is one of six kinds: an Order (work for the target), a Question, a Result, a Notice (an error or blocker that touches its work), and the living's words, <code>Psyche</code> for one saying and <code>Psyches</code> for several.</li><li>The layer decides the model. Flow holds one model per layer. Production declares Primary <code>claude-fable-5-1</code>, Secondary <code>claude-opus-5-5</code>, Tertiary <code>claude-sonnet-5-5</code> and Quaternary <code>claude-haiku-5-5</code>, read from the Primary configuration file and declared on 2026-10-17.</li><li>Sleeping. When a Claude seat's turn ends, Flow notes how large its context was, waits for Herdr to show the seat at rest, and, if nothing is queued, closes its pane and records the metaflow Asleep; the flow joins Past and its transcript is kept. If something is queued, the oldest request is typed into the pane and the seat stays awake. A Primary is never put to sleep, and a Codex seat is not either, because only a Claude flow can be resumed.</li><li>Waking. An Order, a Question or the living's words queued for an Asleep metaflow wake it. A Result or a Notice waits in the queue for the next wake. A Primary is never woken by Flow; what is queued for it waits. The wake hands the whole queue over in one prompt, oldest first. It resumes the last flow's session when that session's context at its last stop was under the layer's refresh threshold, or when no threshold is configured, which is production's state now. Otherwise, or when a Refresh was asked, the wake starts a fresh session at the layer's model and medium effort, from the module identities and leave-outs of the metaflow's last launch.</li><li>The three context repositories. A flow's context is made of modules, plain-text skills, and they live only in <code>psyche-context</code>, <code>mind-context</code> and <code>field-context</code>, one per aspect. A launch names modules by identity; no path or text travels in it.</li><li>A leave-out is a named part of a harness's startup that a flow goes without: a tool, an instruction block or a harness feature. A metaflow's configuration sets its default leave-outs, and a launch may name its own list instead.</li></ul>
+<h2>2. The interfaces</h2>
+<p>Machine: every command takes exactly one datom and prints each reply as a datom. In a block of two or more datoms, the first is the request and the last is its reply. Long datoms are laid out on several lines here for the phone; on a command line each is one line, and the reader treats any whitespace the same.</p>
+<h2>2.1 The command lines</h2>
+<pre data-diff><code class="language-bash">flow 'Current.{ Mind nexus Secondary }'
+# Current.Asleep
+flow 'Metaflows'
+flow --version
+flow-meta 'Refresh.{ Mind flow Secondary }'
+flow-meta reset attempt-1</code></pre>
+<p>Machine: <code>flow</code> speaks on the ordinary socket and <code>flow-meta</code> on the meta socket. <code>FLOW_SOCKET</code> and <code>FLOW_META_SOCKET</code> name another Nexus's sockets. An error goes to standard error and the exit status is 2. The only commands that are not datoms are <code>flow --version</code>; <code>flow-meta reset &lt;key&gt; [credit]</code>, which asks the Codex app-server to use a reset credit (the key makes a retry safe); and <code>flow-meta register-claude|register-codex …</code>, which registers a session started before Flow.</p>
+<h2>2.2 The ordinary wire</h2>
+<p>Machine: Start launches a flow. It carries eleven things in order: a request id; the system modules; the user modules; the Address; the model; the effort; the predecessor, <code>None</code> for a new start or <code>Some.&lt;flow id&gt;</code>; the flows to remember, each with a depth; the Herdr session; the leave-outs, where <code>None</code> takes the metaflow's default and <code>Some.[ … ]</code> replaces it; and the brief, the one text a Start carries.</p>
+<pre data-diff><code class="language-datom">Start.{ request-7
+  [ spirit-core ]
+  [ operation-main-flow knowledge-flow ]
+  { Field flow Primary }
+  gpt-6-astra medium
+  Some.836818
+  [ { 1b8ac0 1 } ]
+  messaging-build
+  Some.[ SkillTool WorkflowTool ]
+  «Carry this bounded launch request.» }</code></pre>
+<p>Machine: the reply is <code>Started</code>, as production returned it for a Codex flow: the flow id, its native session id, the Herdr route it runs in (session, pane name, pane, terminal), and its origin, <code>Unbound</code> when the caller was no flow, otherwise <code>Flow.{ id session }</code>.</p>
+<pre data-diff><code class="language-datom">Started.{ 3ff3fe
+  01a1497a-7fba-7a13-b28a-2873ff3fe0bc
+  Available.{ default
+    codex-9f44235592816c2dbe28a6cb wN:p1
+    term_65e0706826867a5 }
+  Unbound }</code></pre>
+<p>Machine: other ordinary queries. <code>LaunchStatus.&lt;request id&gt;</code> answers one snapshot of a launch; <code>Observe.Launch.&lt;request id&gt;</code> keeps answering at each phase change until the launch settles. <code>Stop.&lt;flow id&gt;</code> closes a flow's pane. <code>Report.{ &lt;flow id&gt; &lt;event&gt; }</code> is what a Claude hook sends, with the event <code>Started</code>, <code>ToolUsed.&lt;tool&gt;</code> or <code>Stopped</code>; the reply is <code>Reported</code>.</p>
+<pre data-diff><code class="language-datom">Report.{ f1c841 Stopped }</code></pre>
+<p>Machine: reading the state. <code>Current.&lt;Address&gt;</code> answers <code>Current.Awake.&lt;flow id&gt;</code>, <code>Current.Asleep</code>, <code>Current.Ended</code> or <code>Current.Unknown</code>. <code>Metaflows</code> lists every metaflow.</p>
+<pre data-diff><code class="language-datom">Listed.[
+  { { Psyche flow Primary }
+    Ended
+    [ past-1 ]
+    [ { Sender.{ Mind flow Tertiary }
+        Order.continue }
+      { Unknown Notice.kept } ] } ]</code></pre>
+<p>Machine: <code>ResolveCaller.None</code> names the flow that is calling, from the process the kernel reports, never from the request.</p>
+<pre data-diff><code class="language-datom">ResolveCaller.None
+CallerResolved.{ 38de5b Psyche High
+                 claude-opus-5-5 }</code></pre>
+<p>Machine: four requests are the Message program's alone: Identify (which address a process runs in), Lock (reserve a recipient for a lease), Deliver (queue a request under the lock) and Release. Any other caller is answered <code>Refused.NotMessage</code>. The recipient of a Lock may also be <code>Up</code>, the layer above in the sender's aspect and topic. The two numbers in Identify are a process id and its start time.</p>
+<pre data-diff><code class="language-datom">Identify.{ 40211 1792234100 }
+Identified.{ Psyche nexus Secondary }</code></pre>
+<pre data-diff><code class="language-datom">Lock.{ { Psyche nexus Secondary }
+       { Mind nexus Secondary } }
+Locked.{ { Psyche nexus Secondary }
+         { Mind nexus Secondary }
+         1792234200 }</code></pre>
+<pre data-diff><code class="language-datom">Deliver.{ { { Psyche nexus Secondary }
+            { Mind nexus Secondary }
+            1792234200 }
+          Order.«Run the tier tests.» }
+Queued</code></pre>
+<h2>2.3 The meta wire</h2>
+<p>Machine: Configure declares one family of settings whole, replacing what was there in one commit; an entry left out of the declaration is removed. The reply is <code>Configured.Replaced</code>, or <code>Configured.Unchanged</code> when nothing differed. The families are Models (one model per layer), Thresholds (per layer, two numbers), LeaveOuts (per metaflow Address) and Nexus (sockets, Codex endpoints and the Message program).</p>
+<pre data-diff><code class="language-datom">Configure.Models.[
+  { Primary claude-fable-5-1 }
+  { Secondary claude-opus-5-5 }
+  { Tertiary claude-sonnet-5-5 }
+  { Quaternary claude-haiku-5-5 } ]
+Configured.Replaced</code></pre>
+<pre data-diff><code class="language-datom">Configure.Thresholds.[
+  { Primary 600000 700000 } ]</code></pre>
+<p>Machine: of the two threshold numbers, this build reads only the second, the refresh threshold, when it decides to resume or start fresh; I found no reader of the first. Production has declared none.</p>
+<pre data-diff><code class="language-datom">Configure.LeaveOuts.[
+  { { Field publisher Quaternary }
+    [ ClaudeAiConnectors ExplorePlanAgents
+      WorkflowTool SkillTool BundledSkills
+      ScheduleWakeupTool ReportFindingsTool
+      ListAgentsTool CronTools DeferredTools
+      ClaudeMd GitInstructions ] } ]</code></pre>
+<p>Machine: that entry is production's default for the Field publisher; declared alone it would remove every other entry. The Nexus family has the source root, two Codex endpoints (client, home, control socket, models), the keys each harness takes, the aspects allowed on this wire, the Message socket and program, and the lease in seconds. It is shown here with placeholder paths. A running Nexus reads its endpoints when it opens, so a changed endpoint is served from the next start.</p>
+<pre data-diff><code class="language-datom">Configure.Nexus.{ /srv/source
+  { stable-client /srv/codex
+    /srv/codex/control.sock
+    [ gpt-5.6-sol gpt-5.6-luna ] }
+  { next-client /srv/codex-next
+    /srv/codex-next/control.sock
+    [ gpt-6-sol gpt-6-luna gpt-6-astra ] }
+  [ { Claude [ / «!» # ] [ esc esc ] [ enter ] }
+    { Codex [ / «!» ] [ esc ] [] } ]
+  [ Psyche ]
+  /srv/message-nexus.sock
+  /srv/message-nexus
+  60 }</code></pre>
+<p>Machine: <code>Configuration</code> reads the committed values back as one record of four parts in this order: the Nexus, the models, the thresholds and the default leave-outs. It never returns defaults, and answers <code>Unconfigured</code> before a Nexus was declared; it returns the models sorted by layer name, not in the order declared.</p>
+<p>Machine: Refresh asks that a metaflow's next wake start a fresh session; the mark clears when the metaflow is recorded awake again. Only an Asleep metaflow is accepted, and a second Refresh answers the same.</p>
+<pre data-diff><code class="language-datom">Refresh.{ Field startup-proof-0355 Quaternary }
+Refreshed.{ Field startup-proof-0355 Quaternary }</code></pre>
+<p>Machine: MetaBindExisting registers sessions started before Flow, after checking each binding against Herdr. The container names a Herdr session, its server and an owner; each binding names a flow, its aspect, power, model, harness, native session, workspace, pane, tab, terminal, agent, process and working directory.</p>
+<pre data-diff><code class="language-datom">MetaBindExisting.{
+  { messaging-build /run/user/1001/herdr.sock
+    { 4100 1001 server-token } owner-flow }
+  [ { psyche-flow Psyche High claude-opus
+      Claude psyche-native workspace wD:p9
+      wD:t9 psyche-terminal psyche-agent
+      { 4200 1001 psyche-token } /srv/work } ] }</code></pre>
+<p>Machine: the rest of the meta wire. <code>Deliver</code> types a message into a flow's pane, in one of three tiers (<code>Soft</code>, <code>MiddleAbrupt</code>, <code>HardAbrupt</code>) whose name heads the pane text; <code>Vet</code> answers what Deliver would refuse and types nothing; <code>Command</code> types a harness command (<code>Compact</code> or <code>Interrupt</code>); <code>Retire.&lt;flow id&gt;</code> takes a flow out of receiving; <code>ReadEvents.&lt;flow id&gt;</code> reads the events its hook reported.</p>
+<pre data-diff><code class="language-datom">Deliver.{ m-81b0e4:7d41e0:0 7d41e0
+  HardAbrupt.{ m-81b0e4 Owner
+    Text.«Stop the build now.» } }</code></pre>
+<pre data-diff><code class="language-datom">Command.{ 7d41e0 Compact }
+Commanded.{ 7d41e0 Compact Transported }</code></pre>
+<pre data-diff><code class="language-datom">ReadEvents.f1c841
+EventsRead.{ f1c841
+  [ Started ToolUsed.Bash Stopped ] }</code></pre>
+<h2>2.4 The Codex send tool</h2>
+<div class="figure" style="position:relative;height:0;padding-bottom:138.89%;overflow:hidden"><svg viewBox="0 0 360 500" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart: a Codex flow calls send with a target, kind and body; Flow finds the sender in its own records; if the target can take it, the request is queued (reply Queued) and wakes the target if it sleeps, and if there is no live sender, no target, or the lock is held, Refused.reason is given.">
+  <defs>
+    <linearGradient id="f4-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffefb"/>
+      <stop offset="1" stop-color="#ecebe2"/>
+    </linearGradient>
+    <linearGradient id="f4-box" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f1f5f8"/>
+    </linearGradient>
+    <linearGradient id="f4-ledger" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf4e4"/>
+      <stop offset="1" stop-color="#e9d9b8"/>
+    </linearGradient>
+    <linearGradient id="f4-envelope" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f2ead8"/>
+    </linearGradient>
+    <linearGradient id="f4-tray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dcd7c8"/>
+      <stop offset="1" stop-color="#b9b19c"/>
+    </linearGradient>
+    <linearGradient id="f4-door" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d5d8de"/>
+      <stop offset="1" stop-color="#a3a9b3"/>
+    </linearGradient>
+    <radialGradient id="f4-glow">
+      <stop offset="0" stop-color="#0e9c90" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#0e9c90" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="f4-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="#b9b3a2" opacity="0.35"/>
+    </pattern>
+    <filter id="f4-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2b3443" flood-opacity="0.18"/>
+    </filter>
+    <marker id="f4-arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0e9c90"/>
+    </marker>
+    <marker id="f4-arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#7d838d"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="0" y="0" width="360" height="500" rx="18" fill="url(#f4-panel)"/>
+  <rect x="0" y="0" width="360" height="500" rx="18" fill="url(#f4-dots)"/>
+
+  
+  <g filter="url(#f4-shadow)">
+    <rect x="56" y="14" width="248" height="46" rx="10" fill="url(#f4-box)" stroke="#3d4a5c" stroke-width="1.5"/>
+  </g>
+  <path d="M74,54 L97,31" fill="none" stroke="#3d4a5c" stroke-width="3" stroke-linecap="round"/>
+  <path d="M96,30 L103,22 L106,26 L99,34 Z" fill="#3d4a5c"/>
+  <text x="190" y="43" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">Codex flow</text>
+
+  
+  <path d="M180,62 C168,80 192,96 180,120" fill="none" stroke="#0e9c90" stroke-width="3" stroke-linecap="round" marker-end="url(#f4-arrow-teal)"/>
+  <g transform="translate(180 89) rotate(-8)">
+    <rect x="-14" y="-10" width="28" height="19" rx="2" fill="url(#f4-envelope)" stroke="#3d4a5c" stroke-width="1.2"/>
+    <path d="M-14,-10 L0,2 L14,-10" fill="none" stroke="#3d4a5c" stroke-width="1.2" stroke-linejoin="round"/>
+    <circle cx="0" cy="2" r="2.8" fill="#0e9c90"/>
+  </g>
+  <text x="200" y="86" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">calls send:</text>
+  <text x="200" y="106" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">target, kind, body</text>
+
+  
+  <g filter="url(#f4-shadow)">
+    <rect x="40" y="120" width="280" height="92" rx="12" fill="url(#f4-box)" stroke="#3d4a5c" stroke-width="1.5"/>
+  </g>
+  <rect x="166" y="117" width="28" height="5" rx="2.5" fill="#3d4a5c"/>
+  <rect x="250" y="134" width="48" height="62" rx="3" fill="url(#f4-ledger)" stroke="#6b5a3a" stroke-width="1.2"/>
+  <path d="M258,134 V196" stroke="#6b5a3a" stroke-width="3"/>
+  <path d="M264,146 H292 M264,168 H292 M264,179 H292 M264,190 H292" stroke="#b59b68" stroke-width="1"/>
+  <rect x="266" y="156" width="18" height="4" rx="2" fill="#3d4a5c"/>
+  <text x="60" y="150" font-family="Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#1d2430">Flow</text>
+  <text x="60" y="174" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">finds the sender in</text>
+  <text x="60" y="194" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">its own records</text>
+
+  
+  <path d="M84,212 C84,240 94,262 98,296" fill="none" stroke="#0e9c90" stroke-width="3" stroke-linecap="round" marker-end="url(#f4-arrow-teal)"/>
+  <path d="M290,212 C290,240 280,266 268,296" fill="none" stroke="#7d838d" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round" marker-end="url(#f4-arrow-grey)"/>
+  <text x="108" y="236" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">target can take it</text>
+  <text x="276" y="254" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">no live sender, no</text>
+  <text x="276" y="272" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">target, or lock held</text>
+
+  
+  <g filter="url(#f4-shadow)">
+    <rect x="20" y="296" width="156" height="82" rx="12" fill="url(#f4-box)" stroke="#3d4a5c" stroke-width="1.5"/>
+  </g>
+  <text x="36" y="322" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">target's queue</text>
+  <text x="36" y="344" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">reply: Queued</text>
+  <path d="M32,358 H164 L158,374 H38 Z" fill="url(#f4-tray)"/>
+  <g transform="translate(134 362)">
+    <rect x="-13" y="-9" width="26" height="18" rx="2" fill="url(#f4-envelope)" stroke="#3d4a5c" stroke-width="1"/>
+    <path d="M-13,-9 L0,2 L13,-9" fill="none" stroke="#3d4a5c" stroke-width="1"/>
+  </g>
+
+  
+  <rect x="196" y="296" width="144" height="82" rx="12" fill="#f5f6f8" stroke="#7d838d" stroke-width="1.8" stroke-dasharray="6 4"/>
+  <text x="208" y="322" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">Refused.reason</text>
+  <rect x="232" y="332" width="60" height="44" rx="2" fill="#e4e6ea" stroke="#5b626e" stroke-width="1.5"/>
+  <rect x="238" y="338" width="48" height="38" fill="url(#f4-door)" stroke="#5b626e" stroke-width="1"/>
+  <circle cx="278" cy="358" r="2.5" fill="#3d4a5c"/>
+  <path d="M228,377 H296" stroke="#5b626e" stroke-width="2"/>
+
+  
+  <path d="M98,378 C98,398 98,410 98,428" fill="none" stroke="#0e9c90" stroke-width="3" stroke-linecap="round" marker-end="url(#f4-arrow-teal)"/>
+  <text x="112" y="402" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">wakes the target</text>
+  <text x="112" y="420" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">if it sleeps</text>
+
+  
+  <g filter="url(#f4-shadow)">
+    <rect x="24" y="428" width="312" height="58" rx="14" fill="url(#f4-box)" stroke="#3d4a5c" stroke-width="1.5"/>
+  </g>
+  <text x="46" y="463" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d2430">target metaflow</text>
+  <circle cx="298" cy="458" r="34" fill="url(#f4-glow)"/>
+  <path d="M283,481 H313 L309,478 Q298,474 287,478 Z" fill="#3d4a5c"/>
+  <path d="M298,478 C294,462 296,448 302,440" fill="none" stroke="#3d4a5c" stroke-width="3" stroke-linecap="round"/>
+  <path d="M288,444 Q302,420 318,438 Z" fill="#3d4a5c"/>
+  <ellipse cx="304" cy="446" rx="5" ry="3" fill="#0e9c90"/>
+</svg></div>
+<p>Machine: every Codex flow Flow opens is given one tool, <code>send</code>. A Claude flow sends through Message instead. The flow passes the target address, a kind and a body, and never says who it is: Flow takes the sender from its own records of the calling thread.</p>
+<pre data-diff><code class="language-json">{
+  "target": {
+    "aspect": "Field",
+    "topic": "startup-proof-0355",
+    "layer": "Quaternary"
+  },
+  "kind": "Order",
+  "body": "Run the tier tests."
+}</code></pre>
+<p>Machine: the kinds are <code>Order</code>, <code>Question</code>, <code>Result</code> and <code>Notice</code>; the living's words are not among them. The reply is one datom, and the call counts as a success only when it was queued. Production returned this for a first-turn call:</p>
+<pre data-diff><code class="language-datom">Queued.{ { Field send-proof-03510 Quaternary }
+         { Field startup-proof-0355 Quaternary } }</code></pre>
+<p>Machine: <code>Queued</code> means in the target's queue, never delivered. The refusals are <code>UnknownTool</code>, <code>Malformed</code>, <code>ThreadUnowned</code> (no flow of Flow's runs the thread), <code>FlowEnded</code>, <code>NotAwake</code> (the sender's metaflow moved on), <code>KeyReused</code>, <code>UnknownRecipient</code>, <code>RecipientEnded</code> and <code>Held</code> (Message holds a lock on the target). A call is recorded under its thread, turn and call, so a replay is answered from the record and queued once. A launch's first turn may call the tool before its flow exists; then the sender is the launching metaflow.</p>
+<h2>2.5 What a woken flow reads</h2>
+<p>Machine: a woken or drained flow gets the queued requests in its prompt, oldest first, each with its sender. The prompt opens with the line «Work queued for this metaflow while no flow of it was running, oldest first, each with who sent it:» and then gives one datom per request. A request queued before Flow kept senders reads <code>Unknown</code>.</p>
+<pre data-diff><code class="language-datom">{ Sender.{ Mind alpha Tertiary } Order.«Carry on.» }
+{ Unknown Notice.kept }</code></pre>
+<h2>2.6 Typed refusals</h2>
+<p>Machine: a refusal is a short typed word, not a sentence. These are the ones a user meets. The first block is what a Start answers, each name after the head <code>StartRejected.</code>; the second is the replies of the other requests, whole, and the last line is a send-tool answer.</p>
+<pre data-diff><code class="language-datom">AddressAwake
+AddressEnded
+LeaveOutRefused.Indispensable.ToolSearch
+LeaveOutRefused.NeedsWorkflowLeftOut.SkillTool
+ContextRefused.ModuleTooLarge
+NativeLaunchRefused.{ Receipt ModelOrEffortDiffers }</code></pre>
+<pre data-diff><code class="language-datom">Refused.NotMessage
+Refused.Unknown.FlowId.0a0a0a
+RefreshRejected.Awake
+RefreshRejected.NoLaunchProfile
+ConfigureRejected.DuplicateEntry
+ConfigureRejected.CodexModelsOverlap
+MetaRefused.PeerNotAuthorized.{
+  da88cf Field Medium gpt-5.5 }
+DeliveryRejected.RecipientWorking
+DeliveryRejected.BodyRefused.HarnessCommand./compact
+CallerResolutionRejected.CallerMismatch.{
+  fac697 Mind Medium gpt-6-sol }
+Refused.ThreadUnowned</code></pre>
+<ul><li><code>NotMessage</code>: a request only the Message program may make, from any other caller.</li><li><code>Unknown.FlowId</code>: a hook report for a flow Flow did not launch; Flow never adopts one.</li><li><code>AddressAwake</code>, <code>AddressEnded</code>: a Start whose Address a live seat holds, or an ended one, is refused before anything launches.</li><li><code>Indispensable</code>, <code>NeedsWorkflowLeftOut</code>: leave-outs that may not be used; see section 4.</li><li><code>ModuleTooLarge</code>: one module with its part header does not fit one message.</li><li><code>ModelOrEffortDiffers</code>: the model the session reported is not the string the launch named; production met it with <code>haiku</code> against <code>claude-haiku-5-5</code>.</li><li><code>Awake</code>: only an Asleep metaflow can be refreshed. <code>NoLaunchProfile</code>: its last flow has no recorded launch to compose from.</li><li><code>DuplicateEntry</code>: a declaration names one key twice. <code>CodexModelsOverlap</code>: a model is named under both Codex endpoints.</li><li><code>PeerNotAuthorized</code>: the meta caller is a flow whose aspect is not allowed; the reply names that flow.</li><li><code>RecipientWorking</code>: a Soft message needs the recipient Idle or Done. <code>HarnessCommand</code>: a message whose first line is a harness command is refused; use <code>Command</code>.</li><li><code>CallerMismatch</code>: the flow id claimed is not the caller's; the reply carries the true caller.</li><li><code>ThreadUnowned</code>: a send-tool call from a thread no flow of Flow's runs.</li></ul>
+<h2>3. How it is used</h2>
+<div class="figure" style="position:relative;height:0;padding-bottom:197.78%;overflow:hidden"><svg viewBox="0 0 360 712" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three context repositories, psyche-context, mind-context and field-context, hold modules that Curriculum finds by identity and returns as composed context to Flow, which opens a terminal pane and types the context and then the brief into a new flow.">
+  <defs>
+    <linearGradient id="f5-panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf9f3"/>
+      <stop offset="1" stop-color="#f1ece0"/>
+    </linearGradient>
+    <linearGradient id="f5-shelf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="1" stop-color="#ebe4d4"/>
+    </linearGradient>
+    <radialGradient id="f5-blob" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e6dbc3" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#e6dbc3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="f5-soft" x="-10%" y="-10%" width="120%" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="b"/>
+      <feOffset in="b" dy="2.5" result="o"/>
+      <feComponentTransfer in="o" result="s">
+        <feFuncA type="linear" slope="0.22"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="s"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="f5-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0e9c90"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="0" y="0" width="360" height="712" rx="16" fill="url(#f5-panel)"/>
+  <ellipse cx="22" cy="40" rx="90" ry="60" fill="url(#f5-blob)"/>
+  <ellipse cx="350" cy="660" rx="110" ry="70" fill="url(#f5-blob)"/>
+
+  
+  <g filter="url(#f5-soft)">
+    <rect x="16" y="40" width="100" height="92" rx="14" fill="url(#f5-shelf)" stroke="#5b5346" stroke-width="1.5"/>
+    <rect x="130" y="40" width="100" height="92" rx="14" fill="url(#f5-shelf)" stroke="#5b5346" stroke-width="1.5"/>
+    <rect x="244" y="40" width="100" height="92" rx="14" fill="url(#f5-shelf)" stroke="#5b5346" stroke-width="1.5"/>
+  </g>
+  <g fill="#cfc6b4" stroke="#8a7d69" stroke-width="0.6">
+    <rect x="24" y="108" width="9" height="20" rx="1.5"/>
+    <rect x="35" y="108" width="6" height="20" rx="1.5" fill="#b3aa9a"/>
+    <rect x="43" y="108" width="11" height="20" rx="1.5" fill="#e3dccd"/>
+    <rect x="56" y="108" width="7" height="20" rx="1.5" fill="#9aa0a6"/>
+    <rect x="65" y="108" width="10" height="20" rx="1.5" fill="#c4baa8"/>
+    <rect x="77" y="108" width="6" height="20" rx="1.5" fill="#b3aa9a"/>
+    <rect x="85" y="108" width="12" height="20" rx="1.5"/>
+    <rect x="99" y="108" width="8" height="20" rx="1.5" fill="#e3dccd"/>
+  </g>
+  <g fill="#cfc6b4" stroke="#8a7d69" stroke-width="0.6">
+    <rect x="138" y="108" width="9" height="20" rx="1.5" fill="#e3dccd"/>
+    <rect x="149" y="108" width="6" height="20" rx="1.5"/>
+    <rect x="157" y="108" width="11" height="20" rx="1.5" fill="#9aa0a6"/>
+    <rect x="170" y="108" width="7" height="20" rx="1.5" fill="#c4baa8"/>
+    <rect x="179" y="108" width="10" height="20" rx="1.5"/>
+    <rect x="191" y="108" width="6" height="20" rx="1.5" fill="#b3aa9a"/>
+    <rect x="199" y="108" width="12" height="20" rx="1.5" fill="#e3dccd"/>
+    <rect x="213" y="108" width="9" height="20" rx="1.5" fill="#cfc6b4"/>
+  </g>
+  <g fill="#cfc6b4" stroke="#8a7d69" stroke-width="0.6">
+    <rect x="252" y="108" width="10" height="20" rx="1.5" fill="#b3aa9a"/>
+    <rect x="264" y="108" width="7" height="20" rx="1.5"/>
+    <rect x="273" y="108" width="12" height="20" rx="1.5" fill="#e3dccd"/>
+    <rect x="287" y="108" width="6" height="20" rx="1.5" fill="#9aa0a6"/>
+    <rect x="295" y="108" width="10" height="20" rx="1.5" fill="#c4baa8"/>
+    <rect x="307" y="108" width="8" height="20" rx="1.5"/>
+    <rect x="317" y="108" width="11" height="20" rx="1.5" fill="#b3aa9a"/>
+    <rect x="330" y="108" width="6" height="20" rx="1.5" fill="#e3dccd"/>
+  </g>
+  <g fill="none" stroke="#1d2430" stroke-width="0.1"/>
+
+  
+  <g font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430" text-anchor="middle">
+    <text x="66" y="68">psyche-</text>
+    <text x="66" y="90">context</text>
+    <text x="180" y="68">mind-</text>
+    <text x="180" y="90">context</text>
+    <text x="294" y="68">field-</text>
+    <text x="294" y="90">context</text>
+  </g>
+
+  
+  <g fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66 132 C66 150 180 146 180 166"/>
+    <path d="M294 132 C294 150 180 146 180 166"/>
+    <path d="M180 132 L180 166"/>
+    <path d="M180 166 C188 186 172 206 180 234" marker-end="url(#f5-arrow)"/>
+  </g>
+  <circle cx="180" cy="166" r="4" fill="#0e9c90"/>
+  <text x="194" y="194" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">hold the modules,</text>
+  <text x="194" y="212" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">by identity</text>
+
+  
+  <rect x="16" y="236" width="328" height="100" rx="18" fill="url(#f5-shelf)" stroke="#5b5346" stroke-width="1.5" filter="url(#f5-soft)"/>
+  <text x="32" y="262" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1d2430">Curriculum</text>
+  <text x="32" y="284" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">finds each named module,</text>
+  <text x="32" y="306" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">returns its text</text>
+  
+  <g stroke="#5b5346" stroke-width="1.4">
+    <path d="M276 330 Q274 290 294 287 Q314 290 312 330 Z" fill="#6f675a"/>
+    <circle cx="294" cy="272" r="11" fill="#f1e3cc"/>
+    <path d="M283 270 Q284 259 294 260 Q305 259 305 270 Q300 263 294 264 Q288 263 283 270 Z" fill="#5b5346"/>
+    <rect x="300" y="296" width="14" height="18" rx="2" fill="#fffdf7" transform="rotate(-12 307 305)"/>
+  </g>
+
+  
+  <path d="M180 336 C170 352 190 376 180 394" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f5-arrow)"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">
+    <text x="194" y="362">returns the composed</text>
+    <text x="194" y="380">context</text>
+  </g>
+
+  
+  <rect x="16" y="396" width="328" height="130" rx="18" fill="url(#f5-shelf)" stroke="#5b5346" stroke-width="1.5" filter="url(#f5-soft)"/>
+  <text x="32" y="422" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1d2430">Flow</text>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">
+    <text x="32" y="444">a Start names modules by id;</text>
+    <text x="32" y="466">Flow checks the answer and</text>
+    <text x="32" y="488">opens a terminal pane</text>
+  </g>
+  
+  <rect x="284" y="430" width="44" height="50" rx="5" fill="#1d2430"/>
+  <path d="M292 444 L298 450 L292 456" fill="none" stroke="#f8f5ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M302 458 H318" fill="none" stroke="#f8f5ee" stroke-width="2" stroke-linecap="round"/>
+
+  
+  <path d="M180 526 C170 544 190 566 180 596" fill="none" stroke="#0e9c90" stroke-width="2.6" stroke-linecap="round" marker-end="url(#f5-arrow)"/>
+  <g stroke="#8a8176" stroke-width="1" fill="#fffdf7">
+    <rect x="104" y="534" width="34" height="44" rx="3" transform="rotate(-9 121 556)"/>
+    <rect x="108" y="538" width="34" height="44" rx="3" transform="rotate(4 125 560)"/>
+    <rect x="112" y="542" width="34" height="44" rx="3" transform="rotate(-3 129 564)" filter="url(#f5-soft)"/>
+  </g>
+  <g stroke="#cfc6b4" stroke-width="1.2" stroke-linecap="round">
+    <path d="M118 554 H138 M118 560 H136 M118 566 H138"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1d2430">
+    <text x="194" y="556">types the context,</text>
+    <text x="194" y="576">then the brief</text>
+  </g>
+
+  
+  <rect x="16" y="598" width="328" height="90" rx="18" fill="#fffdf7" stroke="#5b5346" stroke-width="1.5" filter="url(#f5-soft)"/>
+  <path d="M17 618 V616 Q17 598.5 34 598.5 H326 Q343 598.5 343 616 V618 Z" fill="#e6dfcf"/>
+  <line x1="16" y1="618" x2="344" y2="618" stroke="#5b5346" stroke-width="1.2"/>
+  <circle cx="32" cy="608" r="3.5" fill="#9d9484"/>
+  <circle cx="44" cy="608" r="3.5" fill="#9d9484"/>
+  <circle cx="56" cy="608" r="3.5" fill="#9d9484"/>
+  <text x="180" y="652" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1d2430">new flow</text>
+</svg></div>
+<h2>3.1 Starting a new flow</h2>
+<p>Machine: the caller sends one Start. Flow first checks the Address: a metaflow Awake as a live flow, or named by another unsettled launch, is refused <code>AddressAwake</code>, and an Ended one <code>AddressEnded</code>. It checks the effective leave-outs, the Start's own or else the metaflow's default. It has Curriculum, the composer, find the named modules and verifies the answer; the harness is Codex when a configured Codex endpoint serves the model and Claude otherwise. It opens a pane in the named Herdr session, starts the session, and records the metaflow Awake as the new flow. The first message is the modules followed by the brief; when it does not fit one message it is sent in parts split where modules begin, each after the seat answered the one before, and the modules are named as the skills given, not to be reloaded. Flow waits for the receipt, that every part was seen in order and the seat answered at the intended model and effort, and then answers <code>Started</code>. A launch that ends refused gives the metaflow back as it was found. The caller may follow with <code>Observe.Launch.&lt;request id&gt;</code>; a repeated Start of the same request id may answer <code>LaunchPending</code> while the first runs.</p>
+<h2>3.2 A flow going to sleep</h2>
+<p>Machine: the hook of a Claude flow reports <code>Stopped</code>. Flow records how large the context was, gives Herdr a bounded wait to show the seat Idle or Done, and then, with nothing queued, closes the pane and records the metaflow Asleep; the flow joins Past and its transcript stays. With something queued, it types the oldest request into the pane and the seat goes on. The metaflow's address, queue and past stay in Flow's store; <code>flow 'Current.{ … }'</code> now answers <code>Current.Asleep</code>.</p>
+<h2>3.3 A message waking it fresh</h2>
+<p>Machine: an Order reaches the Asleep metaflow, by a Lock and Deliver from Message or by a send-tool call, and is queued with its sender. After the commit that queued it, Flow reads its own records and, finding the metaflow due a wake, wakes it. On 2026-10-17 production did this for <code>{ Field startup-proof-0355 Quaternary }</code> after a Refresh: a new Claude session at <code>claude-haiku-5-5</code> and medium effort, with all 36 modules (9 system, 27 user) whole, the sender-attributed Order as the brief, and the answer it was asked for; Flow then slept it, recorded it in Past and emptied its queue. The queue leaves only in the write that records the new flow Awake, so a Nexus that dies mid-wake loses none, and on start wakes every metaflow still holding work.</p>
+<h2>3.4 A Codex flow sending</h2>
+<p>Machine: the Codex flow calls <code>send</code> with a target, a kind and a body. Flow finds the thread's flow in its records, queues the request for the target as a Lock and Deliver would, and answers <code>Queued.{ sender target }</code>. If the target sleeps and the kind is an Order or a Question, it wakes. In the 0.35.10 production proof, the first turn of a new Codex flow made exactly one call and received the Queued reply above; the target held one matching Order, with the sender shown.</p>
+<h2>3.5 Refreshing a metaflow</h2>
+<p>Machine: <code>flow-meta 'Refresh.{ Field startup-proof-0355 Quaternary }'</code> answers <code>Refreshed.{ … }</code> and marks the metaflow. Nothing starts at that moment. The next wake starts a fresh session from the modules and leave-outs of the metaflow's last launch, however small the old context was, and the wake clears the mark. An Awake metaflow is answered <code>RefreshRejected.Awake</code>; one with no recorded launch, <code>NoLaunchProfile</code>.</p>
+<h2>3.6 Changing the configuration</h2>
+<p>Machine: on 2026-10-17 the production model registry was changed from aliases to exact ids. The caller sent one <code>Configure.Models.[ … ]</code> with all four layers and got <code>Configured.Replaced</code>; the other families were unchanged and no wake was triggered. The next fresh wake used the new ids. Reading it back with <code>Configuration</code> returned the four models sorted by layer name, which is not the order sent. Models and leave-outs take effect at the next wake or launch; a Nexus family change takes effect when the Nexus next starts.</p>
+<h2>4. What a user must know that is not obvious</h2>
+<ul><li>Model ids are exact. A Start or a Configure must name the string the harness reports, <code>claude-haiku-5-5</code>, not <code>haiku</code>; a launch that names the alias is refused at the receipt as <code>ModelOrEffortDiffers</code>, which production met. A model that no configured Codex endpoint lists is launched on Claude. One model named under both Codex endpoints makes a Configure fail <code>CodexModelsOverlap</code>.</li><li>Some leave-outs cannot be used. <code>ToolSearch</code> and <code>BashTool</code> are refused as <code>Indispensable</code>: without the first every deferred tool's schema loads, without Bash a flow cannot message, commit or build. <code>SkillTool</code> and <code>BundledSkills</code> are refused unless <code>WorkflowTool</code> is left out too. A Claude leave-out in a Codex Start, or the reverse, is refused <code>NotForHarness</code>.</li><li>A Configure declares its family whole. An entry you do not repeat is removed.</li><li><code>Queued</code> is not delivery. A Result or a Notice does not wake a sleeping metaflow, and nothing wakes a Primary; its queue waits.</li><li>Only a Claude flow sleeps. A Codex flow stays running, and a Refresh is accepted only while the metaflow is asleep.</li><li>Sender attribution has a same-user limit. On the send tool, Flow attributes a call to the metaflow its records bind to the thread; it does not prove who started the turn, and any process of the same user can start a turn on a thread. On Message's path the sender in a Lock is what the bound Message process asserts. Both sockets are owner-only, which stops accidents, not another process of the same user.</li><li>Lock, Deliver and Release are accepted only from the one process that bound itself as Message, and a bind as Message is accepted only from the configured Message executable. The Message program's own test says an Identify from a plain client is answered; the Flow code at this commit refuses it as well with <code>NotMessage</code>. I did not run either.</li></ul>
+<h2>Crystallization</h2>
+<p>Machine: three proposals. The first lands lines the living's own records already say and Flow now does; the second lands the interface reference as a knowledge module the machines write and keep; the third points the older knowledge module to it. The older module <code>knowledge-flow</code> also holds three paragraphs of dated observations of version 0.24; this book leaves them to a separate ruling.</p>
+<article class="proposal"><header><span class="pnum">1</span><h2>three lines Flow now does · psyche-context › vision/flow.md</h2></header>
+<p>Machine: the lines come from the records of 2026-10-16 on the lean flow, on the three context repositories and on injecting the modules; Flow's behavior matches each. The existing lines around them stay.</p>
+<div class="diff"><div class="ctx"><div class="textblock">To the Nexus, a module's location is nothing but its registry entry.</div></div><div class="textblock"><ins>
+A flow starts lean: every part of a harness's startup that can be left out is a named leave-out. A metaflow's configuration sets which are left out by default, and a launch may name its own list, which replaces that default.
+
+A flow's first message carries the text of every module it was launched with and says that these are its skills, given there, not to be reloaded. A context too long for one message is sent as consecutive parts, split where modules begin.</ins></div><div class="ctx"><div class="textblock">…
+Every context module lives outside it, the basic modules included, so that a change to a module causes no Nix rebuild.</div></div><div class="textblock"><ins>Context modules, raws included, live only as raw modules in the three aspect context repositories, Psyche, Mind and Field, and nowhere else. A launch names a module by its identity alone, never by a path or a text.</ins></div></div>
+<section class="rulings"><ol><li value="1"><p>Land the three lines.</p><ol class="choices" type="a"><li>Land them as written.</li><li>Land them with changes.</li><li>Land none.</li></ol></li></ol></section>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>the interface reference · mind-context › skills/knowledge-flow-interface.md, a new file</h2></header>
+<p>Machine: a new file, written and kept by the machines from Flow's source and from production replies; nothing is removed. It carries the command lines, the datoms and the send tool as sections 2 and 4 of this book show them, one example each. The lines are as they would be in the file.</p>
+<div class="diff"><div class="textblock"><ins>---
+description: A flow is started, stopped, woken, refreshed, sent to or configured, or a Flow reply or refusal is read, and the command line, datom or tool argument is needed.
+dependencies: [knowledge-flow]
+---
+
+## Command lines
+
+`flow '&lt;datom&gt;'` speaks on the ordinary socket and `flow-meta '&lt;datom&gt;'` on the meta socket. Each takes exactly one datom and prints each reply as a datom; an error goes to standard error with exit status 2. `FLOW_SOCKET` and `FLOW_META_SOCKET` name another Nexus's sockets. The meta socket answers `MetaRefused` unless the peer is the owner, the Message program, or a flow whose aspect is in the configured MetaAspects. Lock, Deliver, Release and Identify are answered `Refused.NotMessage` to any other caller.
+
+## Start
+
+Start carries, in order: a request id, the system modules, the user modules, the Address, the model, the effort, the predecessor (`None` or `Some.&lt;flow id&gt;`), the flows to remember, the Herdr session, the leave-outs (`None` takes the metaflow's default, `Some.[ … ]` replaces it), and the brief. Modules are named by identity; a path or a text is refused. Example: `Start.{ request-7 [ spirit-core ] [ operation-main-flow knowledge-flow ] { Field flow Primary } gpt-6-astra medium Some.836818 [ { 1b8ac0 1 } ] messaging-build Some.[ SkillTool WorkflowTool ] «Carry this bounded launch request.» }`. The reply is `Started.{ &lt;flow id&gt; &lt;session id&gt; Available.{ &lt;Herdr session&gt; &lt;pane name&gt; &lt;pane&gt; &lt;terminal&gt; } &lt;origin&gt; }`.
+
+## Reading state
+
+`Current.{ Mind nexus Secondary }` answers `Current.Awake.&lt;flow id&gt;`, `Current.Asleep`, `Current.Ended` or `Current.Unknown`. `Metaflows` answers `Listed.[ … ]`, each metaflow as `{ &lt;Address&gt; &lt;state&gt; [ &lt;past flows&gt; ] [ &lt;queue&gt; ] }`, a queued request as `{ Sender.&lt;Address&gt; &lt;request&gt; }` or `{ Unknown &lt;request&gt; }`. `ResolveCaller.None` answers `CallerResolved.{ &lt;flow id&gt; &lt;aspect&gt; &lt;power&gt; &lt;model&gt; }` for the caller.
+
+## Configuring
+
+`Configure.&lt;family&gt;.[ … ]` on the meta socket declares the whole family and removes any entry it leaves out; the reply is `Configured.Replaced` or `Configured.Unchanged`. Families: Models `[ { &lt;Layer&gt; &lt;model&gt; } … ]`, Thresholds `[ { &lt;Layer&gt; &lt;handover&gt; &lt;refresh&gt; } … ]` (only the second number is read for resuming), LeaveOuts `[ { &lt;Address&gt; [ &lt;leave-out&gt; … ] } … ]`, and Nexus. Models and leave-outs apply from the next wake or launch. `Configuration` reads the four families back, the models sorted by layer name.
+
+## Refresh
+
+`Refresh.{ Mind flow Secondary }` answers `Refreshed.&lt;Address&gt;`, and the next wake of that Asleep metaflow starts a fresh session instead of resuming. An Awake metaflow answers `RefreshRejected.Awake`.
+
+## Sleeping and waking
+
+A Claude seat at rest with nothing queued is put to sleep; a Codex seat and a Primary are not. An Order, a Question or the living's words queued for an Asleep metaflow below Primary wake it; a Result or a Notice waits. The wake resumes the session when its context is under the layer's refresh threshold or none is configured, else starts fresh at the layer's model and medium effort from the last launch's modules and leave-outs.
+
+## The Codex send tool
+
+A Codex flow Flow opens has the tool `send` with `target` (`aspect`, `topic`, `layer`), `kind` (`Order`, `Question`, `Result` or `Notice`) and `body`. The sender is read from Flow's records, never passed. The answer is `Queued.{ &lt;sender&gt; &lt;target&gt; }` or `Refused.&lt;reason&gt;`. Queued is not delivered. A woken flow reads each queued request as `{ Sender.&lt;Address&gt; &lt;request&gt; }`.
+
+## Exact names
+
+A model is named by the string its harness reports, such as `claude-haiku-5-5`; an alias is refused at the receipt as `ModelOrEffortDiffers`. A model no configured Codex endpoint lists is launched on Claude. `ToolSearch` and `BashTool` cannot be left out; `SkillTool` and `BundledSkills` only with `WorkflowTool` left out; a leave-out of the other harness is refused.
+
+## Limits
+
+Attribution of a send-tool call is by thread, from Flow's records, and of a Lock by what the bound Message process asserts. It does not authenticate who started a turn; any process of the same user can.</ins></div></div>
+<section class="rulings"><ol><li value="2"><p>Land the module.</p><ol class="choices" type="a"><li>Land it as written, kept by the machines.</li><li>Land it, with the Nexus family left out until its paths settle.</li><li>Do not land it.</li></ol></li></ol></section>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>the older module points to it · mind-context › skills/knowledge-flow.md</h2></header>
+<p>Machine: one line added at the end of the older module, after its reading rule; nothing is removed.</p>
+<div class="diff"><div class="ctx"><div class="textblock">caller identity, store state, or runtime bindings from a source version
+or client path.</div></div><div class="textblock"><ins>
+The command lines, datoms, send tool and refusals Flow takes are in `knowledge-flow-interface`.</ins></div></div>
+<section class="rulings"><ol><li value="3"><p>Add the line.</p><ol class="choices" type="a"><li>Add it as written.</li><li>Add it and rule on the three dated paragraphs next.</li><li>Do not add it.</li></ol></li></ol></section>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

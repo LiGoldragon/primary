@@ -62,3 +62,7 @@ Published «Makeshift, from Spirit» https://claude.ai/artifact/Y25526asbL8a6xEa
 17:12 comment on Core's Proposal 1 logged in vision/makeshift.md: "envisioned" rejected as a term; short-term vision and long-term vision, and that's it; either may be implemented or not; when the long-term vision is implemented and documented, the short-term vision and its documentation are removed as noise. Sending Core the reworded spirit line for the next edition (comment is on Core's book).
 33752b published «Short-term and long-term vision» https://claude.ai/artifact/7MByon3oMN2TP9JZDqjpby: my spirit line and knowledge-psyche line, two vocabulary terms, one ruling (the words are his). Thread waits for the living.
 Witnessed (subflow, git): psyche-skills 4ce3789 on origin/main adds to skills/intent-psyche.md the section "Vision is short-term or long-term" with both lines as worded in the thread; spirit-core.md untouched. The living ruled the line intent, not spirit. Thread closed.
+
+## 2026-10-14 — refresh brief
+Field Core Secondary: the living orders behavior/context reload through handover refresh of every live Psyche seat. Wrote handover.md (judgment-only). No active writes; one read-only subflow (locating Field Core Secondary's id for the confirmation) finishing. Holding new work; not retiring myself.
+Confirmation sent to d68c82 (Field Core Secondary's id not in index). handover.md notes Spirit Secondary ee57fb. Holding.

@@ -1,0 +1,10 @@
+Library.{
+[]                                    ; imports
+[ BatchName.String                    ; types
+  Counts.⟦ Integer ⟧
+  Batch.⦃ BatchName Counts ⦄ ]
+[ Named.[ name.[ String ] ]           ; traits
+  Listed.[ count.[ Integer ] ] ]
+[ BatchName.[ Named ]                 ; associations
+  Counts.[ Listed ]
+  Batch.[ Named ] ] }

@@ -39,3 +39,4 @@
 - 2026-10-11: Published my log from the shared copy during d68c82's turn (main 391a2cea); lock 18361 released and reported.
 - 2026-10-11: d68c82, from the living: Fable writes the books. A Secondary gathers every context touching the subject in one packet for its Fable Primary, which checks it and authors the book. With no Nexus Primary, this topic sends its packets to 33752b (core Primary).
 - 2026-10-11: psyche-skills history was rewritten: skills carry no Sources sections, and references go in commit messages (new main d0d194c8d1bef78874c8aad842d70047978c4bac). Both of my published books propose Sources lines, so whoever lands them puts those references in the commit message instead.
+- 2026-10-14: Field asked for a refresh handover; wrote flows/058f16/handover.md. No active writes or subflows. Holding new work.

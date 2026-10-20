@@ -1,0 +1,412 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Nexus: the vision, 2nd edition</title>
+<h1 class="book-title">The Nexus: the vision, 2nd edition</h1>
+<div class="figure" style="position:relative;height:0;padding-bottom:183.33%;overflow:hidden"><svg viewBox="0 0 360 660" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Caller and the Nexus (Signal, Operation, Memory), with the standard entry point enforcing the one path" font-family="system-ui,sans-serif" font-size="14" fill="currentColor" stroke="currentColor" stroke-width="1.6">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" stroke="none"/></marker></defs>
+<g fill="none">
+<rect x="110" y="10" width="140" height="40" rx="6"/>
+<rect x="10" y="130" width="340" height="420" rx="12" stroke-dasharray="6 4"/>
+<rect x="110" y="170" width="140" height="40" rx="6"/>
+<rect x="110" y="290" width="140" height="40" rx="6"/>
+<rect x="110" y="450" width="140" height="40" rx="6"/>
+<rect x="80" y="600" width="200" height="44" rx="6"/>
+<g marker-end="url(#a)">
+<path d="M150 50V170"/><path d="M210 170V50"/>
+<path d="M150 210V290"/><path d="M210 290V210"/>
+<path d="M150 330V450"/><path d="M210 450V330"/>
+<path d="M180 600V550"/></g></g>
+<g stroke="none" text-anchor="middle"><text x="180" y="35">Caller</text><text x="180" y="195">Signal</text><text x="180" y="315">Operation</text><text x="180" y="475">Memory</text><text x="180" y="627">standard entry point</text>
+<text x="180" y="148" font-weight="600">Nexus</text></g>
+<g stroke="none" text-anchor="end"><text x="140" y="95">sends</text><text x="140" y="113">signal to</text>
+<text x="140" y="240">hands its</text><text x="140" y="258">intent to</text>
+<text x="140" y="375">asks a</text><text x="140" y="393">change of</text></g>
+<g stroke="none" text-anchor="start"><text x="220" y="95">replies to</text>
+<text x="220" y="240">returns</text><text x="220" y="258">outcome to</text>
+<text x="220" y="375">answers</text><text x="220" y="393">success or</text><text x="220" y="411">failure to</text>
+<text x="195" y="570">enforces the</text><text x="195" y="588">one path of</text></g>
+</svg></div>
+<div class="figure" style="position:relative;height:0;padding-bottom:194.44%;overflow:hidden"><svg viewBox="0 0 360 700" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two repositories hold datom payloads, read by the CLI, sent to the Nexus meta socket, loaded into Memory" font-family="system-ui,sans-serif" font-size="14" fill="currentColor" stroke="currentColor" stroke-width="1.6">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" stroke="none"/></marker></defs>
+<g fill="none">
+<rect x="10" y="10" width="150" height="40" rx="6"/><rect x="200" y="10" width="150" height="40" rx="6"/>
+<rect x="10" y="150" width="150" height="40" rx="6"/><rect x="200" y="150" width="150" height="40" rx="6"/>
+<rect x="90" y="300" width="180" height="40" rx="6"/>
+<rect x="90" y="430" width="180" height="40" rx="6"/>
+<rect x="90" y="570" width="180" height="40" rx="6"/>
+<g marker-end="url(#a)">
+<path d="M85 50V150"/><path d="M275 50V150"/>
+<path d="M85 190V245Q85 270 110 280L150 300"/>
+<path d="M275 190V245Q275 270 250 280L210 300"/>
+<path d="M180 340V430"/><path d="M180 470V570"/></g></g>
+<g stroke="none" text-anchor="middle"><text x="85" y="35">Repository A</text><text x="275" y="35">Repository B</text>
+<text x="85" y="175">datom payload</text><text x="275" y="175">datom payload</text>
+<text x="180" y="325">CLI</text><text x="180" y="455">Nexus meta socket</text><text x="180" y="595">Memory</text></g>
+<g stroke="none" text-anchor="start"><text x="95" y="105">holds</text><text x="285" y="105">holds</text>
+<text x="190" y="385">sends each, in turn, on</text><text x="190" y="525">loads all at once into</text></g>
+<g stroke="none" text-anchor="middle"><text x="180" y="235">are read by</text></g>
+</svg></div>
+<article class="proposal"><header><span class="pnum">1</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>The basic ontology of an actor and dataflow system is designed before</p></div><p>implementation; <del>signal </del><ins>Signal, Operation </ins>and <del>sema</del><ins>Memory</ins> are designed against it as if new, the</p><div class="ctx"><p>old code at most inspiration.</p></div></div>
+<div class="diff"><p>The <del>nexus</del><ins>Operation</ins> and <del>sema</del><ins>Memory</ins> documents are undesigned; when they are designed</p><div class="ctx"><p>they live in the Nexus's main repository.</p></div></div>
+<div class="diff"><div class="ctx"><p>Its executable holds a default configuration as a constant. On start</p></div><p>it looks for its <del>Sema</del><ins>Memory</ins> database at the default location: a database</p><div class="ctx"><p>that exists holds the configuration; a database created new is</p></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><h4><del>Actors</del><ins>The engine</ins></h4></div>
+<div class="diff"><p><del>The </del><ins>Whether the </ins>engine inside a Nexus is <del>driven by Kameo</del><ins>built of</ins> actors<del>. The standards</del><ins>, or</ins> of <del>their use are still to be designed</del><ins>something better named, is settled once it has been tried in practice</ins>. Arc-Mutex is permitted.</p></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>A Nexus has three parts, each its own ethos specification: Signal is what it says, Operation is what it does, Memory is what it remembers. Nexus always names the whole; the part that does is Operation. Every effect has a matching operation type. A signal reaches memory only through operation; memory answers operation that the change succeeded or failed; the answer returns through operation and leaves as a signal. Reading a Nexus's ethos alone shows every object and process on that path.</p></div><div class="add"><ins><p>The three parts, and how each of them divides, are most of the machine's anatomy.</p></ins></div><div class="add"><ins><p>A standard entry point, like a Rust macro, enforces the three parts and their one path, so nothing bypasses them; the bodies are written by hand.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>Reading a Nexus's ethos alone shows every object and process on that path.</p></div><div class="add"><ins><p>An effect may be an algorithm over data or a wrapped command, such as a Nix build; its operation is the interface around it.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">5</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>Reading a Nexus's ethos alone shows every object and process on that path.</p></div><div class="add"><ins><p>A Memory record type that changes form carries the operation that upgrades each record from its old form into its new one.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>A CLI turns text into Signal and nothing more: it takes one inline datom, no flags, no subcommands; it identifies the process that called it and carries that identity in the message, so a Nexus knows its caller by the process, never by a claim. A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.</p></div><div class="add"><ins><p>A Nexus's payloads, its configuration among them, are written in datom. A Nexus that needs a value from a datom file gets it through its CLI, never by reading the text itself.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">7</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>A CLI speaks to one Nexus, opens no store, stays thin; datom and all text handling are compiled out of the Nexus, which decodes only known types in their rkyv form and so stays small, since it keeps running and there may be many.</p></div><div class="add"><ins><p>The code that identifies a CLI's caller lives in one library that every Nexus's CLI shares, so no CLI writes it again and it reads plainly. It is never user-facing and never configurable.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">8</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>Signal is the messaging layer: an rkyv binary archive, typed, validated on receive, length-prefixed on the socket; nothing else rides the wire. Every reply is typed, refusals included: errors are vocabulary, never strings. The wire vocabulary's version is its contract crate's semver.</p></div><div class="add"><ins><p>Signal defines the forms a message can take: a simple form, without the flow id, for common queries and replies; and an extended form for the technical side, for debugging and for other components.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">9</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>every Nexus has one, since without it nothing could configure the</p></div><p>Nexus. A Nexus that needs more levels of access <del>opens </del><ins>may open </ins>more sockets.<ins> In the long term a Nexus knows who called each socket and checks each caller's access itself, and needs no more sockets for it.</ins></p></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">10</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>Each Nexus runs on its own and is recompiled on its own, toward zero-downtime self-update, one problem at a time.</p></div><div class="add"><ins><p>Functionality may be put into one Nexus and moved into another once its best anatomy and the home of its data are known; it is offloaded while it still runs on the first. A Nexus may also reuse another Nexus's function, or take it in.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">11</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<div class="diff"><div class="ctx"><p>Everything built from now on is a Nexus, and what was built in another shape is rewritten as one. The consistency creates reliability, quality, and clarity.</p></div><div class="add"><ins><h4>Short term</h4></ins></div><div class="add"><ins><p>Ethos and the Nexus are the basic infrastructure; Chronos is the example built with them, as a Nexus. The Nexus then guides Flow, and Flow guides the other nexuses.</p></ins></div></div>
+<div class="figure" style="position:relative;height:0;padding-bottom:120%;overflow:hidden"><svg viewBox="0 0 360 432" width="100%" style="display:block;position:absolute;left:0;top:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d">
+<title id="t">Ethos and Nexus as basic infrastructure</title>
+<desc id="d">Inside the enclosure basic infrastructure, Ethos specifies Nexus. Chronos, the example, is built as Nexus. Nexus guides Flow. Flow then guides other nexuses.</desc>
+<style>
+:root{--ink:#1F2933;--grey:#6B7280}
+@media (prefers-color-scheme: dark){:root{--ink:#E5E7EB;--grey:#9CA3AF}}
+text{font-family:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;fill:var(--ink);text-anchor:middle}
+.h{font-size:19px;font-weight:700}.s{font-size:14px}.g{fill:var(--grey)}.v{font-size:14px;font-style:italic;text-anchor:start}
+.box{fill:none;stroke:var(--ink);stroke-width:1.25}
+.enc{fill:none;stroke:var(--grey);stroke-width:1.25}
+.arr{stroke:var(--ink);stroke-width:3;fill:none}
+.ah{fill:var(--ink)}
+</style>
+
+<rect class="enc" x="10" y="10" width="190" height="200" rx="3"/>
+<text class="s g" x="105" y="32">basic infrastructure</text>
+
+<rect class="box" x="24" y="52" width="90" height="40" rx="3"/>
+<text class="h" x="69" y="79">Ethos</text>
+<line class="arr" x1="69" y1="92" x2="69" y2="128"/><path class="ah" d="M60 126h18l-9 12z"/>
+<text class="v" x="81" y="116">specifies</text>
+
+<rect class="box" x="24" y="138" width="90" height="44" rx="3"/>
+<text class="h" x="69" y="166">Nexus</text>
+<rect class="box" x="226" y="132" width="124" height="56" rx="3"/>
+<text class="s" x="288" y="156">Chronos,</text>
+<text class="s" x="288" y="174">the example</text>
+<line class="arr" x1="226" y1="160" x2="126" y2="160"/><path class="ah" d="M128 151v18l-12-9z"/>
+<text class="v" x="130" y="150">is built as</text>
+
+<line class="arr" x1="69" y1="182" x2="69" y2="272"/><path class="ah" d="M60 270h18l-9 12z"/>
+<text class="v" x="81" y="240">guides</text>
+
+<rect class="box" x="24" y="282" width="90" height="40" rx="3"/>
+<text class="h" x="69" y="309">Flow</text>
+<line class="arr" x1="69" y1="322" x2="69" y2="362"/><path class="ah" d="M60 360h18l-9 12z"/>
+<text class="v" x="81" y="347">then guides</text>
+
+<rect class="box" x="24" y="372" width="160" height="40" rx="3"/>
+<text class="h" x="104" y="399">other nexuses</text>
+</svg></div>
+<div class="diff"><div class="add"><ins><p>Nexuses are the long term. A component may run as a Clojure prototype derived from the same Ethos, carrying EDN payloads where a Nexus carries datom. A prototype is described in its own terms and never in a Nexus's: the meta socket is a Nexus's.</p></ins></div><div class="add"><ins><p>A Nexus's configuration may live in separate files in different repositories, each a datom payload for that Nexus. Its CLI sends them one after another on the meta socket, and the Nexus loads them atomically, even at different layers. This is how a Nexus is started until one datom can draw in another by its path.</p></ins></div></div>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">12</span><h2 class="target"><code style="font-size:.95rem">psyche-context › skills/vision-nexus.md</code></h2></header>
+<pre><code class="language-ethos">  [ FlowId.Integer                         ; types
+  <del>Voice</del><ins>Metaflow</ins>.{ Aspect <ins>Topic </ins>Layer }<del>                 ;   who a flow speaks for, and at which layer</del>
+<ins>                          ; who a flow is</ins>
+    Aspect.[ Psyche Mind Field ]
+<ins>  Topic.String            ; core is the default</ins>
+    Layer.[ Primary Secondary Tertiary Quaternary ]
+
+  Signal                                   ; what Flow says, on its ordinary socket
+[ flow:[ FlowId <del>Voice</del><ins>Metaflow</ins> Event ] ]<del>          ; imports from the Library</del>
+                          <del>[ Launch.{ Voice                         ; queries</del><ins>; imports from the Library</ins>
+<ins>[ Launch.{ Metaflow       ; queries</ins>
+             Brief.String }
+    Report.{ FlowId Event } ]
+  [ Launched.FlowId                        ; responses
+    Refused.[ NoCapsule
+            <del>VoiceBusy.Voice</del><ins>MetaflowBusy.Metaflow</ins> ]
+
+  Operation                                ; what Flow does: one operation for every effect
+[ flow:[ FlowId <del>Voice</del><ins>Metaflow</ins> Event ] ]<del>          ; imports</del>
+                          <del>[ Start.{ Voice Capsule }                </del>; <del>operations</del><ins>imports</ins>
+<ins>[ Start.{ Metaflow Capsule }</ins>
+<ins>                          ; operations</ins>
+
+  Memory                                   ; what Flow remembers
+[ flow:[ FlowId <del>Voice</del><ins>Metaflow</ins> Event ] ]<del>          ; imports</del>
+<ins>                          ; imports</ins>
+  [ Flow.{ FlowId                          ; record types
+         <del>Voice</del><ins>Metaflow</ins>
+           State.[ Running Ended ]
+
+<del>Launch.{ { Psyche Primary } «Draft the Nexus book» }      </del>; 1 Query, typed at the CLI, sent as signal
+<del>Start</del><ins>Launch</ins>.{ { Psyche <del>Primary } { /home/li/primary [] }</del><ins>core Primary</ins> }<del>      ; 2 Operation, from Signal's intend</del>
+         <del>Flow.{ 7 { Psyche Primary } Running [ Started ] }         ; 3</del><ins>«Draft</ins> the <del>Change Operation hands Memory</del><ins>Nexus book» }</ins>
+<ins>; 2 Operation, from Signal's intend</ins>
+<ins>Start.{ { Psyche core Primary }</ins>
+<ins>        { /home/li/primary [] } }</ins>
+<ins>; 3 the Change Operation hands Memory</ins>
+<ins>Flow.{ 7 { Psyche core Primary }</ins>
+<ins>       Running [ Started ] }</ins></code></pre>
+<p>Ruling: land, amend, or reject.</p>
+</article>
+<article class="proposal"><header><span class="pnum">13</span><h2 class="target"><code style="font-size:.95rem">primary › flows/445410/vision/nexus.md</code></h2></header>
+<div class="record destroy"><p>The working order that closes the configuration record of 2026-10-09, to ratify it and to have Mind build it, is cut out of the record. The vision in the record stays, and is archived with the landing of Proposal 11.</p>
+<p>Ruling: land, amend, or reject.</p></div>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
+         <div class="record destroy">  or  <div class="record archive">   the mark ("Destroy" / "Archive") is drawn by the class
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the record removed
+           <div class="ctx">…</div>                  the record's text, shown whole
+         </div>
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     A code block with data-diff tints each line
+     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .del{border-left-color:var(--del-edge)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A record removed, not landed: its own colour and a mark, never the red/green of del/ins. */
+.record{border:1.5px dashed var(--rec-edge);background:var(--rec-bg);border-radius:8px;padding:10px 12px 12px;min-width:0}
+.record.destroy{--rec-edge:var(--destroy-edge);--rec-bg:var(--destroy-bg)}
+.record.archive{--rec-edge:var(--archive-edge);--rec-bg:var(--archive-bg)}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--rec-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block. */
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
+.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
+.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
+.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
+.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
+.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
+.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
+.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function line(l){
+    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
+    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
+      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
+    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
+  }
+  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
+  function extract(e){
+    var out=[],n=0;
+    (function walk(p){
+      p.childNodes.forEach(function(c){
+        if(c.nodeType===3){n+=c.data.length;return}
+        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
+        walk(c);
+        if(t&&n>a)out.push({t:t,a:a,b:n});
+      });
+    })(e);
+    return out;
+  }
+  function restore(e,rs){
+    if(!rs.length)return;
+    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
+    while((x=w.nextNode()))nodes.push(x);
+    var n=0;
+    nodes.forEach(function(tn){
+      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
+      n+=d.length;
+      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
+      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
+      for(var i=0;i+1<cuts.length;i++){
+        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
+        rs.forEach(function(r){
+          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
+        });
+        f.appendChild(node);
+      }
+      tn.parentNode.replaceChild(f,tn);
+    });
+  }
+  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
+  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
+    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
+  });
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
+  function marks(){
+    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
+      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
+      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
+      e.textContent.split('\n').forEach(function(l,i){
+        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
+        if(!k||!lh)return;
+        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
+        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
+      });
+    });
+  }
+  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
+  marks();
+  window.addEventListener('resize',marks);
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
+  s.onerror=marks;
+  document.head.appendChild(s);
+})();
+</script>

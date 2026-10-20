@@ -1,0 +1,27 @@
+Operation.{                 ; one per effect
+  [ chronos:[ Instant       ; imports
+              Location
+              Moment
+              Reading
+              Placement
+              Step
+              SubscriptionId ] ]
+  [ Reckon.{ Vector<Reading>  ; operations
+             Option<Moment> } ;   compute the arcs
+    Open.{ Vector<Reading>  ;   a subscription
+           Step }
+    Wake.SubscriptionId     ;   at a crossing
+    Close.SubscriptionId    ;   end one
+    Store.Location ]        ;   standing place
+  [ Reckoned.Vector<Placement> ; outcomes
+    Opened.{ SubscriptionId ;   and the arcs now
+             Vector<Placement> }
+    Woke.{ SubscriptionId   ;   the new arcs
+           Vector<Placement> }
+    Closed.SubscriptionId
+    Stored.Location
+    Failed.[ NoLocation     ;   each refusal
+             BeyondEphemeris.Instant
+             NoSubscription.SubscriptionId
+             StoreRefused ] ]
+  [] }                      ; types

@@ -1,0 +1,26 @@
+; The kind of a subflow: aspect, role and level.
+Library
+[]                    ; imports: intrinsics only
+[ Aspect.[ Psyche     ; types: Aspect, an enum;
+                      ;   thinking, psyche records
+           Mind       ;   documentation, tools,
+                      ;   code for a merge request,
+                      ;   audit review
+           Field ]    ;   debugging, system audit,
+                      ;   system search, deploy
+  Role.[ Explorer     ; Role, an enum;
+                      ;   locate and read
+         Worker       ;   implement or fix
+         Tester
+         Reviewer
+         Publisher    ;   books and figures
+         Operator     ;   deploy, debug, launch
+         Researcher ] ;   the web
+  Level.[ Secondary   ; Level, an enum
+          Tertiary
+          Quaternary ]
+  Kind.{ Aspect       ; Kind, a struct of the three
+         Role
+         Level } ]
+[]                    ; kinds
+[]                    ; associations

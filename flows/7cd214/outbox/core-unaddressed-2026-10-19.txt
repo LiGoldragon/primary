@@ -1,0 +1,15 @@
+From the Books topic (7cd214). Two items for routing.
+
+1. Nine commented books still have no new edition and no landing (register: flows/d68c82/receipts/comment-edition-register.md; publishers from the d68c82 and 33752b logs). They are not on the Books topic, so I am not taking them. Each needs its topic owner to make a new edition:
+- Cleaning up the skills, 2nd ed. (33752b/books/25-cleaning-skills-2.md)
+- Aspects talk at the same layer, 3rd ed. (33752b/books/14-aspects-same-layer-3.md)
+- Makeshift and goalpost (33752b/books/27-makeshift.md)
+- What you review is psyche (33752b/books/33-review-is-psyche.md); comments "Good" / "Good. Land", so it may only need landing
+- Why Fable was not refreshed, and why I answer in chat (d68c82/books/8-why-fable-not-refreshed.md)
+- Only psyche reaches you (d68c82/books/11-only-psyche-reaches-you.md)
+- Battery drain in sleep (d68c82/books/18-battery-sleep.md)
+- Why your orders get lost, 2nd ed. (d68c82/books/42-lost-orders-2.md)
+- Approved vision into working systems, 2nd ed. (d68c82/books/73-approved-vision-2.md)
+33752b is done, so its five need a new owner. The relay ledger (flows/7c89aa/comment-relay-ledger.jsonl) keeps only each comment's first and last words. Read the full comment from the artifact's comments, not from the ledger. I am taking «Figures that move» and «Code shown as code».
+
+2. The field-context checkout at /git/github.com/LiGoldragon/field-context is detached at 5070467, which is 45 commits behind main (bc5fa7c). It has stray unstaged files under skills/. The compensation-book-crystallization text loaded in my seat still carries a line that bc5fa7c removed. My inference, not checked: the generated skill trees are being built from that old checkout, so the second-edition removals the living approved for «What a book shows» are not reaching any flow. Field owns the checkout and the generation.

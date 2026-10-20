@@ -191,3 +191,275 @@ Relayed by Psyche Core Tertiary, 2026-10-16; the living's comment on «Battery d
 > We could even find maybe a nice web library or tool to show code changes more beautifully. I don't know. I'm sure somebody has tried some stuff. We could look into it. I don't want to push too hard on this, but the Markdown thing is obvious.
 
 -- psyche, STT.
+
+## 2026-10-16 11:02 A knowledge book is checked twice
+
+"I like a nice book with visuals, with checked documentation, and then checked against reality."
+
+Context: asking how compaction works across harnesses and providers.
+-- psyche, STT.
+
+## 2026-10-16 11:12 A book per context module type
+
+"I want to make different kinds of messages, basically by context module type: either it's a vision or it'll be called after the highest proposal that's in the book. Really we should just separate books by context module types. Actually we should make the book per context module type. It's because it's made by a flow so when a meta flow ends, if it doesn't have any other task, by default it creates a presentation. That presentation has types based on the module types: a section can be vision, a section can be intent, a section can be knowledge, compensation, inquiry. These are there. The ones that I don't have to approve are there for me to review or change, which is the point of reviewing. Also reviewing it allows the living to understand better how the system works currently."
+-- psyche, STT.
+
+## 2026-10-16 11:17 A question in a book is a specific proposal
+
+"The question-type proposal doesn't really work because it's not really telling me what the proposal is exactly. It's just being broad and I can't do that. Questions need to be specific so that I can either accept them, or comment on them, or just outright say why they're bad or something."
+
+Context: on «Fable, used with care», whose Choices section listed four options and asked which become rules.
+-- psyche, STT.
+
+## 2026-10-16 11:25 Every main topic ends in a book, prefixed by type
+
+"Every main topic that I talk about ends up creating a book for the living and they're all prefixed by type."
+-- psyche, typed.
+
+## 2026-10-16 11:29 Illustrations first, out of the Primary workspace, least Sonnet context
+
+"It can just give it: \"Here's the book,\" or \"Here's the chart,\" or whatever. \"Here's the book source and I need an illustration for each of these,\" in whatever is most efficient, probably to get the illustrations made first. Let's not dump all of this. I don't want all of this data in the primary workspace. We could make a book publishing repo if we need to put all these illustrations in there for them to be able to handle them properly, or they just get published directly on Claude. Whatever is actually more efficient. You can try different scenarios and see how they work best where they essentially spend the least amount of sonnet context output and input."
+-- psyche, STT.
+
+## 2026-10-16 11:38 Everything starts with vision
+
+"This should be a vision proposal, which will then be implemented. That's what I'm reviewing: vision, not \"then we have a way to know.\" The vision is evidence of what the living psyche wanted, which is the most important thing to keep track of. We need to start with vision. Everything starts with vision that becomes implemented, or intent or spirit, which are higher forms of vision."
+
+Context: comment on «One registry of builds», Proposal 3, an implementation proposal targeting CriomOS builder.nix.
+-- psyche, STT.
+
+## 2026-10-16 11:40 Ideas presented visually, in reviews and proposals
+
+"Let's get a good researcher on how to make better flowchart illustrations: how to make good cognitive associations (like colors, thickness, emphasis, size, and proportions) and create a rough guideline review and more general vision proposal about this: how to present ideas visually; how to do more visuals also in proposals; how to train the machine to do more visual reviews and proposals."
+-- psyche, STT.
+
+## 2026-10-16 11:43 A presentation is non-technical; technical references in their own field
+
+"Presentations for the living, they're non-technical. All of the technical references go in a separate section so the model can, in one response, give all of the technical stuff and the presentation in two different fields of the datom struct (that we are kind of pseudo-specifying here by getting a machine to start behaving that way). Let's review that ethos, that spec on what kind of responses can be given that optimize for a clear answer and a more technical reference part. The type obviously is going to be the first variant that opens the struct."
+-- psyche, typed.
+
+## 2026-10-16 11:43 No noise; one simple view at a time
+
+"I'm tired of reading noise and I want a book solely on that to make sure that we word things properly from now on for any presentation: how they should be done." ... "I don't want any noise in my books. I don't want to be distracted by anything. They kind of look like children's books except that they talk about really sophisticated concepts, just one simple view at a time."
+
+Context: comment on the opening paragraph of «Metaflow roles» (machine branch status and a vision file path), said to apply to all recent books.
+-- psyche, typed.
+
+## 2026-10-16 11:44 Every response to the living is a typed presentation
+
+"We don't have to constrain the flows into doing a certain book but they all, by default, know that their responses should always be a presentation or some kind of response to the living (like a message to the living, basically) that has all of the different types that I've been going over today."
+-- psyche, typed.
+
+## A proposal shows where it lands and everything it lands
+
+Context: comment on «Drawing ideas», at the heading "What each mark means, in every book", 2026-10-16; relayed by the Psyche Core Tertiary.
+
+> "It looks like you're making a proposal but it's not obvious in the user interface where you're going to put this. This is a failure again so we need to fix where that failure is coming from. You don't seem to understand what a proposal is. We're going in circles here and you're still not making proposals. Days after the fact that I told you, I just want proposals. What's wrong with you?"
+
+-- psyche, typed.
+
+## A proposal names where it goes; a book has no technical part
+
+Context: after reopening «Drawing ideas, 2nd edition», 2026-10-16.
+
+> "I reopened the "Drawing Ideas, Second Edition" and I'm pretty astonished by the fact that I just asked to be told where the proposal was going, if accepted. Now I'm getting [prose] instead of a location so it's like I'm talking to stones here or a straw man or something. Is there someone listening?
+>
+> Also the illustration still sucks, just a bit less but it really sucks. It's fucking ugly as fuck and I saw technical parts at the bottom when I said, "I don't want the fucking technical parts in the fucking book." Stop putting the fucking [technical] parts in the fucking [book], you fucking dummy.
+>
+> Okay is it clear enough now? Fuck."
+
+-- psyche, STT. Transcription corrected: "pros" → "prose"; "technic barbard" → "technical"; "boat" → "book".
+
+## A psyche seat's book is psyche proposals
+
+Context: on «Where today stands», the Fable Psyche Core Primary's broad review, published by d68c82, 2026-10-16.
+
+> "The book Where Today Stands is a catastrophic failure of epic proportion that could end entire universes. A psyche seat was started and made zero psyche proposal and crammed the book full of long text and included complicated references and technical details that I don't give a flying fuck about. If the person who made this had heard everything I said and then had done what they did, they would deserve a lot more than being fired."
+
+-- psyche, STT.
+
+## Figures live as code in the vision source
+
+Context: comment on the figure of «Drawing ideas, 3rd edition», 2026-10-16T18:07, relayed by the Psyche Core Tertiary.
+
+> "This illustration is good. Let's land it. I don't know how we're keeping these illustrations because this looks like an image so we can't really use that as documentation. With a text model this is probably an SVG file so let's put the flowchart as code anyway in the source of the vision of whatever this pertains to. Let's get a proposal on how we can have more complex illustrations in documentation or if anybody's done that and how successful or unsuccessful they have been. What are the pros and cons of it all?"
+
+-- psyche, typed.
+
+## The model draws right the first time
+
+Context: second comment on the same figure, 2026-10-16T18:10, against Proposal 3 (a model looks at every drawing); posted ending at "Eventually".
+
+> "Actually no, I changed my mind. I don't think I want a model to look at the illustration. I'll just give the feedback and what I mean is this: this illustration is good as an illustration but its content, I don't agree with. The idea of a model reviewing every image. Let's just get the instructions right so that the model creates the image properly in the first place. Eventually ..."
+
+-- psyche, typed.
+
+## Illustrations are drawn by the Illustrator, not by code
+
+Context: on «Figures as code», which proposed figures kept as data and drawn by code (Graphviz, D2, the builder's own figure form), 2026-10-16.
+
+> "No I don't want illustrations made by these shitty horrible ugly-as-fuck code-based illustrators. Everything they produce is fucking garbage."
+
+-- psyche, STT.
+
+## A proposal touching code shows the code
+
+Context: on Proposal 12 of «Flow: context modules and the prompt, 2nd edition» (inline imports), 2026-10-16.
+
+> "This is not quite accurately described and needs example code. Obviously I'm surprised that there was zero code proposal in here. I think almost anything that touches upon a code component should touch on the code."
+
+-- psyche, typed.
+
+## Every comment redoes its book
+
+Context: spoken to the Psyche Core Tertiary after commenting on «Refreshing the Illustrator», 2026-10-16.
+
+> "I commented on refreshing the illustrator. Every time I comment on a book, unless my comment explicitly closes the topic, I want a book redone with my comments. Potentially even other books will be changed by my comments and then if they're affected they need to be redone as well."
+>
+> "So you can guess that the comment I just made deserves a book of its own."
+
+-- psyche, typed.
+
+## Books show context modules: psyche compared with knowledge and compensation
+
+Context: same comment on «Flow: vision and production», 2026-10-17 18:51.
+
+> On the books also, I only want to be looking at context modules. If you want to present, there are some really horrible books. I think maybe this one. This started with this huge amount of, I don't know what to call it, context or whatever. I just glanced over it because I want to be looking at context modules.
+>
+> If the model wants to present me facts, then first he has to land those facts into knowledge modules. When he's presenting, he is comparing the knowledge modules, which will contain flowcharts, code, example code usage, and things like that. ...
+>
+> Long-term vision: we can fix all of that but I want to only look at context modules. Even if I'm looking at a short-term solution, then I'm looking at a compensation module not because I am approving it. I don't want to see the change in it. I want to see what it is and how it contrasts with the vision either positively or negatively, or how I want to clarify the vision on that.
+>
+> There can be some proposals for vision. I just want to see proposals for change in psyche compared with knowledge and compared with compensation. The same thing: we could even compare intent with vision, anything below it, but that will be more rare.
+
+-- psyche, input mode not shown.
+
+## A book's sections are context modules, not prose
+
+Context: on «The last response as a datom object», looking at its opening sections ("The last response", "The refresh", "The handover": prose saying what the vision, the knowledge and the compensation say), 2026-10-17 13:09.
+
+> Taking this book as an example, I see I just said I want everything to be about the context module. I'm wondering: is this a crystallization proposal that just is not surrounded in green or something? From the picture where it starts to the picture where it ends, what is that? Am I trying? You want me to approve the whole text? Where is it going? I don't understand why the books are showing me these fucking sections.
+
+-- psyche, typed.
+
+## No Markdown in code blocks
+
+Context: on Fable's «What a book is», whose psyche-context vision/book.md view rendered as raw Markdown in a monospace code block, lines cut off at the right edge, 2026-10-17 18:04.
+
+> I've already explained a million times why we can't have markdown in code blocks. I guess for the million-and-first time, again, let's make sure that this time it becomes vision.
+
+-- psyche, typed.
+
+## Every question is answered in a book, gathered by topic
+
+> When I asked about something I expected to be in a book or to create a book. Every question I have needs to be answered for me through the Claude artifacts. Obviously aggregating the questions by topic and then treating that topic is better.
+
+-- psyche, STT.
+
+> Retroactively apply that back to everything today.
+
+-- psyche, STT. Context: said of the entry above, every question answered in a book gathered by topic.
+
+## A question on a topic refreshes its book and looks for what is not satisfying
+
+> Well if I ask about something, then that book needs to be refreshed even if it already exists because it means that I'm more inquisitive. I want a refresh and then it should try to infer why I keep emphasizing it. There must be something going wrong. Find out what the problem is with that topic not going through or not satisfying me. There needs to be a second look.
+
+-- psyche, STT.
+
+## What a book is has become more general
+
+> We need to review all of this: what a book is, because it's become more general and the part as it stands is too specific.
+
+-- psyche, typed. Context: comment on «What a book is» (Fable), on its opening line "A book is a proposal into context modules, and the whole of it is its crystallization…".
+
+> Well as I said in my comment, the guidance on what a book is right now is very confusing. It's evolved and now it's carrying the past like it's maiming it. The past specification is maiming the new specification.
+
+-- psyche, STT. Context: of his comment on «What a book is»; follows the entry "What a book is has become more general".
+
+## A proposal makes the vision; it does not announce it
+
+> "Also, the third sentence doesn't make sense. It should just actually be a proposal to do that. We don't have vision for vision. You don't have, "Oh, one day we're going to create a vision that does this." That's what you're doing: you're creating that vision when you're saying that, so make that vision. Don't just say, "Me, you're going to." Just don't tell me you're going to do something. Just do something. This is silly."
+
+Context: comment on «A context module is named kind:name» 2nd edition, proposal 1, on the line "Every flow learns in its basic training to read a name as kind:name", 2026-10-18 22:33.
+-- psyche, STT.
+
+## Code in a vision book
+
+> "Is this code you want to put in Vision? Because I don't understand what you're showing me. You're showing me something that you changed and you want me to be aware of. I don't understand what this part of the book is about."
+
+Context: comment on «A context module is named kind:name» 2nd edition, proposal 3 (curriculum-deploy runtime code), 2026-10-18 22:34.
+-- psyche, STT.
+
+## A book is context modules and nothing else
+
+Context: said while books on CriomOS and inquiry were being revised.
+
+> So far the books I've liked the most use the current context modules to situate me. I don't want to see any text that isn't either already in the context modules, or being proposed to be added to it, or being proposed to be removed from it.
+>
+> Essentially the whole thing is just this context proposal and this context for these context modules, for context, or this context module for comparison. That's all we're talking about: context modules everywhere in one form or another. Let's look at all the different dynamics that we can have in there.
+
+-- psyche, typed.
+
+## Unknowns go to inquiry
+
+Context: comment on «What a book shows», the current book module line "The book is the center of development: it is the evolution of an idea, and the list of unknowns lives in it."
+
+> Well while we're talking about unknowns, we should mention the inquiry type since that's where unknowns go.
+
+-- psyche, book comment, 2026-10-19T17:12, input mode not shown.
+
+## The first edition is not universally mostly questions
+
+Context: comment on the current book module line "The first edition of a book is mostly questions."
+
+> Let's remove the universal statement that the first version is mostly questions. We don't know that. We need to be more clear about the process and what kind of different books there are but this is too much of a hand-waving, unilateral, inflexible guideline. We should remove it.
+
+-- psyche, book comment, 2026-10-19T17:12, input mode not shown.
+
+## Each unknown is shown as an inquiry context module
+
+Context: comment on proposal 2, the added words "each unknown in it is a question between alternative lines".
+
+> No we should say each unknown is shown as an inquiry context module. And it's used to contrast or to show why maybe a certain vision is being proposed, or to just plainly bring the question up to the living (or something like that), or to create a comparison for implementation or for knowledge that might cover it, anything. We're all just always comparing the living with the context modules themselves, or any combination of those.
+
+-- psyche, book comment, 2026-10-19T17:15, input mode not shown.
+
+## A moved line is shown where it leaves and where it enters
+
+Context: comments on proposals 5 and 6, how a line moved between modules is shown.
+
+> No, when we move a line we should show them. We should show that: here's where it was taken out of and here's where it's added. Otherwise it'll be confusing for the living to keep up.
+
+> Right this is the good approach. This is the one that lands.
+
+-- psyche, book comments, 2026-10-19T17:19, input mode not shown.
+
+## Leaning out a module by showing what makes a line repetition
+
+Context: comments on the book compensation module shown for comparison, and on proposal 4's flowchart.
+
+> There's a lot of repetition here with the other skill. We need to find a way to get rid of all this repetition and maybe we only need one book.
+
+> Oh I see this is compensation. Well let's try and eliminate as much as we can from here if the vision covers it.
+
+> It also seems to overlap with some of what I've read as what stands right now in the module so we should review that module for some removals. You can explain why the removal is a repetition by showing the part that makes it unnecessary. Let's make this also a standard practice sometimes for leaning out modules, especially the compensation module, which should be replaced by vision.
+
+-- psyche, book comments, 2026-10-19T17:13–17:17, input mode not shown.
+
+## The machine's comment, and alternatives shown as their differences
+
+Context: comment on «Flow's vision», 2nd ed., proposal 13, "A main flow manages; its subflows do the work."
+
+> This feels like a repetition of the main flow skill so I don't know why we want to repeat that here. Maybe you want to make your point and explain why you think we can have comments on proposals. They should have a special color or something, somewhere where the machine explains why it thinks that way.
+>
+> Also when there are alternatives, instead of showing the whole alternative I would like the explanation to be: what is the difference? The comment is shown first and then the differences between the alternatives, instead of me reading the whole thing. It is repetitive because a lot of the alternatives have a lot of things in the comment so I end up rereading the same thing once and I have to use my energy to try and differentiate what the difference is, which is ridiculous. The machine should just do that for me.
+
+-- psyche, book comment, 2026-10-19T18:22, input mode not shown.
+
+## Every comment on a book makes a new edition
+
+Context: direct speech, about commented books not getting new editions.
+
+> You're aware that every time I comment on a book, it means that there needs to be a new edition, right? Because I'm not seeing new editions of books coming out, either we did not land that instruction in the skill appropriately or the skill is not being loaded. There's a failure there we need to address with the book, as well as actually address the failure and republish all the books that were commented on (or merge them or split them up into more books). Whatever it is, whatever I say needs to be addressed in one book or another every fucking time.
+
+-- psyche, living messenger, 2026-10-19, input mode not shown.

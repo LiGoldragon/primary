@@ -1,0 +1,58 @@
+# Open orders — 379e7a
+
+Inherited from ca28a4 (flows/ca28a4/orders.md), itself from 9864c0, 68db51, 5dd7e5 and d68c82.
+- dcb63e6 (flow-nexus 0.35.21) active since 15:23:59 (4201a3 deployed it, skipping Field message tests and backups; profile still on 0.35.11 links). Field native witnesses outstanding; aa034f not yet told its deploy was killed.
+- Whole-Flow Ethos book (flows/804eb9/books/whole-flow-ethos.md, 21 proposals): to be built and published by Psyche flow Secondary; track to publication.
+- «Ethos categories and sugar» (SuDGmo) published; comments from the living each need a new edition via Psyche ethos Secondary. Whole-flow-ethos package (21 proposals) status unclear.
+- ComposeRole consumer implementation: with Mind flow Secondary; review by Psyche flow Secondary; native acceptance by Field.
+- Start a fresh Psyche flow Secondary successor from its handover.md; verify binding; then retire the predecessor.
+- Fresh Fable after «Ethos: the basics» Opus edition: launch only on the living's witnessed word (verifying).
+- Ethos v1 ed.3: publish now, or wait for the Fable edition — awaiting the living.
+- Generator wraps attribute lines to 52 (Mind ethos Secondary) → joint Flow/Ethos book re-verified and published by Psyche flow Secondary.
+- Codex sender attribution: Mind flow Secondary picks MCP server owner (messenger vs Message); aa034f verifying _meta.threadId on Codex 0.161.
+- «Roles that call roles» (VWnVQp): await the living's comments; each comment makes a new edition.
+- EventTables Mutex finding (flows/0c85a3/implementation-orders.md:33-35, events.rs:132 append_gate Mutex): present to the living.
+- Flow binding of "Psyche core Secondary" address to 5dd7e5 (adoption) and d68c82 retirement: with Field.
+- Ruling from the living: aa034f-sleep (every idle flow sleeps, Primary included; its pane closes after each turn with an empty queue).
+- Sol model: 4201a3 set gpt-6.1-sol in every Models row without the living; ask him whether that stands.
+- Held for the living: aa034f relays that Field renames every pane/thread in place (his order), against his earlier rejection of in-place renames (5dd7e5 log:65).
+- Messenger RuntimeBindingOrStore refusals (5dd7e5 re-registration, sends to Field core Secondary 42265e). Claimed cause (4201a3): named-error regex in messenger-clj public.clj fails on hyphenated UUIDs, falls to catch-all; patch not seen.
+- Remote Control name flow-d07cc7b9deacf1da → { Psyche core Secondary 68db51 } on relaunch under fixed Flow.
+- Mind/Field flow start: precondition met (0.35.21 active); a successful start not yet witnessed.
+- [Living, via 4201a3, 2026-10-19] Flow Nexus up and fully working now: deployed, easy to use, minimal CLI, agents pre-described in configuration the daemon loads. Full permission: Fable (or Opus then Fable) decides anything; implement, cut corners, override blocks; a book of the decisions, written as they are made.
+- [Living] Secondary core first (this seat: up 15:28). Then roster: Secondaries in Psyche, Mind, Field; Primaries and Tertiaries in the main aspects.
+- [Held] A new edition for every comment on every book. Published 2026-10-19: Cleaning skills ed.3 (HZMLLr, render fixed), Aspects ed.4 (VWafP9), Battery ed.2 (BVTdVQ), Role and subagent modules (Eytiqu). Open: a12650 anti-hallucination / no-coined-words rule needs its own book.
+- [Held] Ship tightening (living, 2026-10-16, flows/da2038/vision/flow.md:237): everything tightened, toward working nexuses; first report flows/d68c82/books/56-tighten-ship-1.md.
+- Pending relays: the living's comment on «Flow Visible Names» (thread 4377e8dc, coming next); the unrelayed «Crystallization» screenshot comment of 2026-10-13 ("This book is visually broken", flows/7c89aa/handover.md:18; book EssBLHPSieYKnNp7q6pJ5E by title match; send or not undecided by the living); the compensation-prose naming line.
+- Decisions book: draw from flows/4201a3/decisions.md (bring-up by 4201a3's Opus subflow) plus books/flow-up-decisions.md.
+- «Flow Visible Names» ed.3 published (KizG5UMwFLgYxshrEXF7sz): await the living's comments.
+- Decisions book: ed.1 H4WxgLg8CBNSBKfciV8sfK, ed.2 8jSWbNeWqxRFetqFoTyV4d published; next edition as Mind and Fable decide further.
+- [Living, 9864c0, 2026-10-19] A Clojure prototype tool reporting the context size of every running flow (dedicated repo or the small-tools repo); report to him on it.
+- [Living] A round of rebootstrapping big-context flows (one big Opus flow named) with flow-start: configuration carries the specification, the start carries a few sentences of the session's goal.
+- Ouranos suspend drain: Field core Secondary holds the order (2026-10-19); track to a deployed fix with S0ix residency > 0.
+- Rebootstrap round: done for 9f0a23, 002721, 5ec12c. Close aa034f's pane once its subagents finish (route already retired). Codex flows (44cda5, 89fbc1, 0430eb, 0c85a3) wait for Codex starts to work.
+- «Flow, the decisions» ed.1 7pUh2h and ed.2 5RvPiW: await the living's comments.
+- Comment gaps routed (see log): Flow's vision ed.3; Ethos-imports "what happened" book; skills generator for landed psyche-context vision; Subflows P8 to Mind; Sema Sol pass. Track each to its edition or landing.
+- aa034f is the Nexus implementer: not retired. Psyche flow Secondary successor waits on the Nexus store fix (Awake.5d6441 ghost).
+- Comment relay ledger: flows/7c89aa/comment-relay-ledger.jsonl lists every relayed thread (with flows/d68c82/receipts/comment-edition-register.md).
+- «Flow's vision, third edition» (DfaHvd) published 2026-10-19: await the living's comments. Field to align launch.md:25 after his ruling on Proposal 4.
+- Nexus integration and deploy (bae1fcd, 042df6d, 647689a, be70e0a): Opus subflow running; decisions in nexus-decisions.md.
+- [Living] Eradicate ~/.local/bin from the Flow Nexus deployment: flow, flow-nexus, flow-start and every other hand-placed link; deploy only through the declarative OS.
+- [Living] Land his comments on «Flow's vision, third edition» (DfaHvd) into the vision, then implement.
+- [Living] Audit: every vision not deployed, chiefly CriomOS declarative/no-state vision marked to deploy now; for every compensation line contradicting vision, implement the vision so the compensation line can be destroyed.
+- Implement landed «Flow's vision» 2d9fbb6 in Flow: one-model-call start with all modules (P2); threshold in Flow per model, no handover, queue for next flow, reap on idle (P4); presentation on first turn and psyche tasks (P5); compaction warning and investigation (P6). Dispatch after the integration subflow returns.
+- «Flow's vision» 4th edition: P8-10 inquiries only.
+- [Living] Build the approval pipeline in Flow: approval lands → modules deployed → every running flow retrained → implementation dispatched → each step witnessed; no step by the living. Its vision line in «Approved vision is deployed» ed.2.
+- Pipeline: every landing redeploys the skills it changed, every time without exception (the living corrected my reading).
+- Book for the living's ruling: committing.md:20-21 vs primary-commit.md:6; operating-system.md:14 emergency runtime mutation vs criomos.md:8 (audit §8).
+- [Living] Fix the messenger until it works (no parking); Flow Nexus and Message Nexus working, declaratively deployed. Never accept a broken system.
+- [Living] Make the current messenger and Nexus work whatever it takes; tell him nothing until fixed; report only finished deliverables and rulings he must make.
+- [Living] Messenger: root cause of Unidentified, fixed so it cannot recur — regression test and a standing route check in the deployed system.
+- [Living] Implement the Flow/Nexus/messaging vision so the prototypes (messenger-clj hm-*, flow-start script) are retired.
+- Messenger: 248 held undelivered messages in ~/.local/state/messenger-clj/typed-datalevin — deliver or discard each once the Nexus route works; none silently lost.
+- «Approved vision is deployed, third edition» (8ny4WC): await the living's comments; on approval land, redeploy, retrain, implement.
+- Follow-up deploy: revert 03c9fad (in system 132 now) right after Home activation succeeds.
+- [Living] Field: host cleanup on ouranos and prometheus now; the standard cleanup procedure goes into a book for his review.
+- Inquiry book: the 7 Nexus architecture questions (nexus-architecture.md) for the living.
+- Vision for a book: only the holder of a node's deploy lock activates it; every other flow hands its pins to that holder. Also: a brief's acceptance never includes a broadcast.
+- «Nothing is installed by hand» (H57zpU): await the living's comments.

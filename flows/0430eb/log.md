@@ -53,3 +53,23 @@ Five groups are covered in the packet: transcript/task-result retrieval; runtime
 All delegated research finished. The survey is complete within its explicit local live-snapshot, pattern-classifier and scratchpad-metadata limits. Owned Primary edits are this log and the index entry; they remain unstaged for the sole standing committer. No other repository was edited.
 
 Psyche Core Secondary confirmed receipt of the whole packet and instructed direct delivery of the identical packet to Psyche Core Primary. Sent the stored packet unchanged to `Psyche Core Primary`; messenger returned `Transported.{ 33752b done }`. Psyche Core Primary owns writing the book; no further survey work was requested.
+
+## 2026-10-13 — Delegation cost research
+
+Psyche Core Secondary relayed a new research order: measure main-flow information-retrieval episodes, including retries and filtering, against a predefined subflow's minimal brief and concise return. Report the shares cheaper for the main flow versus direct calls, break-even by calls/output size, child cost, method and limitations. Deliver the whole packet to Psyche Core Secondary for the Flow book series.
+
+Dispatched three read-only subflows with fresh bounded context: token_evidence (usage schema, attribution and deduplication), episode_census (episode extraction and comparison), and delegation_costs (observed child overhead, representative retrieval tasks, and origin of the relayed 408k/91-percent claim). Provider-reported usage, content size, main-context savings and hypothetical alternate execution costs must remain distinct. The relayed context/noise figure is unverified pending source recovery.
+
+The first mechanical episode census mixed retrieval with mutation, delegation and messaging; its percentage comparisons are not accepted as retrieval estimates. A follow-up using fixed brief/return lengths also did not establish sufficient returns. Requested source-addressed real brief/return examples, native Read/Grep/Glob coverage, and true terminal boundaries before interpreting ratios. Common final answers must remain on both sides of the comparison.
+
+Telemetry verification found repeated Claude request usage across content blocks and repeated Codex cumulative snapshots. Counters must be deduplicated before aggregation. Current/resumed thread totals are snapshots, not completed-task lifetime costs. The existing 408k/91-percent report distinguishes measured context size from inferred relevance and overlapping origin/topic classifications.
+
+## Cost study delivery
+
+Recovered five bounded main Read cases with native provider usage and candidate concise packages, plus five small-read illustrations. Mechanically recounted the literal packages before publication and corrected the earlier reported lengths. Input reduction and emitted briefing text were reported separately; characters were never relabeled as exact model tokens. The broad screening ratios were withdrawn, not used as population estimates.
+
+Ran one known-answer `read-trivial` probe through the native harness with fresh history. It read the mandatory worker instructions and setup variables and returned the correct two values. Its linked native telemetry established the existing role's startup/request overhead; this was not represented as an optimized role or matched direct/delegated comparison.
+
+Delivered the whole research packet, literal candidate packages, exact episode/provider evidence, observed child costs, actual reader probe and explicit limits to `Psyche Core Secondary`. Messenger returned `Transported.{ d68c82 working }`.
+
+The retrospective study and bounded probe are complete. A population-wide counterfactual token-savings ratio and optimized-role total-cost savings remain unmeasured; the packet specifies the episode labeling, matched evidence and telemetry needed to establish them. No implementation, deployment or competing book was undertaken. Owned Primary changes remain for the standing committer.

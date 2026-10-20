@@ -4,63 +4,86 @@
 <h2>What the pod controller owns</h2>
 <p>Machine: one controller owns processes, input and sockets; the caller is known by the master process, never by a name it states.</p>
 <div class="figure"><svg viewBox="0 0 239 354" width="239" height="354" style="display:block" role="img" aria-label="pod controller process PTY input socket master process caller identity owns locks listens on asks who called answers" xmlns="http://www.w3.org/2000/svg"><path d="M125 46 L125 54 L46 54 L46 102" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="42,102 50,102 46,110" style="fill:var(--fg,currentColor)"/><path d="M125 46 L125 54 L202 54 L202 102" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="198,102 206,102 202,110" style="fill:var(--fg,currentColor)"/><path d="M125 46 L125 54 L128 54 L128 102" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="124,102 132,102 128,110" style="fill:var(--fg,currentColor)"/><path d="M128 146 L128 197" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="124,197 132,197 128,205" style="fill:var(--fg,currentColor)"/><path d="M128 259 L128 292" stroke-width="1.5" style="fill:none;stroke:var(--fg,currentColor)"/><polygon points="124,292 132,292 128,300" style="fill:var(--fg,currentColor)"/><rect x="28.6" y="66.5" width="34.8" height="15" style="fill:var(--sheet,Canvas)"/><text x="46" y="77.5" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">owns</text><rect x="181" y="66.5" width="42" height="15" style="fill:var(--sheet,Canvas)"/><text x="202" y="77.5" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">locks</text><rect x="99.8" y="59" width="56.4" height="30" style="fill:var(--sheet,Canvas)"/><text x="128" y="70" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">listens</text><text x="128" y="85" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">on</text><rect x="71" y="169" width="114" height="15" style="fill:var(--sheet,Canvas)"/><text x="128" y="180" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">asks who called</text><rect x="99.8" y="264" width="56.4" height="15" style="fill:var(--sheet,Canvas)"/><text x="128" y="275" text-anchor="middle" font-size="12" font-family="JetBrains Mono, ui-monospace, DejaVu Sans Mono, monospace" style="fill:var(--muted,currentColor)">answers</text><rect x="60" y="10" width="130" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="125" y="32" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">pod controller</text><rect x="9" y="110" width="74" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="46" y="132" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">process</text><rect x="95" y="110" width="66" height="36" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="128" y="132" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">socket</text><rect x="173" y="110" width="58" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="202" y="132" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">PTY</text><text x="202" y="150" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">input</text><rect x="91" y="205" width="74" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="128" y="227" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">master</text><text x="128" y="245" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">process</text><rect x="87" y="300" width="82" height="54" rx="3" stroke-width="1.5" style="fill:var(--sheet,Canvas);stroke:var(--fg,currentColor)"/><text x="128" y="322" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">caller</text><text x="128" y="340" text-anchor="middle" font-size="14" font-family="IBM Plex Sans Condensed, Arial Narrow, system-ui, sans-serif" style="fill:var(--fg,currentColor)">identity</text></svg></div>
-<h2>1. Crystallization: the pod, long-term</h2>
+<article class="proposal"><header><span class="pnum">1</span><h2>the pod, long-term</h2></header>
 <p>Machine: a new long-term psyche module.</p>
 <p class="target"><code>psyche-context/skills/vision-pod.md</code></p><p>(new)</p>
 <div class="diff"><div class="add"><ins><div class="textblock">---
 description: The pod controller — the pod as container, who may write which path, process and PTY control — is being designed or judged against what the living wants.
 dependencies: [vision-ethos, vision-datom]
 ---</div></ins></div><div class="add"><ins><p>Long-term vision.</p></ins></div><div class="add"><ins><div class="textblock">## The pod is the container</div></ins></div><div class="add"><ins><p>The pod is the container: lighter than a virtual machine, which carries its own kernel; both may exist. The pod becomes part of CriomOS and, through it, controls the environment of every process.</p></ins></div><div class="add"><ins><div class="textblock">## The meta pod holds who may access what</div></ins></div><div class="add"><ins><p>The meta pod is a data structure of permissions: who may access, at different levels of access. Callers are known by who called the socket, so authentication is verified through the master process; sockets may differ per level, and eventually they need not.</p></ins></div><div class="add"><ins><div class="textblock">## One owner for every process</div></ins></div><div class="add"><ins><p>Control of all processes gives a complete lock and a single owner of each process. A process can be locked, or its input in the PTY can be locked.</p></ins></div><div class="add"><ins><div class="textblock">## One writer per path, switched atomically</div></ins></div><div class="add"><ins><p>Writable access to a path, recursively or not, is passed around in datom; Ethos is the language that controls it. The permission switches between containers atomically, and at most one writer holds a path at any time.</p></ins></div><div class="add"><ins><div class="textblock">## Flush before the switch</div></ins></div><div class="add"><ins><p>After the pod controller stops accepting writes on a path, the kernel has no operation left to flush to the system. Only then is the permission changed and opened on the other side.</p></ins></div><div class="add"><ins><div class="textblock">## Agents ask; the controller decides</div></ins></div><div class="add"><ins><p>Agents ask the pod controller for access to files and the access is controlled programmatically. An agent without write access through the pod controller cannot write the file.</p></ins></div><div class="add"><ins><div class="textblock">## The security of the system arrives later</div></ins></div><div class="add"><ins><p>Until the pod controller exists the system is open, and the harness sandbox is not used for security; the system's own sandbox and correctness come after.</p></ins></div></div>
-<h2>2. Crystallization: the Ethos anatomy of the pod controller</h2>
-<p>Machine: the pod controller's ethos anatomy: Library, Signal, Operation, Memory.</p>
-<p class="target"><code>pod-controller/pod.ethos</code></p><p>(new)</p>
-<pre data-diff><code class="language-ethos">+ Library
-+ []                              ; imports
-+ [ Path.String                   ; types
-+   Access.[ Read Write ]         ; levels
-+   Recursive.Boolean             ; subtree?
-+   Owner.String                  ; flow holding
-+   Pod.String                    ; container
-+   Process.Integer               ; pid
-+   Grant.{ Path Access           ; one grant
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>the Ethos anatomy of the pod controller</h2></header>
+<p>Machine: the pod controller&#x27;s ethos anatomy: Library, Signal, Operation, Memory. In the proposed syntax a file is an ordinary datom, its root and a dot, then braced sections, and holds one root; the anatomy is therefore four files, one per root. Every file was read by the proposed Ethos reader (Inspect) and is accepted. Three changes are forced by the syntax and change no meaning: an Operation file has four sections, so its outcomes and its types are written as empty <code>[]</code> (the outcomes are not proposed here); a Memory section holds declarations, so the bare <code>Grant</code> becomes <code>Writer.Grant</code>, one writer, a Grant; the Library names the traits below.</p>
+<p>Machine: the traits and associations are new in this proposal and part of it for the living&#x27;s ruling (choice 5). <code>Spelled</code> gives the text of a name (Path, Owner, Pod). <code>Numbered</code> gives a process id (Process). <code>Switched</code> says whether a flag is on (Recursive). <code>Permitting</code> says whether a level allows writing (Access). <code>Holding</code> gives a Grant's path, access, flag, owner and pod (Grant). Only a Library declares traits, so the Signal, Operation and Memory types carry none.</p>
+<p class="target"><code>pod-controller/library.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Library.
++ {
++ []                         ; imports
++ [ Path.String              ; types
++   Access.[ Read Write ]    ; levels
++   Recursive.Boolean        ; subtree?
++   Owner.String             ; flow holding
++   Pod.String               ; container
++   Process.Integer          ; pid
++   Grant.{ Path Access      ; one grant
 +           Recursive Owner Pod } ]
-+ []                              ; traits
-+ []                              ; associations
-+
-+ Signal
-+ [ pod:[ Path Access Recursive   ; imports
++ [ Spelled.[ spelling.[ String ] ]   ; traits
++   Numbered.[ number.[ Integer ] ]
++   Switched.[ enabled.[ Boolean ] ]
++   Permitting.[ writes.[ Boolean ] ]
++   Holding.[ path.[ Path ]
++             access.[ Access ]
++             recursive.[ Recursive ]
++             owner.[ Owner ]
++             pod.[ Pod ] ] ]
++ [ Path.[ Spelled ]         ; associations
++   Access.[ Permitting ]
++   Recursive.[ Switched ]
++   Owner.[ Spelled ]
++   Pod.[ Spelled ]
++   Process.[ Numbered ]
++   Grant.[ Holding ] ] }</code></pre>
+<p class="target"><code>pod-controller/signal.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Signal.
++ {
++ [ pod:[ Path Access Recursive    ; imports
 +         Process Grant ] ]
-+ [ AskAccess.AccessRequest       ; queries
++ [ AskAccess.AccessRequest        ; queries
 +   Release.Path
 +   LockInput.Process
 +   UnlockInput.Process ]
-+ [ Granted.Grant                 ; responses
++ [ Granted.Grant                  ; responses
 +   Released.Path
 +   Refused.Refusal
 +   InputLocked.Process
 +   InputUnlocked.Process ]
-+ [ AccessRequest.{ Path Access   ; types
++ [ AccessRequest.{ Path Access    ; types
 +                   Recursive }
-+   Refusal.[ NoAccess            ; no access
-+             Held.Grant ] ]      ;   another writer
-+
-+ Operation
-+ [ pod:[ Path Access Pod ] ]       ; imports
-+ [ StopWrites.Path               ; one per effect
++   Refusal.[ NoAccess             ; no access
++             Held.Grant ] ] }    ; another writer</code></pre>
+<p class="target"><code>pod-controller/operation.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Operation.
++ {
++ [ pod:[ Path Access Pod ] ]      ; imports
++ [ StopWrites.Path                ; one per effect
 +   AwaitFlush.Path
-+   SwitchPermission.{ Path       ;   to the next
++   SwitchPermission.{ Path        ;   to the next
 +                      Access Pod }
-+   Grant ]                       ; opens other
-+
-+ Memory
-+ [ pod:[ Grant Process Owner     ; imports
++   Grant ]                        ; opens other
++ []                               ; outcomes
++ [] }                             ; types</code></pre>
+<p class="target"><code>pod-controller/memory.ethos</code></p><p>(new)</p>
+<pre data-diff><code class="language-ethos">+ Memory.
++ {
++ [ pod:[ Grant Process Owner      ; imports
 +         Pod ] ]
-+ [ Grant                         ; one writer
-+   Ownership.{ Process Owner     ; process owner
-+               Pod } ]</code></pre>
++ [ Writer.Grant                   ; one writer
++   Ownership.{ Process Owner      ; process owner
++               Pod } ] }</code></pre>
 <p>Machine: the caller is no field in a request; the socket's caller identity, verified through the master process, supplies it.</p>
 <p>Numbered choices:</p>
-<ol class="choices" start="1"><li>Sockets are 1a «one socket» · 1b «one socket per level of access».</li><li>A grant without the Recursive flag covers 2a «the path alone» · 2b «the whole subtree below it». Default: 2a.</li><li>Primary flows 3a «pass through the pod controller like every flow» · 3b «keep unrestricted access».</li><li>The pod 4a «contains the Capsule» · 4b «stays separate from the Capsule».</li></ol>
+<ol class="choices" start="1"><li>Sockets are 1a «one socket» · 1b «one socket per level of access».</li><li>A grant without the Recursive flag covers 2a «the path alone» · 2b «the whole subtree below it». Default: 2a.</li><li>Primary flows 3a «pass through the pod controller like every flow» · 3b «keep unrestricted access».</li><li>The pod 4a «contains the Capsule» · 4b «stays separate from the Capsule».</li><li>The Library's traits and associations are 5a «as shown» · 5b «left out: the traits and associations sections are empty». Default: 5a.</li></ol>
+</article>
 <!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
      Markup, all optional except what the source has:
        <h1 class="book-title">                       the book's title

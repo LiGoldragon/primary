@@ -1,0 +1,77 @@
+Usage report, whole (file: /home/li/primary/flows/da2038/reports/usage-2026-10-14.md). Caveat from me: Codex shows no local data since 09-26; it may run under another CODEX_HOME or machine — unknown, worth a check before charting Codex as idle.
+
+# Usage report, 2026-10-14 (read at 18:03 UTC / 12:03 local, UTC-6)
+
+Read-only. Sources: ~/.claude/projects/**/*.jsonl (usage fields, deduped by message id + request id), ~/.codex/sessions + archived_sessions rollouts (token_count / rate_limits events), ~/.codex/state_5.sqlite (threads.tokens_used, model, cwd). Scripts: scratchpad/usage/*.py. "Tokens" = input + output + cache read + cache creation, in millions (M).
+
+## Plans (config only, no secrets)
+- Claude: Max, tier default_claude_max_20x (organizationType claude_max, billing stripe_subscription; ~/.claude.json, ~/.claude/.credentials.json). Extra usage: disabled (hasExtraUsageEnabled false; cachedExtraUsageDisabledReason org_level_disabled).
+- Codex: ChatGPT sign-in, plan_type pro (rate_limits events; ~/.codex/auth.json claims). Default model gpt-6-astra, effort xhigh (config.toml).
+
+## Claude: tokens per day by model (Oct 1-14, local day)
+| Day (UTC-6) | Fable | Opus | Sonnet | Haiku | Total M | Output k | Cache-read share |
+|---|---|---|---|---|---|---|---|
+| 2026-10-01 | 59 | 114 | 26 | 13 | 212 | 374 | 96% |
+| 2026-10-02 | 220 | 338 | 68 | 35 | 661 | 872 | 96% |
+| 2026-10-03 | 220 | 816 | 145 | 28 | 1,209 | 2,057 | 97% |
+| 2026-10-04 | 110 | 210 | 90 | 7 | 416 | 701 | 96% |
+| 2026-10-05 | 81 | 63 | 18 | 3 | 165 | 262 | 97% |
+| 2026-10-06 | 26 | 77 | 19 | 5 | 128 | 233 | 95% |
+| 2026-10-07 | 38 | 120 | 50 | 17 | 226 | 553 | 94% |
+| 2026-10-08 | 4 | 60 | 4 | 3 | 70 | 97 | 94% |
+| 2026-10-09 | 125 | 386 | 102 | 48 | 661 | 1,114 | 96% |
+| 2026-10-10 | 251 | 808 | 111 | 113 | 1,283 | 1,690 | 97% |
+| 2026-10-11 | 39 | 102 | 50 | 10 | 201 | 352 | 95% |
+| 2026-10-12 | 49 | 148 | 25 | 13 | 236 | 498 | 96% |
+| 2026-10-13 | 211 | 233 | 54 | 13 | 511 | 1,193 | 95% |
+| 2026-10-14 (partial) | 107 | 144 | 25 | 4 | 280 | 746 | 96% |
+| **14-day** | 1,543 | 3,619 | 786 | 310 | 6,259 | 10,748 | 96% |
+
+Model ids seen: Fable = fable-5-1; Opus = opus-5-5 (opus-5 and opus-4-8 small); Sonnet = sonnet-5-5 (sonnet-5 earlier); Haiku = haiku-4-5 and haiku-5-5. Sub-agent transcripts are included in each day.
+
+### Claude limits
+- Percentages are recorded only four times in transcripts (rate_limits blocks; kinds session 5h, weekly_all, weekly_scoped Fable):
+  - 2026-09-26 08:06 UTC: weekly 99% (Fable 96%), session 30%; weekly resets 09-26 13:00 UTC.
+  - 2026-09-27 12:42 UTC: weekly 37% (Fable 34%), session 3%; weekly resets 10-03 13:00 UTC.
+  - 2026-10-01 17:57 UTC: weekly 55% (Fable 46%), session 5%.
+  - 2026-10-03 12:23 UTC: weekly 84% (Fable 73%), severity warning, session 5%; resets 13:00 UTC (07:00 local).
+- Nothing recorded after 10-03: current Claude percentage and the 10-10 reset are unwitnessed. Weekly resets fall on Saturdays 13:00 UTC (07:00 local) in all four samples; the next, 2026-10-17 13:00 UTC / 07:00 local, is the flow's inference from that cadence.
+- Limit hits: none. Search of all transcripts for synthetic/API-error messages found only "Login expired" (3), "Not logged in" (1), connection-lost (4), a model-not-found (1), one Sonnet 5 safeguards flag; no usage-limit message, no "Get Codex to help you", no "low on usage" as a system message.
+
+### Claude top consumers (Oct 1-14, by session, 6249M total)
+d68c82 446M (Opus 380); 28d847 401M (Opus 357); f5a6e9 362M (Fable 253); 73ada7 346M (Opus 279); d4ae97 345M (Opus 290); 3ec648 307M (Opus 190, Fable 82); 445410 302M (Opus 259). Opus carries the largest share overall: 3,619M of 6,259M (58%), Fable 25%, Sonnet 13%, Haiku 5%. Cache read is 96% of tokens; output is 10.7M.
+
+## Codex: what the logs hold
+- Newest rollout / thread update / rate-limit read: 2026-09-26 18:20 UTC. Nothing is recorded for the 18 days since (history.jsonl last written 09-30; logs_2.sqlite active today but holds no usage). So the last 14 days (Sep 30-Oct 14) have no Codex data here, and current windows and used % are unknown. Whether Codex ran elsewhere is unknown.
+- Last reading (09-26 18:20 UTC): bucket "codex", one window of 10080 min (weekly), 0%, resets_at 2026-10-03 17:06:42 UTC = 11:06 local. That reset has passed.
+- Windows: bucket "codex" (all model use) shows only a weekly window (secondary null) in 139,453 events. A 5-hour (300 min) primary plus weekly secondary appears only in bucket codex_bengalfox "GPT-5.3-Codex-Spark" (8,919 events, Sep 3-11), always 0%. A two-window (5h + weekly) arrangement is therefore not witnessed for the main bucket.
+- Weekly reset timing is not fixed: resets_at values seen were 09-03 16:25, 09-07 02:27, 09-15 09:08, 09-19 15:05, 09-24 17:49, 09-28 13:21, 10-01 16:19, 10-03 17:06 (UTC). Several resets came before the stated time (cause unknown).
+
+### Codex: tokens per day by model, last 14 days of data (Sep 12-26, local day; thread totals attributed to the thread's last-update day, so long threads shift later)
+| Day (UTC-6) | Astra | Sol | Terra | Luna | Total M | Weekly % last seen that UTC day |
+|---|---|---|---|---|---|---|
+| 2026-09-12 | 18 | 96 | 36 | 0 | 150 | 5 |
+| 2026-09-13 | 34 | 1 | 53 | 17 | 104 | 12 |
+| 2026-09-14 | 98 | 0 | 209 | 43 | 351 | 31 |
+| 2026-09-15 | 66 | 0 | 286 | 72 | 424 | 47 |
+| 2026-09-16 | 297 | 0 | 492 | 159 | 948 | 99 |
+| 2026-09-17 | 53 | 105 | 281 | 21 | 459 | 16 |
+| 2026-09-18 | 102 | 72 | 139 | 45 | 358 | 55 |
+| 2026-09-19 | 101 | 130 | 349 | 15 | 594 | 76 |
+| 2026-09-20 | 40 | 34 | 97 | 37 | 209 | 100 |
+| 2026-09-21 | 0 | 215 | 144 | 45 | 403 | 50 |
+| 2026-09-22 | 297 | 308 | 215 | 41 | 861 | 68 |
+| 2026-09-23 | 228 | 556 | 249 | 69 | 1,102 | 85 |
+| 2026-09-24 | 81 | 186 | 173 | 24 | 463 | 7 |
+| 2026-09-25 | 0 | 0 | 3 | 0 | 3 | 37 |
+| 2026-09-26 | 0 | 0 | 0 | 2 | 2 | 0 |
+
+Weekly % column = last reading that UTC day. Peaks: 100% on 09-06 (primary went null at 08:11 UTC, limit reached), 99% on 09-16, 100% on 09-20 (23:49 UTC), 100% on 09-24 early. Each followed by a drop to 16%, 50%, 7% before the stated reset time.
+Codex top consumers Sep 12-26 (6,467M total): by model Terra 2,760M, Sol 1,703M, Astra 1,414M, Luna 590M; by cwd /home/li/primary 4,814M (706 threads), wt/primary-5f4fea 1,025M, codex-successor-cf7879-bootstrap 210M, field-high-refresh-753e69 207M. Largest threads: Field Medium 753e69 (Sol) 315M, Primary Codex cf7879 (Astra) 297M, mind-astra-of-893603 (Astra) 240M.
+
+## Observations
+1. Claude weekly use ran hot: 99% on 09-26 and 84% about 37 minutes before the 10-03 reset, on Max 20x with no extra usage, so hitting the cap was close but no limit message was logged.
+2. Claude's week Oct 4-10 used 2,949M tokens, more than Sep 29-Oct 3 (2,282M counted, which ended at 84%+), yet no percentage was recorded; the true state is unknown. The 10-03 and 10-10 days (1.2B each) are the peaks; token counts are 96% cache read, so they track the percentage only loosely.
+3. Opus is the main Claude spender (58%); Fable is 25% but its scoped weekly meter reached 96% on 09-26.
+4. Codex hit 100% of the weekly allowance on 09-06, 09-20 and (early) 09-24, and 99% on 09-16, each time before the reset date; its last day of data (09-26) was near zero.
+5. Codex has been absent from these logs since 09-26 and Claude carries all current load (about 1.2B tokens Oct 11-14).

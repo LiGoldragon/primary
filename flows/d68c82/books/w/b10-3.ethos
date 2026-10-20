@@ -1,0 +1,6 @@
+Library.{
+[]                                    ; imports
+[ Prompt.[ SystemPrompt               ; types
+          StartupPrompt ] ]
+[ Named.[ name.[ String ] ] ]         ; traits
+[ Prompt.[ Named ] ] }                ; associations
