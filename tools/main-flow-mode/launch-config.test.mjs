@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig, firstPromptFromConfig, roleModulesFromConfig} from './launch-config.mjs';
+import {loadLaunchConfig, validateLaunchConfig, voiceFromConfig, firstPromptFromConfig, roleModulesFromConfig, metaflowFor} from './launch-config.mjs';
 import {mainSystemModules} from './spirit-system-prompt.mjs';
 
 const config = loadLaunchConfig(path.resolve(import.meta.dirname, '../..'));
@@ -51,7 +51,10 @@ assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'gp
 assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'claude-haiku-5-5'})), /effort is unsupported/);
 assert.throws(() => validateLaunchConfig({...config, metaflow: {metaflows: [...config.metaflow.metaflows, config.metaflow.metaflows[0]]}}), /duplicate/);
 
-assert.equal(config.metaflow.metaflows.length, 30);
+const declarationDirectory = path.resolve(import.meta.dirname, '../../config/main-flow/metaflow');
+const declarationCount = fs.readdirSync(declarationDirectory, {withFileTypes: true}).filter(entry => entry.isFile() && entry.name.endsWith('.edn')).length;
+assert.equal(declarationCount, config.metaflow.metaflows.length, 'every authored EDN declaration is loaded exactly once');
+assert.equal(config.metaflow.metaflows.length, 31);
 for (const metaflow of config.metaflow.metaflows) {
   const key = `${metaflow.aspect}.${metaflow.topic}.${metaflow.layer}`;
   const declared = metaflow['user-modules'];
@@ -60,6 +63,15 @@ for (const metaflow of config.metaflow.metaflows) {
 }
 const missingCorrection = {...config, metaflow: {metaflows: config.metaflow.metaflows.map((row, index) => index === 0 ? {...row, 'user-modules': row['user-modules'].filter(name => name !== 'compensation-correction')} : row)}};
 assert.throws(() => validateLaunchConfig(missingCorrection), /must include compensation-correction exactly once/);
+const messenger = metaflowFor(config, {aspect: 'Mind', topic: 'messenger', layer: 'Secondary'});
+assert.ok(messenger, 'Mind messenger Secondary is declared');
+assert.equal(config.metaflow.metaflows.filter(row => row.aspect === 'Mind' && row.topic === 'messenger' && row.layer === 'Secondary').length, 1);
+assert.deepEqual(messenger.modules, []);
+assert.deepEqual(messenger['user-modules'], ['compensation-correction']);
+assert.deepEqual(voiceFromConfig(config, {aspect: 'Mind', topic: 'messenger', layer: 'Secondary'}), {status: 'configured', harness: 'codex', model: 'gpt-6.1-sol', effort: 'medium'});
+assert.equal(roleModulesFromConfig(config, messenger, 'user').filter(name => name === 'compensation-correction').length, 1);
+assert.ok(roleModulesFromConfig(config, messenger, 'user').includes('vision-messaging'));
+assert.ok(roleModulesFromConfig(config, messenger, 'user').includes('compensation-messenger-clj'));
 const extraRole = {aspect: 'Field', 'user-modules': ['compensation-correction', 'compensation-book']};
 const completeRoots = roleModulesFromConfig(config, extraRole, 'user');
 assert.equal(completeRoots.filter(name => name === 'compensation-correction').length, 1);
