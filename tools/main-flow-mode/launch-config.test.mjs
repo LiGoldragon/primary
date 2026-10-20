@@ -7,18 +7,27 @@ import {mainSystemModules} from './spirit-system-prompt.mjs';
 
 const config = loadLaunchConfig(path.resolve(import.meta.dirname, '../..'));
 assert.equal(config.aspects.length, 3);
-const frozenModules = mainSystemModules('/tmp/does-not-matter', '.agents', {aspect: 'Psyche', layer: 'Secondary', launchConfig: config, metaflowConfig: {modules: ['spirit-core', 'intent-main-flow', 'vision-book', 'compensation-book-crystallization']}});
-assert.match(frozenModules.find(module => module.name === 'vision-book').body, /book/i);
+const installed = fs.mkdtempSync(path.join(os.tmpdir(), 'installed-skills-'));
+try {
+  const seat = {aspect: 'Psyche', layer: 'Secondary', launchConfig: config, metaflowConfig: {modules: ['spirit-core', 'intent-main-flow', 'vision-book', 'compensation-book-crystallization']}};
+  assert.throws(() => mainSystemModules(installed, '.agents', seat), /not installed/);
+  for (const name of roleModulesFromConfig(config, {...seat.metaflowConfig, aspect: 'Psyche'}, 'system')) {
+    fs.mkdirSync(path.join(installed, '.agents/skills', name), {recursive: true});
+    fs.writeFileSync(path.join(installed, '.agents/skills', name, 'SKILL.md'), `---\ndescription: fixture\n---\n\n${name} installed body\n`);
+  }
+  const installedModules = mainSystemModules(installed, '.agents', seat);
+  assert.equal(installedModules.find(module => module.name === 'vision-book').body, 'vision-book installed body');
+} finally { fs.rmSync(installed, {recursive: true, force: true}); }
+assert.equal(config.shared.repositories, undefined, 'module revisions are pinned once, in the CriomOS-home cohort');
 assert.deepEqual(voiceFromConfig(config, {aspect: 'Mind', layer: 'Primary'}), {status: 'configured', harness: 'codex', model: 'gpt-6-astra', effort: 'medium'});
 assert.throws(() => voiceFromConfig(config, {aspect: 'Mind', layer: 'Primary', model: 'gpt-6-luna'}), /voice model differs/);
 assert.throws(() => validateLaunchConfig({shared: config.shared, aspects: [{...config.aspects[0], voices: [...config.aspects[0].voices, config.aspects[0].voices[0]]}, ...config.aspects.slice(1)], metaflow: config.metaflow}), /duplicate voice/);
-assert.throws(() => validateLaunchConfig({shared: {...config.shared, repositories: {...config.shared.repositories, psyche: {...config.shared.repositories.psyche, ref: 'latest'}}}, aspects: config.aspects, metaflow: config.metaflow}), /40-hex ref/);
 const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'launch-config-'));
 try {
   const dir = path.join(fixture, 'config/main-flow'); fs.mkdirSync(dir, {recursive: true});
-  for (const name of ['shared', 'psyche', 'mind', 'field']) fs.copyFileSync(path.resolve(import.meta.dirname, `../../config/main-flow/${name}.edn`), path.join(dir, `${name}.edn`));
+  for (const name of ['shared', 'psyche', 'mind', 'field']) fs.writeFileSync(path.join(dir, `${name}.edn`), fs.readFileSync(path.resolve(import.meta.dirname, `../../config/main-flow/${name}.edn`)));
   fs.mkdirSync(path.join(dir, 'metaflow'));
-  for (const name of ['Psyche-Core-Primary', 'Mind-Core-Primary', 'Field-Core-Primary']) fs.copyFileSync(path.resolve(import.meta.dirname, `../../config/main-flow/metaflow/${name}.edn`), path.join(dir, 'metaflow', `${name}.edn`));
+  for (const name of ['Psyche-Core-Primary', 'Mind-Core-Primary', 'Field-Core-Primary']) fs.writeFileSync(path.join(dir, 'metaflow', `${name}.edn`), fs.readFileSync(path.resolve(import.meta.dirname, `../../config/main-flow/metaflow/${name}.edn`)));
   const text = fs.readFileSync(path.join(dir, 'mind.edn'), 'utf8').replace(':medium}', ':bogus}'); fs.writeFileSync(path.join(dir, 'mind.edn'), text);
   assert.throws(() => loadLaunchConfig(fixture), /unsupported: bogus/);
 } finally { fs.rmSync(fixture, {recursive: true, force: true}); }

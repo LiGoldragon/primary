@@ -22,16 +22,18 @@
       url = "github:LiGoldragon/Curriculum/d7bb1375338cb9da30d29f1f7f5182b4766fea26";
       flake = false;
     };
+    # The context cohort is pinned once, by CriomOS-home's
+    # primary.inputs.{psyche,mind,field}-context; this flake's lock follows it.
     psyche-context = {
-      url = "github:LiGoldragon/psyche-context/53f68b69c3f9a7628e804dcd69cb47cd5db9bb33";
+      url = "github:LiGoldragon/psyche-context";
       flake = false;
     };
     mind-context = {
-      url = "github:LiGoldragon/mind-context/e3fcd4f36d4f75e8c546e5e9596f5a48a5d8592b";
+      url = "github:LiGoldragon/mind-context";
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context/95121c6727052941f7e5f0c1125f8118d737e561";
+      url = "github:LiGoldragon/field-context";
       flake = false;
     };
     flow = {
@@ -220,6 +222,14 @@
                 query=$(${pkgs.babashka}/bin/bb -e '(require (quote [clojure.edn :as edn]) (quote [clojure.string :as str])) (let [m (:modules (edn/read-string (slurp (first *command-line-args*))))] (println (str "ComposeStartup.{ { Psyche core Secondary } Claude [ " (str/join " " (map name (:system m))) " ] [ " (str/join " " (map name (:user m))) " ] }")))' ${self}/config/main-flow/psyche.edn)
                 ${runtime}/bin/curriculum "$query" > "$TMPDIR/composed.datom"
                 grep -q '^StartupComposed' "$TMPDIR/composed.datom"
+                # A metaflow's start carries its aspect's modules and its own.
+                for seat in Psyche-Core-Secondary:Claude Field-Core-Secondary:Codex; do
+                  declaration="${self}/config/main-flow/metaflow/''${seat%%:*}.edn"
+                  query=$(${pkgs.babashka}/bin/bb -e '(require (quote [clojure.edn :as edn]) (quote [clojure.string :as str])) (let [[declaration harness root] *command-line-args* row (edn/read-string (slurp declaration)) aspect (edn/read-string (slurp (str root "/config/main-flow/" (str/lower-case (name (:aspect row))) ".edn"))) ids (fn [defaults extra] (str/join " " (map name (distinct (concat defaults extra)))))] (println (str "ComposeStartup.{ { " (name (:aspect row)) " " (str/lower-case (name (:topic row))) " " (name (:layer row)) " } " harness " [ " (ids (:system (:modules aspect)) (:modules row)) " ] [ " (ids (:user (:modules aspect)) (:user-modules row)) " ] }")))' "$declaration" "''${seat#*:}" ${self})
+                  ${runtime}/bin/curriculum "$query" > "$TMPDIR/seat.datom"
+                  grep -q '^StartupComposed' "$TMPDIR/seat.datom"
+                  grep -q 'CriomOS is a declarative operating system' "$TMPDIR/seat.datom"
+                done
                 ${runtime}/bin/curriculum 'ComposeRole.{ illustrator ClaudeAgent }' > "$TMPDIR/role.datom"
                 grep -q '^RoleComposed' "$TMPDIR/role.datom"
                 touch "$out"
@@ -268,9 +278,10 @@
           claudeNativeSeatFixtures =
             pkgs.runCommand "primary-claude-native-seat-fixtures"
               {
-                nativeBuildInputs = [ pkgs.python3 pkgs.nodejs ];
+                nativeBuildInputs = [ pkgs.python3 pkgs.nodejs pkgs.babashka ];
               }
               ''
+                node ${self}/tools/main-flow-mode/launch-config.test.mjs
                 node ${self}/tools/main-flow-mode/spirit-system-prompt.test.mjs
                 python3 ${self}/tools/claude-native-seat-refresh.test.py
                 touch "$out"

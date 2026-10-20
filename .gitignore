@@ -62,3 +62,10 @@ agent-worktrees/agent-toolchain-refresh-tracker/
 # flow-id private runtime claim metadata; lanes and authored flow records remain tracked
 /flows/.*.flow-id
 /flows/.*.flow-id.lock
+
+# Harness skills: linked by CriomOS-home from the pinned context cohort
+/.claude/skills
+/.agents/skills
+/.codex/skills
+/.opencode/skills
+/.pi/skills

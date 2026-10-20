@@ -26,11 +26,6 @@ function unique(values, name) { const seen = new Set(); for (const value of valu
 
 export function validateLaunchConfig({shared, aspects, metaflow}) {
   if (shared?.schema !== 'main-flow-launch/1') throw new Error('unsupported or missing launch config schema');
-  for (const [name, repo] of Object.entries(shared.repositories ?? {})) {
-    if (!path.isAbsolute(repo.path) || !/^[a-f0-9]{40}$/.test(repo.ref) || !repo.skills) throw new Error(`repository ${name} requires an absolute path, immutable 40-hex ref, and skills path`);
-    let actual; try { actual = execFileSync('git', ['-C', repo.path, 'rev-parse', repo.ref], {encoding: 'utf8'}).trim(); } catch { throw new Error(`repository ${name} ref is unavailable: ${repo.ref}`); }
-    if (actual !== repo.ref) throw new Error(`repository ${name} ref does not match materialized source: ${repo.ref}`);
-  }
   for (const [name, tools] of Object.entries(shared.tools ?? {})) { list(tools, `tools.${name}`); unique(tools, `tools.${name}`); }
   const found = new Set();
   for (const config of aspects) {
@@ -58,10 +53,10 @@ export function loadLaunchConfig(root = process.cwd()) {
   const dir = path.join(root, 'config', 'main-flow');
   const shared = readEdn(path.join(dir, 'shared.edn'));
   const aspects = ASPECTS.map(aspect => readEdn(path.join(dir, `${aspect.toLowerCase()}.edn`)));
-  for (const config of aspects) {
-    const repo = shared.repositories[config.aspect.toLowerCase()];
-    for (const placement of ['system', 'user']) config.modules[placement] = config.modules[placement].map(name => ({name, repository: name === 'compensation-book-crystallization' || name === 'compensation-main-flow' || name.startsWith('compensation-') ? 'field' : (name.startsWith('intent-') || name.startsWith('spirit-') || name === 'vision-book' ? 'psyche' : (name.startsWith('knowledge-') || name.startsWith('operation-') ? 'mind' : config.aspect.toLowerCase())), path: `skills/${name}.md`, placement}));
-  }
+  // Module text comes from the installed skills of the one pinned context
+  // cohort; the configuration names modules only.
+  for (const config of aspects)
+    for (const placement of ['system', 'user']) config.modules[placement] = config.modules[placement].map(name => ({name, placement}));
   const metaflow = {metaflows: fs.readdirSync(path.join(dir, 'metaflow'), {withFileTypes: true}).filter(entry => entry.isFile() && entry.name.endsWith('.edn')).map(entry => readEdn(path.join(dir, 'metaflow', entry.name)))};
   validateLaunchConfig({shared, aspects, metaflow});
   return Object.freeze({shared, aspects, metaflow});
@@ -90,12 +85,6 @@ export function roleModulesFromConfig(config, metaflow, placement) {
   const defaults = modulesFromConfig(config, metaflow.aspect, placement);
   const additions = placement === 'system' ? metaflow.modules ?? [] : metaflow['user-modules'] ?? [];
   return [...new Set([...defaults, ...additions.map(module => module.name ?? module)])];
-}
-
-export function sourceModulesFromConfig(config, aspect, placement) {
-  const modules = config.aspects.find(item => item.aspect === aspect)?.modules?.[placement];
-  if (!modules) throw new Error(`no configured ${placement} modules for ${aspect}`);
-  return modules.map(module => ({...module}));
 }
 
 export function metaflowFor(config, {aspect, topic = 'Core', layer}) {

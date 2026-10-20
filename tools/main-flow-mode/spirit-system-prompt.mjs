@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
-import {roleModulesFromConfig, sourceModulesFromConfig} from './launch-config.mjs';
+import {roleModulesFromConfig} from './launch-config.mjs';
 
 export function spiritModules(workspace, surface = '.agents') {
   const root = path.join(workspace, surface, 'skills');
@@ -23,7 +22,6 @@ export function mainSystemModules(workspace, surface, {aspect, layer, topic = 'C
   const configured = seat.launchConfig;
   let modules;
   if (configured) {
-    const base = sourceModulesFromConfig(configured, aspect, 'system');
     // A row may add context; even an empty row cannot remove spirit/intent.
     const names = [...new Set([
       ...roleModulesFromConfig(configured, {...seat.metaflowConfig, aspect}, 'system'),
@@ -31,16 +29,14 @@ export function mainSystemModules(workspace, surface, {aspect, layer, topic = 'C
     ])];
     if (!names.includes('spirit-core') || !names.includes('intent-main-flow'))
       throw new Error('main system context requires spirit-core and intent-main-flow');
-    const sources = [...base, ...sourceModulesFromConfig(configured, aspect, 'user')];
-    const selected = names.map(name => sources.find(module => module.name === name) ?? ({name, repository: name === 'compensation-book-crystallization' ? 'field' : 'psyche', path: `skills/${name}.md`, placement: 'system'}));
-    modules = selected.map(module => {
-      const repo = configured.shared.repositories[module.repository];
+    modules = names.map(name => {
+      const file = path.join(workspace, surface, 'skills', name, 'SKILL.md');
       let body;
-      try { body = execFileSync('git', ['-C', repo.path, 'show', `${repo.ref}:${module.path}`], {encoding: 'utf8'}); }
-      catch { throw new Error(`configured system module is unavailable at frozen source: ${module.repository}:${repo.ref}:${module.path}`); }
+      try { body = fs.readFileSync(file, 'utf8'); }
+      catch { throw new Error(`configured system module is not installed: ${file}`); }
       body = body.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').trim();
-      if (!body) throw new Error(`empty main system module: ${module.name}`);
-      return {name: module.name, body};
+      if (!body) throw new Error(`empty main system module: ${name}`);
+      return {name, body};
     });
   } else {
     modules = spiritModules(workspace, surface);

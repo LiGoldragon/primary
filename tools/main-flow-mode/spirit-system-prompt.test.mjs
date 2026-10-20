@@ -38,6 +38,12 @@ try {
   assert.deepEqual(mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}).map(module => module.name), roleNames);
   const rolePrompt = composeSpiritSystemPrompt('Base.', mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary'}));
   assert.equal(rolePrompt.split('Read all comments').length - 1, 1);
+  const configured = defaultLaunchConfig();
+  for (const name of configured.aspects.find(row => row.aspect === 'Psyche').modules.system.map(module => module.name)) {
+    if (fs.existsSync(path.join(skills, name))) continue;
+    fs.mkdirSync(path.join(skills, name));
+    fs.writeFileSync(path.join(skills, name, 'SKILL.md'), `${name} body`);
+  }
   const configuredRole = mainSystemModules(root, '.agents', {aspect: 'Psyche', layer: 'Tertiary', launchConfig: defaultLaunchConfig()});
   assert.equal(configuredRole.filter(module => module.name === 'main-seat-role-psyche-core-tertiary').length, 1);
   assert.ok(configuredRole.at(-1).body.includes('relay ledger'));

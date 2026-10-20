@@ -1,4 +1,4 @@
-{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche] :aspect :Field
+{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-criomos] :aspect :Field
  :topic :Publisher
  :layer :Quaternary
  :user-modules [:compensation-book ]
