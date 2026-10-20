@@ -1,1 +1,1 @@
-{:aspect :Mind :topic :Core :layer :Primary :modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche] :raw-psyche-paths ["flows/0c85a3/vision/"]}
+{:aspect :Mind :topic :Core :layer :Primary :modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :compensation-correction] :raw-psyche-paths ["flows/0c85a3/vision/"]}

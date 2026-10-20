@@ -1,1 +1,1 @@
-{:aspect :Field :topic :Core :layer :Primary :modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-criomos] :raw-psyche-paths ["flows/44cda5/vision/" "flows/42265e/vision/"]}
+{:aspect :Field :topic :Core :layer :Primary :modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-criomos :compensation-correction] :raw-psyche-paths ["flows/44cda5/vision/" "flows/42265e/vision/"]}
