@@ -38,7 +38,16 @@ export function validateLaunchConfig({shared, aspects, metaflow}) {
     for (const placement of PLACEMENTS) { list(config.modules?.[placement], `${config.aspect}.modules.${placement}`); unique(config.modules[placement].map(module => module.name ?? module), `${config.aspect}.modules.${placement}`); }
   }
   if (found.size !== ASPECTS.length * LAYERS.length) throw new Error('every aspect and layer needs exactly one voice');
-  for (const row of list(metaflow?.metaflows, 'metaflows')) { exact(row.aspect, new Set(ASPECTS), 'metaflow aspect'); exact(row.layer, new Set(LAYERS), 'metaflow layer'); if (!row.topic) throw new Error('metaflow topic is required'); unique(row.modules ?? [], `metaflow ${row.aspect}.${row.layer}.modules`);
+  for (const row of list(metaflow?.metaflows, 'metaflows')) {
+    exact(row.aspect, new Set(ASPECTS), 'metaflow aspect');
+    exact(row.layer, new Set(LAYERS), 'metaflow layer');
+    if (!row.topic) throw new Error('metaflow topic is required');
+    unique(row.modules ?? [], `metaflow ${row.aspect}.${row.layer}.modules`);
+    const userModules = list(row['user-modules'], `metaflow ${row.aspect}.${row.topic}.${row.layer}.user-modules`);
+    const userModuleNames = userModules.map(module => module.name ?? module);
+    unique(userModuleNames, `metaflow ${row.aspect}.${row.topic}.${row.layer}.user-modules`);
+    if (userModuleNames.filter(name => name === 'compensation-correction').length !== 1)
+      throw new Error(`metaflow ${row.aspect}.${row.topic}.${row.layer}.user-modules must include compensation-correction exactly once`);
     if (row.voice !== undefined) {
       exact(row.voice.harness, HARNESS, 'metaflow voice harness');
       exact(row.voice.effort, new Set(EFFORTS), 'metaflow voice effort');

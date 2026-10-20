@@ -46,16 +46,20 @@ for (const [topic, layer, model] of [['Publisher', 'Quaternary', 'claude-haiku-5
 }
 assert.equal(voiceFromConfig(config, {aspect: 'Field', layer: 'Quaternary'}).harness, 'codex');
 assert.equal(voiceFromConfig(config, {aspect: 'Field', topic: 'Publisher', layer: 'Tertiary'}).harness, 'codex');
-const badVoice = voice => ({...config, metaflow: {metaflows: [{aspect: 'Field', topic: 'Example', layer: 'Quaternary', voice}]}});
+const badVoice = voice => ({...config, metaflow: {metaflows: [{aspect: 'Field', topic: 'Example', layer: 'Quaternary', 'user-modules': ['compensation-correction'], voice}]}});
 assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'gpt-6-luna', effort: 'medium'})), /must match its harness/);
 assert.throws(() => validateLaunchConfig(badVoice({harness: 'claude', model: 'claude-haiku-5-5'})), /effort is unsupported/);
 assert.throws(() => validateLaunchConfig({...config, metaflow: {metaflows: [...config.metaflow.metaflows, config.metaflow.metaflows[0]]}}), /duplicate/);
 
-for (const metaflow of config.metaflow.metaflows.filter(row => row.aspect === 'Psyche')) {
-  const inherited = config.aspects.find(row => row.aspect === 'Psyche').modules.user.map(row => row.name);
-  assert.ok(inherited.every(name => roleModulesFromConfig(config, metaflow, 'user').includes(name)));
-  assert.equal(metaflow['user-modules'], undefined, `${metaflow.topic}.${metaflow.layer} must inherit its aspect roots`);
+assert.equal(config.metaflow.metaflows.length, 30);
+for (const metaflow of config.metaflow.metaflows) {
+  const key = `${metaflow.aspect}.${metaflow.topic}.${metaflow.layer}`;
+  const declared = metaflow['user-modules'];
+  assert.equal(declared.filter(name => name === 'compensation-correction').length, 1, `${key} declares correction exactly once`);
+  assert.equal(roleModulesFromConfig(config, metaflow, 'user').filter(name => name === 'compensation-correction').length, 1, `${key} composes correction exactly once`);
 }
+const missingCorrection = {...config, metaflow: {metaflows: config.metaflow.metaflows.map((row, index) => index === 0 ? {...row, 'user-modules': row['user-modules'].filter(name => name !== 'compensation-correction')} : row)}};
+assert.throws(() => validateLaunchConfig(missingCorrection), /must include compensation-correction exactly once/);
 const extraRole = {aspect: 'Field', 'user-modules': ['compensation-main-flow', 'compensation-book']};
 const completeRoots = roleModulesFromConfig(config, extraRole, 'user');
 assert.equal(completeRoots.filter(name => name === 'compensation-main-flow').length, 1);
