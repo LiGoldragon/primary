@@ -102,12 +102,6 @@ export function metaflowFor(config, {aspect, topic = 'Core', layer}) {
   return row;
 }
 
-export function birthSkillsFromConfig(config, aspect = 'Psyche') {
-  const names = modulesFromConfig(config, aspect, 'user');
-  if (!names.includes('compensation-main-flow')) throw new Error(`configured ${aspect} user modules omit compensation-main-flow`);
-  return [...names];
-}
-
 export function firstPromptFromConfig(config, metaflow, {modules, handover, rawPsychePaths}) {
   const template = metaflow?.['first-prompt-template'] ?? config.shared['first-prompt-template'];
   if (typeof template !== 'string' || !template.trim()) throw new Error('EDN first-prompt-template is required');

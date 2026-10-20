@@ -60,9 +60,8 @@ for (const metaflow of config.metaflow.metaflows) {
 }
 const missingCorrection = {...config, metaflow: {metaflows: config.metaflow.metaflows.map((row, index) => index === 0 ? {...row, 'user-modules': row['user-modules'].filter(name => name !== 'compensation-correction')} : row)}};
 assert.throws(() => validateLaunchConfig(missingCorrection), /must include compensation-correction exactly once/);
-const extraRole = {aspect: 'Field', 'user-modules': ['compensation-main-flow', 'compensation-book']};
+const extraRole = {aspect: 'Field', 'user-modules': ['compensation-correction', 'compensation-book']};
 const completeRoots = roleModulesFromConfig(config, extraRole, 'user');
-assert.equal(completeRoots.filter(name => name === 'compensation-main-flow').length, 1);
-assert.ok(completeRoots.includes('compensation-truth'));
+assert.equal(completeRoots.filter(name => name === 'compensation-correction').length, 1);
 assert.ok(completeRoots.includes('compensation-book'));
 assert.ok(roleModulesFromConfig(config, {aspect: 'Psyche', modules: ['vision-nexus']}, 'system').includes('intent-psyche'));

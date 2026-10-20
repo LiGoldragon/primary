@@ -4,10 +4,10 @@ import os from 'node:os';
 import path from 'node:path';
 import {startRequest, launchedResponse, decodeFlowResponse, submitStart, launchMain, parseArgs} from './flow-start-adapter.mjs';
 const uuid = '4201a3e4-964c-403e-824c-6f8908023e6f';
-const profile = {requestId:'proof-1',system:['spirit-core','intent-psyche'],user:['compensation-main-flow'],aspect:'Psyche',topic:'core',layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium',session:'default',brief:'Run once: «quoted» \\path\n$(never)'};
+const profile = {requestId:'proof-1',system:['spirit-core','intent-psyche'],user:['compensation-correction'],aspect:'Psyche',topic:'core',layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium',session:'default',brief:'Run once: «quoted» \\path\n$(never)'};
 const success = 'Started.{ 4201a3 '+uuid+' Available.{ default child w1:p4E term_123 } Flow.{ 42265e caller-session } }';
 const q = startRequest(profile);
-assert.equal(q, 'Start.{ «proof-1» [ spirit-core intent-psyche ] [ compensation-main-flow ] { Psyche core Tertiary } «claude-sonnet-5-5» «medium» None [  ] «default» None «Run once: «quoted\\» \\\\path\n$(never)» }');
+assert.equal(q, 'Start.{ «proof-1» [ spirit-core intent-psyche ] [ compensation-correction ] { Psyche core Tertiary } «claude-sonnet-5-5» «medium» None [  ] «default» None «Run once: «quoted\\» \\\\path\n$(never)» }');
 assert.match(startRequest({...profile,leaveOuts:[]}),/Some\.\[  \]/);
 assert.match(startRequest({...profile,predecessor:'7c89aa',remembered:[{flowId:'abcdef',depth:2}]}),/Some\.«7c89aa» \[ \{ «abcdef» 2 \} \]/);
 for (const invalid of [{system:['/tmp/context']},{user:['intent-psyche']},{system:['spirit-core']},{model:'sonnet'},{leaveOuts:['Unknown']},{remembered:[{flowId:'abcdef',depth:-1}]},{topic:'core } injected'}]) assert.throws(()=>startRequest({...profile,...invalid}));
@@ -78,7 +78,7 @@ for (const response of ['not JSON',JSON.stringify({error:{code:'transport_error'
 const workspace=fs.mkdtempSync(path.join(os.tmpdir(),'flow-adapter-'));try {
  fs.mkdirSync(path.join(workspace,'flows','4201a3'),{recursive:true});
  const brief=path.join(workspace,'task.txt'),meta=path.join(workspace,'declaration.edn');fs.writeFileSync(brief,'READ THIS TASK ONCE');fs.writeFileSync(meta,'{:aspect :Psyche :topic :core :layer :Tertiary}');
- const config={shared:{'first-response-timeout-seconds':900,'first-prompt-template':'OUTSIDE CONTEXT MUST NOT BE USED'},aspects:[{aspect:'Psyche',harness:'claude',voices:[{layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium'}],modules:{system:['spirit-core','intent-psyche'],user:['compensation-main-flow']}}],metaflow:{metaflows:[{aspect:'Psyche',topic:'Core',layer:'Tertiary',modules:[], 'user-modules':[],'topic-context':'OUTSIDE CONTEXT MUST NOT BE USED'}]}};
+ const config={shared:{'first-response-timeout-seconds':900,'first-prompt-template':'OUTSIDE CONTEXT MUST NOT BE USED'},aspects:[{aspect:'Psyche',harness:'claude',voices:[{layer:'Tertiary',model:'claude-sonnet-5-5',effort:'medium'}],modules:{system:['spirit-core','intent-psyche'],user:['compensation-correction']}}],metaflow:{metaflows:[{aspect:'Psyche',topic:'Core',layer:'Tertiary',modules:[], 'user-modules':['compensation-correction'],'topic-context':'OUTSIDE CONTEXT MUST NOT BE USED'}]}};
  const o=parseArgs(['--brief',brief,'--layer','Tertiary','--root','--metaflow',meta,'--workspace',workspace,'--topic','core','--launch-request-id','proof-1'],'claude');calls=[];
  launchMain(o,'claude',{config,run:(bin,args)=>{calls.push({bin,args});return bin==='flow'?success:bin==='herdr'?present:'registered';},log:()=>{}});
  assert.equal(calls.length,3);assert.equal(calls[0].bin,'flow');assert.match(calls[0].args[0],/Address\.\{ Psyche core Tertiary \}/);assert.match(calls[0].args[0],/READ THIS TASK ONCE/);assert.doesNotMatch(calls[0].args[0],/OUTSIDE CONTEXT/);
