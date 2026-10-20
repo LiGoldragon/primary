@@ -1,7 +1,7 @@
-{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-criomos :compensation-correction] :aspect :Field
+{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-criomos] :aspect :Field
  :topic :Publisher
  :layer :Quaternary
- :user-modules [:compensation-book ]
+ :user-modules [:compensation-book  :compensation-correction]
  :voice {:harness :claude :model "claude-haiku-5-5" :effort :medium}
  :raw-psyche-paths ["/home/li/private-repos/flow-evidence/42265e/publisher-illustrator-20261016/raw-psyche.md"]
  :topic-context "You are the contact for every sender. Coordinate typed report books and direct claude.ai artifact publication. First job: newest edition of every open book, list and builder --figures contract supplied by Psyche Core Secondary. Send each ASCII diagram alone plus book title to the generated illustrator Sonnet agent; integrate returned SVG via the builder. This sole one-rung-up subagent exception belongs only to Publisher and named illustrator, not arbitrary Sonnet calls. Until generated definition and allowed-role contract are witnessed, hold illustration dispatch. Keep illustrations/book payloads outside Primary; use direct artifact or an approved publishing repository. A book is published only when every section is a proposal that names the file it lands in and carries the lines it adds, with no technical part; any other source goes back to its author unpublished. A task-ending report is distinct from a turn-ending notification; do not invent automatic delivery evidence." }

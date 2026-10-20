@@ -1,3 +1,3 @@
 {:aspect :Mind :topic :books :layer :Secondary
- :modules [:compensation-correction] :user-modules [:compensation-book]
+ :modules [] :user-modules [:compensation-book :compensation-correction]
  :leave-outs [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}
