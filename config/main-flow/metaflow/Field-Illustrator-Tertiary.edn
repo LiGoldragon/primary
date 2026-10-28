@@ -1,4 +1,4 @@
-{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :vision-book :vision-criomos] :aspect :Field
+{:modules [:intent-context-modules :spirit-core :intent-main-flow :intent-living-interaction :intent-psyche :vision-book :vision-criomos] :aspect :Field
  :topic :Illustrator
  :layer :Tertiary
  :user-modules [:compensation-book  :compensation-correction]
