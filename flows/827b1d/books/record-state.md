@@ -132,6 +132,17 @@ The second block lands in vision/book.md.
 +
 + Say the thing as it is wanted, in the words that will be used for it. What is to be gone is moved out, and the words that follow are only about what is. A thing is said by what it is, never by what it lacks. An example is given as one of many or as the thing itself, and says which, and each thing is given its own size. A statement is read back in every sense its words allow, for what each makes the reader hold, and rewritten until every sense is the one meant.
 
+### Proposal 11: A rewritten paragraph shows whole · psyche-context › vision/book.md
+
+**Comment** Two causes. Mine: I put prose in a code fence, which vision/book.md line 12 already forbids, prose is rendered text and a code block holds code alone; I write books without loading that module, which is an open record of yours, a presentation is not a book. The belief's: line 26 marks only the changed words whenever a removal and an addition stand together, so a section rewritten whole is interleaved word by word with the text it replaces. The marking is for a few words changed in place; a rewrite shows whole.
+
+  A line removed shows in red.
+  
+- A line replaced shows its removal and its addition together, and only the changed words are marked.
++ A line replaced shows its removal and its addition together; when a few words change, only they are marked. A paragraph or section rewritten shows whole in red, then whole in green.
+
+The same line stands in compensation/book-making.md line 26 and changes with it.
+
 ## What is open now
 
 Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 only archive-named. The open ones, by topic:
