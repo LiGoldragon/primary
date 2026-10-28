@@ -15,3 +15,8 @@ Context: the living, direct to Psyche core Primary 827b1d, after the startup tha
 Context: the living, direct to Psyche core Primary 827b1d, agreeing that landed records move to an archive directory with a state line, open records carrying nothing.
 
 > Yeah I think we're starting to agree on stuff and the long term is the psyche nexus obviously.
+
+## 2026-10-28 — The archive directory is named explicitly, for predictable behavior
+Context: the living, as a comment on Proposal 1 of the presentation Record state, on the words "in a separate directory".
+
+> This is good but we need to be explicit about what directory we're talking about so that we can get predictable behavior, so that scripts and tools can work reliably to find archived data. Do you know what I mean?

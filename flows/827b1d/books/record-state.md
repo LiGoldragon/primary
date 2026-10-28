@@ -6,17 +6,21 @@ Created by Fable, inventory by Sonnet.
 
 ### Proposal 1: A landed record moves to the archive · psyche-context › vision/psyche.md
 
-**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone. The line first said the open record carries nothing, then that it is open where it is written; both are kinds in Proposal 10.
+**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone. Your comment: the directory is named explicitly, so scripts and tools find archived data predictably; the archive is the record's own path under the flow's archive directory. The line first said the open record carries nothing, then that it is open where it is written; both are kinds in Proposal 10.
 
 + ## A settled record moves to the archive
 +
-+ When a raw record is landed, superseded or refuted it moves to the archive file of its
-+ topic, in a separate directory, under one line that says which:
-+ Landed, with the module and the commit, written by the lander in the
-+ commit that lands it; Superseded, by the record that overruled it;
-+ Refuted, with his reason. A file is never renamed to say what became
-+ of its records. In the long term the records live in the psyche nexus
-+ and the state is a field.
++ A raw record is written at flows/<flow>/vision/<topic>.md or
++ flows/<flow>/notion/<topic>.md and is open there. When it is landed,
++ superseded or refuted it moves to the same path under the flow's
++ archive directory, flows/<flow>/archive/vision/<topic>.md, under one
++ line that says which: Landed, with the module and the commit, written
++ by the lander in the commit that lands it; Superseded, by the record
++ that overruled it; Refuted, with his reason. The archived records of
++ the whole system are flows/*/archive/**; the open ones are every
++ record outside an archive directory. A file is never renamed to say
++ what became of its records. In the long term the records live in the
++ psyche nexus and the state is a field.
 
 ### Proposal 2: Remembering selects by state · psyche-context › vision/remembering.md
 
@@ -26,7 +30,7 @@ Created by Fable, inventory by Sonnet.
 +
 + A remembering of Open gives a fresh flow every open record of its
 + address, from every flow that wrote one, and a one-line index of the
-+ archived ones: heading and state. Depth and named flows remain for
++ archived ones, heading and state, read from flows/*/archive/**. Depth and named flows remain for
 + reaching a transcript.
 
 ### Proposal 3: Remembering gains Open · signal-flow › ethos/signal.ethos
