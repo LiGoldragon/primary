@@ -23,3 +23,8 @@ Context: the living, direct to Psyche core Primary 827b1d, after it gave the cau
 Context: the living, direct to Psyche core Primary 827b1d, on Proposal 9 of the book Record state.
 
 > I'm the only reader here. I made the whole system. There's no context I lack. You are the only one here who lacks context. I'm trying to convey my context to you. I could design the system if I could write code as fast as you. I could design the entire system that would revolutionize the world in a few hours.
+
+## 2026-10-28 — The line "a raw record carries nothing" has a harmful ghost; find it and generalize the pattern into the ghost section
+Context: the living, direct to Psyche core Primary 827b1d, on Proposal 1 of the book Record state.
+
+> The raw record is written and carries nothing. That line has... I can totally see a harmful ghost effect here. Show me if you can see the ghost effect without me telling you what it is and then let's generalize that into that particular pattern of ghost effect so that we can explain it in the ghost effect section.

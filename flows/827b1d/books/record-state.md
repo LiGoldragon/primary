@@ -6,12 +6,12 @@ Created by Fable, inventory by Sonnet.
 
 ### Proposal 1: A landed record moves to the archive · psyche-context › vision/psyche.md
 
-**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone.
+**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone. The line first said the open record carries nothing; that ghost is Proposal 10.
 
 + ## A settled record moves to the archive
 +
-+ A raw record is open where it is written and carries nothing. When it
-+ is landed, superseded or refuted it moves to the archive file of its
++ A raw record is open where it is written. When it is landed,
++ superseded or refuted it moves to the archive file of its
 + topic, in a separate directory, under one line that says which:
 + Landed, with the module and the commit, written by the lander in the
 + commit that lands it; Superseded, by the record that overruled it;
@@ -118,6 +118,27 @@ Created by Fable, inventory by Sonnet.
 ```
 
 The second block lands in vision/book.md.
+
+### Proposal 10: The emptying · psyche-context › spirit/ghost.md
+
+**Comment** The ghost you saw in Proposal 1. "A raw record carries nothing" meant that an open record bears no state mark. Read plain it says the record is empty, and it carries your words, the most valuable data there is. The reader keeps both: open records become records missing their line, and the record's own content is taken away. The kind is added to the Kinds section, after The denial, and a sentence to Composing.
+
+```diff
+  The denial. Naming a thing to keep it away gives it. A host who says the
+  soup is not burnt has every guest tasting for burn.
++
++ The emptying. Saying a thing carries, has or does nothing, to mean it
++ lacks one mark, gives the mark and empties the thing. A raw record
++ carries nothing says his words are nothing; the open record is said by
++ what it is, open where it is written.
+```
+
+```diff
+  Say the thing as it is wanted, in the words that will be used for it.
+  What is to be gone is moved out, and the words that follow are only
+- about what is.
++ about what is. A thing is never said by what it lacks.
+```
 
 ## What is open now
 
