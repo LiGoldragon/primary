@@ -19,21 +19,20 @@
       flake = false;
     };
     curriculum = {
-      url = "github:LiGoldragon/Curriculum/d7bb1375338cb9da30d29f1f7f5182b4766fea26";
+      url = "github:LiGoldragon/Curriculum/7dfa6a81b2e7bd174ce924824497bf39f82c744b";
       flake = false;
     };
-    # The context cohort is pinned once, by CriomOS-home's
-    # primary.inputs.{psyche,mind,field}-context; this flake's lock follows it.
+    # Pinned to each context repo main head; CriomOS-home follows this cohort.
     psyche-context = {
-      url = "github:LiGoldragon/psyche-context";
+      url = "github:LiGoldragon/psyche-context/8717e76a6582aff93ae074698b5571193c2ede2a";
       flake = false;
     };
     mind-context = {
-      url = "github:LiGoldragon/mind-context";
+      url = "github:LiGoldragon/mind-context/1850d49feebbb60a61c992c49dc6aee8aef82d8f";
       flake = false;
     };
     field-context = {
-      url = "github:LiGoldragon/field-context";
+      url = "github:LiGoldragon/field-context/d7b2cdcaadcff35fcb1e9de34e95bd6a54e750e6";
       flake = false;
     };
     flow = {

@@ -18,7 +18,7 @@ time. It is what the living works with instead of the chat.
 ## Before anything
 
 Load these skills through the skill interface: `knowledge-psyche`,
-`inquiry-psyche-crystallization`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
+`vision-crystallization`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
@@ -211,7 +211,7 @@ record already listed in some row's `records`, or already landed in
 `/home/li/primary/Vision/` (see `Vision/sources/<topic>.md`, one line per
 record source), is not proposed again.
 
-- Crystallize as the `inquiry-psyche-crystallization` skill says: re-articulate, never
+- Crystallize as the `vision-crystallization` skill says: re-articulate, never
   quote; cut what is unnecessary; the statement stands by itself; a small
   ruling makes a small statement; no undefined term; a statement about a
   syntax, type or wire form shows example code. One record may feed
@@ -229,7 +229,7 @@ The living's choices on the page, and what you do with each:
 
 - `Approved`, or approved as a good skill of a kind (`approvedAs`): return
   it to the caller, who lands it (vision through the
-  `inquiry-psyche-crystallization` skill; a skill through the seat that owns
+  `vision-crystallization` skill; a skill through the seat that owns
   it).
   Keep the row until the transcript shows it landed, then delete it.
 - `{"changed": note}`: the note is the correction. Rewrite the statement

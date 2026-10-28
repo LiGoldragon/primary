@@ -4,5 +4,5 @@
           {:layer :Secondary :model "gpt-6.1-sol" :effort :medium}
           {:layer :Tertiary :model "gpt-6-luna" :effort :medium}
           {:layer :Quaternary :model "gpt-6-luna" :effort :low}]
- :modules {:system [:intent-context-modules :vision-book :compensation-book-crystallization :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :intent-design :intent-models]
- :user [:compensation-behavior :compensation-correction :knowledge-vocabulary :knowledge-psyche :inquiry-psyche-crystallization :vision-crystallization :compensation-psyche-interraction :knowledge-orchestrate :compensation-edit-coordination :compensation-truth :compensation-orders :compensation-prose :compensation-understanding :vision-aspects :vision-model-roles :compensation-launch :compensation-design :compensation-default-effort :knowledge-protos :knowledge-datom :vision-messaging :compensation-messenger-clj :compensation-network-temporary :compensation-temporary]}}
+ :modules {:system [:intent-belief-modules :vision-book :compensation-book-making :compensation-messaging :compensation-book-crystallization :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :intent-design :intent-models]
+ :user [:compensation-behavior :compensation-correction :knowledge-vocabulary :knowledge-psyche :vision-crystallization :compensation-psyche-interraction :knowledge-orchestrate      :vision-aspects :vision-model-roles    :knowledge-protos :knowledge-datom :vision-messaging   ]}}
