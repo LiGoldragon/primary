@@ -5,15 +5,6 @@ Context: the living, direct to Psyche core Primary 7459f3 at 2026-10-28T17:31:53
 
 > No I don't know if I want. I don't think our system is ready to enforce that kind of stuff programmatically. That's a dangerous road. We would have to have long-running stability through multiple versions before we would consider doing stuff that could very well end up crippling us. What if you don't have a secondary? How is anybody going to fucking talk to you then?
 
-## 2026-10-28 — Passing his comments means giving the comments
-Context: the living, direct to Psyche core Secondary b49eaf, after it sent the Primary paths to raw records and summaries instead of his comments on Record state.
-
-> You didn't give him my comments.
-
-## 2026-10-28 — Carrying only what the recipient can use includes the comments
-Context: the living, direct to Psyche core Secondary b49eaf, on its analysis blaming the line "A message to another flow carries only what the recipient can use" for sending paths instead of his comments.
-
-> You can send your analysis to Primary and tell him that I don't understand why you think that he couldn't use the comments because it only said what he can use. So you're implying that he didn't need the comments.
 
 ## 2026-10-28 — His words relayed in his words is approved
 Context: the living, to Psyche core Primary, approving the book His words are relayed in his words (https://claude.ai/artifact/LqvnSm9xvfywrRXsvMikP5); relayed by that Primary as a quotation.
