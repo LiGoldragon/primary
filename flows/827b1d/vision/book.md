@@ -51,3 +51,8 @@ Context: the living, direct to Psyche core Primary 827b1d, with a screenshot of 
 > Looks like we need to fix the belief on how to make books because we have a failure here.
 
 > And it's funny because the rest of the book was okay, just this part.
+
+## 2026-10-28 — A presentation is not a book; the book vision does not bear on the Primary's failure
+Context: the living, direct to Psyche core Primary 827b1d, after it cited the book vision for the failure of Proposal 10 of the presentation Record state.
+
+> Well you're saying that the book vision forbids something but you're making a presentation not a book. This has nothing to do with books. If it was your failure, unless I'm missing something, what do you think?
