@@ -103,15 +103,21 @@ Created by Fable, inventory by Sonnet.
 + and never appears in a book.
 ```
 
-### Proposal 9: He is the reader, and he has the context · psyche-context › intent/living-interaction.md
+### Proposal 9: He lacks no context; the flow does · psyche-context › spirit/core.md
 
-**Comment** The belief behind the prose for nothing. Nothing says who reads a book, so I wrote for a reader who lacks the context and led him to the proposal with an account and a design. You are the reader, and you gave the context.
+**Comment** The belief behind the prose for nothing. Nothing says who reads a book, so I wrote for a reader who lacks the context and led him to the proposal. Your words: you are the only reader, you made the whole system, there is no context you lack; the flow is the one that lacks context, and your words convey yours to it. That holds beyond books, so it is spirit; the book line follows from it.
 
 ```diff
-+ The living is the reader of every book, and he has its context, since
-+ he gave it. A book begins at its first proposal; nothing leads him to
-+ it.
++ The living lacks no context: he made the whole system. The machine is
++ what lacks context, and every word of his conveys his to it. Nothing
++ the machine writes supplies him context; it brings him what to judge.
 ```
+
+```diff
++ A book begins at its first proposal; nothing leads him to it.
+```
+
+The second block lands in vision/book.md.
 
 ## What is open now
 

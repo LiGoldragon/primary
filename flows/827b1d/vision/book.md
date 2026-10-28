@@ -18,3 +18,8 @@ Context: the living, direct to Psyche core Primary 827b1d, after it gave the cau
 > So why are you putting stuff in there that's for nothing?
 
 > Where's the faulty belief here?
+
+## 2026-10-28 — He is the only reader and lacks no context; the flow is the one that lacks it
+Context: the living, direct to Psyche core Primary 827b1d, on Proposal 9 of the book Record state.
+
+> I'm the only reader here. I made the whole system. There's no context I lack. You are the only one here who lacks context. I'm trying to convey my context to you. I could design the system if I could write code as fast as you. I could design the entire system that would revolutionize the world in a few hours.
