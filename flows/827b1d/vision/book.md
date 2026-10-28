@@ -44,3 +44,10 @@ Context: the living, direct to Psyche core Primary 827b1d, on Proposal 1 of the 
 > So you say a raw record is read where it is written. I don't know if that's a ghost effect or more like a useless effect. Are you supposed to read something where it's not written? This is another type of failure. There would be a ghost effect on useless stuff, which would introduce noise. Potentially the only effect this line could have would be harmful because if it doesn't have an effect, then it just means that, given you read something where it's written, duh. If it does have an effect it means that it was misinterpreted and then it's going to be harmful, like a no-op ghost effect or something. Give me some more ideas of how we can name this and whether or not we need a completely different term to talk about this type of problematic belief.
 
 > I didn't read everything you said, just the first sentence. You're presuming that it was better before when it was followed by "a settled record moves" but I would argue that it was still harmful because it's kind of like this. I would say it's useless but it also turns it into another kind of harmful belief, which is this sort of cheesy poetry style of writing things. Like how good poetry can be interpreted a thousand different ways, that's a problem for us in this and for what we're doing. Do you understand what I mean?
+
+## 2026-10-28 — Proposal 10 rendered unreadable; the belief on making books is fixed
+Context: the living, direct to Psyche core Primary 827b1d, with a screenshot of Proposal 10 of the book Record state: the ghost module's rewrite in a diff fence, monospace, clipped at the right, old and new words interleaved.
+
+> Looks like we need to fix the belief on how to make books because we have a failure here.
+
+> And it's funny because the rest of the book was okay, just this part.

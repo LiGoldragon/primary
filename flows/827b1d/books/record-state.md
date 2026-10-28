@@ -120,91 +120,17 @@ The second block lands in vision/book.md.
 
 ### Proposal 10: A ghost is a reading never weighed · psyche-context › spirit/ghost.md
 
-**Comment** Your words: this ghost comes when not every way the thing can be read is considered; cure is drying to keep in one mouth and healing in another; to avoid it one weighs every reading of everything, since how a thing will be read is never known. And the kinds with their examples now overrepresent, since how much a thing is spoken of sets how much it is considered; the section is to convey the concept. Then: a raw record is open where it is written is useless read plain and harmful read otherwise, cheesy poetry, which reads a thousand ways where a belief reads one. The module is rewritten whole: the concept carries the one example, the kinds are named in one sentence each with none, and the emptying and the poetry join them.
+**Comment** Your words: this ghost comes when not every way the thing can be read is considered; cure is drying to keep in one mouth and healing in another; to avoid it one weighs every reading of everything, since how a thing will be read is never known. The kinds with their examples overrepresent, since how much a thing is spoken of sets how much it is considered; the section is to convey the concept. Then: a raw record is open where it is written is useless read plain and harmful read otherwise, cheesy poetry, which reads a thousand ways where a belief reads one. The module is replaced whole by what follows; its first two paragraphs are kept as they stand, the Kinds and Composing sections are rewritten, Considering is kept.
 
-```diff
-  # The ghost effect
-  
-  Every statement acts beyond what it means to say. An effect it was not
-  written for is a ghost. A line is written so that all it does is wanted.
-  
-  A ghost is made in the reader, by attention: whatever a statement makes
-  the reader hold in mind, the reader keeps, whether the statement meant
-  to give it or to take it away.
-+ 
-+ A statement bears every reading its words allow, and which one a reader
-+ takes is never known. A ghost is a reading the writer never weighed.
-+ Cure, said of meat, is drying to keep; said of the sick, it is healing;
-+ a reader who hears the other sense is read it, and never told. So every
-+ reading of every statement is weighed before it stands.
-  
-  ## Kinds
-  
-- The denial. Naming a thing to keep it away gives it. A host who says the
-- soup is not burnt has every guest tasting for burn.
-- 
-- The contrast. Saying X, not Y, makes Y a standing way. Take the path, not
-- the river, and the river is now a route.
-- 
-- The precaution. A warning makes its danger a possibility. A sign saying
-- do not throw stones at this sign invites the stone.
-- 
-- The frame. A statement brings the world it belongs to. We are all adults
-- here says that someone was a child.
-- 
-- The identity. Binding oneself to what one leaves keeps one there. A
-- reformed smoker is still a smoker, in the one word that matters.
-- 
-- The history. Telling what went wrong teaches the wrong way. Last time we
-- got lost at the bridge, and the bridge is now where the walk goes.
-- 
-- The example. An example given to show a rule becomes the rule. Paint it
-- some color, say red, and every door is red.
-- 
-- The emphasis. Capitals and absolutes make the forbidden thing the
-- center of the page; the louder the never, the larger the thing.
-- 
-- The presupposition. A question or a hedge carries what it assumes. Is
-- the bridge safe now; this is probably fine: the doubt is delivered
-- whole.
-+ The kinds are the shapes a reading never weighed takes, named so they
-+ are recognized; the list is open. The other sense: a word read in a
-+ sense the writer did not mean. The denial: a thing named to keep it
-+ away is given. The contrast: saying this, not that, makes that a
-+ standing way. The precaution: a warning makes its danger possible. The
-+ frame: a statement brings the world it belongs to. The identity:
-+ binding oneself to what one leaves keeps one there. The history:
-+ telling what went wrong teaches the wrong way. The example: an example
-+ given for a rule becomes the rule. The emphasis: the louder the never,
-+ the larger the thing. The presupposition: a question or a hedge
-+ delivers what it assumes. The emptying: a thing said to carry, have or
-+ do nothing, to mean it lacks one mark, is emptied, and the mark is
-+ given. The proportion: how much a thing is spoken of sets how much it
-+ is considered. The poetry: a line written for how it reads admits
-+ every reading and fixes none; it is useless when read plain and
-+ harmful when read otherwise, and a belief reads one way.
-  
-  ## Composing
-  
-  Say the thing as it is wanted, in the words that will be used for it.
-  What is to be gone is moved out, and the words that follow are only
-- about what is. An example is given as one of many or as the thing
-- itself, and says which. A statement is read back for what it makes the
-- reader hold, and rewritten until that is what was meant.
-+ about what is. A thing is said by what it is, never by what it lacks.
-+ An example is given as one of many or as the thing itself, and says
-+ which, and each thing is given its own size. A statement is read back
-+ in every sense its words allow, for what each makes the reader hold,
-+ and rewritten until every sense is the one meant.
-  
-  ## Considering
-  
-  A statement read is weighed for what its writer meant to give, apart
-  from what it carries. A denial is read as the wanted thing beneath it;
-  a contrast as the one way that was meant; an example as an example; a
-  warning as care, with the danger left at its own size. What a statement
-  makes present by accident is set down, and only what it means is kept.
-```
++ A statement bears every reading its words allow, and which one a reader takes is never known. A ghost is a reading the writer never weighed. Cure, said of meat, is drying to keep; said of the sick, it is healing; a reader who hears the other sense is read it, and never told. So every reading of every statement is weighed before it stands.
++
++ ## Kinds
++
++ The kinds are the shapes a reading never weighed takes, named so they are recognized; the list is open. The other sense: a word read in a sense the writer did not mean. The denial: a thing named to keep it away is given. The contrast: saying this, not that, makes that a standing way. The precaution: a warning makes its danger possible. The frame: a statement brings the world it belongs to. The identity: binding oneself to what one leaves keeps one there. The history: telling what went wrong teaches the wrong way. The example: an example given for a rule becomes the rule. The emphasis: the louder the never, the larger the thing. The presupposition: a question or a hedge delivers what it assumes. The emptying: a thing said to carry, have or do nothing, to mean it lacks one mark, is emptied, and the mark is given. The proportion: how much a thing is spoken of sets how much it is considered. The poetry: a line written for how it reads admits every reading and fixes none; it is useless when read plain and harmful when read otherwise, and a belief reads one way.
++
++ ## Composing
++
++ Say the thing as it is wanted, in the words that will be used for it. What is to be gone is moved out, and the words that follow are only about what is. A thing is said by what it is, never by what it lacks. An example is given as one of many or as the thing itself, and says which, and each thing is given its own size. A statement is read back in every sense its words allow, for what each makes the reader hold, and rewritten until every sense is the one meant.
 
 ## What is open now
 
