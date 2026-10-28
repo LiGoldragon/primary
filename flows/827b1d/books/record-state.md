@@ -12,26 +12,7 @@ A raw record is written once and nothing ever says what became of it. My launch 
 
 The record is the thing; a file is only how a flow is handed context. A record that lands moves out of its open file into the archive file of the same topic, in a separate directory, and carries there one line saying what became of it: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with your reason. An open record carries nothing, and the open file is what a fresh flow reads whole. Location answers open or settled by one query; the line answers what became of it. The hand-renamed `archive-*.md` files are undone: their open records go back to the topic file, their landed ones to the archive with their line. In the long term the records live in the psyche nexus and the state is a field of the record.
 
-The Ethos:
-
-```ethos
-Library
-[]                                               ; imports
-[ ModulePath.String                              ; types
-  Commit.String
-  FlowId.String
-  Heading.String
-  Settled.[ Landed.{ ModulePath Commit }         ;   the lander writes it, same commit
-            Superseded.{ FlowId Heading }        ;   a later word of his overruled it
-            Refuted.String ]                     ;   he said the thing is not wanted, and why
-  Remembering.[ Open                             ;   every open record of the address
-                Predecessors.Integer
-                Custom.Vector<FlowId> ] ]
-[]                                               ; traits
-[]                                               ; associations
-```
-
-The line, as it sits under an archived record's heading today:
+The Ethos is found nowhere: both types are proposed, in Proposals 3 and 4 below. Today the line under an archived record's heading is written by hand as datom:
 
 ```datom
 Landed.{ vision/proposal.md 5d81baa }
@@ -62,6 +43,30 @@ Landed.{ vision/proposal.md 5d81baa }
 + address, from every flow that wrote one, and a one-line index of the
 + archived ones: heading and state. Depth and named flows remain for
 + reaching a transcript.
+
+### Proposal 3: Remembering gains Open · signal-flow › ethos/signal.ethos
+
+**Comment** Found at line 259, the launch's remembering as it stands. The Open variant is added; the two that exist stay.
+
+  RememberingDepth.Integer
+- Remembering.[ Predecessors.RememberingDepth Custom.Vector<FlowId> ]
++ Remembering.[ Open                                 ; every open record of the address
++               Predecessors.RememberingDepth
++               Custom.Vector<FlowId> ]
+
+### Proposal 4: The settled line has a type · psyche › ethos/memory.ethos
+
+**Comment** Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is read as Memory because the records are what the psyche nexus will remember.
+
++ Memory
++ []                                              ; imports
++ [ ModulePath.String                             ; record types
++   Commit.String
++   FlowId.String
++   Heading.String
++   Settled.[ Landed.{ ModulePath Commit }        ;   the lander writes it, same commit
++             Superseded.{ FlowId Heading }       ;   a later word of his overruled it
++             Refuted.String ] ]                  ;   he said the thing is not wanted, and why
 
 ## What is open now
 
