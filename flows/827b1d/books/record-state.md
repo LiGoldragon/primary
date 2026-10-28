@@ -10,7 +10,7 @@ A raw record is written once and nothing ever says what became of it. My launch 
 
 ## The design
 
-Mark, do not move. A record keeps its file, its heading and its provenance, and carries one state line under its heading. The lander writes it when the line lands, in the commit that lands it; the flow that hears a later word overruling it writes Superseded; the flow that hears the thing is not wanted writes Refuted. Remembering then selects by state: a fresh flow receives every Open record of its address, whoever wrote it, and a one-line index of the settled ones, so none is re-raised and none is missed. Depth stays only for the transcript.
+The record is the thing; a file is only how a flow is handed context. A record that lands moves out of its open file into the archive file of the same topic, in a separate directory, and carries there one line saying what became of it: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with your reason. An open record carries nothing, and the open file is what a fresh flow reads whole. Location answers open or settled by one query; the line answers what became of it. The hand-renamed `archive-*.md` files are undone: their open records go back to the topic file, their landed ones to the archive with their line. In the long term the records live in the psyche nexus and the state is a field of the record.
 
 The Ethos:
 
@@ -21,35 +21,36 @@ Library
   Commit.String
   FlowId.String
   Heading.String
-  RecordState.[ Open                             ;   written with the record
-                Landed.{ ModulePath Commit }     ;   the lander writes it, same commit
-                Superseded.{ FlowId Heading }    ;   a later word of his overruled it
-                Refuted.String ]                 ;   he said the thing is not wanted, and why
-  Remembering.[ Open                             ;   every Open record of the address
+  Settled.[ Landed.{ ModulePath Commit }         ;   the lander writes it, same commit
+            Superseded.{ FlowId Heading }        ;   a later word of his overruled it
+            Refuted.String ]                     ;   he said the thing is not wanted, and why
+  Remembering.[ Open                             ;   every open record of the address
                 Predecessors.Integer
                 Custom.Vector<FlowId> ] ]
 []                                               ; traits
 []                                               ; associations
 ```
 
-The datom, as it sits in a record today:
+The line, as it sits under an archived record's heading today:
 
 ```datom
-## 2026-10-28 — A proposal is signed with the models that made it
-State: Landed.{ vision/proposal.md 5d81baa }
+Landed.{ vision/proposal.md 5d81baa }
 ```
 
-### Proposal 1: A record carries its state · psyche-context › vision/psyche.md
+### Proposal 1: A landed record moves to the archive · psyche-context › vision/psyche.md
 
-**Comment** Your words: some way for the things that have been landed, changed or refuted not to be passed over. The archive renames are undone and every record marked.
+**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone.
 
-+ ## A raw record carries its state
++ ## A settled record moves to the archive
 +
-+ A raw record is never moved. Under its heading it carries one state:
-+ Open when written; Landed, with the module and the commit, written by
-+ the lander in the commit that lands it; Superseded, with the record
-+ that overruled it; Refuted, with his reason. A file is never renamed
-+ to say what became of its records.
++ A raw record is open where it is written and carries nothing. When it
++ is landed, superseded or refuted it moves to the archive file of its
++ topic, in a separate directory, under one line that says which:
++ Landed, with the module and the commit, written by the lander in the
++ commit that lands it; Superseded, by the record that overruled it;
++ Refuted, with his reason. A file is never renamed to say what became
++ of its records. In the long term the records live in the psyche nexus
++ and the state is a field.
 
 ### Proposal 2: Remembering selects by state · psyche-context › vision/remembering.md
 
@@ -57,9 +58,9 @@ State: Landed.{ vision/proposal.md 5d81baa }
 
 + ## A fresh flow receives what is open
 +
-+ A remembering of Open gives a fresh flow every Open record of its
++ A remembering of Open gives a fresh flow every open record of its
 + address, from every flow that wrote one, and a one-line index of the
-+ settled ones: heading and state. Depth and named flows remain for
++ archived ones: heading and state. Depth and named flows remain for
 + reaching a transcript.
 
 ## What is open now
