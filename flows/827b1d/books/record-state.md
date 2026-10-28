@@ -94,6 +94,15 @@ Landed.{ vision/proposal.md 5d81baa }
 + A fault he points out in a thing a flow made is a fault in the belief that made it, however he phrases it; the reply gives that belief's line before the thing is repaired.
 ```
 
+### Proposal 7: The cause and the line go into the book · psyche-context › intent/living-interaction.md
+
+**Comment** The fix was in: the chat line landed and was in my prompt. It falls short because the main-flow line says the reply gives the cause and the belief line, and nothing says where; I gave them in the chat and in the book both. The line names the place.
+
+```diff
+  A chat answer is a few sentences. What is long and for the living goes into a presentation; what is long and not for him is said nowhere.
++ When he points out a fault, its cause and its belief line go into the book; the chat says in one sentence which belief failed, and gives the link.
+```
+
 ## What is open now
 
 Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so Open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 archive-named. The open ones, by flow:

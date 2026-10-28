@@ -18,11 +18,36 @@
 </article>
 <article class="proposal"><header><span class="pnum">3</span><h2>Remembering gains Open · signal-flow › ethos/signal.ethos</h2></header>
 <aside class="comment"><p>Found at line 259, the launch's remembering as it stands. The Open variant is added; the two that exist stay.</p></aside>
-<div class="diff"><div class="ctx"><p>RememberingDepth.Integer</p></div><p>Remembering.[ <del>Predecessors.RememberingDepth Custom.Vector&lt;FlowId&gt; ]</del><ins>Open                                 ; every open record of the address</ins></p><div class="add"><ins><p>Predecessors.RememberingDepth</p></ins></div><div class="add"><ins><p>Custom.Vector&lt;FlowId&gt; ]</p></ins></div></div>
+<pre><code class="language-diff">  RememberingDepth.Integer
+Remembering.[ <del>Predecessors.RememberingDepth Custom.Vector&lt;FlowId&gt; ]</del><ins>Open                                 ; every open record of the address</ins>
+<ins>              Predecessors.RememberingDepth</ins>
+<ins>              Custom.Vector&lt;FlowId&gt; ]</ins></code></pre>
 </article>
 <article class="proposal"><header><span class="pnum">4</span><h2>The settled line has a type · psyche › ethos/memory.ethos</h2></header>
-<aside class="comment"><p>Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is read as Memory because the records are what the psyche nexus will remember.</p></aside>
-<div class="diff"><div class="add"><ins><p>Memory []                                              ; imports [ ModulePath.String                             ; record types Commit.String FlowId.String Heading.String Settled.[ Landed.{ ModulePath Commit }        ;   the lander writes it, same commit</p></ins></div><div class="add"><ins><p>Superseded.{ FlowId Heading }       ;   a later word of his overruled it</p></ins></div><div class="add"><ins><p>Refuted.String ] ]                  ;   he said the thing is not wanted, and why</p></ins></div></div>
+<aside class="comment"><p>Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is Memory because the records are what the psyche nexus will remember.</p></aside>
+<pre><code class="language-diff">Memory
+[]                                              ; imports
+[ ModulePath.String                             ; record types
+  Commit.String
+  FlowId.String
+  Heading.String
+  Settled.[ Landed.{ ModulePath Commit }        ;   the lander writes it, same commit
+            Superseded.{ FlowId Heading }       ;   a later word of his overruled it
+            Refuted.String ] ]                  ;   he said the thing is not wanted, and why</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">5</span><h2>Code in a proposal is found or proposed · psyche-context › vision/proposal.md</h2></header>
+<aside class="comment"><p>The belief behind the bare Ethos block. vision:datom says a datom newly made is shown with its Ethos; nothing said that the Ethos of a design is itself proposed and must say so. vision:proposal has no line on code at all, so a design's Ethos stood between the proposals as an illustration. Your words: it has to have been found because it is not shown as an addition.</p></aside>
+<pre><code class="language-diff">## Code in a proposal is found or proposed
+
+Every line of code in a proposal is one of two things, and says which:
+found, with the file and line it stands at today; or proposed, shown
+as an addition at the place it will stand. The Ethos of a design is
+proposed code. No code stands bare.</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">6</span><h2>A fault in a thing is a fault in a belief · psyche-context › intent/main-flow.md</h2></header>
+<aside class="comment"><p>The belief that did not fire. intent:main-flow already says that when you point out a fault the reply gives its cause and the line that changes the behavior, behavior first, repair second. I held that line and repaired the book first, because I read your words as a fault in the book, not in me, and nothing said those are the same thing. The line that was missing is the one that binds them.</p></aside>
+<pre data-diff><code class="language-diff">  When the living points out a fault, the reply gives its cause and the line that changes the behavior that produced it; the behavior change comes first, the repair of the artifact second.
++ A fault he points out in a thing a flow made is a fault in the belief that made it, however he phrases it; the reply gives that belief's line before the thing is repaired.</code></pre>
 </article>
 <h2>What is open now</h2>
 <p>Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so Open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 archive-named. The open ones, by flow:</p>
