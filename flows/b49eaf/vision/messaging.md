@@ -14,3 +14,8 @@ Context: the living, direct to Psyche core Secondary b49eaf, after it sent the P
 Context: the living, direct to Psyche core Secondary b49eaf, on its analysis blaming the line "A message to another flow carries only what the recipient can use" for sending paths instead of his comments.
 
 > You can send your analysis to Primary and tell him that I don't understand why you think that he couldn't use the comments because it only said what he can use. So you're implying that he didn't need the comments.
+
+## 2026-10-28 — His words relayed in his words is approved
+Context: the living, to Psyche core Primary, approving the book His words are relayed in his words (https://claude.ai/artifact/LqvnSm9xvfywrRXsvMikP5); relayed by that Primary as a quotation.
+
+> His words are relayed and his words are a good proposal. Although I’m not sure where it stemmed from, it’s good so we can land it.
