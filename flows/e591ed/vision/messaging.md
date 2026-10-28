@@ -10,3 +10,9 @@
 2026-10-28. Context: right after the living ordered his words on queue delivery passed to the Psyche core Primary; "he" is read by the flow as that Primary and the investigation he leads.
 
 > He needs to really investigate this flawed queuing system because this is a huge problem and it means that he had no way to communicate with anyone for hours. This is as bad as it gets when it comes to a critical flaw in the system.
+
+## A messaging watcher, and an emergency Flow fix
+
+2026-10-28. Context: following his words on the held queue being a critical flaw.
+
+> It also means that the messaging right now cannot be trusted. We almost need a messaging watcher that can watch for flows that are stuck and get them unstuck somehow for now. We need an urgent emergency fix and redeployment of a new flow that doesn't have this flaw.
