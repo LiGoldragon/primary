@@ -56,3 +56,8 @@ Context: the living, direct to Psyche core Primary 827b1d, with a screenshot of 
 Context: the living, direct to Psyche core Primary 827b1d, after it cited the book vision for the failure of Proposal 10 of the presentation Record state.
 
 > Well you're saying that the book vision forbids something but you're making a presentation not a book. This has nothing to do with books. If it was your failure, unless I'm missing something, what do you think?
+
+## 2026-10-28 — A presenting belief found in the book vision is held in the wrong place
+Context: the living, direct to Psyche core Primary 827b1d, after Proposal 11 moved from the book vision to the proposal vision.
+
+> Well don't forget that this also means that if you found something in the book vision that really pertains to how to present things, there's a failure in where the belief is being held.

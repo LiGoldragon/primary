@@ -134,11 +134,79 @@ The second block lands in vision/book.md.
 
 ### Proposal 11: Prose is shown as prose; a rewrite shows whole · psyche-context › vision/proposal.md
 
-**Comment** Your words: this is a presentation, not a book; the book vision has nothing to do with it. The proposal vision says how code in a proposal is shown and nothing of prose or of a rewrite, so I fenced prose as code, and the builder marked the rewrite word by word against what it replaces. The lines go under the existing ones on code.
+**Comment** Your words: this is a presentation, not a book; the book vision has nothing to do with it. The proposal vision says how code in a proposal is shown and nothing of prose or of a rewrite, so I fenced prose as code, and the builder marked the rewrite word by word against what it replaces. The lines go under the existing ones on code; Proposal 12 carries them into the section it moves.
 
   A code block in a proposal stands on its own: it is shown without a path, directory or file name. It carries the code, why it is important, and what its function is.
 +
 + Prose proposed is shown as prose, and code as code. A line changed in a few words shows its removal and its addition together, and only those words are marked. A paragraph or section rewritten shows whole in red, then whole in green.
+
+### Proposal 12: What a presentation shows leaves the book vision · psyche-context › vision/book.md › vision/proposal.md
+
+**Comment** Your words: a belief found in the book vision that pertains to how things are presented is held in the wrong place. The section What a book shows, with the two lines beside it on prose and code, is how a proposal is presented; it moves whole to the proposal vision, the word book becoming presentation, and takes Proposal 11's rule for a replaced line in place of its own. The figure grammar stays in the book vision.
+
+#### vision/book.md
+
+- Prose is shown as rendered text. A code block holds code alone, and it may scroll sideways.
+-
+- ## What a book shows
+-
+- A book is belief modules in the forms below, each under its repo › path; its headings, naming the module and the kind of change, are the only words it has of its own.
+-
+- A module shown whole, as it stands, situates the landing.
+-
+- A module shown beside another, both as they stand, serves comparison: psyche with knowledge, with compensation.
+-
+- A line added shows in green.
+-
+- A line removed shows in red.
+-
+- A line replaced shows its removal and its addition together, and only the changed words are marked.
+-
+- A new module shows whole in green, under the path it will have.
+-
+- A module deleted shows whole in red, with a Destroy or Archive mark.
+-
+- A line moved between modules is one proposal headed by both paths: the line in red under the module it leaves, the same line in green under the module it enters.
+-
+- A dependency changed shows in the module's front matter: the dependency removed in red, the dependency added in green.
+-
+- A figure shows as proposed for the module it will live in.
+-
+- A figure proposed for a module shows under that module's path in green, as an added line does; a figure it replaces shows beside it in red.
+-
+- Code in a book is shown as code, labelled with its language, plain. Ethos and datom in a book are written in the vertical form.
+
+#### vision/proposal.md
+
++ ## What a presentation shows
++
++ A presentation is belief modules in the forms below, each under its repo › path; its headings, naming the module and the kind of change, are the only words it has of its own.
++
++ Prose is shown as rendered text. A code block holds code alone, and it may scroll sideways. Code is shown as code, labelled with its language, plain; Ethos and datom are written in the vertical form.
++
++ A module shown whole, as it stands, situates the landing.
++
++ A module shown beside another, both as they stand, serves comparison: psyche with knowledge, with compensation.
++
++ A line added shows in green.
++
++ A line removed shows in red.
++
++ A line changed in a few words shows its removal and its addition together, and only those words are marked. A paragraph or section rewritten shows whole in red, then whole in green.
++
++ A new module shows whole in green, under the path it will have.
++
++ A module deleted shows whole in red, with a Destroy or Archive mark.
++
++ A line moved between modules is one proposal headed by both paths: the line in red under the module it leaves, the same line in green under the module it enters.
++
++ A dependency changed shows in the module's front matter: the dependency removed in red, the dependency added in green.
++
++ A figure shows as proposed for the module it will live in.
++
++ A figure proposed for a module shows under that module's path in green, as an added line does; a figure it replaces shows beside it in red.
+
+The Mermaid figure of that section moves with it.
 
 ## What is open now
 
