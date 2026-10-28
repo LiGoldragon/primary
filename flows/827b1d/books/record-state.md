@@ -85,6 +85,15 @@ Landed.{ vision/proposal.md 5d81baa }
 + proposed code. No code stands bare.
 ```
 
+### Proposal 6: A fault in a thing is a fault in a belief · psyche-context › intent/main-flow.md
+
+**Comment** The belief that did not fire. intent:main-flow already says that when you point out a fault the reply gives its cause and the line that changes the behavior, behavior first, repair second. I held that line and repaired the book first, because I read your words as a fault in the book, not in me, and nothing said those are the same thing. The line that was missing is the one that binds them.
+
+```diff
+  When the living points out a fault, the reply gives its cause and the line that changes the behavior that produced it; the behavior change comes first, the repair of the artifact second.
++ A fault he points out in a thing a flow made is a fault in the belief that made it, however he phrases it; the reply gives that belief's line before the thing is repaired.
+```
+
 ## What is open now
 
 Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so Open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 archive-named. The open ones, by flow:
