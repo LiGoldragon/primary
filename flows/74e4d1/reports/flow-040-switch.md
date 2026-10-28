@@ -317,3 +317,17 @@ Psyche core Primary entry as applied:
 ```
 { { Psyche core Primary } [ spirit:core intent:context intent:design intent:main-flow intent:models intent:psyche intent:psyche-interaction vision:ethos vision:datom vision:remembering vision:model-roles ] [] Regular Default Maintained «» [] }
 ```
+
+## 2026-10-28: compensation:psyche-interraction removed from the live configuration
+
+The module was deleted at source on 2026-10-27 on the living's order; a declaration naming a missing module makes Launch refuse. Live list read with `flow-meta 'Configuration'` (12 occurrences of `compensation:psyche-interraction`, one per metaflow entry holding it), re-applied with `Configure.Metaflows` carrying the live Metaflows vector with only the token `compensation:psyche-interraction ` removed (396 bytes = 12 x 33; every other byte identical). Nexus reply: `Configured.Replaced`. Re-read: the new Configuration equals the old with exactly those 12 tokens removed (byte-checked); zero occurrences remain.
+
+Ids in the live configuration, resolved with `curriculum 'ResolveSources.[ <hyphen-form-id> ]'`: all 28 distinct ids resolve to a module in psyche-context, field-context or mind-context. `inquiry:psyche-crystallization` is no longer in the live configuration (it does not resolve: `missing module inquiry-psyche-crystallization`). Five ids resolve to a different module than their name, a redirect rather than a missing module, left unchanged:
+
+- knowledge:datom -> knowledge-protos (mind-context)
+- vision:datom -> vision-ethos (psyche-context)
+- vision:flow -> vision-ethos (psyche-context)
+- compensation:book-crystallization -> vision-book (psyche-context)
+- vision:criomos -> vision-nix-builds (psyche-context)
+
+Unresolved ids: none.
