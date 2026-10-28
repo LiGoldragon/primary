@@ -16,3 +16,9 @@
 2026-10-28. Context: following his words on the held queue being a critical flaw.
 
 > It also means that the messaging right now cannot be trusted. We almost need a messaging watcher that can watch for flows that are stuck and get them unstuck somehow for now. We need an urgent emergency fix and redeployment of a new flow that doesn't have this flaw.
+
+## One message per answer keeps him from reading
+
+2026-10-28. Context: the Psyche core Secondary was receiving one queued message per turn, so its answers to him scrolled away.
+
+> Also this behavior of you continuing to get another message every time you respond means that I'm unable to read your answers so don't bother talking to me right now. Just pass all the stuff that's important that came from me to Fable, to Primary, if you're able to tell the difference. Otherwise get him to audit your transcript to see which messages are likely to have come from me.
