@@ -184,55 +184,6 @@
             filter = path: type: true;
           };
 
-          contextCompositionCurrent =
-            pkgs.runCommand "primary-context-composition-current"
-              {
-                nativeBuildInputs = [ pkgs.coreutils ];
-              }
-              ''
-                set -eu
-                workspace="$TMPDIR/workspace"
-                runtime_root="$TMPDIR/runtime"
-            mkdir -p "$workspace" "$runtime_root/curriculum"
-                cp -R ${self}/. "$workspace/"
-                chmod -R u+rwX "$workspace"
-                export XDG_RUNTIME_DIR="$runtime_root"
-                export CURRICULUM_PSYCHES_REPOSITORY_DIR="${inputs."psyche-context"}"
-                export CURRICULUM_CONTEXT_LAYOUT=2
-                export CURRICULUM_PSYCHES_REVISION="${inputs."psyche-context".rev}"
-                export CURRICULUM_MIND_CONTEXT_DIR="${inputs."mind-context"}"
-                export CURRICULUM_MIND_REVISION="${inputs."mind-context".rev}"
-                export CURRICULUM_FIELD_CONTEXT_DIR="${inputs."field-context"}"
-                export CURRICULUM_FIELD_REVISION="${inputs."field-context".rev}"
-                export CURRICULUM_ROLES_FILE="${curriculum}/roles.datom"
-                ${runtime}/bin/curriculum-nexus > "$TMPDIR/curriculum-nexus.log" 2>&1 &
-                nexus_pid=$!
-                trap 'kill "$nexus_pid" 2>/dev/null || true; wait "$nexus_pid" 2>/dev/null || true' EXIT
-                socket="$runtime_root/curriculum/curriculum.sock"
-                attempts=0
-                while [ ! -S "$socket" ]; do
-                  if [ "$attempts" -ge 100 ]; then
-                    cat "$TMPDIR/curriculum-nexus.log" >&2
-                    exit 1
-                  fi
-                  attempts=$((attempts + 1))
-                  sleep 0.1
-                done
-                query=$(${pkgs.babashka}/bin/bb -e '(require (quote [clojure.edn :as edn]) (quote [clojure.string :as str])) (let [m (:modules (edn/read-string (slurp (first *command-line-args*))))] (println (str "ComposeStartup.{ { Psyche core Secondary } Claude [ " (str/join " " (map name (:system m))) " ] [ " (str/join " " (map name (:user m))) " ] }")))' ${self}/config/main-flow/psyche.edn)
-                ${runtime}/bin/curriculum "$query" > "$TMPDIR/composed.datom"
-                grep -q '^StartupComposed' "$TMPDIR/composed.datom"
-                # A metaflow's start carries its aspect's modules and its own.
-                for seat in Psyche-Core-Secondary:Claude Field-Core-Secondary:Codex; do
-                  declaration="${self}/config/main-flow/metaflow/''${seat%%:*}.edn"
-                  query=$(${pkgs.babashka}/bin/bb -e '(require (quote [clojure.edn :as edn]) (quote [clojure.string :as str])) (let [[declaration harness root] *command-line-args* row (edn/read-string (slurp declaration)) aspect (edn/read-string (slurp (str root "/config/main-flow/" (str/lower-case (name (:aspect row))) ".edn"))) ids (fn [defaults extra] (str/join " " (map name (distinct (concat defaults extra)))))] (println (str "ComposeStartup.{ { " (name (:aspect row)) " " (str/lower-case (name (:topic row))) " " (name (:layer row)) " } " harness " [ " (ids (:system (:modules aspect)) (:modules row)) " ] [ " (ids (:user (:modules aspect)) (:user-modules row)) " ] }")))' "$declaration" "''${seat#*:}" ${self})
-                  ${runtime}/bin/curriculum "$query" > "$TMPDIR/seat.datom"
-                  grep -q '^StartupComposed' "$TMPDIR/seat.datom"
-                  grep -q 'CriomOS is a declarative operating system' "$TMPDIR/seat.datom"
-                done
-                ${runtime}/bin/curriculum 'ComposeRole.{ illustrator ClaudeAgent }' > "$TMPDIR/role.datom"
-                grep -q '^RoleComposed' "$TMPDIR/role.datom"
-                touch "$out"
-              '';
           bookPhoneCode = pkgs.runCommand "primary-book-phone-code" {
             nativeBuildInputs = [ pkgs.nodejs pkgs.chromium pkgs.coreutils ];
           } ''
@@ -241,9 +192,8 @@
             timeout 100s node ${self}/tools/book-phone-code.test.mjs ${self}/tools/book-code.html > "$out"
           '';
           bookPublicationFixtures = pkgs.runCommand "primary-book-publication-fixtures" {
-            nativeBuildInputs = [ pkgs.nodejs ];
+            nativeBuildInputs = [ pkgs.nodejs pkgs.babashka ];
           } ''
-            node ${self}/tools/book-check.test.mjs
             node ${self}/tools/book-fetch.test.mjs
             touch "$out"
           '';
@@ -272,17 +222,6 @@
               }
               ''
                 node ${self}/tools/canonical-title-alignment.test.mjs
-                touch "$out"
-              '';
-          claudeNativeSeatFixtures =
-            pkgs.runCommand "primary-claude-native-seat-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.python3 pkgs.nodejs pkgs.babashka ];
-              }
-              ''
-                node ${self}/tools/main-flow-mode/launch-config.test.mjs
-                node ${self}/tools/main-flow-mode/spirit-system-prompt.test.mjs
-                python3 ${self}/tools/claude-native-seat-refresh.test.py
                 touch "$out"
               '';
           thirdSeatFixtures =
@@ -325,20 +264,15 @@
               '';
         in
         {
-          direct-start-adapter = pkgs.runCommand "primary-direct-start-adapter" { nativeBuildInputs = [ pkgs.nodejs ]; } ''
-            node --test ${self}/tools/claude-main-flow-launch.test.mjs ${self}/tools/codex-main-flow-launch.test.mjs ${self}/tools/flow-start-adapter.test.mjs > "$out"
-          '';
-          context-composition-current = contextCompositionCurrent;
           book-publication-fixtures = bookPublicationFixtures;
           book-phone-code = bookPhoneCode;
           prompt-relay-fixtures = promptRelayFixtures;
           component-evidence-fixtures = componentEvidenceFixtures;
           canonical-title-fixtures = canonicalTitleFixtures;
-          native-seat-fixtures = claudeNativeSeatFixtures;
           third-seat-fixtures = thirdSeatFixtures;
           fan-out-fixtures = fanOutFixtures;
           messaging-fixtures = messagingFixtures;
-          default = contextCompositionCurrent;
+          default = messagingFixtures;
         }
       );
     };

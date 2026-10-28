@@ -1,8 +1,0 @@
-{:aspect :Field
- :harness :codex
- :voices [{:layer :Primary :model "gpt-6-astra" :effort :medium}
-          {:layer :Secondary :model "gpt-6.1-sol" :effort :medium}
-          {:layer :Tertiary :model "gpt-6-luna" :effort :medium}
-          {:layer :Quaternary :model "gpt-6-luna" :effort :low}]
- :modules {:system [:intent-belief-modules :vision-book :compensation-book-making :compensation-messaging :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :intent-design :intent-models]
- :user [:compensation-behavior :knowledge-vocabulary :knowledge-psyche :vision-crystallization :knowledge-orchestrate :vision-aspects :vision-model-roles :knowledge-protos :knowledge-datom :vision-messaging]}}

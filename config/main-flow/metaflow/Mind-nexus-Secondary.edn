@@ -1,3 +1,0 @@
-{:aspect :Mind :topic :nexus :layer :Secondary
- :modules [] :user-modules [:vision-nexus :compensation-correction]
- :leave-outs [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}

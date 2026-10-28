@@ -1,8 +1,0 @@
-{:aspect :Psyche
- :harness :claude
- :voices [{:layer :Primary :model "claude-fable-5-1" :effort :medium}
-          {:layer :Secondary :model "claude-opus-5-5" :effort :medium}
-          {:layer :Tertiary :model "claude-sonnet-5-5" :effort :medium}
-          {:layer :Quaternary :model "claude-haiku-5-5" :effort :medium :source "living correspondence"}]
- :modules {:system [:intent-belief-modules :compensation-messaging :vision-proposal :spirit-core :intent-main-flow :intent-psyche-interaction :intent-psyche :intent-design :intent-models]
- :user [ :compensation-behavior :compensation-correction :knowledge-vocabulary :knowledge-psyche :vision-crystallization :knowledge-orchestrate      :vision-aspects :vision-psyche-aspect :vision-model-roles    :knowledge-protos :knowledge-datom :vision-messaging   ]}}

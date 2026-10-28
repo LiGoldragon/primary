@@ -1,3 +1,0 @@
-{:aspect :Mind :topic :ethos :layer :Secondary
- :modules [] :user-modules [:vision-ethos :compensation-correction]
- :leave-outs [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}

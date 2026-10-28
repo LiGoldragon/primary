@@ -1,3 +1,0 @@
-{:aspect :Mind :topic :messenger :layer :Secondary
- :modules [] :user-modules [:compensation-correction]
- :leave-outs [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}

@@ -1,3 +1,0 @@
-{:aspect :Mind :topic :flow :layer :Secondary
- :modules [] :user-modules [:vision-flow :vision-subflows :compensation-correction]
- :leave-outs [:CodexAgentsMd :CodexSkillListing :CodexCollaborationMode :CodexEnvironmentContext :CodexPermissions :CodexDeveloperInstructions]}
