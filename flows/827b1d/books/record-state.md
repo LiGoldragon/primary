@@ -6,12 +6,11 @@ Created by Fable, inventory by Sonnet.
 
 ### Proposal 1: A landed record moves to the archive · psyche-context › vision/psyche.md
 
-**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone. The line first said the open record carries nothing; that ghost is Proposal 10.
+**Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone. The line first said the open record carries nothing, then that it is open where it is written; both are kinds in Proposal 10.
 
 + ## A settled record moves to the archive
 +
-+ A raw record is open where it is written. When it is landed,
-+ superseded or refuted it moves to the archive file of its
++ When a raw record is landed, superseded or refuted it moves to the archive file of its
 + topic, in a separate directory, under one line that says which:
 + Landed, with the module and the commit, written by the lander in the
 + commit that lands it; Superseded, by the record that overruled it;
@@ -121,7 +120,7 @@ The second block lands in vision/book.md.
 
 ### Proposal 10: A ghost is a reading never weighed · psyche-context › spirit/ghost.md
 
-**Comment** Your words: this ghost comes when not every way the thing can be read is considered; cure is drying to keep in one mouth and healing in another; to avoid it one weighs every reading of everything, since how a thing will be read is never known. And the kinds with their examples now overrepresent, since how much a thing is spoken of sets how much it is considered; the section is to convey the concept. The module is rewritten whole: the concept carries the one example, the kinds are named in one sentence each with none, and the emptying joins them.
+**Comment** Your words: this ghost comes when not every way the thing can be read is considered; cure is drying to keep in one mouth and healing in another; to avoid it one weighs every reading of everything, since how a thing will be read is never known. And the kinds with their examples now overrepresent, since how much a thing is spoken of sets how much it is considered; the section is to convey the concept. Then: a raw record is open where it is written is useless read plain and harmful read otherwise, cheesy poetry, which reads a thousand ways where a belief reads one. The module is rewritten whole: the concept carries the one example, the kinds are named in one sentence each with none, and the emptying and the poetry join them.
 
 ```diff
   # The ghost effect
@@ -181,7 +180,9 @@ The second block lands in vision/book.md.
 + delivers what it assumes. The emptying: a thing said to carry, have or
 + do nothing, to mean it lacks one mark, is emptied, and the mark is
 + given. The proportion: how much a thing is spoken of sets how much it
-+ is considered.
++ is considered. The poetry: a line written for how it reads admits
++ every reading and fixes none; it is useless when read plain and
++ harmful when read otherwise, and a belief reads one way.
   
   ## Composing
   
