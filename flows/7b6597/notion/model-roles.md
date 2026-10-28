@@ -13,3 +13,5 @@ Context: the living, direct, after I stopped a running Fable fork on his order a
 > Did you just kill the fucking Fable subagent?
 
 > It's like you don't understand the value of Fable.
+
+> So by the time you had it running 100,000 tokens, killing it was stupid beyond words.
