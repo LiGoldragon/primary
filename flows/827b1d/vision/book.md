@@ -11,3 +11,10 @@ Context: the living, direct to Psyche core Primary 827b1d, reading the sections 
 Context: the living, direct to Psyche core Primary 827b1d, reading the sections The fault and The design that remained above the proposals in the book Record state, version 5.
 
 > What's all this for?
+
+## 2026-10-28 — The cause of the prose for nothing is named with its belief line
+Context: the living, direct to Psyche core Primary 827b1d, after it gave the cause in the chat, that it writes for a reader who lacks the context, and no line.
+
+> So why are you putting stuff in there that's for nothing?
+
+> Where's the faulty belief here?

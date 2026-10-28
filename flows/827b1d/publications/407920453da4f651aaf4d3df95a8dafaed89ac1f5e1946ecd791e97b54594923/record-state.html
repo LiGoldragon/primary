@@ -2,12 +2,6 @@
 <title>Record state</title>
 <h1 class="book-title">Record state</h1>
 <p class="book-subtitle">Created by Fable, inventory by Sonnet.</p>
-<h2>The fault</h2>
-<p>A raw record is written once and nothing says what became of it, so a fresh flow is handed records already landed and misses open ones that sit in other files. My launch did both.</p>
-<h2>The design</h2>
-<p>The record is the thing; a file is only how a flow is handed context. A record that lands moves out of its open file into the archive file of the same topic, in a separate directory, and carries there one line saying what became of it: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with your reason. An open record carries nothing, and the open file is what a fresh flow reads whole. Location answers open or settled by one query; the line answers what became of it. In the long term the records live in the psyche nexus and the state is a field of the record.</p>
-<p>The Ethos is found nowhere: both types are proposed, in Proposals 3 and 4 below. Today the line under an archived record's heading is written by hand as datom:</p>
-<pre data-diff><code class="language-datom">Landed.{ vision/proposal.md 5d81baa }</code></pre>
 <article class="proposal"><header><span class="pnum">1</span><h2>A landed record moves to the archive · psyche-context › vision/psyche.md</h2></header>
 <aside class="comment"><p>Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone.</p></aside>
 <div class="diff"><div class="add"><ins><h4>A settled record moves to the archive</h4></ins></div><div class="add"><ins><p>A raw record is open where it is written and carries nothing. When it is landed, superseded or refuted it moves to the archive file of its topic, in a separate directory, under one line that says which: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with his reason. A file is never renamed to say what became of its records. In the long term the records live in the psyche nexus and the state is a field.</p></ins></div></div>
@@ -55,11 +49,12 @@ Remembering.[ <del>Predecessors.RememberingDepth Custom.Vector&lt;FlowId&gt; ]</
 + When he points out a fault, its cause and its belief line go into the book; the chat says in one sentence which belief failed, and gives the link.</code></pre>
 </article>
 <article class="proposal"><header><span class="pnum">8</span><h2>A book speaks in your terms · psyche-context › vision/book.md</h2></header>
-<aside class="comment"><p>Your words: what's all this for; you already said you don't care about flow IDs. The book opened with an account of my startup in machine terms, flow IDs throughout, and listed the open records by flow. A flow in a book is named by its seat; the IDs are the ledger's.</p></aside>
+<aside class="comment"><p>Your words, twice: what's all this for; you already said you don't care about flow IDs. The book opened with an account of my startup and a design section repeating the proposals, flow IDs throughout. The proposal with its comment is the design; a flow in a book is named by its seat; the IDs are the ledger's.</p></aside>
 <pre data-diff><code class="language-diff">+ ## A book speaks in his terms
 +
-+ A book carries the proposals and what he needs to judge them, nothing
-+ else: no account of how the flow got there. A flow is named by its
++ A book is its proposals, each with its comment, and what he needs to
++ judge them, nothing else: no account of how the flow got there, no
++ design section beside the proposals that are the design. A flow is named by its
 + seat, Psyche core Primary, my predecessor; a flow ID is the ledger's
 + and never appears in a book.</code></pre>
 </article>

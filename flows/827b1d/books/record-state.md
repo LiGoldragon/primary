@@ -103,6 +103,16 @@ Created by Fable, inventory by Sonnet.
 + and never appears in a book.
 ```
 
+### Proposal 9: He is the reader, and he has the context · psyche-context › intent/living-interaction.md
+
+**Comment** The belief behind the prose for nothing. Nothing says who reads a book, so I wrote for a reader who lacks the context and led him to the proposal with an account and a design. You are the reader, and you gave the context.
+
+```diff
++ The living is the reader of every book, and he has its context, since
++ he gave it. A book begins at its first proposal; nothing leads him to
++ it.
+```
+
 ## What is open now
 
 Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 only archive-named. The open ones, by topic:
