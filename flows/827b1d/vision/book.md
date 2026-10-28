@@ -28,3 +28,12 @@ Context: the living, direct to Psyche core Primary 827b1d, on Proposal 9 of the 
 Context: the living, direct to Psyche core Primary 827b1d, on Proposal 1 of the book Record state.
 
 > The raw record is written and carries nothing. That line has... I can totally see a harmful ghost effect here. Show me if you can see the ghost effect without me telling you what it is and then let's generalize that into that particular pattern of ghost effect so that we can explain it in the ghost effect section.
+
+## 2026-10-28 — The ghost is a reading never weighed; examples overrepresent, so the ghost section conveys the concept and pulls back its examples
+Context: the living, direct to Psyche core Primary 827b1d, on Proposal 10 of the book Record state, The emptying.
+
+> Okay I'm seeing the pattern now while you're explaining it and this is a huge ghost effect that I keep seeing over and over again. It's because it's kind of like this one example where there was a context in which they were using the word "curing" to mean when you dry out something to keep it. The word "curing" can also mean to heal.
+
+> This type of ghost effect happens when not all of the different ways in which the thing can be interpreted are considered. There's another way to consider this: "carries nothing" isn't whatever is marked by additional metadata or something but it could be interpreted in a really harmful way, meaning it's empty.
+
+> To avoid this ghost effect one has to always consider every possible interpretation of everything because you never know how something is going to be interpreted. Maybe we can pull back on some of the examples in the ghost effect, which are maybe now overrepresented because we're going to have different types. Really we want to convey more the concept generally because if we give too many examples of a certain type, we're skewing. We're getting the overrepresentation type of ghost effect because how much something is talked about is going to impact how much it's considered. Do you know what I mean?
