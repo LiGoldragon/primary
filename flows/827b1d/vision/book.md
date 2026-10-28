@@ -6,3 +6,8 @@ Context: the living, direct to Psyche core Primary 827b1d, reading the sections 
 > What's all this for?
 
 > And I already said that I don't care about flow IDs so it's just failure after failure here.
+
+## 2026-10-28 — The prose before the proposals is for nothing
+Context: the living, direct to Psyche core Primary 827b1d, reading the sections The fault and The design that remained above the proposals in the book Record state, version 5.
+
+> What's all this for?

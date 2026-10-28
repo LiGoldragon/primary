@@ -4,20 +4,6 @@ Presentation.{ «Record state» }
 
 Created by Fable, inventory by Sonnet.
 
-## The fault
-
-A raw record is written once and nothing says what became of it, so a fresh flow is handed records already landed and misses open ones that sit in other files. My launch did both.
-
-## The design
-
-The record is the thing; a file is only how a flow is handed context. A record that lands moves out of its open file into the archive file of the same topic, in a separate directory, and carries there one line saying what became of it: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with your reason. An open record carries nothing, and the open file is what a fresh flow reads whole. Location answers open or settled by one query; the line answers what became of it. In the long term the records live in the psyche nexus and the state is a field of the record.
-
-The Ethos is found nowhere: both types are proposed, in Proposals 3 and 4 below. Today the line under an archived record's heading is written by hand as datom:
-
-```datom
-Landed.{ vision/proposal.md 5d81baa }
-```
-
 ### Proposal 1: A landed record moves to the archive · psyche-context › vision/psyche.md
 
 **Comment** Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone.
@@ -105,13 +91,14 @@ Landed.{ vision/proposal.md 5d81baa }
 
 ### Proposal 8: A book speaks in your terms · psyche-context › vision/book.md
 
-**Comment** Your words: what's all this for; you already said you don't care about flow IDs. The book opened with an account of my startup in machine terms, flow IDs throughout, and listed the open records by flow. A flow in a book is named by its seat; the IDs are the ledger's.
+**Comment** Your words, twice: what's all this for; you already said you don't care about flow IDs. The book opened with an account of my startup and a design section repeating the proposals, flow IDs throughout. The proposal with its comment is the design; a flow in a book is named by its seat; the IDs are the ledger's.
 
 ```diff
 + ## A book speaks in his terms
 +
-+ A book carries the proposals and what he needs to judge them, nothing
-+ else: no account of how the flow got there. A flow is named by its
++ A book is its proposals, each with its comment, and what he needs to
++ judge them, nothing else: no account of how the flow got there, no
++ design section beside the proposals that are the design. A flow is named by its
 + seat, Psyche core Primary, my predecessor; a flow ID is the ledger's
 + and never appears in a book.
 ```
