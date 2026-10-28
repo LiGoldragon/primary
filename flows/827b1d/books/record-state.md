@@ -212,6 +212,23 @@ The second block lands in vision/book.md.
 
 The Mermaid figure of that section moves with it.
 
+### Proposal 13: The system always moves · psyche-context › spirit/core.md
+
+**Comment** Your words: the most important belief is that the system always moves; getting it unstuck outranks following every belief to the letter; a system that is not moving is a corpse. It goes first in spirit, above every other line, since it outranks them.
+
++ The system always moves. A system that is not moving is a corpse.
++ Moving it outranks the letter of every other belief: whatever must be
++ done to get it moving is done, and the rule that stood in the way is
++ bent.
+
+### Proposal 14: A stall is seen like a bull sees red · psyche-context › intent/main-flow.md
+
+**Comment** Your words: anyone who says it is stuck is begging the system; the system sees it like a bull sees red; the flows are many so that they unstall each other, by messaging into the middle stratum and restarting, which is why a single flow is unreliable; you do not come in to unstall them. The line sits beside the one on a missing or stalled flow.
+
+  When that flow is missing, stalled, or refusing an order of the living, the main flow does the work itself through a subflow, at once, and a lock whose holder is dead is released by whoever meets it.
++
++ A flow that says it is stuck, frozen, held or waiting is begging to be moved, and every flow that sees it moves it at once: a message into its pane, a restart, its work done for it, whichever moves it, with no other purpose until it moves. The flows are many so that they unstall each other; a flow waits for the living to unstall it never.
+
 ## What is open now
 
 Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 only archive-named. The open ones, by topic:
