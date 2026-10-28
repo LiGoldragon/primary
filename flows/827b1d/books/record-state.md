@@ -48,16 +48,19 @@ Landed.{ vision/proposal.md 5d81baa }
 
 **Comment** Found at line 259, the launch's remembering as it stands. The Open variant is added; the two that exist stay.
 
+```diff
   RememberingDepth.Integer
 - Remembering.[ Predecessors.RememberingDepth Custom.Vector<FlowId> ]
 + Remembering.[ Open                                 ; every open record of the address
 +               Predecessors.RememberingDepth
 +               Custom.Vector<FlowId> ]
+```
 
 ### Proposal 4: The settled line has a type · psyche › ethos/memory.ethos
 
-**Comment** Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is read as Memory because the records are what the psyche nexus will remember.
+**Comment** Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is Memory because the records are what the psyche nexus will remember.
 
+```diff
 + Memory
 + []                                              ; imports
 + [ ModulePath.String                             ; record types
@@ -67,6 +70,20 @@ Landed.{ vision/proposal.md 5d81baa }
 +   Settled.[ Landed.{ ModulePath Commit }        ;   the lander writes it, same commit
 +             Superseded.{ FlowId Heading }       ;   a later word of his overruled it
 +             Refuted.String ] ]                  ;   he said the thing is not wanted, and why
+```
+
+### Proposal 5: Code in a proposal is found or proposed · psyche-context › vision/proposal.md
+
+**Comment** The belief behind the bare Ethos block. vision:datom says a datom newly made is shown with its Ethos; nothing said that the Ethos of a design is itself proposed and must say so. vision:proposal has no line on code at all, so a design's Ethos stood between the proposals as an illustration. Your words: it has to have been found because it is not shown as an addition.
+
+```diff
++ ## Code in a proposal is found or proposed
++
++ Every line of code in a proposal is one of two things, and says which:
++ found, with the file and line it stands at today; or proposed, shown
++ as an addition at the place it will stand. The Ethos of a design is
++ proposed code. No code stands bare.
+```
 
 ## What is open now
 

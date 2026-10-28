@@ -6,22 +6,7 @@
 <p>A raw record is written once and nothing ever says what became of it. My launch gave me 7459f3's model-roles and proposal records, both landed and pushed hours earlier, because remembering picks by flow and depth, not by state. It gave me none of the 73 records across twelve flows that no module line answers yet, because they sit in other flows' files. 7459f3 patched this by hand: it renamed landed files to <code>archive-*.md</code> and put "Landed in …" on top of some. Twenty-five records are archive-named with no note; the rename moved them and said nothing.</p>
 <h2>The design</h2>
 <p>The record is the thing; a file is only how a flow is handed context. A record that lands moves out of its open file into the archive file of the same topic, in a separate directory, and carries there one line saying what became of it: Landed, with the module and the commit, written by the lander in the commit that lands it; Superseded, by the record that overruled it; Refuted, with your reason. An open record carries nothing, and the open file is what a fresh flow reads whole. Location answers open or settled by one query; the line answers what became of it. The hand-renamed <code>archive-*.md</code> files are undone: their open records go back to the topic file, their landed ones to the archive with their line. In the long term the records live in the psyche nexus and the state is a field of the record.</p>
-<p>The Ethos:</p>
-<pre data-diff><code class="language-ethos">Library
-[]                                               ; imports
-[ ModulePath.String                              ; types
-  Commit.String
-  FlowId.String
-  Heading.String
-  Settled.[ Landed.{ ModulePath Commit }         ;   the lander writes it, same commit
-            Superseded.{ FlowId Heading }        ;   a later word of his overruled it
-            Refuted.String ]                     ;   he said the thing is not wanted, and why
-  Remembering.[ Open                             ;   every open record of the address
-                Predecessors.Integer
-                Custom.Vector&lt;FlowId&gt; ] ]
-[]                                               ; traits
-[]                                               ; associations</code></pre>
-<p>The line, as it sits under an archived record's heading today:</p>
+<p>The Ethos is found nowhere: both types are proposed, in Proposals 3 and 4 below. Today the line under an archived record's heading is written by hand as datom:</p>
 <pre data-diff><code class="language-datom">Landed.{ vision/proposal.md 5d81baa }</code></pre>
 <article class="proposal"><header><span class="pnum">1</span><h2>A landed record moves to the archive · psyche-context › vision/psyche.md</h2></header>
 <aside class="comment"><p>Your words: a file is not a thing; the parts that are landed are moved into the otherwise fixed file, in a different directory, so what has landed and what is believed open are easy to query. The archive renames are undone.</p></aside>
@@ -30,6 +15,14 @@
 <article class="proposal"><header><span class="pnum">2</span><h2>Remembering selects by state · psyche-context › vision/remembering.md</h2></header>
 <aside class="comment"><p>Your words: you were given things already settled and not the things that were not settled. The launch gains an Open remembering; depth remains for the transcript.</p></aside>
 <div class="diff"><div class="add"><ins><h4>A fresh flow receives what is open</h4></ins></div><div class="add"><ins><p>A remembering of Open gives a fresh flow every open record of its address, from every flow that wrote one, and a one-line index of the archived ones: heading and state. Depth and named flows remain for reaching a transcript.</p></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>Remembering gains Open · signal-flow › ethos/signal.ethos</h2></header>
+<aside class="comment"><p>Found at line 259, the launch's remembering as it stands. The Open variant is added; the two that exist stay.</p></aside>
+<div class="diff"><div class="ctx"><p>RememberingDepth.Integer</p></div><p>Remembering.[ <del>Predecessors.RememberingDepth Custom.Vector&lt;FlowId&gt; ]</del><ins>Open                                 ; every open record of the address</ins></p><div class="add"><ins><p>Predecessors.RememberingDepth</p></ins></div><div class="add"><ins><p>Custom.Vector&lt;FlowId&gt; ]</p></ins></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">4</span><h2>The settled line has a type · psyche › ethos/memory.ethos</h2></header>
+<aside class="comment"><p>Found nowhere. The psyche crate has no ethos yet; this is its first file, and the type of the line written by hand today. It is read as Memory because the records are what the psyche nexus will remember.</p></aside>
+<div class="diff"><div class="add"><ins><p>Memory []                                              ; imports [ ModulePath.String                             ; record types Commit.String FlowId.String Heading.String Settled.[ Landed.{ ModulePath Commit }        ;   the lander writes it, same commit</p></ins></div><div class="add"><ins><p>Superseded.{ FlowId Heading }       ;   a later word of his overruled it</p></ins></div><div class="add"><ins><p>Refuted.String ] ]                  ;   he said the thing is not wanted, and why</p></ins></div></div>
 </article>
 <h2>What is open now</h2>
 <p>Sonnet matched every record since 2026-10-26 against psyche-context by distinctive phrase; the modules paraphrase, so Open means no line found, not proof of none. Of 136 records: 73 open, 34 landed, 29 archive-named. The open ones, by flow:</p>
