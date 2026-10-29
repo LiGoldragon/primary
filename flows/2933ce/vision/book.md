@@ -1,0 +1,6 @@
+# Book
+
+## 2026-10-29 — A book is made right by its training, not by a checking tool; the instruction is clear and leaves the format free to evolve
+Context: the living, direct to Psyche core Primary f6637e, 2026-10-29, after the Primary said the book builder should refuse what is outside its grammar; relayed by that Primary. Also bears on belief-modules and training. The Primary is rewriting the book role text itself.
+
+> I don't think you should rely too much on this tool you apparently use to check the book or whatever. Proper training, even by the least costly model, should yield a very reliable outcome. I think if anything is faulty we just need to fix the training. Ideally we don't want to also just keep adding a bunch of instructions that end up contradicting themselves, which happens when machines just keep piling on the instructions. Maybe you want to take a look yourself at this book publishing instruction and re-render a better version: one that is clear and unambiguous, with little or no ghost effect detectable, and which guides what we want. It shouldn't be so tyrannical that it prevents the book format from evolving. If it sets too much in stone then we end up paralyzing the evolution of things. Do you understand what I'm saying?

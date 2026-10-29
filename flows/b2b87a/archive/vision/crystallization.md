@@ -31,3 +31,4 @@ Thread d79835f1, on "A vision record is made from his words alone; a line met in
 good
 
 Landed in vision/crystallization.md: «A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision.»
+

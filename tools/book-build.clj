@@ -59,11 +59,15 @@
     (if (== x (Math/floor x)) (str (long x)) (str x))))
 
 (defn inline
-  "Escape text; turn `code` into <code> and **bold** into <strong>."
+  "Escape text; turn `code` into <code>, [text](url) into a link, and **bold** into <strong>."
   [text]
   (let [m (re-matcher #"`([^`]+)`" text)
         sb (StringBuilder.)
-        esc (fn [t] (str/replace (esc t) #"\*\*(?=\S)(.+?)(?<=\S)\*\*" "<strong>$1</strong>"))]
+        ;; the url is escaped by esc; the pattern excludes quotes, so it stays inside href
+        esc (fn [t] (-> (esc t)
+                        (str/replace #"\[([^\]]+)\]\((https?://[^\s)\"']+)\)"
+                                     (fn [[_ label url]] (str "<a href=\"" url "\">" label "</a>")))
+                        (str/replace #"\*\*(?=\S)(.+?)(?<=\S)\*\*" "<strong>$1</strong>")))]
     (loop [pos 0]
       (if (.find m)
         (do (.append sb (esc (subs text pos (.start m))))

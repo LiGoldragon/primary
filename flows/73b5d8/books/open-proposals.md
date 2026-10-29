@@ -6,6 +6,8 @@ Designed by Fable 5.1, inventory by Opus 5.5, extraction by Sonnet 5.5.
 
 Every proposal not yet ruled, from nine books and this flow, redone as lines; 44 to 51 added by 554e1a from the remembering audit. A book this supersedes is closed: Modules by role and function (both editions), Belief composition, Three nexuses, Hard words proposal 2, Energy third edition, His words enter at the middle stratum, The book role rewritten, Anger second edition proposal 1, Only the link proposal 2, Night rulings 2 to 6, Five Flow proposals, Record state open sections.
 
+Every proposal not yet ruled, from nine books and this flow, redone as lines. A book this supersedes is closed: Modules by role and function (both editions), Belief composition, Three nexuses, Hard words proposal 2, Energy third edition, His words enter at the middle stratum, The book role rewritten, Anger second edition proposal 1, Only the link proposal 2, Night rulings 2 to 6, Five Flow proposals, Record state open sections.
+
 ### Proposal 1: Address and fault · psyche-context › spirit/core.md
 
 **Comment** Your two rulings of today, written as spirit.
@@ -480,3 +482,4 @@ Letter.{ Order
          { Psyche core Secondary }
          «Review the source packet.» }
 ```
+
