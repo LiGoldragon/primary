@@ -39,13 +39,3 @@ lets make sure codex isnt eating up all the ram; turn off old servers and remove
 Context: the living, same chat, after the Primary ran ps, kill and free itself during the jam.
 
 youre running commands yourself!
-
-## 2026-10-29 — Something keeps trying to start an Obsidian app
-Context: the living, same chat, after obsidian was shelved.
-
-something keeps trying to start an obsidian app
-
-## 2026-10-29 — The laptop's speech-to-text is broken again; it was never fixed properly
-Context: the living, same chat, during the jam.
-
-my STT is broken on the laptop. 100th time. nobody every fixed it properly
