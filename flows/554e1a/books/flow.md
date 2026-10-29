@@ -4,7 +4,7 @@ Presentation.{ «Flow» }
 
 Designed by Fable 5.1, inventory by Opus 5.5, extraction by Sonnet 5.5; split by 554e1a.
 
-This page comes from Everything open and holds one idea: the Flow nexus: its messages, ids, reminders and what a fresh flow receives.
+Superseded: every proposal here is carried in Flow, whole, by the Psyche flow Primary; read that one.
 
 ### Proposal 1: the sender is in the message type · psyche-context › vision/flow.md
 
