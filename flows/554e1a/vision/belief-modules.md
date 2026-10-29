@@ -9,11 +9,6 @@ I would even say it would be great if we could have a main flow that is dedicate
 
 I've been talking about this for several days, but I understand that you're having trouble even discerning up from down right now, so it might be a little bit overwhelming for you to try to make well-functioning software out of the Flow Nexus. Maybe you can try, and obviously this would be passed over right now to the flow making the design, but you would probably be involved in the belief side of things on this.
 
-## 2026-10-29 — A refreshed Primary is neither crippled by missing modules nor confused by wrong ones
-Context: the living, same chat, while the Codex-thread check is out.
-
-And make sure that when you get refreshed, you don't end up crippled by missing modules or confused by modules you shouldn't be loaded with.
-
 ## 2026-10-29 — A flow's brief and default work are composition, not remembering
 Context: the living, same chat, on the line placed in vision:remembering.
 
