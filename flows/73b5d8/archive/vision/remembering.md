@@ -1,3 +1,5 @@
+Landed: psyche-context f9f3242, 2026-10-29.
+
 # Remembering
 
 ## 2026-10-29 — A fresh flow does not read its predecessor's last block
