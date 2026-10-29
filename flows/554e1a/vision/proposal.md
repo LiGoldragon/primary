@@ -4,3 +4,10 @@
 Context: the living, in the Psyche core Primary chat 554e1a, on the Primary's list of what its remembering audit found he had said that no record or proposal held.
 
 Why are you telling me all this? My job is to review proposals, so I don't see any proposals there. I just see a lot of text, and now it has taken my energy just to see this. Do you want me to read that? Is it a proposal? If not, why do you want me to read it? If it's not a proposal, then where are the proposals for it? If there are no proposals for it, then why are we even talking about this?
+
+## 2026-10-29 — The word is proposal; proposal 45 redone without ghosts
+Context: the living, same chat, after the Primary reported the proposal set as "the book" and proposed "What a flow finds reaches the living only as the proposals it yields; a finding that yields no proposal reaches him nowhere."
+
+Why are you talking about a book? The only time we talk about books is when we're talking about how to make them. If I use the word "book" in passing and say "this book," I really should have said "proposal." Try to avoid the word "book" as much as possible. Even when I use the word "book" and you think I mean "proposal," just say "proposal."
+
+In your in-chat proposal that says, "What if Flow finds and reaches the living only as the proposal? It yields," you're kind of on track here, but I can see some ghost effects coming out of this. Be mindful of that and try again. Just put it in a "get it published."
