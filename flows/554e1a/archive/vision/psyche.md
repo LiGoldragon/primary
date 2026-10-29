@@ -19,3 +19,5 @@ We could even introduce, I don't know what we would call it, the naive way would
 Let's say we have problems. Let's say we're in a situation where things are breaking and we need to get the system going again. This is the implementer that would be started to fix things. It could be loaded only with the short vision.
 
 I think that the unmarked type, the vision that does not have short, medium, or long, is actually where we would put the horizon-independent or horizon-insensitive part of the vision. What do you think of all this?
+
+Landed in psyche-context intent/psyche.md (commit c386f58): Vision by horizon, flows/b2b87a/books/horizons.md.
