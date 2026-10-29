@@ -18,3 +18,8 @@ And then, as soon as that's done, I guess you can inform Mind and just see what 
 Maybe a new dedicated flow that can take a deep look at the code and this proposed vision, focusing on the short term: everything that we need to have working right now to have a fairly sane system. If there's anything obviously lacking, he can start working on a branch to fix that. If I agree with the short term, then that could become a candidate for the next improved version, which should build on what's already been built, unless what's been built is actually problematic, right? In which case, I'm all for code being thrown out and rewritten.
 
 Like I said, or maybe you didn't know this, the vision is really what matters, and the implementation can be redone from scratch just from the vision if the vision is good. The code is really secondary in importance to a good vision.
+
+## 2026-10-29 — The unmarked vision is the perennial vision
+Context: the living, in the Psyche core Primary chat b2b87a, on the Primary's offer of the word perennial for the part of a vision with no horizon qualifier.
+
+Yes, perennial is a good term. Let's put that somewhere in the vision so that everybody knows what I'm talking about when I say the perennial vision.
