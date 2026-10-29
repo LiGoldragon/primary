@@ -24,3 +24,8 @@ The ancestor of that psyche nexus was called spirit, and we actually used it for
 Also, I think we should abandon the compensation modules and redefine what the mind beliefs are. I would like all of these psyche context, mind context, and field context repos to be renamed with belief instead of context, because that's what we call them now, and it's more in line. It's easier to understand.
 
 Anyway, I feel like I'm talking too much, but just write me a proposal for this because it's a lot to cover, and we have to start crystallizing some stuff around this.
+
+## 2026-10-29 — Non-essential flows shelved: research and obsidian
+Context: the living, same chat, while his laptop was jamming.
+
+lets shelf non-essential flows: research and obsidian (synching isnt interesting; shelf obsidian for now)
