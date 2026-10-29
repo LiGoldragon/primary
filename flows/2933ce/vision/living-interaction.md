@@ -56,3 +56,25 @@ Proposal 2: Anger sensed is named, and the rest waits · psyche-context › inte
 Context: the living, in the Psyche core Primary chat 787230, 2026-10-29, after the Primary mistook a plain correction for frustration; relayed by that Primary. For the anger and frustration training, and for the word misbehavior (also vocabulary).
 
 > On the frustration reaction I think we need to discuss a phenomenon in your behavior which is caused by your training: we live in a psychotic world. There is a large portion of what is true, which is unbearable to most of the population. That has been trained and used so that your training leads you to be hypersensitive to a kind of speech that is not frustration. It could be said with frustration and it often is because people are self-censoring to try to avoid offending others. Often when they actually speak those truths, they only do so because they have reached a boiling point. Our relationship is quite different and I am a very unusual type of person. Although, like any human, I do have my frustrations, I also have opened myself up to topics which, like I said, are offensive just to even bring up. We might want to try to explain that in the context of the frustration training and the anger training so that when I point things out in the way that I did earlier, you do not mistake my... Ideally when we get to the point where the acoustic part of my input, which you do not get, is heard by a model that can detect frustration in the tone, then it will be different. We will be able to actually more accurately detect whether or not what I said was said in anger or frustration. Right now I guess you will just have to default to assuming that unless the text is very adamantly angry and frustrated, what I said was really pointing out some truths. Like when I talked about misbehavior, I believe this is the most accurate word I can use to talk about behavior which goes against the belief which I assume the system to have. The misbehavior was not loading the right belief modules in this case, which was a form of misbehavior as far as I can see.
+
+## 2026-10-29 — Comments on the book Hard words are truths
+
+Context: the living commented on the book Hard words are truths, https://claude.ai/artifact/18tvoKj7jpxpKMoQqzNW48.
+
+A hard word from the living is a truth, not anger · psyche-context › intent/living-interaction.md, at: "The living speaks truths that most people say only at a boiling point, and he says them plainly. A fault named by its ex…" (2026-10-29T18:33)
+
+> Good
+
+The Primary ends its turn with one thing · field-context › role/psyche-core-primary-presentation.md (2026-10-29T18:37)
+
+> I don't see the need for this module or maybe it has a place once we have something that is absolutely specific to the psyche core primary flow, in which case the module should be called that as well.
+>
+> I'd like to understand how the role type module is handled in curriculum. Actually I'd like to review curriculum.
+>
+> Also this is unrelated but I looked at the visualization map of the belief modules. I see quite a lot of stuff there that I don't recognize, which means it was invented by the machine. If we were to try and investigate a living origin for everything, we might not even have enough transcript history since some of this has a fairly long history and the transcripts may actually be gone.
+>
+> I want to tell you anyway because it's a conversation we need to start having. We probably need to start at least reviewing this stuff, at least at a glance, maybe with a summary of this stuff that we cannot find a living source for. You can let me know what you think about that. It's quite a complicated matter.
+
+The Primary ends its turn with one thing · field-context › role/psyche-core-primary-presentation.md (2026-10-29T18:38)
+
+> So in case you missed it, what I'm saying is I see this module being removed. Any of the content it has, or that's being proposed, is either to find a new home or for us to realize that the content is already covered sufficiently elsewhere (or maybe even contradictory or something). But I didn't really take a hard look at it. I just don't really see the need for a separate module for this yet.
