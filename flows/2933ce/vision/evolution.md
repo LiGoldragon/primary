@@ -1,0 +1,6 @@
+# Evolution
+
+## 2026-10-29 — Mind keeps evolving on the Codex usage, Field deploys what is audited; usage is managed programmatically (long term)
+Context: the living, direct to Psyche core Primary f6637e, 2026-10-29, after the Half done book; relayed by that Primary. Also bears on deployment, model-roles and usage. The last paragraph is long-term vision on usage management.
+
+> So you said something is with secondary but are you just passing things to secondary and then nothing happens? Or is your mind working on something? It should be. We have so much codex usage. Let's keep evolving here and then get Field to, once you've audited, actually deploy these things. That's what I would do. The work that I'm creating with you is the most important engineering work in the world right now. Let's make sure: if anything, Anthropic and OpenAI should be giving us as much AI usage as we want for free, for the good of the world. Let's at least get what's due to us, as much as we can, and maximize usage. Ideally soon we can design a programmatic system that helps you to manage usage so that we can both get our money's worth and always have spare usage (especially with you) so that I can at least discuss my ideas and review them with you.
