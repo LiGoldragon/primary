@@ -34,3 +34,8 @@ lets shelf non-essential flows: research and obsidian (synching isnt interesting
 Context: the living, same chat, right after.
 
 lets make sure codex isnt eating up all the ram; turn off old servers and remove all the old flows
+
+## 2026-10-29 — The Primary ran commands itself
+Context: the living, same chat, after the Primary ran ps, kill and free itself during the jam.
+
+youre running commands yourself!
