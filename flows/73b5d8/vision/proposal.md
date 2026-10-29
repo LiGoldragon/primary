@@ -26,8 +26,3 @@ Context: the living, same chat, on the proposed line "A book is read back agains
 No, no, no, the book is not read back. For you to write a proposal that is not a proposal is a failure. If you need to look at your failure to realize it's a failure, then you're misbehaving in creating the failure in the first place.
 
 If you shoot someone in the head, you can't look at the corpse and say, "Oh, whoops, I shouldn't have shot that person. Now he's dead." There's no going back so we can't do that. Sure you can cry over the dead body but that's not going to bring back the dead.
-
-## 2026-10-29 — The failure is in the proposal, not the book
-Context: the living, same chat, after the Primary spoke of books written wrong.
-
-I'm not talking about books here. I'm talking about proposals. Do you understand the difference?
