@@ -10,7 +10,7 @@ Tertiary audit for b2b118. Marks: [W] witnessed (file:line or command), [I] infe
 - [W] The Primary's local checkout (HEAD 9ca5f1b41) and origin/main (790aae4d0 when read) have diverged: `git rev-list --count origin/main..HEAD` = 57, `HEAD..origin/main` = 42. Records the Secondaries wrote (for example flows/046782/vision/*, flows/9aaaba/vision/belief-modules.md, flows/7459f3/vision/*, flows/2933ce/vision/energy.md and proposal.md, flows/87f1ee/what-he-wanted.md) are in the local history and absent from origin/main (`ls` on a worktree at origin/main). Record paths below are local-HEAD paths; "(not on origin/main)" marks the ones I checked.
 - [W] The Curriculum checkouts under /home/li/.local/state/curriculum-context/ are at psyche-context 6f70281, mind-context 95c90eb, field-context f02af7a, each equal to its `refs/remotes/origin/main`. A module's identity is its path: `intent/living-interaction.md` is `intent:living-interaction`. The only registry file in the checkouts is field-context/roles.datom (subflow roles, hyphen IDs); the served module set is the file tree. 151 module files: 40 vision, 16 intent, 2 spirit, 44 knowledge, 34 role, 11 compensation, 4 evidence.
 - [W] The declarations live in the Flow Nexus Configuration, not in a repository file. repos/flow has no declaration; repos/flow-data holds a README only; the local CriomOS-home checkout is at 437455a4 (2026-10-22), 21 commits behind origin and lacks the source commits named in configuration-today.md (`git cat-file -t c1a0b09...` fails). So the live declarations come from /home/li/primary/flows/b2b118/reports/configuration-today.md (it was present when I looked; no wait was needed), and the pre-today baseline is /home/li/.local/state/curriculum-040/flow-040-configuration-before-2026-10-27.datom. "Since the declaration was ruled" is read as "since that 10-27 snapshot"; the date the living ruled each row is not recorded anywhere I found [I].
-- Sections 1 and 2 cover what I read: the commit log of the three context repos since 2026-10-28 and the records those commits trace to. There are 184 dated headings from 10-28/29 in flows/*/vision, archive, notion. I read about half in full; the rest by heading only. "Source not located" means I did not find his approving words; it does not mean none exist.
+- Sections 1 and 2 cover what I read: the commit log of the three context repos since 2026-10-28 and the records those commits trace to. There are 184 dated headings from 10-28/29 in flows/*/vision, archive, notion. Stage 3 (after the origin/main reconciliation, which brought in the local-only records) read in full the half first read by heading only: 2933ce {belief-modules,book,energy,evolution,messaging,psyche,remembering,vocabulary} and notion/messaging; 554e1a {belief-modules,collaboration,flow,remembering,proposal}; 73b5d8 {belief-modules,evolution,flow,proposal,psyche,remembering}; 787230 {anatomy,evolution,messaging,model-roles,proposal}; 7b6597/design; 827b1d {book,flow,living-interaction,main-flow,proposal}; b2b87a {field,design,messaging,belief-modules} and notion/belief-modules; b49eaf {archive-messaging,book,energy,ethos,flow-nexus,main-flow,model-roles,psyche,remembering,spirit,vocabulary}, all under flows/<id>/vision/. 177 dated 10-28/29 headings are in the tree at origin/main (8202485) after the archive moves. "Source not located" means I did not find his approving words; it does not mean none exist.
 
 ## 1. Lines the living approved since 2026-10-28
 
@@ -57,7 +57,7 @@ Landing commit is the context-repo commit (`git log` in the checkout). Approval 
 | Line | Approved where | Landed |
 |---|---|---|
 | Evolution is the dynamic procedure of improvement and redeployment | flows/2933ce/vision/vocabulary.md:3 (his word); flows/2933ce/vision/living-interaction.md "Comments on the book Anger, and the word evolution", 17:10 "Good" [W] | 2eff0f9 |
-| Obsidian sync, comments, hosts, self-hosted sync, app (five modules) | words not located; flows/554e1a/vision/proposal.md:30,35 name Obsidian as the medium for proposals [I] | b6af9b8, 95c90eb |
+| Obsidian sync, comments, hosts, self-hosted sync, app (five modules) | flows/554e1a/vision/proposal.md "Proposals are written and commented in Obsidian, not Claude artifacts" and "A fresh Psyche pair, then a Mind pair, on Obsidian" (his order) [W]; his approval of the module texts not located | b6af9b8, 95c90eb |
 | Curriculum context serving route (knowledge/nexus.md) | not located; reads as a Mind report, not an approval [I] | 35a46aa |
 
 ### Field context (field-context)
@@ -66,18 +66,22 @@ Landing commit is the context-repo commit (`git log` in the checkout). Approval 
 |---|---|---|
 | Landing archives each drawn-on record in its commit | follows from the approved P2 above [I] | 76fe780 |
 | Comment relay: each comment byte for byte, the older preserve clause goes | not located | 1194e49, f02af7a |
-| psyche-core-primary-presentation: the pane answers the living | not located; see section 1 unlanded (he asks for this module's removal) | 77feb34 |
+| psyche-core-primary-presentation: the pane answers the living | not located; he asked for its removal (flows/2933ce/archive/vision/living-interaction.md, "Comments on the book Hard words are truths", 18:37, 18:38) | 77feb34; removed in b31f587 |
 | Typed configuration discovery and routed notifications | not located | 0ccd7b0 |
 
 ### Approved or ordered, unlanded in the checkouts
 
 | Line | Where | State |
 |---|---|---|
-| The pulse is never shorter than an hour | flows/046782/vision/flow.md:3 | unlanded; proposal 3 of flow-composition |
-| Everything is urgent | flows/7b6597/vision/belief-modules.md:15 | unlanded; proposal 3 |
-| A harness-blacklisted module removes the harness's shell-preference line | flows/046782/vision/flow.md:8 | unlanded; proposal 11 |
-| Remove the psyche-core-primary-presentation module (2933ce, 18:37 and 18:38) | flows/2933ce/vision/living-interaction.md, last section | unlanded; field-context role/psyche-core-primary-presentation.md still present [W: file listing] |
-| Anger as a core belief | flows/2933ce/vision/living-interaction.md:3 "make this part of the core belief" | only the intent line landed (a836e1c); spirit/core.md has no anger line [W: grep] |
+| The pulse is never shorter than an hour | flows/046782/vision/flow.md:3 "dont make the pulse shorter than an hour" | UNLANDED by the stage 2 lander: his words fix the content but not the line or the module; the line and intent/main-flow.md come from the machine's flow-composition proposal 3, which has no recorded approval |
+| Everything is urgent | flows/7b6597/vision/belief-modules.md:15 "Oh, you're wrong. Everything is urgent." | UNLANDED: no line or destination in his words; proposal 3's wording is the machine's |
+| A harness-blacklisted module removes the harness's shell-preference line | flows/046782/vision/flow.md:8 | UNLANDED: his words name a mechanism, not a module or its text; proposal 11's text is the machine's |
+| Remove the psyche-core-primary-presentation module (2933ce, 18:37 and 18:38) | flows/2933ce/archive/vision/living-interaction.md | LANDED: field-context b31f587 deleted role/psyche-core-primary-presentation.md; served by Curriculum (role-psyche-core-primary-presentation: missing module) |
+| Anger as a core belief | flows/2933ce/archive/vision/living-interaction.md, "make this part of the core belief"; "Good" on the redone line (Four spirit lines, Anger yields nothing good) | LANDED: psyche-context 2dc7d42 spirit/core.md "Anger yields nothing good, between any two beings." |
+| Energy is the measure; the implementation is retaken; address to the whole self; a fault in conduct is a fault in belief | flows/b2b87a/archive/vision/spirit.md (five rulings, 23:01-23:03; the two to intent, one to spirit:psyche, two good) | LANDED: psyche-context 2dc7d42 (spirit/core.md, new spirit/psyche.md, intent/living-interaction.md, intent/belief-modules.md); spirit-psyche served at 2dc7d42 |
+| His words are retrievable once every machine message in a pane is datom | flows/2933ce/vision/messaging.md "Right and that's a really good line to land somewhere" | unlanded; the line's destination is not in his words |
+| Every flow starts with the proper modules; modules that do not serve a flow leave it; the Artifact tool and its prompt leave every Claude flow but the publishing one | flows/554e1a/vision/belief-modules.md (three sections, orders) | unlanded as belief; an order carried by the configuration work |
+| The system never freezes; better to break things than stop acting | flows/b49eaf/vision/spirit.md, flows/827b1d/vision/flow.md | the spirit line "A thinking machine keeps acting" is in spirit/core.md (c984eeb) [I]; whether it holds his "high-level spirit" request fully is not settled |
 | Only the Psyche core Secondary messages the Psyche core Primary | flows/b2b87a/vision/messaging.md:3 | order; the line in vision/messaging.md and model-roles keeps the practice wording |
 | A proposal's signature names each model with its version | flows/2933ce/vision/proposal.md:3 | vision/proposal.md:39 names "the model"; version number not checked [I] |
 | Mind Primary writes the code; Secondary is its secretary | flows/b49eaf/vision/model-roles.md:8 | not in a landed module; proposal 9 of flow-composition |
@@ -91,20 +95,22 @@ Archived (in flows/<id>/archive/vision/, [W] on origin/main and local):
 - flows/73b5d8/archive/vision/{belief-modules,remembering}.md
 - flows/787230/archive/vision/living-interaction.md
 - flows/827b1d/archive/vision/psyche.md
-- flows/b2b87a/archive/vision/{crystallization,design,flow,psyche}.md
+- flows/b2b87a/archive/vision/{crystallization,design,flow,psyche,spirit}.md (spirit added in 8202485, landed 2dc7d42)
+- flows/73b5d8/archive/vision/spirit.md and the anger, anger-second-edition and hard-words sections of flows/2933ce/archive/vision/living-interaction.md (8202485; landed 2dc7d42 and b31f587)
 
 Not archived though a line of it landed:
 - flows/b2b87a/vision/crystallization.md (P3, landed bb73fbe)
 - flows/b2b87a/vision/psyche.md (perennial, landed 6f70281; also holds unlanded words on the Flow redo)
-- flows/2933ce/vision/living-interaction.md and vocabulary.md (anger a836e1c, hard words 52aae3f, evolution 2eff0f9)
+- flows/2933ce/vision/vocabulary.md (evolution 2eff0f9); the rest of flows/2933ce/vision/living-interaction.md holds unlanded words
 - flows/2933ce/vision/proposal.md (Briefness 02990c0); flows/2933ce/vision/energy.md
 - flows/7b6597/vision/{belief-modules,records,model-roles}.md (beads, fable; 632e2d0, d8a1b83)
 - flows/046782/vision/belief-modules.md (150e598, f2b0047)
 - flows/9aaaba/vision/{belief-modules,flow,book,memory}.md (d8a1b83, 661f31f, 1d3c853, 536a903)
-- flows/b49eaf/vision/{messaging,proposal,model-roles}.md (31655ef, 5d81baa)
+- flows/b49eaf/vision/{messaging,proposal,model-roles}.md (31655ef, 5d81baa); flows/b49eaf/vision/{energy,psyche}.md (comments behind 0162bb2 and the 2dc7d42 implementation line; the energy comments also hold unlanded long-term Fable words) [W, read in full in stage 3]
 - flows/7459f3/vision/archive-{model-roles,living-interaction,spirit}.md (6642b8c, ba3989c, 0ed3ad8): file names say archive-, the directory is vision/, not archive/vision/
 - flows/787230/vision/belief-modules.md (228c47e)
 - flows/554e1a/vision/living-interaction.md
+- Read in full in stage 3 and holding no approval beyond the above: 2933ce {belief-modules,book,energy,evolution,psyche,remembering}, 554e1a {collaboration,flow,remembering,proposal}, 73b5d8 {belief-modules,evolution,flow,proposal,psyche,remembering}, 787230 {anatomy,evolution,messaging,model-roles,proposal}, 7b6597/design, 827b1d {book,flow,living-interaction,main-flow,proposal}, b2b87a {field,messaging}, b49eaf {archive-messaging,book,ethos,flow-nexus,main-flow,vocabulary}: his words, orders and comments awaiting a proposal, not approvals [W].
 - Books and answers carrying approvals: flows/87f1ee/{answers-to-comments,energy-second,what-he-wanted}.md.
 [W] by `ls` at local HEAD; the b2b87a archive of psyche/design/flow was confirmed on origin/main. [I] "Not archived" for the rest: the rule that a landing archives its records (08643f3) came on 10-29 and these landings mostly precede it.
 
