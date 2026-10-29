@@ -23,3 +23,14 @@ Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29T16:52:45Z;
 
 ## 2026-10-29 — The chat beside a book carries its link alone
 See energy.md, same date: the living to Psyche core Primary f6637e on reading the book to him in chat.
+
+## 2026-10-29 — Comments on the book Anger, and the word evolution
+Context: the living, on the book Anger, and the word evolution (https://claude.ai/artifact/Pi1XkXJAyJFzExkZq2CD5x), two comments, both 2026-10-29T17:10; relayed to Psyche core Primary.
+
+Section "Anger is named, and nothing else is said" (psyche-context › spirit/core.md), at "Anger carries no message worth…", 2026-10-29T17:10:
+
+> This is ambiguous and not quite what I was trying to say. I'm not sure who "he" is in parts of the sentences. Is it the flow? Is it the living? Who's waiting for who? What are they waiting for? This doesn't really embody what I said so do you want to reconsider what I said and try again?
+
+Section "Evolution is a defined word" (mind-context › knowledge/vocabulary.md), at "Evolution is the dynamic procedure of i…", 2026-10-29T17:10:
+
+> Good
