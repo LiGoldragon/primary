@@ -13,3 +13,13 @@ I've been talking about this for several days, but I understand that you're havi
 Context: the living, same chat, while the Codex-thread check is out.
 
 And make sure that when you get refreshed, you don't end up crippled by missing modules or confused by modules you shouldn't be loaded with.
+
+## 2026-10-29 — A flow's brief and default work are composition, not remembering
+Context: the living, same chat, on the line placed in vision:remembering.
+
+And the things I said are not about remembering because they deal with how a flow is composed before it started, not what a flow does after it started, which is what remembering is.
+
+## 2026-10-29 — Every flow starts with the proper modules
+Context: the living, same chat, after the Primary's own declaration was ruled.
+
+Make sure all of the flows are configured with the proper modules that they should have when they start.

@@ -145,3 +145,9 @@ This page comes from Everything open and holds one idea: how flows are composed:
 
   The basic modules give our own take on how an agent behaves in a harness, replacing the prompt the harnesses build in.
 + A harness-blacklisted module, one per harness version, names the lines that harness puts into a flow's base context which are not ours, and says each is void; Flow composes it into every flow of that harness, so a blacklisted line never reaches a flow unanswered.
+
+### Proposal 12: a flow is composed of modules and logs; a brief is optional · psyche-context › vision/composition.md
+
+**Comment** Your words of tonight, when I said I would write my successor's brief; this is composition, what a flow is made of before it starts, so it sits in vision:composition beside proposal 6: the new flow gets context modules and vision logs, and knows its work by its aspect; a brief is optional, a topic flow likely gets one, and without one it works its topic.
+
++ A flow is composed before it starts, of its declaration's modules and the logs its launch names; a brief is optional; a flow started without one knows its work by its aspect and its topic: a Psyche flow reviews its presentation or makes a new one; a Mind flow reviews its past work, or implements and tests; a Field flow reviews the system and sees that everything works; a topic flow works its topic.

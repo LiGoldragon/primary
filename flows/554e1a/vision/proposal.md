@@ -21,3 +21,8 @@ Also, I don't like the tendency that you sometimes have, which you're now showin
 Context: the living, 21:05, comment on the header of Flow, whole.
 
 I also don't see the module description, which I should always see if I am asking to see the whole module.
+
+## 2026-10-29 — He does not review proposals in the chat
+Context: the living, same chat, on the remembering line the Primary put in the chat twice.
+
+Sorry, I'm not going to review the proposal in the chat right now. I thought I told you this already.
