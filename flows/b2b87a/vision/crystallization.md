@@ -12,7 +12,7 @@ Thread 27f540ad, two comments, on "The landing of a line archives the raw record
 
 Do we have instructions on how to do that properly, or is that in a module that is a dependency of this one?
 
-If so, then it is good.
+If so, then it's good.
 
 ## 2026-10-29 — P3, vision is logged from his words alone: good
 Thread d79835f1, on "A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision."
@@ -22,4 +22,4 @@ good
 ## 2026-10-29 — P4 lands without the line on repetition for emphasis
 Thread 2769d351, on "A raw record whose every point a later record of his states better is superseded: it moves to the archive with one line naming the record that supersedes it, in a commit naming both. A record he repeated for emphasis stays, and the crystallized line carries that emphasis. A record whose subject is gone from the system is irrelevant and archived the same way."
 
-We do not need the line about repetition for emphasis, so just land it without that line.
+We don't need the line about repetition for emphasis, so just land it without that line.
