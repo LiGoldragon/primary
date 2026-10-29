@@ -39,3 +39,15 @@ Section "Evolution is a defined word" (mind-context › knowledge/vocabulary.md)
 Context: the living, direct to Psyche core Primary f6637e, 2026-10-29; relayed by that Primary. His message ends mid-sentence at the word "you". Also bears on context strata. Answered by the book His words enter at the middle stratum.
 
 > Make sure that whenever you retrieve my words, they're coming in through your middle stratum. If that wasn't the case and you wrote a presentation using my words coming in through your bottom stratum, you reacquire that content in the proper stratum and then reconsider the proposal and you
+
+## 2026-10-29 — Comments on the book Anger, second edition
+
+Context: the living's comments on the book Anger, second edition (https://claude.ai/artifact/GizGiBk9mjfAFNNXNcm1o9), made at 2026-10-29T17:16 and 2026-10-29T17:17.
+
+Proposal 1: Anger yields nothing good · psyche-context › spirit/core.md, at "Anger yields nothing good, between any two beings. Even what must be done is done without it." (2026-10-29T17:16)
+
+> What do you mean, "even what must be done"? I don't follow you there at all. That somebody said that things can only be done with anger, isn't that the opposite of what I just said? You're introducing a ghost effect here. There's a lot of room for misinterpretation.
+
+Proposal 2: Anger sensed is named, and the rest waits · psyche-context › intent/living-interaction.md, at "When a flow senses anger or frustration in the living's words, the flow says that, at once, and nothing else; the rest of his message waits. …" (2026-10-29T17:17)
+
+> Good
