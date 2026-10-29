@@ -44,3 +44,8 @@ youre running commands yourself!
 Context: the living, same chat, after obsidian was shelved.
 
 something keeps trying to start an obsidian app
+
+## 2026-10-29 — The laptop's speech-to-text is broken again; it was never fixed properly
+Context: the living, same chat, during the jam.
+
+my STT is broken on the laptop. 100th time. nobody every fixed it properly
