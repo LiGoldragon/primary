@@ -53,3 +53,12 @@ By a read-demanding subflow (Sonnet) of Psyche obsidian Primary 11b7c0. "gh" mar
 - Whether Remotely Save picks up files written straight to its backend.
 - Stability of LiveSync CLI and obsidian-headless, both recent or beta.
 - How Obsidian Sync or LiveSync resolve a conflict when the agent and the phone edit the same file.
+
+## His hosts, 2026-10-29, by a second read-demanding subflow of 11b7c0
+- This machine is ouranos; prometheus and zeus answer over ssh; tiger and balboa do not resolve; cluster VMs and the phone unchecked.
+- Obsidian is installed and running on none of ouranos, prometheus, zeus: `which obsidian` not found, no nix profile, system bin, store path, config dir, Flatpak or process; no couchdb, livesync or syncthing unit, system or user.
+- No vault of his: the only `.obsidian` directory under depth 6 is in the cloned third-party repo /git/github.com/mattwparas/steel/notes; no git remote under /git/*/*/* names a vault.
+- No LiGoldragon Nix repo (CriomOS, CriomOS-home, goldragon, criomos-horizon-config and others) mentions obsidian, couchdb or livesync.
+- gopass holds `Obsidian/ligoldragon`: an Obsidian account exists; what it carries (a Sync subscription or not) is unknown, the entry was not decrypted.
+- gopass cloud names: digitalocean.com/api-token, cloudflare.com/api-token and token, linode, vultr.com, amazon.com (shopping or AWS, undetermined), goldragon.criome/tailnet/headscale-tls-key. No Hetzner, OVH, Scaleway, Contabo. No cloud CLI on PATH; whether any cloud server runs now is unknown.
+- mind-context/knowledge/obsidian-hosts.md (2c8b6a, commit b6af9b8) claims Headscale running and gitolite enabled on ouranos, no reverse proxy; agrees with the checks above on Obsidian, CouchDB and Syncthing; its other claims were not re-checked here.
