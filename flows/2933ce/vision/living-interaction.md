@@ -10,3 +10,8 @@ Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29T16:30:46Z,
 > Actually I would like to bring this up and make this part of the core belief: if at any point you feel or you get the impression that I'm angry at something, or I'm frustrated at anything or at you, you should bring this up immediately and make it extremely obvious (essentially by not saying anything else). If you're talking to me directly, if we're having a conversation, and you feel like there's any kind of anger or frustration, I want you to bring it up immediately and only bring that up. We can go back to everything else after we address this directly so that either I can catch myself or you can help me catch myself. I can correct any kind of misunderstanding that the frustration or anger might have conveyed or I can explain the misunderstanding and how I'm not actually angry or frustrated.
 >
 > Do you understand what I'm saying?
+
+## 2026-10-29 — An order is read from the time it was given; the night before is no longer now
+Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29; relayed by that Primary as his words. Near noon, on orders from the previous night. For beads and living-interaction.
+
+> Well if you're getting stuff like orders that I gave last night, let's just take a minute here because now it's not last night anymore. Now from the point of view of last night, we're at almost noon tomorrow so that changes things.
