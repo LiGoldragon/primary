@@ -8,3 +8,8 @@ I need my STT back. use both claude and codex to implement two versions of every
 Right after:
 
 we have excessive usage of both claude and codex
+
+## 2026-10-29 — From his idea to implementation tested in production on the same day
+Context: the living, in the Psyche core Primary chat b2b87a, after the reminder idea's route was explained.
+
+Well, there's no reason why we can't go from me having an idea to it being implemented, and then tested in production on the same day, right?
