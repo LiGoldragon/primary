@@ -1,3 +1,5 @@
+Superseded, by flows/ebbe30/vision/messaging.md, which holds the same words of 2026-10-09 whole, the ellipsis here filled.
+
 # Messaging
 
 ## 2026-10-09 — Psyche is conveyed by the psyche-type message, other talk by the message type; both can go in one call

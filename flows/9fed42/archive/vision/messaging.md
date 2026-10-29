@@ -1,3 +1,5 @@
+Superseded, by flows/ebbe30/vision/messaging.md, which holds the same words of 2026-10-09 whole, the ellipsis here filled.
+
 ## Psyche goes in the psyche-type message
 
 Context: relayed by 445410; STT to 445410 on psyche messages.
