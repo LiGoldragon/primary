@@ -8,3 +8,8 @@ I see that the psyche primary flow topic was started. I just happened to glance 
 I would even say it would be great if we could have a main flow that is dedicated to publishing books, so that we can take the tool out, as well as the system prompt that teaches how to use the tool, from all the other Claude main flows, so that they take a bunch of noise out of their context.
 
 I've been talking about this for several days, but I understand that you're having trouble even discerning up from down right now, so it might be a little bit overwhelming for you to try to make well-functioning software out of the Flow Nexus. Maybe you can try, and obviously this would be passed over right now to the flow making the design, but you would probably be involved in the belief side of things on this.
+
+## 2026-10-29 — A refreshed Primary is neither crippled by missing modules nor confused by wrong ones
+Context: the living, same chat, while the Codex-thread check is out.
+
+And make sure that when you get refreshed, you don't end up crippled by missing modules or confused by modules you shouldn't be loaded with.
