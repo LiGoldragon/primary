@@ -1,0 +1,106 @@
+; Obsidian comment read-only projection contract, ruled by Mind obsidian Primary ce1f02.
+; Review Comments 2.1.1 grammar source: c218093c0363bb18f6d939e29ed7a1ace909be89.
+; Review Critic 2.1.1 grammar source: ddf5fe71a429da2deb3cddf0ec23bb782fbbe04f.
+; Owner: new dedicated obsidian-reader repository at /home/li/primary/repos/obsidian-reader.
+; Reader executable: obsidian-reader. Curriculum remains registry-only.
+; Each request explicitly selects one SourceFormat. The reader makes no format inference
+; or fallback, and material not resolved by the selected grammar is never reparsed as another.
+; Parser success alone does not certify a note's format; Critic free text may contain text
+; that resembles Review Comments metadata.
+; Paths are runtime inputs; NotePath echoes the supplied spelling unchanged.
+; SourceExtent is a zero-based half-open UTF-8 byte range in the exact input file.
+; ReviewComments211 emits Anchored entries. Its parsed passage and text use the released
+; unescapeMultiline semantics, and its existing positional reply semantics remain unchanged.
+; RawThread and RawMetadata preserve exact stored source, including escapes.
+; Missing fields remain None; no NOTE, identity, author, date or empty fallback is fabricated.
+; Metadata blocks after the first are positional replies; retain each block's own
+; id and type even when they differ from the first id or are not REPLY.
+; ReviewCritic211 emits Anchored only for a nonempty highlight followed by whitespace and
+; its first comment. The Comment has decoded passage, first Metadata, no replies, and an
+; extent and RawThread covering the exact highlight, gap and comment.
+; Every later or unanchored Critic comment is Standalone Metadata in source order; its
+; SourceExtent and RawMetadata cover the exact whole comment token. Comments are independent.
+; Critic supplies no id, date or type. An absent author is None; an explicitly present author,
+; including an empty one, is Some of its trimmed stored value. The body uses Critic trimming,
+; retains backslashes literally and may be empty. Unicode aliases follow the selected grammar.
+; A Critic empty-highlight candidate is wholly Unparsed; it is not a Comment and its metadata
+; is not discarded. Malformed candidates outside excluded fenced code are likewise Unparsed.
+; Critic fenced-code exclusions and overlapping-token precedence follow the exact release.
+; Critic add, delete and substitution tokens are outside this comment projection.
+; This is lexical extraction, not identity authentication or proof of rendered anchoring.
+; A scanner, not released parseThreads/splitMetaBlocks as a complete parser, owns coverage.
+; Every malformed, truncated or orphan comment delimiter fragment is Unparsed,
+; with exact source, byte extent and reason. Empty passages are Unparsed.
+; Recovery stops immediately before the next independently complete valid thread;
+; no candidate bytes are silently dropped or attributed to two output records.
+; Scan the exact file text; no rendered-Markdown or plugin-UI claim follows.
+; ConflictPath lists only same-directory siblings matching the exact generated
+; Syncthing conflict filename grammar for this note, not the broader existingConflicts glob.
+; Conflict files are listed, not parsed implicitly; a caller reads each explicitly.
+; A matching name is a conflict candidate, not proof of its origin or content.
+; Conflict paths are sorted deterministically; entries and unparsed candidates follow source order.
+; Missing paths, directory paths, unreadable files and invalid UTF-8 return ReadFailed.
+; Reading changes no note, conflict file, plugin setting or vault.
+; This projection request/output vocabulary is a draft. It does not declare a Nexus wire or
+; operation contract, change an executable default, or authorize a production format switch.
+Library
+[]                                                          ; imports: shared names used by the reader vocabulary
+[ ReaderOutput.[                                            ; types: the only output, a readable note or a read failure
+    Observed.Observation
+    ReadFailed.ReadFailure ]
+  SourceFormat.[                                            ;        grammar explicitly selected for one read
+    ReviewComments211
+    ReviewCritic211 ]
+  ReadRequest.{                                             ;        one path interpreted under exactly one grammar
+    NotePath
+    SourceFormat }
+  NotePath.String                                           ;        the requested filesystem path
+  ConflictPath.String                                       ;        a matching sibling Syncthing conflict path
+  Passage.String                                            ;        the decoded selected passage
+  CommentId.String                                          ;        an id exactly as stored
+  Author.String                                             ;        an author exactly as parsed
+  CommentDate.String                                        ;        a date exactly as parsed
+  CommentType.String                                        ;        a type exactly as parsed
+  CommentText.String                                        ;        decoded comment text
+  RawMetadata.String                                        ;        one metadata body exactly as stored
+  RawThread.String                                          ;        one complete thread exactly as stored
+  SourceText.String                                         ;        unparsed source exactly as stored
+  Problem.String                                            ;        a read or parse problem in plain words
+  ByteStart.Integer                                         ;        inclusive UTF-8 byte offset
+  ByteEnd.Integer                                           ;        exclusive UTF-8 byte offset
+  SourceExtent.{                                            ;        one exact half-open source location
+    ByteStart
+    ByteEnd }
+  Metadata.{                                                ;        fields supplied by one stored metadata block
+    Option<CommentId>
+    Option<Author>
+    Option<CommentDate>
+    Option<CommentType>
+    CommentText
+    RawMetadata
+    SourceExtent }
+  Reply.Metadata                                            ;        a later adjacent metadata block, unchanged
+  Comment.{                                                 ;        one released-grammar thread
+    Passage
+    Metadata
+    Vector<Reply>
+    SourceExtent
+    RawThread }
+  Unparsed.{                                                ;        comment-like material outside a complete thread
+    SourceText
+    SourceExtent
+    Problem }
+  CommentEntry.[                                           ;        one source-ordered anchored or standalone comment
+    Anchored.Comment
+    Standalone.Metadata ]
+  Observation.{                                            ;        all projected data found beside the readable note
+    NotePath
+    SourceFormat
+    Vector<CommentEntry>
+    Vector<Unparsed>
+    Vector<ConflictPath> }
+  ReadFailure.{                                            ;        filesystem read failure, with the requested path
+    NotePath
+    Problem } ]
+[]                                                          ; traits: none declared
+[]                                                          ; associations: none declared
