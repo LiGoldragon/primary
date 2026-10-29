@@ -19,3 +19,10 @@ And maybe you need to make sure that your proposals, once you understand what I 
 Context: the living, same chat, on the line "A book holds the module as it stands and the lines proposed into it".
 
 Yes you could optionally present the module as it stands or as parts of it. I guess it all depends on a few factors, which we could work out in yet another proposal, but you could tell me quickly, in a very short paragraph, how you would see or approach such a problem.
+
+## 2026-10-29 — A book is written right, not read back
+Context: the living, same chat, on the proposed line "A book is read back against its shape before its link is given to the living".
+
+No, no, no, the book is not read back. For you to write a proposal that is not a proposal is a failure. If you need to look at your failure to realize it's a failure, then you're misbehaving in creating the failure in the first place.
+
+If you shoot someone in the head, you can't look at the corpse and say, "Oh, whoops, I shouldn't have shot that person. Now he's dead." There's no going back so we can't do that. Sure you can cry over the dead body but that's not going to bring back the dead.
