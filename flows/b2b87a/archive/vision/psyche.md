@@ -33,3 +33,10 @@ Context: the living, 22:43, same page, thread faa5a6c3, on "To an implementer a 
 We could still have proof-of-concept implementations trying to implement the medium term, while someone is trying to keep the short-term implementation, either improving it or fixing it. It's possible that we would have multiple timeframes being implemented, but yes, generally, especially right now, we would focus on the short term. I believe you can make those changes and still land it without my help.
 
 Landed in psyche-context intent/psyche.md (commit c386f58): Vision by horizon, flows/b2b87a/books/horizons.md.
+
+## 2026-10-29 — The unmarked vision is the perennial vision
+Context: the living, in the Psyche core Primary chat b2b87a, on the Primary's offer of the word perennial for the part of a vision with no horizon qualifier.
+
+Yes, perennial is a good term. Let's put that somewhere in the vision so that everybody knows what I'm talking about when I say the perennial vision.
+
+Landed in psyche-context intent/psyche.md (commit 6f70281): the unmarked module is the perennial vision.
