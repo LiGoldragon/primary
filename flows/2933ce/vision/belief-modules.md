@@ -18,3 +18,8 @@ Context: the living, direct to Psyche core Secondary 2933ce, 2026-10-29, after c
 > I started reading the next proposal but then I realized that my previous comments would have an effect. They maybe wouldn't change the content itself but would affect where it's going. Maybe there are a few other things that we talked about that would affect that presentation so Primary can take a fresh look at everything and do it again.
 >
 > With his newly acquired wisdom on the ghost effect and things like that, he makes sure that he is aware of this new ghost effect training and stuff. He makes sure that the new flow was started with all of the new fresh wisdom, the new fresh belief that we worked on so hard yesterday. We're going in the right direction. Good work.
+
+## 2026-10-29 — A fault in behavior is healed in belief by removing first, then replacing, and adding only as a last resort
+Context: the living, direct to Psyche core Primary f6637e, 2026-10-29, after the report that Mind flow Primary ran its tests itself while its Secondary sat idle; relayed by that Primary. Also bears on psyche and spirit; the Primary gave a one-line spirit proposal in chat.
+
+> Well if we're finding faults in the behavior of mind in terms of the secondary not doing enough, then we should look at fixing the belief first: by removing (as always), then by replacing, and then by adding as a last resort. Let's review that concept. We could make that quite a high-level belief editing rule: must favor removal first since any additional belief adds to the cost, possible noise, and possible ghost effects.
