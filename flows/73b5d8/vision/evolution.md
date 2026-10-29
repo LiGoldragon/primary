@@ -11,3 +11,8 @@ Like I said earlier you don't seem to take your evolution very seriously. This i
 Context: the living, same chat, after the Primary reported 0.40.6 on Mind flow Primary's integration branch, undeployed.
 
 And who knows, there might be even yet another version. It sounded like the work was getting sprawled, which is also a problem.
+
+## 2026-10-29 — "You" names the whole machine
+Context: the living, same chat, after the Primary answered his evolution charge as if it named this one flow.
+
+I wouldn't look. There's another failure. When I say "you" I don't mean this one specific flow, right? I thought that you already had that belief.
