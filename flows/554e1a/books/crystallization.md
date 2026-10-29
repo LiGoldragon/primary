@@ -26,3 +26,10 @@ This page comes from Everything open and holds one idea: how vision is crystalli
 
   A question the vision already answers is answered from it, and is not a record. What he says that the vision already holds is not logged again. An order is read from the time it was given.
 + A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision.
+
+### Proposal 4: a later record that says it all supersedes the earlier · psyche-context › vision/crystallization.md
+
+**Comment** Your protocol of tonight: when you explain yourself better later and say everything the earlier record said, the earlier one is redundant; a repetition may stay for the emphasis it carries.
+
+  Impurities are hunted by the records cleaner and fall through crystallization alike; every destruction is one commit line naming the record.
++ A raw record whose every point a later record of his states better is superseded: it moves to the archive with one line naming the record that supersedes it, in a commit naming both. A record he repeated for emphasis stays, and the crystallized line carries that emphasis. A record whose subject is gone from the system is irrelevant and archived the same way.
