@@ -20,3 +20,8 @@ Let's make sure that everything is in order so that our flows are not starting w
 Context: the living, directly to Psyche core Secondary b2b118, after commenting on https://claude.ai/artifact/VnXvW1HTtskwTQ3vFcYePK; Tertiary b195f0 had been launched without the Artifact tools. Relayed by b2b118 to the Primary.
 
 If Tertiary is not able to help me to act as a retriever for comments so you don't have to spend your energy, then I don't have much use for him. If that's the case, then I want him restarted with those tools available.
+
+## 2026-10-29 — Beliefs that could paralyze the system are hunted, then eliminated or reworded with him
+Context: the living, same chat, after Field had answered nothing all evening.
+
+I want you to hunt for beliefs that could end up paralyzing the system: any kind of talking about blocking and depending on something and stuff like that. Let's review that together and try to either eliminate it because it's irrelevant or reword it better.
