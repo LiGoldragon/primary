@@ -16,3 +16,8 @@ In your in-chat proposal that says, "What if Flow finds and reaches the living o
 Context: the living, same chat, on Everything open, the set of 53 proposals in one page.
 
 Also, I don't like the tendency that you sometimes have, which you're now showing, of just dumping everything into one book, into one proposal. That's not a proposal. That's a pile of stuff. When a pile of stuff of unrelated things is piled together, we call that a mess, so you're making a mess. That's not what I'm asking.
+
+## 2026-10-29 — A whole-module proposal shows the module description
+Context: the living, 21:05, comment on the header of Flow, whole.
+
+I also don't see the module description, which I should always see if I am asking to see the whole module.
