@@ -14,3 +14,8 @@ I opened the 3 Nexus's presentation and I was met with a giant text that was nei
 Context: the living, same chat, right after.
 
 And maybe you need to make sure that your proposals, once you understand what I mean, don't all have the same flaw. It takes a bit of my energy every time I open a book and I'm met with such a catastrophic failure in terms of the disappointment that surges in me. So I'd rather not open them before you make sure that you didn't create another aberration.
+
+## 2026-10-29 — The module as it stands is shown whole or in parts, by factors to be worked out
+Context: the living, same chat, on the line "A book holds the module as it stands and the lines proposed into it".
+
+Yes you could optionally present the module as it stands or as parts of it. I guess it all depends on a few factors, which we could work out in yet another proposal, but you could tell me quickly, in a very short paragraph, how you would see or approach such a problem.
