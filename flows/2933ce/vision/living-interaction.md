@@ -20,3 +20,6 @@ Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29; relayed b
 Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29T16:52:45Z; the order that relaunched the Primary as f6637e. Verbatim from /home/li/.claude/projects/-home-li-primary/87f1eeb3-882b-5285-9e49-67ed36434d32.jsonl, entry 694; relayed by Psyche core Primary f6637e.
 
 > Why don't you make sure right now that your new flow gets all of the psyche that it should have so that you don't lose track of all the important things we're talking about here? I think you're on the verge of being refreshed so you might as well be proactive and actually refresh yourself. In your role why don't you just remove all the things which are suspicious (we can review them later in these belief modules that we just heard about) and restart yourself with all of the relevant psyche data that we have here and that you may still have to address from even previous flows. Let's be proactive and get you a nice good fresh flow for us to pick up from. Since we have so much cloud usage to use today and tomorrow, we're kind of flush with usage. Let's be proactive and get a really nice quality output today.
+
+## 2026-10-29 — The chat beside a book carries its link alone
+See energy.md, same date: the living to Psyche core Primary f6637e on reading the book to him in chat.
