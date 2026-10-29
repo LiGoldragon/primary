@@ -1,3 +1,5 @@
+Superseded, by flows/2d9f4d/vision/flow.md, which recorded both comments first; logged here again by mistake.
+
 # Flow
 
 ## 2026-10-26 — The module is the section; a module name beside a section name is duplication
