@@ -13,3 +13,8 @@ Leading into it, 16:34:29Z:
 Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29, correcting the Primary's line on retrieving his words; relayed by that Primary. For messaging, remembering, datom. The correction, as relayed: "Your words are never datom; the machine messages are." The Primary's restatement, which he accepted: your words are retrievable once every message injected into a pane is datom, so that yours are the ones that are not. His words on it:
 
 > Right and that's a really good line to land somewhere.
+
+## 2026-10-29 — Source of the relayed correction: his words are not pulled out of a datom-formatted message
+Context: the living, direct to Psyche core Primary 87f1ee, 2026-10-29T16:48:13Z, after the Primary said his words would be retrieved from datom-formatted messages. Verbatim from /home/li/.claude/projects/-home-li-primary/87f1eeb3-882b-5285-9e49-67ed36434d32.jsonl, entry 643; relayed by Psyche core Primary f6637e.
+
+> No, no, no, not pulling my words out of a datom-formatted message. Oh I see what you mean. Out of a datom format that you didn't... I don't think you said that right. That could be confusing. If we're not careful how we say things, we can confuse ourselves and so you have to be careful how you say that because that's not quite what I meant. Do you know what I mean?
