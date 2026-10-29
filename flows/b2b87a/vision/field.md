@@ -9,3 +9,8 @@ There's still a problem. There's a lot of swap occupied. We need to resolve this
 Context: the living, same chat, after speech-to-text, the fullscreen shortcut, the Obsidian relauncher, the swap and the jam, with Field silent on all of them.
 
 get all those stupid bugs iv been pestered with fixed once and for all
+
+## 2026-10-29 — Speech-to-text's recurring problem is dug for; the implementation may need simplifying or fixing
+Context: the living, same chat, after speech-to-text came back.
+
+stt is working now. lets have someone dig deep to find the recurring problem. maybe the implementation needs simplification/fixing
