@@ -14,3 +14,8 @@ And I'd like to put together a very well-trained... I guess this would be the Fl
 Context: the living, same chat, after the Primary said vision code is the Ethos and datom in a vision statement.
 
 Well, it is usually mostly ethos and Datom, although if some of the rest is interesting to us, or if we're depending right on the vision, sometimes it might involve explaining how we like to use Nix (which would obviously involve Nix code). Maybe we want to review that as well: the belief that touches on all this.
+
+## 2026-10-29 — The vision-code line names the stacks, not one example
+Context: the living, same chat, on the proposed line "Vision code is mostly Ethos and Datom; where a design depends on how a tool is used, Nix among them, the statement carries that code as well."
+
+Your proposal is half good. One of the problems is that we now have a ghost effect because your example would skew the balance. We're welcome to give examples, but let's not forget the most important stacks that we use, right?
