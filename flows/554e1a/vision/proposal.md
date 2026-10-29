@@ -11,3 +11,8 @@ Context: the living, same chat, after the Primary reported the proposal set as "
 Why are you talking about a book? The only time we talk about books is when we're talking about how to make them. If I use the word "book" in passing and say "this book," I really should have said "proposal." Try to avoid the word "book" as much as possible. Even when I use the word "book" and you think I mean "proposal," just say "proposal."
 
 In your in-chat proposal that says, "What if Flow finds and reaches the living only as the proposal? It yields," you're kind of on track here, but I can see some ghost effects coming out of this. Be mindful of that and try again. Just put it in a "get it published."
+
+## 2026-10-29 — One proposal is one idea; a pile of unrelated things is a mess
+Context: the living, same chat, on Everything open, the set of 53 proposals in one page.
+
+Also, I don't like the tendency that you sometimes have, which you're now showing, of just dumping everything into one book, into one proposal. That's not a proposal. That's a pile of stuff. When a pile of stuff of unrelated things is piled together, we call that a mess, so you're making a mess. That's not what I'm asking.
