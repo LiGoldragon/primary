@@ -2,13 +2,13 @@ Presentation.{ «Vision by horizon» }
 
 # Vision by horizon
 
-Designed by Fable 5.1; the records gathered by a Sonnet 5.5 subflow of the Psyche core Secondary. Third edition, on your comment of 22:21: a short line no longer names the line it stands in for.
+Designed by Fable 5.1; the records gathered by a Sonnet 5.5 subflow of the Psyche core Secondary. Third edition, on your comments of 22:21 and 22:37: a short line no longer names the line it stands in for, and the far module is loaded by the flow designing the far vision.
 
 One idea: vision divided by horizon into modules, so a flow loads the horizon its work needs and nothing of the others. Flow, whole is revisited after this is ruled.
 
 ### Proposal 1: Vision is divided by horizon · psyche-context › intent/psyche.md
 
-**Comment** Your words of tonight, as lines. The far horizon is named far: one syllable beside short, medium and long, and it says what it is. The naming of the medium line by its short line is gone, as you said; a short line is known as a compromise by the module it sits in, and when its replacement lands, the short line on that subject is removed.
+**Comment** Your words of tonight, as lines. The far horizon is named far: one syllable beside short, medium and long, and it says what it is. It is loaded by the flow designing that far, currently impractical vision, in your words of 22:37, and by no other. The naming of the medium line by its short line is gone, as you said; a short line is known as a compromise by the module it sits in, and when its replacement lands, the short line on that subject is removed.
 
 - ## Vision is short-term or long-term
 -
@@ -17,11 +17,11 @@ One idea: vision divided by horizon into modules, so a flow loads the horizon it
 - The long-term vision is the goalpost; the short-term vision is what the system is to be for now. Either may be implemented or not. A flow holds both apart, each true at its own horizon. When the long-term vision is implemented and documented, the short-term vision and its documentation are removed.
 + ## Vision is divided by horizon
 +
-+ Vision is what the living says the system is to be, and a topic's vision is divided by horizon into modules, so a flow loads the horizon its work needs. The unmarked module, vision:<topic>, holds what is true of the topic at every horizon. vision:short:<topic> holds the compromises in force now: the short-term solutions and hacks. vision:medium:<topic> describes the system as it is to be past the compromised phase. vision:long:<topic> describes it as it is ideally to be. vision:far:<topic> holds the living's broadest idea of it, loaded only by a flow that must understand the whole.
++ Vision is what the living says the system is to be, and a topic's vision is divided by horizon into modules, so a flow loads the horizon its work needs. The unmarked module, vision:<topic>, holds what is true of the topic at every horizon. vision:short:<topic> holds the compromises in force now: the short-term solutions and hacks. vision:medium:<topic> describes the system as it is to be past the compromised phase. vision:long:<topic> describes it as it is ideally to be. vision:far:<topic> holds the living's broadest idea of it, the very far, currently impractical vision, loaded by a flow that is designing that far vision.
 +
 + Any horizon may be implemented or not; a flow holds each true at its own horizon. When a line of a farther horizon is implemented and documented it moves to the nearer module, and the short line on its subject is removed with its documentation.
 +
-+ A metaflow's declaration names the horizons it loads. A flow that implements or repairs loads the unmarked and the short; a flow that designs loads the medium and the long beside them; the far is loaded by name.
++ A metaflow's declaration names the horizons it loads. A flow that implements or repairs loads the unmarked and the short; a flow that designs loads the medium and the long beside them; a flow designing the far vision loads the far.
 
 ```datom
 ; a declaration, as datom, naming the horizons a metaflow loads

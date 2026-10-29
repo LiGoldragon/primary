@@ -3,3 +3,4 @@
 - flows/554e1a/vision/psyche.md — Vision divided by horizon into modules; Long-term ideas, underspecified, are built monolithic
 - flows/b2b87a/vision/psyche.md — A short line naming the medium line it stands in for is impractical (22:21)
 - flows/554e1a/references/horizons.md — the second edition's references
+- flows/b2b87a/vision/psyche.md — The far module is loaded by a flow designing the very far, currently impractical broad vision (22:37)
