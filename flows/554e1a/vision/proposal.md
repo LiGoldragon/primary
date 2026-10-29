@@ -26,3 +26,8 @@ I also don't see the module description, which I should always see if I am askin
 Context: the living, same chat, on the remembering line the Primary put in the chat twice.
 
 Sorry, I'm not going to review the proposal in the chat right now. I thought I told you this already.
+
+## 2026-10-29 — Proposals are written and commented in Obsidian, not Claude artifacts
+Context: the living, same chat, after the Artifact-tool ruling.
+
+I think we're supposed to use Obsidian instead of Claude artifacts for you to write your proposals and for me to comment on it. That way, we're not tied to a proprietary product, and we don't depend on Claude. We don't have to use Claude usage, which is more valuable in Codex, to publish and edit all these documents.
