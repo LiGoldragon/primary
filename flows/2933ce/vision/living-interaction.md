@@ -34,3 +34,8 @@ Section "Anger is named, and nothing else is said" (psyche-context › spirit/co
 Section "Evolution is a defined word" (mind-context › knowledge/vocabulary.md), at "Evolution is the dynamic procedure of i…", 2026-10-29T17:10:
 
 > Good
+
+## 2026-10-29 — His retrieved words enter through the middle stratum; a presentation built on them from the bottom stratum is redone
+Context: the living, direct to Psyche core Primary f6637e, 2026-10-29; relayed by that Primary. His message ends mid-sentence at the word "you". Also bears on context strata. Answered by the book His words enter at the middle stratum.
+
+> Make sure that whenever you retrieve my words, they're coming in through your middle stratum. If that wasn't the case and you wrote a presentation using my words coming in through your bottom stratum, you reacquire that content in the proper stratum and then reconsider the proposal and you
