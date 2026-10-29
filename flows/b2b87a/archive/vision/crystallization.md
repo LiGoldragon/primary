@@ -24,3 +24,10 @@ Thread 2769d351, on "A raw record whose every point a later record of his states
 We don't need the line about repetition for emphasis, so just land it without that line.
 
 Landed in vision/crystallization.md: «A raw record whose every point a later record of his states better is superseded: it moves to the archive with one line naming the record that supersedes it, in a commit naming both. A record whose subject is gone from the system is irrelevant and archived the same way.»
+
+## 2026-10-29 — P3, vision is logged from his words alone: good
+Thread d79835f1, on "A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision."
+
+good
+
+Landed in vision/crystallization.md: «A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision.»
