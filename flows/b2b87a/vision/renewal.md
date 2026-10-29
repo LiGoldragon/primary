@@ -29,3 +29,8 @@ Anyway, I feel like I'm talking too much, but just write me a proposal for this 
 Context: the living, same chat, while his laptop was jamming.
 
 lets shelf non-essential flows: research and obsidian (synching isnt interesting; shelf obsidian for now)
+
+## 2026-10-29 — Codex kept from eating the RAM: old servers off, old flows removed
+Context: the living, same chat, right after.
+
+lets make sure codex isnt eating up all the ram; turn off old servers and remove all the old flows
