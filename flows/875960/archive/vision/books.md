@@ -1,3 +1,5 @@
+Superseded, by flows/9519a1/vision/books.md, which holds the same words; this copy was relayed from it the same day.
+
 # Books
 
 ## 2026-10-11 — no huge paragraphs: visuals, or very succinct text inside a visual, then straight to the proposal

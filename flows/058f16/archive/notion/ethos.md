@@ -1,3 +1,5 @@
+Superseded, by flows/d68c82/notion/ethos.md, which holds the same words; this copy was relayed from it the same day.
+
 # Ethos
 
 ## Referring to Rust types from Ethos; a byte array that corresponds to the Rust type

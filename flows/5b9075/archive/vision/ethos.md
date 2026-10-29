@@ -1,3 +1,5 @@
+Superseded, by flows/e4b7d7/vision/ethos.md, which holds the same words; this copy was relayed from it the same day.
+
 
 ## Traits declared in ethos
 

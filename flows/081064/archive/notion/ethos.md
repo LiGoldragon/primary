@@ -1,3 +1,5 @@
+Superseded, by flows/d68c82/notion/ethos.md, which holds the same words; this copy was relayed from it the same day.
+
 # Ethos — raw notions heard by 081064
 
 ## 2026-10-10 — referring to Rust types from ethos; bytes
