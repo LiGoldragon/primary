@@ -23,3 +23,8 @@ And the things I said are not about remembering because they deal with how a flo
 Context: the living, same chat, after the Primary's own declaration was ruled.
 
 Make sure all of the flows are configured with the proper modules that they should have when they start.
+
+## 2026-10-29 — Modules that do not serve a flow leave it; the Artifact tool and its prompt leave every Claude flow but the publishing one
+Context: the living, same chat, right after ordering every flow configured with its proper modules.
+
+And make sure they do not have the modules that do not serve them. The book module is a good example. See that work progresses on making some tools unavailable, along with the description in the system prompt on how to use that tool. You can see past conversations we've had about this on the Claude artifacts, which, for a long time, we've tried to take out of most of the Claude flows (except one, which we can leave there in order to publish presentations into books).

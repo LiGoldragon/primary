@@ -31,3 +31,14 @@ Sorry, I'm not going to review the proposal in the chat right now. I thought I t
 Context: the living, same chat, after the Artifact-tool ruling.
 
 I think we're supposed to use Obsidian instead of Claude artifacts for you to write your proposals and for me to comment on it. That way, we're not tied to a proprietary product, and we don't depend on Claude. We don't have to use Claude usage, which is more valuable in Codex, to publish and edit all these documents.
+
+## 2026-10-29 — A fresh Psyche pair, then a Mind pair, on Obsidian as the medium for proposals
+Context: the living, same chat, right after.
+
+Get a fresh mind, primary and secondary, on this topic.
+
+1. Start a fresh Fable and Opus to create a design proposal after researching.
+2. Let them go back and forth with a dedicated Astro and Sol on a mind aspect after creating the knowledge modules for the topic, after their research.
+3. Let them go back and forth between designing and auditing the system for you to be able to use, and for any agent, Claude or Codex, to be able to use this system to collaborate with me.
+
+I guess what you'll want me to do is create an account or something, or is this self-hosted? Maybe I need to get you a way to spin up services in the cloud, or maybe it's better to just use the service that is not self-hosted. I don't know. I guess let's start with the psyche pair, and then the proposal can explain all that to me.
