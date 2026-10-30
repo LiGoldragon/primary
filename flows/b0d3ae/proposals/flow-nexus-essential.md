@@ -8,7 +8,6 @@ Created by the Primary
 
 **Why** The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.
 
-```text
 ---
 description: The Flow Nexus, which starts, messages, refreshes and ends flows.
 dependencies: [vision-nexus, vision-model-roles]
@@ -35,6 +34,8 @@ A request is one of a closed set: an order, a question, the living's words, a re
 ## The harness
 
 The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, and the Nexus injects that reproduction in place of the stock one. A harness module is one section, named by the harness's own term, and says which tool it teaches; a tool and its teaching are one module. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired.
+
+```
 
 The Ethos:
 
@@ -85,10 +86,11 @@ The Psyche core Primary's declaration, with its blacklist:
 
 What the Nexus composes from the two for Claude Code, and runs today:
 
-```
+```sh
 claude --disallowedTools Artifact ArtifactComments ArtifactData --system-prompt-file <the prompt, the three sections left out>
 ```
 
+```text
 ## State
 
 Every harness event reaches the Nexus through the harness's hooks calling the Flow CLI, so the Nexus knows each flow's state as it changes: started, working, idle, ended.
@@ -120,7 +122,6 @@ Signal
 Send.{ { Psyche core Primary }
        Words.«This is not necessary.» }
 Delivered
-```
 
 **Moved, not removed** These leave the module for vision:long:flow-nexus, as they stand today, under the same headings: a metaflow sleeping and waking; the topic enum; the judgment by a small model of whether to wake a topic; the simplified flow; a Primary as a simplified flow; the flow ethos specifying a flow whole; the heartbeat; the ephemeral flow; restarting without waking; versions; the Capsule's later encryption; the real-world test; Herdr as one exchangeable backend.
 

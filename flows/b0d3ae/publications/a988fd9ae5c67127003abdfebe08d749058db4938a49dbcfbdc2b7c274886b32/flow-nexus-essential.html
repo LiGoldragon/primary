@@ -3,7 +3,7 @@
 <h1 class="book-title">The Flow Nexus, bare</h1>
 <p class="book-subtitle">Created by the Primary</p>
 <article class="proposal"><header><span class="pnum">1</span><h2>vision:flow-nexus · psyche-belief › vision/flow-nexus.md — whole, retaken</h2></header>
-<p><strong>Why</strong> The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.</p>
+<p><strong>Why</strong> The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.</p>
 <pre><code class="language-text">---
 description: The Flow Nexus, which starts, messages, refreshes and ends flows.
 dependencies: [vision-nexus, vision-model-roles]
@@ -17,7 +17,7 @@ A flow's id is the first six characters of the hash of its harness session id, s
 
 ## Start
 
-A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
+A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools and prompt are the harness's, less its blacklist. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
 
 ## Message
 
@@ -27,7 +27,48 @@ A message lands in the flow's prompt as one datom: the sender's address, the kin
 
 A request is one of a closed set: an order, a question, the living's words, a result, a notice. The Nexus refuses a request that leaves the routes of vision:aspects.
 
-## State
+## The harness
+
+The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, and the Nexus injects that reproduction in place of the stock one. A harness module is one section, named by the harness's own term, and says which tool it teaches; a tool and its teaching are one module. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired.
+</code></pre>
+<p>The Ethos:</p>
+<pre data-diff><code class="language-ethos">Library
+[ flow:[ Address ModuleId ] ]                      ; imports
+[ Harness.[ ClaudeCode Codex ]                     ; types
+  HarnessVersion.String                            ;   as the harness prints it
+  HarnessModuleName.String                         ;   the harness's own term for the part
+  ToolName.String                                  ;   the tool's name as the harness names it
+  HarnessModule.{ HarnessModuleName                ;   one labeled section of the stock prompt
+                  Option&lt;ToolName&gt;                 ;     the tool it teaches, when it teaches one
+                  Text.String }                    ;     the section's text, verbatim
+  HarnessPrompt.{ Harness HarnessVersion           ;   the stock system prompt, whole, sectioned
+                  Vector&lt;HarnessModule&gt; }
+  Blacklist.Vector&lt;HarnessModuleName&gt;              ;   the harness modules a flow goes without
+  Declaration.{ Address                            ;   what a metaflow is started with
+                Vector&lt;ModuleId&gt;                   ;     its belief modules
+                Blacklist } ]
+[ Extractable.[ extract:{ [ Harness HarnessVersion ] [ HarnessPrompt ] } ]      ; traits: the separate tool
+  Composable.[ compose.{ [ HarnessPrompt Blacklist ] [ Vector&lt;String&gt; ] } ] ]   ;   the harness's launch arguments
+[ HarnessPrompt.[ Composable ] ]                   ; associations</code></pre>
+<p>The datom, real: Claude Code 2.1.294 as installed today, two of its modules, each the tool's name and the first words of the text the harness gives for it; the text is the harness's, verbatim, so it is cut here:</p>
+<pre data-diff><code class="language-datom">; HarnessPrompt
+{ ClaudeCode 2.1.294
+  [ { Artifact Some.Artifact
+      «The Artifact tool renders an HTML file as an Artifact: a web page hosted on claude.ai that is private by default. …» }
+    { ArtifactComments Some.ArtifactComments
+      «Read and answer the comment threads people leave on a published artifact, and manage this session's artifact watches. …» }
+    { ArtifactData Some.ArtifactData
+      «Read and write the small shared database an artifact's page code keeps. …» }
+    { Environment None
+      «Primary working directory: /home/li/primary …» } ] }</code></pre>
+<p>The Psyche core Primary's declaration, with its blacklist:</p>
+<pre data-diff><code class="language-datom">; Declaration
+{ { Psyche core Primary }
+  [ spirit:core spirit:psyche spirit:ghost intent:psyche intent:living-interaction vision:psyche-primary ]
+  [ Artifact ArtifactComments ArtifactData ] }</code></pre>
+<p>What the Nexus composes from the two for Claude Code, and runs today:</p>
+<pre data-diff><code class="language-sh">claude --disallowedTools Artifact ArtifactComments ArtifactData --system-prompt-file &lt;the prompt, the three sections left out&gt;</code></pre>
+<pre><code class="language-text">## State
 
 Every harness event reaches the Nexus through the harness's hooks calling the Flow CLI, so the Nexus knows each flow's state as it changes: started, working, idle, ended.
 
