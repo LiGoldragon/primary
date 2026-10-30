@@ -1593,6 +1593,10 @@
             (and (= lang "figure") (try (read-figure lines) (catch Exception _ nil)))
             (emit (show-fig lines))
 
+            ;; a Mermaid flowchart is a diagram: shown as its fig-N.svg
+            (= raw-lang "mermaid")
+            (emit (show-fig lines))
+
             ;; a proposal's unchanged lines, written outside a fence, are panels of the change
             (and per-line (not-any? signed-line? lines))
             (emit-panels (text-panels lines true))
