@@ -24,3 +24,8 @@ I know that you don't have a good track record so far of making a nexus that wor
 By the way, this is another aside: we need a way for the system to be able to relog in because the tokens seem to expire after a certain time.
 
 And I hope that once you reach your context limit, your current flow doesn't get killed, and that this problem that is keeping you from starting a new flow doesn't prevent the new flow from starting (which would leave us without a primary core).
+
+## 2026-10-29 — An urgent patch so a refresh never kills a flow whose successor cannot compose; the Flow Nexus ships one or two versions a day
+Context: the living, same chat, right after.
+
+So if that's the case, maybe either you want to get your context limit raised, or we might even be contemplating compacting you before this dreadful possibility ever happens. And if that's a possibility, we certainly want and need an urgent patch to the current Flow Nexus so that this never happens. By the way, I don't understand why we still don't have a new version of the Flow Nexus in production. We should be moving on to at least one or two versions a day.
