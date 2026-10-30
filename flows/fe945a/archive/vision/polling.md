@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/nexus.md de699c.
+
 # Polling
 
 ## Nobody checks anything repeatedly

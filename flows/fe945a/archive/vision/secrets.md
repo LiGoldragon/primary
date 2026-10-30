@@ -1,3 +1,5 @@
+Landed, in field-context/compensation/secrets.md 99f9aa.
+
 # Secrets
 
 ## A pairing code passed through the conversation is unsafe

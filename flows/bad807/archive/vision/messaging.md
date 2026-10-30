@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/messaging.md c984ee.
+
 # Messaging
 
 ## A rule that guides messaging so noisy messages do not wake or disturb flows

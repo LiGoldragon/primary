@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Flow Nexus
 
 ## The anatomy of Flow in Ethos: Flow holds the lock on flows, flows addressed by name, the flow id in words

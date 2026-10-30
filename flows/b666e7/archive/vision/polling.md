@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 4fc4c7.
+
 ## Registry of polling systems
 
 Context: relayed by Psyche Opus 7328f4 on 2026-09-30; speech-to-text corrections supplied in brackets.

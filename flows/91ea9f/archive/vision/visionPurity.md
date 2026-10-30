@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/living-interaction.md a6fd92.
+
 # Vision purity
 
 ## A direct order is not vision; remove it where logged as vision

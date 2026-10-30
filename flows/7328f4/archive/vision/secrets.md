@@ -1,3 +1,5 @@
+Landed, in field-context/compensation/secrets.md 99f9aa.
+
 # secrets
 
 ## Agents do not handle pairing codes

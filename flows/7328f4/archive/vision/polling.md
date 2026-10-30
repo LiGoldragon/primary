@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 4fc4c7.
+
 # polling
 
 ## Flow state through hooks, as cheaply as possible, no polling; a registry of polling systems

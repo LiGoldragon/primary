@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 
 ## 2026-10-03 — The semi-sandbox copies only the credentials
 

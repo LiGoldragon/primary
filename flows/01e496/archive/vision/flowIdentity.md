@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 6c8e26.
+
 # Flow identity
 
 ## Addressed by continuous name; flow IDs for the ledger

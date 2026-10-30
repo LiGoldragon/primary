@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Flow
 
 ## Flow is hooked to the harness's hooks as notifications for everything; when the agent comments, Flow is notified and can decide on it

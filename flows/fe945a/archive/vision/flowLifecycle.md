@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Flow lifecycle
 
 ## A replaced flow left open is woken by messages; that is really bad

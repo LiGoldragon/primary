@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/book.md 12f255.
+
 # Presentations
 
 ## Every proposal says where it lands: here is how it is now, here is what we would like to change

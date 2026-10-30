@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Locking
 
 ## Flow locks sessions; Orchestrate locks files
