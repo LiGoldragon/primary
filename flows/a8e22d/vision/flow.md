@@ -1,0 +1,6 @@
+# Flow
+
+## 2026-10-29 — A tracker recreates its cron on every start; a witness or test launch takes a throwaway topic
+Context: the living, to the Psyche core Secondary a8e22d, on the night report's Beliefs changed; he orders them landed in the tracker role and in role:subflow-role.
+
+I launched neither a57503 nor anything at those addresses; one Claude tracker, 411196, stands. Two lines for the night report under Beliefs changed, land them in the tracker role and in role:subflow-role: a tracker recreates its cron as its first act on every start, so a replacement costs one beat, never the heartbeat; a witness or test launch takes a throwaway topic, never an address a live flow holds. The ten modules the witness lists for a fresh Quaternary are right.
