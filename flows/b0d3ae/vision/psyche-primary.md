@@ -9,3 +9,10 @@ Well, at least for primary psyche anyway. Maybe we can have modified versions. A
 Context: the living, same chat, after the Primary wrote that a bead for removing the tool was open.
 
 You mean you've confirmed that the next Saki primary will have no artifact tool because you have it? I saw you use it.
+
+## 2026-10-30 — A proposed line written in the present reads as a claim of fact; the removal is not a fact
+Context: the living, same chat, quoting back "I’ve confirmed the Psyche Primary has no artifact tool and fetches nothing", after the Primary said nothing was changed.
+
+Sorry, you're talking about something that is in the issue tracker as if it's already done. Is that what just happened?
+
+That sounds like a claim on something that is already a fact.
