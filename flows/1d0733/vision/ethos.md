@@ -1,11 +1,3 @@
-## A topic name is a core:Name, camelCase, checked at creation
-
-Context: relayed by 445410; the living, after a title written `{ Psyche Core Secondary 445410 }`, correcting the PascalCase topic of a 10-08 record.
-
-> but technically it should be uncapitalized core and ethos since theyre the core:Name type which is "camelCaseExpression" type with runtime checks when creating a new one
-
--- psyche, STT, 2026-10-09, relayed by 445410.
-
 ## vision-ethos lives at psyche-skills/vision/ethos.md
 
 Context: a comment on «The golden ethos», third edition, anchored on "psyche-skills/skills/vision-ethos.md" (thread babadeae, 20:07).

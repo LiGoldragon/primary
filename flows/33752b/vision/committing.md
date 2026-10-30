@@ -17,11 +17,3 @@ Context: typed to the Psyche core Primary after it was found committing Primary 
 > Also we use [Jujutsu], which makes it easy to do that. I don't mind rewriting history because we're the only people working on this repository.
 
 -- psyche, STT, 2026-10-12. Transcription corrected: "grant" → "Luna", "mine" → "Mind", "turn hand" → "turn end", "jujitsu" → "Jujutsu".
-
-## The committer is simple enough to actually get implemented
-
-Context: typed to the Psyche core Primary after it returned Astra's committer design with four changes and a size target.
-
-> Well, make sure it's not so complicated that we never actually fucking implement it.
-
--- psyche, STT, 2026-10-12.

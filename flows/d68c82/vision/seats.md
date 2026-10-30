@@ -1,8 +1,4 @@
 
-## Every boss has its secretary
-"Okay I've compacted psyche spirit primary but I don't see any psyche spirit secondary. What the fuck? We're supposed to start a secondary before a primary. Let's make that a rule: we always start a secondary because you can't have a boss without a secretary. That's impossible so every boss needs its secretary."
--- psyche, STT, 2026-10-12.
-
 ## 2026-10-14 — A Fable-assisted pair
 
 > Send it to a fresh Fable-assisted primary and secondary. Starting with the secondary, we'll assemble all of the psyche-relevant and then start creating a prompt, not too long, like a couple thousand characters maximum, to add to what Fable will start with (so that he has a head start in terms of collecting stuff and it comes into the user prompt). Then Fable can just create the design and that's all Fable is for, really.
