@@ -7,18 +7,6 @@ I read the statement, passage, line, your proposal, and it's good but wouldn't t
 
 I mean I'm not saying you didn't literally fail your belief but you failed common sense. I doubt that there's a way to make you believe, to make you behave in a way that would value common sense over blind instruction following but maybe you have a different take on this. It's an interesting subject but I don't have much hope.
 
-## 2026-10-30 — A giant proposal is ordered most-harmful-first
-Context: the living, same chat, on the coming Slash and burn proposal.
-
-And if you make a giant proposal out of this, just try to propose it in most-harmful-first order.
-
-## 2026-10-30 — The Fable flow is the judge; a lower model makes a first pass the judge uses, never the proposal he reads
-Context: the living, same chat, while the Slash and burn sweep was being gathered by subflows.
-
-You have to be the judge, right? You can get Opus to do a first proposal but you're the judge. If Opus makes the proposal that I'm reading, then that's a failure.
-
-You can make Opus do a first pass that you can use yourself. I didn't mean a first proposal.
-
 ## 2026-10-30 — A book is the belief itself; a legend or a preamble about the sweep is read as wasted time
 Context: the living, same chat, with a screenshot of Slash and burn, round 2, the marker legend and the "What this is" paragraph circled.
 

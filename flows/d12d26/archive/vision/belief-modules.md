@@ -23,3 +23,9 @@ Landed: compensation modules deleted, book-making and secrets moved to knowledge
 Context: the living, same chat, on Slash and burn round 1, whose first proposal is the removal of the compensation modules.
 
 Your first proposal on the slash-and-burn is removal and compensation modules but I had ordered that all. We do not even have compensation modules anymore so why do we still have them? Is there a danger in removing them?
+
+Landed: Slash and burn rounds 1 and 2, mind-belief 4f0500, psyche-belief a8d748, field-belief 1a3a48, Curriculum b112a8
+## 2026-10-30 — Slash and burn now
+Context: the living, same chat, after a morning of single-line removals, Slash and burn rounds 1 and 2 standing unruled.
+
+So are we splashing burning or what? Are you scared of blood?
