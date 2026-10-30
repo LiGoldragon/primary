@@ -17,3 +17,9 @@ Landed: spirit:core, intent:main-flow, intent:startup-prompt, psyche-belief a88a
 Context: the living, same chat, on the Primary's chat proposal: spirit:core minus "A mistake made this way is repaired by the next act." and the doubled output sentence; intent:main-flow minus "A finished analysis ends with the first repair started.", "A flow does the work it holds; reading is its preparation, writing its result.", the doubled "What a flow presents carries the thing as it now is.", and "A subflow is a separate process; what it did, you did." becoming "What a subflow did, you did."; intent:startup-prompt minus "if one was left out, it is put in afterward, as a repair of the startup prompt."
 
 Yeah you can do all that removal but did you actually make a proposal for slashing and burning?
+
+Landed: compensation modules deleted, book-making and secrets moved to knowledge; psyche-belief 7d2764b aae0e68, mind-belief 4932069 f3b2f29, field-belief 9760469, Curriculum 64dbe9a
+## 2026-10-30 — Compensation modules were ordered gone and still exist; are they dangerous to remove?
+Context: the living, same chat, on Slash and burn round 1, whose first proposal is the removal of the compensation modules.
+
+Your first proposal on the slash-and-burn is removal and compensation modules but I had ordered that all. We do not even have compensation modules anymore so why do we still have them? Is there a danger in removing them?
