@@ -83,19 +83,11 @@ A flow reads only what its task needs, and never loads the same text twice.
 <!-- module: vision-book -->
 ## Books
 
-A book is a proposal into belief modules, and the whole of it is its crystallization: a line removed shows in red, a line added in green, and a figure in it is a figure proposed for a module.
+A book carries belief modules, as they stand and as they are proposed to change; its sources live in its reference file.
 
-A book carries belief modules, as they stand and as they are proposed to change; it shows no verbatim quote, and the records it draws from are not shown.
+A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A figure is boxes joined by verbed arrows. A diagram in a book's source is a Mermaid flowchart in that grammar, drawn so a phone shows it; every sketch carries its arrows before it is sent. The published book shows the figure drawn from the Mermaid source by a Tertiary or Quaternary subflow given the grammar with the sketch; the figure keeps every box, label and arrow, and says only what the source says; a figure that lost an arrow is returned. A sizable book carries several figures.
 
-The records a proposal draws from live in an unrendered reference file, one per book, in a references/ directory beside the books; they are archived with the landing when some or all of the proposal is accepted.
-
-The book is the center of development: it is the evolution of an idea, and each unknown in it is shown as an inquiry belief module.
-
-An inquiry belief module is shown for one of three uses: to contrast with a vision being proposed, or to explain why that vision is proposed; to bring a question plainly to the living; or to compare with the implementation or the knowledge that may cover it.
-
-A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A list in boxes, a tally, or a sentence in a rectangle is not a figure. A diagram in a book's source is a Mermaid flowchart in that grammar, drawn so a phone shows it; a sketch without arrows is rewritten before it is sent. The published book never shows the Mermaid source, but a figure drawn from it by a Tertiary or Quaternary subflow that is given the grammar with the sketch, keeps every box, label and arrow, and adds nothing the source does not say; a figure that lost an arrow is returned. A sizable book carries several figures.
-
-Prose is never shown in a code block: a module written in Markdown is shown as rendered text. A code block holds code alone, and it may scroll sideways.
+Prose is shown as rendered text. A code block holds code alone, and it may scroll sideways.
 
 ## What a book shows
 
@@ -103,7 +95,7 @@ A book is belief modules in the forms below, each under its repo › path; its h
 
 A module shown whole, as it stands, situates the landing.
 
-A module shown beside another, both as they stand, serves comparison: psyche with knowledge, with compensation, with inquiry.
+A module shown beside another, both as they stand, serves comparison: psyche with knowledge.
 
 A line added shows in green.
 
@@ -119,45 +111,26 @@ A line moved between modules is one proposal headed by both paths: the line in r
 
 A dependency changed shows in the module's front matter: the dependency removed in red, the dependency added in green.
 
-A line removed from a module is shown beside the line that makes it unnecessary; the compensation module is leaned out first, because vision replaces it.
-
-A question between alternative lines shows each alternative as its own proposal, with the exact lines it lands; the living rules land, amend or reject.
-
 A figure shows as proposed for the module it will live in.
 
 A figure proposed for a module shows under that module's path in green, as an added line does; a figure it replaces shows beside it in red.
 
+```mermaid
+flowchart TB
+    a["belief module"] -- "stays" --> b["shown whole or beside another"]
+    a -- "changes" --> c["line added in green, removed in red"]
+    a -- "is born or is deleted" --> d["shown whole, in green or in red"]
+    c -- "proposed as" --> e["a proposal: land, amend or reject"]
+    d -- "proposed as" --> e
 ```
-+--------------------------------------------+
-| belief module                             |
-+--------------------------------------------+
-    |              |                |
-    | stays        | changes        | is born or
-    |              |                | is deleted
-    v              v                v
-+-----------+ +------------+ +--------------+
-| shown     | | line added | | shown whole, |
-| whole or  | | in green,  | | in green or  |
-| beside    | | removed in | | in red       |
-| another   | | red        | +--------------+
-+-----------+ +------------+        |
-                    |               |
-                    | proposed as   | proposed as
-                    v               v
-+--------------------------------------------+
-| a proposal: land, amend or reject          |
-+--------------------------------------------+
-```
+
+Code in a book is shown as code, labelled with its language, plain. Ethos and datom in a book are written in the vertical form.
 
 ## Pictures
 
 A figure shows one thing, where the idea has a shape, and its colours and marks mean the same in every book.
 
-A proposal is drawn as well as written: what it adds, removes and keeps, in one frame.
-
-A proposal that touches a code component shows the code it changes or adds.
-
-Every word of his, in a book comment or anywhere else, redoes the book it bears on, unless it closes the topic; a book his words affect is redone as well. Words that open a topic of their own get a book of their own.
+Every figure, in a book or in a module, is the SVG drawn from a Mermaid flowchart in the figure grammar. A sketch met anywhere is converted to a Mermaid figure.
 <!-- end-module: vision-book -->
 
 <!-- module: knowledge-book-making -->
@@ -233,10 +206,6 @@ layer carries a fact that belongs to another.
 
 ## Updating the page
 
-You are the judge: you run at medium effort (Opus), start
-readers at medium effort (Sonnet), merge what they return into what the page
-already holds, and write the page.
-
 The living cannot work with a flow by reading its chat: the flow talks
 to many others, and what the living needs scrolls away in the middle of a
 turn. What the living needs is not in the flow's final answers. The page
@@ -247,10 +216,6 @@ time. It is what the living works with instead of the chat.
 
 The composed context provides knowledge-psyche, vision-crystallization and knowledge-vocabulary. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
-
-Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
-`The living's page` (the page's address), `Claude transcript root`,
-`Curriculum skills`. Read them there.
 
 Use the caller's actual registered flow and native-session binding supplied by the dispatcher. Never derive a flow ID by truncating a native UUID. If that binding is missing, return the blocker instead of reading another flow's transcript.
 
@@ -280,7 +245,7 @@ the page; nothing is invented.
 
 ## The page's database
 
-The page reads these historical collections. Before any write, qualify the actual ArtifactData contract against current module identities. The old destination and approvedAs enums below are read-only historical data; they never authorize new Operation or Trial destinations. If the page API cannot represent a current destination, keep that consumer gap held and return its blocker; do not coerce the destination into a legacy kind.
+The page reads these historical collections. The old destination and approvedAs enums below are read-only historical data; they never authorize new Operation or Trial destinations. If the page API cannot represent a current destination, change the schema in the same act; do not coerce the destination into a legacy kind.
 
 - `subjects/<id>`: `name` (short noun phrase), `state` (Markdown: what
   stands now, a few short sentences or a short list), `changed` (time of
@@ -295,15 +260,6 @@ The page reads these historical collections. Before any write, qualify the actua
   (`null`, or `{option, note}` written by the page; `option` may be
   `null` when the living wrote only a note), `answeredAt` (written by the
   page), `order` (number; lower is higher on the page).
-- Historical `crystallizations/<id>` rows: `statement` (Markdown), legacy `destination` (one
-  of `{"vision": "<topic>"}`, `{"intent": "<topic>"}`,
-  `{"skill": {"kind": "Operation"|"Documentation"|"Compensation"|"Trial",
-  "name": "<skill name>"}}`), `sources` (list of `{flowId, topic}`: the
-  flow that heard each record and the record file's topic), `records`
-  (list of record ids drawn on; never shown), `state` (`"Proposed"`,
-  `"Approved"`, `{"changed": "<the living's note>"}` or `"Refused"`),
-  historical `approvedAs` (read as its original value; never generate a new retired kind), `answeredAt` (written by the
-  page), `order`.
 - `items/<id>`: settled answers from the page's earlier shape, shown at the
   bottom as "Settled earlier". Keep them; add none. An `items` row whose
   `state` is `open`, and any row in `news`, is left from the earlier shape:
@@ -313,17 +269,6 @@ The page reads these historical collections. Before any write, qualify the actua
   counts in), `line` (the last transcript line handled in it),
   `pageReadAt` (ISO time of your last read of the page's answers and
   comments). Keep this document; never delete it.
-
-Historical read schema only; these are not writable current proposal destinations:
-
-    Subject.{ Name State Vector<Waiting> Changed }
-    Waiting.{ Question Proposal Vector<Option> Lost Answer }
-    Answer.[ None Chosen.{ Option Note } ]
-    Crystallization.{ Statement Destination Vector<Source> State }
-    LegacyDestination.[ Vision.Topic Intent.Topic Skill.{ LegacyKind Name } ]
-    LegacyKind.[ Operation Documentation Compensation Trial ]
-    Source.{ FlowId Topic }
-    State.[ Proposed Approved Changed.Markdown Refused ]
 
 ## The work
 
@@ -349,8 +294,6 @@ These are the living's word, the newest there is, and outrank anything in
 the transcript before them.
 
 ### 2. Fetch the new part of the transcript
-
-    node /home/li/primary/tools/book-fetch.mjs --from <line> --out <scratch>/book
 
 `<scratch>` is your scratchpad directory. The program prints each stretch
 file with its line range and size, then `session <id>` and `last <n>`:
@@ -420,13 +363,13 @@ A new proposal names its current context repository, module type and subject, wi
 
 Use vision-crystallization to articulate the proposal from the living's records, with exact proposed lines and the current destination. A notion binds nothing. Keep open design choices distinct from ruled changes.
 
-Do not write a new crystallization destination or approvedAs value through the historical page schema until the ArtifactData consumer can represent current module identities. If it cannot, report that exact API gap and return the proposal as work data for its owner; do not encode it as an old skill kind or invent a new wire field.
+A schema that cannot hold a new crystallization destination or approvedAs value is changed by whoever writes it, in the same act; do not encode it as an old skill kind.
 
 Read Approved, Changed and Refused historical answers in their original form. Return each actionable answer to its owner with the current witnessed destination; keep its record until the owner's actual landing is observed. The living's answer is never inferred from the old kind spelling.
 
 ### 6. Write the page
 
-Only writes whose current API contract has been qualified may proceed. New crystallization and approvedAs writes remain held at the gate above. Qualified writes go in one `ArtifactData` `batch`, every entry on a document
+Writes go in one `ArtifactData` `batch`, every entry on a document
 you read pinned with `if_version` to the version you read; a new document
 takes no pin. The batch holds at most 50 writes: when more are needed,
 write the fewest batches, subjects and waiting first, and the
