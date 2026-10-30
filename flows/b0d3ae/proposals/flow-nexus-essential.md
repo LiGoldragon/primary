@@ -17,7 +17,7 @@ dependencies: [vision-nexus, vision-model-roles]
 
 A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.
 
-A flow's id is a hash, taken from the random part of the harness's session id, so that the transcript is found from it; which part of a session id is random differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt.
+A flow's id is six characters taken from the random part of the harness's session id, so that the transcript is found from it; where the random part begins differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt.
 
 ```ethos
 Library
@@ -25,18 +25,17 @@ Library
 [ Hash.Integer                              ; types
   FlowId.Hash                               ;   held as a hash, never as text
   SessionId.String                          ;   the harness's, as the harness gives it
-  RandomPart.{ Offset.Integer               ;   where in a session id the random bytes lie
-               Length.Integer }
-  HarnessSession.{ Harness RandomPart } ]   ;   one row of the harness map
-[ Hashable.[ hash:{ [ SessionId RandomPart ] [ FlowId ] } ]   ; traits: the id from the session
+  RandomOffset.Integer                      ;   where in a session id the random part begins
+  HarnessSession.{ Harness RandomOffset } ]  ;   one row of the harness map
+[ Hashable.[ hash:{ [ SessionId RandomOffset ] [ FlowId ] } ] ; traits: six characters at the offset, as a hash
   Writable.[ write.[ String ] ] ]                               ;   six alphanumerics today, three words long term: the codec's
 [ FlowId.[ Writable ] ]                     ; associations
 ```
 
 ```datom
 ; HarnessSession, one per harness
-{ ClaudeCode { 0 36 } }     ; a UUID whose whole is random
-{ Codex { 15 21 } }         ; a time-ordered UUID: the random part follows the time prefix; Mind verifies the offsets
+{ ClaudeCode 0 }     ; a UUID whose whole is random: the six begin at its start
+{ Codex 15 }         ; a time-ordered UUID: the six begin after the time prefix; Mind verifies the offset
 ```
 
 Every call to the Flow CLI is identified by the calling process.

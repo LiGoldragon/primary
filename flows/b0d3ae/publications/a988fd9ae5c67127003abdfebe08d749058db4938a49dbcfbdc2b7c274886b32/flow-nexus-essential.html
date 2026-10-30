@@ -8,17 +8,44 @@
 </article>
 <h2>Address</h2>
 <p>A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.</p>
-<p>A flow's id is a hash, taken from the random part of the harness's session id, so that the transcript is found from it; which part of a session id is random differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt. Every call to the Flow CLI is identified by the calling process.</p>
-<h2>Start</h2>
-<p>A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools and prompt are the harness's, less its blacklist. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.</p>
-<h2>Message</h2>
-<p>A request is sent to an address and the Nexus delivers it into the flow's prompt. When the flow is busy, the request queues and is delivered when the flow is idle, the queue whole and oldest first; when no flow is running at the address, one is started with the queue as its first prompt. The living's words, a comment among them, reach a flow by this path.</p>
-<p>A message lands in the flow's prompt as one datom: the sender's address, the kind and the words. Because the form is fixed, a transcript is searched for the living's words by it.</p>
-<p>A request is one of a closed set: an order, a question, the living's words, a result, a notice. The Nexus refuses a request that leaves the routes of vision:aspects.</p>
-<h2>The harness</h2>
-<p>The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, and the Nexus injects that reproduction in place of the stock one. A harness module is one section, named by the harness's own term, and says which tool it teaches; a tool and its teaching are one module. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired.</p>
-<p>The Ethos:</p>
+<p>A flow's id is a hash, taken from the random part of the harness's session id, so that the transcript is found from it; which part of a session id is random differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt.</p>
 <pre data-diff><code class="language-ethos">Library
+[]                                          ; imports
+[ Hash.Integer                              ; types
+  FlowId.Hash                               ;   held as a hash, never as text
+  SessionId.String                          ;   the harness's, as the harness gives it
+  RandomPart.{ Offset.Integer               ;   where in a session id the random bytes lie
+               Length.Integer }
+  HarnessSession.{ Harness RandomPart } ]   ;   one row of the harness map
+[ Hashable.[ hash:{ [ SessionId RandomPart ] [ FlowId ] } ]   ; traits: the id from the session
+  Writable.[ write.[ String ] ] ]                               ;   six alphanumerics today, three words long term: the codec's
+[ FlowId.[ Writable ] ]                     ; associations</code></pre>
+<pre data-diff><code class="language-datom">; HarnessSession, one per harness
+{ ClaudeCode { 0 36 } }     ; a UUID whose whole is random
+{ Codex { 15 21 } }         ; a time-ordered UUID: the random part follows the time prefix; Mind verifies the offsets
+``` Every call to the Flow CLI is identified by the calling process.
+
+## Start
+
+A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools and prompt are the harness's, less its blacklist. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
+
+## Message
+
+A request is sent to an address and the Nexus delivers it into the flow's prompt. When the flow is busy, the request queues and is delivered when the flow is idle, the queue whole and oldest first; when no flow is running at the address, one is started with the queue as its first prompt. The living's words, a comment among them, reach a flow by this path.
+
+A message lands in the flow's prompt as one datom: the sender's address, the kind and the words. Because the form is fixed, a transcript is searched for the living's words by it.
+
+A request is one of a closed set: an order, a question, the living's words, a result, a notice. The Nexus refuses a request that leaves the routes of vision:aspects.
+
+## The harness
+
+The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, and the Nexus injects that reproduction in place of the stock one. A harness module is one section, named by the harness's own term, and says which tool it teaches; a tool and its teaching are one module. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired.
+
+
+The Ethos:
+
+```ethos
+Library
 [ flow:[ Address ModuleId ] ]                      ; imports
 [ Harness.[ ClaudeCode Codex ]                     ; types
   HarnessVersion.String                            ;   as the harness prints it
