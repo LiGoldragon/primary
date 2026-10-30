@@ -30,3 +30,8 @@ Oh yeah, I said that a long time ago. That is not your idea. I've been actually 
 Context: the living, same chat, as the Primary sent a Tertiary to find his blacklist words.
 
 No, you don't have to fetch anything. There's nothing in what I said that changes what the idea is. Now you're still being argumentative.
+
+## 2026-10-30 — The harness mapping idea was more sophisticated than the Primary's reading; his good ideas are dropped, and it is frustrating
+Context: the living, same chat, after the Primary gave its reading of "map the harnesses' stuff" from the modules.
+
+No, that's not what I meant. My idea was way more sophisticated. You need to map. Please don't make me repeat myself. See if you can find it again. God, I hate how you just drop all of my good ideas like they're not worth much. It's really frustrating.
