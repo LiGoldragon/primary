@@ -4,10 +4,7 @@
 <p>Created and judged by Fable; candidates gathered by Sonnet, each ruled on here.</p>
 <article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge/nexus.md — Destroy</code></h2></header>
 <p>it promises what the nexuses are today and holds a Curriculum commit hash, a dated witness with flow ids, and four lines telling a flow to read Cargo.toml.</p>
-<p>[-Orchestrate: read the current source version in the declared Orchestrate repository's <code>Cargo.toml</code>. Flow: read the current source version in the declared Flow repository's <code>Cargo.toml</code>. Message: read the current source version in the declared Message repository's <code>Cargo.toml</code>. Lojix: read the current source version in the declared Lojix repository's <code>Cargo.toml</code>.</p>
-<p>Curriculum receives one typed request through the socket at <code>$XDG_RUNTIME_DIR/curriculum/curriculum.sock</code>. Its three authored-context checkouts come from <code>CURRICULUM_PSYCHES_REPOSITORY_DIR</code>, <code>CURRICULUM_MIND_CONTEXT_DIR</code> and <code>CURRICULUM_FIELD_CONTEXT_DIR</code>; its refresh executable comes from <code>CURRICULUM_CONTEXT_REFRESH_PROGRAM</code>. These configured values, including the service account and checkout locations, belong to the installation and are read there rather than assumed from another setup.</p>
-<p>At Curriculum <code>2d74e7725bfff88ee3aec1ebe9ce31d52873ebbc</code>, every query follows <code>CurriculumOperation::perform</code> → <code>SourceConfiguration::from_environment</code> → <code>SourceConfiguration::read</code>. <code>read</code> runs the configured refresh executable synchronously and requires its success before reading the three checkout revisions and their module sources; only then does <code>perform</code> dispatch <code>ResolveSkills</code>, <code>ResolveSources</code>, <code>ComposeStartup</code> or <code>ComposeRole</code>. Nexus startup also calls <code>read</code> while opening its memory. Thus <code>ExecStartPre</code> is not the request-time refresh: it is an additional startup action.</p>
-<p>The 2026-10-29 operational witness from Psyche Primary <code>psyche228c47e</code> (with Mind <code>2eff0f9</code> and Field <code>77feb34</code>) observed the user <code>curriculum-nexus.service</code>, with no root process, configured to run <code>curriculum-refresh-contexts</code>. That program fetches each context repository's <code>origin/main</code> and detaches its configured checkout there. The same witnessed checkout update was performed manually with <code>git fetch origin</code> followed by <code>git checkout --detach origin/main</code>. A <code>ResolveSources.[ ModuleIdentity ]</code> request through the configured socket then reported the revision from which Curriculum served that module. The returned revision witnesses the request's source checkout; it does not identify the Curriculum executable revision by itself.-]</p>
+<div class="diff"><div class="del"><del><p>Orchestrate: read the current source version in the declared Orchestrate repository's <code>Cargo.toml</code>. Flow: read the current source version in the declared Flow repository's <code>Cargo.toml</code>. Message: read the current source version in the declared Message repository's <code>Cargo.toml</code>. Lojix: read the current source version in the declared Lojix repository's <code>Cargo.toml</code>.</p></del></div><div class="del"><del><p>Curriculum receives one typed request through the socket at <code>$XDG_RUNTIME_DIR/curriculum/curriculum.sock</code>. Its three authored-context checkouts come from <code>CURRICULUM_PSYCHES_REPOSITORY_DIR</code>, <code>CURRICULUM_MIND_CONTEXT_DIR</code> and <code>CURRICULUM_FIELD_CONTEXT_DIR</code>; its refresh executable comes from <code>CURRICULUM_CONTEXT_REFRESH_PROGRAM</code>. These configured values, including the service account and checkout locations, belong to the installation and are read there rather than assumed from another setup.</p></del></div><div class="del"><del><p>At Curriculum <code>2d74e7725bfff88ee3aec1ebe9ce31d52873ebbc</code>, every query follows <code>CurriculumOperation::perform</code> → <code>SourceConfiguration::from_environment</code> → <code>SourceConfiguration::read</code>. <code>read</code> runs the configured refresh executable synchronously and requires its success before reading the three checkout revisions and their module sources; only then does <code>perform</code> dispatch <code>ResolveSkills</code>, <code>ResolveSources</code>, <code>ComposeStartup</code> or <code>ComposeRole</code>. Nexus startup also calls <code>read</code> while opening its memory. Thus <code>ExecStartPre</code> is not the request-time refresh: it is an additional startup action.</p></del></div><div class="del"><del><p>The 2026-10-29 operational witness from Psyche Primary <code>psyche228c47e</code> (with Mind <code>2eff0f9</code> and Field <code>77feb34</code>) observed the user <code>curriculum-nexus.service</code>, with no root process, configured to run <code>curriculum-refresh-contexts</code>. That program fetches each context repository's <code>origin/main</code> and detaches its configured checkout there. The same witnessed checkout update was performed manually with <code>git fetch origin</code> followed by <code>git checkout --detach origin/main</code>. A <code>ResolveSources.[ ModuleIdentity ]</code> request through the configured socket then reported the revision from which Curriculum served that module. The returned revision witnesses the request's source checkout; it does not identify the Curriculum executable revision by itself.</p></del></div></div>
 </article>
 <article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge/flow-seats.md — Destroy</code></h2></header>
 <p>two commit hashes, then the Flow CLI's own help copied out; the CLI prints its help itself.</p>
@@ -26,166 +23,166 @@
 </article>
 <article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge/claude-harness.md — section changed</code></h2></header>
 <p>a dated version observation and the launcher's internals.</p>
-<p>[-On 2026-10-09, <code>claude --version</code> returned <code>2.1.294 (Claude Code)</code>. This is an observation of the installed command, not a metaflow binding.-]</p>
-<p>[-The native Claude launcher reads generated <code>.claude/skills/&lt;name&gt;/SKILL.md</code> files, sends bounded leading slash requests, and verifies the returned skill bodies against those files. Configuration is Flow's datom, read with <code>flow-meta 'Configuration'</code>.-]</p>
+<div class="diff"><div class="del"><del><p>On 2026-10-09, <code>claude --version</code> returned <code>2.1.294 (Claude Code)</code>. This is an observation of the installed command, not a metaflow binding.</p></del></div></div>
+<div class="diff"><div class="del"><del><p>The native Claude launcher reads generated <code>.claude/skills/&lt;name&gt;/SKILL.md</code> files, sends bounded leading slash requests, and verifies the returned skill bodies against those files. Configuration is Flow's datom, read with <code>flow-meta 'Configuration'</code>.</p></del></div></div>
 <p><del>Claude Code stops its background tasks when the host's free memory looks low, judging by free rather than available memory, so another process's build can end a long task that is nowhere near its own limit. A long-running process launched from the harness runs detached, as a transient systemd user service or scope with its own memory cap, and the harness watches for its end.</del></p>
 </article>
 <article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge/lojix.md — sections changed</code></h2></header>
 <p>the field lists of every request and reply are signal-lojix's; the schema history (v2 to v5) and the fixture transcripts with literal ids and paths age with the next release. What stays: which client speaks to which socket, that admission is not completion, and the deployment contract.</p>
 <p><del>The Nexus accepts schema v5 and refuses earlier schemas. Reset removes and recreates recognized v2/v3/v4 stores as v5. An existing v5 store is left intact.</del></p>
-<p>[-Successful reset replies are:</p>
-
-<p>The anatomy of ethos lives in vision-ethos itself, as the first golden ethos; Flow's ethos is one example, in its own skill.-]</p>
-<p>[-``<code> GenerationFailure.SyntaxError.[ /abs/orchestrate.ethos ]     ; the datom </code>``-]</p>
-<p>[-## Generation</p>
-<p>By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.</p>
-<pre><code class="language-text">ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'
-```-]
-
-## psyche-belief › vision/protos.md — passages changed
-
-Why: a repeated example whose `Datom::Struct` contradicts the `Datom { path, form }` shape above it; history of a dropped delimiter; a plan about three daemons.
-
-[-```rust
-Protos::Enclosed(Braced, vec![Protos::Bare("Ada"), Protos::Bare("1990")])   // structure: an enclosure of two runs
-Datom::Struct(vec![Datom::Bare("Ada"), Datom::Bare("1990")])                // meaning: a struct of two positions
-```-]
-
-A brace-enclosed structure's arity is anatomical;
-a bracket-enclosed structure's arity is not. Angle brackets are a
-real protos delimiter. [-The key-value map, which the guillemets once
-delimited, is dropped entirely from protos and its dialects.-]
-
-Datom is a protos dialect, carrying only
-pure typed data; it does not take part in the multi-pass
-rust-generation engine that ethos, nomos and logos are slated to
-become, but it shares the protos style. [-The final fully-decomposed
-engine with three daemons is the protos engine.-]
-
-## psyche-belief › vision/crystallization.md — further passages changed
-
-Why: said twice beside it, and a record-id format.
-
-[-## Impurities fall out through crystallization
-
-Impurities come out in the course of crystallization: a crystallization
-proposal points out the impurities it dissects out, and the living
-rules on them with the statements.-]
-
-[-A record's id is its originating session's short id and that
-session's own count.-]
-
-## psyche-belief › vision/nexus.md — further passage changed
-
-Why: an open naming question left in belief.
-
-An object enters a Nexus for the effect; the response follows as an
-effect of it. Conversion is the wrong frame for it. [-The name is open,
-Apply liked.-]
-
-## psyche-belief › vision/chronos.md — passages changed
-
-Why: an ephemeris version and a build order.
-
-[-Chronos reckons from JPL's DE440 ephemeris, for the years 1550 to 2650.-]
-
-Chronos is the golden example: a simple, idiomatic Nexus with a full ethos specification, built on Ethos and the Nexus.
-[-Flow is implemented from it, then the other nexuses.-]
-
-## psyche-belief › vision/committing.md — passage changed
-
-Why: a version-control mechanic.
-
-[-A commit
-made without paths takes the whole working copy, and is made only
-while the whole repository is locked, when nobody else may be
-editing.-]
-
-## psyche-belief › vision/remembering.md — section changed
-
-Why: a log-entry format.
-
-[-## The remembering line says what was found most relevant
-
-The log's record of a remembering carries a short description of what
-from the remembered flow was found most relevant to the current one.-]
-
-## psyche-belief › vision/psyche-aspect.md — passage changed
-
-Why: said again in the two sections under it.
-
-[-Psyche core keeps track of all the psyche and passes each matter to the topic flow it belongs to.-]
-
-## psyche-belief › vision/signal.md — section changed
-
-Why: portable rkyv is said above; the rest is an open question.
-
-[-## Protocol
-
-Signal is portable rkyv plus whatever protocol is standardized on top
-of it. The protocol is to be decided.-]
-
-## psyche-belief › vision/high-level-view.md — passage changed
-
-Why: a roadmap of named products that ages.
-
-In the long term, the great advancements are the improvements that most increase the definition of the psyche[-:
-
-- a more complete and reliable Ethos and Datom;
-- reliable flow spawning and communication: transcripts scanned by hooks with programmatic reactions, and flows that are truly lean;
-- real-time communication with the living, and better, a functioning interface, Unity, over Mentci;
-- Sema, the rich-expression dialect of protos;
-- paralinguistic speech-to-text, on Android and iOS-].
-
-## psyche-belief › vision/horizon.md — passage changed
-
-Why: a host name in passing and a status note.
-
-A virtual machine runs on a node, and sandboxing is a feature a node
-has. Which node has it is known by querying Horizon. [-Prometheus is
-mostly the workhorse. Allocating resources is not easy and is not yet
-designed.-]
-
-## psyche-belief › vision/meaning.md — passage changed
-
-Why: a flow id cited in belief.
-
-The roots of the ontology are the seven Vaiśeṣika categories, and
-its verbs follow the Aṣṭādhyāyī of Pāṇini, which an earlier ruling
-makes the base for how the system thinks, communicates, and
-classifies things in the world[- (flow 5851f4)-]. How the two divide
-beyond that is not yet ruled.
-
-## psyche-belief › vision/git-server.md — passages changed
-
-Why: the implementing program, and a bare record id.
-
-The cluster runs its own Git server on the node whose cluster data gives it the GitServer role. It serves thinking machines: it accepts the SSH keys the cluster data holds, carries no web interface, and mirrors every repository to GitHub as a backup. [-Gitolite serves it, with every key and every access rule declared from the cluster data.-]
-
-[-## Sources
-
-d68c82 git-]
-
-## psyche-belief › vision/nix-builds.md — passages changed
-
-Why: a status note and a bare record id.
-
-[-Tracking Nix builds is long term.-]
-
-[-## Sources
-
-d68c82 builds-]
-
-## mind-belief › role/default-description.md, explorer-description.md, worker-description.md — changed
-
-Why: each names the Codex orchestrator.
-
-[-General-purpose sub-agent for the Codex orchestrator-][+General-purpose subflow+]
-
-[-Read-only exploration sub-agent for the Codex orchestrator-][+Read-only exploration subflow+]
-
-[-Implementation sub-agent for the Codex orchestrator-][+Implementation subflow+]
-</code></pre>
+<div class="diff"><div class="del"><del><p>Successful reset replies are:</p></del></div><div class="del"><del><pre><code class="language-text">LojixStoreReset.{ path 5 count }
+LojixStoreAlreadyCurrent.{ path 5 }</code></pre></del></div></div>
+<p><del>Reset is destructive for a recognized v2/v3/v4 store.</del></p>
+<div class="diff"><div class="del"><del><p>Exact witnessed reply:</p></del></div><div class="del"><del><pre><code class="language-text">DeployAccepted.{ 13 { 263 263 } }</code></pre></del></div></div>
+<div class="diff"><div class="del"><del><p>Exact tested form:</p></del></div><div class="del"><del><pre><code class="language-text">ConfigurationWriteRequest.{ /run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-nexus NoTestDefaults /tmp/startup.rkyv }</code></pre></del></div></div>
+<div class="diff"><div class="del"><del><p>Every "has, in order:" field list, every "carries" variant list and every "Exact witnessed form" example of a request or reply, from <code>Query</code> through <code>BootstrapRejected</code>: sixty-odd passages, each the contract crate's own vocabulary.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge/orchestrate.md — passages changed</code></h2></header>
+<p>a flow-id token in an example, and a stale-lock check written as herdr and flow commands.</p>
+<p><del>    orchestrate 'Lock.{ OrchestrateDocs 444e5e [ /absolute/path/to/file ] «Clarify Lock fields» }'</del></p>
+<div class="diff"><div class="del"><del><p>A lock whose holder has no live flow is stale: check the holder's six-character id against <code>herdr pane list</code> labels and <code>flow 'Metaflows'</code>; <code>orchestrate 'Release.&lt;id&gt;'</code> releases any lock by its number, whoever holds it, and a stale lock is released by whoever meets it.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">field-belief › compensation, 9 modules — Destroy</code></h2></header>
+<p>the compensation kind is gone on his word. behavior.md, book-crystallization.md, correction.md, deployment.md, file-editing.md, nix-workflow.md, operating-system.md, secrets.md (shown in round 1), testing.md. With them psyche-belief › compensation/book-making.md and compensation/messaging.md.</p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › evidence, 4 files — Destroy</code></h2></header>
+<p>research transcripts kept beside belief, never composed into a flow. android-paralinguistic-transcription-sources.md, belief-module-inventory.md, cache-compaction-research.md, instruction-length-research.md.</p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › knowledge, the 29 modules of the first draft — Destroy</code></h2></header>
+<p>version-pinned descriptions of a harness or of our own code at one commit, carrying hashes, ids and paths. belief-module-size, belief-modules, claude-agent-frontmatter, claude-tool-allowance, codex-rollout, codex, compaction, context-source-contracts, context-strata, file-editing, flow-caller, flow-configuration, flow-queue, flow-receipt, generated-projection, handover, harness-effort, last-response, monitoring-systems, obsidian-app, obsidian-comments, obsidian-hosts, obsidian-self-hosted-sync, obsidian-sync, paralinguistic-transcription, periodic-hook-context, psyche-grasp, refresh, subagent-context, subflow-token-cost, yt-dlp.</p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › intent/mandatory-traits.md — passage changed</code></h2></header>
+<p>a date, a session hash and an approval quote inside a belief module.</p>
+<p><del>— living-approved wording, 2026-08-13 (Steward session d2bb5f5f). Proposed by Steward, approved with "otherwise its good, implement commit and deploy."</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">field-belief › role/book-publishing-procedure.md — passages changed</code></h2></header>
+<p>a SHA-256 path template, a reservation protocol, and a gallery sweep at 950 artifacts are the tool's job, written as instruction to a model.</p>
+<div class="diff"><div class="del"><del><p>Preserve the local source. Build to <code>FLOW_DIRECTORY/publications/&lt;source-path-digest&gt;/&lt;source-basename&gt;.html</code>, where <code>source-path-digest</code> is the SHA-256 digest of the source's canonical path. A fixed or caller-independent output such as the scratchpad's <code>book.html</code> is forbidden. A prior URL supplies comment context, never replacement source. Every revised presentation has its own source and page and a fresh artifact; preserve the older publication and its comments.</p></del></div></div>
+<div class="diff"><div class="del"><del><p>Before any Artifact call, atomically reserve that source's digest directory with a <code>publishing</code> entry, re-read the publication state while holding it, and remove only your reservation when the operation ends. On a first publication, call Artifact without a URL, then atomically create <code>publication</code> in that directory with one <code>source &lt;canonical-path&gt;</code> line and one <code>url &lt;returned-url&gt;</code> line. An existing record makes the operation a republish attempt, not another first publication. A book is published once, at one URL, and a republish keeps its URL.</p></del></div></div>
+<p><del>When the gallery passes 950 artifacts, the book Secondary runs artifact-sweep (tracker repo tools/artifact-sweep/) with a cutoff seven days back.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">field-belief › role/book-page-procedure.md — passages changed</code></h2></header>
+<p>model names, an absolute path, a retired schema listed as a type, and a batch limit of 50 with version pins.</p>
+<p><del>You are the judge: you run at medium effort (Opus), start readers at medium effort (Sonnet), merge what they return into what the page already holds, and write the page.</del></p>
+<div class="diff"><div class="del"><del><p>Values that differ between setups are in <code>/home/li/primary/SKILL_VARIABLES.md</code>: <code>The living's page</code> (the page's address), <code>Claude transcript root</code>, <code>Curriculum skills</code>. Read them there.</p></del></div></div>
+<div class="diff"><div class="del"><del><p>Historical read schema only; these are not writable current proposal destinations:</p></del></div><div class="del"><del><p>Subject.{ Name State Vector&lt;Waiting&gt; Changed } Waiting.{ Question Proposal Vector&lt;Option&gt; Lost Answer } Answer.[ None Chosen.{ Option Note } ] Crystallization.{ Statement Destination Vector&lt;Source&gt; State } LegacyDestination.[ Vision.Topic Intent.Topic Skill.{ LegacyKind Name } ] LegacyKind.[ Operation Documentation Compensation Trial ] Source.{ FlowId Topic } State.[ Proposed Approved Changed.Markdown Refused ]</p></del></div></div>
+<div class="diff"><div class="del"><del><ul><li>Historical <code>crystallizations/&lt;id&gt;</code> rows: <code>statement</code> (Markdown), legacy <code>destination</code> (one of <code>{"vision": "&lt;topic&gt;"}</code>, <code>{"intent": "&lt;topic&gt;"}</code>, <code>{"skill": {"kind": "Operation"|"Documentation"|"Compensation"|"Trial", "name": "&lt;skill name&gt;"}}</code>), <code>sources</code> (list of <code>{flowId, topic}</code>: the flow that heard each record and the record file's topic), <code>records</code> (list of record ids drawn on; never shown), <code>state</code> (<code>"Proposed"</code>, <code>"Approved"</code>, <code>{"changed": "&lt;the living's note&gt;"}</code> or <code>"Refused"</code>), historical <code>approvedAs</code> (read as its original value; never generate a new retired kind), <code>answeredAt</code> (written by the page), <code>order</code>.</li></ul></del></div></div>
+<p><del>    node /home/li/primary/tools/book-fetch.mjs --from &lt;line&gt; --out &lt;scratch&gt;/book</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">field-belief › role/subflow-role.md — passage changed</code></h2></header>
+<p>environment variable names, a PROVENANCE handoff, jj and git invocations and a compensation module name, in one paragraph every subflow carries.</p>
+<div class="diff"><div class="del"><del><p>Your flow is <code>FLOW_ID</code> and <code>FLOW_DIRECTORY</code> in your environment. The harness or launcher records the current <code>THREAD_ID</code> for transcript and evidence provenance. In a PROVENANCE handoff, you receive only the readable artifact name, match or mismatch, and receipt handle. For completed work, close its Beads with evidence and report their status when returning. A subflow never stashes, resets or checks out over the shared working copy; it reads a baseline from a revision with <code>git show &lt;rev&gt;:&lt;path&gt;</code> or <code>jj file show -r &lt;rev&gt; &lt;path&gt;</code>. A search over files is rg. Do not create a lane, index entry, or log. Create a report or witness only when the main flow delegates it or a named tool or flow will consume it, and use compensation-flow-evidence for its contract. A witness or test launch takes a throwaway topic of its own; an address a live flow holds stays with that flow.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">field-belief › role/comment-relay.md — passage changed</code></h2></header>
+<p>a flow command written out literally, for a relay the tool should make.</p>
+<div class="diff"><div class="del"><del><p>Compose the <code>Psyches</code> request yourself from the new comments and send it to Psyche core Secondary: <code>flow 'Send.{ Address.{ Psyche core Secondary } Wake MiddleAbrupt.Psyches.[ { «context» «verbatim» } … ] }'</code>.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/archive-ethos-monolith.md — Destroy</code></h2></header>
+<p>it describes itself as retired; every paragraph is history of a renamed stage.</p>
+<div class="diff"><div class="del"><del><p>Retired on landing by flow fe34eb, 2026-09-10. The living ruled Ethos Monolith and Ethos Zero one stage under two names. What still stands is carried by Vision/ethos.md, heading Zero; the words are kept here.</p></del></div><div class="del"><del><h3>Ethos-monolith</h3></del></div><div class="del"><del><h4>Origin</h4></del></div><div class="del"><del><p>All our systems will be Nexuses, and the correct three-nexus ethos stack is the desired stack — but it is too complex to go for directly, and the previous effort devolved into agent hallucinations for lack of proper instructions. The monolith is the short-term path that brings ethos into production: the earlier stack's code is kept, left in place, frozen, and new repositories carry a simplified path from Ethos straight to Rust.</p></del></div><div class="del"><del><h4>Name</h4></del></div><div class="del"><del><p>First named ethos-rust, the schema-rust analogue; then renamed ethos-monolith: it has no nomos and no logos component and goes straight to Rust — a monolith.</p></del></div><div class="del"><del><h4>Shape</h4></del></div><div class="del"><del><p>The monolith will itself be a Nexus. Nexus by itself names our specifically designed daemon — distinct from Nexus Core, the runtime engine — and executables are named component-nexus.</p></del></div><div class="del"><del><h4>Purpose</h4></del></div><div class="del"><del><p>An incremental implementation and bootstrap process, so that ethos and datom get written and read as soon as possible, at full correctness, and components start being written in ethos.</p></del></div><div class="del"><del><h4>Vocabulary carried</h4></del></div><div class="del"><del><p>The Signal, Nexus, SEMA vocabulary and principles are kept, and how they are used and implemented is designed afresh. Nexus is authored in ethos so its main operations are visible. Sema is the database engine, authored in ethos so the stored types are visible; it matters more than nexus, because operational editing should yield database migration operations along with the editing operation.</p></del></div><div class="del"><del><h4>Readiness</h4></del></div><div class="del"><del><p>Ethos serves new work in place of legacy schema once the monolith is ready to use; readiness is witnessed.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/datom.md — passages changed</code></h2></header>
+<p>a postponement and the patch note that contradicts it, a speculative future guarded by a gag, and the name's history.</p>
+<p><del>Meaning is postponed so that a working syntax lands as soon as possible: today a parenthesized text lands as a plain String, with the later type marked in code. The name Meaning smells of a verb; it stands provisionally and is reopened together with the type.</del></p>
+<p><del>The meaning language is now developed, and is defined in Vision/meaning.md; that supersedes the postponement stated above.</del></p>
+<p><del>Generating Rust is Ethos's duty, in today's division of labor. When Ethos becomes the full authoring language, with Rustlang as its assembly layer, Datom, the data dialect of the Protos family, may gain an inline place in authored Ethos, the way Rustlang composes data directly in code. That road is reached, or even floated, only with explicit context: how, when, and where data yields Rust, stated without ambiguity; until then the division stands as spoken.</del></p>
+<p>Everything moves to Datom: all of the stack, Horizon, Lojix, everything. <del>Datom's own line of descent is NOTA, which also passed through the temporary name Dotos; that old notation stays behind, frozen, and may be called legacy. Schema is the abandoned ancestor of Ethos, not of Datom.</del> The library is named datom-codec so that datom is free for the datom nexus, which comes when there is more to do: translating datom objects between formats, and a parsing cache keyed by the content-addressed hash of normalized text.</p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/flow.md — further passages changed</code></h2></header>
+<p>a code note on payloads, a fallback that round 1 removed from messaging, and a reaping section the refresh paragraph already says.</p>
+<p><del>Psyche, Mind and Field have similar payloads, and they go under one: the metaflow, whose aspect is Psyche, Mind or Field.</del></p>
+<p><del>A request that Flow holds or refuses reaches its recipient by the Herdr fallback the same minute, as vision:messaging gives it.</del></p>
+<div class="diff"><div class="del"><del><h4>A replaced session is reaped by the refresh itself</h4></del></div><div class="del"><del><p>Reaping belongs to the refresh event. A refreshed flow takes the replaced end out of receiving messages, so only live ends stay registered and addressable.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/ethos.md — further passages changed</code></h2></header>
+<p>a map of which module lives where, a datom carrying a literal path, and the generator's invocation.</p>
+<div class="diff"><div class="del"><del><pre><code class="language-text">┌──────────────────────────────────────────┐
+│ vision-ethos                             │
+│                                          │
+│  what ethos is · its layout              │
+│  its two anatomies: types and traits     │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │ the ethos of ethos                 │  │
+│  │ the types an ethos file is made of │  │
+│  │ the first golden ethos             │  │
+│  └────────────────────────────────────┘  │
+└───────────────────┬──────────────────────┘
+                    │ example
+                    ▼
+        ┌───────────────────────┐
+        │ vision-flow-ethos     │
+        │ the Flow Nexus, in    │
+        │ ethos; its own skill  │
+        └───────────────────────┘</code></pre></del></div><div class="del"><del><p>The anatomy of ethos lives in vision-ethos itself, as the first golden ethos; Flow's ethos is one example, in its own skill.</p></del></div></div>
+<div class="diff"><div class="del"><del><pre><code class="language-text">GenerationFailure.SyntaxError.[ /abs/orchestrate.ethos ]     ; the datom</code></pre></del></div></div>
+<div class="diff"><div class="del"><del><h4>Generation</h4></del></div><div class="del"><del><p>By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.</p></del></div><div class="del"><del><pre><code class="language-text">ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'</code></pre></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/protos.md — passages changed</code></h2></header>
+<p>a repeated example whose <code>Datom::Struct</code> contradicts the <code>Datom { path, form }</code> shape above it; history of a dropped delimiter; a plan about three daemons.</p>
+<div class="diff"><div class="del"><del><pre><code class="language-rust">Protos::Enclosed(Braced, vec![Protos::Bare("Ada"), Protos::Bare("1990")])   // structure: an enclosure of two runs
+Datom::Struct(vec![Datom::Bare("Ada"), Datom::Bare("1990")])                // meaning: a struct of two positions</code></pre></del></div></div>
+<p>A brace-enclosed structure's arity is anatomical; a bracket-enclosed structure's arity is not. Angle brackets are a real protos delimiter. <del>The key-value map, which the guillemets once delimited, is dropped entirely from protos and its dialects.</del></p>
+<p>Datom is a protos dialect, carrying only pure typed data; it does not take part in the multi-pass rust-generation engine that ethos, nomos and logos are slated to become, but it shares the protos style. <del>The final fully-decomposed engine with three daemons is the protos engine.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/crystallization.md — further passages changed</code></h2></header>
+<p>said twice beside it, and a record-id format.</p>
+<div class="diff"><div class="del"><del><h4>Impurities fall out through crystallization</h4></del></div><div class="del"><del><p>Impurities come out in the course of crystallization: a crystallization proposal points out the impurities it dissects out, and the living rules on them with the statements.</p></del></div></div>
+<p><del>A record's id is its originating session's short id and that session's own count.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/nexus.md — further passage changed</code></h2></header>
+<p>an open naming question left in belief.</p>
+<p>An object enters a Nexus for the effect; the response follows as an effect of it. Conversion is the wrong frame for it. <del>The name is open, Apply liked.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/chronos.md — passages changed</code></h2></header>
+<p>an ephemeris version and a build order.</p>
+<p><del>Chronos reckons from JPL's DE440 ephemeris, for the years 1550 to 2650.</del></p>
+<p>Chronos is the golden example: a simple, idiomatic Nexus with a full ethos specification, built on Ethos and the Nexus. <del>Flow is implemented from it, then the other nexuses.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/committing.md — passage changed</code></h2></header>
+<p>a version-control mechanic.</p>
+<p><del>A commit made without paths takes the whole working copy, and is made only while the whole repository is locked, when nobody else may be editing.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/remembering.md — section changed</code></h2></header>
+<p>a log-entry format.</p>
+<div class="diff"><div class="del"><del><h4>The remembering line says what was found most relevant</h4></del></div><div class="del"><del><p>The log's record of a remembering carries a short description of what from the remembered flow was found most relevant to the current one.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/psyche-aspect.md — passage changed</code></h2></header>
+<p>said again in the two sections under it.</p>
+<p><del>Psyche core keeps track of all the psyche and passes each matter to the topic flow it belongs to.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/signal.md — section changed</code></h2></header>
+<p>portable rkyv is said above; the rest is an open question.</p>
+<div class="diff"><div class="del"><del><h4>Protocol</h4></del></div><div class="del"><del><p>Signal is portable rkyv plus whatever protocol is standardized on top of it. The protocol is to be decided.</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/high-level-view.md — passage changed</code></h2></header>
+<p>a roadmap of named products that ages.</p>
+<p>In the long term, the great advancements are the improvements that most increase the definition of the psyche<del>:</del>.</p>
+<div class="diff"><div class="del"><del><ul><li>a more complete and reliable Ethos and Datom;</li><li>reliable flow spawning and communication: transcripts scanned by hooks with programmatic reactions, and flows that are truly lean;</li><li>real-time communication with the living, and better, a functioning interface, Unity, over Mentci;</li><li>Sema, the rich-expression dialect of protos;</li><li>paralinguistic speech-to-text, on Android and iOS</li></ul></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/horizon.md — passage changed</code></h2></header>
+<p>a host name in passing and a status note.</p>
+<p>A virtual machine runs on a node, and sandboxing is a feature a node has. Which node has it is known by querying Horizon. <del>Prometheus is mostly the workhorse. Allocating resources is not easy and is not yet designed.</del></p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/meaning.md — passage changed</code></h2></header>
+<p>a flow id cited in belief.</p>
+<p>The roots of the ontology are the seven Vaiśeṣika categories, and its verbs follow the Aṣṭādhyāyī of Pāṇini, which an earlier ruling makes the base for how the system thinks, communicates, and classifies things in the world<del> (flow 5851f4)</del>. How the two divide beyond that is not yet ruled.</p>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/git-server.md — passages changed</code></h2></header>
+<p>the implementing program, and a bare record id.</p>
+<p>The cluster runs its own Git server on the node whose cluster data gives it the GitServer role. It serves thinking machines: it accepts the SSH keys the cluster data holds, carries no web interface, and mirrors every repository to GitHub as a backup. <del>Gitolite serves it, with every key and every access rule declared from the cluster data.</del></p>
+<div class="diff"><div class="del"><del><h4>Sources</h4></del></div><div class="del"><del><p>d68c82 git</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/nix-builds.md — passages changed</code></h2></header>
+<p>a status note and a bare record id.</p>
+<p><del>Tracking Nix builds is long term.</del></p>
+<div class="diff"><div class="del"><del><h4>Sources</h4></del></div><div class="del"><del><p>d68c82 builds</p></del></div></div>
+</article>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">mind-belief › role/default-description.md, explorer-description.md, worker-description.md — changed</code></h2></header>
+<p>each names the Codex orchestrator.</p>
+<p><del>General-purpose sub-agent for the Codex orchestrator</del><ins>General-purpose subflow</ins></p>
+<p><del>Read-only exploration sub-agent for the Codex orchestrator</del><ins>Read-only exploration subflow</ins></p>
+<p><del>Implementation sub-agent for the Codex orchestrator</del><ins>Implementation subflow</ins></p>
 </article>
 <!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
      Markup, all optional except what the source has:
