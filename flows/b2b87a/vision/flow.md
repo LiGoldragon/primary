@@ -29,3 +29,8 @@ And I hope that once you reach your context limit, your current flow doesn't get
 Context: the living, same chat, right after.
 
 So if that's the case, maybe either you want to get your context limit raised, or we might even be contemplating compacting you before this dreadful possibility ever happens. And if that's a possibility, we certainly want and need an urgent patch to the current Flow Nexus so that this never happens. By the way, I don't understand why we still don't have a new version of the Flow Nexus in production. We should be moving on to at least one or two versions a day.
+
+## 2026-10-29 — Every Flow version is tested hard in independent capsules; a Nexus supports a different Herdr, so capsules do not conflict
+Context: the living, same chat, right after, on the excess usage.
+
+Well, here's a perfect use of our excessive usage: we can test the hell out of these Flow Nexus instances in independent capsules. This should be standard in every new version of the Nexus: it should be able to support using a different herder, right? Another capsule, so that we can have non-conflicting flow capsules, like meta flow capsules or Flow Nexus capsules, or maybe that's not the term we use. I just seem to remember that that's the term we agreed on.
