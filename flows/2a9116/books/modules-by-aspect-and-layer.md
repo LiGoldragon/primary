@@ -161,3 +161,15 @@ Figure proposed for vision:composition, added in green.
 **Alternative 2**
 
 + A subflow carries spirit:core and its role's modules alone.
+
+### Proposal 17: whether Psyche seats keep the compensation modules · psyche-context › vision/psyche-flows.md
+
+**Comment** Psyche seats carry compensation:behavior and compensation:correction tonight. Should they keep them?
+
+**Alternative 1**
+
++ Psyche seats carry compensation:behavior and compensation:correction, as they do now.
+
+**Alternative 2**
+
++ Psyche seats carry neither compensation:behavior nor compensation:correction.
