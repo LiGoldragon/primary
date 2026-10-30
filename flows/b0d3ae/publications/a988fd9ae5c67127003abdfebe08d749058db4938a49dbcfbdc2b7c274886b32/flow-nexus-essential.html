@@ -78,6 +78,46 @@
 Send.{ { Psyche core Primary }
        Words.«This is not necessary.» }
 Delivered</code></pre>
+<h2>Operation</h2>
+<p>What the Nexus does; every effect is one operation type. A signal reaches memory only through an operation, and the answer returns the same way.</p>
+<pre data-diff><code class="language-ethos">Operation
+[ flow:[ Address Remembering FlowId Request Declaration ] ]   ; imports
+[ Start.{ Address Remembering Brief.String Declaration }      ; operations
+  Deliver.{ FlowId Request }
+  Enqueue.{ Address Request }
+  Replace.FlowId
+  Stop.FlowId ]
+[ Started.FlowId                                              ; outcomes
+  Delivered  Enqueued
+  Replaced.FlowId
+  Stopped
+  Failed.[ CapsuleRefused HarnessRefused StoreRefused ] ]
+[ Capsule.{ Home.String Pane.String } ]                       ; types</code></pre>
+<h2>Memory</h2>
+<p>What the Nexus remembers: one record per flow, and the queue of each address.</p>
+<pre data-diff><code class="language-ethos">Memory
+[ flow:[ Address FlowId Request Declaration ] ]               ; imports
+[ Flow.{ FlowId Address                                       ; record types
+         State.[ Started Working Idle Ended ]
+         Predecessor.Option&lt;FlowId&gt; }
+  Queue.{ Address Vector&lt;Request&gt; }
+  Answer.[ Succeeded Failed ] ]</code></pre>
+<h2>Meta signal</h2>
+<p>The owner's socket: configuration alone passes through it, the declarations and the thresholds among it.</p>
+<pre data-diff><code class="language-ethos">Signal
+[ flow:[ Address Declaration ] ]                              ; imports
+[ Declare.Declaration                                         ; queries
+  Threshold.{ Model.String Tokens.Integer }
+  Observe ]
+[ Declared  Thresholded                                       ; responses
+  Observed.Vector&lt;Declaration&gt;
+  Refused.NotOwner ]
+[]                                                            ; types</code></pre>
+<pre data-diff><code class="language-datom">; the Psyche core Primary declared over the meta socket, with its blacklist
+Declare.{ { Psyche core Primary }
+          [ spirit:core spirit:psyche spirit:ghost intent:psyche intent:living-interaction vision:psyche-primary ]
+          [ Artifact ArtifactComments ArtifactData ] }
+Declared</code></pre>
 <p><strong>Moved, not removed</strong> These leave the module for vision:long:flow-nexus, as they stand today, under the same headings: a metaflow sleeping and waking; the topic enum; the judgment by a small model of whether to wake a topic; the simplified flow; a Primary as a simplified flow; the flow ethos specifying a flow whole; the heartbeat; the ephemeral flow; restarting without waking; versions; the Capsule's later encryption; the real-world test; Herdr as one exchangeable backend.</p>
 <p><strong>Removed</strong> The one-model line. Id lengthening on collision. "What it does", which said the Nexus three times. "Repository and belief modules", held by vision:belief-modules. "What a refresh carries", said once under Refresh.</p>
 <article class="proposal"><header><span class="pnum">2</span><h2>vision:messaging · psyche-belief › vision/messaging.md — Destroy</h2></header>
