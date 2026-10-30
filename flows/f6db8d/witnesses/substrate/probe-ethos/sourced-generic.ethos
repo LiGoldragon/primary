@@ -1,5 +1,0 @@
-Library
-[ external:[ Vector ] ]
-[ Holder.{ external:Vector<String> } ]
-[]
-[]

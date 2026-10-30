@@ -1,7 +1,0 @@
-Library
-[]
-[ Title.String
-  Body.String
-  Reply.[ Presentation.{ Title Body } ] ]
-[]
-[]

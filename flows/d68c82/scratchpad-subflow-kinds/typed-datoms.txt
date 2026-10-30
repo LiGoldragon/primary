@@ -1,3 +1,0 @@
-type.Kind { Field Operator Tertiary }
-type.Kind { Psyche Explorer Quaternary }
-type.Level Secondary

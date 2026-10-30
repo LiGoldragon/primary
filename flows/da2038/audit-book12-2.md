@@ -1,7 +1,0 @@
-Audit of book 12 second edition v2 (source line refs). Revise and republish to the same URL:
-- L6 edition preamble renders: remove. L78, L80, L93 "machine choice:" justifications are narration: remove (move to refs).
-- Choices: drop 1–3 (land/amend/drop: he can always do that by comment). 4, 6, 8, 10 only restate the main proposal; a proposal stands as the default, choices carry only real alternatives with only the differing words. Choice 7 revives the higher-then-lower escalation he called obsolete: remove.
-- Faithfulness: the default line says "with a working transcript, its flow is restarted from it" and the heading says "restart"; he said "reawaken" and named no mechanism. Make his line the default: started whether or not it is running; with no working transcript to reawaken, fed the metaflow's context modules and the prompt it is to get now. The model-roles replacements (L50–51, L66–67) add layer routing he did not speak on here: strike the obsolete lines without inventing new routing, or offer the routing as a labelled machine choice.
-- The L51–55 hunk's word marks interleave into an unreadable run; when a line is mostly rewritten, show it as one removed line then one added line, not word-interleaved.
-- Figure label "the request as its prompt" should match the text ("the prompt it is to get now"); keep the verb on the arrow, the condition out of it.
-- Choice 9 cites "intent-psyche L8", which is a heading; cite the statement's line.

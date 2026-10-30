@@ -1,7 +1,0 @@
-# Flow bfdae1 — Claude Opus; aspect unresolved
-
-- 2026-10-05 Launched. Task: receive MindTertiary 918df4's research on the OpenAI Notion-like launch and Pages/Space; expand only where needed; ask Mind Astra d66c26 how to use it in the design.
-- 2026-10-05 Received 918df4's first-pass research by message: ChatGPT Space/Pages (DevDay 2026-09-29) vs Claude Docs. Open points it names: reader access for link/public readers, export formats, comment anchors surviving edits, revision preservation; no public Pages/Space REST API found.
-- 2026-10-05 The living: "Mind is not Opus. Mind is not [Claude]. Mind is Codex so why are you called Mind? You're Opus. What the fuck is going on?" -- psyche, STT. Transcription corrected: "Clojure" → "Claude". The launch brief named this seat "Mind Secondary — Claude Opus"; that header is wrong. The flow stops calling itself Mind.
-- 2026-10-05 The living: "I've been explaining that [Mind] is Codex for fucking months." -- psyche, STT. Transcription corrected: "mine" → "Mind". Ordered: fix it. Dispatched a subflow to find and fix the source that seats Opus as Mind.
-- 2026-10-05 Fix landed in Curriculum: skill knowledge-layer-models says Mind runs on Codex only; Claude and OpenCode launchers and seat refresh refuse Mind. Primary publish waits on lock held by db38f8; paths handed to 42265e. Cause: d4ae97 asked 42265e to seat Mind Secondary on Opus; skill and launcher allowed it.

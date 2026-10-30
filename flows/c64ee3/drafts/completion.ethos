@@ -1,7 +1,0 @@
-Library
-[]
-[ FlowId.String
-  Remainder.String
-  Completion.[ Finished.{ Option<FlowId> Vector<Remainder> } ] ]
-[]
-[]

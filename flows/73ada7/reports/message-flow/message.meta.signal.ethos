@@ -1,9 +1,0 @@
-; What Message says, on its meta socket
-
-Signal
-[ message_library:Configuration ]
-[ Configure.Configuration ]
-[ Configured
-  RestartRequired               ; a socket path changed
-  Refused.[ StoreRefused ] ]
-[]

@@ -1,8 +1,0 @@
-[
- ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «Flow exposes the harness; Message makes use of it; Flow first»; anchored passage «Flow exposes everything from the harness, the bare input: a flow is started, stopped and sent a message through Flow, an…»; 2026-10-14T15:15; thread a9e8af3d-20f5-4df8-9e53-f31e91957b1b"
-  "Yes this is good."]
- ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «anybody may call Flow; a flow refreshes itself safely»; anchored passage «Anybody may call Flow, a flow for its own refresh among them: because the CLI checks the calling process, a flow refresh…»; 2026-10-14T15:16; thread c48143f5-bf5b-4602-a4cd-c6b1db99a153"
-  "Yeah this is good, especially the later part."]
- ["Book «Flow: CLI, deployment, long term» https://claude.ai/artifact/KqGmvFzr4VAqEeCA4jYMmA; proposal «an undelivered request tries a higher power, then lower; a crucial metaflow missing is started»; anchored passage «A request that cannot be delivered tries a higher power in its own aspect: the layer above, and when nothing is higher, …»; 2026-10-14T15:18; thread 858cdedf-7fcd-48f6-a7c3-3616049132d6"
-  "We have old vision that is now obsolete in there, with a conflicting vision. The long-term vision is that the flow is started if it's needed, which means it doesn't matter if it's running or not. Even if it doesn't have any working transcript to reawaken, then we just feed it the context modules that this meta flow is supposed to have, along with the prompt that it's supposed to be getting now."]
-]

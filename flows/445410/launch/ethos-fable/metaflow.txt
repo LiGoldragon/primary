@@ -1,1 +1,0 @@
-Psyche Primary Ethos: Ethos vision against implementation, invariants, type versus new type versus alias

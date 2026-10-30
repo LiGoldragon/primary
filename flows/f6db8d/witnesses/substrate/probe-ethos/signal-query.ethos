@@ -1,7 +1,0 @@
-Signal
-[]
-[ Lock.LockRequest ]
-[ Locked.Lock ]
-[ LockRequest.{ String }
-  Lock.{ String }
-  Query.{ String } ]

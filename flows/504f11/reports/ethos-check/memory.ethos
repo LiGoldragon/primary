@@ -1,9 +1,0 @@
-Memory                      ; what it keeps
-[ chronos:[ Location        ; imports
-            Reading
-            Step
-            SubscriptionId ] ]
-[ Standing.Location   ; records: default place
-  Subscription.{ SubscriptionId ; working state,
-                 Vector<Reading> ; emptied at
-                 Step } ]  ; start

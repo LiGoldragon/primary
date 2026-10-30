@@ -1,7 +1,0 @@
-Library.{
-[]                                    ; imports
-[ Brief.String ]                      ; types
-[ Briefing.[ brief.[ String ]         ; traits
-             rewriteBrief!{ [ Named ] [] } ]
-  Named.[ name.[ String ] ] ]
-[ Brief.[ Briefing Named ] ] }        ; associations

@@ -1,6 +1,0 @@
-Library.{
-[]                                    ; imports
-[ Sink.{ String Integer } ]           ; types
-[ Fillable.[ create:[ Self ]          ; traits
-             drain![ Vector<String> ] ] ]
-[ Sink.[ Fillable ] ] }               ; associations
