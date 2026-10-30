@@ -16,3 +16,8 @@ Context: the living, same chat, quoting back "I’ve confirmed the Psyche Primar
 Sorry, you're talking about something that is in the issue tracker as if it's already done. Is that what just happened?
 
 That sounds like a claim on something that is already a fact.
+
+## 2026-10-30 — The window showed, in the Primary's name, "I've confirmed the Psyche Primary has no artifact tool and fetches nothing"; the Primary's transcript holds other words there
+Context: the living, same chat, with a screenshot of the Primary's window showing the paragraph after the Bash step "Recorded his words, commit, and open the bead for removing the tool from the Primary".
+
+This is your window, and as you can see, the exact sentence I just quoted is from your response. So now you're denying what you said. Is it because you have no way of knowing what you said, or because you decided you should start lying to me?
