@@ -7,14 +7,6 @@ Context: Comment on «Layers, not models, in the skills»; recovered from flows/
 
 -- psyche, typed, 2026-10-03T15:39; relayed by 5578cc.
 
-## Layer
-
-Context: Same book, approval of the proposed scope ‘Layer replaces rank everywhere, the ethos type included’; recovered from 5578cc decision item 1. The proposed scope is context, not a separate quote of the living.
-
-> Yes I like layer.
-
--- psyche, typed, 2026-10-03T15:41; relayed by 5578cc.
-
 ## Quaternary layer
 
 Context: relayed by Field db38f8 after the living learned a Quaternary Field flow had launched on Sonnet without a defined Quaternary model choice.

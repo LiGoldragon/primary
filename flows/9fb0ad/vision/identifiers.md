@@ -33,9 +33,3 @@ Comment at "1. What the words are."
 > "Well it seems to me that the first 33 bits of the actual ID we were using from the harness's ID is what we're using and then converting it into words because then we can go back. Kind of like how people remember their crypto wallet private key with a list of words and then from the words they can get the key back. This utility would allow for tools to deterministically be able to determine which transcript files actually belong to this flow ID by converting the words. Is there anything that doesn't work with that in practice?"
 
 -- psyche, typed, book comment, 2026-10-03T15:59Z, relayed by 5578cc.
-
-## The September words were the same vision: words convert back to the flow id
-Comment on «The day, in one view», point 4, which had called the September record superseded.
-> "I don't think what you're saying is a misinterpretation of what I said in September. It was my vision all along that the words could be converted and give us the flow ID in return so that there's a correspondence between them."
-
--- psyche, typed, book comment, 2026-10-03T16:05Z.
