@@ -45,3 +45,8 @@ show me the section about the harness system prompt correctly in the proposal se
 Context: the living, same chat, reading "The Flow Nexus, bare", which showed the Signal ethos alone.
 
 I don't see the operation ethos, the memory ethos, and the meta signal ethos. Is this a concept that was never really understood and incorporated into practice? I'm just talking to myself here about these concepts that no one cares about?
+
+## 2026-10-30 — The flow id is not derived from the harness session id, since not every harness can give one
+Context: the living, same chat, on the bare Flow Nexus's line "A flow's id is the first six characters of the hash of its harness session id".
+
+No, Flow's ID is not the first six characters of a session ID and you should know that because not all harnesses can do that. I'm surprised that I have to tell you this again.
