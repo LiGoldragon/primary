@@ -40,3 +40,8 @@ No, that's not what I meant. My idea was way more sophisticated. You need to map
 Context: the living, same chat, after the Primary put the harness map into the bare Flow Nexus from his words of 2026-10-26.
 
 show me the section about the harness system prompt correctly in the proposal section, published with an example, with the actual ethos specification of what that would look like, and some example datom. Ideally, using a real-world datom that would work currently in the real-world harness Do you understand what I'm saying?
+
+## 2026-10-30 — The Operation, Memory and meta signal ethos are missing from the bare Flow Nexus; are these concepts understood and in practice?
+Context: the living, same chat, reading "The Flow Nexus, bare", which showed the Signal ethos alone.
+
+I don't see the operation ethos, the memory ethos, and the meta signal ethos. Is this a concept that was never really understood and incorporated into practice? I'm just talking to myself here about these concepts that no one cares about?
