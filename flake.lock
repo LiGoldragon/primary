@@ -68,19 +68,19 @@
         "type": "github"
       }
     },
-    "field-context": {
+    "field-belief": {
       "flake": false,
       "locked": {
         "lastModified": 1793128048,
         "narHash": "sha256-Ce9yN8e5LIgozylHncwGPgUF5ue36y36qS5K5Bikelo=",
         "owner": "LiGoldragon",
-        "repo": "field-context",
+        "repo": "field-belief",
         "rev": "d7b2cdcaadcff35fcb1e9de34e95bd6a54e750e6",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
-        "repo": "field-context",
+        "repo": "field-belief",
         "rev": "d7b2cdcaadcff35fcb1e9de34e95bd6a54e750e6",
         "type": "github"
       }
@@ -102,19 +102,19 @@
         "type": "github"
       }
     },
-    "mind-context": {
+    "mind-belief": {
       "flake": false,
       "locked": {
         "lastModified": 1793128041,
         "narHash": "sha256-PozuOnf60/uT1LieH/FiV9x27lrbDuu3Ogwah9Qffi0=",
         "owner": "LiGoldragon",
-        "repo": "mind-context",
+        "repo": "mind-belief",
         "rev": "1850d49feebbb60a61c992c49dc6aee8aef82d8f",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
-        "repo": "mind-context",
+        "repo": "mind-belief",
         "rev": "1850d49feebbb60a61c992c49dc6aee8aef82d8f",
         "type": "github"
       }
@@ -135,19 +135,19 @@
         "type": "github"
       }
     },
-    "psyche-context": {
+    "psyche-belief": {
       "flake": false,
       "locked": {
         "lastModified": 1793143544,
         "narHash": "sha256-5+mxQ1luHlcGMNsmOVHf2VT/C4zCjXm/NEjAYb0pE6s=",
         "owner": "LiGoldragon",
-        "repo": "psyche-context",
+        "repo": "psyche-belief",
         "rev": "8717e76a6582aff93ae074698b5571193c2ede2a",
         "type": "github"
       },
       "original": {
         "owner": "LiGoldragon",
-        "repo": "psyche-context",
+        "repo": "psyche-belief",
         "rev": "8717e76a6582aff93ae074698b5571193c2ede2a",
         "type": "github"
       }
@@ -158,11 +158,11 @@
         "dotos": "dotos",
         "dotos-config": "dotos-config",
         "dotos-text-query": "dotos-text-query",
-        "field-context": "field-context",
+        "field-belief": "field-belief",
         "flow": "flow",
-        "mind-context": "mind-context",
+        "mind-belief": "mind-belief",
         "nixpkgs": "nixpkgs",
-        "psyche-context": "psyche-context",
+        "psyche-belief": "psyche-belief",
         "tree-sitter-dotos": "tree-sitter-dotos"
       }
     },

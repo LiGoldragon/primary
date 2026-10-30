@@ -10,7 +10,7 @@ const located = /^Proposal \d+: (?:.+ · )?[^\s›·]+ › [^\s,]+(?:, a (?:new|
 const change = (line) => /^[+-] .*\S/.test(line) || /^\*\*(?:Archive|Destroy)\*\*/.test(line);
 // The three context repositories hold only their authored modules; any other
 // repository of the living holds any file, named by a relative path.
-const contextRepository = /^(?:psyche|mind|field)-context$/;
+const contextRepository = /^(?:psyche|mind|field)-belief$/;
 const contextModule = /^(?:spirit|intent|vision|knowledge|compensation|inquiry|role|raw)\/[A-Za-z0-9][A-Za-z0-9_.-]*\.md$/;
 const repositoryName = /^[A-Za-z0-9][A-Za-z0-9_.-]*$/;
 const filePath = /^(?!\/)(?:[A-Za-z0-9_.-]+\/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*$|^(?!\/)(?:[A-Za-z0-9_.-]+\/)*\.[A-Za-z0-9_-][A-Za-z0-9_.-]*$/;
