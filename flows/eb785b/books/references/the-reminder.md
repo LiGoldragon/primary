@@ -2,7 +2,7 @@
 
 - flows/b2b87a/vision/flow.md, 2026-10-29, "A reminder in Flow": Proposal 1.
 - Psyche core Primary rulings of 2026-10-29 (task is the order, named by its message id): Proposal 1.
-- Psyche core Primary ruling of 2026-10-29 night (reminder repeats at the same interval, capped at three, the third also to the sender's Secondary as a failure), relayed to Psyche flow Secondary 2a9116: Proposal 2.
+- Psyche flow Primary ruling of 2026-10-29 night (the reminder fires at the deadline, then three repeats at the same interval, four in all; the third repeat also to the sender's Secondary as a failure; the wire shape under ruling), relayed to Psyche flow Secondary 2a9116: Proposal 2.
 - flows/b2b87a/vision/flow.md, 2026-10-29, "Resiliency": Proposals 3 and 4.
 - flows/2a9116/references/harness-events.md, sections 1 to 5: Proposals 3 to 12.
 - flows/d9065e/vision/tracker.md, both 2026-10-29 entries: Proposal 5.

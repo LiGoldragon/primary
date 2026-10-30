@@ -2,7 +2,7 @@ Presentation.{ «The reminder» }
 
 # The reminder
 
-Your ideas of 10-29: a task message carries its expected minutes, and Flow reminds the sender when they lapse; a receiver going idle on a task is reported; hooks on every harness event, configurable; the tracker. The record as it stands, then the reminder as the Psyche core Primary ruled it, with its one question, which his ruling of tonight in Proposal 2 settles. Then the idle notification, the hooks, the two trackers, and seven features the harness study makes possible, each yours to take or leave. Short means buildable next on Flow 0.40.4; medium means past it. The first proposal by flow eb785b; Proposals 2 to 12 by Opus 5.5, Psyche flow Secondary 2a9116, from the harness study of an Opus subflow.
+Your ideas of 10-29: a task message carries its expected minutes, and Flow reminds the sender when they lapse; a receiver going idle on a task is reported; hooks on every harness event, configurable; the tracker. The record as it stands, then the reminder as the Psyche core Primary ruled it, with its one question, which the Psyche flow Primary's ruling of tonight, in Proposal 2, settles. Then the idle notification, the hooks, the two trackers, and seven features the harness study makes possible, each yours to take or leave. Short means buildable next on Flow 0.40.4; medium means past it. The first proposal by flow eb785b; Proposals 2 to 12 by Opus 5.5, Psyche flow Secondary 2a9116, from the harness study of an Opus subflow.
 
 ## primary › flows/b2b87a/vision/flow.md
 
@@ -102,13 +102,13 @@ sender ──Order.{ Minutes … }──▶ Flow ──▶ receiver
 +                       answers Current.» } }
 ```
 
-### Proposal 2: A lapsed task is reminded three times, then fails · psyche-context › vision/short/flow.md
+### Proposal 2: A lapsed task is reminded four times, then fails · psyche-context › vision/short/flow.md
 
-**Comment** The Psyche core Primary ruled tonight: a reminder fires at its deadline, then repeats at the same interval until a Result names the task, capped at three; the third repeat also goes to the sender's Secondary as a failure. This settles Proposal 1's question: Alternative 2, capped at three, the third also a failure to the sender's Secondary. Short: Order, Result, the message id and Memory stand in Flow 0.40.4; the timer is new. The sender's Secondary is the Secondary of the sender's aspect and topic, so a sender that is that Secondary hears its own failure. Not ruled: whether an Extend after a reminder resets the count.
+**Comment** The Psyche flow Primary ruled tonight: the reminder fires at the deadline, then repeats at the same interval until a Result names the task: the first firing plus three repeats, four reminders in all; the third repeat also reaches the sender's Secondary as a failure. This settles Proposal 1's question: Alternative 2, four reminders in all, the last also a failure to the sender's Secondary. Tonight's wire is under ruling between two shapes: the in-place Order.{ Minutes String } and Result.{ MessageId String }, shown here, and the appended Task.{ Minutes String } and Done.{ LogicalDeliveryId String }, which needs no store migration; either refuses a reply naming no open task with Refused.NoOpenTask. Short: Order, Result, the message id and Memory stand in Flow 0.40.4; the timer is new. The sender's Secondary is the Secondary of the sender's aspect and topic, so a sender that is that Secondary hears its own failure. Not ruled: whether an Extend after a reminder resets the count.
 
-+ ## A lapsed task is reminded three times, then fails
++ ## A lapsed task is reminded four times, then fails
 +
-+ When the minutes lapse with no Result, Flow sends Reminder.{ <id> 0 } to the sender, waking it, and a Notice copy to the receiver, queued. It repeats the reminder at the same interval, its Minutes long, as Reminder.{ <id> 1 }, then 2, then 3, until a Result names the task. The third repeat is the last; Flow sends it also to the Secondary of the sender's aspect and topic, as TaskFailed.{ <id> <sender> <receiver> }.
++ When the minutes lapse with no Result, Flow sends Reminder.{ <id> 0 } to the sender, waking it, and a Notice copy to the receiver, queued. Until a Result names the task, it repeats the reminder at the same interval, its Minutes long, as Reminder.{ <id> 1 }, then 2, then 3: the first firing plus three repeats, four reminders in all. The third repeat is the last, and it also reaches the Secondary of the sender's aspect and topic, as TaskFailed.{ <id> <sender> <receiver> }.
 
 ```ethos
 + Signal
@@ -120,7 +120,7 @@ sender ──Order.{ Minutes … }──▶ Flow ──▶ receiver
 +   Request.[ Order.{ Minutes String }
 +             Result.{ MessageId String }
 +             Extend.{ MessageId Minutes }
-+             ; 0 at the deadline, then 1 to 3
++             ; 0 at the deadline, repeats 1 to 3
 +             Reminder.{ MessageId Repeat }
 +             ; to the sender's Secondary
 +             TaskFailed.{ MessageId
@@ -147,11 +147,11 @@ sender ──Order.{ Minutes … }──▶ Flow ──▶ receiver
 ```
 
 ```datom
-+ ; an order of forty minutes, no Result
++ ; forty minutes, no Result: four reminders
 + Reminder.{ 7f3a2c 0 }  ; at forty minutes
 + Reminder.{ 7f3a2c 1 }  ; at eighty
 + Reminder.{ 7f3a2c 2 }  ; at a hundred and twenty
-+ Reminder.{ 7f3a2c 3 }  ; at a hundred and sixty
++ Reminder.{ 7f3a2c 3 }  ; at 160, the last
 + ; with the third, to Psyche core Secondary
 + TaskFailed.{ 7f3a2c
 +              { Psyche core Primary }
