@@ -42,3 +42,10 @@ Context: the living, same chat, on the one line that replaced the anger paragrap
 This is also just useless noise now.
 
 Maybe there's more we can take out.
+
+## 2026-10-30 — Policing his frustration was his job dumped on the machine; the proposed removals go, and more may
+Context: the living, same chat, on the struck lines of intent:living-interaction.
+
+In a way, when I was making you police me for frustration, I was dumping my job on you.
+
+Yeah, you can do the removal. I think you can remove even more. Just remove what you proposed here

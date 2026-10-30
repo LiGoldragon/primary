@@ -35,3 +35,8 @@ No, you don't have to fetch anything. There's nothing in what I said that change
 Context: the living, same chat, after the Primary gave its reading of "map the harnesses' stuff" from the modules.
 
 No, that's not what I meant. My idea was way more sophisticated. You need to map. Please don't make me repeat myself. See if you can find it again. God, I hate how you just drop all of my good ideas like they're not worth much. It's really frustrating.
+
+## 2026-10-30 — The harness system prompt section is shown in the proposal with its Ethos and a real-world datom that works in the harness today
+Context: the living, same chat, after the Primary put the harness map into the bare Flow Nexus from his words of 2026-10-26.
+
+show me the section about the harness system prompt correctly in the proposal section, published with an example, with the actual ethos specification of what that would look like, and some example datom. Ideally, using a real-world datom that would work currently in the real-world harness Do you understand what I'm saying?
