@@ -6,7 +6,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { checkBook } from "./book-check.mjs";
 const program = new URL("./book-check.mjs", import.meta.url).pathname;
-const good = "# A book\n## Proposal 1: psyche-context › vision/example.md\n+ Use the supported route.\n";
+const good = "# A book\n## Proposal 1: psyche-belief › vision/example.md\n+ Use the supported route.\n";
 const reasons = (source) => checkBook(source).map(e => e.reason);
 
 test("the heading carries the location, with an optional title and new-file mark", () => {
@@ -17,7 +17,7 @@ test("the heading carries the location, with an optional title and new-file mark
 test("a proposal heading without a location refuses", () => {
   assert.deepEqual(reasons("## Proposal 1: The Library\n+ Added.\n"), ["proposal-heading-without-location", "missing-proposal", "text-outside-proposal-without-module"]);
   assert.deepEqual(reasons("## Proposal\n+ Added.\n"), ["proposal-heading-without-location", "missing-proposal", "text-outside-proposal-without-module"]);
-  assert.deepEqual(reasons(good + "## Proposal 2: psyche-context skills/x.md\n+ Added.\n"), ["proposal-heading-without-location", "text-outside-proposal-without-module"]);
+  assert.deepEqual(reasons(good + "## Proposal 2: psyche-belief skills/x.md\n+ Added.\n"), ["proposal-heading-without-location", "text-outside-proposal-without-module"]);
 });
 test("a File: line in the body refuses, in prose or a text block", () => {
   assert.deepEqual(reasons(good.replace("+ Use", "File: skills/example.md\n+ Use")), ["file-line-in-body"]);
@@ -76,18 +76,18 @@ test("historical books with independent prose now refuse", () => {
 test("outside proposals only whole current modules under their locations pass", () => {
   const body = "## The rule\n\nUse the actual module.\n\n> Literal source quotation.\n";
   const readModule = (repo, file) => {
-    assert.equal(repo, "field-context"); assert.equal(file, "compensation/example.md");
+    assert.equal(repo, "field-belief"); assert.equal(file, "compensation/example.md");
     return "---\ndescription: A fixture.\ndependencies: []\n---\n\n" + body;
   };
-  const heading = "## field-context › compensation/example.md\n\n";
-  const proposal = "## Proposal 1: psyche-context › vision/example.md\n+ A proposal.\n";
+  const heading = "## field-belief › compensation/example.md\n\n";
+  const proposal = "## Proposal 1: psyche-belief › vision/example.md\n+ A proposal.\n";
   assert.deepEqual(checkBook("# A book\n" + heading + body + "\n" + proposal, {readModule}), []);
   assert.deepEqual(checkBook(heading + "```markdown\n" + body.trim() + "\n```\n\n" + proposal, {readModule}), []);
   assert.equal(checkBook(heading + "The rule means something else.\n\n" + proposal, {readModule})[0].reason, "context-module-differs");
   assert.equal(checkBook(heading + body + "\nMy own conclusion.\n\n" + proposal, {readModule})[0].reason, "context-module-differs");
   assert.equal(checkBook(heading + body + proposal, {readModule: () => { throw Error(); }})[0].reason, "context-module-unavailable");
   assert.ok(checkBook("## tools › brief.md\nProse.\n" + proposal, {readModule}).length);
-  assert.ok(checkBook("## field-context › ../secret.md\nProse.\n" + proposal, {readModule}).length);
+  assert.ok(checkBook("## field-belief › ../secret.md\nProse.\n" + proposal, {readModule}).length);
   assert.ok(checkBook("# A book\nA paraphrase.\n## What vision says\nMore prose.\n" + proposal).some(e => e.reason === "heading-outside-proposal-without-module"));
 });
 
@@ -106,7 +106,7 @@ test("module-view headings use the builder's level-two contract", () => {
 });
 
 test("Markdown in a plain code block is refused; markdown fences are not", () => {
-  const proposal = "## Proposal 1: psyche-context › vision/example.md\n+ A proposal.\n";
+  const proposal = "## Proposal 1: psyche-belief › vision/example.md\n+ A proposal.\n";
   const md = "## Rule\n\nText.\n";
   for (const label of ["", "text", "txt", "prose"])
     assert.ok(reasons(proposal + "```" + label + "\n" + md + "```\n").includes("markdown-in-code-block"), label);
@@ -130,7 +130,7 @@ test("a view of any file of any repository matches it to the character", () => {
   assert.equal(checkBook("# B\n" + heading + "```ethos\n" + file.trimEnd() + "\n```\n\n" + proposal, {readModule: () => { throw Error(); }})[0].reason, "context-module-unavailable");
   assert.ok(checkBook("# B\n## chronos › ../x.ethos\n```ethos\nx\n```\n" + proposal, {readModule}).length);
   assert.ok(checkBook("# B\n## chronos › /etc/passwd\n```ethos\nx\n```\n" + proposal, {readModule}).length);
-  assert.ok(checkBook("# B\n## psyche-context › src/x.rs\n```rust\nx\n```\n" + proposal, {readModule}).length, "context repositories hold only authored modules");
+  assert.ok(checkBook("# B\n## psyche-belief › src/x.rs\n```rust\nx\n```\n" + proposal, {readModule}).length, "context repositories hold only authored modules");
 });
 
 test("a proposal that only removes lines, or deletes the file, passes", () => {
@@ -146,7 +146,7 @@ test("an unlabelled diagram fence outside a section is accepted; prose there is 
   assert.deepEqual(reasons("# A book\n" + ascii + good.split("\n").slice(1).join("\n")), []);
   assert.deepEqual(reasons("# A book\n```\nJust some prose here.\n```\n" + good.split("\n").slice(1).join("\n")), ["text-outside-proposal-without-module"]);
 });
-const located = "### Proposal 1: Replace · psyche-context › vision/book.md\n";
+const located = "### Proposal 1: Replace · psyche-belief › vision/book.md\n";
 const alternative = (n, added) => `**Alternative ${n}**\n\n  Context.\n\n- Old.\n+ ${added}\n\n`;
 test("a machine comment comes first in its proposal, once", () => {
   assert.deepEqual(checkBook(located + "**Comment** Why it is proposed.\n\n- Old.\n+ New.\n"), []);

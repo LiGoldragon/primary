@@ -403,13 +403,13 @@
     (try
       (is (str/includes? (run "# B\n\n```ethos\nA\n```\n") "RealBuild")
           "a quoted fence outside a proposal is real code")
-      (is (str/includes? (run "## mind-context › knowledge/x.md\n\n```ethos\nA\n```\n") "RealBuild"))
+      (is (str/includes? (run "## mind-belief › knowledge/x.md\n\n```ethos\nA\n```\n") "RealBuild"))
       (is (str/includes? (run "### Proposal 1: x\n\nFile: `r/x.ethos`\n\n```text\n  Library\n+ [ New ]\n```\n") "ProposedBuild")
           "a fence inside a proposal is proposed code")
       (is (str/includes? (run "### Proposal 1: x\n\n```ethos\nA\n```\n") "ProposedBuild"))
       (is (str/includes? (run "# B\n\n```ethos\nLibrary\n- [ Old ]\n+ [ New ]\n```\n") "ProposedBuild")
           "a fence written as a change is proposed")
-      (is (str/includes? (run "### Proposal 1: x\n\n```ethos\nA\n```\n\n## mind-context › knowledge/y.md\n\n```ethos\nB\n```\n") "RealBuild")
+      (is (str/includes? (run "### Proposal 1: x\n\n```ethos\nA\n```\n\n## mind-belief › knowledge/y.md\n\n```ethos\nB\n```\n") "RealBuild")
           "a module quoted after a proposal is real again")
       (finally (fs/delete-tree dir)))))
 
@@ -430,7 +430,7 @@
 (deftest an-unlabelled-fence-is-code-only-inside-a-module-view
   (let [render (fn [md] (binding [book-build/*ethos-check* (fn [t] (when-not (str/starts-with? t "Library") "no"))]
                           (book-build/build md "")))
-        in-module (fn [fence] (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n" fence))
+        in-module (fn [fence] (str "# B\n\n## mind-belief \u203a knowledge/x.md\n\n" fence))
         datom "```\nLaunch.{ { Psyche Primary } \u00abDraft\u00bb } ; one\nSucceeded\nStarted.7\n```\n"
         sketch (str "```\n+----------------+\n| a book         |\n+-------+--------+\n        | holds\n        v\n+-------+--------+\n| a section      |\n+----------------+\n```\n")
         no-figure #"has no figure"]
@@ -454,9 +454,9 @@
 
 (deftest a-module-view-is-one-framed-sheet
   (let [html (binding [book-build/*ethos-check* (constantly nil)]
-               (book-build/build (str "# B\n\n## mind-context › knowledge/x.md\n\nIntro.\n\n## Its own heading\n\nBody.\n\n### Deeper\n\nMore.\n\n"
+               (book-build/build (str "# B\n\n## mind-belief › knowledge/x.md\n\nIntro.\n\n## Its own heading\n\nBody.\n\n### Deeper\n\nMore.\n\n"
                                       "### Proposal 1: Land it\n\nProse.\n\n## repo › other.md\n\nAnother.\n") ""))]
-    (is (str/includes? html "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">mind-context › knowledge/x.md</code></h2></header>"))
+    (is (str/includes? html "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">mind-belief › knowledge/x.md</code></h2></header>"))
     (is (str/includes? html "<h3>Its own heading</h3>") "the module's headings are demoted")
     (is (str/includes? html "<h4>Deeper</h4>"))
     (is (= 2 (count (re-seq #"<article class=\"module\">" html))))
@@ -476,11 +476,11 @@
             :let [close (str/replace open #"[a-z]+$" "")]]
       (is (shows-text? (build (str "# B\n\n" open "\n" body close "\n")))
           (str "a " open " fence is text")))
-    (is (shows-text? (build (str "# B\n\n## mind-context › knowledge/x.md\n\n```text\n" body "```\n")))
+    (is (shows-text? (build (str "# B\n\n## mind-belief › knowledge/x.md\n\n```text\n" body "```\n")))
         "a module view of a .md module, written in a text fence, is text")
-    (is (shows-text? (build (str "# B\n\n## mind-context › knowledge/x.md\n\n~~~~markdown\n" body "~~~~\n")))
+    (is (shows-text? (build (str "# B\n\n## mind-belief › knowledge/x.md\n\n~~~~markdown\n" body "~~~~\n")))
         "a module view in a tilde fence is text")
-    (let [html (build (str "# B\n\n## mind-context › knowledge/x.md\n\n````markdown\n" body "\n```rust\nfn a() {}\n```\n````\n"))]
+    (let [html (build (str "# B\n\n## mind-belief › knowledge/x.md\n\n````markdown\n" body "\n```rust\nfn a() {}\n```\n````\n"))]
       (is (str/includes? html "<h3>Rule</h3>"))
       (is (= 1 (count (re-seq #"<pre" html))) "the module's own code stays code")
       (is (str/includes? html "language-rust")))))
@@ -509,8 +509,8 @@
                 (str "# B\n\n### Proposal 1: t\n\nFile: a.md\n\n```text\n" box "```\n")
                 (str "# B\n\n```txt\n" box "```\n")
                 (str "# B\n\n```\n+------+\n| a    |\n+------+\n```\n")
-                (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n```text\n" box "```\n")
-                (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n````\n")]]
+                (str "# B\n\n## mind-belief \u203a knowledge/x.md\n\n```text\n" box "```\n")
+                (str "# B\n\n## mind-belief \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n````\n")]]
       (is (thrown-with-msg? clojure.lang.ExceptionInfo no-figure (render md)) md))
     (is (not (re-find #"\+---" (render "# B\n\n### Proposal 1: t\n\nFile: a.md\n\n```text\nplain words\n```\n"))))))
 
@@ -525,7 +525,7 @@
   (let [box "+------+\n| a    |\n+------+\n   | to\n   v\n+------+\n| b    |\n+------+\n"
         glyph "┌───┐\n│ a │\n└───┘\n"
         render #(binding [book-build/*ethos-check* (constantly nil)] (book-build/build % ""))]
-    (doseq [md [(str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n\nMore.\n\n```\n" glyph "```\n````\n")
+    (doseq [md [(str "# B\n\n## mind-belief \u203a knowledge/x.md\n\n````markdown\nProse.\n\n```\n" box "```\n\nMore.\n\n```\n" glyph "```\n````\n")
                 (str "# B\n\n## tools \u203a x.mjs\n\n```\n" glyph "```\n")]]
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"diagram 1 " (render md)))
       (let [html (with-figures {"fig-1.svg" drawn "fig-2.svg" drawn} #(render md))]
@@ -533,11 +533,11 @@
         (is (str/includes? html "figure"))))
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"diagram 2 "
           (with-figures {"fig-1.svg" drawn}
-            #(render (str "# B\n\n## mind-context \u203a knowledge/x.md\n\n````markdown\n```\n" box "```\n\n```\n" glyph "```\n````\n")))))))
+            #(render (str "# B\n\n## mind-belief \u203a knowledge/x.md\n\n````markdown\n```\n" box "```\n\n```\n" glyph "```\n````\n")))))))
 
 (defn- built [md] (binding [book-build/*ethos-check* (constantly nil)] (book-build/build md "")))
 
-(def ^:private head "# B\n\n### Proposal 1: Replace · psyche-context › vision/book.md\n\n")
+(def ^:private head "# B\n\n### Proposal 1: Replace · psyche-belief › vision/book.md\n\n")
 
 (defn- alternative [n added]
   (str "**Alternative " n "**\n\n  Context before.\n\n- An old line here.\n+ " added "\n\n  Context after.\n\n"))

@@ -1,4 +1,11 @@
 Landed, in psyche-context/intent/psyche.md c386f58.
+# Psyche
+
+## 2026-10-29 — A short line naming the medium line it stands in for is impractical
+Context: the living, 22:21, comment on Vision by horizon (https://claude.ai/artifact/9WCADhbhbER9oXAaepEchL), thread d0430b8d, on the passage "each naming the medium line it stands in for", relayed by the comment relay through Psyche core Secondary ca3262.
+
+That's totally impractical.
+
 ## 2026-10-29 — The far module is loaded by a flow designing the very far, currently impractical broad vision
 Context: the living, 22:37, comment on Vision by horizon (https://claude.ai/artifact/9WCADhbhbER9oXAaepEchL), thread 046345a2, on "loaded only by a flow that must understand the whole", relayed by the comment relay through Psyche core Secondary ca3262.
 
@@ -29,3 +36,12 @@ Landed, in psyche-context/intent/psyche.md c386f58.
 Context: the living, 22:43, same page, thread faa5a6c3, on "To an implementer a medium, long or far line says: not this iteration…"
 
 We could still have proof-of-concept implementations trying to implement the medium term, while someone is trying to keep the short-term implementation, either improving it or fixing it. It's possible that we would have multiple timeframes being implemented, but yes, generally, especially right now, we would focus on the short term. I believe you can make those changes and still land it without my help.
+
+Landed in psyche-context intent/psyche.md (commit c386f58): Vision by horizon, flows/b2b87a/books/horizons.md.
+
+## 2026-10-29 — The unmarked vision is the perennial vision
+Context: the living, in the Psyche core Primary chat b2b87a, on the Primary's offer of the word perennial for the part of a vision with no horizon qualifier.
+
+Yes, perennial is a good term. Let's put that somewhere in the vision so that everybody knows what I'm talking about when I say the perennial vision.
+
+Landed in psyche-context intent/psyche.md (commit 6f70281): the unmarked module is the perennial vision.

@@ -37,6 +37,11 @@ I want to tell you anyway because it's a conversation we need to start having. W
 
 So in case you missed it, what I'm saying is I see this module being removed. Any of the content it has, or that's being proposed, is either to find a new home or for us to realize that the content is already covered sufficiently elsewhere (or maybe even contradictory or something). But I didn't really take a hard look at it. I just don't really see the need for a separate module for this yet.
 
+## 2026-10-29 — The implementation-detail line is removed from main-flow
+Context: the living, comment on the book Modules by role and function, 18:42, on proposal 1, at "A main flow is the manager of the flows it delegates to. It stays out of implementation-level detail."
+
+I see some very potentially harmful ghost effects here from saying that a main flow does not in any way get involved in implementation-level details, which could lead to designer flow refusing to design. This is a really puzzling line and I don't even remotely remember approving anything like this. Let's start by removing it and then we can explore maybe the intent or any possibly valuable intent that it was trying to express (which I can sort of kind of see a glimpse of). But there's very little gold to be mined out of this ore, I think, if it hasn't been mined already in the rest of the module.
+
 ## 2026-10-29 — One aspect per training file
 Context: the living, in the Psyche core Primary chat 787230, on the second edition of Modules by role and function, whose vision:declaration names every aspect's modules in one module and whose intent:living-relay trains Mind and Field together.
 

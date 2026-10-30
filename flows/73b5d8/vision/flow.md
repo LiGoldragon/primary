@@ -5,6 +5,11 @@ Context: the living, in the Psyche core Primary chat 73b5d8, after the fresh Pri
 
 And I'm still not hearing about the new Flow Nexus, which should fix the message format. I don't see any reason why the Flow Nexus cannot give you your Flow ID and why you have to spend your own energy to do something so trivial.
 
+Context: the second half of the same order, his words of 14:24, recovered by the remembering check of primary-zr42.
+
+Then I will review your open proposals.
+
+
 ## 2026-10-29 — The Flow flow first grasps his vision, then revises the whole vision of Flow and its ethos, with vision code
 Context: the living, same chat, after ordering the Flow work merged, audited by a Fable flow, fixed and deployed.
 

@@ -4,6 +4,8 @@ Presentation.{ «Everything open» }
 
 Designed by Fable 5.1, inventory by Opus 5.5, extraction by Sonnet 5.5.
 
+Every proposal not yet ruled, from nine books and this flow, redone as lines; 44 to 51 added by 554e1a from the remembering audit. A book this supersedes is closed: Modules by role and function (both editions), Belief composition, Three nexuses, Hard words proposal 2, Energy third edition, His words enter at the middle stratum, The book role rewritten, Anger second edition proposal 1, Only the link proposal 2, Night rulings 2 to 6, Five Flow proposals, Record state open sections.
+
 Every proposal not yet ruled, from nine books and this flow, redone as lines. A book this supersedes is closed: Modules by role and function (both editions), Belief composition, Three nexuses, Hard words proposal 2, Energy third edition, His words enter at the middle stratum, The book role rewritten, Anger second edition proposal 1, Only the link proposal 2, Night rulings 2 to 6, Five Flow proposals, Record state open sections.
 
 ### Proposal 1: Address and fault · psyche-context › spirit/core.md
@@ -415,3 +417,69 @@ Signal
 + "Orders that I gave last night... now it's not last night anymore." Is the line "an order is read from the time it was given", proposal 8, what you meant?
 +
 + On the Curriculum book written for a machine: the belief that produced it is the book role's "from the calling flow's transcript", which a machine wrote for a machine; proposal 41 replaces it. Is that the review you asked for?
+
+### Proposal 44: vision code names the stacks · psyche-context › vision/crystallization.md
+
+**Comment** Your word of 14:27: examples skew the balance; name the stacks.
+
+  A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
++ Vision code is written in the stacks the system is built in: Ethos and Datom first, then Rust and Nix; where a design depends on how any of them is used, the statement carries that code.
+
+### Proposal 45: a finding reaches you only as its proposals · psyche-context › vision/proposal.md
+
+**Comment** Your word of today on the audit list I put in the chat.
+
+  The proposal is the center of development: it is the evolution of an idea.
++ What a flow finds reaches the living only as the proposals it yields; a finding that yields no proposal reaches him nowhere.
+
+### Proposal 46: the records of a landing are archived with it · psyche-context › vision/crystallization.md
+
+**Comment** Your question of 13:05, whether raw records are still archived when you approve an edit, so they do not pile into contradiction and noise.
+
+  A crystallized statement lands as lines in a vision- or intent- skill's authored source. A ruling a crystallization lands in a skill is recorded by the landing itself. Intent enters an intent- skill only on the living's explicit word.
++ The landing of a line archives the raw records it drew on, in the same commit; a record stays raw only while no line of it has landed.
+
+### Proposal 47: the chat is for an emergency · psyche-context › intent/energy.md
+
+**Comment** Your words of 12:45 and 12:18: either there is an emergency and the chat reaches you tersely, or the text is a proposal.
+
+  A text for the living is as small as its point: a comment on a proposal is a sentence or two, and the chat gives him one line.
++ The chat carries what cannot wait for him, tersely; everything else he is to read is a proposal in a book, and the chat carries its link.
+
+### Proposal 48: vision is logged from his words alone · psyche-context › intent/living-psyche.md
+
+**Comment** Your word of 12:30, beside proposal 8's lines.
+
+  A question the vision already answers is answered from it, and is not a record. What he says that the vision already holds is not logged again. An order is read from the time it was given.
++ A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision.
+
+### Proposal 49: Vision has three subkinds · psyche-context › intent/psyche.md
+
+**Comment** Alternative 2 to proposal 6, from your words of 12:28: actual, next in the pipeline, further down the road.
+
+Alternative 2
+
++ ## Vision has three subkinds
++
++ Vision is what the living says the system is to be. Its present subkind holds what the system is to be now, in plain unmarked lines. Its next subkind holds the step after the present, in modules under vision/next, loaded by a flow that builds it. Its long-term subkind holds the eventual design, in modules under vision/long-term, loaded by a flow that designs toward it. A next or long-term module says plainly that it is not achieved. When a module of a later subkind is implemented and documented it becomes present vision, and the knowledge that differed from it is removed.
+
+### Proposal 50: a blocked flow tells you · psyche-context › vision/blocking.md
+
+**Comment** Your question of 13:20 on the Prometheus builder: did a flow believe itself blocked and wait for you to ask.
+
+  A flow waits for one thing, the output its task needs next, and does everything else meanwhile.
++ A flow blocked by what only the living can change tells him in the hour it finds out, through the flow he is talking to.
+
+### Proposal 51: the sender is an address · psyche-context › vision/flow.md
+
+**Comment** Amends proposal 34, whose type still carries a Flow ID where you said "without Flow ID".
+
+- Sender.{ Address FlowId }
++ Sender.Address
+
+```datom
+Letter.{ Order
+         { Psyche core Secondary }
+         «Review the source packet.» }
+```
+

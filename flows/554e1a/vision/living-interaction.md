@@ -1,0 +1,11 @@
+# Living interaction
+
+## 2026-10-29 — The living is in conversation or away; away, the chat does not reach him
+Context: the living, in the Psyche core Primary chat 554e1a, same message.
+
+I'm kind of not really in front of my computer. I'm just coming back and forth. Right now, don't count on me to catch anything in the chat. When I say "right now, don't count on me to catch anything in the chat," it's not directly vision, although maybe we could explain that I sometimes operate actively. Sometimes I'm in active conversation with you, and I like when you have all my focus. Sometimes I'm just doing other things, and in that case, the chat is essentially useless as far as reaching me, or should be considered so.
+
+## 2026-10-29 — He says he commented; Tertiary tells Secondary, Secondary fetches, acts, researches and tells Primary
+Context: the living, to Psyche core Tertiary b195f0, after commenting on Flow, whole; relayed by it to Secondary 9b514f and by 9b514f to the Primary.
+
+Okay, I've commented on one of the latest artifacts, which is "flow, whole", and I want the comment sent to the primary core. In this middle stratum, you would know that I wanted the comment sent to the middle stratum with context if I hadn't told you. Don't answer me, but pass this along to primary while you do that, so that we can make sure that I can tell tertiary that I commented on a book. I don't have to say anything else, and he would know how to take care of it. Well, technically, just so that we're consistent, you can tell secondary, and then secondary can pass your message and maybe take some action over to primary. Secondary could take some action on the content of what I said and then also pass it over to primary, right? Maybe he might want to collect some more research in regards to what I said concerning the subject or anything related to that, and tell primary that he's doing that. When he passes your message over, obviously you're going to pass everything I'm saying here too, so that the primary would know that secondary is researching deeper into anything I might have said related to that while he's thinking about what I said. We could make some kind of protocol out of this in the belief modules.

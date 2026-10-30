@@ -23,16 +23,16 @@
       flake = false;
     };
     # Pinned to each context repo main head; CriomOS-home follows this cohort.
-    psyche-context = {
-      url = "github:LiGoldragon/psyche-context/8717e76a6582aff93ae074698b5571193c2ede2a";
+    psyche-belief = {
+      url = "github:LiGoldragon/psyche-belief/8717e76a6582aff93ae074698b5571193c2ede2a";
       flake = false;
     };
-    mind-context = {
-      url = "github:LiGoldragon/mind-context/1850d49feebbb60a61c992c49dc6aee8aef82d8f";
+    mind-belief = {
+      url = "github:LiGoldragon/mind-belief/1850d49feebbb60a61c992c49dc6aee8aef82d8f";
       flake = false;
     };
-    field-context = {
-      url = "github:LiGoldragon/field-context/d7b2cdcaadcff35fcb1e9de34e95bd6a54e750e6";
+    field-belief = {
+      url = "github:LiGoldragon/field-belief/d7b2cdcaadcff35fcb1e9de34e95bd6a54e750e6";
       flake = false;
     };
     flow = {
