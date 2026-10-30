@@ -11,6 +11,8 @@ Into `vision:psyche-aspect`, a new section. Added:
 > **## Vision heard below the Primary goes up whole**
 >
 > **A Psyche flow below the Primary that hears vision from the living writes the raw record in its own flow and, in the same turn, sends his words whole Up as a Psyche request. Each layer that receives it sends it Up the same way, until it reaches the Primary.**
+>
+> **Up from a topic Secondary reaches that topic's Primary, and that is enough: every Primary is Fable, and the vision touches that topic. A topic Primary that holds vision on another topic sends it across to that topic's Primary. The core Primary hears it when the living asks or a topic Primary brings it.**
 
 The send it makes, one call:
 
@@ -24,7 +26,8 @@ The Psyche request carries the context and his exact words, so the Primary gets 
 flowchart TB
     a["the living speaks vision to a Psyche flow below the Primary"] -- "same turn" --> b["raw record in that flow's own vision log"]
     a -- "same turn, Psyche request Up" --> c["the layer above"]
-    c -- "Up again, until" --> d["the Primary, Fable"]
+    c -- "Up again, until" --> d["that topic's Primary, Fable"]
+    d -- "vision on another topic, across" --> g["that topic's Primary"]
     b -- "found by" --> e["any search of flows/*/vision"]
 ```
 
@@ -47,5 +50,3 @@ flow 'Launch.{ { Psyche core Primary } Predecessors.2 «brief» }'
 A refreshed Primary reads the raw logs of its own predecessors to the named depth. With Proposal 1, words heard by a Tertiary or a Secondary also reach the Primary in its context while it runs, and the Primary records what it then rules on.
 
 Nothing more short term: the transcript search and the database of his words are medium term.
-
-One open point for you: in a topic other than core, Up from a topic Secondary reaches that topic's Primary, not the core Primary. Proposal 1 sends the words there.
