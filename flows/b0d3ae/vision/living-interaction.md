@@ -35,3 +35,10 @@ Okay, I'm sorry I got frustrated when it was warranted to be frustrated. You're 
 Context: the living, same chat, on the proposal to remove the two anger paragraphs from intent:living-interaction.
 
 Well, I still want... I don't know. Maybe we just remove it, and I police myself because this isn't really helping you to get your work done, right?
+
+## 2026-10-30 — "A fault he names is a truth pointed out, and the answer to it is the work" is useless noise; maybe more comes out
+Context: the living, same chat, on the one line that replaced the anger paragraphs in intent:living-interaction.
+
+This is also just useless noise now.
+
+Maybe there's more we can take out.
