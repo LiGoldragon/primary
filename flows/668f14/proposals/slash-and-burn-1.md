@@ -123,10 +123,12 @@ Psyche contains Spirit, Intent, Vision, and Notion, in descending authority.
 
 Everything the living says he wants is crystallized into the existing vision: psyche data is what the work mines for, and rich building stands on it.
 
-[-Psyche reaches through its hierarchy to Orchestrate coordinates. Unprefixed
-vision is Psyche's most reliable, accepted gold. These statements are approved
-by the living in the native desktop record at
-`flows/8393ca/vision/operational-herdrVoiceAccess.md` (archive ordinal 1833).-]
+```text
+- Psyche reaches through its hierarchy to Orchestrate coordinates. Unprefixed
+- vision is Psyche's most reliable, accepted gold. These statements are approved
+- by the living in the native desktop record at
+- `flows/8393ca/vision/operational-herdrVoiceAccess.md` (archive ordinal 1833).
+```
 
 Crystallized vision preserves references to its supporting raw records. Archived
 records retain their original words and provenance.
@@ -170,16 +172,18 @@ Run `bd bootstrap` when an existing scaffold has no usable database.
 Use embedded Dolt sequentially: never run `bd` commands in parallel, including reads.
 Wait and retry an embedded-Dolt lock instead of concurrent access.
 
-[-When repository metadata identifies the owner, repository name, and GitHub visibility, create and attach its missing DoltHub database.
-Use one database per repository, named from that metadata, with matching visibility and no suffix.
-Use `compensation-secrets` to connect `gopass show -o dolthub.com/api-token` directly to curl's supported secret-input interface; keep the token out of agent output, arguments, and environment.
-Authenticate `GET https://www.dolthub.com/api/v1alpha1/user` and `POST https://www.dolthub.com/api/v1alpha1/database` with `Authorization: token ...`; send `ownerName`, `repoName`, and `visibility` to create the matching database.
-Treat a missing-database read returning `400 no such repository` as absent and a creation response returning `409 already exists` as success.
-Configure the canonical Beads remote with `bd dolt remote add`.
-Use `compensation-secrets` for PAT and JWK delivery.
-When Dolt needs a missing JWK credential, import it through Dolt's supported stdin contract.
-Synchronize without force.
-Stop only when owner, name, or visibility cannot be derived, or an unexpected conflict or destructive repair is required.-]
+```text
+- When repository metadata identifies the owner, repository name, and GitHub visibility, create and attach its missing DoltHub database.
+- Use one database per repository, named from that metadata, with matching visibility and no suffix.
+- Use `compensation-secrets` to connect `gopass show -o dolthub.com/api-token` directly to curl's supported secret-input interface; keep the token out of agent output, arguments, and environment.
+- Authenticate `GET https://www.dolthub.com/api/v1alpha1/user` and `POST https://www.dolthub.com/api/v1alpha1/database` with `Authorization: token ...`; send `ownerName`, `repoName`, and `visibility` to create the matching database.
+- Treat a missing-database read returning `400 no such repository` as absent and a creation response returning `409 already exists` as success.
+- Configure the canonical Beads remote with `bd dolt remote add`.
+- Use `compensation-secrets` for PAT and JWK delivery.
+- When Dolt needs a missing JWK credential, import it through Dolt's supported stdin contract.
+- Synchronize without force.
+- Stop only when owner, name, or visibility cannot be derived, or an unexpected conflict or destructive repair is required.
+```
 
 ## psyche-belief › intent/models.md — whole, changed
 

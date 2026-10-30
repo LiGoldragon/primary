@@ -66,13 +66,17 @@ Why: the crate's type definitions copied into belief, and two sentences beside e
 
 Why: a dated version observation and the launcher's internals.
 
-[-On 2026-10-09, `claude --version` returned `2.1.294 (Claude Code)`.
-This is an observation of the installed command, not a metaflow binding.-]
+```text
+- On 2026-10-09, `claude --version` returned `2.1.294 (Claude Code)`.
+- This is an observation of the installed command, not a metaflow binding.
+```
 
-[-The native Claude launcher reads generated
-`.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
-requests, and verifies the returned skill bodies against those files.
-Configuration is Flow's datom, read with `flow-meta 'Configuration'`.-]
+```text
+- The native Claude launcher reads generated
+- `.claude/skills/<name>/SKILL.md` files, sends bounded leading slash
+- requests, and verifies the returned skill bodies against those files.
+- Configuration is Flow's datom, read with `flow-meta 'Configuration'`.
+```
 
 [-Claude Code stops its background tasks when the host's free memory
 looks low, judging by free rather than available memory, so another
@@ -114,7 +118,9 @@ Why: the field lists of every request and reply are signal-lojix's; the schema h
 - ```
 ````
 
-[-Every "has, in order:" field list, every "carries" variant list and every "Exact witnessed form" example of a request or reply, from `Query` through `BootstrapRejected`: sixty-odd passages, each the contract crate's own vocabulary.-]
+```text
+- Every "has, in order:" field list, every "carries" variant list and every "Exact witnessed form" example of a request or reply, from `Query` through `BootstrapRejected`: sixty-odd passages, each the contract crate's own vocabulary.
+```
 
 ## mind-belief › knowledge/orchestrate.md — passages changed
 
@@ -122,7 +128,9 @@ Why: a flow-id token in an example, and a stale-lock check written as herdr and 
 
 [-    orchestrate 'Lock.{ OrchestrateDocs 444e5e [ /absolute/path/to/file ] «Clarify Lock fields» }'-]
 
-[-A lock whose holder has no live flow is stale: check the holder's six-character id against `herdr pane list` labels and `flow 'Metaflows'`; `orchestrate 'Release.<id>'` releases any lock by its number, whoever holds it, and a stale lock is released by whoever meets it.-]
+```text
+- A lock whose holder has no live flow is stale: check the holder's six-character id against `herdr pane list` labels and `flow 'Metaflows'`; `orchestrate 'Release.<id>'` releases any lock by its number, whoever holds it, and a stale lock is released by whoever meets it.
+```
 
 ## field-belief › compensation, 9 modules — Destroy
 
@@ -148,9 +156,13 @@ commit and deploy."-]
 
 Why: a SHA-256 path template, a reservation protocol, and a gallery sweep at 950 artifacts are the tool's job, written as instruction to a model.
 
-[-Preserve the local source. Build to `FLOW_DIRECTORY/publications/<source-path-digest>/<source-basename>.html`, where `source-path-digest` is the SHA-256 digest of the source's canonical path. A fixed or caller-independent output such as the scratchpad's `book.html` is forbidden. A prior URL supplies comment context, never replacement source. Every revised presentation has its own source and page and a fresh artifact; preserve the older publication and its comments.-]
+```text
+- Preserve the local source. Build to `FLOW_DIRECTORY/publications/<source-path-digest>/<source-basename>.html`, where `source-path-digest` is the SHA-256 digest of the source's canonical path. A fixed or caller-independent output such as the scratchpad's `book.html` is forbidden. A prior URL supplies comment context, never replacement source. Every revised presentation has its own source and page and a fresh artifact; preserve the older publication and its comments.
+```
 
-[-Before any Artifact call, atomically reserve that source's digest directory with a `publishing` entry, re-read the publication state while holding it, and remove only your reservation when the operation ends. On a first publication, call Artifact without a URL, then atomically create `publication` in that directory with one `source <canonical-path>` line and one `url <returned-url>` line. An existing record makes the operation a republish attempt, not another first publication. A book is published once, at one URL, and a republish keeps its URL.-]
+```text
+- Before any Artifact call, atomically reserve that source's digest directory with a `publishing` entry, re-read the publication state while holding it, and remove only your reservation when the operation ends. On a first publication, call Artifact without a URL, then atomically create `publication` in that directory with one `source <canonical-path>` line and one `url <returned-url>` line. An existing record makes the operation a republish attempt, not another first publication. A book is published once, at one URL, and a republish keeps its URL.
+```
 
 [-When the gallery passes 950 artifacts, the book Secondary runs artifact-sweep (tracker repo tools/artifact-sweep/) with a cutoff seven days back.-]
 
@@ -162,9 +174,11 @@ Why: model names, an absolute path, a retired schema listed as a type, and a bat
 readers at medium effort (Sonnet), merge what they return into what the page
 already holds, and write the page.-]
 
-[-Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
-`The living's page` (the page's address), `Claude transcript root`,
-`Curriculum skills`. Read them there.-]
+```text
+- Values that differ between setups are in `/home/li/primary/SKILL_VARIABLES.md`:
+- `The living's page` (the page's address), `Claude transcript root`,
+- `Curriculum skills`. Read them there.
+```
 
 ```text
 - Historical read schema only; these are not writable current proposal destinations:
@@ -197,13 +211,17 @@ already holds, and write the page.-]
 
 Why: environment variable names, a PROVENANCE handoff, jj and git invocations and a compensation module name, in one paragraph every subflow carries.
 
-[-Your flow is `FLOW_ID` and `FLOW_DIRECTORY` in your environment. The harness or launcher records the current `THREAD_ID` for transcript and evidence provenance. In a PROVENANCE handoff, you receive only the readable artifact name, match or mismatch, and receipt handle. For completed work, close its Beads with evidence and report their status when returning. A subflow never stashes, resets or checks out over the shared working copy; it reads a baseline from a revision with `git show <rev>:<path>` or `jj file show -r <rev> <path>`. A search over files is rg. Do not create a lane, index entry, or log. Create a report or witness only when the main flow delegates it or a named tool or flow will consume it, and use compensation-flow-evidence for its contract. A witness or test launch takes a throwaway topic of its own; an address a live flow holds stays with that flow.-]
+```text
+- Your flow is `FLOW_ID` and `FLOW_DIRECTORY` in your environment. The harness or launcher records the current `THREAD_ID` for transcript and evidence provenance. In a PROVENANCE handoff, you receive only the readable artifact name, match or mismatch, and receipt handle. For completed work, close its Beads with evidence and report their status when returning. A subflow never stashes, resets or checks out over the shared working copy; it reads a baseline from a revision with `git show <rev>:<path>` or `jj file show -r <rev> <path>`. A search over files is rg. Do not create a lane, index entry, or log. Create a report or witness only when the main flow delegates it or a named tool or flow will consume it, and use compensation-flow-evidence for its contract. A witness or test launch takes a throwaway topic of its own; an address a live flow holds stays with that flow.
+```
 
 ## field-belief › role/comment-relay.md — passage changed
 
 Why: a flow command written out literally, for a relay the tool should make.
 
-[-Compose the `Psyches` request yourself from the new comments and send it to Psyche core Secondary: `flow 'Send.{ Address.{ Psyche core Secondary } Wake MiddleAbrupt.Psyches.[ { «context» «verbatim» } … ] }'`.-]
+```text
+- Compose the `Psyches` request yourself from the new comments and send it to Psyche core Secondary: `flow 'Send.{ Address.{ Psyche core Secondary } Wake MiddleAbrupt.Psyches.[ { «context» «verbatim» } … ] }'`.
+```
 
 ## psyche-belief › vision/archive-ethos-monolith.md — Destroy
 
