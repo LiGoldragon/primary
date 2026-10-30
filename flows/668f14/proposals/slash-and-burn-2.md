@@ -448,13 +448,15 @@ Why: portable rkyv is said above; the rest is an open question.
 
 Why: a roadmap of named products that ages.
 
-In the long term, the great advancements are the improvements that most increase the definition of the psyche[-:
+In the long term, the great advancements are the improvements that most increase the definition of the psyche[-:-].
 
-- a more complete and reliable Ethos and Datom;
-- reliable flow spawning and communication: transcripts scanned by hooks with programmatic reactions, and flows that are truly lean;
-- real-time communication with the living, and better, a functioning interface, Unity, over Mentci;
-- Sema, the rich-expression dialect of protos;
-- paralinguistic speech-to-text, on Android and iOS-].
+```text
+- - a more complete and reliable Ethos and Datom;
+- - reliable flow spawning and communication: transcripts scanned by hooks with programmatic reactions, and flows that are truly lean;
+- - real-time communication with the living, and better, a functioning interface, Unity, over Mentci;
+- - Sema, the rich-expression dialect of protos;
+- - paralinguistic speech-to-text, on Android and iOS
+```
 
 ## psyche-belief › vision/horizon.md — passage changed
 
