@@ -2,10 +2,6 @@
 
 Created and judged by Fable; no other model took part.
 
-Source for the book metaflow. Markers: [-removed-] red, [+added+] green, [~moved from <module>: ...~] blue. Everything unmarked stands as it is. Each touched section is shown whole, as it stands at origin main; modules are in order of harm, the most harmful first.
-
-What this is: the belief modules loaded into the Psyche core Primary, swept by his criterion of 2026-10-30, anything that does not sound like common sense and is too specific. Every mark below is a removal; nothing is added. Where a kept sentence had to absorb a removed one, the join is marked. intent/design.md, vision/belief-modules.md, vision/proposal.md and vision/book.md are left to their open proposals (Golden rule, Belief modules whole, Proposal and book).
-
 ## field-belief › compensation/secrets.md — Destroy
 
 Why: the compensation kind is gone on his word; this is the one compensation module the Primary still carries.

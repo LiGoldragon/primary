@@ -18,3 +18,8 @@ Context: the living, same chat, while the Slash and burn sweep was being gathere
 You have to be the judge, right? You can get Opus to do a first proposal but you're the judge. If Opus makes the proposal that I'm reading, then that's a failure.
 
 You can make Opus do a first pass that you can use yourself. I didn't mean a first proposal.
+
+## 2026-10-30 — A book is the belief itself; a legend or a preamble about the sweep is read as wasted time
+Context: the living, same chat, with a screenshot of Slash and burn, round 2, the marker legend and the "What this is" paragraph circled.
+
+Can you try to explain back to me what I want when I say I'm not interested in any of this kind of stuff here unless this is actually a proposal that's been badly formatted? I did say that the only thing I'm interested in looking at is the belief itself so if I read this I'm wasting my time, I think. I might have literally said this 50 times by now.

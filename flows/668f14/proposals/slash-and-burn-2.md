@@ -2,10 +2,6 @@
 
 Created and judged by Fable; candidates gathered by Sonnet, each ruled on here.
 
-Source for the book metaflow. Markers: [-removed-] red, [+added+] green, [~moved from <module>: ...~] blue. Everything unmarked stands as it is. A module deleted whole is shown whole in red; otherwise each touched passage is shown whole; modules are in order of harm, the most harmful first.
-
-What this is: every belief module outside the Primary's own set, swept by his criterion, anything that does not sound like common sense and is too specific. Every mark is a removal. Thirty-eight whole modules go: the compensation kind and the mind-belief evidence files already ordered gone, and the knowledge modules that are version pins, commit hashes, dated witnesses, tool help or copied code. The role procedures of the book pipeline are left standing until the Curriculum successor replaces them; their worst passages are cut here. The gatherers also flagged his own design decisions, routing between aspects, the anger rule, the fallback-chain symptom, replacing a system whole: those are kept, because he said them.
-
 ## mind-belief › knowledge/nexus.md — Destroy
 
 Why: it promises what the nexuses are today and holds a Curriculum commit hash, a dated witness with flow ids, and four lines telling a flow to read Cargo.toml.
