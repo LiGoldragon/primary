@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/living-interaction.md 632e2d0.
+
 ## Every main flow loads psyche-interraction and relays new psyche to a Psyche flow
 
 Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25.

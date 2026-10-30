@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Operational: gather the latest vision, refresh above the context threshold, and implement the layer closest to deployment
 
 ## Get all the latest vision and psyche, and maybe even refresh yourself if you're above 30% context for sure. Again, if you're above 39, let's implement that closest layer of everything to deployment

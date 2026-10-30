@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Messaging bootstrap
 
 ## Why isn't the agent intercom working? where did the messaging go? it was working; I want the messaging bootstrapped Codex node that can rebootstrap everybody and you, the first one to restart; don't we have a Codex remote executable just for that?

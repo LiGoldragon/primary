@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Operation
 
 ## Codex's design and strategy work implements ideas through the night so there is something to test in the morning; a smart, efficient choreography of proofs of concept and audits; a wake-up system; a cheap model checks up on everything; flows are refreshed when they get old

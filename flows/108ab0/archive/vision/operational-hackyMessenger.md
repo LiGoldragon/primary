@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Operational: Hacky Messenger — quick scripts on top of Herdr, right now
 
 ## Maybe a codex can implement a quick bunch of scripts for the flows to message each other through Herdr right now, that they can rely on and remember how to use. Call it the Hacky Messenger. It exists before the proper Flow ↔ Herdr ↔ Message triangle lands, so messaging works today

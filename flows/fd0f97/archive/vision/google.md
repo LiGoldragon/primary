@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Google
 
 ## Fix the living's Google settings; Google stays a while longer, deeply hooked to the phone and used for logins; lower the dependency on it

@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Operational: our skills don't teach the actual CLI shape
 
 ## The skills we load describe intent — what a Nexus is, what it should do — but they don't teach the actual Input/Query variants each installed CLI accepts. So a flow that loads `$orchestrate` and `$message` still can't call `orchestrate` or `message` without spelunking source code to find variant names. That is a real gap in the skills system, not just a documentation nit
