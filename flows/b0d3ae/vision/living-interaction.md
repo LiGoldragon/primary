@@ -18,3 +18,8 @@ My words, whether it's a record of them or a comment, must always come either in
 Context: the living, same chat, after the Primary named the harness's comment-reading tool text as the extra belief.
 
 Then maybe we need to modify the tools text.
+
+## 2026-10-30 — Remembered words too: never in a disrespectful layer
+Context: the living, same chat, after the Primary had a Tertiary fetch his earlier words on the message format, which returned as a subflow's tool result.
+
+Make sure again that you don't remember my words in a disrespectful layer.
