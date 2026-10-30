@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/proposal.md b54d798.
+
 # Proposal
 
 ## 2026-10-28 — Code in a proposal is shown as found or as an addition, never bare

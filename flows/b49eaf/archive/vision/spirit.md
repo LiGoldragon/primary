@@ -1,3 +1,5 @@
+Landed, in psyche-context/spirit/core.md c984eeb.
+
 # Spirit
 
 ## 2026-10-28 — The system never freezes; better to break things than to stop acting

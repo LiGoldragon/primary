@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 
 ## A Psyche pair for topics not related to coding
 

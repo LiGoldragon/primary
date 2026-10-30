@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/fable.md d8a1b83.
+
 # Design
 
 ## 2026-10-28 — A designing main flow researches the raw logs deeply, to infer what I mean, not what I said literally

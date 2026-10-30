@@ -1,3 +1,5 @@
+Landed, in mind-context/knowledge/vocabulary.md 2eff0f9.
+
 # Vocabulary
 
 ## 2026-10-29 — Evolution names the dynamic procedure of improvement and redeployment

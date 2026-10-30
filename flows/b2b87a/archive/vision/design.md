@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/design.md c386f58.
+
 # Design
 
 ## 2026-10-29 — A step is one thing: good

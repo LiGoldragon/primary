@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/main-flow.md 632e2d0.
+
 # Records
 
 ## 2026-10-28 — Orders are beads, not logs

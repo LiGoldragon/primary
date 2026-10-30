@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/energy.md 02990c0; psyche-context/intent/living-interaction.md a6fd92d.
+
 # Energy
 
 ## 2026-10-29 — The chat beside a book carries its link alone; every written word invites him to read it

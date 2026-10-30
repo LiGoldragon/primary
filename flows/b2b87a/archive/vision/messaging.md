@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/model-roles.md c984eeb.
+
 # Messaging
 
 ## 2026-10-29 — Only the Psyche core Secondary messages the Psyche core Primary

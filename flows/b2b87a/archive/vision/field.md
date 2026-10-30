@@ -1,3 +1,5 @@
+Impurity: a working instruction with no vision in it, archived by the records cleaner.
+
 # Field
 
 ## 2026-10-29 — Ten gigabytes of swap in use; brought back to zero and the cause found

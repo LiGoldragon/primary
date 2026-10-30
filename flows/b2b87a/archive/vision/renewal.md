@@ -1,3 +1,5 @@
+Landed, in psyche-context/intent/main-flow.md 53f68b6; the rest a working instruction, an impurity.
+
 # Renewal
 
 ## 2026-10-29 — Tonight's plan: Opus subflows and specialized Primaries bring every important Nexus up to date; heartbeats on the Tertiary and Secondary; the overview crystallized as a north star; the psyche nexus; compensation abandoned; context repositories renamed belief
