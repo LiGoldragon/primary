@@ -1,3 +1,5 @@
+Landed, in mind-belief/knowledge/psyche.md; mind-belief/knowledge/vocabulary.md.
+
 ## 2026-08-19 — living psyche is always called living psyche; the psyche skill says so
 
 Design session `e06e4c07`, typed (captured 2026-08-19T14:33+02:00):

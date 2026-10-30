@@ -1,3 +1,5 @@
+Landed, in psyche-belief/spirit/core.md.
+
 ## fb1008c0-3 — 2026-08-14 — the context is the agent
 
 > this is another failure; the context is *always* the problem.

@@ -1,3 +1,5 @@
+Landed, in psyche-belief/vision/model-roles.md.
+
 # Models
 
 ## 2026-09-13 — Fable is the Claude Code main flow model

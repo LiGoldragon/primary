@@ -1,3 +1,5 @@
+Landed, in mind-belief/knowledge/vocabulary.md.
+
 # Vocabulary
 
 ## Machine
