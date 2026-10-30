@@ -25,3 +25,8 @@ On "A flow runs one model, linear and very limited … together resemble a synth
 Context: the living, in the Psyche core Primary chat b0d3ae, after the Primary explained its ruling on primary-ld0e: a typed "default minus these tools" in the next Flow Nexus revision.
 
 Oh yeah, I said that a long time ago. That is not your idea. I've been actually asking for that. I called it the blacklist, so I guess you are intentionally discarding my good ideas.
+
+## 2026-10-30 — The blacklist needs no fetching; the idea is what it is
+Context: the living, same chat, as the Primary sent a Tertiary to find his blacklist words.
+
+No, you don't have to fetch anything. There's nothing in what I said that changes what the idea is. Now you're still being argumentative.

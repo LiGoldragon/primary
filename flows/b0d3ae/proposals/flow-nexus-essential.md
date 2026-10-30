@@ -22,7 +22,7 @@ A flow's id is the first six characters of the hash of its harness session id, s
 
 ## Start
 
-A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
+A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools are the harness's default minus the declaration's blacklist, the tools named out of it. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
 
 ## Message
 
