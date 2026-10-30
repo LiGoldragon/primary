@@ -4,3 +4,10 @@
 Context: the living, in the Psyche core Primary chat b0d3ae, after the Primary asked what he meant by the message output format, which he had said to flow 73b5d8 on 2026-10-29, two flows back; this flow remembers one predecessor.
 
 If you're having trouble keeping the thread of our conversations, then your refresh procedure is flawed, and you're making yourself forget what I'm saying with context, with my words with context. Did you not get my words from your...? You should know what I'm talking about because we just talked about it, or are you not remembering far enough?
+
+## 2026-10-30 — He does not repeat himself; the machine finds his words
+Context: the living, same chat, after the Primary twice rewrote the flow id line without his earlier words, then sent for them.
+
+I'm not going to repeat myself.
+
+Wait did you just record? I'm not going to repeat myself.
