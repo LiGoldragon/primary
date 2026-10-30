@@ -17,19 +17,17 @@ dependencies: [vision-nexus, vision-model-roles]
 
 A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.
 
-A flow's id is six characters taken from the random part of the harness's session id, so that the transcript is found from it; where the random part begins differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt.
+A flow's id is six characters taken from the random part of the harness's session id, so that the transcript is found from it; where the random part begins differs per harness and is the harness map's to say. The Nexus tells a flow its id and its address in its system prompt.
 
 ```ethos
 Library
 []                                          ; imports
-[ Hash.Integer                              ; types
-  FlowId.Hash                               ;   held as a hash, never as text
+[ FlowId.String                             ; types: the six characters, as the harness gives them
   SessionId.String                          ;   the harness's, as the harness gives it
   RandomOffset.Integer                      ;   where in a session id the random part begins
   HarnessSession.{ Harness RandomOffset } ]  ;   one row of the harness map
-[ Hashable.[ hash:{ [ SessionId RandomOffset ] [ FlowId ] } ] ; traits: six characters at the offset, as a hash
-  Writable.[ write.[ String ] ] ]                               ;   six alphanumerics today, three words long term: the codec's
-[ FlowId.[ Writable ] ]                     ; associations
+[ Identifiable.[ identify:{ [ SessionId RandomOffset ] [ FlowId ] } ] ]   ; traits: the six characters at the offset
+[]                                          ; associations
 ```
 
 ```datom
@@ -204,7 +202,7 @@ Declare.{ { Psyche core Primary }
 Declared
 ```
 
-**Moved, not removed** These leave the module for vision:long:flow-nexus, as they stand today, under the same headings: a metaflow sleeping and waking; the topic enum; the judgment by a small model of whether to wake a topic; the simplified flow; a Primary as a simplified flow; the flow ethos specifying a flow whole; the heartbeat; the ephemeral flow; restarting without waking; versions; the Capsule's later encryption; the real-world test; Herdr as one exchangeable backend.
+**Moved, not removed** These leave the module for vision:long:flow-nexus, as they stand today, under the same headings: a metaflow sleeping and waking; the topic enum; the judgment by a small model of whether to wake a topic; the simplified flow; a Primary as a simplified flow; the flow ethos specifying a flow whole; the heartbeat; the ephemeral flow; restarting without waking; versions; the Capsule's later encryption; the real-world test; Herdr as one exchangeable backend; the id held as a hash with its own textual form, three words among them.
 
 **Removed** The one-model line. Id lengthening on collision. "What it does", which said the Nexus three times. "Repository and belief modules", held by vision:belief-modules. "What a refresh carries", said once under Refresh.
 
