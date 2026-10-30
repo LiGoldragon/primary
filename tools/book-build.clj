@@ -59,7 +59,8 @@
     (if (== x (Math/floor x)) (str (long x)) (str x))))
 
 (defn inline
-  "Escape text; turn `code` into <code>, [text](url) into a link, and **bold** into <strong>."
+  "Escape text; render proposal marks, `code`, links and **bold**. Proposal
+  marks are [+added+], [-removed-], and [~moved from <module>: text~]."
   [text]
   (let [m (re-matcher #"`([^`]+)`" text)
         sb (StringBuilder.)
@@ -67,7 +68,11 @@
         esc (fn [t] (-> (esc t)
                         (str/replace #"\[([^\]]+)\]\((https?://[^\s)\"']+)\)"
                                      (fn [[_ label url]] (str "<a href=\"" url "\">" label "</a>")))
-                        (str/replace #"\*\*(?=\S)(.+?)(?<=\S)\*\*" "<strong>$1</strong>")))]
+                        (str/replace #"\*\*(?=\S)(.+?)(?<=\S)\*\*" "<strong>$1</strong>")
+                        (str/replace #"\[~moved from ([^:\]]+):\s*(.+?)~\]"
+                                     "<span class=\"moved\"><span class=\"moved-origin\">from $1:</span> $2</span>")
+                        (str/replace #"\[-(.+?)-\]" "<del>$1</del>")
+                        (str/replace #"\[\+(.+?)\+\]" "<ins>$1</ins>")))]
     (loop [pos 0]
       (if (.find m)
         (do (.append sb (esc (subs text pos (.start m))))
@@ -730,14 +735,14 @@
                :else (panel "+" a))))))
 
 (defn code-lines
-  "A non-text fence with removed lines followed by added lines: the same diff
-  line by line, lines kept. Nil otherwise; a wholly added or removed fence stays
-  tinted by the page script."
+  "A non-text fence with signed lines: removed lines followed by added lines
+  are word-diffed in place; an unpaired removed or added line is wholly marked.
+  Every sign is consumed into static HTML. Nil when the fence has no signed line."
   [lines]
   (let [sgn (fn [l] (cond (or (= l "-") (str/starts-with? l "- ")) :del
                           (or (= l "+") (str/starts-with? l "+ ")) :add
                           :else :same))]
-    (when (some (fn [[a b]] (and (= :del (sgn a)) (= :add (sgn b)))) (partition 2 1 lines))
+    (when (some #(not= :same (sgn %)) lines)
       (loop [ls (vec lines) out []]
         (if (empty? ls)
           (str/join "\n" out)
@@ -1094,6 +1099,11 @@
   [path]
   (get target-langs (some-> path (str/split #"\.") rest last) "text"))
 
+(defn- module-path-text
+  "A module heading's text with a trailing change-kind suffix (\" — …\" or \" - …\") stripped."
+  [heading]
+  (str/trim (str/replace (strip heading) #"\s+[—-]\s+.*$" "")))
+
 (def ^:private file-langs
   (merge target-langs {"js" "javascript" "mjs" "javascript" "py" "python" "nix" "nix" "toml" "toml"
                        "json" "json" "yaml" "yaml" "yml" "yaml" "html" "html" "ts" "typescript"}))
@@ -1121,10 +1131,10 @@
        "</header>"))
 
 (defn module-header
-  "The opening of a module view's sheet: the module's path as a chip under the
-  label \"as it stands\". `heading` is the text of a \"## repo › path\" heading."
+  "Open a proposal authored as the whole module, with its path and no badge or
+  state label. `heading` is the text of a \"## repo › path\" heading."
   [heading]
-  (str "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span>"
+  (str "<article class=\"module diff\"><header>"
        "<h2 class=\"target\"><code style=\"font-size:.95rem\">" (esc (str/replace heading "`" "")) "</code></h2>"
        "</header>"))
 
@@ -1713,8 +1723,8 @@
                 (when @in-article (append! "</article>") (vreset! in-article false))
                 (when @in-module (append! "</article>"))
                 (append! (module-header (strip (subs first-line 3))))
-                (vreset! module-md (str/ends-with? (strip (subs first-line 3)) ".md"))
-                (vreset! module-file (last (str/split (strip (subs first-line 3)) #" › " 2)))
+                (vreset! module-md (str/ends-with? (module-path-text (subs first-line 3)) ".md"))
+                (vreset! module-file (last (str/split (module-path-text (subs first-line 3)) #" › " 2)))
                 (vreset! module-first true)
                 (vreset! in-module true))
 
@@ -1743,6 +1753,12 @@
             (re-find comment-mark first-line)
             (do (when (and @rulings @pending-close) (close-rulings true))
                 (emit (comment-html (second (re-find comment-mark text)))))
+
+            ;; A module-change page carries its short reason as ordinary prose.
+            ;; `Why:` is source notation for that reason, not a label in this
+            ;; page form, so neither the label nor a comment node is emitted.
+            (and @in-module (str/starts-with? text "Why:"))
+            (emit (str "<p>" (inline (strip (subs text 4))) "</p>"))
 
             (str/starts-with? first-line "File: `")
             (do (when (and @rulings @pending-close) (close-rulings true))
