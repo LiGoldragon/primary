@@ -3,12 +3,12 @@
 <h1 class="book-title">The Flow Nexus, bare</h1>
 <p class="book-subtitle">Created by the Primary</p>
 <article class="proposal"><header><span class="pnum">1</span><h2>vision:flow-nexus · psyche-belief › vision/flow-nexus.md — whole, retaken</h2></header>
-<p><strong>Why</strong> The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is minted by the Nexus, sleeping and waking move to the long vision, the one-model line is gone.</p>
+<p><strong>Why</strong> The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is the hash of the harness's random part, sleeping and waking move to the long vision, the one-model line is gone.</p>
 <p>--- description: The Flow Nexus, which starts, messages, refreshes and ends flows. dependencies: [vision-nexus, vision-model-roles] ---</p>
 </article>
 <h2>Address</h2>
 <p>A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.</p>
-<p>The Nexus mints a flow's id, six characters, and tells the flow its id and its address in its system prompt; it remembers which harness session is the flow's, so the transcript is found from the id whatever the harness. Every call to the Flow CLI is identified by the calling process.</p>
+<p>A flow's id is a hash, taken from the random part of the harness's session id, so that the transcript is found from it; which part of a session id is random differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt. Every call to the Flow CLI is identified by the calling process.</p>
 <h2>Start</h2>
 <p>A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools and prompt are the harness's, less its blacklist. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.</p>
 <h2>Message</h2>
