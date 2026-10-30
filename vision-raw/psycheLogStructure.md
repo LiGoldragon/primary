@@ -50,20 +50,3 @@ design, Designer assessment requested. A new psyche skill is
 directed: name and first proposal owed by the Designer, informed
 by the session d2bb5f5f discussion; some Vision transfers into
 skills, with a manifest linking skills to psyche archives.
-
-## 2026-08-14 — "agent annotations are not records" was never ratified
-
-Reconstructed 2026-08-22 by design session `15b67974` from transcript
-06196cc7 L716 (2026-08-14T11:20Z) — the opening of the same message
-whose remainder is captured in the entry above. On the distillation
-draft line "Agent annotations and context notes are not records; a
-proposal may cite them but never treat them as psyche ground.":
-
-> I dont understand
-
-Context (agent-authored): the Designer explained the two kinds of
-text in a psyche file (the psyche's quoted words; the agent's context
-lines); the psyche's next message moved to the id scheme without
-approving or rejecting the principle. It stands unratified — not to
-be assumed accepted by any later skill draft.
-

@@ -113,15 +113,6 @@ future road — datom inline in authored Ethos — is reached, or even
 floated, only with explicit context: how, when, and where data
 yields Rust, stated without ambiguity.
 
-## 2026-08-23, 68512643-5 — truth-in-everything needs a lot more context; not explored now
-
-> "there is truth in everything" would need a lot more context, and
-> it's not a road we have time to explore appropriately
-
-— psyche, 2026-08-23 (Designer session 68512643), typed. Closes the
-Intent-graduation question on 68512643-2's philosophical thread for
-now: the statement stays raw vision here, unexpanded.
-
 ## 2026-08-23, 68512643-2
 
 Context (agent, brief): raised on reviewing the datom distillation
