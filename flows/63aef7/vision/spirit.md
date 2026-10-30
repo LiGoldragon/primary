@@ -1,0 +1,4 @@
+## 2026-10-26 — Spirit in every flow's system prompt, however the harness delivers it
+Context: the living, direct, approving the spirit line above ("Yeah that's good. Let's land that and make this standard spirit.") and adding, on the same subject:
+
+> I want to make sure with you (unrelated but slightly related): I do want spirit behavior modules to be injected in the system prompt of the main flow and in the system prompt to subagents that don't get the system prompt from their main flow as well. I want spirit to be standard in all flows' system prompt however their system prompt works. This will be enforced in different ways depending on how each harness and each sub-agent functionality functions. Just making sure: this should be the case already. Let's make any part of this that could be configurable, configurable, as always, right in line with what we're actually landing.

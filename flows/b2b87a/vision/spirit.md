@@ -17,11 +17,6 @@ Thread fa661588, section Anger yields nothing good, on "Anger yields nothing goo
 
 good
 
-## 2026-10-29 — Energy is the measure: good
-Thread 5fe103fa, section Energy is the measure, on "Work is measured by the energy it costs, weighed by whose energy it is. A living reader's attention is the dearest energ…"
-
-good
-
 ## 2026-10-29 — An implementation is retaken, not painted over: spirit:psyche
 Thread 147e5cc8, section An implementation is retaken, not painted over, on "Vision is what is kept and improved. An implementation is ephemeral: when it is flawed it is rebuilt whole from its visi…"
 
