@@ -6,7 +6,7 @@ Created by the Primary
 
 ### Proposal 1: vision:flow-nexus · psyche-belief › vision/flow-nexus.md — whole, retaken
 
-**Why** The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.
+**Why** The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.
 
 ```text
 ---
@@ -22,7 +22,7 @@ A flow's id is the first six characters of the hash of its harness session id, s
 
 ## Start
 
-A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. A flow's tools are the harness's default minus the declaration's blacklist, the tools named out of it. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
+A launch names an address, a remembering and a brief. The Nexus composes the flow's prompts from the belief modules declared for that address: spirit and intent in the system prompt, the other modules, the remembering and the brief in the first prompt. The layer selects the model. The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, a tool's teaching among them, and the Nexus injects that reproduction in place of the stock one; a harness module, named by the harness's own term, says which section and which tool are its own. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired. The Capsule gives the flow its place to run, one Herdr pane; a permission prompt reaching the living is a launch failure.
 
 ## Message
 
