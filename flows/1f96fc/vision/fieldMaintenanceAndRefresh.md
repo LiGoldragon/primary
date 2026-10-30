@@ -18,9 +18,3 @@ and ambiguous wording are retained as received; no correction is inferred.
 > Send a low-power field main flow to investigate all of the disk usage everywhere, what kind of files are taking up room, and what looks wonky. Talk to Psyche about designing an ontology or an anatomy of a standard home user directory structure, where everything should be, what should be done with stuff, which should be done when there are too many files or when something gets too big, and how to connect all that with our Google Drive that we have for uploading stuff that hasn't been classified as being thrown out, downsized, compressed, or somehow archived with a smaller size and lower resolution.
 
 -- living, direct user message to Field Astra 1f96fc.
-
-## Separate follow-up message
-
-> Make sure all this Psyche stuff gets forwarded to Psyche, the whole message, right?
-
--- living, direct follow-up in the same native thread.

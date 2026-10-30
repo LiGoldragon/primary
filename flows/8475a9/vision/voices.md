@@ -44,22 +44,6 @@ Context: his comment on the same book, on its ruling asking which layer the secr
 
 -- psyche, STT, book comment, 2026-10-05, relayed by d4ae97.
 
-## Forty-four minutes after "no fields": "I don't see field tertiary and field quaternary"
-
-Context: typed to Field 42265e, 2026-10-05T17:33Z, after the no-Field words of 16:49Z. Relayed by d4ae97.
-
-> The field Astra's context is way too large and so is yours, and I don't see field tertiary and field quaternary. What do you think?
-
--- psyche, typed, 2026-10-05, relayed by d4ae97.
-
-## "Yeah let's do that as you suggested": Field's proposal of Field Tertiary and Quaternary approved
-
-Context: typed to Field 42265e at 17:34Z, answering Field's own proposal (Field Tertiary for bounded implementation, Field Quaternary for routine checks and publication). His words do not name Field themselves; later that day he told the secretary he does not recognise having approved Field flows at those layers; the tension is before him in «What's going on». Relayed by d4ae97.
-
-> Yeah let's do that as you suggested.
-
--- psyche, typed, 2026-10-05, relayed by d4ae97.
-
 ## No need for "seat": there is the voice and the flow
 
 Context: his comment on the secretary's «What's going on», on whether "seat" leaves the vocabulary (ruling 3 of «A voice's name»). Relayed by d4ae97.
@@ -87,11 +71,3 @@ Context: his comments on the secretary's layer-model lines (Secondary read as Op
 > Also quaternary, for now, is the same model as tertiary with a lower effort.
 
 -- psyche, typed, 2026-10-05, relayed by d4ae97.
-
-## Field at Tertiary and Quaternary: no approval
-
-Context: said to the secretary after being shown Field 42265e's reading of his "Yeah let's do that as you suggested" as approval of Field Tertiary and Quaternary. Relayed by d4ae97.
-
-> I still don't understand what you mean. No approval. I have no idea what the hell you're talking about.
-
--- psyche, STT, 2026-10-05, relayed by d4ae97.

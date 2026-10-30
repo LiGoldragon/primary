@@ -1,16 +1,4 @@
 
-## What Psyche has talked about most today
-
-> Making judgment of what's been talked about the most today by Psyche
-
--- psyche, typed.
-
-## Frustrating problems first
-
-> Attacking the problems that seem to frustrate him the most first on both fields, meaning fixing things in Mind and implementing them properly
-
--- psyche, typed.
-
 ## Field
 
 Context: Said to Psyche Fable c64ee3 directly by speech-to-text on 2026-09-29 and relayed to Mind Sol.

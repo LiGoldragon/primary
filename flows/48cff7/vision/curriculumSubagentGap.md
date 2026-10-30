@@ -16,16 +16,3 @@ Two paths for now, both imperfect:
 2. **Extend `roles.datom` to carry a specialty-subagent list** — a new positional field or a new variant inside `descriptions`. Downside: schema change; the runtime must be updated in lock-step.
 
 The living has flagged that a rethink is due — a namespace for different kinds so different generators produce different files. This entry records the gap so the rethink has a place to start.
-
-## Consequences for the current test
-
-- `.claude/agents/visual-report-from-md.md` in this flow's worktree (committed to `flow/48cff7`) is the *runtime* form of the subagent. If Curriculum regenerates the primary repo's `.claude/` tree from `roles.datom` today, this file is likely deleted.
-- `Curriculum/skills/visual-report-from-md.md` (committed at `a6c0d66`) is the *authored* form. It survives Curriculum's own edits.
-- Until the runtime learns to generate a subagent file from a skill with `kind: subagent`, the ad hoc `.claude/agents/` copy is the only way the harness can invoke the subagent by name.
-
-## Open questions worth the living's word
-
-1. Confirm the two paths above are the right framing, or name a third.
-2. Choose the direction — extend `roles.datom` schema, add a new authored file type in Curriculum, or something else.
-3. Which flow does the runtime update — an implementation subflow dispatched to Codex, a Claude implementation subflow, or a joint pair.
-4. Whether the ad hoc `.claude/agents/<name>.md` copies live in `flows/<flow>/.claude/agents/` per flow until Curriculum handles them, or somewhere else.

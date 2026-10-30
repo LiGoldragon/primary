@@ -8,24 +8,6 @@ Context: his comment on the book «How we call the voices», on its types block 
 
 -- psyche, typed, book comment.
 
-## The metaflow is a central concept of Flow design
-
-Context: said to this seat on 2026-10-06, after commenting on the book «Flow spawning» (by Mind f768df, reviewed by Fable), which does not bring the metaflow up.
-
-> I'd like to make the concept of a meta flow a central concept. I see that it hasn't been brought up so that's part of my vision that's being missed. I want that brought out.
-
--- psyche, STT.
-
-## Fixing Flow is central: fresher flows spawned more often, metaflows that focus on topics
-
-Context: same message, 2026-10-06.
-
-> I think fixing Flow is central to getting more efficient flows that are more on point with what they're supposed to do, so that we can spawn them fresher, more often, and have meta-flows that can focus on certain topics.
->
-> I feel like I was getting more out of my flows when I was handling them manually. Right now God knows how long it's going to take you and the others to spawn a new Fable. We're still spending a lot of context just trying to. We're using LLMs to make up for a lack of software, which is bad.
-
--- psyche, STT.
-
 ## Flow and Message are designed and implemented together, deeply married
 
 Context: same message, 2026-10-06; "message" is read as the Message Nexus and its messenger.
@@ -82,16 +64,6 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 
 -- psyche, comment on «Flow and Message» 2nd edition (https://claude.ai/artifact/Tpf6nJzyu5jpkRpogQLFb5), 2026-10-07.
 
-## No voice: the aspects are the variants, by layer
-> I want to change the name "voice" to describe the long-running seed [sic]. There's no voice, right? The variants are all of the different voice aspects directly. They're called by name:
-> - psyche
-> - mind
-> - field
->
-> They're separated by layer, right? These are kind of internal and they're going to have different functions for now.
-
--- psyche, STT, 2026-10-07.
-
 ## Spirit replaces the system prompt; intent specializes metaflows; vision goes in the user prompt
 > I think it's a good system because I can see that there are three different aspects to the thinking machine: the psyche, the mind, and the field. The psyche is trying to understand what it wants and what it sees as what it wants to build, right? The vision, the intent, and the spirit are also sort of designed there. This is central to how the whole rest of the machine behaves: we're going to replace the system prompt with the spirit.
 >
@@ -101,15 +73,6 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 
 ## A fourth type: the topic flow, ephemeral, off the pane
 > We can start this new opus, which is going to be of the other type, which is like topic, basically. I think it's the fourth type and these are ephemeral. They have a different payload and we don't need it on the pane.
-
--- psyche, STT, 2026-10-07.
-
-## Psyche, mind and field share one payload; psyche divides into spirit, intent and vision
-> We're going to create this different flow type that is basically a meta flow. It is one of the four things and they have different types of payload but psyche, mind, and field have similar payloads. I don't know if they're going to be always the same but I think possibly that would be the case.
->
-> I guess this is where we made the case to put them all under a certain umbrella since they have a similar payload. Their variant can be just one of the fields in that particular payload. The ethos, I guess, is more terse and the datom is not bigger because you already have the struct.
->
-> What's the name that we put them all under, these three that are very similar, or are these going to actually diverge and take their own shape? Maybe they subdivide into their own subcategory. Oh my God, this is it. This is where I'm going. I'm actually trying to start a session to work on spirit and then I would have a session to work on intent and a session to work on vision. That's what they are so we don't need all of them at the same time.
 
 -- psyche, STT, 2026-10-07.
 
@@ -123,16 +86,6 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 
 -- psyche, STT, 2026-10-07.
 
-## The thread title names no model; a word-based id
-> When we write the name of the thread in the harness, we don't actually mention the model because when I go into Claude I know that I'm talking to Claude, right? I don't need to know that it's Opus. I can see it in the user interface and I don't really need to see the flow ID I guess. I can, but I'd rather see the word-based one. I think it would be cool to have this word-based translation that actually works. Let's see if we can do that with three words, maybe even two.
-
--- psyche, STT, 2026-10-07.
-
-## A passable Flow vision: the metaflow as a chain of ancestors
-> Let's get a passable vision for Flow using the current Flow design, where MetaFlow is the ancestor of the next. Let's modify the scripts that we're using now to launch all this.
-
--- psyche, STT, 2026-10-07.
-
 ## Primary designs and implements; Secondary is its secretary; messages move by level
 > Astra is primary and designs and implements because he uses his own subflows with his own design directly. He doesn't need to use Sol to implement new designs. Sol is good for keeping track of everything that Primary is working on and acting as a secretary. You're going to have to talk to a secretary because you're secondary. I want that hard-enforced. I guess this is basic intent, right, because it's not spirit. It's not about general behavior and how to act. It's still going to be a system prompt, right, but it's not universal in nature. It's just due to the environment that we work in because the messaging program is imperfect and it cannot actually enforce this.
 >
@@ -140,25 +93,10 @@ Context: comment on the threshold bar in the figure, section 4 «The refresh is 
 
 -- psyche, STT, 2026-10-07. Transcription corrected: "when level up" → "one level up".
 
-## Psyche's layers; spirit, intent and vision as a hierarchy
-> This is all going to be basically spirit and intent at this level I'm speaking with. We're going to have a psyche secondary, and I guess intent, secondary, primary, tertiary, and quaternary. This is all going to go into the background and we're going to put a better UI on all of this. All of these sessions are just basically keeping track of what's specific to them and then we're going to see that the lowest level, right, is the one where there are three levels within: spirit, intent, and vision. That's the hierarchy, right, from top to bottom. It's a subdivision and has its own hierarchy.
-
--- psyche, STT, 2026-10-07.
-
-## A topic metaflow, carrying the psyche data relevant to its topic
-> Let's organize for launching a flow that specializes in this. We'll have this different kind of variant of flow, or metaflow, that is centered around a topic. Let's start with an Astra Flow that has the vision that is relevant to this or all of the psyche data that is relevant to this in its context.
-
--- psyche, STT, 2026-10-08. "This": redesigning Ethos and Flow.
-
 ## A Clojure Flow prototype, with its own database, addressed by metaflow name, specified in Ethos
 > Anyway I would really like to get all of the current or the most current psyche vision, or the most psyche-aligned version of the Clojure flow prototype, with its own database with metaflow addressing by metaflow name. We could even have channel enforcement anchored in the configuration-style data: we should spec everything in Ethos and then have a standard, maybe even eventually code, from which Ethos code creates the types, the functions, and the logic, centered around the concepts defined in Ethos in the vision, right?
 >
 > We're always creating psyche data, mostly vision, because this is what we're going towards, what our vision is.
-
--- psyche, STT, 2026-10-08.
-
-## Flow titles in the old convention
-> I see a new Fable and it has the old name convention. Now there are two online Fable flows. They're both labeled Psyche Fable, which is not even how I want things. The whole way it's titled is completely obsolete now.
 
 -- psyche, STT, 2026-10-08.
 

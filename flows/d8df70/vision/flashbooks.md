@@ -30,12 +30,6 @@
 
 -- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
 
-## Flashbooks are designed for full illustration
-
-> For now let's just redo the 6 most important topics with proper illustrations and maybe even make better flashbooks with the idea in mind that we're going to fully illustrate it. Make it better.
-
--- living, input mode not established, 2026-09-23, to Psyche Medium d8df70.
-
 ## Images are asked of a Codex seat by message, not by running Codex
 
 > No you don't run Codex. You talk to him. We have messages.
@@ -59,7 +53,6 @@
 > I need to modify the system prompt of the main flow only and not its subagents. Can I do that on Codex and Claude? I need a fucking answer. I need an answer on that because I've been asking for days and I haven't come across the answer. You don't have a reliable way to talk to me because it's all over the place. There are too many flows. I can't read them all so it has to end up in the flashbook and I have to be reminded of it by different flows. Have you read this flashbook? Just keep reminding me so I can comment on it.
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70.
-
 
 ## No ugly SVGs; a model that draws nice SVG would be welcome; flowcharts stay, illustrations come from an AI model
 

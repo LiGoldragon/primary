@@ -12,60 +12,6 @@ Flow reading, not the living's words: an idea flow (a thinking flow) carries a r
 
 From the highest tier, escalation continues by stepping *out* of the stratum. What that step lands on is a design decision.
 
-## Suggestions offered for the "higher stratum" step
-
-The living's phrase "a higher stratum" reads two ways in the material we have. Both are drafted here; only one stands after the living picks.
-
-**Reading A — the harness's top stratum.** In `claude-harness` and `codex-harness`, top stratum is the base instructions / system prompt. Escalating there means: the concept, once passed Fable, is written into the harness's top stratum for every future flow. Effective for a change the whole system should know henceforth — think: a new skill body promoted into the base, or a rule that every session should carry. Slow, durable.
-
-**Reading B — the core layer.** In `psychePairAnatomy.md` the core is named as defense: quiescent, doubtful, careful. Escalating there means: the concept, once past Fable, is handed to core-psyche for a doubt-and-defense pass, using the tertiary layer for private comms. Effective for a change with security or trust weight the primary layer cannot authorize alone. Rare, secure.
-
-The two are not mutually exclusive. A likely full shape is: from the highest tier of a stratum, escalate *sideways* to the core (Reading B) for authorization; when the core rules the change should stand everywhere, promote it into the top stratum (Reading A). Each is a distinct hook.
-
-## Suggested escalation flowchart
-
-```
-                    ┌───────── living ─────────┐
-                    │                          │
-                    ▼                          │
-        ┌── low-effort psyche ──┐              │
-        │  (Terra / Sonnet)     │              │
-        └──────────┬────────────┘              │
-                   │ effort shift up           │
-                   ▼                           │  refresh
-        ┌── medium-effort psyche ┐             │  ↑
-        │  (this flow · Opus 4.7) │            │  report
-        └──────────┬─────────────┘             │
-                   │ escalate: problem or      │
-                   │ authority                 │
-                   ▼                           │
-        ┌── highest-effort psyche ┐            │
-        │  (Fable)                │────────────┘
-        └──────────┬─────────────┘
-                   │ step out of stratum
-                   ▼
-      ┌────── core layer ──────┐   (Reading B — doubt/defense pass)
-      │  private comms via     │
-      │  tertiary layer        │
-      └──────────┬─────────────┘
-                 │
-                 ▼
-      ┌── top stratum (harness) ─┐   (Reading A — promotion)
-      │  the change is written   │
-      │  into base instructions  │
-      │  for every future flow   │
-      └──────────────────────────┘
-```
-
-## Suggested hooks on a psyche flow's refresh package
-
-- **`Report`** — deliver to the living. Payload: flowcharts, visuals, concepts, anatomy, related-skills index, proposals.
-- **`PromptUp`** — deliver as the prompt of the next-higher psyche flow in this stratum. Same payload.
-- **`AskCore`** — deliver to core-psyche via the tertiary layer for a doubt/defense pass. Same payload, plus the specific decision the primary is uncertain of authority to take.
-- **`Promote`** — deliver as a proposed insertion into the harness top stratum's base instructions or a Curriculum skill. Same payload, structured as skill-designing wants (description + body).
-
-Each hook uses the same underlying package but names a different consumer. A psyche flow picks the hook by the situation it faces.
-
 ## 2026-09-16 — an up-message must cite psyche to qualify; the higher layer judges the citation before acting
 
 > It's important that whenever someone tries to ask for a higher level in the hierarchy or send a message to them, in order for it to qualify, it has to use some psyche. It has to use some vision or some raw psyche log, verbatim psyche with context that essentially backs its proposal. Here's why this psyche, this idea, is in response to creating something or addressing this particular psyche. It has to use vision, intent, and spirit. That's how it can justify doing what it's doing.
@@ -81,20 +27,3 @@ Flow reading, not the living's words: an escalation without a psyche citation do
 Even MEDIUM may address the living directly with a question when a citation warrants it — the mirror-and-report loop is the default, but a direct question is admitted.
 
 At the core layer, urgency reaches the express lane: the core is the only tier permitted to bypass do-not-disturb and wake the living for a security or system-wide problem the living or psyche must attend to. The channel is `messagingUp.md`'s express variant, reserved to core.
-
-## Rules the anatomy encodes after this addition
-
-- **Citation-or-refuse.** An up-message with no psyche citation is refused by the receiver; the sender must attach a citation and retry.
-- **Judge-then-act.** The higher layer's first action is validating the citation, not acting on the proposal.
-- **Merge here, or escalate again.** Every tier decides whether the proposal completes at its layer or continues upward.
-- **Direct question from MEDIUM to the living is admitted.** Not routine; permitted when a citation warrants it. Not the same as the express lane.
-- **Express lane is core-only.** Bypass do-not-disturb, wake-in-the-night. Reserved for danger or major system problems; not for design discussion.
-
-## Open questions worth the living's word
-
-1. Confirm "higher stratum" means the harness top stratum, the core layer, or both in sequence (Reading A, B, or A-after-B).
-2. Whether effort *lowers* itself automatically (a flow completing at high effort hands off to medium for follow-up) or only rises.
-3. Where escalation records live — the receiving flow's lane, the sender's, or a shared escalation stream in the mind.
-4. Whether AskCore requires the living's word every time, or the primary can invoke it on its own judgement when authority is uncertain.
-5. What "urgency" is at the wire — a variant on the up-message, a separate signal, or a per-tier default that the sender does not set.
-6. What qualifies for the express lane besides "danger" and "major system problem" — the living's threshold for wake-in-the-night.

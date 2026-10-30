@@ -20,7 +20,3 @@
 > It's just a raw database for now, a version of what we're doing, so that we're going to migrate this to mind. Maybe I'm wasting my time and it's better to just do it with mine but I don't know. I feel like we got a system here and let's just keep it going I guess.
 
 -- living, typed directly in this flow.
-
-### Correction to this flow’s proposal
-
-The earlier response proposed selecting skills by content type, aspect, and target. That added an unsupported per-skill classification. The direct correction assigns type to each source repository, with repository-to-type provenance centrally controlled. Prior raw words are retained. The possible migration to Mind remains unsettled; no migration is authorized by this record.

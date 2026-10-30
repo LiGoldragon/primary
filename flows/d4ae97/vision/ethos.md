@@ -8,40 +8,6 @@ Context: his comment on «Flow spawning», on its Library root (Role.[ Voice Job
 
 -- psyche, typed, book comment.
 
-## Ethos is central, very central
-
-Context: said to this seat on 2026-10-06, turning to the datom expansion and an ethos psyche distillation.
-
-> Keep in mind ethos: ethos is central, it's very central
-
--- psyche, STT.
-
-## The datom file expansion and the ethos syntax changes are implemented in ethos, ahead of the three-repo curriculum deploy
-
-Context: same message, 2026-10-06; on Astra implementing the three-repository, skill-based curriculum deploy.
-
-> I want to get Astra going maybe on a new flow after all this, on implementing the three-repo skill-based curriculum deploy. I guess we would need the datom file expansion and also all of the things that I've been talking about modifying ethos syntax to be implemented in ethos.
-
--- psyche, STT.
-
-## Types are declared inline up to a decent level of recursion; repeating type names to declare them apart is noise
-
-Context: his comment on «Ethos, distilled», proposal 5 (Everything is a type), 2026-10-06T15:52.
-
-> There's some good here but remember I was saying that until we reach the third level of recursion I would rather see the types defined inline. Here there would only be one entry where each field of the struct would have the definition of these types inline, which would avoid repetition, right? That's the whole point: the terseness, unless the type is reused somewhere else.
->
-> Even if Ethos must support declaring types inline that are used elsewhere, it could be confusing visually to find where a type's been defined but that's okay. I would rather the types be defined inline up until a decent level of recursion. I don't want to have to repeat the type names just so that they're declared independently. I think that's silly. And it creates a whole bunch of repetition, which creates a whole bunch of cognitive load.
-
--- psyche, typed, book comment.
-
-## Inline declaration is mandatory unless the type is too deep; an algorithm decides
-
-Context: his comment on «Ethos, distilled», proposal 6 (Inline types), 2026-10-06T15:53.
-
-> Well like I said earlier, even if a type is declared inline in one place, it can still be declared at the top. We don't have to and in fact just because of the extra repetition that creates, I would want to make the inline declaration mandatory unless that particular type is so deep that it itself requires too much recursion to be declared inline. We have to explain some kind of algorithm to determine whether or not a type should be declared inline.
-
--- psyche, typed, book comment.
-
 ## A one-position type is called a new type
 
 Context: his comment on «Ethos, distilled», proposal 7 (One position), which said "There is no struct of one position. A type that holds one other type is written as its name, a dot, and …", 2026-10-06T15:55.
@@ -61,13 +27,6 @@ Context: his comment on «Ethos, distilled», proposal 8 (Vertical), on its exam
 > Like when we have a vector, we can do this: we can have more than one item per line but at a certain length it wraps around and lines up with the first item and then continues like that. We can have a certain number per line but only up to a certain width.
 
 -- psyche, typed, book comment.
-
-## Review the specification of the operation type
-Context: comment on "Composed" (with open and spawn), section 4 of «Flow and Message» 2nd edition.
-
-> What's this section about, with `composed`, `open`, and `spawn`? What is that? I'd like to get to review the specification of the operation type ethos.
-
--- psyche, comment on «Flow and Message» 2nd edition (https://claude.ai/artifact/Tpf6nJzyu5jpkRpogQLFb5), 2026-10-07.
 
 ## Show the Ethos, not the Rust it generates
 Context: comment on "enum" in the Names section.
@@ -126,11 +85,6 @@ Context: comment on `Settings`, among the types Curriculum defines in Rust.
 > I was saying we can mechanically make sure there's no trait in the non-ethos-generated part of the code and my speech detect got me off.
 
 -- psyche, typed, 2026-10-07. Corrects the [sic] in "Traits are written in ethos": every trait is written in ethos; a mechanical check finds none in hand-written code.
-
-## Ethos redesigned to his syntax; patterns wanted and disallowed
-> I want to redesign the ethos and flow. ... Actually probably changing ethos to better conform with my expectations of the syntax and what kind of patterns I want to see and what kind of patterns I don't want to see and even disallow
-
--- psyche, STT, 2026-10-08.
 
 ## Ethos is designed with the datom payload's cost in mind
 > Basically the guiding principle in designing the ethos and the datom payload is also keeping in mind what the datom payload looks like, considering that the datom will probably be more expensive because machines will have to output them. It's funny because System 1 models actually make that cheaper, which is interesting.

@@ -12,22 +12,6 @@ Context: the living directly addressed Field Sol b7da5d after noticing it lacked
 
 -- living, typed, 2026-09-26, directly to Field Sol b7da5d.
 
-## Refresh right now; Flow Master and Luna help
-
-Context: the living is viewing this Flow from a laptop; the phrase “hurt or pain” is retained exactly as received and may refer to a Herdr pane, but that is not confirmed.
-
-> Yeah, I'm looking at this flow from the laptop, and it's hurt or pain is completely wrong. Now we're using the Flow Nexus, right? Why don't you just refresh your flow right now and put yourself on becoming the Flow Master and the new agent launching? Get a Luna to help you also, and who's going to be aware of how things work? Keep communicating with your peers there.
-
--- living, typed, 2026-09-26, directly to Field Sol b7da5d.
-
-## Luna as Flow master for CLI pumping
-
-Context: clarification of the immediately previous request for Luna help with the refresh and Flow Master work.
-
-> Well, actually, Luna will become the Flow master in a sense because you're going to give her all the jobs, and she'll do all the pumping of the CLI, but you're going to be aware of all of it.
-
--- living, typed, 2026-09-26, directly to Field Sol b7da5d.
-
 ## Luna updates Sol; Field tool indexes system calls
 
 Context: the living clarified the Luna Flow Master's reporting and the desired Field tool surface. “Herder” and “pains” are preserved exactly as typed; they may mean Herdr and panes, but that interpretation is not inside the quote.

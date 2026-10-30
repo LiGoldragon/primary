@@ -9,9 +9,3 @@ The psyche's words on a value layer between datom and the native Rust value were
 > The reason I brought up the value layer was: imagine you're writing the code, the general code that's going to Datomize something. Maybe you want an actual type somewhere, which is generic enough to not really know what it is at that moment in the code, to just call Datomize on it. Since you're going to derive Datomize, then I guess my fears were unfounded. It's just going to be derived from the derived macro, and that's where the Datomize code will go in.
 
 -- psyche, STT.
-
-## 2026-09-09 — composed and composable for the in-memory value layer
-
-> Imagine that we're composing. There's another word, "composed," for the rest. In memory value layer, so composable and composed. Composed wouldn't be possible. I don't know if there's a place in the code that says "composed," but composable is the kind. The concept is composable. What is the etymology here? Or maybe, if that doesn't work, we can look at synonyms.
-
--- psyche, STT.

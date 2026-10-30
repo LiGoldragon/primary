@@ -33,14 +33,6 @@ Context: said to this seat on 2026-10-05 after reading «Jev proposals and imple
 
 -- psyche, STT. Transcription corrected: "Jav" → "Jev".
 
-## The code goes in a separate book, in more detail
-
-Context: same message, 2026-10-06, on the Flow design books.
-
-> I'd also like to have it separate. Maybe you can do that: you make a separate book on the code itself, in more detail.
-
--- psyche, STT.
-
 ## Code presentation blocks with syntax highlighting, and more code
 
 Context: his comment on «Flow spawning», on its Rust excerpt (`let binding = match self.perform(Operation::Bind(pane_launch)) …`), 2026-10-06T14:58.

@@ -19,26 +19,6 @@ for examples). The draft's snippet entered via
 DesignExemplars-Rust-2026-08-21.md §10. Replacement to be drafted
 from a witnessed production logos lexer, or the example dropped.
 
-## 2026-08-22 — a skill is not a history book
-
-Design session `bc05da32`, typed (captured 2026-08-22), on the
-software-design draft's "Backwards from the want" passage
-attributing the doctrine to SICP's wishful thinking and Kent Beck's
-output tape:
-
-> The content there can be good, but this is a skill not a history
-> book
-
-Context (agent-authored, separate from the psyche's words): the
-content survives as instruction ("Write the core as if its coherent
-inputs already existed; then ask what produces them"); the
-attributions move to the draft's provenance file. Read together with
-the approved example style: real machines cited as evidence (GCC,
-bat, ruff, syn, serde, walrus) are examples; lineage and survey
-narration are history. A skill-designing cut-list line is proposed,
-approval-gated per 2026-08-19: "A line that tells where an idea came
-from."
-
 ## 2026-08-22 — the taplo replacement isnt logos: quackery again; an example must be what it is presented as
 
 Design session `bc05da32`, typed (captured 2026-08-22, after the
@@ -77,21 +57,3 @@ what the value is at the moment it exists, and it misled the psyche
 into reading emission. A replacement creation-side example with
 truthful naming is hunted. Example rule carried forward: one crate
 per code block.
-
-## 2026-08-22 — cut the bad example: the lexer-crate example leaves the software-design draft
-
-Design session `bc05da32`, typed (captured 2026-08-22), green on the
-Designer's recommendation after the hunt returned both replacement
-slots empty:
-
-> cut the bad example and explain the macro options
-
-Context (agent-authored, separate from the psyche's words): the
-lexer-crate example (README toy → taplo → protox-parse) is cut from
-the draft — the crate's name collides with our Logos and no
-non-colliding machine-from-the-type's-shape specimen was found. The
-witnessed trail stays in the exemplars report. Better examples to
-come from our own software as it is built (machineAnatomy.md
-2026-08-21).
-
-

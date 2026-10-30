@@ -1,8 +1,3 @@
-## 2026-08-17 — why `CLAUDE.md` as `@AGENTS.md` was unoptimal
-
-> the subagent problem is codex only, and @ references arent loaded
-> recursively, apparently.
-
 ## 2026-08-17 — one authored entry module in Curriculum generates CLAUDE.md and AGENTS.md
 
 The Designer proposed one authored entry module in Curriculum with

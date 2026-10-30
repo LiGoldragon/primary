@@ -7,9 +7,3 @@
 
 -- psyche, book comment, 2026-10-03T18:01Z; relayedPsycheFableedf227, «Flow» or Opus Flow-ids book.
 
-
-## Full implementation shown as it is built
-
-> Okay, let's do the full implementation with all the comments, in the sake of this new flow with the context module set up. Let's look at what's being built while it's being built so I can comment on it. You and Mind Astra, choreograph on this, and you can use Opus and Sol as assistants.
-
-— the living, typed to Psyche Fable edf227, 2026-10-03 approximately 21:10Z; relayed verbatim as #psyche.

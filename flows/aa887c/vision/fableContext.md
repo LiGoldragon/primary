@@ -34,11 +34,3 @@ Context: on hearing that the composed first prompt for the new Fable is 2.4 MB (
 > That's way too much. It would make the context too big from the first prompt so it's a bad idea from the beginning. ... There's way too much context there.
 
 -- psyche, STT.
-
-## Only the books on the subjects he talks about most
-
-Context: on the lean first prompt for the next Fable (twelve current books).
-
-> We don't want old books actually and I just want to focus on the books that touch the subjects that I talk about the most.
-
--- psyche, typed.

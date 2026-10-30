@@ -48,13 +48,3 @@ Context: second comment in the same thread, relayed by Fable8475a9.
 > Actually the voice is a sort of metaflow so we should throw that into the soup somehow. The voice is a type of metaflow and then there are specialized metaflows.
 
 -- psyche, typed book comment, 2026-10-05T17:58; relayed by 8475a9.
-
-## 2026-10-05 — No approval
-
-Context: said to the secretary about Field's interpretation of “Yeah let's do
-that as you suggested” as approval of Field Tertiary/Quaternary; relayed by
-Fable8475a9.
-
-> I still don't understand what you mean. No approval. I have no idea what the hell you're talking about.
-
--- psyche, relayed by 8475a9, 2026-10-05.

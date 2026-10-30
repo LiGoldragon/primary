@@ -1,13 +1,5 @@
 # Vocabulary
 
-## The vocabulary is not settled enough to judge the distillation wording
-
-Context: terminal, on the flow's proposed Vision/layers.md sentence.
-
-> Your vision distillation looks reasonable, but I still don't understand enough of the whole vocabulary. It's not settled enough for me in my mind to be able to say whether or not these are the terms that we should use to explain this particular part of the vision.
-
--- psyche, STT.
-
 ## Raw means no confirmation was asked; Intent requires confirmation; only Vision can be raw
 
 > raw means you didnt ask for confirmation. and intent requires confirmation. only vision can be raw

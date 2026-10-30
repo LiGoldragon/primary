@@ -8,12 +8,6 @@ Reading, marked as mine: "Sonnet5 images" is the imagery Psyche Low 0625c3 produ
 
 Supersession, 2026-09-23: the living's words behind the relay above are recorded verbatim by the flow that heard them, Field High 6fb948, in flows/6fb948/vision/personaServiceAndNexusImagery-20260923.md ("The flashbooks have to have proper imagery. The sonnet 5 images we've made are atrocious." and "Let's build out the anatomy of all these nexuses and how they fit with each other."). That record is the source; this file points to it.
 
-## The attention flashbook, illustrated by Psyche Opus, content from Mind Astra
-
-> Can you get the new Psyche Opus, running 5.5, to do a flashbook on all the things that need my attention and do a proper illustration and then ask Mind Astra to also create flashbook content for Psyche Opus to illustrate?
-
--- psyche, typed, 2026-09-23, directly to Psyche High 836818.
-
 ## Six to nine, illustrations that pull the living in, one rolling flashbook per main flow
 
 Heard by Psyche Medium d8df70 (its transcript line 985, 2026-09-23T23:00:36Z, queued, the living's own input); raw record in flows/d8df70; quoted here because it governs this seat's flashbook ownership.

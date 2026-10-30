@@ -147,3 +147,11 @@ Answering the flow's resolution: extent a fact of protos, path a fact of the dat
 > We have a bit of a problem here. You have a migration section in the ethos, and this is operational. It's not vision, so it's going to become stale as soon as somebody does the implementation of what we're distilling. It doesn't qualify as vision because vision doesn't go stale unless it's respecified.
 
 -- psyche, STT.
+
+## 2026-09-09 — none of the value-layer words were vision; they were a notion, a brainstorm
+
+Superseding, as vision, the entries above on a value layer, on the generic object, and on a generic parameter not being a thing; they are held in notion/datom.md:
+
+> Well, I'm not sure anymore about the value layer. None of what I was saying about the value layer was vision. It was a notion. I was brainstorming with you, so none of what I said about the value layer has any authority in the vision. I think you have a hard time differentiating. I guess I should be more explicit when I'm bouncing ideas with you and when I'm actually making pronouncements. I was not making pronouncements. I was trying to brainstorm the code with you.
+
+-- psyche, STT.

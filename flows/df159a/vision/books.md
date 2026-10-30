@@ -20,14 +20,6 @@ Context: 2026-10-14, book comment on «Communicating with the living». Relayed 
 
 -- psyche, STT, book comment.
 
-## On «His words, 2026-09-25, flows/88475f/...» in the Clojure-migration book
-
-Context: 2026-10-14, to d68c82, with a screenshot of the Clojure-migration book showing «His words, 2026-09-25, flows/88475f/...» and «The machine's count, flows/d68c82/reports/...». Relayed by Psyche Flow Secondary da2038.
-
-> So do you think that I wasn't clear enough on the fact that I didn't want stuff like this in the book?
-
--- psyche, STT.
-
 ## No proposals of code; propose an approach, a pattern, or wrapping code that becomes standard
 
 Context: 2026-10-14, spoken to the Psyche Core Tertiary after commenting on «Short-term prototypes: Clojure now?». Relayed by Psyche Flow Secondary da2038.

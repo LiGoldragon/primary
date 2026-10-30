@@ -6,12 +6,6 @@ Context: after the Zeus probe showed Prometheus's USB downlink never brought up.
 
 -- psyche, typed, 2026-09-25, directly to Psyche High 752e0f. Logged as notion: a design put as a question.
 
-## Existing works on resharing internet
-
-> And yeah on the resharing of internet, what are the existing works? Is it really thin and is it kind of brittle? Has nobody even really done internet rerouting properly?
-
--- psyche, typed, 2026-09-25, directly to Psyche High 752e0f.
-
 ## The 4-to-6 conversion at the node with internet
 
 > A few years ago I was going to do a 4-to-6 conversion (stateful conversion, I think), so that the internal IPv6, easy-to-configure large subnets would just route externally to IPv4 seamlessly. Essentially the node that would get internet would do the 4-to-6 conversion. It would spawn a service for that and create this IPv6 subnet that routes to the internet and we could even get a

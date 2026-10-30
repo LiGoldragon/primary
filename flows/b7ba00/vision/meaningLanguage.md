@@ -144,14 +144,6 @@ Context: the living's comment on Fable b7ba00's "Noema" artifact, at the alterna
 
 -- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
 
-## Is the Category layer equivalent with Ethos?
-
-Context: comment on the same artifact, at the table cell "Category".
-
-> Is this category part of the language equivalent with our ethos?
-
--- psyche, typed (artifact comment), 2026-09-26, relayed by 93ba9f.
-
 ## Sema's first version: one or two layers of variants with a string payload — a strongly typed string; the basis of agent–Message communication
 
 > The first version of sema could be that it just has one or two layers of variants, possibly with one variant and then another variant inside and the payload at the end being a string. That way we get a sort of strongly typed string, if you will.  And this then becomes the basis for how agents start to communicate with the message component.

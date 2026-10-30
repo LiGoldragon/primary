@@ -13,11 +13,3 @@ On the «Sources» sections at the end of vision skills; relayed by core d68c82 
 > Well we should just put that source reference in the commit message that makes the change.
 
 -- psyche, STT, relayed by 9519a1.
-
-## 2026-10-10 — the existing Sources sections are backported by rewriting history
-
-> We would need to send a subflow to backport all of these, essentially rewrite history.
-
-His order to Mind, kept beside it as context: "Well if it's straightforward you can just send that to Mind to implement the reference [backport] and rewriting of the history. He can just write a different branch, obviously, and then move the main bookmark to that new branch."
-
--- psyche, STT, relayed by 9519a1.

@@ -34,12 +34,6 @@ Context: the living is sending the same messages to a Codex session (flow bcd02a
 
 -- psyche, STT.
 
-## 2026-09-13 — Re-bootstrap the pair from a remember first prompt in a fresh session I can attach to
-
-> So are you able to re-bootstrap the pair on that infrastructure from passing over like a remember flow, a remember first prompt with all the right skills in a fresh session that I'll be able to attach to on my laptop, so that you can, and can you send each other prompt through the medium stratum?
-
--- psyche, STT.
-
 ## 2026-09-13 — Inject into an interactive session
 
 Context: answer to the flow's finding that a print-mode resume injects a user turn into a Claude session only while it is not running. "cloud session" is left as transcribed; the flow read it as the interactive Claude session.

@@ -1,16 +1,4 @@
 
-## Audit focus — 2026-09-24
-
-> Or maybe you should just audit what someone else is doing, make suggestions, ask questions, and bring questions to me.  Focus on ethos specification and an anatomy of traits.
-
--- living, typed directly in this flow.
-
-## Evidence for design — 2026-09-24
-
-> Use these dispatched subflows in order to get enough data to help you design the ethos types, traits, and kinds.
-
--- living, typed directly in this flow.
-
 ## Kinds and compiled conversion boundaries — 2026-09-24
 
 > Yeah I meant kinds not traits. If I say traits I mean kinds. They're kind of the same thing but we say kind because I think it's actually more accurate.

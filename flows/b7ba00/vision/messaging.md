@@ -16,12 +16,6 @@ Context: the living's comment on the "e167d8 Night Summary" book, at its line on
 
 -- psyche, STT, 2026-09-26, relayed by 93ba9f (package by direct Herdr prompt).
 
-## Why the anatomy of a message was asked
-
-> But earlier I was asking about the anatomy of a message because I saw one message coming from it and it had a bunch of fields in there that I don't want to see.
-
--- psyche, STT, 2026-09-26, relayed by 93ba9f (package by direct Herdr prompt).
-
 ## No message ID; a different interface for history; the sender is psyche primary, psyche secondary, etc.
 
 Context: after 93ba9f proposed removing the message ID from the pane letter and asked whether the living's sender name should stay "Owner" or become "Living".

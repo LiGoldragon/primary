@@ -1,31 +1,3 @@
-## 2026-08-14T01:31+02:00 — the top rung is the builtin harness prompt, not parent output
-
-Context (agent-authored, separate from the psyche's words): the
-Design flow had reported subagent context probes as "subagents do not
-share the parent's system prompt." The psyche corrects the frame.
-
-> I dont believe it. the builtin prompt instructs agents how to
-> behave in the harness and how to use tools,etc. theres no way the
-> parent is outputting all that for every subagent. I think you dont
-> understand what the top rung actually is
-
-— psyche, 2026-08-14T01:31+02:00 (Design sibling flow 1030529c),
-typed. The Design flow's reading, pending the psyche's confirmation:
-the top rung is harness property — the harness process composes every
-agent's top from its own built-in templates and door inputs; no
-parent LLM outputs a child's top; the parent's spawn text enters the
-child at the middle rung.
-
-## 2026-08-14T01:35+02:00 — reading confirmed
-
-> now you understand
-
-— psyche, 2026-08-14T01:35+02:00 (Design sibling flow 1030529c),
-typed, confirming the previous entry's reading of the top rung as
-harness property: the harness process composes every agent's top from
-built-in templates and door inputs; the parent's spawn text enters
-the child at the middle rung.
-
 ## 2026-08-14T15:34+02:00 — no authority without an anchor in a skill or claude/agents.md
 
 > and what skill tells you that? Anything not anchored in a skill or

@@ -6,16 +6,6 @@
 
 -- psyche, typed, 2026-10-02.
 
-## An emergency skill catch-up wave
-
-> "Bring me things that are in skills that need my approval and are in conflict with what I want, with things moving a bit faster and you behaving more the way I want you to behave (in all of the ways that I've been asking for a change of behavior lately that hasn't landed). Like an emergency skill catch-up wave"
-
--- psyche, typed, 2026-10-02.
-
-Correction typed right after, one word: "Skill*". This flow reads it as correcting "the bookmaker role" to "the bookmaker skill" in the entry above; not confirmed.
-
--- psyche, typed, 2026-10-02.
-
 ## Get rid of gold; every skill is typed
 
 Comment on «Skill catch-up wave», chart "Who may change which skill", at "gold skills". Framed with "I don't know" and "maybe": read as notion until he raises it.

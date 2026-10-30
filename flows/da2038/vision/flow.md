@@ -284,14 +284,6 @@ Context: same message, 2026-10-17.
 
 -- psyche, STT.
 
-## Migrate to a Flow modified to have an always-on core
-
-Context: relayed by Psyche Core Secondary d68c82, 2026-10-17; core holds any migration until the anatomy of "always-on core" is ruled and will relay it.
-
-> Okay I've got Flow topic working on this but I want to migrate to a Flow that's modified to have an always-on core.
-
--- psyche, STT, relayed by d68c82.
-
 ## A waking flow first looks for a past flow and its context size; a fresh flow is almost always better unless it is the same topic's continuation; a system one call asks whether the past is noise for the new message
 
 Context: comment on «Flow: sleeping and waking seats», figure under «A message wakes a sleeping seat», 2026-10-16 01:45; found unrelayed 2026-10-17.

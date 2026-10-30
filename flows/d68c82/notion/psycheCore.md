@@ -1,13 +1,5 @@
 # Psyche core
 
-## A Psyche core Primary
-
-Context: on noticing the core seat has a Secondary and no Fable Primary.
-
-> I notice you don't have a primary core Fable and that you didn't name yourself Psyche core secondary. Just not a big deal. I guess we can get a Psyche core primary if we want but for now it's okay.
-
--- psyche, STT, 2026-10-10.
-
 ## A Psyche core Tertiary that fetches book comments and wakes the Secondary with them
 
 Context: after the core Secondary sent a subflow to fetch his comments on a book.

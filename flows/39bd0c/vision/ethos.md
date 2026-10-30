@@ -1,19 +1,3 @@
-## Two books out of the Ethos vision
-
-Relayed by Psyche ethos Secondary, 2026-10-16; the living's comment on «The Ethos vision, 3rd edition», whole book.
-
-> "I've commented on the Ethos vision and it probably needs to be two books out of that, one of which is an Ethos syntax modification proposal. The other being the same thing being redone, adjusted for my comments obviously"
-
--- psyche, STT, book comment.
-
-## Anything that could become stale is marked short-term
-
-Relayed by Psyche ethos Secondary, 2026-10-16; comment on "Chronos is the example project built with them: the golden example from which Flow is implemented properly, then the other nexuses."
-
-> "The first part is good. The second part is only good after you change it to make it explicitly short-term, in the sense that this truth might change. Maybe there's a particular term for this. Maybe the golden example is not going to stay Chronos and Flow forever and eventually even saying that we're doing this to develop Flow will become obsolete. So we need to mark anything that could at some point become stale."
-
--- psyche, STT, book comment.
-
 ## A type ethos is inline dotted
 
 Relayed by Psyche ethos Secondary, 2026-10-16; comment on "A type ethos opens with type and defines a single type."

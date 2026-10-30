@@ -25,14 +25,6 @@ After commenting on the capsule book.
 
 -- psyche, typed, 2026-10-02.
 
-## A book with Astra on the ethos of the three layers: signal, storage, operation
-
-Held in the transcript during the quiet window; written at its end.
-
-> "Yes let's make a book with Astra and with the ethos of all three layers: signal, storage, and operation. I like it. I don't know what yet storage is. Do we have a book on that? I'm going to go look. Anyway I want to talk about that. Do you understand what I'm saying?"
-
--- psyche, typed, 2026-10-02.
-
 ## His comments on «Flow in ethos», 2026-10-02 20:09–20:56
 
 > "Yes they're going to be called voices. That's the right term. Psyche, Fable, and Mind Astra are voices."

@@ -18,18 +18,6 @@
 
 -- living, input mode not established, 2026-09-24, to Psyche Medium d8df70, after it asked the living to run a command on Prometheus's console.
 
-## Using Prometheus for remote builds
-
-> So, are we using Prometheus for remote builds now?
-
--- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 2388.
-
-## Why can't we use Prometheus anymore
-
-> So why can't we use Prometheus anymore? Why isn't anybody fixing that?
-
--- psyche, typed, 2026-09-24, to Psyche Medium d8df70; reconstructed from the transcript by 752e0f from d8df70's audit, transcript line 2471.
-
 ## Force restarted Prometheus; fix it in criome and redeploy
 
 > I force restarted Prometheus. Usually you can get in after I do that. I need you to figure out what the hell is going on so that it doesn't disconnect again and then fix it in criome and redeploy Prometheus right away before you lose it. I want this priority 1. I want you, Field Astra, to get on it. Where's the new flow?

@@ -1,13 +1,5 @@
 # Stable and next services
 
-## Codex updates by the same stable/next rotation done for Claude
-
-Context: Codex had a new model (Sol 6.1); said to Mind Sol b666e7.
-
-> Just repeat what we've done for [Claude] this morning and update Codex with the next server, so that the current next server becomes stable, and maybe make another version, another next. I don't know, but just find a way to proceed with updating Codex, or at least get the version that has Sol 6.1, or see if you can get Sol 6.1 already.
-
--- psyche, STT. 2026-09-29 21:23 UTC, b666e7, Mind Sol (session 01a0e9d1, line 3840). Reconstructed by fe945a from transcript. Transcription corrected: "Clojure" → "Claude".
-
 ## The rotation protocol: once every flow is on next, next becomes stable and the newer version goes on next
 
 Context: Field Astra d5b96b had left the living on an older Codex; the new version was staged on next but held.

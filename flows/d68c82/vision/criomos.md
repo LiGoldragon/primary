@@ -42,10 +42,3 @@ Context: comment on «CriomOS: the desktop opens nothing on its own», on CriomO
 
 Context: comment on the same book, Proposal 1, line "Nothing opens a tab in the desktop browser on its own.", 2026-10-19 01:05. Transcription corrected: "Cloud" → "[Claude]".
 -- psyche, STT.
-
-## Librem 5
-
-> "Librem 5"
-
-Context: correction of "Libre M5 Linux smartphone" in the same book's hardware line, 2026-10-19 01:00.
--- psyche, STT.

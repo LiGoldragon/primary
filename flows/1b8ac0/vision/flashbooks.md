@@ -40,12 +40,6 @@ Correction note (2026-09-21, PsycheHigh 1b8ac0, not a new entry): in the first e
 
 Recovered by PsycheHigh 1b8ac0 from its own transcript after the psyche capture audit found them logged only as paraphrase. Each entry below quotes the living's words as spoken to PsycheHigh, with its transcript locator. Input mode STT throughout ("flashback" for flashbook, "his contacts" for his context in the same session).
 
-### Make nine flashbooks: the first an overall overview, then the tarot, 1 to 9
-
-> Make sure you're all up to date with any new psyche that might have landed after you started your first prompt, and then create a series of flashbooks. The first flashbook is an overall overview of everything, and then just use the tarot and go down the symbolism all the way to 9, from 1 to 9. Make 9 flashbooks.
-
--- psyche, STT. 1b8ac00b:45, 2026-09-20T17:38:31Z.
-
 ### The flashbooks are made by another flow, not a subagent; the markdown lives in the transcript; the renderer finds it by title
 
 > Of course, you write the markdown and stuff, and then you get a low-powered flow. You don't start a main flow, or you get the field to start a low-powered main flow that you can message, not a sub-agent in your harness. Get an actual other flow to make all the flashbooks that you make, all the markdown, and you can put these in your transcript. You don't have to put them in the files as long as you communicate where it is in your transcript.

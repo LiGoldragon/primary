@@ -1,13 +1,5 @@
 # Spirit
 
-## A proposed vision-understanding statement is spirit, worded with care
-
-Context: relayed by d68c82; the living commenting on a proposed vision-understanding statement.
-
-> There's something good behind this but this really is spirit and we ought to be careful in how we word it. There might be some words in there that are a bit dangerous.
-
--- psyche, 2026-10-11, relayed by d68c82 (channel not stated).
-
 ## The one thing put into words implies a million other things
 
 Context: relayed by d68c82 as the record behind the comment above (original record: flows/d68c82/vision/distillation.md, second entry).

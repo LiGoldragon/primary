@@ -14,14 +14,6 @@ Context: the living had commented on the Clojure prototypes book and then spoke 
 
 -- psyche, STT.
 
-## Side question: objects with methods in Clojure (2026-10-14)
-
-Context: asked as a side question, not important.
-
-> I want to know: does Clojure have object-oriented programming where we can have methods on objects instead of functions taking in? So we can be more object-oriented, kind of like how we do [Rust]. Just a side question, not important. If not it's okay.
-
--- psyche, STT. Transcription corrected: "REST" → "[Rust]" (the living confirmed: "Rust not rest").
-
 ## A full Flow Nexus proposal, short-term and long-term/universal; a Clojure topic (2026-10-14)
 
 Context: the living had commented on the second edition of the Flow CLI development book and then spoke this to the Tertiary.

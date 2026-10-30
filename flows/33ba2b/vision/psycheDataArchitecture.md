@@ -1,20 +1,5 @@
 # Psyche data architecture: distinguish living input; raw flow records and future subject spaces
 
-## Context and provenance
-
-The living typed the two messages below to the native Codex thread while Field
-Sol `33ba2b` was active.  They are recorded directly from that thread, not
-from a relay or an agent summary.  The immediate instruction is to log this on
-Primary `main`; the repository/data migration is future architecture and is
-not performed by this record.
-
-- Thread: `01a0b53c-30ba-7d42-8f3a-53433ba2b9e5`
-- Transcript: `/home/li/.codex/sessions/2026/09/18/rollout-2026-09-18T09-56-55-01a0b53c-30ba-7d42-8f3a-53433ba2b9e5.jsonl`
-- First message: source-event `2026-09-18T17:56:41.786Z`, transcript records
-  935 (typed user message) and 936 (user-message event).
-- Second message: source-event `2026-09-18T17:57:23.713Z`, transcript records
-  963 (typed user message) and 964 (user-message event).
-
 ## Living's verbatim message: distinguished typed messages and the Psyche/Mind split
 
 > But whatever I say, whatever the psyche ever says, this is why we need the typed messages that are easily distinguishable from psyche-typed stuff, so we can differentiate psyche very well.
@@ -32,21 +17,6 @@ not performed by this record.
 `psyche/intent`, given the later list of subject spaces, but that is STT/word
 choice uncertainty only—not a correction to the living's words or a settled
 path.
-
-## Current direction and deferred ownership
-
-Living-originated messages must retain their native type and provenance so
-they cannot be confused with messages typed by a psyche flow or another agent.
-The proposed future Psyche layout separates per-flow raw material at
-`raw/<flow-id>/` from subject-addressed material across Vision, Intent, Spirit,
-and Notion. `psyche/vision` is an additional data/layout namespace; it does
-not rename or replace the existing skill named `vision`.
-
-Mind is the future home for technical field chronology and witnesses: what
-landed, ran, was tested, or was deployed. Psyche holds living psyche material.
-The exact migration rules and the eventual subject directory names remain to
-be designed in the relevant skills; this log neither creates those paths nor
-moves existing records.
 
 ## Living's verbatim message: log on main now; move to Primary Next later
 

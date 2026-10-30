@@ -5,10 +5,3 @@
 
 Context: carried verbatim by Psyche Opus 183ae0; original input mode not specified.
 -- psyche, relayed verbatim by 183ae0.
-
-## 2026-09-29 — the whole skill stack situation
-
-> He can start with the whole skill stack situation and then come back to the fore again. It's very inefficient.
-
-Context: carried verbatim by Psyche Opus 183ae0, which explicitly leaves its interpretation unrulled. Meaning remains unclear; no implementation assumption drawn from this sentence.
--- psyche, relayed verbatim by 183ae0.

@@ -21,14 +21,6 @@ Context: said to the secretary 2026-10-06 after commenting on «Flow spawning».
 
 -- psyche, STT, 2026-10-06, relayed by d4ae97.
 
-## A separate book on the code itself, in more detail
-
-Context: same message. Relayed by d4ae97.
-
-> I'd also like to have it separate. Maybe you can do that: you make a separate book on the code itself, in more detail.
-
--- psyche, STT, 2026-10-06, relayed by d4ae97.
-
 ## Fixing Flow is central: fresher, more frequent flows; metaflows focused on topics; software, not LLMs, for spawning
 
 Context: same message. Relayed by d4ae97.

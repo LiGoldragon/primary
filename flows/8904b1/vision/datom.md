@@ -6,12 +6,6 @@ Raw. Mode of entry not stated. Said in answer to this seat's question: "Do you a
 
 > Yeah we don't need Datom syntax where the program doesn't need it so we're not going to enforce Datom syntax on a messenger that doesn't need it.
 
-## 8904b1-3 — 2026-09-27, the living, direct to this pane
-
-Raw. Mode of entry not stated; reads as speech-to-text. Said in answer to this seat's statement that the guidance not about syntax would stay in plain words.
-
-> Don't keep stuff. Just remove everything. We leave, it costs so delete.
-
 ## 8904b1-4 — 2026-09-27, the living, direct to this pane
 
 Raw. Mode of entry not stated.
