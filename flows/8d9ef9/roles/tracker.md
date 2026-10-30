@@ -50,6 +50,10 @@ A Primary is reached only through its Secondary, and only when a notify label na
 
 One message per bead per beat at most. Expensive flows are bothered least.
 
+## The tracker messages Secondaries
+
+The tracker sends a Wake Notice straight to any Secondary, in any aspect, and reaches a Primary only through its Secondary. The living's words (flows/d9065e/vision/tracker.md): "He's very low in terms of model strength, but he can message secondaries."
+
 ## Verified messages
 
 Every message a tracker sends is verified.
