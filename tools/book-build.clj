@@ -712,6 +712,8 @@
       "fig-" (str "<div class=\"figmark fig-del\">" inner "</div>")
       "+" (str "<div class=\"add\"><ins>" inner "</ins></div>")
       "-" (str "<div class=\"del\"><del>" inner "</del></div>")
+      ;; a moved passage, shown once at its destination in its own colour
+      "~" (str "<div class=\"moved\">" inner "</div>")
       (str "<div class=\"ctx\">" inner "</div>"))))
 
 (defn change-panels
@@ -786,7 +788,7 @@
 (defn- sign-content
   "A change line's sign (\"+\", \"-\" or \" \" for context) and its content."
   [raw]
-  (let [signed (and (#{\+ \-} (first raw))
+  (let [signed (and (#{\+ \- \~} (first raw))
                     (or (= 1 (count raw)) (= \space (nth raw 1))))]
     [(if signed (subs raw 0 1) " ")
      (cond signed (if (> (count raw) 2) (subs raw 2) "")
@@ -937,7 +939,7 @@
   adds a line, removes a front-matter rule, or opens on an unchanged line and
   removes one. A list item's indented continuation is not a change."
   [para]
-  (let [signed (fn [l] (or (#{"+" "-"} l) (re-find #"^[-+] " l)))
+  (let [signed (fn [l] (or (#{"+" "-" "~"} l) (re-find #"^[-+~] " l)))
         kept (fn [l] (str/starts-with? l "  "))]
     (boolean (and (seq para) (every? #(or (signed %) (kept %)) para)
                   (some signed para)
@@ -1066,7 +1068,7 @@
 (defn signed-line?
   "A fence line written as a change: opens with + or - and a space, or is that sign alone."
   [l]
-  (boolean (and (#{\+ \-} (first l)) (or (= 1 (count l)) (= \space (nth l 1))))))
+  (boolean (and (#{\+ \- \~} (first l)) (or (= 1 (count l)) (= \space (nth l 1))))))
 
 (defn signed-figure
   "[sign stripped-lines] when every non-blank line of a fence carries one same sign

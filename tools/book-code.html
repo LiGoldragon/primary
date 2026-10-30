@@ -7,7 +7,7 @@
          <p>…</p>                                    the section's prose, as text
          <div class="diff">                          one change
            <div class="ctx">…</div>                  unchanged context (muted)
-           <del>…</del> / <ins>…</ins>               removed words (red, struck through) / added words (green), inline in one text
+           <del>…</del> / <ins>…</ins>               removed words (red highlight, never struck through) / added words (green), inline in one text
          </div>
        </article>
        A record removed rather than landed (separate from del/ins; violet for Destroy, amber for Archive):
@@ -32,6 +32,7 @@
   --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
   --add-bg:#e3f5e6;--add-edge:#2f8a46;--add-fg:#14351f;
   --del-bg:#fbe5e3;--del-edge:#c2372b;--del-fg:#5b1a14;
+  --moved-bg:#e4e9fb;--moved-edge:#3a5bc7;--moved-fg:#1c2b66;
   --ctx-bg:#f1f3ef;--accent:#1c5f8a;
   --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
   --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
@@ -44,6 +45,7 @@
   --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
   --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
@@ -52,6 +54,7 @@
   --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
   --add-bg:#16301f;--add-edge:#5cc47a;--add-fg:#cdeed5;
   --del-bg:#361a18;--del-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
   --ctx-bg:#1e2622;--accent:#7cc0ee;
   --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
@@ -96,18 +99,21 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .ctx>:first-child{padding-top:10px}
 .ctx>:last-child{padding-bottom:12px}
 .ctx>*+*{padding-top:.6em}
-.ctx{background:var(--ctx-bg);color:var(--muted)}
+.ctx{background:transparent;color:var(--fg)}
 .ctx::before{content:"";}
-.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px;overflow-wrap:anywhere;word-break:break-word}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
 .diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
 .diff del *,pre del *{color:inherit;text-decoration:inherit}
 .diff ins *,pre ins *{color:inherit;text-decoration:none}
 /* Fallback for publishers that emit prose panels instead of inline marks. */
-.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:line-through;text-decoration-thickness:1.5px}
+.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:none}
 .diff .add{color:var(--add-edge);background:var(--hl-add)}
 .del>*,.add>*{overflow-wrap:anywhere}
 .diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
 .diff .add{border-left-color:var(--add-edge)}
+.diff .moved{color:var(--moved-fg);background:var(--moved-bg);padding:6px 10px 6px 12px;border-left:4px solid var(--moved-edge);border-radius:6px;min-width:0}
+.diff .moved>*{overflow-wrap:anywhere}
+.diff .moved :is(h3,h4,h5,h6){margin:0;color:inherit}
 .diff .del{border-left-color:var(--del-edge)}
 .diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
 .diff :is(ul,ol){padding-inline-start:1.3em}
