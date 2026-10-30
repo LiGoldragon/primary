@@ -20,3 +20,8 @@ On "and lengthened when two collide": Let's just forget about this for now, and 
 On "A topic lives on; when idle, its flows are turned off and its address stays. A metaflow sleeps so that an idle session keeps no harness … an old one only when the new input is literally the continuation of that topic.": This doesn't go here. This would go in a long vision counterpart.
 
 On "A flow runs one model, linear and very limited … together resemble a synthetic intelligence.": This is not necessary.
+
+## 2026-10-30 — The tool exclusion is his idea, the blacklist, asked for long ago; an idea of his presented as the machine's is a discarded idea
+Context: the living, in the Psyche core Primary chat b0d3ae, after the Primary explained its ruling on primary-ld0e: a typed "default minus these tools" in the next Flow Nexus revision.
+
+Oh yeah, I said that a long time ago. That is not your idea. I've been actually asking for that. I called it the blacklist, so I guess you are intentionally discarding my good ideas.

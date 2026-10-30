@@ -3,7 +3,7 @@
 <h1 class="book-title">The Flow Nexus, bare</h1>
 <p class="book-subtitle">Created by the Primary</p>
 <article class="proposal"><header><span class="pnum">1</span><h2>vision:flow-nexus · psyche-belief › vision/flow-nexus.md — whole, retaken</h2></header>
-<p><strong>Why</strong> The module is cut to what the Nexus needs to function. Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.</p>
+<p><strong>Why</strong> The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. Your four comments are in: the metaflow is a name on the user side, the id is not lengthened, sleeping and waking move to the long vision, the one-model line is gone.</p>
 <pre><code class="language-text">---
 description: The Flow Nexus, which starts, messages, refreshes and ends flows.
 dependencies: [vision-nexus, vision-model-roles]
@@ -13,7 +13,7 @@ dependencies: [vision-nexus, vision-model-roles]
 
 A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.
 
-A flow's id is the first six characters of the hash of its harness session id, so its transcript is found from it. Every call to the Flow CLI is identified by the calling process.
+A flow's id is the first six characters of the hash of its harness session id, so its transcript is found from it. The Nexus tells a flow its id and its address in its system prompt. Every call to the Flow CLI is identified by the calling process.
 
 ## Start
 
@@ -22,6 +22,8 @@ A launch names an address, a remembering and a brief. The Nexus composes the flo
 ## Message
 
 A request is sent to an address and the Nexus delivers it into the flow's prompt. When the flow is busy, the request queues and is delivered when the flow is idle, the queue whole and oldest first; when no flow is running at the address, one is started with the queue as its first prompt. The living's words, a comment among them, reach a flow by this path.
+
+A message lands in the flow's prompt as one datom: the sender's address, the kind and the words. Because the form is fixed, a transcript is searched for the living's words by it.
 
 A request is one of a closed set: an order, a question, the living's words, a result, a notice. The Nexus refuses a request that leaves the routes of vision:aspects.
 
