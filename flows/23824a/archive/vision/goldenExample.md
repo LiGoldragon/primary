@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/chronos.md b93865.
+
 # golden example
 
 ## Ethos, the Nexus and the Chronos example project as the golden example

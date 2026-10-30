@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/sema.md e19f3c.
+
 # Ethos
 
 ## Sema and Memory

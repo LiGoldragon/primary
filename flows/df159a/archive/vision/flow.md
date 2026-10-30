@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Flow
 
 ## A needed flow is started whether or not it is running; with no transcript, it is fed its context modules and its prompt

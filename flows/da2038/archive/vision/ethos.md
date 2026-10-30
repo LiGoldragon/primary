@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/clojure.md 53f68b.
+
 
 ## A standard translation of ethos and datom into Clojure and EDN
 

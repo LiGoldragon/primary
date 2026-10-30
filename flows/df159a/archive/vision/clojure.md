@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/clojure.md 53f68b.
+
 # Clojure
 
 ## A standard translation of an ethos specification to a Clojure type and EDN; a context module for it

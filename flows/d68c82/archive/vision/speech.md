@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/high-level-view.md 67c4f1.
+
 # Speech
 
 ## 2026-10-14 — paralinguistic speech-to-text

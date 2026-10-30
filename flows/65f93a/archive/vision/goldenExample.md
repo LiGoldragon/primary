@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/ethos.md 6c8e26.
+
 # golden example
 
 ## Ethos and Nexus are basic infrastructure, not golden examples

@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/chronos.md b93865.
+
 
 ## Sign and nakṣatra are obtained from an arc, not kept
 

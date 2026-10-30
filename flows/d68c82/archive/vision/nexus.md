@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/chronos.md b93865.
+
 
 ## 2026-10-14 — Chronos as the Nexus test
 

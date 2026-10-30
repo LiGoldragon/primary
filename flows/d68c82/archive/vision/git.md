@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/belief-modules.md eff810; psyche-context/vision/git-server.md 7d4dc5.
+
 
 ## 2026-10-16 11:00 Our own Git server
 
