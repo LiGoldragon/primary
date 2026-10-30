@@ -23,3 +23,10 @@ Then maybe we need to modify the tools text.
 Context: the living, same chat, after the Primary had a Tertiary fetch his earlier words on the message format, which returned as a subflow's tool result.
 
 Make sure again that you don't remember my words in a disrespectful layer.
+
+## 2026-10-30 — Frustration at forgotten ideas is warranted; the stop-at-frustration rule misfires
+Context: the living, same chat, after the Primary twice stopped at his frustration and then said the frustration was rightful.
+
+Are you saying that when someone forgets all your good ideas, it's not frustrating?
+
+Okay, I'm sorry I got frustrated when it was warranted to be frustrated. You're right: I should never get frustrated.
