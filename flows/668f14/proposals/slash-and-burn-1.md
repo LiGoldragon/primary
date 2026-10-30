@@ -6,16 +6,18 @@ Created and judged by Fable; no other model took part.
 
 Why: the compensation kind is gone on his word; this is the one compensation module the Primary still carries.
 
-[-Verify the consumer's official stdin or file-descriptor interface first.
-Pipe GoPass producer output directly to that consumer.
-Use `set -o pipefail`.
-Use absolute or verified executables where appropriate.
-Suppress secret-bearing output. A secret travels by pipe from GoPass straight into the consumer's verified stdin
-or file-descriptor interface, and by that path alone.
-Name the unavoidable crypto-backend, kernel, and consumer boundary as the exact extent of isolation held.
-Persistent import is allowed when the consumer's supported contract requires it and the task authorizes credential setup.
-
-A secret or pairing code reaches the living only through its own device flow.-]
+```text
+- Verify the consumer's official stdin or file-descriptor interface first.
+- Pipe GoPass producer output directly to that consumer.
+- Use `set -o pipefail`.
+- Use absolute or verified executables where appropriate.
+- Suppress secret-bearing output. A secret travels by pipe from GoPass straight into the consumer's verified stdin
+- or file-descriptor interface, and by that path alone.
+- Name the unavoidable crypto-backend, kernel, and consumer boundary as the exact extent of isolation held.
+- Persistent import is allowed when the consumer's supported contract requires it and the task authorizes credential setup.
+- 
+- A secret or pairing code reaches the living only through its own device flow.
+```
 
 ## psyche-belief › intent/main-flow.md — whole, changed
 
@@ -89,21 +91,29 @@ another, and a submission is never a read receipt.
 
 A message carries what its reader acts on: what the sender intends, or what it has done.
 
-[-## A hash or an identifier is six characters
+```text
+- ## A hash or an identifier is six characters
+- 
+- A hash or an identifier in a message is its first six characters.
+```
 
-A hash or an identifier in a message is its first six characters.-]
+```text
+- ## A message says what the sender intends and what it has done
+- 
+- A message between flows says what the sender intends to do and what it has done.
+```
 
-[-## A message says what the sender intends and what it has done
+```text
+- ## A messaging test sends one message
+- 
+- A messaging test sends one message, to a flow that needs it anyway or to a Quaternary started for it and stopped after.
+```
 
-A message between flows says what the sender intends to do and what it has done.-]
-
-[-## A messaging test sends one message
-
-A messaging test sends one message, to a flow that needs it anyway or to a Quaternary started for it and stopped after.-]
-
-[-## When Flow holds a delivery
-
-When Flow holds a delivery, the sender falls back to direct Herdr messaging: it finds the recipient's pane in the pane list, sends the text with the first words naming the sender, then Enter. The fallback changes the carrier and keeps the address: a message for a Primary goes to its Secondary's pane, by Flow or by Herdr alike.-]
+```text
+- ## When Flow holds a delivery
+- 
+- When Flow holds a delivery, the sender falls back to direct Herdr messaging: it finds the recipient's pane in the pane list, sends the text with the first words naming the sender, then Enter. The fallback changes the carrier and keeps the address: a message for a Primary goes to its Secondary's pane, by Flow or by Herdr alike.
+```
 
 ## psyche-belief › vision/psyche.md — opening sections, changed
 
@@ -135,15 +145,17 @@ migration, repository creation, history rewrite, or broad archival operation.-]
 
 Why: a hedge saying it describes nothing deployed, a stale merge order, a definition nothing uses, and one sentence vision/flow.md already says.
 
-[-## Stated configuration and launch contract
-
-These are the authorized contracts; this section does not establish deployed runtime behavior while the configuration rewrite is pending.
-
-The tool that starts flows merges its configuration files in order, shared, aspect, metaflow, map into map, so a later file's value wins at each key.
-
-A context is young while it stays under half the layer's refresh threshold.
-
-A launch that needs a Primary starts its Secondary first.-]
+```text
+- ## Stated configuration and launch contract
+- 
+- These are the authorized contracts; this section does not establish deployed runtime behavior while the configuration rewrite is pending.
+- 
+- The tool that starts flows merges its configuration files in order, shared, aspect, metaflow, map into map, so a later file's value wins at each key.
+- 
+- A context is young while it stays under half the layer's refresh threshold.
+- 
+- A launch that needs a Primary starts its Secondary first.
+```
 
 ## mind-belief › knowledge/beads.md — section "Store", changed
 
@@ -180,11 +192,13 @@ Raising effort costs a great deal and changes little.
 [-Harness calls go out at medium effort by default. Effort may be set light
 where a task needs speed — voice among them.-]
 
-[-## Two scales share the words high and medium
-
-The harness's model-effort setting is one scale. The naming of a flow's
-layer is another. A flow named Primary is named by layer, not by effort setting;
-a flow that reads its layer as an effort setting has misread it.-]
+```text
+- ## Two scales share the words high and medium
+- 
+- The harness's model-effort setting is one scale. The naming of a flow's
+- layer is another. A flow named Primary is named by layer, not by effort setting;
+- a flow that reads its layer as an effort setting has misread it.
+```
 
 ## psyche-belief › vision/model-roles.md — section "Native names use aspect, topic and layer", changed
 
@@ -226,13 +240,15 @@ Why: which horizons a metaflow's declaration loads is Flow configuration, shown 
 
 A line in a marked module is unimplemented by definition: a medium line stands because a short line is the compromise in its place, and a long line stands beyond the medium the same way. The far vision is never implemented: what comes within reach of it has already moved to long. When the medium vision is implemented, the short is irrelevant and is removed, and the horizons move up: the medium is now the short term, the long the medium, the far the long.
 
-[-A metaflow's declaration names the horizons it loads. A flow that implements or repairs loads the unmarked and the short; a flow that designs loads the medium and the long beside them; a flow designing the far vision loads the far.
-
-```datom
-; a declaration, as datom, naming the horizons a metaflow loads
-{ { Field core Tertiary } [ vision:flow-nexus vision:short:flow-nexus ] }
-{ { Psyche flow Primary } [ vision:flow-nexus vision:short:flow-nexus vision:medium:flow-nexus vision:long:flow-nexus vision:far:flow-nexus ] }
-```-]
+````text
+- A metaflow's declaration names the horizons it loads. A flow that implements or repairs loads the unmarked and the short; a flow that designs loads the medium and the long beside them; a flow designing the far vision loads the far.
+- 
+- ```datom
+- ; a declaration, as datom, naming the horizons a metaflow loads
+- { { Field core Tertiary } [ vision:flow-nexus vision:short:flow-nexus ] }
+- { { Psyche flow Primary } [ vision:flow-nexus vision:short:flow-nexus vision:medium:flow-nexus vision:long:flow-nexus vision:far:flow-nexus ] }
+- ```
+````
 
 A medium, long or far line reaches an implementer through a proposal that moves it to the short or unmarked module with its design: the abstractions it is made of, how they compose, and the configuration the running system takes it through, shown as vision code. A proof of concept may implement the medium while the short implementation is kept, improved or fixed, so several horizons may be in implementation at once; the focus, generally and now, is the short term.
 
@@ -259,9 +275,11 @@ A topic's name is a camelCase identifier, uncapitalized. [-Short term, it is kep
 
 [-To the Nexus, a module's location is its registry entry.-]
 
-[-## Long term: modules checked by hash
-
-Long term, every module composed into a prompt is checked against its source by its hash, once hashes update efficiently as edits are made; short term, no check is made.-]
+```text
+- ## Long term: modules checked by hash
+- 
+- Long term, every module composed into a prompt is checked against its source by its hash, once hashes update efficiently as edits are made; short term, no check is made.
+```
 
 A flow is refreshed when its context passes its model's threshold: Flow keeps the metaflow's next messages for its next flow, and the flow is replaced as it goes idle; while the refresh runs the metaflow is locked, and the predecessor is reaped in the same event. Each model's threshold is configured in Flow[-; an OpenAI model's is lower than a Claude model's-].
 
@@ -280,10 +298,12 @@ Why: a section saying a thing is undesigned, a permission for one Rust type, and
 [-Every component built from now on is a Nexus.-] The nexus repository is
 the library that defines the core of a Nexus component.
 
-[-## Documents
-
-For now, the nexus and memory documents are undesigned; when they are
-designed they live in the Nexus's main repository.-]
+```text
+- ## Documents
+- 
+- For now, the nexus and memory documents are undesigned; when they are
+- designed they live in the Nexus's main repository.
+```
 
 ## Actors
 
@@ -317,11 +337,13 @@ Four roots: Library, Signal, Operation, Memory. Signal declares what a Nexus say
 
 An open enum is an Ethos object whose capitalized words are its fixed variants. A word that is not capitalized is its implied extensible variant, a camel ID: a word-based camel-case identifier, written bare, with no variant head before it. [-The name camel ID is temporary. A check that a word is a word-based camel-case identifier comes long term; short term, none is made.-]
 
-[-## Zero
-
-Ethos Zero was first named Ethos Monolith; the two are the same thing.
-Zero as in version 0: no daemon yet, no Nexus. The ethos repository is
-for the ethos nexus that follows.-]
+```text
+- ## Zero
+- 
+- Ethos Zero was first named Ethos Monolith; the two are the same thing.
+- Zero as in version 0: no daemon yet, no Nexus. The ethos repository is
+- for the ethos nexus that follows.
+```
 
 ## mind-belief › knowledge/psyche.md — sections changed
 
@@ -334,18 +356,22 @@ Why: a legacy path, a sentence of jargon, and a special case for one kind of ord
 A notion may be drawn upon for suggestions. [-A flow told explicitly to implement without asking for clarifications may rely on a notion only when its need matches the notion exactly.-]
 
 - `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
-[-- `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
-  heard before flows, draining into vision belief modules as crystallization
-  touches it; phased out, gone when empty. Nothing new lands
-  there — a raw record lives in the flow that heard it.-]
+```text
+- - `vision-raw/<topic>.md` — legacy: the vision corpus not yet crystallized
+-   heard before flows, draining into vision belief modules as crystallization
+-   touches it; phased out, gone when empty. Nothing new lands
+-   there — a raw record lives in the flow that heard it.
+```
 
 ## psyche-belief › vision/crystallization.md — one section, removed
 
 Why: said two sections earlier, "A crystallized statement stands on its own words."
 
-[-## A statement speaks in its own voice
-
-A crystallized statement states its subject in its own voice.-]
+```text
+- ## A statement speaks in its own voice
+- 
+- A crystallized statement states its subject in its own voice.
+```
 
 ## psyche-belief › spirit/core.md — one sentence, changed
 

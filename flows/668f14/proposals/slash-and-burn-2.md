@@ -6,39 +6,41 @@ Created and judged by Fable; candidates gathered by Sonnet, each ruled on here.
 
 Why: it promises what the nexuses are today and holds a Curriculum commit hash, a dated witness with flow ids, and four lines telling a flow to read Cargo.toml.
 
-[-Orchestrate: read the current source version in the declared Orchestrate repository's `Cargo.toml`.
-Flow: read the current source version in the declared Flow repository's `Cargo.toml`.
-Message: read the current source version in the declared Message repository's `Cargo.toml`.
-Lojix: read the current source version in the declared Lojix repository's `Cargo.toml`.
-
-Curriculum receives one typed request through the socket at
-`$XDG_RUNTIME_DIR/curriculum/curriculum.sock`. Its three authored-context
-checkouts come from `CURRICULUM_PSYCHES_REPOSITORY_DIR`,
-`CURRICULUM_MIND_CONTEXT_DIR` and `CURRICULUM_FIELD_CONTEXT_DIR`; its refresh
-executable comes from `CURRICULUM_CONTEXT_REFRESH_PROGRAM`. These configured
-values, including the service account and checkout locations, belong to the
-installation and are read there rather than assumed from another setup.
-
-At Curriculum `2d74e7725bfff88ee3aec1ebe9ce31d52873ebbc`, every query follows
-`CurriculumOperation::perform` → `SourceConfiguration::from_environment` →
-`SourceConfiguration::read`. `read` runs the configured refresh executable
-synchronously and requires its success before reading the three checkout
-revisions and their module sources; only then does `perform` dispatch
-`ResolveSkills`, `ResolveSources`, `ComposeStartup` or `ComposeRole`. Nexus
-startup also calls `read` while opening its memory. Thus `ExecStartPre` is not
-the request-time refresh: it is an additional startup action.
-
-The 2026-10-29 operational witness from Psyche Primary
-`psyche228c47e` (with Mind `2eff0f9` and Field `77feb34`) observed the user
-`curriculum-nexus.service`, with no root process, configured to run
-`curriculum-refresh-contexts`. That program fetches each context repository's
-`origin/main` and detaches its configured checkout there. The same witnessed
-checkout update was performed manually with `git fetch origin` followed by
-`git checkout --detach origin/main`. A
-`ResolveSources.[ ModuleIdentity ]` request through the configured socket then
-reported the revision from which Curriculum served that module. The returned
-revision witnesses the request's source checkout; it does not identify the
-Curriculum executable revision by itself.-]
+```text
+- Orchestrate: read the current source version in the declared Orchestrate repository's `Cargo.toml`.
+- Flow: read the current source version in the declared Flow repository's `Cargo.toml`.
+- Message: read the current source version in the declared Message repository's `Cargo.toml`.
+- Lojix: read the current source version in the declared Lojix repository's `Cargo.toml`.
+- 
+- Curriculum receives one typed request through the socket at
+- `$XDG_RUNTIME_DIR/curriculum/curriculum.sock`. Its three authored-context
+- checkouts come from `CURRICULUM_PSYCHES_REPOSITORY_DIR`,
+- `CURRICULUM_MIND_CONTEXT_DIR` and `CURRICULUM_FIELD_CONTEXT_DIR`; its refresh
+- executable comes from `CURRICULUM_CONTEXT_REFRESH_PROGRAM`. These configured
+- values, including the service account and checkout locations, belong to the
+- installation and are read there rather than assumed from another setup.
+- 
+- At Curriculum `2d74e7725bfff88ee3aec1ebe9ce31d52873ebbc`, every query follows
+- `CurriculumOperation::perform` → `SourceConfiguration::from_environment` →
+- `SourceConfiguration::read`. `read` runs the configured refresh executable
+- synchronously and requires its success before reading the three checkout
+- revisions and their module sources; only then does `perform` dispatch
+- `ResolveSkills`, `ResolveSources`, `ComposeStartup` or `ComposeRole`. Nexus
+- startup also calls `read` while opening its memory. Thus `ExecStartPre` is not
+- the request-time refresh: it is an additional startup action.
+- 
+- The 2026-10-29 operational witness from Psyche Primary
+- `psyche228c47e` (with Mind `2eff0f9` and Field `77feb34`) observed the user
+- `curriculum-nexus.service`, with no root process, configured to run
+- `curriculum-refresh-contexts`. That program fetches each context repository's
+- `origin/main` and detaches its configured checkout there. The same witnessed
+- checkout update was performed manually with `git fetch origin` followed by
+- `git checkout --detach origin/main`. A
+- `ResolveSources.[ ModuleIdentity ]` request through the configured socket then
+- reported the revision from which Curriculum served that module. The returned
+- revision witnesses the request's source checkout; it does not identify the
+- Curriculum executable revision by itself.
+```
 
 ## mind-belief › knowledge/flow-seats.md — Destroy
 
@@ -85,26 +87,32 @@ Why: the field lists of every request and reply are signal-lojix's; the schema h
 
 [-The Nexus accepts schema v5 and refuses earlier schemas. Reset removes and recreates recognized v2/v3/v4 stores as v5. An existing v5 store is left intact.-]
 
-[-Successful reset replies are:
-
-```text
-LojixStoreReset.{ path 5 count }
-LojixStoreAlreadyCurrent.{ path 5 }
-```-]
+````text
+- Successful reset replies are:
+- 
+- ```text
+- LojixStoreReset.{ path 5 count }
+- LojixStoreAlreadyCurrent.{ path 5 }
+- ```
+````
 
 [-Reset is destructive for a recognized v2/v3/v4 store.-]
 
-[-Exact witnessed reply:
+````text
+- Exact witnessed reply:
+- 
+- ```text
+- DeployAccepted.{ 13 { 263 263 } }
+- ```
+````
 
-```text
-DeployAccepted.{ 13 { 263 263 } }
-```-]
-
-[-Exact tested form:
-
-```text
-ConfigurationWriteRequest.{ /run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-nexus NoTestDefaults /tmp/startup.rkyv }
-```-]
+````text
+- Exact tested form:
+- 
+- ```text
+- ConfigurationWriteRequest.{ /run/fixture-lojix/ordinary.sock 432 /run/fixture-lojix/owner.sock 384 /var/lib/fixture-lojix /var/lib/fixture-lojix/configured-lojix-store.db fixture-nexus NoTestDefaults /tmp/startup.rkyv }
+- ```
+````
 
 [-Every "has, in order:" field list, every "carries" variant list and every "Exact witnessed form" example of a request or reply, from `Query` through `BootstrapRejected`: sixty-odd passages, each the contract crate's own vocabulary.-]
 
@@ -158,26 +166,30 @@ already holds, and write the page.-]
 `The living's page` (the page's address), `Claude transcript root`,
 `Curriculum skills`. Read them there.-]
 
-[-Historical read schema only; these are not writable current proposal destinations:
+```text
+- Historical read schema only; these are not writable current proposal destinations:
+- 
+-     Subject.{ Name State Vector<Waiting> Changed }
+-     Waiting.{ Question Proposal Vector<Option> Lost Answer }
+-     Answer.[ None Chosen.{ Option Note } ]
+-     Crystallization.{ Statement Destination Vector<Source> State }
+-     LegacyDestination.[ Vision.Topic Intent.Topic Skill.{ LegacyKind Name } ]
+-     LegacyKind.[ Operation Documentation Compensation Trial ]
+-     Source.{ FlowId Topic }
+-     State.[ Proposed Approved Changed.Markdown Refused ]
+```
 
-    Subject.{ Name State Vector<Waiting> Changed }
-    Waiting.{ Question Proposal Vector<Option> Lost Answer }
-    Answer.[ None Chosen.{ Option Note } ]
-    Crystallization.{ Statement Destination Vector<Source> State }
-    LegacyDestination.[ Vision.Topic Intent.Topic Skill.{ LegacyKind Name } ]
-    LegacyKind.[ Operation Documentation Compensation Trial ]
-    Source.{ FlowId Topic }
-    State.[ Proposed Approved Changed.Markdown Refused ]-]
-
-[-- Historical `crystallizations/<id>` rows: `statement` (Markdown), legacy `destination` (one
-  of `{"vision": "<topic>"}`, `{"intent": "<topic>"}`,
-  `{"skill": {"kind": "Operation"|"Documentation"|"Compensation"|"Trial",
-  "name": "<skill name>"}}`), `sources` (list of `{flowId, topic}`: the
-  flow that heard each record and the record file's topic), `records`
-  (list of record ids drawn on; never shown), `state` (`"Proposed"`,
-  `"Approved"`, `{"changed": "<the living's note>"}` or `"Refused"`),
-  historical `approvedAs` (read as its original value; never generate a new retired kind), `answeredAt` (written by the
-  page), `order`.-]
+```text
+- - Historical `crystallizations/<id>` rows: `statement` (Markdown), legacy `destination` (one
+-   of `{"vision": "<topic>"}`, `{"intent": "<topic>"}`,
+-   `{"skill": {"kind": "Operation"|"Documentation"|"Compensation"|"Trial",
+-   "name": "<skill name>"}}`), `sources` (list of `{flowId, topic}`: the
+-   flow that heard each record and the record file's topic), `records`
+-   (list of record ids drawn on; never shown), `state` (`"Proposed"`,
+-   `"Approved"`, `{"changed": "<the living's note>"}` or `"Refused"`),
+-   historical `approvedAs` (read as its original value; never generate a new retired kind), `answeredAt` (written by the
+-   page), `order`.
+```
 
 [-    node /home/li/primary/tools/book-fetch.mjs --from <line> --out <scratch>/book-]
 
@@ -197,54 +209,56 @@ Why: a flow command written out literally, for a relay the tool should make.
 
 Why: it describes itself as retired; every paragraph is history of a renamed stage.
 
-[-Retired on landing by flow fe34eb, 2026-09-10. The living ruled Ethos
-Monolith and Ethos Zero one stage under two names.
-What still stands is carried by Vision/ethos.md,
-heading Zero; the words are kept here.
-
-# Ethos-monolith
-
-## Origin
-
-All our systems will be Nexuses, and the correct three-nexus ethos
-stack is the desired stack — but it is too complex to go for
-directly, and the previous effort devolved into agent hallucinations
-for lack of proper instructions. The monolith is the short-term path
-that brings ethos into production: the earlier stack's code is kept,
-left in place, frozen, and new repositories carry a simplified path
-from Ethos straight to Rust.
-
-## Name
-
-First named ethos-rust, the schema-rust analogue; then renamed
-ethos-monolith: it has no nomos and no logos component and goes
-straight to Rust — a monolith.
-
-## Shape
-
-The monolith will itself be a Nexus. Nexus by itself names our
-specifically designed daemon — distinct from Nexus Core, the
-runtime engine — and executables are named component-nexus.
-
-## Purpose
-
-An incremental implementation and bootstrap process, so that ethos
-and datom get written and read as soon as possible, at full correctness,
-and components start being written in ethos.
-
-## Vocabulary carried
-
-The Signal, Nexus, SEMA vocabulary and principles are kept, and
-how they are used and implemented is designed afresh. Nexus is
-authored in ethos so its main operations are visible. Sema is the
-database engine, authored in ethos so the stored types are visible;
-it matters more than nexus, because operational editing should yield
-database migration operations along with the editing operation.
-
-## Readiness
-
-Ethos serves new work in place of legacy schema once the monolith is
-ready to use; readiness is witnessed.-]
+```text
+- Retired on landing by flow fe34eb, 2026-09-10. The living ruled Ethos
+- Monolith and Ethos Zero one stage under two names.
+- What still stands is carried by Vision/ethos.md,
+- heading Zero; the words are kept here.
+- 
+- # Ethos-monolith
+- 
+- ## Origin
+- 
+- All our systems will be Nexuses, and the correct three-nexus ethos
+- stack is the desired stack — but it is too complex to go for
+- directly, and the previous effort devolved into agent hallucinations
+- for lack of proper instructions. The monolith is the short-term path
+- that brings ethos into production: the earlier stack's code is kept,
+- left in place, frozen, and new repositories carry a simplified path
+- from Ethos straight to Rust.
+- 
+- ## Name
+- 
+- First named ethos-rust, the schema-rust analogue; then renamed
+- ethos-monolith: it has no nomos and no logos component and goes
+- straight to Rust — a monolith.
+- 
+- ## Shape
+- 
+- The monolith will itself be a Nexus. Nexus by itself names our
+- specifically designed daemon — distinct from Nexus Core, the
+- runtime engine — and executables are named component-nexus.
+- 
+- ## Purpose
+- 
+- An incremental implementation and bootstrap process, so that ethos
+- and datom get written and read as soon as possible, at full correctness,
+- and components start being written in ethos.
+- 
+- ## Vocabulary carried
+- 
+- The Signal, Nexus, SEMA vocabulary and principles are kept, and
+- how they are used and implemented is designed afresh. Nexus is
+- authored in ethos so its main operations are visible. Sema is the
+- database engine, authored in ethos so the stored types are visible;
+- it matters more than nexus, because operational editing should yield
+- database migration operations along with the editing operation.
+- 
+- ## Readiness
+- 
+- Ethos serves new work in place of legacy schema once the monolith is
+- ready to use; readiness is witnessed.
+```
 
 ## psyche-belief › vision/datom.md — passages changed
 
@@ -283,62 +297,72 @@ Why: a code note on payloads, a fallback that round 1 removed from messaging, an
 
 [-A request that Flow holds or refuses reaches its recipient by the Herdr fallback the same minute, as vision:messaging gives it.-]
 
-[-## A replaced session is reaped by the refresh itself
-
-Reaping belongs to the refresh event. A refreshed flow
-takes the replaced end out of receiving messages, so only live ends stay
-registered and addressable.-]
+```text
+- ## A replaced session is reaped by the refresh itself
+- 
+- Reaping belongs to the refresh event. A refreshed flow
+- takes the replaced end out of receiving messages, so only live ends stay
+- registered and addressable.
+```
 
 ## psyche-belief › vision/ethos.md — further passages changed
 
 Why: a map of which module lives where, a datom carrying a literal path, and the generator's invocation.
 
-[-```
-┌──────────────────────────────────────────┐
-│ vision-ethos                             │
-│                                          │
-│  what ethos is · its layout              │
-│  its two anatomies: types and traits     │
-│                                          │
-│  ┌────────────────────────────────────┐  │
-│  │ the ethos of ethos                 │  │
-│  │ the types an ethos file is made of │  │
-│  │ the first golden ethos             │  │
-│  └────────────────────────────────────┘  │
-└───────────────────┬──────────────────────┘
-                    │ example
-                    ▼
-        ┌───────────────────────┐
-        │ vision-flow-ethos     │
-        │ the Flow Nexus, in    │
-        │ ethos; its own skill  │
-        └───────────────────────┘
-```
+````text
+- ```
+- ┌──────────────────────────────────────────┐
+- │ vision-ethos                             │
+- │                                          │
+- │  what ethos is · its layout              │
+- │  its two anatomies: types and traits     │
+- │                                          │
+- │  ┌────────────────────────────────────┐  │
+- │  │ the ethos of ethos                 │  │
+- │  │ the types an ethos file is made of │  │
+- │  │ the first golden ethos             │  │
+- │  └────────────────────────────────────┘  │
+- └───────────────────┬──────────────────────┘
+-                     │ example
+-                     ▼
+-         ┌───────────────────────┐
+-         │ vision-flow-ethos     │
+-         │ the Flow Nexus, in    │
+-         │ ethos; its own skill  │
+-         └───────────────────────┘
+- ```
+- 
+- The anatomy of ethos lives in vision-ethos itself, as
+- the first golden ethos; Flow's ethos is one example,
+- in its own skill.
+````
 
-The anatomy of ethos lives in vision-ethos itself, as
-the first golden ethos; Flow's ethos is one example,
-in its own skill.-]
+````text
+- ```
+- GenerationFailure.SyntaxError.[ /abs/orchestrate.ethos ]     ; the datom
+- ```
+````
 
-[-```
-GenerationFailure.SyntaxError.[ /abs/orchestrate.ethos ]     ; the datom
-```-]
-
-[-## Generation
-
-By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.
-
-```
-ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'
-```-]
+````text
+- ## Generation
+- 
+- By request to ethos-zero, which is not a daemon, hence its name; committed, held fresh by a test.
+- 
+- ```
+- ethos-zero 'Generate.{ /abs/orchestrate.ethos /abs/out }'
+- ```
+````
 
 ## psyche-belief › vision/protos.md — passages changed
 
 Why: a repeated example whose `Datom::Struct` contradicts the `Datom { path, form }` shape above it; history of a dropped delimiter; a plan about three daemons.
 
-[-```rust
-Protos::Enclosed(Braced, vec![Protos::Bare("Ada"), Protos::Bare("1990")])   // structure: an enclosure of two runs
-Datom::Struct(vec![Datom::Bare("Ada"), Datom::Bare("1990")])                // meaning: a struct of two positions
-```-]
+````text
+- ```rust
+- Protos::Enclosed(Braced, vec![Protos::Bare("Ada"), Protos::Bare("1990")])   // structure: an enclosure of two runs
+- Datom::Struct(vec![Datom::Bare("Ada"), Datom::Bare("1990")])                // meaning: a struct of two positions
+- ```
+````
 
 A brace-enclosed structure's arity is anatomical;
 a bracket-enclosed structure's arity is not. Angle brackets are a
@@ -355,11 +379,13 @@ engine with three daemons is the protos engine.-]
 
 Why: said twice beside it, and a record-id format.
 
-[-## Impurities fall out through crystallization
-
-Impurities come out in the course of crystallization: a crystallization
-proposal points out the impurities it dissects out, and the living
-rules on them with the statements.-]
+```text
+- ## Impurities fall out through crystallization
+- 
+- Impurities come out in the course of crystallization: a crystallization
+- proposal points out the impurities it dissects out, and the living
+- rules on them with the statements.
+```
 
 [-A record's id is its originating session's short id and that
 session's own count.-]
@@ -394,10 +420,12 @@ editing.-]
 
 Why: a log-entry format.
 
-[-## The remembering line says what was found most relevant
-
-The log's record of a remembering carries a short description of what
-from the remembered flow was found most relevant to the current one.-]
+```text
+- ## The remembering line says what was found most relevant
+- 
+- The log's record of a remembering carries a short description of what
+- from the remembered flow was found most relevant to the current one.
+```
 
 ## psyche-belief › vision/psyche-aspect.md — passage changed
 
@@ -409,10 +437,12 @@ Why: said again in the two sections under it.
 
 Why: portable rkyv is said above; the rest is an open question.
 
-[-## Protocol
-
-Signal is portable rkyv plus whatever protocol is standardized on top
-of it. The protocol is to be decided.-]
+```text
+- ## Protocol
+- 
+- Signal is portable rkyv plus whatever protocol is standardized on top
+- of it. The protocol is to be decided.
+```
 
 ## psyche-belief › vision/high-level-view.md — passage changed
 
@@ -451,9 +481,11 @@ Why: the implementing program, and a bare record id.
 
 The cluster runs its own Git server on the node whose cluster data gives it the GitServer role. It serves thinking machines: it accepts the SSH keys the cluster data holds, carries no web interface, and mirrors every repository to GitHub as a backup. [-Gitolite serves it, with every key and every access rule declared from the cluster data.-]
 
-[-## Sources
-
-d68c82 git-]
+```text
+- ## Sources
+- 
+- d68c82 git
+```
 
 ## psyche-belief › vision/nix-builds.md — passages changed
 
@@ -461,9 +493,11 @@ Why: a status note and a bare record id.
 
 [-Tracking Nix builds is long term.-]
 
-[-## Sources
-
-d68c82 builds-]
+```text
+- ## Sources
+- 
+- d68c82 builds
+```
 
 ## mind-belief › role/default-description.md, explorer-description.md, worker-description.md — changed
 
