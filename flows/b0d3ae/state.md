@@ -2,7 +2,7 @@
 
 The living's words are in flows/b0d3ae/vision/*.md; this is only where each thread stands.
 
-- The Flow Nexus, version 1: book https://claude.ai/artifact/9WFGudHSiGQzuZAGu6kvUX (source proposals/flow-nexus-essential.md), proposing vision:flow-nexus-1, a new module; not yet ruled. Mind flow Secondary is declaring { Mind flowNexus Secondary } and { Mind flowNexus Primary } and launching them with the rewrite brief; ids not yet returned (they go to Psyche core Secondary).
+- The Flow Nexus, version 1: book https://claude.ai/artifact/9WFGudHSiGQzuZAGu6kvUX (source proposals/flow-nexus-essential.md), proposing vision:flow-nexus-1, a new module; not yet ruled. Mind flow Secondary is declaring { Mind flowNexus Secondary } and { Mind flowNexus Primary } and launching them with the rewrite brief; launched: Primary 4c98c9, Secondary 19dacc; rulings sent on repositories (flow-nexus, fresh), first boundary, metaflow peers, request ids, queue order, library reuse.
 - vision:versioning landed (psyche-belief ae80e87 and the per-version-module line), on his permission. Terms: metaflow = one whole running system (was capsule); permaflow = one persistent address (was metaflow).
 - The translator (vision/translator.md): a datom-signal translator shared by Nexuses and the CLI; a Nexus emits a typed output signal, never a command string. He was mid-explanation; he welcomes a first draft for the first prototype. Open: whether it goes to the flowNexus pair or its own pair.
 - The Belief Nexus, first step: https://claude.ai/artifact/LudkSywT1aUnXEKZduNUMn, proposing vision:belief-nexus; not ruled. Subflow roles are a multi-day design (vision/subflowRoles.md); he said he must talk for half an hour on it.
