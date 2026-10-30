@@ -6,7 +6,7 @@ Created by the Primary
 
 ### Proposal 1: vision:flow-nexus · psyche-belief › vision/flow-nexus.md — whole, retaken
 
-**Why** The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is minted by the Nexus, sleeping and waking move to the long vision, the one-model line is gone.
+**Why** The module is cut to what the Nexus needs to function. The Nexus gives a flow its id, and a message lands as one datom, so your words are found in a transcript by its form. The harness map is your idea of 2026-10-26 (flows/63aef7/vision/flow.md). Your four comments are in: the metaflow is a name on the user side, the id is the hash of the harness's random part, sleeping and waking move to the long vision, the one-model line is gone.
 
 ---
 description: The Flow Nexus, which starts, messages, refreshes and ends flows.
@@ -17,7 +17,7 @@ dependencies: [vision-nexus, vision-model-roles]
 
 A flow is addressed by { Aspect topic Layer }. Inside the Nexus the unit is the flow: one harness session, one id, one address. The metaflow is the user-facing name for the flows that have run at one address, one after another; in the chat a flow is called by its address.
 
-The Nexus mints a flow's id, six characters, and tells the flow its id and its address in its system prompt; it remembers which harness session is the flow's, so the transcript is found from the id whatever the harness. Every call to the Flow CLI is identified by the calling process.
+A flow's id is a hash, taken from the random part of the harness's session id, so that the transcript is found from it; which part of a session id is random differs per harness and is the harness map's to say. The Nexus holds the id as a hash and never as text; writing it, six alphanumeric characters today and three words in the long term, is the codec's. The Nexus tells a flow its id and its address in its system prompt. Every call to the Flow CLI is identified by the calling process.
 
 ## Start
 
