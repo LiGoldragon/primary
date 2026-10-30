@@ -35,7 +35,6 @@ A request is one of a closed set: an order, a question, the living's words, a re
 
 The harness's own system prompt is reproduced as a datom, sectioned and labeled by what each part is about, and the Nexus injects that reproduction in place of the stock one. A harness module is one section, named by the harness's own term, and says which tool it teaches; a tool and its teaching are one module. A declaration's blacklist names the harness modules a flow goes without, and each leaves with its tool and its section together. A separate tool extracts the stock prompt at each harness version and diffs it against the sections, so the modules a new version touches are known. What is universal is one abstraction; what differs per harness is its configuration, nothing hardwired.
 
-```
 
 The Ethos:
 
@@ -90,7 +89,6 @@ What the Nexus composes from the two for Claude Code, and runs today:
 claude --disallowedTools Artifact ArtifactComments ArtifactData --system-prompt-file <the prompt, the three sections left out>
 ```
 
-```text
 ## State
 
 Every harness event reaches the Nexus through the harness's hooks calling the Flow CLI, so the Nexus knows each flow's state as it changes: started, working, idle, ended.
@@ -105,6 +103,7 @@ A flow is ended by request, by refresh, or when it is abandoned or superseded; i
 
 ## Signal
 
+```ethos
 Signal
 [ flow:[ Address Remembering FlowId Request ] ]      ; imports
 [ Launch.{ Address Remembering Brief.String }         ; queries
@@ -118,10 +117,13 @@ Signal
   Refused.[ NoCapsule RouteClosed AddressBusy ] ]
 []                                                    ; types
 
+```
+```datom
 ; the living's comment on a book, carried to the Psyche core Primary
 Send.{ { Psyche core Primary }
        Words.«This is not necessary.» }
 Delivered
+```
 
 **Moved, not removed** These leave the module for vision:long:flow-nexus, as they stand today, under the same headings: a metaflow sleeping and waking; the topic enum; the judgment by a small model of whether to wake a topic; the simplified flow; a Primary as a simplified flow; the flow ethos specifying a flow whole; the heartbeat; the ephemeral flow; restarting without waking; versions; the Capsule's later encryption; the real-world test; Herdr as one exchangeable backend.
 
