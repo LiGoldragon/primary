@@ -37,7 +37,9 @@ Library
 ; HarnessSession, one per harness
 { ClaudeCode { 0 36 } }     ; a UUID whose whole is random
 { Codex { 15 21 } }         ; a time-ordered UUID: the random part follows the time prefix; Mind verifies the offsets
-``` Every call to the Flow CLI is identified by the calling process.
+```
+
+Every call to the Flow CLI is identified by the calling process.
 
 ## Start
 
