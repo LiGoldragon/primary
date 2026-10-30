@@ -4,3 +4,8 @@
 Context: the living, in the Psyche core Primary chat b0d3ae, after the Primary looked at how a flow's tool set is declared, following "maybe we need to modify the tools text."
 
 Well, at least for primary psyche anyway. Maybe we can have modified versions. Actually, you shouldn't even be fetching. You shouldn't even have the artifact tool. You should use secondary or tertiary to do it. Because your context is valuable, and now we're wasting it on this tool thing, which is useless for you because you have other flows that can do this for you.
+
+## 2026-10-30 — He saw the Primary use the artifact tool; the removal must be confirmed, not asserted
+Context: the living, same chat, after the Primary wrote that a bead for removing the tool was open.
+
+You mean you've confirmed that the next Saki primary will have no artifact tool because you have it? I saw you use it.
