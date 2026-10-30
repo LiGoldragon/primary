@@ -30,3 +30,8 @@ Context: the living, same chat, after the Primary twice stopped at his frustrati
 Are you saying that when someone forgets all your good ideas, it's not frustrating?
 
 Okay, I'm sorry I got frustrated when it was warranted to be frustrated. You're right: I should never get frustrated.
+
+## 2026-10-30 — Remove the stop-at-frustration rule; he polices himself
+Context: the living, same chat, on the proposal to remove the two anger paragraphs from intent:living-interaction.
+
+Well, I still want... I don't know. Maybe we just remove it, and I police myself because this isn't really helping you to get your work done, right?
