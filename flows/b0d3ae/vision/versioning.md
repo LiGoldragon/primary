@@ -14,3 +14,8 @@ Make sure that it can operate in multiple capsules, that nothing depends on an e
 Actually you know what? I think the meta flow. We need some terminology to talk about different parts here. There's a capsule. I don't think that is the right term because the capsule is really the whole thing. Maybe that's the metaflow. What we call a metaflow now is just a persistent flow or a permaflow maybe. Our main flow also works and whatever you pick doesn't matter. We can change later.
 
 These meta flows, which we call capsules now, could talk to each other. Then you would have a situation where you could update without having a compatible store because you could get communication across metaflows. That would allow you to start incrementally starting the new flows in the next metaflow, where they could still talk to the perma flows in the former metaflow or in the metaflow that's being upgraded from. Does all of this make any sense to you?
+
+## 2026-10-30 — The vision proposal is for Flow Nexus version 1, its own module, so version 0 keeps taking fixes while 1 is built
+Context: the living, same chat, after the Primary wrote vision:versioning.
+
+You probably want to rewrite your vision proposal also because I just sort of added a whole bunch of vision to it, right? Maybe the vision proposal is actually for Flow Nexus V1. What do you think? Then we can have multiple modules and we don't have to worry about the rewrite of the vision making it impossible for any kind of fixes or improvements to happen on version 0 while we actually work on version 1. What do you think of all that?
