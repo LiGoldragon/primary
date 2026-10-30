@@ -50,3 +50,8 @@ I don't see the operation ethos, the memory ethos, and the meta signal ethos. Is
 Context: the living, same chat, on the bare Flow Nexus's line "A flow's id is the first six characters of the hash of its harness session id".
 
 No, Flow's ID is not the first six characters of a session ID and you should know that because not all harnesses can do that. I'm surprised that I have to tell you this again.
+
+## 2026-10-30 — Nor is the id minted by the Nexus from nothing
+Context: the living, same chat, on the corrected line "The Nexus mints a flow's id, six characters, and … remembers which harness session is the flow's".
+
+No that's not it either.
