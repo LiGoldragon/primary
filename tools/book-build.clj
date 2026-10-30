@@ -1690,7 +1690,7 @@
                 (if-let [m (re-find #"(?U)^### Proposal (\d+): (.*)$" text)]
                   (append! (proposal-header (m 1) (m 2) false))
                   (append! (str "<h3>" (inline (strip (subs first-line 4))) "</h3>")))
-                (vreset! in-article true))
+                (vreset! in-article (boolean (re-find #"(?U)^### Proposal " text))))
 
             (re-find #"(?U)^## Proposal (\d+): (.*)$" text)
             (let [[_ n where] (re-find #"(?U)^## Proposal (\d+): (.*)$" text)]
