@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/crystallization.md 08643f.
+
 # Distillation
 
 ## A distillation archives the raw records that compose it

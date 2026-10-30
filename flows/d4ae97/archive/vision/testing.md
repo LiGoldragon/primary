@@ -1,3 +1,5 @@
+Landed, in field-context/compensation/testing.md 53d99b.
+
 # Testing
 
 ## Never search production code for a string; test by trace in normal running

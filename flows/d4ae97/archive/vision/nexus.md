@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/nexus.md 53f68b.
+
 # Nexus
 
 ## Every Nexus has Signal, Operation and Memory

@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/book.md ef26aa.
+
 
 ## Rendering books for the living
 

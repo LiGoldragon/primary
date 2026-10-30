@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/aspects.md 53f68b.
+
 
 ## Shared topic — 2026-10-09
 

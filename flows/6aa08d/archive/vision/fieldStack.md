@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/aspects.md 378b63.
+
 # The field stack
 
 Context: The living corrected the escalation route after I contacted Psyche Secondary directly.

@@ -1,3 +1,5 @@
+Landed, in psyche-context/vision/flow.md 53f68b.
+
 # Core
 
 ## Core as the always-present topic

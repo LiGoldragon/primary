@@ -1,3 +1,5 @@
+Landed, in mind-context/knowledge/vocabulary.md b4c300.
+
 ## Thinking machine, then machine; not AI or agent
 
 Context: Comment on the spirit-behavior part of «Spirit, a kind of skill».
