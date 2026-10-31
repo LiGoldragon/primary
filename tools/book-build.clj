@@ -5,7 +5,7 @@
 ;;
 ;; The source is a book in the to-the-living form: a title, a
 ;; Crystallization heading, proposals (### Proposal N: title), File:
-;; lines, fenced text as red/green/context panels, fenced code as code
+;; lines, fenced text as panels signed in the margin, fenced code highlighted by tree-sitter as code
 ;; blocks, and numbered rulings. An ASCII box-and-arrow diagram in an unlabelled
 ;; fence, and every unlabelled fence outside a proposal, boxed or not, is a
 ;; diagram; it is never drawn: the n-th diagram is shown as fig-n.svg from the
@@ -648,6 +648,139 @@
         lvl (min 6 (+ 2 (count hashes)))]
     (str "<h" lvl ">" (fmt t) "</h" lvl ">")))
 
+;; ------------------------------------------------------------- highlighting
+;;
+;; A code fence is highlighted at build time by tree-sitter: the CLI's HTML
+;; output, one row per line, its capture classes prefixed ts-. Which grammar
+;; serves which fence language is book-grammars.json: a grammar's source is a
+;; directory or a flake reference realised once. A language with no grammar,
+;; or a grammar that fails, is shown plain. Colour in a book is the sign of a
+;; change and lives in the margin; the code's own text keeps its language's
+;; colours, each side of a change highlighted whole as valid code.
+
+(def book-grammars
+  (cheshire.core/parse-string (slurp (str (fs/path script-dir "book-grammars.json")))))
+
+(defn- run [& args]
+  (let [p (.start (ProcessBuilder. ^java.util.List (vec args)))
+        _ (future (slurp (.getErrorStream p)))
+        out (slurp (.getInputStream p) :encoding "UTF-8")]
+    {:exit (.waitFor p) :out out}))
+
+(defn- realise-grammar
+  "A grammar source as a directory: itself, or the store path its flake reference builds."
+  [source]
+  (if (fs/directory? source)
+    (str source)
+    (let [{:keys [exit out]} (try (run "nix" "build" "--no-link" "--print-out-paths" source)
+                                  (catch Exception _ {:exit 1}))
+          store (some->> out str/split-lines (remove blank?) last strip)]
+      (when (and (zero? exit) store (fs/directory? store)) store))))
+
+(def ^:private ts-env
+  "The tree-sitter config for this build: one parser directory holding a link
+  per grammar that could be had; nil when tree-sitter is absent."
+  (delay
+    (when (fs/which "tree-sitter")
+      (let [dir (fs/create-temp-dir {:prefix "book-grammars"})
+            parsers (fs/path dir "parsers")
+            ok (into {}
+                     (for [[name {:strs [source scope]}] (book-grammars "grammars")
+                           :let [d (realise-grammar source)]
+                           :when d]
+                       (do (fs/create-dirs parsers)
+                           (fs/create-sym-link (fs/path parsers (str "tree-sitter-" name)) d)
+                           [name scope])))
+            cfg (str (fs/path dir "config.json"))]
+        (spit cfg (cheshire.core/generate-string {"parser-directories" [(str parsers)]}))
+        (.deleteOnExit (fs/file dir))
+        {:config cfg :dir (str dir) :scopes ok}))))
+
+(def ^:private warned (atom #{}))
+
+(defn- ts-classes [html]
+  (str/replace html #"<span class='([^']*)'>"
+               (fn [[_ cs]] (str "<span class=\"" (str/join " " (map #(str "ts-" %) (str/split cs #"\s+"))) "\">"))))
+
+(def ^:dynamic *highlight*
+  "Whether code is highlighted; false shows every fence plain."
+  true)
+
+(def ^:private highlight-lines*
+  (memoize
+   (fn [lang lines]
+     (let [grammar (get (book-grammars "languages") lang)
+           {:keys [config dir scopes]} @ts-env
+           scope (get scopes grammar)]
+       (if-not scope
+         (do (when (and grammar (not (@warned lang)))
+               (swap! warned conj lang)
+               (binding [*out* *err*] (println "book-build: no tree-sitter grammar for" lang "; shown plain")))
+             nil)
+         (let [f (str (fs/path dir (str "block-" (hash [lang lines]))))]
+           (spit f (str (str/join "\n" lines) "\n") :encoding "UTF-8")
+           (let [{:keys [exit out]} (run "tree-sitter" "highlight" "--config-path" config
+                                         "--html" "--css-classes" "--scope" scope f)
+                 rows (mapv second (re-seq #"(?s)<td class=line>(.*?)\n?</td></tr>" out))]
+             (fs/delete-if-exists f)
+             (when (and (zero? exit) (= (count rows) (count lines)))
+               (mapv ts-classes rows)))))))))
+
+(defn highlight-lines
+  "The lines of a code text highlighted as HTML, one string per line; nil when
+  highlighting is off, the language has no grammar here, or tree-sitter fails."
+  [lang lines]
+  (when *highlight* (highlight-lines* lang (vec lines))))
+
+(defn- code-class [lang] (get langs lang (if (= "" lang) "text" lang)))
+
+(defn code-html
+  "A code fence: its lines highlighted in its language, plain when no grammar
+  serves it. With a sign, the whole fence is added (+) or removed (-), and the
+  sign is its margin alone."
+  ([lang lines] (code-html lang lines nil))
+  ([lang lines sign]
+   (let [lines (vec lines)]
+     (str "<pre" (case sign "+" " class=\"code-add\"" "-" " class=\"code-del\"" "")
+          "><code class=\"language-" (code-class lang) "\">"
+          (str/join "\n" (or (highlight-lines lang lines) (map esc lines)))
+          "</code></pre>"))))
+
+(defn- code-sign
+  "A code change line as [kind content]: + added, - removed, two spaces kept."
+  [l]
+  (let [[k c] (cond (or (= l "+") (str/starts-with? l "+ ")) [:add (subs l (min 2 (count l)))]
+                    (or (= l "-") (str/starts-with? l "- ")) [:del (subs l (min 2 (count l)))]
+                    (str/starts-with? l "  ") [:ctx (subs l 2)]
+                    :else [:ctx l])]
+    [k (if (blank? c) "" c)]))
+
+(defn signed-code-html
+  "A code fence written as a change; nil when no line is signed. Wholly added
+  or wholly removed, it is one fence with a green or red margin. Otherwise the
+  module as it stands and as proposed are each highlighted whole, then the
+  lines interleave in the order written, each carrying its sign in the gutter."
+  [lang lines]
+  (let [items (mapv code-sign lines)
+        kinds (set (map first (remove #(and (= :ctx (first %)) (blank? (second %))) items)))]
+    (cond
+      (not (or (kinds :add) (kinds :del))) nil
+      (= kinds #{:add}) (code-html lang (map second items) "+")
+      (= kinds #{:del}) (code-html lang (map second items) "-")
+      :else
+      (let [side (fn [k] (mapv second (filter #(#{k :ctx} (first %)) items)))
+            old (side :del) new (side :add)
+            old-h (or (highlight-lines lang old) (mapv esc old))
+            new-h (or (highlight-lines lang new) (mapv esc new))
+            rows (loop [[[k] & more] items o 0 n 0 out []]
+                   (case k
+                     nil out
+                     :del (recur more (inc o) n (conj out (str "<span class=\"ln ln-del\">" (old-h o) "\n</span>")))
+                     :add (recur more o (inc n) (conj out (str "<span class=\"ln ln-add\">" (new-h n) "\n</span>")))
+                     (recur more (inc o) (inc n) (conj out (str "<span class=\"ln\">" (new-h n) "\n</span>")))))]
+        (str "<pre class=\"code-diff\"><code class=\"language-" (code-class lang) "\">"
+             (apply str rows) "</code></pre>")))))
+
 ;; Markdown is never shown in a code block: a fence labelled markdown or md, and
 ;; the markdown fence a module view of a .md module is written in, render as text.
 (def fence-languages
@@ -693,8 +826,7 @@
             (str "<" tag ">" (apply str (map (fn [[_ t]] (str "<li>" (inline t) "</li>")) body)) "</" tag ">"))
     :code (if (and *module-fig* (drawing? (second body)))
             (*module-fig* (second body))
-            (str "<pre><code class=\"language-" (get langs (first body) (if (= "" (first body)) "text" (first body))) "\">"
-               (esc (str/join "\n" (second body))) "</code></pre>"))
+            (code-html (first body) (second body)))
     :table (table-html body)
     :fig body
     (str "<p>" (inline body) "</p>")))
@@ -719,8 +851,9 @@
       ;; a figure keeps its own colours: only a surround marks it as added or removed
       "fig+" (str "<div class=\"figmark fig-add\">" inner "</div>")
       "fig-" (str "<div class=\"figmark fig-del\">" inner "</div>")
-      "+" (str "<div class=\"add\"><ins>" inner "</ins></div>")
-      "-" (str "<div class=\"del\"><del>" inner "</del></div>")
+      ;; the sign is the margin; the text keeps the page's colour
+      "+" (str "<div class=\"add\">" inner "</div>")
+      "-" (str "<div class=\"del\">" inner "</div>")
       ;; a moved passage, shown once at its destination in its own colour
       "~" (str "<div class=\"moved\">" inner "</div>")
       (str "<div class=\"ctx\">" inner "</div>"))))
@@ -737,32 +870,6 @@
                (and r a) (or (paired-body r a) (str (panel "-" r) (panel "+" a)))
                r (panel "-" r)
                :else (panel "+" a))))))
-
-(defn code-lines
-  "A non-text fence with signed lines: removed lines followed by added lines
-  are word-diffed in place; an unpaired removed or added line is wholly marked.
-  Every sign is consumed into static HTML. Nil when the fence has no signed line."
-  [lines]
-  (let [sgn (fn [l] (cond (or (= l "-") (str/starts-with? l "- ")) :del
-                          (or (= l "+") (str/starts-with? l "+ ")) :add
-                          :else :same))]
-    (when (some #(not= :same (sgn %)) lines)
-      (loop [ls (vec lines) out []]
-        (if (empty? ls)
-          (str/join "\n" out)
-          (if (= :same (sgn (first ls)))
-            (recur (subvec ls 1) (conj out (esc (first ls))))
-            (let [[rem r1] (split-with #(= :del (sgn %)) ls)
-                  [add r2] (split-with #(= :add (sgn %)) r1)
-                  rem (vec rem) add (vec add)
-                  rows (for [i (range (max (count rem) (count add)))
-                             :let [r (some-> (get rem i) (subs (min 2 (count (get rem i)))))
-                                   a (some-> (get add i) (subs (min 2 (count (get add i)))))]]
-                         (cond
-                           (and r a) (str (re-find #"^\s*" a) (marked (strip-left r) (strip-left a) esc))
-                           r (str "<del>" (esc r) "</del>")
-                           :else (str "<ins>" (esc a) "</ins>")))]
-              (recur (vec r2) (into out rows)))))))))
 
 (defn- in-fence?
   "The chunk has an open code fence: a fence line without its closing one."
@@ -821,18 +928,14 @@
             (recur (inc i) (conj out (lines i)))))))))
 
 (defn- code-fence-html
-  "An inner code fence of mixed signs: a removed line followed by an added one
-  is marked word by word; otherwise every line is tinted by its sign."
+  "An inner code fence of mixed signs: highlighted per side, signs in the gutter."
   [lang lines]
-  (let [cls (get langs lang (if (= "" lang) "text" lang))]
-    (if-let [m (code-lines lines)]
-      (str "<pre><code class=\"language-" cls "\">" m "</code></pre>")
-      (str "<pre data-diff><code class=\"language-" cls "\">" (esc (str/join "\n" lines)) "</code></pre>"))))
+  (or (signed-code-html lang lines) (code-html lang lines)))
 
 (defn- table-diff-html
   "A table written as a change: its rows are [sign content], the kept header and
-  separator first, then kept, removed and added rows. One table; a removed row
-  is struck in place and an added row marked in place."
+  separator first, then kept, removed and added rows. One table; a removed or
+  added row carries its sign as a red or green margin."
   [rows]
   (let [[[_ head] [_ sep] & body] rows
         aligns (mapv #(let [c (strip %)]
@@ -841,15 +944,13 @@
                               :else nil))
                      (cells sep))
         row (fn [sign tag l]
-              (let [wrap (case sign "-" "del" "+" "ins" nil)]
-                (str "<tr" (case sign "-" " style=\"background:var(--hl-del)\"" "+" " style=\"background:var(--hl-add)\"" "") ">"
-                     (apply str (map-indexed
-                                 (fn [k c]
-                                   (str "<" tag (when-let [a (get aligns k)] (str " style=\"text-align:" a "\"")) ">"
-                                        (when wrap (str "<" wrap ">")) (inline c) (when wrap (str "</" wrap ">"))
-                                        "</" tag ">"))
-                                 (cells l)))
-                     "</tr>")))]
+              (str "<tr" (case sign "-" " class=\"row-del\"" "+" " class=\"row-add\"" "") ">"
+                   (apply str (map-indexed
+                               (fn [k c]
+                                 (str "<" tag (when-let [a (get aligns k)] (str " style=\"text-align:" a "\"")) ">"
+                                      (inline c) "</" tag ">"))
+                               (cells l)))
+                   "</tr>"))]
     (str "<table><thead>" (row " " "th" head) "</thead><tbody>"
          (apply str (map (fn [[sign l]] (row sign "td" l)) body)) "</tbody></table>")))
 
@@ -1628,8 +1729,7 @@
             code-file?
             (emit (str (when (and (= lang "ethos") (not (ethos-readable? (str/join "\n" lines))))
                          "<p class=\"mlabel\">not read by current Ethos</p>")
-                       "<pre><code class=\"language-" (get langs lang lang) "\">"
-                       (esc (str/join "\n" lines)) "</code></pre>"))
+                       (code-html lang lines)))
 
             (or (and module-sheet? (or md? (not (diagram? lines))))
                 (and md? (or (not @in-article) (not-any? signed-line? lines))))
@@ -1638,8 +1738,7 @@
 
             (and (:bare (meta b)) @in-module (not-any? signed-line? lines)
                  (bare-code-language lines))
-            (emit (str "<pre><code class=\"language-" (bare-code-language lines) "\">"
-                       (esc (str/join "\n" lines)) "</code></pre>"))
+            (emit (code-html (bare-code-language lines) lines))
 
             (and (= lang "text") (not-any? signed-line? lines) (diagram? lines))
             (emit (show-fig lines))
@@ -1650,34 +1749,23 @@
 
             (and (= lang "text") (not-any? signed-line? lines))
             ;; An unsigned fence that is no diagram is a block of code or file text: kept as written.
-            (emit (str "<pre><code class=\"language-" (target-lang @target) "\">"
-                       (esc (str/join "\n" lines)) "</code></pre>"))
+            (emit (code-html (target-lang @target) lines))
 
             ;; An unlabelled fence of signed lines that reads as Ethos or datom is code.
-            (and (:bare (meta b)) (not (code-lines lines)) (unsign-lines lines)
-                 (guess-code-language (unsign-lines lines)))
-            (let [plain (unsign-lines lines)]
-              (emit (str "<pre><code class=\"language-" (guess-code-language plain) "\">"
-                         (esc (str/join "\n" plain)) "</code></pre>")))
+            (and (:bare (meta b)) (unsign-lines lines) (guess-code-language (unsign-lines lines)))
+            (emit (signed-code-html (guess-code-language (unsign-lines lines)) lines))
 
             (= lang "text")
             (emit-panels (binding [*module-fig* show-fig]
                            (text-panels lines (= :per-line per-line))))
 
-            ;; Proposed code is shown as an addition: a fence whose every line is added
-            ;; keeps its signs and falls through to the data-diff block, tinted green.
-            ;; Other all-signed fences (all removed) still lose the signs and take no tint.
-            (and (not (code-lines lines)) (unsign-lines lines)
-                 (not (every? #(str/starts-with? % "+") (remove blank? lines))))
-            (let [plain (unsign-lines lines)
-                  shown (if (= "" lang) (or (guess-code-language plain) "text") (get langs lang lang))]
-              (emit (str "<pre><code class=\"language-" shown "\">" (esc (str/join "\n" plain)) "</code></pre>")))
-
+            ;; Code written as a change: wholly added or removed takes one margin;
+            ;; mixed, each side is highlighted whole and the lines interleave.
             :else
-            (if-let [marked-code (code-lines lines)]
-              (emit (str "<pre><code class=\"language-" (get langs lang lang) "\">" marked-code "</code></pre>"))
-              (emit (str "<pre data-diff><code class=\"language-" (get langs lang lang) "\">"
-                         (esc (str/join "\n" lines)) "</code></pre>")))))
+            (let [shown (if (= "" lang)
+                          (or (some-> (unsign-lines lines) guess-code-language) "text")
+                          lang)]
+              (emit (or (signed-code-html shown lines) (code-html shown lines))))))
         :else
         (let [lines (second b)
               _ (vreset! module-first false)

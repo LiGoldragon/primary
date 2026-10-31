@@ -31,8 +31,9 @@
      Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
      Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
      Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
-     A code block with data-diff tints each line
-     that starts with + (green) or - (red). Code never wraps midline; a line wider than the block
+     Colour is the sign of a change and lives in the margin: <div class="add">/<div class="del"> and <tr class="row-add|row-del"> carry a green or red edge, their text in the page's colour.
+     Code is highlighted at build time (tree-sitter, classes ts-*): <pre class="code-add|code-del"> is a fence wholly added or removed, one margin;
+     <pre class="code-diff"> holds <span class="ln ln-add|ln-del"> lines, each signed in its gutter. Code never wraps midline; a line wider than the block
      scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width). -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -46,7 +47,7 @@
   --ctx-bg:#f1f3ef;--accent:#1c5f8a;
   --destroy-bg:#efe6f7;--destroy-edge:#7b3fb0;--archive-bg:#fdf0d5;--archive-edge:#a86a00;
   --comment-bg:#e8ebfa;--comment-edge:#3f51b5;--comment-fg:#1f2756;
-  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#2f6f3e;--hl-meta:#8a3d6b;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#6a3fa0;--hl-meta:#8a3d6b;
   --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
   --f-prose:"Literata",Georgia,"Times New Roman",serif;
   --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
@@ -60,7 +61,7 @@
   --ctx-bg:#1e2622;--accent:#7cc0ee;
   --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
-  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
@@ -70,7 +71,7 @@
   --ctx-bg:#1e2622;--accent:#7cc0ee;
   --destroy-bg:#2a1d3a;--destroy-edge:#c39af0;--archive-bg:#392a10;--archive-edge:#f0b94f;
   --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
-  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#9fd29a;--hl-meta:#d58fb9;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
   --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
 body>*{min-width:0;margin:0}
@@ -130,8 +131,7 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .diff del *,pre del *{color:inherit;text-decoration:inherit}
 .diff ins *,pre ins *{color:inherit;text-decoration:none}
 /* Fallback for publishers that emit prose panels instead of inline marks. */
-.diff .del{color:var(--del-edge);background:var(--hl-del);text-decoration:none}
-.diff .add{color:var(--add-edge);background:var(--hl-add)}
+.diff .del,.diff .add{color:var(--fg);background:transparent;text-decoration:none}
 .del>*,.add>*{overflow-wrap:anywhere}
 .diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
 .diff .add{border-left-color:var(--add-edge)}
@@ -195,89 +195,33 @@ th{color:var(--muted);font-weight:600;letter-spacing:.03em}
 .choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
 
 /* Code: never wraps; wide lines scroll inside their block. */
-pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;max-width:100%;min-width:0;margin:0}
+pre:has(>code[class*="language-"]){background:var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0;margin:0}
 pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
 pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
 @media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
 :where(*):has(pre>code[class*="language-"]){min-width:0}
-.ln-mark{position:absolute;left:-14px;right:-14px;z-index:-1;pointer-events:none}
-.ln-mark.ln-add{background:var(--hl-add);box-shadow:inset 3px 0 var(--add-edge)}
-.ln-mark.ln-del{background:var(--hl-del);box-shadow:inset 3px 0 var(--del-edge)}
-.hl-type,.hljs-keyword,.hljs-title{color:var(--hl-type)}
-.hl-punct{color:var(--hl-punct);font-weight:600}.hl-dot,.hljs-built_in,.hljs-type{color:var(--hl-punct)}
-.hl-comment,.hljs-comment{color:var(--hl-comment);font-style:italic}
-.hl-string,.hljs-string,.hljs-number,.hljs-symbol{color:var(--hl-string)}
-.hljs-meta,.hljs-attr,.hljs-variable,.hljs-params{color:var(--hl-meta)}
+/* A change in code: one margin for a fence wholly added or removed; per line in the gutter otherwise. */
+pre.code-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff:has(>code){padding-inline:0}
+pre.code-diff .ln{display:block;padding-inline:14px;position:relative}
+pre.code-diff .ln-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-diff .ln-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff .ln-add::before,pre.code-diff .ln-del::before{position:absolute;left:5px;font-weight:600}
+pre.code-diff .ln-add::before{content:"+";color:var(--add-edge)}
+pre.code-diff .ln-del::before{content:"\2212";color:var(--del-edge)}
+tr.row-add>:first-child{box-shadow:inset 4px 0 var(--add-edge)}
+tr.row-del>:first-child{box-shadow:inset 4px 0 var(--del-edge)}
+/* Syntax colours, from tree-sitter's captures. */
+.ts-keyword,.ts-type,.ts-constructor{color:var(--hl-type)}
+.ts-punctuation,.ts-operator{color:var(--hl-punct)}
+.ts-comment{color:var(--hl-comment);font-style:italic}
+.ts-string,.ts-number,.ts-constant{color:var(--hl-string)}
+.ts-function,.ts-module,.ts-attribute,.ts-property,.ts-label,.ts-string.ts-special{color:var(--hl-meta)}
+.ts-type.ts-builtin,.ts-function.ts-builtin,.ts-keyword{font-weight:600}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 <script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-  function line(l){
-    var i=l.indexOf(';'),a=i<0?l:l.slice(0,i),c=i<0?'':l.slice(i);
-    a=esc(a).replace(/(«[^»]*»)|([A-Z][A-Za-z0-9]*)|([\[\]{}()!])|(\.)/g,function(m,s,t,p,d){
-      return s?'<span class="hl-string">'+s+'</span>':t?'<span class="hl-type">'+t+'</span>':p?'<span class="hl-punct">'+p+'</span>':'<span class="hl-dot">.</span>'});
-    return a+(c?'<span class="hl-comment">'+esc(c)+'</span>':'');
-  }
-  // Word marks: del/ins inside code are read as character ranges, the code is highlighted as flat text, then the ranges are put back around the highlighted text.
-  function extract(e){
-    var out=[],n=0;
-    (function walk(p){
-      p.childNodes.forEach(function(c){
-        if(c.nodeType===3){n+=c.data.length;return}
-        var t=c.nodeName==='DEL'?'del':c.nodeName==='INS'?'ins':'',a=n;
-        walk(c);
-        if(t&&n>a)out.push({t:t,a:a,b:n});
-      });
-    })(e);
-    return out;
-  }
-  function restore(e,rs){
-    if(!rs.length)return;
-    var w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),nodes=[],x;
-    while((x=w.nextNode()))nodes.push(x);
-    var n=0;
-    nodes.forEach(function(tn){
-      var s=n,d=tn.data,f=document.createDocumentFragment(),cuts=[0,d.length];
-      n+=d.length;
-      rs.forEach(function(r){[r.a,r.b].forEach(function(o){if(o>s&&o<s+d.length)cuts.push(o-s)})});
-      cuts=cuts.sort(function(p,q){return p-q}).filter(function(v,i,l){return !i||v!==l[i-1]});
-      for(var i=0;i+1<cuts.length;i++){
-        var from=cuts[i],to=cuts[i+1],node=document.createTextNode(d.slice(from,to));
-        rs.forEach(function(r){
-          if(r.a<=s+from&&s+to<=r.b){var m=document.createElement(r.t);m.appendChild(node);node=m}
-        });
-        f.appendChild(node);
-      }
-      tn.parentNode.replaceChild(f,tn);
-    });
-  }
-  function flat(e,fn){var rs=extract(e);e.textContent=e.textContent;try{fn(e)}finally{restore(e,rs)}}
-  document.querySelectorAll('code.language-ethos,code.language-datom').forEach(function(e){
-    flat(e,function(){e.innerHTML=e.textContent.split('\n').map(line).join('\n')});
-  });
   // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
   if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
-  // Tint lines starting with "+ " or "- " (or a lone sign) in code blocks marked data-diff; a line such as a table's ---|--- row is untouched.
-  function marks(){
-    document.querySelectorAll('pre[data-diff]>code').forEach(function(e){
-      e.querySelectorAll('.ln-mark').forEach(function(m){m.remove()});
-      var lh=parseFloat(getComputedStyle(e).lineHeight)||0;
-      e.textContent.split('\n').forEach(function(l,i){
-        var c=l.charAt(0),k=(l.length===1||l.charAt(1)===' ')?(c==='+'?'add':c==='-'?'del':''):'';
-        if(!k||!lh)return;
-        var m=document.createElement('span');m.className="ln-mark ln-"+k;m.setAttribute('aria-hidden','true');
-        m.style.top=(i*lh)+'px';m.style.height=lh+'px';e.appendChild(m);
-      });
-    });
-  }
-  function hl(){document.querySelectorAll('code.language-rust,code.language-clojure,code.language-bash').forEach(function(e){try{flat(e,function(){hljs.highlightElement(e)})}catch(x){}});marks()}
-  marks();
-  window.addEventListener('resize',marks);
-  var s=document.createElement('script');
-  s.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
-  s.onload=function(){var c=document.createElement('script');c.src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js';c.onload=hl;c.onerror=hl;document.head.appendChild(c)};
-  s.onerror=marks;
-  document.head.appendChild(s);
-})();
 </script>
