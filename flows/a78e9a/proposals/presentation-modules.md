@@ -203,7 +203,7 @@ flowchart TB
 +
 + Spirit, intent and vision land only on the living's review; he approves every crystallization.
 +
-+ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him as a review: a presentation of the lines as landed, each under its repo › path, in a red and a green of its own, shades distinct from a proposal's, one for a line landed added and one for a line landed removed, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
++ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him as a review: a presentation of the lines as landed, each under its repo › path, in the same red and green as a proposal but dark where a proposal's are light, since a proposal's lines have not landed and a review's have, one for a line landed added and one for a line landed removed, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
 
 ### Proposal 8: The source format is the author's knowledge · mind-belief › knowledge/book-making.md, and mind-belief › knowledge/presentation-source.md, a new file
 
