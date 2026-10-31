@@ -31,22 +31,6 @@ Context: same book, section "What the key reaches: names"; relayed by 23824a.
 
 -- psyche, STT, 2026-10-10, relayed by 23824a. Transcription corrected by the relay: "[Ethos]".
 
-## 2026-10-10 — the inline import, D1
-
-Context: comment on «The inline import, third edition», D1 (the vision statement for `Topic.custom:Name`); relayed by 23824a.
-
-> Yes this is good.
-
--- psyche, STT, 2026-10-10, relayed by 23824a.
-
-## 2026-10-10 — the inline import is not blocking
-
-Context: spoken to the core Secondary 445410, on the inline import; relayed by 23824a.
-
-> The inline import, we don't have to worry too much about it for now. It's just a nice thing that I thought about and let's not block on it right now.
-
--- psyche, STT, 2026-10-10, relayed by 23824a.
-
 ## 2026-10-10 — a Nexus called sources
 
 Context: comment on «Sources and the registry», heading «What the registry must say», anchored on «One registry type, serving both the libraries named by a source and the vision and knowledge files keyed by subaspect…» (question 2, option a); relayed by 23824a.

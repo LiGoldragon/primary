@@ -23,11 +23,3 @@ Context (agent-authored, separate from the psyche's words): This supersedes the 
 > we'll just say ethos, which will motivate everyone to get ethos working.
 
 — psyche, 2026-08-24T00:36:16+02:00, typed; Codex realization flow `01a02fd5`.
-
-## 2026-08-24T00:36:44+02:00 — use the line you proposed without schema
-
-Context (agent-authored, separate from the psyche's words): This approves the exact owning line `Write every wire interface in Ethos.` under the authored `nexus` skill's wire-type-repository section, with no Schema fallback or Ethos-readiness condition.
-
-> use the line you proposed without schema
-
-— psyche, 2026-08-24T00:36:44+02:00, typed; Codex realization flow `01a02fd5`.

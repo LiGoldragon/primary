@@ -6,14 +6,6 @@ Relayed by Psyche Core Secondary, 2026-10-17; his comment on «Flow: vision and 
 
 -- psyche, STT, book comment.
 
-## What are these sections; where is it going
-
-Relayed by Psyche Core Secondary, 2026-10-17; his comment on «The last response as a datom object», whose opening had prose sections on what the vision, the knowledge and the compensation say. He asked: "Can you ask Fable what he thinks on this?"
-
-> "Taking this book as an example, I see I just said I want everything to be about the context module. I'm wondering: is this a crystallization proposal that just is not surrounded in green or something? From the picture where it starts to the picture where it ends, what is that? Am I trying? You want me to approve the whole text? Where is it going? I don't understand why the books are showing me these fucking sections."
-
--- psyche, STT, book comment.
-
 ## Everything Fable says is a book: code, where it goes, what it is for, flowcharts
 
 Relayed by Psyche Core Secondary, 2026-10-17; on my reply about the book form.

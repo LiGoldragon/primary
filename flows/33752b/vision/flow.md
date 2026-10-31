@@ -25,11 +25,3 @@ Context: comment on «Flow: short term and long term», second edition, Proposal
 > Also we should say that maybe we should make that flow tool also do the messaging since it can mark a flow as being in transition. Therefore it can start queuing messages instead of delivering them when the flow has reached its context limit and therefore should not receive more messages. That would just send it into a spin: potentially it could never actually refresh because it keeps getting new messages.
 
 -- psyche, STT, 2026-10-13.
-
-## "Meta socket" in the short-term proposal is not understood; the short-term solution is not the Nexus
-
-Context: comment on the same book, Proposal 2, at "sent to Flow as configuration payloads on its meta socket". The word in brackets is the relaying seat's correction.
-
-> What do you mean by meta socket? I don't understand. You're talking about meta sockets, which have to do with nexus, and then you're talking about the short-term solution, which is [Clojure]. Total fucking confusion here. Hallucinating model, now I don't trust anything you're saying or any system you've made. In this department I'm afraid that the current code or the current proposal is fucked.
-
--- psyche, STT, 2026-10-13.

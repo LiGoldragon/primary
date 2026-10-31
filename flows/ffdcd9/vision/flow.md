@@ -1,0 +1,7 @@
+# flow — raw records heard by ffdcd9
+
+## ffdcd9-1 — 2026-10-29, relayed verbatim by Psyche core Secondary
+
+> Making a reliable and improved flow, migrating to it first as a test and then as a whole, and then doing that iteratively is your main task. Bringing the rest of the drafts of other nexuses up to date is secondary. Make sure your trackers are up and working, and that they're keeping track of this stuff. This is like a meta bead that then has dependency beads, right? You can mark the end state of the flow nexes that you're trying to achieve, and then create a bunch of dependencies for that, attack them one by one, iterate over and over, and then migrate. Try to do one feature at a time. You probably want the Datom-formatted messages and non-problematic Flow refresh: to have reliability first in finding the living messages, in not having any trouble restarting flows, and in being able to configure everything about a flow. See if you can try to remove the Claude artifacts tool and system prompt from all of the flows that don't need to publish books, because you really only need one Metaflow to publish all the books.
+
+Reading: orders (main task, trackers, one feature at a time, Artifact tool removal) are beads under primary-bie3; vision in it: Flow is improved by test migration then whole migration, iteratively; one metaflow publishes all books, and only it carries the Artifact tool and its system prompt.

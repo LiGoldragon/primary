@@ -1,0 +1,39 @@
+fb13fa765d6d9ef1fff90cd94a6dee8030d1dcc9 signal-flow 34.0.0 flake check
+evaluating flake...
+checking flake output 'packages'...
+checking derivation packages.x86_64-linux.default...
+derivation evaluated to /nix/store/jxi4ba80si4b37yqmf7zli9hqq39p6vk-signal-flow-34.0.0.drv
+checking flake output 'checks'...
+checking derivation checks.x86_64-linux.test...
+derivation evaluated to /nix/store/k5zsn5j46vk2k5ayadlgr0jl8yxdbqxj-signal-flow-test-34.0.0.drv
+checking derivation checks.x86_64-linux.test-datom...
+derivation evaluated to /nix/store/w4ihrpikdi16w39847c4m7b9dcjkzbxx-signal-flow-test-34.0.0.drv
+checking derivation checks.x86_64-linux.fmt...
+derivation evaluated to /nix/store/0sp0czy9saaqci385670iypdjd952g3x-signal-flow-fmt-34.0.0.drv
+running 0 flake checks...
+all checks passed!
+warning: The check omitted these incompatible systems: aarch64-darwin, aarch64-linux, x86_64-darwin
+Use '--all-systems' to check all.
+nix exit 0
+== no build line printed: checks were already built (by an earlier run of this same flake rev) and cached; evidence below ==
+-- /nix/store/6ald8q9dbxsawv82w5hfh6iky3vgmbcy-signal-flow-fmt-34.0.0
+local:
+{"/nix/store/6ald8q9dbxsawv82w5hfh6iky3vgmbcy-signal-flow-fmt-34.0.0":{"ca":null,"deriver":"/nix/store/0sp0czy9saaqci385670iypdjd952g3x-signal-flow-fmt-34.0.0.drv","narHash":"sha256-79yw8iOs/wmKqFcyF81Yy2zwlZNxe9ifK0LRK1HXhr8=","narSize":368,"references":[],"registrationTime":1793328650,"signatures":[],"storeDir":"/nix/store","ultimate":false,"version":1}}
+prometheus (ssh):
+{"/nix/store/6ald8q9dbxsawv82w5hfh6iky3vgmbcy-signal-flow-fmt-34.0.0":{"ca":null,"deriver":"/nix/store/0sp0czy9saaqci385670iypdjd952g3x-signal-flow-fmt-34.0.0.drv","narHash":"sha256-79yw8iOs/wmKqFcyF81Yy2zwlZNxe9ifK0LRK1HXhr8=","narSize":368,"references":[],"registrationTime":1793328650,"signatures":[],"storeDir":"/nix/store","ultimate":true,"version":1}}
+warning: '--json' without '--json-format' is deprecated; please specify '--json-format 1' or '--json-format 2'. This will become an error in a future release.
+
+-- /nix/store/kkcfy176jrj4big2q83xd6348gxif34l-signal-flow-test-34.0.0
+local:
+{"/nix/store/kkcfy176jrj4big2q83xd6348gxif34l-signal-flow-test-34.0.0":{"ca":null,"deriver":"/nix/store/k5zsn5j46vk2k5ayadlgr0jl8yxdbqxj-signal-flow-test-34.0.0.drv","narHash":"sha256-MxqNdQbJ4o+xWjICNYocFWGIduBb0F3x5ehnmyg6OlM=","narSize":5588496,"references":["/nix/store/srd4y9r0k3szylcx68bn55kakbjxffhz-signal-flow-deps-34.0.0"],"registrationTime":1793328665,"signatures":[],"storeDir":"/nix/store","ultimate":false,"version":1}}
+prometheus (ssh):
+warning: '--json' without '--json-format' is deprecated; please specify '--json-format 1' or '--json-format 2'. This will become an error in a future release.
+{"/nix/store/kkcfy176jrj4big2q83xd6348gxif34l-signal-flow-test-34.0.0":{"ca":null,"deriver":"/nix/store/k5zsn5j46vk2k5ayadlgr0jl8yxdbqxj-signal-flow-test-34.0.0.drv","narHash":"sha256-MxqNdQbJ4o+xWjICNYocFWGIduBb0F3x5ehnmyg6OlM=","narSize":5588496,"references":["/nix/store/srd4y9r0k3szylcx68bn55kakbjxffhz-signal-flow-deps-34.0.0"],"registrationTime":1793328665,"signatures":[],"storeDir":"/nix/store","ultimate":true,"version":1}}
+
+-- /nix/store/22zx4dqfxp0m5mq75qq3nywwd8nd0sn8-signal-flow-test-34.0.0
+local:
+{"/nix/store/22zx4dqfxp0m5mq75qq3nywwd8nd0sn8-signal-flow-test-34.0.0":{"ca":null,"deriver":"/nix/store/w4ihrpikdi16w39847c4m7b9dcjkzbxx-signal-flow-test-34.0.0.drv","narHash":"sha256-guUfx8CENgCUH1Ymaz1+NS4KibnLkcwRLMaoa3zEAhE=","narSize":10440744,"references":["/nix/store/5sfgnk99mfk8nyv06aj25qxfx2m9jzl3-rust-nightly-complete-with-components-2026-06-19","/nix/store/srd4y9r0k3szylcx68bn55kakbjxffhz-signal-flow-deps-34.0.0"],"registrationTime":1793328667,"signatures":[],"storeDir":"/nix/store","ultimate":false,"version":1}}
+prometheus (ssh):
+warning: '--json' without '--json-format' is deprecated; please specify '--json-format 1' or '--json-format 2'. This will become an error in a future release.
+{"/nix/store/22zx4dqfxp0m5mq75qq3nywwd8nd0sn8-signal-flow-test-34.0.0":{"ca":null,"deriver":"/nix/store/w4ihrpikdi16w39847c4m7b9dcjkzbxx-signal-flow-test-34.0.0.drv","narHash":"sha256-guUfx8CENgCUH1Ymaz1+NS4KibnLkcwRLMaoa3zEAhE=","narSize":10440744,"references":["/nix/store/5sfgnk99mfk8nyv06aj25qxfx2m9jzl3-rust-nightly-complete-with-components-2026-06-19","/nix/store/srd4y9r0k3szylcx68bn55kakbjxffhz-signal-flow-deps-34.0.0"],"registrationTime":1793328667,"signatures":[],"storeDir":"/nix/store","ultimate":true,"version":1}}
+

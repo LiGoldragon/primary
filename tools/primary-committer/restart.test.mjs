@@ -9,7 +9,8 @@ import {Restarter, checkLock, rpc, subscribe} from './restart.mjs';
 const config = {flow: '127d95', name: 'field_quaternary_127d95', uuid: 'same-real-native-id', lock: {id: 19178, name: 'PrimaryPublish', owner: '127d95', paths: ['/primary/.PrimaryPublish.lock']}};
 const old = {pane: 'w1:p1', terminal: 'term1', workspace: 'w1'};
 const target = {pane: 'w1:p2', terminal: 'term2', workspace: 'w1'};
-const event = {event: 'pane.exited', data: {pane_id: old.pane, workspace_id: old.workspace}};
+// Exact EventEnvelope shape from retained installed protocol-20 schema, not Subscription.type.
+const event = {event: 'pane_exited', data: {type: 'pane_exited', pane_id: old.pane, workspace_id: old.workspace}};
 function agent(b = old) { return {name: config.name, agent: 'codex', agent_session: {agent: 'codex', kind: 'id', value: config.uuid}, pane_id: b.pane, terminal_id: b.terminal, workspace_id: b.workspace, interactive_ready: true, launch_pending: false, agent_status: 'idle'}; }
 function fixture(failAt) {
   const calls = []; let live = agent(); let phase = 'startup'; let oldRoute = true;
@@ -30,14 +31,14 @@ function fixture(failAt) {
 
 test('one event burst makes one ready replacement with the same UUID, recipient and lock', async () => {
   const f = fixture(); await f.begin();
-  await Promise.all([f.restarter.event(event), f.restarter.event(event), f.restarter.event({event: 'pane.exited', data: {pane_id: 'unrelated', workspace_id: 'w1'}})]);
+  await Promise.all([f.restarter.event(event), f.restarter.event(event), f.restarter.event({event: 'pane_exited', data: {type: 'pane_exited', pane_id: 'unrelated', workspace_id: 'w1'}})]);
   assert.equal(f.calls.filter(x => x === 'create').length, 1);
   assert.equal(f.calls.filter(x => x === 'resume').length, 1);
   assert.deepEqual(f.restarter.current, target);
   assert.equal(f.restarter.phase, 'watching');
   assert.ok(f.calls.indexOf('resume') < f.calls.indexOf('deregister'));
   assert.ok(f.calls.indexOf('deregister') < f.calls.lastIndexOf('register'));
-  assert.equal(f.calls.at(-1), 'recovered');
+  assert.equal(f.calls.filter(x => x === 'recovered').length, 1);
 });
 
 test('guard, old-client, launch, native-identity and partial-registration refusals never retry or claim recovery', async () => {
@@ -84,9 +85,14 @@ test('public NDJSON adapter subscribes and carries errors without invoking any l
   });
   await new Promise(resolve => server.listen(socketPath, resolve));
   try {
+    const f = fixture(); await f.begin();
     let got; const received = new Promise(resolve => { got = resolve; });
     const subscription = await subscribe(socketPath, got, error => assert.fail(error));
-    assert.deepEqual(await received, event);
+    const actual = await received;
+    assert.deepEqual(actual, event);
+    await f.restarter.event(actual);
+    assert.equal(f.calls.filter(x => x === 'resume').length, 1);
+    assert.equal(f.calls.at(-1), 'recovered');
     subscription.destroy();
     await assert.rejects(rpc(socketPath, 'pane.get', {pane_id: old.pane}), error => error.code === 'pane_not_found');
   } finally { for (const socket of sockets) socket.destroy(); await new Promise(resolve => server.close(resolve)); fs.rmSync(dir, {recursive: true}); }
@@ -147,4 +153,22 @@ test('real local adapter preserves exact arguments and moves only the stale regi
     ]);
     assert.equal(restarter.phase, 'watching');
   } finally { for (const socket of sockets) socket.destroy(); await new Promise(resolve => server.close(resolve)); fs.rmSync(dir, {recursive: true}); }
+});
+
+
+test('wire mismatch refuses visibly and startup requires ready native binding', async () => {
+  for (const invalid of [
+    {event: 'pane.exited', data: event.data},
+    {event: 'pane_exited', data: {pane_id: old.pane, workspace_id: old.workspace}},
+    {event: 'pane_exited', data: {...event.data, pane_id: null}},
+  ]) {
+    const f = fixture(); await f.begin();
+    await assert.rejects(f.restarter.event(invalid), /wire envelope/);
+    assert.ok(!f.calls.includes('create'));
+  }
+  const f = fixture();
+  f.io.agent = async () => ({...agent(), interactive_ready: false});
+  await assert.rejects(f.restarter.start(), /not interactively ready/);
+  assert.ok(!f.calls.includes('watching'));
+  assert.ok(!f.calls.includes('register'));
 });

@@ -10,13 +10,6 @@ Context: on the name choice in Proposal 1.
 
 -- psyche, STT, book comment, relayed.
 
-## The harness sentence goes
-Context: on "The same lines hold in every harness: Claude artifacts, Codex, or a later one."
-
-> The sentence that starts with "the same line hold in every harness" is probably just harmful so take that out.
-
--- psyche, STT, book comment, relayed.
-
 ## Speech is not designed now; a long-term vision goes in an annotated section
 Context: on "It is multimodal: figure, text and speech."
 

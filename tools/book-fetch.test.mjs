@@ -118,6 +118,12 @@ test("prints the latest block of the whole transcript whatever the mark", () => 
   assert.match(printed, /^latest-block L16\n<!-- to-the-living:start -->\nPresentation\.\{ «Second» \}\n\nX{13000}\n<!-- to-the-living:end -->$/m);
 });
 
+test("a block that quotes the markers inside a fence is taken whole", () => {
+  const body = "<!-- to-the-living:start -->\nPresentation.{ «Outer» }\n\n```markdown\n<!-- to-the-living:start -->\nPresentation.{ «Quoted» }\n<!-- to-the-living:end -->\n```\n\nAfter the fence.\n<!-- to-the-living:end -->";
+  const { file } = transcript([{ type: "assistant", timestamp: t, message: { content: [{ type: "text", text: "Lead.\n" + body + "\nTrail." }] } }]);
+  assert.equal(latestBlock(readFrom(file, 0).records).text, body);
+});
+
 test("says when the transcript holds no block", () => {
   const { home } = transcript(records);
   const printed = execFileSync("node", [program, "--out", path.join(home, "out")], {

@@ -73,7 +73,7 @@ more than a wrong shape sooner. The beauty gate is canonical in the generated
 **Backward compatibility is not a constraint for systems being born.** Break
 the system if it makes it more beautiful — not carelessness, but refusal to
 compromise design to preserve a wrong shape. Compatibility binds only at
-explicitly-declared boundaries: published APIs under semantic versioning,
+explicitly-declared boundaries: published APIs under memoryntic versioning,
 wire contracts pinned by version, schemas externally consumed beyond our
 control. Before such a boundary is declared, the system is being shaped, not
 preserved. The version-surface mechanics are canonical in the generated
@@ -107,9 +107,9 @@ generated `push-not-pull` skill packet.
 
 When a concept has both a today's form and an eventual encompassing form,
 the docs explicitly mark that boundary and give the two forms distinct names:
-`sema` (today's typed storage kernel) / `sema-engine` versus the eventual
-`Sema` (the universal medium for meaning); `criome` (today's BLS auth daemon)
-versus the eventual `Criome` (the universal computing paradigm in Sema). ARCH
+`memory` (today's typed storage kernel) / `memory-engine` versus the eventual
+`Memory` (the universal medium for meaning); `criome` (today's BLS auth daemon)
+versus the eventual `Criome` (the universal computing paradigm in Memory). ARCH
 docs describe what is built today; eventual scope gets an explicit marker.
 This is a scope discipline, not a quality one — "today's piece" is never a
 license to cut corners. `protocols/active-repositories.md` carries the live
@@ -122,18 +122,18 @@ workspace canon because the *pattern* repeats across repos; each repo's
 `ARCHITECTURE.md` owns its component-specific detail. Stated here so a fresh
 agent reads the shape once and recognises it everywhere.
 
-### The runtime logic triad: Signal / Nexus / SEMA
+### The runtime logic triad: Signal / Nexus / MEMORY
 
-Each component engine defines its **Signal**, **Nexus**, and **SEMA**
+Each component engine defines its **Signal**, **Nexus**, and **MEMORY**
 interfaces in schema and runs its core logic through schema-emitted traits over
 root types, with strict ownership:
 
-- **SEMA** owns durable state and storage (the body at rest).
+- **MEMORY** owns durable state and storage (the body at rest).
 - **Nexus** owns decision-making and request execution — it is the execution
   engine.
 - **Signal** owns communication (movement across channels).
 
-The request flow is `Signal in → Nexus → SEMA (on state work) → Nexus → Signal
+The request flow is `Signal in → Nexus → MEMORY (on state work) → Nexus → Signal
 → client`. The engine-role names are *traits*, not one component's enum. This
 runtime **logic** triad is a different thing from the repository **packaging**
 triad below; do not conflate them. The shared daemon concurrency primitive (the
@@ -168,7 +168,7 @@ isolation, security visibility, and optionality — it is compilation/dependency
 isolation and authority clarity, not where state or logic lives.
 
 A component with **two authority surfaces** uses the two-contract triad
-directly: two schemas, each emitting its own Signal/Nexus/SEMA engines and
+directly: two schemas, each emitting its own Signal/Nexus/MEMORY engines and
 sharing record types; the runtime imports both and runs two listeners on two
 sockets (an owner-authenticated meta socket and a peer-callable ordinary
 socket).
@@ -200,11 +200,11 @@ caller threading it).
 
 - **No DOTOS between components.** Daemons exchange binary protocol data; the CLI
   is the translation/debugging surface (it can wrap a normal call in a debugging
-  request that says where logs are displayed or stored). `SEMA` is the compact
+  request that says where logs are displayed or stored). `MEMORY` is the compact
   data format defined by schema.
 - **Origin route as implicit return address.** Every message carries an origin
   route as automatic, *un-schema-declared* metadata — a short statistically
-  unique identifier that travels Signal → Nexus → SEMA and back, so a reply is
+  unique identifier that travels Signal → Nexus → MEMORY and back, so a reply is
   associated with its originating query on return. It is internal to each
   component and need not be a long hash.
 - **Schema is the source of truth.** Schema is the macro-language source of
@@ -282,15 +282,15 @@ honor everywhere.
   Persona. Disambiguation suffixes apply only when wrapping a backend
   (`persona-codex`, `persona-gemini`, `persona-claude`). The whole workspace stack
   is the **Criome stack**.
-- **sema**: speech-to-text may hear *sema* as *sim*; normalize to **sema** before
+- **memory**: speech-to-text may hear *memory* as *sim*; normalize to **memory** before
   storing verbatim.
 
 ### The three-part vocabulary
 
-- **SCHEMA** is the specification part — it specifies both signal and sema, and
+- **SCHEMA** is the specification part — it specifies both signal and memory, and
   is the textual representation of the psyche's idea language.
 - **SIGNAL** is the movement (transport) — it carries movement across channels.
-- **SEMA** is the body — data at rest, state — and is the compact data format
+- **MEMORY** is the body — data at rest, state — and is the compact data format
   defined by schema.
 
 This closes the loop between specification, transport, and state.

@@ -1,0 +1,4 @@
+transcript /home/li/.claude/projects/-home-li-primary/33752bfb-ebba-4e2d-ba66-be84b318e939.jsonl
+session 33752bfb-ebba-4e2d-ba66-be84b318e939
+last 4187
+latest-block L4173

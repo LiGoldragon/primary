@@ -17,25 +17,11 @@ plain markdown":
 > no of course not! the directory gives the flow. only subflows need to
 > indicate their id
 
-## 5c8be3ca-3 — 2026-08-21 — subflow marking dropped
-
-Design session `5c8be3ca`, typed, on the Designer's "the subflow can't see
-its own id":
-
-> then we should drop the idea
-
 ## 5c8be3ca-4 — 2026-08-21 — in the workspace for now
 
 Design session `5c8be3ca`, typed, on where the flows structure lives:
 
 > lets make it simple, in workspace for now.
-
-## 5c8be3ca-5 — 2026-08-21 — context-handover renamed; it generates prompts pasted manually
-
-Design session `5c8be3ca`, typed:
-
-> the context-handover skill could be renamed, as its used to generate
-> prompts manually for other flows which are copy pasted manually.
 
 ## 5c8be3ca-6 — 2026-08-21 — the four forks answered; anatomy research directed; awareness rooted out
 
@@ -64,13 +50,6 @@ Design session `5c8be3ca`, typed, on the draft protocol's negative rules
 > proposal, and repropose the protocol; I need to see the skill proposal
 > itself
 
-## 5c8be3ca-8 — 2026-08-22 — one file for external edits; the witness question
-
-Design session `5c8be3ca`, typed, on the reproposed protocol and skill:
-
-> lets create a file for external edits. annotations.md? and will agents
-> know what is a witness?
-
 ## 5c8be3ca-9 — 2026-08-22 — the larger-response line is noise; the skill approved to land
 
 Design session `5c8be3ca`, typed, on the proposal line "A larger response
@@ -80,36 +59,3 @@ answers":
 > this is just noise. models will do this naturally
 >
 > great, let's land this
-
-## 5c8be3ca-10 — 2026-08-22 — description leak; migration prompt ordered; the 15b67974 merge assigned; reword approved; vocabulary delayed
-
-Design session `5c8be3ca`, typed, on the landed prompt-crafting
-description "A prompt must be crafted for another flow, to be pasted
-manually.", the session-log removal, the 15b67974 log divergence, the
-proposed body reword, and the pending pronouncement vocabulary entry:
-
-> body leaking into description. skill design description training
-> proposal?
->
-> was session-log removed?
->
-> I want a prompt for another flow to migrate all the artifacts that can
-> be pinpointed to a session file, along with all the psyche logs, etc.
-> Do you understand what I mean by that?
->
-> re divergence: are you session a flow implemented both protocols? then
-> a merge is in order. to be done by the fore mentionned external flow
->
-> rewording is better.
->
-> delay the vocabulary expansion. We'll start a new session after this
-
-## 5c8be3ca-11 — 2026-08-22 — traced psyche records also move
-
-Design session `5c8be3ca`, typed, correcting the Designer's migration
-reading "not moving anything out of psyche/, which stays topic-keyed by
-your ruling":
-
-> no, psyche records that can be traced will also be moved.
->
-> spiritbackup.nota sounds like a really old artifact.

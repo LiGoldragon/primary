@@ -71,6 +71,11 @@ test('base/revision and unsafe selections refuse before publication; lifetime ow
   assert.equal(f.git('rev-parse', 'HEAD'), before); assert.ok(fs.readFileSync(path.join(f.primary, '.git/index')).equals(index));
 });
 
+test('lifetime lock reasons accept bare and guillemet Datom strings', () => {
+  const sentinel = '/home/li/primary/.PrimaryPublish.lock';
+  assert.equal(verifyLifetime(`Observed.Locks.[ { 24847 x 9140db [ /x ] x } { 12 PrimaryPublish 6eda8a [ ${sentinel} ] «Lifetime standing committer hold» } ]`, '6eda8a', sentinel), '12');
+});
+
 test('divergent selected staged data and an unexpected remote tip are not repaired', () => {
   const f = fixture();
   f.write('owned.txt', 'staged variant\n'); f.git('add', 'owned.txt'); f.write('owned.txt', 'working variant\n');

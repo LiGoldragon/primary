@@ -67,6 +67,7 @@ export class Restarter {
     await this.step('guard');
     const a = await this.step('agent');
     this.current = binding(this.c, a);
+    ready(this.c, a, this.current);
     // Idempotent registration refuses any stale or conflicting route; never removes one at startup.
     await this.step('register');
     this.phase = 'watching';
@@ -75,7 +76,10 @@ export class Restarter {
   event(event) {
     this.tail = this.tail.then(async () => {
       if (this.phase === 'blocked') throw new Error('recovery blocked; no automatic retry');
-      if (event.event !== 'pane.exited' || event.data?.pane_id !== this.current?.pane || event.data?.workspace_id !== this.current?.workspace) return;
+      // Herdr schema 20: subscribe with dot spelling; EventEnvelope/EventData serialize snake_case.
+      requireFact(event.event === 'pane_exited' && event.data?.type === 'pane_exited' && typeof event.data.pane_id === 'string' && typeof event.data.workspace_id === 'string', 'unexpected pane-exit wire envelope');
+      this.io.record('exit-received', {pane: event.data.pane_id, workspace: event.data.workspace_id});
+      if (event.data.pane_id !== this.current?.pane || event.data.workspace_id !== this.current?.workspace) return;
       const old = this.current;
       try {
         this.phase = 'checking';

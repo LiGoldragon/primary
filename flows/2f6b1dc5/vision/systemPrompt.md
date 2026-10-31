@@ -25,12 +25,3 @@ authored here. Vendor parlance: system prompt." The psyche quoted
 it back and ruled. Verbatim:
 
 > this is good. approved. deploy
-
-## 2026-08-23 — method: most offensive blocks first, replacement per block
-
-Context (agent, brief): directed after the Claude probe subflow
-returned witnessed replacement mechanics. Verbatim:
-
-> Let's look at the most offensive base prompt blocks first, and
-> design replacement for each, and work our way through the entire
-> offensive corpus like this

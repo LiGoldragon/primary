@@ -8,14 +8,6 @@ Context: relayed by Psyche Fable 91ea9f from the living's typed comments on «Th
 
 -- psyche, typed, 2026-10-02, on «The Capsule and the Semi-Sandbox»; relayed by Psyche Fable 91ea9f.
 
-## 2026-10-02 — comments on charts
-
-Context: same relayed book comments.
-
-> I can see this comment showing up on all the pages now, which means you may not even be able to tell which chart I was commenting on.
-
--- psyche, typed, 2026-10-02, on «The Capsule and the Semi-Sandbox»; relayed by Psyche Fable 91ea9f.
-
 ## 2026-10-02 — visual flowcharts
 
 Context: same relay, referring to the chart brief Fable asks Field to distill into operation-flashbook-illustration.
@@ -23,14 +15,6 @@ Context: same relay, referring to the chart brief Fable asks Field to distill in
 > This is a great example of the visual flowcharts I want to see. Let's make sure that the skill has distilled guidance
 
 -- psyche, typed, 2026-10-02, on «The Capsule and the Semi-Sandbox»; relayed by Psyche Fable 91ea9f.
-
-## Checkbox checks
-
-Context: relayed by Psyche Fable 91ea9f, typed 2026-10-02, on «Skill catch-up wave».
-
-> I checked the boxes in the UI. There were checkbox checks so let's see if you see them. If not we'll have to prohibit their use.
-
--- psyche, typed.
 
 ## Absolutely forbid this kind of UI
 
@@ -45,14 +29,6 @@ Context: relayed by Psyche Fable 91ea9f, typed 2026-10-02, on «Skill catch-up w
 Context: relayed by Psyche Fable 91ea9f, typed 2026-10-02; ellipsis preserved as received.
 
 > I only read the presentations so why didn't you put that into a presentation? ... Talk back to me in the book.
-
--- psyche, typed.
-
-## Remove these Sonnet comments
-
-Context: relayed by Psyche Fable 91ea9f; typed 2026-10-02 comment on «Flow in ethos».
-
-> I don't want these Sonnet comments anymore. Sonnet's place is not in comments so that was an error on my part. Let's remove that instruction wherever it is.
 
 -- psyche, typed.
 

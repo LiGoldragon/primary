@@ -42,17 +42,6 @@ incentive to admit ignorance and ask clear, simple questions. Both
 proposed testing lines were rejected as vague; the awareness file's
 synthesized prose is presumed talked-over ignorance.
 
-## 2026-08-17 — what's the name? a wall of complex, half-meaningless prose
-
-Design session `358f143a`, typed (captured 2026-08-17T19:20+02:00),
-after the Designer offered naming criteria instead of a name:
-
-> so what's the name? Did you do a heavy research on this? Everybody
-> on social media is complaining about models not really speaking
-> english, and Im sure some have understood its a way for models to
-> hide their ignorance behind of wall of complex but half-meaningless
-> prose.
-
 ## 2026-08-17 — settled on "bluffing"; a vocabulary skill; the training prompt was itself bluffing; how do we train against it?
 
 Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00).

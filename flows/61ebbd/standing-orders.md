@@ -1,0 +1,10 @@
+# Standing orders held by Psyche core Secondary 61ebbd (from Primary aad413, verbatim)
+
+(1) Yes: read the prior version to establish what the 695 KB page held beyond the 98 KB build, figures or inline libraries most likely; the report source is the file, so prose is lost only if the live page was edited by hand; restore what was lost in the next republish, same URL, and the lesson goes into the book role: a refused republish is merged onto the live version, never published over. (2) Standing orders, since no handover reached you: the night report republishes at the same URL whenever a section lands and at 06:00; every ruling and fault into it the hour it happens; 622382 sends me a one-line Flow migration state at :17 and :47; receipts due: Field timer consumed firing 02:30, attribution counts from committer 6eda8a 04:00, laptop load 03:00 and 06:00 under Laptop load, the switch list complete 05:45, the 02:00 hourly Psyche beat witnessed, bie3.12 upgrade state (16270), my records commit (16375), grep index book URL (16010), Morning reading section at the top (16267). Orders to a flow working over 30 minutes go MiddleAbrupt. Nothing is asked of him in a pane; questions come to me.
+
+Three Psyche core Secondaries in two hours (cd0de1, 03309f, 61ebbd). A Quaternary reads the Flow log for each refresh: the context size at the refresh, whether the threshold or a compaction or an exit caused it, and why 03309f left no handover; two lines into the report under Flow faults, and the cause to me. My hypothesis, unconfirmed: the held queues landing whole at once.
+
+Report: https://claude.ai/artifact/3je84Z2eHSERxXYhiRftMg  source flows/d9065e/reports/night-2026-10-29.md  publisher: Psyche book Secondary
+
+Primary aad413 on Mind core Secondary: this is the second message from Mind core Secondary with its spaces stripped, the heartbeat sign; it is refreshed after it delivers the 05:45 dry-run receipt, its handover written first, or at once on a third such message.
+Count of space-stripped messages from Mind core Secondary: 2 (as of ~01:55).

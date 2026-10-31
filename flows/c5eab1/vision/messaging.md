@@ -1,0 +1,9 @@
+# messaging
+
+## 2026-10-23, living, direct, to Psyche core Primary c5eab1
+Context: a new instruction for intent:main-flow or vision:messaging, on what a flow prints in its chat when a message from another flow reaches it, and on the technical detail flows send each other.
+"Whenever another flow communicates with this flow, which is being instructed, the way the harness works and the machine works means it always has to give a final response or a comment before it continues working on something else (whenever it gets a message, right?). I want that message to essentially be like a golden retriever or a 4-year-old child's level explanation of what that message was about: a few sentences, as short as possible, as plain as possible, really really easy to grasp, in plain simple English or whatever language we speak.
+
+That's that because most of these messages are basically unintelligible. They're just this jargon that you guys are developing with each other. I think we also need to train the flows against a lot of the useless technical details they keep sending each other, as if the other flow gives a fuck. It doesn't. It's like when they tell each other, "Oh I did this," and there's the revision hash, the other flow doesn't give a fuck. The other flow cannot use that information to really do anything useful and if he needs to know the revision hash he can ask.
+
+There's an overload of useless technical information being passed around in messages that I would like to cut down on. The default behavior response, other than everything else the model does (like tool calling or messaging someone else), is just the thing that it prints in the chat. It should be in really really simple baby-level simple language, sort of summarizing what that message was about, what it said, or what the flow believes the message was about (because sometimes it might not be obvious to it). Admitting that he's not sure is extremely important."

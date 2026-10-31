@@ -1,11 +1,3 @@
-## 2026-08-18 — the vocabulary defines "flow"
-
-Design session `358f143a`, typed (captured 2026-08-18T15:23+02:00).
-The Designer had said the vocabulary skill would hold "bluffing
-only" once strata and behavior had their own skills:
-
-> flow?
-
 ## 2026-08-17 — we should have a vocabulary skill
 
 Design session `358f143a`, typed (captured 2026-08-17T20:20+02:00),
@@ -58,13 +50,6 @@ psyche does.":
 > single words are nice, especially for typing, but if we dont find a
 > good option, well have to train agents to be very careful about
 > discerning between living and written psyche.
-
-## 2026-08-18 — record / log / testimony rejected for the written psyche
-
-Design session `358f143a`, typed (captured 2026-08-18T17:32+02:00), on the Designer's
-candidates (record, log, testimony) for the written psyche:
-
-> your suggestions are bad for psyche.
 
 ## 2026-08-18 — "psyche" alone means the written psyche; the living psyche is named as such
 

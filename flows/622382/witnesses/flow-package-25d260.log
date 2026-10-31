@@ -1,0 +1,9 @@
+25d260bfe9578acc5ab71bd52772a379ac3d1116 flow package
+evaluation warning: buildDepsOnly will ignore `src` when `dummySrc` is specified
+this derivation will be built:
+  /nix/store/c1060zxhy4mscq1bpmffw4sjasf503bs-flow-0.40.7.drv
+building '/nix/store/c1060zxhy4mscq1bpmffw4sjasf503bs-flow-0.40.7.drv' on 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+copying 1 paths...
+copying path '/nix/store/jjwpmjn28r03qby8f3v5i5q9rplxxcwm-flow-0.40.7' from 'ssh-ng://nix-ssh@prometheus.goldragon.criome'...
+/nix/store/jjwpmjn28r03qby8f3v5i5q9rplxxcwm-flow-0.40.7
+nix exit 0

@@ -1,13 +1,5 @@
 # Subagents
 
-## Default models for subagents
-
-Context: opening the flow, on the model the subagent roles default to.
-
-"I want to switch the default opus for your subagents to the latest version."
-
--- psyche, typed.
-
 ## Sonnet too, effort medium everywhere, three roles
 
 Context: while subflows were out witnessing where the subagent default model is pinned.
@@ -31,9 +23,3 @@ Context: ruling on the questions about which role survives, effort on trivial, a
 "So now we can take out the critical role on both sides:
 - On the Claude side, we have Haiku, Sonnet, and Opus, all at medium effort: Haiku 4.5, Sonnet 5, and Opus 5.
 - On the codex side, we would also have three roles: Luna, Terra, and Soul, all on the medium effort."
-
-## Deployed
-
-Curriculum c5498a22, primary fee54661. The psyche said "Soul" but
-the existing Codex model name is `gpt-5.6-sol` (Sol, not Soul);
-the deployed file keeps Sol.

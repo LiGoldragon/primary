@@ -19,9 +19,7 @@ A book named by title is taken from the calling flow's transcript with
 `/home/li/primary/flows/<calling flow>/books/<n>-<slug>.md`, `<n>` one
 above the highest number there. Commit nothing.
 
-Before rendering, run the source checker on the saved source:
-`node /home/li/primary/tools/book-check.mjs <absolute-source-path>`. A failed check returns its
-defects to the caller and publishes nothing. Every book has a nonempty
+Every book has a nonempty
 crystallization section proposing skill lines and their authored targets.
 Never invent that section or a proposal on the caller's behalf.
 
@@ -78,31 +76,15 @@ font and code geometry; literal text inherits the prose font and wraps.
   keeping the proposal's number.
 
 An ASCII diagram is a drawing specification, not real code. Never show
-the ASCII in the published page. For each diagram, use the Agent tool
-to start a `general-purpose` figure subflow with `model` `haiku`. Give
-it the diagram and the surrounding section's text, and ask it for an
-inline SVG figure: vertical, narrow enough for a phone, with large
-readable labels. Claude Code 2.1.294 resolves this model to Haiku 5.5;
-if that model is unavailable, report the blocker rather than silently
-choosing another model.
-
-Carry the `compensation-flashbook-illustration` rules whole in the figure
-subflow's brief, rather than assuming it inherits a skill or asking it to
-fetch one. Give it these rules with the diagram and source text:
-
-- Make a literal, elaborate and artistically attractive picture, using
-  curved paths, gradients, layered shapes and organic forms rather than
-  bare straight lines and boxes. Draw its imagery only from the source.
-- Draw one thing so it rewards looking. Use a title or a few labels at
-  most, at least 16px on a 360px-wide screen, legible in both themes.
-- A flowchart is hand-written inline SVG without a library, with a portrait
-  viewBox about 360 units wide and top-to-bottom flow. Measure its labels
-  to fit, at least 14px. Keep one colour per role across charts, numbered
-  step badges, a solid bright chosen route, a dashed grey alternative,
-  and short labels from the source.
-- Illustrate the flowchart itself: give the connections a style and feeling
-  that the source supports and draw the things around them. Never put two
-  bare charts in succession; alternate image and text.
+the ASCII in the published page. For each diagram, ask the standing
+`{ Field illustrator Tertiary }` flow first; if it is unavailable, use the Agent tool
+to start the `illustrator` subflow. Give it the sketch, whole, and ask
+it for the figure as one inline SVG. The illustrator role composes
+vision-book's figure grammar; the brief carries the sketch and nothing
+more. Pass each returned SVG to the builder with `--figures`. A figure
+the builder refuses goes back to the illustrator with the builder's
+one-line error. If the illustrator role is unavailable, report the
+blocker rather than drawing the figure here.
 
 The figure carries the diagram's relationships and the meaning in the
 surrounding text. It may add visual grouping, color and emphasis that

@@ -34,12 +34,6 @@
 
 -- psyche, STT.
 
-# Compatible with our desktop shell
-
-"Do side research on a visual notification client that would be compatible with our desktop shell, maybe even one that is included or can fit into the shell that we are using right now. That would be well integrated or well suited for showing the real-time streaming of the words while they're being recorded."
-
--- psyche, STT.
-
 # Inserting into the clipboard and history suffices for now
 
 "I never use Listener to automatically inject the text. ... Inserting into the clipboard and history suffices for now."

@@ -1,13 +1,5 @@
 # Communication
 
-## The harness sentence is harmful
-
-Context: comment on «Communicating with the living», Proposal 1, on «The same lines hold in every harness: Claude artifacts, Codex, or a later one.»
-
-> The sentence that starts with "the same line hold in every harness" is probably just harmful so take that out.
-
--- psyche, STT, 2026-10-14, book comment, relayed by Psyche Core Secondary.
-
 ## No speech in the book now; real-time speech is long-term vision
 
 Context: comment on the same book, on «It is multimodal: figure, text and speech.»

@@ -9,6 +9,7 @@ Psyche belief: /git/github.com/LiGoldragon/psyche-belief
 Mind belief: /git/github.com/LiGoldragon/mind-belief
 Field belief: /git/github.com/LiGoldragon/field-belief
 Curriculum repository: /git/github.com/LiGoldragon/Curriculum
+Books repository: /git/github.com/LiGoldragon/books
 Claude transcript root: /home/li/.claude/projects
 NixBuilder: prometheus.goldragon.criome
 Local model host: Prometheus

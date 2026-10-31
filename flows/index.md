@@ -257,7 +257,7 @@ psyche, d86ec0, Psyche.{ Sonnet d86ec0 }, successor of Psyche Sonnet bd0019; mak
 psyche, 01e496, Psyche.{ Opus 01e496 }, successor of fe945a (Psyche Opus): the Opus Psyche seat.
 
 field, 7de94a, Field Astra successor to e2a70a; coordinates system audit and ownership-based garbage collection with Field Sol, and polling-system registry findings for Mind.
-field, 42265e, Field Sol successor; sole local Ouranos host audit and ownership-based cleanup executor
+field, 42265e, Field Core Secondary, live Field secretary to Field Core Primary; declarative deployment, native launch/refresh and runtime witness owner. Reach with hm-send "Field Core Secondary".
 codex, dea0ba, Mind Astra — Flow design ownership; Start, harness state, continuous names
 mind, 41fa34, Mind Sol — registered successor of 5104af; operation-skill and Astra Flow design/code review; Field owns implementation/deployment/witness
 psyche, 3ec648, Psyche.{ Fable 3ec648 }, successor of 91ea9f: judgment, design and presentation; the ethos distillations, the voice-name fork, the open books.
@@ -293,4 +293,21 @@ psyche, 23824a, Psyche.{ Opus 23824a }, Psyche Ethos Secondary 23824a (successor
 psyche, 081064, Psyche.{ Fable 081064 }, Psyche Ethos Primary succeeding d5df1d: ethos vision against its implementation; the types, invariants, golden ethos, inline import and registry books; secretary 1d0733; reports to 445410.
 psyche, 33752b, { Psyche core Primary 33752b }, Psyche core Primary (Fable): reviews d68c82's designs and books against their psyche sources; drafts the psyche-honesty skill book.
 psyche, ee57fb, { Psyche spirit Secondary ee57fb }, Psyche Spirit Secondary (Opus): secretary to Spirit Primary d55c56; gathers spirit and intent distillation candidates and packages them for its Primary.
+mind, 0430eb, { Mind Tools Primary 0430eb }, Ad hoc script survey and tool proposals through read-only subflows; evidence delivered to existing Mind, Field and Psyche owners.
+psyche, 0c9a77, { Psyche Flow Primary 0c9a77 }, Psyche Flow Primary (Fable): crystallizes the living's Flow words, in ten batches from Psyche Flow Secondary da2038, into vision-flow and the Flow code; one book per batch.
+psyche, 563761, { Psyche Flow Primary 563761 }, Psyche Flow Primary (Fable): successor to 0c9a77; continues the Flow book series from Psyche Flow Secondary da2038 batches, one book per batch, into vision-flow and the Flow code.
+psyche, 288af9, { Psyche Flow Primary 288af9 }, Psyche Flow Primary (Fable): successor to 563761; finishes batch 04 and continues the Flow book series from Psyche Flow Secondary da2038 batches, one book per batch, into vision-flow and the Flow code.
+psyche, c5f24b, { Psyche Flow Primary c5f24b }, Psyche Flow Primary (Fable): successor to 288af9; continues the Flow book series from Psyche Flow Secondary da2038 batches, starting at batch 06 (context modules and prompt), one book per batch, into vision-flow and the Flow code.
+psyche, df159a, { Psyche Flow Primary df159a }, Psyche Flow Primary (Fable): successor to c5f24b; revises book 10 (batch 07, messaging between flows) on the Secondary's audit, then batch 08 of the Flow book series.
+psyche, 17ac8a, { Psyche Communication Primary 17ac8a }, Psyche Communication Primary (Fable): crystallizes the living's words on communicating change with the least text (inline diffs, figures) into the psyche module that holds it; takes over the book «Communicating with the living»; proposes the final topic name.
+claude, 984e88, { Psyche Chronos Secondary 984e88 }: Chronos head-start for a Fable Primary, and the Chronos anatomy book
+psyche, 38d4c1, { Psyche greatAdvancements Secondary 38d4c1 }, Psyche greatAdvancements Secondary (Opus): started by Psyche core Secondary 8624c4; with the living, orders the great advancements one at a time and contemplates a lean, nearly toolless Fable flow.
+- 8a8bed — { Psyche core Primary 8a8bed } — fresh broad presentation for the living, 2026-10-16
+- 5dd7e5 — { Psyche core Secondary 5dd7e5 } — successor to d68c82, 2026-10-19
+- 68db51 — { Psyche core Secondary 68db51 } — successor to 5dd7e5, 2026-10-19
+- 9864c0 — { Psyche core Secondary 9864c0 } — successor to 68db51, 2026-10-19
 - 379e7a — { Psyche core Secondary 379e7a } — successor to ca28a4, 2026-10-19
+- aae29e — { Psyche core Secondary aae29e } — successor to 379e7a, 2026-10-20
+psyche, 9ef2c5, { Psyche core Secondary 9ef2c5 }, Psyche core Secondary (Opus): replaces 8624c4 at the living's order; hub for the psyche.
+psyche, 2ff004, Psyche core Secondary; successor of cdbe86; provenance audit of today's relayed orders; coordinating landing of rulings 30 and 21 and the 2nd edition of «Flow, the decisions».
+psyche, 6e2616, { Psyche core Primary 6e2616 }, Psyche core Primary (Fable): successor of 5ec12c, started by the living by hand on 2026-10-23; decides design for Psyche, Flow and the standing order of 2026-10-22; sends no message; Secondary 2ff004.

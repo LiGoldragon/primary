@@ -10,8 +10,12 @@ const value = flag => { const i = args.indexOf(flag); return i < 0 ? undefined :
 const flowId = value('--flow');
 const receiptPath = value('--receipt');
 const registryPath = value('--registry');
-const flowBin = value('--flow-bin') ?? '/home/li/.local/bin/flow';
-const nexusBin = value('--nexus-bin') ?? '/home/li/.local/bin/flow-nexus';
+// The installed commands are the ones the declared profile puts on PATH.
+const onPath = name => (process.env.PATH ?? '').split(':').filter(Boolean)
+  .map(dir => `${dir}/${name}`)
+  .find(file => { try { fs.accessSync(file, fs.constants.X_OK); return true; } catch { return false; } }) ?? name;
+const flowBin = value('--flow-bin') ?? onPath('flow');
+const nexusBin = value('--nexus-bin') ?? onPath('flow-nexus');
 const nexusPid = value('--nexus-pid');
 const bindingPath = value('--binding-evidence');
 const attestationPath = value('--source-attestation');

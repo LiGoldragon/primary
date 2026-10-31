@@ -32,29 +32,6 @@ pseudocode or an unexplained reference is insufficient.
 
 — psyche, captured 2026-08-20T11:49:18+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
 
-## 2026-08-21T20:14:10+02:00 — looks good enough. deploy it
-
-Context (agent-authored, separate from the psyche's words): Explicit approval
-of the complete proposed Lojix skill wording and scope, its operating-system
-dependency/reference, deployment variables, manifest activation,
-regeneration, testing, commit, push, and declarative deployment. This does not
-authorize reboot or emergency runtime mutation.
-
-> looks good enough. deploy it
-
-— psyche, captured 2026-08-21T20:14:10+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
-
-## 2026-08-22T12:43:17+02:00 — if the templates are only triggered by {% then there is no collision
-
-Context (agent-authored, separate from the psyche's words): Literal Dotos
-braces do not collide with Curriculum target-condition syntax when the
-template delimiter is `{%`. The existing any-brace rejection is broader than
-the template grammar and must not be treated as evidence of a syntax collision.
-
-> if the templates are only triggered by {% then there is no collision.
-
-— psyche, captured 2026-08-22T12:43:17+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
-
 ## 2026-08-22T12:56:32+02:00 — the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
 
 Context (agent-authored, separate from the psyche's words): Curriculum skill
@@ -65,18 +42,6 @@ role in that contract.
 > I dont understand the point of this incorrect checker. the only need is for an indication in the skill design skill to know about the template syntax, nothing more. the checker is quackery
 
 — psyche, captured 2026-08-22T12:56:32+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
-
-## 2026-08-22T13:25:05+02:00 — y
-
-Context (agent-authored, separate from the psyche's words): Explicit approval
-of the proposed skill-designing target-template line and the removal of
-Curriculum's any-brace source validator, brace-free generated-output checker,
-and their checker-specific tests and documentation. Conditional rendering
-itself remains.
-
-> y
-
-— psyche, captured 2026-08-22T13:25:05+02:00 (01a01bac; 01a01bac-91d6-7161-80c3-6f9ca38c7cf5)
 
 ## 2026-08-22T13:48:44.947+02:00 — remove the forbidden tests; do not use the old GPT model; deploy
 

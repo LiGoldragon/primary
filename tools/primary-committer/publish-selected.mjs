@@ -39,7 +39,7 @@ export function verifyLifetime(snapshot, flow, sentinel) {
   let rest = match[1];
   const rows = [];
   while (rest.trim()) {
-    const row = /^\s*\{\s*(\d+)\s+(\S+)\s+(\S+)\s+\[([^\[\]]*)\]\s*«[^«»]*»\s*\}/.exec(rest);
+    const row = /^\s*\{\s*(\d+)\s+(\S+)\s+(\S+)\s+\[([^\[\]]*)\]\s*(?:«[^«»]*»|[^\s{}]+)\s*\}/.exec(rest);
     requireFact(row, 'invalid lifetime lock row');
     rows.push({id: row[1], name: row[2], owner: row[3], paths: row[4].trim().split(/\s+/).filter(Boolean)});
     rest = rest.slice(row[0].length);

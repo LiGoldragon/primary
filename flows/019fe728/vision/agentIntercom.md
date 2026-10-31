@@ -1,14 +1,3 @@
-## 2026-08-09T15:46:27.106Z · session 019fe728 · "we need agent intercom for that"
-
-Context (agent-authored, separate from the psyche's words): This focus request
-is from response item line 123 and event line 124 in
-`/home/li/.codex/sessions/2026/08/09/rollout-2026-08-09T17-33-36-019fe728-7742-7ab0-91dc-f813ca89ec7e.jsonl`, session `019fe728-7742-7ab0-91dc-f813ca89ec7e`.
-
-> yes, but we need agent intercom for that. so lets focus on that together.
-> acquire the context pertaining to that now
-
-— psyche, 2026-08-09T15:46:27.106Z (019fe728; 019fe728-7742-7ab0-91dc-f813ca89ec7e)
-
 ## 2026-08-09T20:18:11.025Z · session 019fe728 · "There's two stacks here that you're talking about"
 
 Context (agent-authored, separate from the psyche's words): This deployment-

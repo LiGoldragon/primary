@@ -52,7 +52,7 @@ function luna(summary) {
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'field-luna-')); const schema=path.join(dir,'schema.json'), out=path.join(dir,'out.json');
   try {
     fs.writeFileSync(schema,JSON.stringify({type:'object',additionalProperties:false,required:['status'],properties:{status:{enum:['clear','attention','unavailable']}}}));
-    const prompt=`You are Field Luna, an ultra-low operational observer. Read only this metadata. Do not run commands, propose commands, or authorize cleanup. Return JSON only. ${JSON.stringify(summary)}`;
+    const prompt=`You are Field Luna, an operational observer. Read only this metadata. Do not run commands, propose commands, or authorize cleanup. Return JSON only. ${JSON.stringify(summary)}`;
     const result=run('codex',['exec','--ephemeral','--model','gpt-5.6-luna','--sandbox','read-only','--skip-git-repo-check','--output-schema',schema,'--output-last-message',out,prompt],{stdio:'ignore',timeout:90_000});
     return result.status===0&&fs.existsSync(out)?JSON.parse(fs.readFileSync(out,'utf8')):{status:'unavailable'};
   } catch { return {status:'unavailable'}; } finally { fs.rmSync(dir,{recursive:true,force:true}); }

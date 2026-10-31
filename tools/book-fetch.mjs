@@ -214,17 +214,18 @@ export function split(entries, size) {
 }
 
 // The flow's last complete to-the-living block in `records` ([lineNumber,
-// parsed] pairs), from its start marker to its end marker, raw.
+// parsed] pairs), from its first start marker to its last end marker, raw: a block that
+// quotes the markers inside a fence is not cut short.
 export function latestBlock(records) {
   let latest = null;
   for (const [line, record] of records) {
     if (record.isSidechain || record.type !== "assistant" || !Array.isArray(record.message?.content)) continue;
     for (const block of record.message.content) {
       if (block.type !== "text" || typeof block.text !== "string") continue;
-      const start = block.text.lastIndexOf(BLOCK_START);
+      const start = block.text.indexOf(BLOCK_START);
       if (start < 0) continue;
-      const end = block.text.indexOf(BLOCK_END, start);
-      if (end < 0) continue;
+      const end = block.text.lastIndexOf(BLOCK_END);
+      if (end < start) continue;
       latest = { line, text: block.text.slice(start, end + BLOCK_END.length) };
     }
   }
