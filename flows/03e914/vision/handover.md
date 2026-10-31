@@ -20,3 +20,15 @@ Context: the living, in the Psyche core Primary chat 03e914, after the flow said
 Well I guess one way of doing it would be to rewrite or maybe we can move the raw vision logs as they have been done in the last few flows. We could just put them into maybe an old format directory next to it, right, or something. Or not, maybe we just remove them but we can leave them there for now.
 
 Then we would replace it with this one final vision or maybe it's not the vision log, maybe it's just the psyche log, right? It's the living log. This one thing would be the thing that I asked for and then we could use the same mechanism as long as the files, I guess, are in the vision directory, right? They would be passed over to the new flow. Isn't that right?
+
+## 2026-10-31 — The flow that had the conversation writes the living log, not another flow
+Context: the living, in the Psyche core Primary chat 03e914, when the flow proposed a separate writer flow or script.
+
+So you want another flow that does not understand the conversation (because it's not the flow that's been having the conversation) to give his opinion on what the conversation is, instead of letting the one who knows the conversation (because he had it) do it?
+
+## 2026-10-31 — The Nexus tells the flow its time has come; what if the living keeps talking
+Context: the living, same chat, agreeing that the flow writes its own living log before its refresh.
+
+Yes that's what I mean. The Nexus, like you said, doesn't have any mechanism for this right now but it would essentially send a message to the current Flow and tell him that his time has come. That would mean that it's time. It's just a few code words, right, like "write your living log," and the Flow would do it. And then what?
+
+There are many ways this can happen, right? Maybe the Nexus tells the Flow that it's time and I don't see that, right? I keep talking with the same Flow, which ends up putting more living into that chat, and then every time I talk the Flow would have to redo the living log. What do we do there?
