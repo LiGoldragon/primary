@@ -44,6 +44,8 @@ The one-line column is an estimate: one turn at the stretch's mean context (774,
 
 > Let's make a case study of this. You ran all these commands. It hasn't gotten you really far. How much would it have cost to send a couple-line instruction set to a subagent that knows how to edit beliefs? This is coming back to my point from yesterday: having really well-defined subagents that know how to do things that only need a single line to direct them.
 
+> I was reading your thing in chat there where you're saying Fable 5:1, 10:1. That's one aspect of it. The other aspect of it is that when you run all these tools you're introducing noise into your context, which lowers the quality of your output, which is the most important part of the machine system (because if the design is fucked everything is fucked).
+
 ## His words yesterday, 2026-10-30
 
 From flows/b0d3ae/vision/subflows.md, after the Primary listed files itself:
