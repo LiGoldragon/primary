@@ -139,7 +139,7 @@ flowchart TB
 +
 + ## Publishing
 +
-+ A book is a presentation published. The publisher builds the source as it was handed and publishes the page; it authors nothing and enforces nothing, and the book is as correct as its author made it.
++ The publisher builds the source as it was handed and publishes the page; it authors nothing and enforces nothing, and the book is as correct as its author made it.
 
 ### Proposal 6: The commented-book rule is vision of publishing · mind-belief › knowledge/book-making.md, and psyche-belief › vision/book.md
 
@@ -165,7 +165,7 @@ A book the living has commented on stays as he saw it; what his comments change 
 +
 + Spirit, intent and vision land only on the living's review; he approves every crystallization.
 +
-+ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him as a review: a presentation of the lines as landed, each under its repo › path, in the same red and green as a proposal but dark where a proposal's are light, since a proposal's lines have not landed and a review's have, one for a line landed added and one for a line landed removed, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
++ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him, each line under its repo › path, in the same red and green as a proposal but dark where a proposal's are light, since a proposal's lines have not landed and a review's have, one for a line landed added and one for a line landed removed, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
 
 ### Proposal 8: The source format is the author's knowledge · mind-belief › knowledge/book-making.md, and mind-belief › knowledge/presentation-source.md, a new file
 
@@ -181,9 +181,6 @@ A book the living has commented on stays as he saw it; what his comments change 
 - ## The author makes the book
 -
 - The author makes the book properly and sends the source as made. The builder renders what it is given and enforces nothing; the book is as correct as the author made it. The publisher builds the source and publishes the page.
-+
-+ ## The publisher builds and publishes
-+
 
 - A proposal opens with `### Proposal N: title · repo › path`, numbered from 1; a new module ends the heading with `, a new file`, a deleted one with `, a deleted file`. A line moved between modules is one proposal headed `### Proposal N: title · repoA › pathA, and repoB › pathB`, with a level-four heading for each path, the line in red under the first and green under the second. No other level-three heading exists.
 
