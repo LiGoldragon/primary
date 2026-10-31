@@ -710,7 +710,11 @@
       nil)))
 
 (defn panel [sign body]
-  (let [inner (body-html body)]
+  (let [body (if (and *module-fig* (= :code (first body)) (= "mermaid" (first (second body)))
+                      (#{"+" "-"} sign))
+               [:fig (*module-fig* (second (second body)))]
+               body)
+        inner (body-html body)]
     (case (if (= :fig (first body)) (str "fig" sign) sign)
       ;; a figure keeps its own colours: only a surround marks it as added or removed
       "fig+" (str "<div class=\"figmark fig-add\">" inner "</div>")
@@ -1078,14 +1082,15 @@
 (defn signed-figure
   "[sign stripped-lines] when every non-blank line of a fence carries one same sign
   (a proposed figure: all + added, all - removed) and, signs stripped, it is a figure
-  (an EDN or ASCII graph, or an ASCII drawing); else nil."
+  (an EDN or ASCII graph, an ASCII drawing, or a Mermaid flowchart); else nil."
   [lang lines]
   (let [ls (remove blank? lines)
         sign (some-> (first ls) first)]
-    (when (and (#{"" "text" "figure"} lang) (seq ls) (every? signed-line? ls) (every? #(= sign (first %)) ls))
+    (when (and (#{"" "text" "figure" "mermaid"} lang) (seq ls) (every? signed-line? ls) (every? #(= sign (first %)) ls))
       (let [stripped (mapv #(if (< (count %) 2) "" (subs % 2)) lines)]
-        (when (or (and (= lang "figure") (try (read-figure stripped) (catch Exception _ nil)))
-                  (and (not= lang "figure") (drawing? stripped)
+        (when (or (= lang "mermaid")
+                  (and (= lang "figure") (try (read-figure stripped) (catch Exception _ nil)))
+                  (and (not (#{"figure" "mermaid"} lang)) (drawing? stripped)
                        ;; a drawing, not prose that holds one
                        (every? #(or (blank? %) (<= (count (strip %)) 30) (re-find #"[|+\u2500-\u257f]" %)) stripped)))
           [(str sign) stripped])))))
@@ -1656,7 +1661,8 @@
                          (esc (str/join "\n" plain)) "</code></pre>")))
 
             (= lang "text")
-            (emit-panels (text-panels lines (= :per-line per-line)))
+            (emit-panels (binding [*module-fig* show-fig]
+                           (text-panels lines (= :per-line per-line))))
 
             ;; Proposed code is shown as an addition: a fence whose every line is added
             ;; keeps its signs and falls through to the data-diff block, tinted green.
