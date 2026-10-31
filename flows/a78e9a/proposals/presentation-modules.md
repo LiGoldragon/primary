@@ -195,7 +195,7 @@ flowchart TB
 **Comment** His ruling of today: psyche lands only on his review; a knowledge or role module the machine lands is shown to him afterward, in a colour of its own.
 
 + ---
-+ description: What a review is: a presentation of lines already landed without the living's review, in their own colour.
++ description: What a review is: a presentation of lines already landed without the living's review, in two colours of their own.
 + dependencies: [vision-presentation]
 + ---
 +
@@ -203,7 +203,7 @@ flowchart TB
 +
 + Spirit, intent and vision land only on the living's review; he approves every crystallization.
 +
-+ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him as a review: a presentation of the lines as landed, each under its repo › path, in a third colour beside the red and green of a proposal, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
++ A knowledge or role module may be landed by the machine so the work goes on. Every such landing is then shown to him as a review: a presentation of the lines as landed, each under its repo › path, in two colours of its own beside the red and green of a proposal, one for a line landed added and one for a line landed removed, so he sees at a glance that it has already landed and checks it for a line that would make a flow misbehave.
 
 ### Proposal 8: The source format is the author's knowledge · mind-belief › knowledge/book-making.md, and mind-belief › knowledge/presentation-source.md, a new file
 
