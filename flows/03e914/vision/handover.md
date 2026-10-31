@@ -41,3 +41,10 @@ I type directly in the harness. We didn't make an app that goes through the Flow
 ## 2026-10-31 — A design is not sent to be built before the living rules on it
 Context: the living, in the Psyche core Primary chat 03e914, after the flow sent the living-log design to the Secondary for Mind core to build.
 Nobody gave you the authority to decide what we're going to do.
+
+## 2026-10-31 — Changing the Nexus is the hardest thing; adapt to how it works now, and inject the living summaries into the successor's context
+Context: the living, in the Psyche core Primary chat 03e914, after the flow proposed a Nexus change for the living log.
+
+Well as you know, if you want to change the Nexus and get it deployed, you're going to have to destroy several villages, trigger several tsunamis, and have several universes end and be reborn. It's like asking for a camel to go through the eye of a needle for you to change the Nexus. When you're going like, "Oh we're just going to change the Nexus," you sound so naive. This is the hardest thing to do. I had to almost threaten you with the worst imaginable pain in the universe for you to even contemplate actually trying to update the Nexus.
+
+We can't really rely on that. What we can do is adapt to how the Nexus works right now and try to achieve that behavior. In any case here's an idea and maybe you've already done it but maybe you're not that clever. Did you get a subagent or another Flow to inject the summaries, the living summaries that were written that you were supposed to have started with, into your middle stratum?
