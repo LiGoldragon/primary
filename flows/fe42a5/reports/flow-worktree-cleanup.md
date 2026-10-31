@@ -1,6 +1,8 @@
 # Flow worktrees: 75 to one
 
-**Done:** Flow now has only its canonical checkout. Source from the dirty copies is reachable on 12 pushed archive branches; two formerly unreachable clean HEADs have pushed archive tags. All 74 original linked HEADs remain reachable. **Production code removed 0 / added 0.** This is the Flow batch, not a claim that every repository is consolidated.
+**Done:** The cleaned `/git/github.com/LiGoldragon/flow/.git` repository now registers only its canonical checkout. Source from the dirty copies is reachable on 12 pushed archive branches; two formerly unreachable clean HEADs have pushed archive tags. All 74 original linked HEADs remain reachable. **Production code removed 0 / added 0.** Other clones and their active work remain preserved.
+
+**Exact scope:** 75→1 is registration reduction in the common Git repository `/git/github.com/LiGoldragon/flow/.git`. A separate common repository `/home/li/primary/flow/.git` survives with the active `/home/li/worktrees/flow-heartbeat-24eb5b` checkout. Its paired `/home/li/worktrees/meta-heartbeat-24eb5b` belongs to `/git/github.com/LiGoldragon/meta-signal-flow/.git`. Both active paths and lock24937 were preserved. This is **not** proof of one Flow working copy across all clones; no further cleanup is requested. Direct path/admin witnesses are in `heartbeat-preservation.md`.
 
 ## Witness
 
