@@ -143,7 +143,7 @@ flowchart TB
 +
 + A module deleted shows whole in red, with a Destroy or Archive mark.
 +
-+ A line moved between modules is one proposal headed by both paths: the line in red under the module it leaves, the same line in green under the module it enters.
++ A line moved between modules is shown once, in the colour of a move, distinct from the colours of a line added and a line removed, under a heading that names the module it leaves and the module it enters; light while proposed, dark once landed, as the other colours are.
 +
 + A dependency changed shows in the module's front matter: the dependency removed in red, the dependency added in green.
 +
@@ -284,7 +284,7 @@ flowchart TB
 +
 + Outside a proposal a source holds only: one `Presentation.{ «title» }` line, one `# title`, unlabelled diagram fences, and modules shown as they stand, each under a level-two heading `## repo › path`. A module shown as it stands is its text at origin main, byte for byte, front matter left out.
 +
-+ A proposal opens with `### Proposal N: title · repo › path`, numbered from 1; a new module ends the heading with `, a new file`, a deleted one with `, a deleted file`. A line moved between modules is one proposal headed `### Proposal N: title · repoA › pathA, and repoB › pathB`, with a level-four heading for each path, the line in red under the first and green under the second. No other level-three heading exists.
++ A proposal opens with `### Proposal N: title · repo › path`, numbered from 1; a new module ends the heading with `, a new file`, a deleted one with `, a deleted file`. A line moved between modules is one proposal headed `### Proposal N: title · repoA › pathA, and repoB › pathB`, and its moved lines shown once, in the move colour, under one level-four heading `#### from repoA › pathA to repoB › pathB`. No other level-three heading exists.
 +
 + ## Red and green
 +
