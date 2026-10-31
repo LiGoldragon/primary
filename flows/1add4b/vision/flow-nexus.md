@@ -18,3 +18,8 @@ Do some research. See if you can find some things that were mentioned that were 
 Context: the living, same chat, during the 0.44 activation in the quiet hours.
 
 set a makeshift heartbeat tracker below an hour to keep the caches warm
+
+## 2026-10-31 — Once the new version works, the Primary itself migrates onto it
+Context: the living, same chat, after the makeshift heartbeat was set and the 0.44 activation ordered.
+
+you should be able to migrate the new version works.
