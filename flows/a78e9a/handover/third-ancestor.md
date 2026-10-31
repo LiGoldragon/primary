@@ -9,7 +9,7 @@ He asked for "the proposal vision for this translator or transcriber thing, howe
 
 On its proposed Output root he said: "We really don't need a special "kind" and "signal." It is a signal, the thing that the translator does. It's just that some of those things are kind of only meant for the translator. You wouldn't send the system call back to the CLI." The root was withdrawn.
 
-Before leaving to shave he said "you're welcome to go crazy with this whole new world concept on the Flow Nexus version 1 with its translator or transcriber", and asked: "What are we calling it: translator or transcriber or is there another suggestion?" No answer to the name question appears in the transcript; it stands open.
+Before leaving to shave he said "you're welcome to go crazy with this whole new world concept on the Flow Nexus version 1 with its translator or transcriber" [unverified], and asked: "What are we calling it: translator or transcriber or is there another suggestion?" [unverified] No answer to the name question appears in the transcript; it stands open.
 
 ## Operation is an object that acts
 
@@ -65,7 +65,7 @@ He opened "a tiny side conversation on efficient Rust builds in Nix", "a holy gr
 
 ## His other asks
 
-He suggested "a subflow to compare your context with your predecessors to make sure you aren't missing anything important I said and to inject it if you're lacking it."
+He suggested "a subflow to compare your context with your predecessors to make sure you aren't missing anything important I said and to inject it if you're lacking it." [unverified]
 
 The flow's raw records also hold words heard earlier that day: "Can we get this logical delivery nonsense out of the production flow nexus at least? It's really annoying and it's just introducing a bunch of noise."; on the flow id, "these are things that we agree on so we don't need to leave it to the implementer to maybe understand what we mean"; and, on printing the same thing in the chat and the book, "You're outputting the same thing twice. You're taking $20 out of my wallet for a hamburger that costs $10."
 
