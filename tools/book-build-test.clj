@@ -49,26 +49,40 @@
          (change "- Keep the plan.\n+ Keep the whole new plan."))))
 
 (deftest line-wholly-added
-  (is (= "<div class=\"diff\"><div class=\"ctx\"><p>Kept.</p></div><div class=\"add\"><ins><p>Brand new line.</p></ins></div></div>"
+  (is (= "<div class=\"diff\"><div class=\"ctx\"><p>Kept.</p></div><div class=\"add\"><p>Brand new line.</p></div></div>"
          (change "  Kept.\n+ Brand new line."))))
 
 (deftest line-wholly-removed
-  (is (= "<div class=\"diff\"><div class=\"del\"><del><p>Gone line.</p></del></div><div class=\"ctx\"><p>Kept.</p></div></div>"
+  (is (= "<div class=\"diff\"><div class=\"del\"><p>Gone line.</p></div><div class=\"ctx\"><p>Kept.</p></div></div>"
          (change "- Gone line.\n  Kept."))))
 
 (deftest two-lines-paired-with-two
   (is (= "<div class=\"diff\"><p>first <del>old</del><ins>new</ins> line second <del>old</del><ins>new</ins> line</p></div>"
          (change "- first old line\n- second old line\n+ first new line\n+ second new line"))))
 
-(deftest code-diff-keeps-lines-and-indent
-  (is (= "x\n  (a <del>b</del><ins>z</ins>)\n(c)"
-         (book-build/code-lines ["x" "-   (a b)" "- (c)" "+   (a z)" "+ (c)"]))))
+(deftest signed-code-html-three-cases
+  (binding [book-build/*highlight* false]
+    (is (= "<pre class=\"code-add\"><code class=\"language-rust\">one &lt;\n  two</code></pre>"
+           (book-build/signed-code-html "rust" ["+ one <" "+   two"])) "wholly added")
+    (is (= "<pre class=\"code-del\"><code class=\"language-rust\">one\ntwo</code></pre>"
+           (book-build/signed-code-html "rust" ["- one" "- two"])) "wholly removed")
+    (is (= (str "<pre class=\"code-diff\"><code class=\"language-rust\">"
+                "<span class=\"ln\">x\n</span><span class=\"ln ln-del\">  (a b)\n</span>"
+                "<span class=\"ln ln-add\">  (a z)\n</span><span class=\"ln\">(c)\n</span></code></pre>")
+           (book-build/signed-code-html "rust" ["  x" "-   (a b)" "+   (a z)" "  (c)"])) "mixed")
+    (is (nil? (book-build/signed-code-html "rust" ["plain"])) "no sign, no change")))
+
+(deftest highlight-on-marks-rust-keywords
+  (if-not (zero? (:exit (clojure.java.shell/sh "sh" "-c" "command -v tree-sitter")))
+    (println "tree-sitter not on PATH; highlight test skipped")
+    (binding [book-build/*highlight* true]
+      (is (str/includes? (book-build/code-html "rust" ["fn main() {}"]) "<span class=\"ts-keyword\">fn</span>")))))
 
 (def fixture-md
   "# Fixture & <book>\n\n<!-- hidden comment -->\nPresentation.{ Book Fixture }\n\n## Crystallization\n\nAn opening paragraph with `inline <code>` and\na second line & more.\n\n### Proposal 1: Figures & `records`\n\nFile: `skills/vision-x/SKILL.md`, (builds on `vision-y`)\n\n```text\n  ---\n  name: vision-x\n  ---\n  ## A heading kept as text\n  Unchanged context line\n- Removed line one\n- removed line two\n+ Added line with `code`\n+ # added heading\n```\n\n```text\n+-----------------------+\n| Flow                  |\n| with \"two\" lines      |\n+-----------------------+\n           |\n           | sends it's\n           | message\n           v\n+-----------------------+\n| Recipient             |\n+-----------------------+\n     |\n     | reads\n     v\n+-----------------------+\n| Log                   |\n+-----------------------+\n```\n\n**Destroy** the record `flows/aa/vision/x.md` below.\n\nFile: `flows/aa/vision/x.md`\n\n```text\n- A working instruction logged as vision.\n```\n\n**Archive**\n\n```text\n- An archived line.\n```\n\n**Destroy** with nothing following.\n\n```js\nconst x = 1 < 2 && \"y\";\n```\n\nRuling, one number per line:\n\n1. Approve.\n2. Reject:\n\n```text\n+ inside the ruling card\n```\n\nAfter the card.\n\n### Proposal 2: Second\n\nGroup heading\n3. Third choice\ncontinued here.\n4. Fourth choice\n\nRuling, one number per line:\n\n3. Yes\n4. No\n\n```python\nprint(\"tail\")\n```\n\nTrailing paragraph.\n")
 
 (def fixture-expected
-  "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Fixture &amp; &lt;book&gt;</title>\n<h1 class=\"book-title\">Fixture &amp; &lt;book&gt;</h1>\n<h2>Crystallization</h2>\n<p>An opening paragraph with <code>inline &lt;code&gt;</code> and a second line &amp; more.</p>\n<article class=\"proposal\"><header><span class=\"pnum\">1</span><h2>Figures &amp; <code>records</code></h2></header>\n<p class=\"target\"><code>skills/vision-x/SKILL.md</code></p><p>builds on <code>vision-y</code></p>\n<div class=\"diff\"><div class=\"ctx\"><div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl><dt>Name</dt><dd>vision-x</dd></dl></div></div><div class=\"ctx\"><h4>A heading kept as text</h4></div><div class=\"ctx\"><p>Unchanged context line</p></div><p><del>Removed</del><ins>Added</ins> line <del>one removed line two</del><ins>with <code>code</code></ins></p><div class=\"add\"><ins><h3>added heading</h3></ins></div></div>\n<div class=\"figure\">FIGURE</div>\n<div class=\"record destroy\"><p>the record <code>flows/aa/vision/x.md</code> below.</p>\n<p class=\"target\"><code>flows/aa/vision/x.md</code></p>\n<div class=\"del\"><del><p>A working instruction logged as vision.</p></del></div></div>\n<div class=\"record archive\">\n<div class=\"del\"><del><p>An archived line.</p></del></div></div>\n<div class=\"record destroy\"><p>with nothing following.</p>\n<pre data-diff><code class=\"language-javascript\">const x = 1 &lt; 2 &amp;&amp; \"y\";</code></pre>\n<section class=\"rulings\"><ol><li value=\"1\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"1\"><li>Approve.</li><li>Reject:</li></ol><div class=\"add\"><ins><p>inside the ruling card</p></ins></div></div><p>After the card.</p></li></ol></section>\n</article>\n<article class=\"proposal\"><header><span class=\"pnum\">2</span><h2>Second</h2></header>\n<p>Group heading</p>\n<ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Third choice continued here.</li><li>Fourth choice</li></ol>\n<section class=\"rulings\"><ol><li value=\"2\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Yes</li><li>No</li></ol></li></ol></section><pre data-diff><code class=\"language-python\">print(\"tail\")</code></pre><p>Trailing paragraph.</p>\n</article>\nTAIL\n")
+  "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Fixture &amp; &lt;book&gt;</title>\n<h1 class=\"book-title\">Fixture &amp; &lt;book&gt;</h1>\n<h2>Crystallization</h2>\n<p>An opening paragraph with <code>inline &lt;code&gt;</code> and a second line &amp; more.</p>\n<article class=\"proposal\"><header><span class=\"pnum\">1</span><h2>Figures &amp; <code>records</code></h2></header>\n<p class=\"target\"><code>skills/vision-x/SKILL.md</code></p><p>builds on <code>vision-y</code></p>\n<div class=\"diff\"><div class=\"ctx\"><div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl><dt>Name</dt><dd>vision-x</dd></dl></div></div><div class=\"ctx\"><h4>A heading kept as text</h4></div><div class=\"ctx\"><p>Unchanged context line</p></div><p><del>Removed</del><ins>Added</ins> line <del>one removed line two</del><ins>with <code>code</code></ins></p><div class=\"add\"><h3>added heading</h3></div></div>\n<div class=\"figure\">FIGURE</div>\n<div class=\"record destroy\"><p>the record <code>flows/aa/vision/x.md</code> below.</p>\n<p class=\"target\"><code>flows/aa/vision/x.md</code></p>\n<div class=\"del\"><p>A working instruction logged as vision.</p></div></div>\n<div class=\"record archive\">\n<div class=\"del\"><p>An archived line.</p></div></div>\n<div class=\"record destroy\"><p>with nothing following.</p>\n<pre><code class=\"language-javascript\">const x = 1 &lt; 2 &amp;&amp; \"y\";</code></pre>\n<section class=\"rulings\"><ol><li value=\"1\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"1\"><li>Approve.</li><li>Reject:</li></ol><div class=\"add\"><p>inside the ruling card</p></div></div><p>After the card.</p></li></ol></section>\n</article>\n<article class=\"proposal\"><header><span class=\"pnum\">2</span><h2>Second</h2></header>\n<p>Group heading</p>\n<ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Third choice continued here.</li><li>Fourth choice</li></ol>\n<section class=\"rulings\"><ol><li value=\"2\"><p>Ruling, one number per line:</p><ol class=\"choices\" start=\"3\" style=\"counter-reset:choice 2\"><li>Yes</li><li>No</li></ol></li></ol></section><pre><code class=\"language-python\">print(\"tail\")</code></pre><p>Trailing paragraph.</p>\n</article>\nTAIL\n")
 
 (def illustration
   (str "<?xml version=\"1.0\"?><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
@@ -118,8 +132,8 @@
     (is (str/includes? html "<th style=\"text-align:right\">b</th>"))
     (is (str/includes? html "<td>3</td><td>4</td>"))
     (is (not (re-find #"-{3}" html)) "no separator row drawn as text")
-    (is (= 1 (count (re-seq #"<del>" html))))
-    (is (str/includes? html "<del><p>Gone line.</p></del>") "a line opening with - and a space is still removed")))
+    (is (= 1 (count (re-seq #"class=\"del\"" html))))
+    (is (str/includes? html "<p>Gone line.</p>") "a line opening with - and a space is still removed")))
 
 (deftest a-table-is-read-across-its-signs
   ;; kept header and separator, then kept, removed and added rows: one table
@@ -128,24 +142,22 @@
     (is (= 1 (count (re-seq #"<table>" html))) "one table")
     (is (str/includes? html "<thead><tr><th>type</th><th>kind</th></tr></thead>"))
     (is (str/includes? html "<tr><td>kept</td><td><code>A</code></td></tr>"))
-    (is (str/includes? html "<td><del>gone</del></td><td><del><code>B</code></del></td>"))
-    (is (str/includes? html "<td><del>also gone</del></td><td><del>C</del></td>"))
-    (is (str/includes? html "<td><ins>new</ins></td><td><ins>D</ins></td>"))
-    (is (= 2 (count (re-seq #"<tr style=\"background:var\(--hl-del\)\">" html))) "each removed row is its own struck row")
+    (is (str/includes? html "<tr class=\"row-del\"><td>gone</td><td><code>B</code></td></tr>"))
+    (is (str/includes? html "<tr class=\"row-del\"><td>also gone</td><td>C</td></tr>"))
+    (is (str/includes? html "<tr class=\"row-add\"><td>new</td><td>D</td></tr>"))
+    (is (= 2 (count (re-seq #"<tr class=\"row-del\">" html))) "each removed row is its own struck row")
     (is (not (str/includes? html "<p>")) "no paragraph of pipes")
     (is (not (re-find #"-{3}" html)) "no separator row drawn as text"))
   (let [html (change "- | a | b |\n- |---|---|\n- | 1 | 2 |")]
-    (is (not (str/includes? html "<tr style")) "a table of one sign stays as it was read")))
+    (is (not (str/includes? html "<tr class=\"row-")) "a table of one sign stays as it was read")))
 
 (deftest empty-line-in-text-fence
-  (is (= "<div class=\"diff\"><div class=\"add\"><ins><p>a</p></ins></div><div class=\"add\"><ins><p>b</p></ins></div></div>\n"
+  (is (= "<div class=\"diff\"><div class=\"add\"><p>a</p></div><div class=\"add\"><p>b</p></div></div>\n"
          (book-build/build "```\n+ a\n\n+ b\n```\n" ""))))
 
 (deftest bare-markers-equal-marker-space
-  (is (= (book-build/code-lines ["x" "- a" "-  " "- b" "+ a" "+ " "+ b"])
-         (book-build/code-lines ["x" "- a" "-" "- b" "+ a" "+" "+ b"])))
-  (is (= "x\n\n<del></del>"
-         (book-build/code-lines ["x" "-" "- " "+"])) "unpaired empties stay empty marks")
+  (is (= (book-build/signed-code-html "text" ["x" "- a" "-  " "- b" "+ a" "+ " "+ b"])
+         (book-build/signed-code-html "text" ["x" "- a" "-" "- b" "+ a" "+" "+ b"])))
   (is (= (change "- a\n- \n+ b\n+ ") (change "- a\n-\n+ b\n+"))))
 
 (deftest new-module-renders-as-web
@@ -153,12 +165,12 @@
                 "+ ## Head\n+\n+ Para with `code` & more.\n+\n+ - one\n+ - two\n+\n+ ```rust\n+ let a = 1;\n+\n+ - kept < code\n+ ```\n\n"
                 "- ---\n- description: Old.\n- ---\n- Old body.\n")
         html (book-build/build md "")]
-    (is (str/includes? html "<div class=\"add\"><ins><div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl><dt>Description</dt><dd>Does a thing.</dd><dt>Dependencies</dt><dd>x, y</dd></dl></div></ins></div>"))
-    (is (str/includes? html "<div class=\"add\"><ins><h4>Head</h4></ins></div>"))
+    (is (str/includes? html "<div class=\"add\"><div class=\"fm\"><div class=\"fm-label\">Front matter</div><dl><dt>Description</dt><dd>Does a thing.</dd><dt>Dependencies</dt><dd>x, y</dd></dl></div></div>"))
+    (is (str/includes? html "<div class=\"add\"><h4>Head</h4></div>"))
     (is (str/includes? html "<p>Para with <code>code</code> &amp; more.</p>"))
     (is (str/includes? html "<ul><li>one</li><li>two</li></ul>"))
     (is (str/includes? html "<pre><code class=\"language-rust\">let a = 1;\n\n- kept &lt; code</code></pre>") "fence stays code, blank line kept")
-    (is (str/includes? html "<div class=\"del\"><del><div class=\"fm\">") "removed module is rendered and marked")
+    (is (str/includes? html "<div class=\"del\"><div class=\"fm\">") "removed module is rendered and marked")
     (is (not (str/includes? html "---")) "no YAML syntax shown")
     (is (not (str/includes? html "<div class=\"textblock\">")))))
 
@@ -306,15 +318,15 @@
 
 (deftest signed-lines-of-one-paragraph-are-one-panel
   (let [html (book-build/build "## Proposal 1: x\n\n+ First added.\n+ Second added.\n+ - item one\n+ - item two\n" "")]
-    (is (str/includes? html (str "<div class=\"diff\"><div class=\"add\"><ins><p>First added. Second added.</p></ins></div>"
-                                 "<div class=\"add\"><ins><ul><li>item one</li><li>item two</li></ul></ins></div></div>"))
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"add\"><p>First added. Second added.</p></div>"
+                                 "<div class=\"add\"><ul><li>item one</li><li>item two</li></ul></div></div>"))
         "running text of one sign is one paragraph; a list after it is its own"))
   (let [html (book-build/build "## Proposal 1: x\n\n- Gone one.\n-\n- Gone two.\n" "")]
-    (is (str/includes? html "<div class=\"del\"><del><p>Gone one.</p></del></div><div class=\"del\"><del><p>Gone two.</p></del></div>")
+    (is (str/includes? html "<div class=\"del\"><p>Gone one.</p></div><div class=\"del\"><p>Gone two.</p></div>")
         "a removed blank line parts two removed paragraphs"))
   (let [html (book-build/build "## Proposal 1: x\n\n- old one\n-\n- old two\n+ new one\n+\n+ new two\n+\n+ three\n" "")]
     (is (str/includes? html (str "<p><del>old</del><ins>new</ins> one</p><p><del>old</del><ins>new</ins> two</p>"
-                                 "<div class=\"add\"><ins><p>three</p></ins></div>"))
+                                 "<div class=\"add\"><p>three</p></div>"))
         "removed paragraphs pair in order with the added paragraphs after them"))
   (is (= "<div class=\"diff\"><p>first <del>old</del><ins>new</ins> line second <del>old</del><ins>new</ins> line</p></div>"
          (change "- first old line\n- second old line\n+ first new line\n+ second new line"))
@@ -324,8 +336,8 @@
   (let [html (book-build/build (str "## Proposal 1: x\n\n"
                                     "- A claim must be relayed as a claim; a thing is verified only by a\n"
                                     "- witness.\n") "")]
-    (is (str/includes? html (str "<div class=\"diff\"><div class=\"del\"><del><p>A claim must be relayed as a claim;"
-                                 " a thing is verified only by a witness.</p></del></div></div>")))
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"del\"><p>A claim must be relayed as a claim;"
+                                 " a thing is verified only by a witness.</p></div></div>")))
     (is (= 1 (count (re-seq #"class=\"del\"" html))) "one box, never one per physical line"))
   (let [html (book-build/build (str "## Proposal 1: x\n\n"
                                     "  - **Rulings**: each time the living decides,\n"
@@ -366,36 +378,36 @@
                                     "  A kept vision line.\n+\n"
                                     "+ First added line.\n+ Second added line.\n") "")]
     (is (str/includes? html (str "<div class=\"diff\"><div class=\"ctx\"><p>A kept vision line.</p></div>"
-                                 "<div class=\"add\"><ins><p>First added line. Second added line.</p></ins></div></div>")))
+                                 "<div class=\"add\"><p>First added line. Second added line.</p></div></div>")))
     (is (not (str/includes? html "+ First"))))
   (let [html (book-build/build "## Proposal 1: x\n\n  Kept line.\n- Gone line.\n" "")]
     (is (str/includes? html (str "<div class=\"ctx\"><p>Kept line.</p></div>"
-                                 "<div class=\"del\"><del><p>Gone line.</p></del></div>"))))
+                                 "<div class=\"del\"><p>Gone line.</p></div>"))))
   (let [html (book-build/build "## Proposal 1: x\n\n  - kept item\n+ - added item\n" "")]
-    (is (str/includes? html "<div class=\"add\"><ins><ul><li>added item</li></ul></ins></div>")))
+    (is (str/includes? html "<div class=\"add\"><ul><li>added item</li></ul></div>")))
   (let [html (book-build/build "## Section\n\n- an item\n  its continuation\n" "")]
     (is (not (str/includes? html "class=\"diff\""))
         "a list item's indented continuation is not a change")))
 
 (deftest every-change-in-a-proposal-is-coloured
   (let [html (book-build/build "## Proposal 1: x\n\n- Gone line.\n  Kept line.\n" "")]
-    (is (str/includes? html (str "<div class=\"diff\"><div class=\"del\"><del><p>Gone line.</p></del></div>"
+    (is (str/includes? html (str "<div class=\"diff\"><div class=\"del\"><p>Gone line.</p></div>"
                                  "<div class=\"ctx\"><p>Kept line.</p></div></div>"))
         "a removal followed directly by an unchanged line is red, then unchanged")
     (is (not (str/includes? html "<p>- Gone"))))
   (let [html (book-build/build "## Proposal 1: x\n\nFile: `skills/a/SKILL.md`\n- Gone line.\n  Kept line.\n" "")]
     (is (str/includes? html (str "<p class=\"target\"><code>skills/a/SKILL.md</code></p>\n"
-                                 "<div class=\"diff\"><div class=\"del\"><del><p>Gone line.</p></del></div>"
+                                 "<div class=\"diff\"><div class=\"del\"><p>Gone line.</p></div>"
                                  "<div class=\"ctx\"><p>Kept line.</p></div></div>"))
         "a File line may head its change without a blank line"))
   (let [html (book-build/build "## Proposal 1: x\n\n**Comment** Why.\n- Gone line.\n  Kept line.\n" "")]
-    (is (str/includes? html "<div class=\"del\"><del><p>Gone line.</p></del></div><div class=\"ctx\"><p>Kept line.</p></div>")
+    (is (str/includes? html "<div class=\"del\"><p>Gone line.</p></div><div class=\"ctx\"><p>Kept line.</p></div>")
         "a comment may head its change without a blank line"))
   (let [html (book-build/build "## Proposal 2: x\n\nNot yet parseable:\n- Gone line.\n+ New line.\n" "")]
     (is (str/includes? html "<del>Gone</del><ins>New</ins> line.") "prose glued to change lines is rendered, not refused")
     (is (str/includes? html "Not yet parseable:")))
   (let [html (book-build/build "## Proposal 1: x\n\n- Gone line.\nRuling: keep it.\n" "")]
-    (is (str/includes? html "<del><p>Gone line.</p></del>") "an unsigned line after change lines is rendered, not refused")
+    (is (str/includes? html "<p>Gone line.</p>") "an unsigned line after change lines is rendered, not refused")
     (is (str/includes? html "Ruling: keep it.")))
   (let [html (book-build/build "## Section\n\n- an item\n  its continuation\n" "")]
     (is (str/includes? html "<li>an item its continuation</li>")
@@ -410,7 +422,7 @@
                                     "  \n"
                                     "+ Added line.\n") "")]
     (is (str/includes? html (str "<div class=\"diff\"><div class=\"ctx\"><h4>Kept heading</h4></div>"
-                                 "<div class=\"add\"><ins><p>Added line.</p></ins></div></div>")))
+                                 "<div class=\"add\"><p>Added line.</p></div></div>")))
     (is (not (str/includes? html "<p>## Kept heading</p>")))))
 
 (deftest title-from-presentation-datom
@@ -422,7 +434,8 @@
 
 (deftest signed-lines-inside-a-code-fence-stay-code
   (let [html (book-build/build "## Proposal 1: x\n\n```text\n  ```rust\n  fn a() {}\n+ ## x\n- old\n  ```\n```\n" "")]
-    (is (str/includes? html "<pre data-diff><code class=\"language-rust\">  fn a() {}\n+ ## x\n- old</code></pre>"))
+    (is (str/includes? html (str "<pre class=\"code-diff\"><code class=\"language-rust\"><span class=\"ln\">fn a() {}\n</span>"
+                                 "<span class=\"ln ln-add\">## x\n</span><span class=\"ln ln-del\">old\n</span></code></pre>")))
     (is (not (str/includes? html "<h4>x</h4>")) "+ ## x is a code line, not a heading")))
 
 (deftest proposal-heading-without-a-blank-line-opens-a-proposal
@@ -506,10 +519,10 @@
   (let [html (binding [book-build/*ethos-check* (constantly nil)]
                (book-build/build (str "# B\n\n## mind-belief › knowledge/x.md\n\nIntro.\n\n## Its own heading\n\nBody.\n\n### Deeper\n\nMore.\n\n"
                                       "### Proposal 1: Land it\n\nProse.\n\n## repo › other.md\n\nAnother.\n") ""))]
-    (is (str/includes? html "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">mind-belief › knowledge/x.md</code></h2></header>"))
+    (is (str/includes? html "<article class=\"module diff\"><header><h2 class=\"target\"><code style=\"font-size:.95rem\">mind-belief › knowledge/x.md</code></h2></header>"))
     (is (str/includes? html "<h3>Its own heading</h3>") "the module's headings are demoted")
     (is (str/includes? html "<h4>Deeper</h4>"))
-    (is (= 2 (count (re-seq #"<article class=\"module\">" html))))
+    (is (= 2 (count (re-seq #"<article class=\"module diff\">" html))))
     (is (= 1 (count (re-seq #"<article class=\"proposal\">" html))))
     (is (< (str/index-of html "Intro.") (str/index-of html "</article>") (str/index-of html "<article class=\"proposal\">"))
         "a proposal closes the module sheet")
@@ -541,7 +554,7 @@
         build (fn [check] (binding [book-build/*ethos-check* check] (book-build/build src "")))
         refused (build (constantly "Rejected.1:1"))
         read (build (constantly nil))]
-    (is (str/includes? refused "<article class=\"module\"><header><span class=\"mlabel\">as it stands</span><h2 class=\"target\"><code style=\"font-size:.95rem\">chronos \u203a .ethos/data/chronos.ethos</code></h2></header>"))
+    (is (str/includes? refused "<article class=\"module diff\"><header><h2 class=\"target\"><code style=\"font-size:.95rem\">chronos \u203a .ethos/data/chronos.ethos</code></h2></header>"))
     (is (str/includes? refused "<pre><code class=\"language-ethos\">(Types\n  chronos)\n- not a change</code></pre>")
         "the file is code in its language, a line opening with - is no change")
     (is (str/includes? refused "not read by current Ethos") "a file no ethos-zero reads is tagged")
@@ -639,13 +652,13 @@
     (is (str/includes? html "<del>Old</del><ins>New one</ins>.") "the shared line once")
     (is (= 1 (count (re-seq #"And a second line" html))))
     (is (re-find #"Alternative 1</div><p class=\"alt-words\"><mark class=\"alt-none\"" html) "the first adds nothing there")
-    (is (re-find #"Alternative 2</div><div class=\"diff\"><div class=\"add\"><ins><p>And a second line.</p></ins></div></div>" html))))
+    (is (re-find #"Alternative 2</div><div class=\"diff\"><div class=\"add\"><p>And a second line.</p></div></div>" html))))
 
 (deftest alternatives-of-several-lines-differ-line-by-line
   (let [html (built (str head "**Alternative 1**\n\n- Old.\n+ Shared first line.\n+\n+ The second line says one thing.\n\n"
                          "**Alternative 2**\n\n- Old.\n+ Shared first line.\n+\n+ The second line says another thing.\n"))]
     (is (= 1 (count (re-seq #"Shared first line" html))) "a line every alternative lands, once")
-    (is (str/includes? html "<ins><p>The second line says <span class=\"alt-gap\">\u2026</span> thing.</p></ins>"))
+    (is (str/includes? html "<div class=\"add\"><p>The second line says <span class=\"alt-gap\">\u2026</span> thing.</p></div>"))
     (is (str/includes? html "<p class=\"alt-words add\">The second line says <mark>one</mark> thing.</p>"))
     (is (str/includes? html "<p class=\"alt-words add\">The second line says <mark>another</mark> thing.</p>"))))
 
@@ -682,15 +695,16 @@
     (binding [book-build/*ethos-check* (constantly nil)]
       (doseq [sign ["+" "-"]]
         (let [e (built (fence "" sign ethos)) d (built (fence "" sign datom)) l (built (fence "rust" sign ["let a = 1;"]))]
-          (is (str/includes? e "<pre><code class=\"language-ethos\">Library\n[]"))
+          (is (str/includes? e "<code class=\"language-ethos\">Library\n[]"))
           (is (not (str/includes? e "data-diff")))
+          (is (str/includes? e (str "<pre class=\"" (if (= sign "+") "code-add" "code-del") "\">")))
           (is (str/includes? d "language-datom"))
-          (is (str/includes? l "<pre><code class=\"language-rust\">let a = 1;</code>"))))
+          (is (str/includes? l "<code class=\"language-rust\">let a = 1;</code>"))))
       (is (str/includes? (built (fence "datom" "+" datom)) "language-datom") "a label is kept")
-      (is (str/includes? (built (str head "```rust\n- let a = 1;\n+ let a = 2;\n```\n")) "<del>")
+      (is (str/includes? (built (str head "```rust\n- let a = 1;\n+ let a = 2;\n```\n")) "<span class=\"ln ln-del\">")
           "removed then added stays a diff"))))
 
-(let [{:keys [fail error]} (run-tests 'book-build-test)]
+(let [{:keys [fail error]} (binding [book-build/*highlight* false] (run-tests 'book-build-test))]
   (System/exit (if (zero? (+ fail error)) 0 1)))
 
 (deftest prose-fence-renders-as-text
