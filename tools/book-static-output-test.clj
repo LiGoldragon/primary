@@ -76,5 +76,14 @@
     (is (str/includes? css "text-decoration:none") "removed words are never struck through")
     (is (str/includes? css "font:17px/1.6 var(--f-prose)") "module prose keeps ordinary body type")))
 
+(deftest move-state-theme-contract
+  (let [css (slurp (str (fs/path tools-dir "book-code.html")))]
+    (is (str/includes? css ".move-proposed") "proposed move has its own light state")
+    (is (str/includes? css ".move-landed") "landed move has its own dark state")
+    (is (str/includes? css "--move-proposed-bg:#eef1ff") "light proposed move colour")
+    (is (str/includes? css "--move-landed-bg:#d9e0ff") "light landed move colour")
+    (is (str/includes? css "--move-proposed-bg:#252e54") "dark proposed move colour")
+    (is (str/includes? css "--move-landed-bg:#171e3b") "dark landed move colour")))
+
 (let [{:keys [fail error]} (binding [book-build/*highlight* false] (run-tests 'book-static-output-test))]
   (when (pos? (+ fail error)) (System/exit 1)))

@@ -433,6 +433,9 @@
 
 (def ^:dynamic *figures-dir* nil)
 
+(def ^:dynamic *shared-figure-counter* nil)
+(def ^:dynamic *move-context* false)
+
 (def ^:dynamic *module-fig* nil)
 
 (defn diagram?
@@ -1127,6 +1130,7 @@
         n (count lines)
         skip #"(?U)^(<!--.*-->|Presentation\.\{.*\})\s*$"
         fence-open-re #"(?U)^(`{3,}|~{3,})(\w*)\s*$"
+        move-open-re #"^::: move(?:\s+.*)?$"
         flush (fn [para proposal] (if proposal (proposal-para para proposal) (flush-para para)))]
     (loop [i 0 out [] para [] proposal nil]
       (if (>= i n)
@@ -1136,7 +1140,37 @@
               proposal (cond (re-find proposal-heading l) (second (re-find proposal-heading l))
                              (and (empty? para) (str/starts-with? l "## ")) nil
                              :else proposal)]
-          (if-let [m (re-find fence-open-re l)]
+          (if (re-find move-open-re l)
+            (let [state (second (re-find #"^::: move(?:\s+(.*))?$" l))
+                  line-no (inc i)
+                  out (cond-> out (seq para) (into (flush para proposal)))
+                  from-line (when (< (inc i) n) (lines (inc i)))
+                  to-line (when (< (+ i 2) n) (lines (+ i 2)))
+                  fm (and from-line (re-matches #"from: (.*)" from-line))
+                  tm (and to-line (re-matches #"to: (.*)" to-line))
+                  _ (when-not (and (#{"proposed" "landed"} state)
+                                   fm tm (not (blank? (second fm)))
+                                   (not (blank? (second tm)))
+                                   (< (+ i 3) n) (= "" (lines (+ i 3))))
+                      (throw (ex-info (str "malformed move container at source line " line-no) {})))
+                  start (+ i 4)
+                  [end body] (loop [j start fence nil]
+                               (if (>= j n)
+                                 (throw (ex-info (str "unclosed move container at source line " line-no) {}))
+                                 (let [x (lines j)
+                                       fo (second (re-find fence-open-re x))
+                                       fence' (cond
+                                                (and fence (re-matches (re-pattern (str "^" (if (= \` (first fence)) "`" "~") "{" (count fence) ",}\\s*$")) x)) nil
+                                                fence fence
+                                                fo fo
+                                                :else nil)]
+                                   (cond
+                                     (and (nil? fence) (= x ":::")) [j (subvec lines start j)]
+                                     (and (nil? fence) (re-find move-open-re x))
+                                     (throw (ex-info (str "nested move container at source line " (inc j)) {}))
+                                     :else (recur (inc j) fence')))))]
+              (recur (inc end) (conj out [:move state (second fm) (second tm) body]) [] proposal))
+            (if-let [m (re-find fence-open-re l)]
             (let [out (cond-> out (seq para) (into (flush para proposal)))
                   lang (if (or (= "" (m 2)) (text-languages (m 2))) "text" (m 2))
                   close-re (re-pattern (str "(?U)^" (if (= \` (first (m 1))) "`" "~") "{" (count (m 1)) ",}\\s*$"))
@@ -1153,7 +1187,7 @@
               (re-find proposal-heading l)
               (recur (inc i) (-> out (cond-> (seq para) (into (flush para before))) (conj [:para [l]])) [] proposal)
               (re-find skip l) (recur (inc i) out para proposal)
-              :else (recur (inc i) out (conj para l) proposal))))))))
+              :else (recur (inc i) out (conj para l) proposal)))))))))
 
 (defn parse-list [lines]
   (reduce (fn [items l]
@@ -1631,7 +1665,7 @@
   (str "<aside class=\"comment\"><p>" (inline text) "</p></aside>"))
 
 (defn build [src code]
-  (let [nfig (volatile! 0)
+  (let [nfig (or *shared-figure-counter* (volatile! 0))
         heading-where (volatile! nil)
         datom-title (presentation-title src)
         bs (vec (group-alternatives (blocks src)))
@@ -1646,10 +1680,14 @@
                               (catch clojure.lang.ExceptionInfo e
                                 (binding [*out* *err*]
                                   (println (str "book-build: figure fig-" n ".svg left out: " (ex-message e))))
-                                "")))
+                                (if *move-context*
+                                  (throw (ex-info (str "required move figure fig-" n ".svg is invalid") {}))
+                                  ""))))
                        (do (binding [*out* *err*]
                              (println (str "book-build: figure fig-" n ".svg not found; diagram " n " left out")))
-                           ""))))
+                           (if *move-context*
+                             (throw (ex-info (str "required move figure fig-" n ".svg not found") {}))
+                             "")))))
         out (atom [])
         target (volatile! nil)
         in-article (volatile! false)
@@ -1684,6 +1722,14 @@
                         (when (not= "" diff) (emit diff))))]
     (doseq [[i b] (map-indexed vector bs)]
       (cond
+        (= :move (first b))
+        (let [[_ state from to body] b
+              inner (binding [*shared-figure-counter* nfig *move-context* true]
+                      (build (str/join "\n" body) ""))]
+          (emit (str "<section class=\"move move-" state "\"><header><h2>From "
+                     (esc from) " → To " (esc to) "</h2><span class=\"move-state\">"
+                     (str/capitalize state) "</span></header>" inner "</section>")))
+
         (= :alternatives (first b))
         (do (when (and @rulings @pending-close) (close-rulings true))
             (emit (try (binding [*alt-fig* show-fig] (alternatives-html (second b)))
@@ -1777,9 +1823,10 @@
           (cond
             (str/starts-with? first-line "# ")
             (let [title (strip (subs first-line 2))]
-              (append! "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">")
-              (append! (str "<title>" (esc (or datom-title title)) "</title>"))
-              (vreset! after-title true)
+              (when-not *move-context*
+                (append! "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">")
+                (append! (str "<title>" (esc (or datom-title title)) "</title>"))
+                (vreset! after-title true))
               (append! (str "<h1 class=\"book-title\">" (esc title) "</h1>")))
 
             (and @in-module (str/starts-with? first-line "### ") (not (str/starts-with? first-line "### Proposal ")))

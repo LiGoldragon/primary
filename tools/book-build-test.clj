@@ -704,6 +704,41 @@
       (is (str/includes? (built (str head "```rust\n- let a = 1;\n+ let a = 2;\n```\n")) "<span class=\"ln ln-del\">")
           "removed then added stays a diff"))))
 
+(deftest move-containers-render-once-and-share-figures
+  (let [src (str "::: move proposed\nfrom: vision/<old>.md\nto: vision/new.md\n\n"
+                 "# Inner\n\nMoved <body>.\n\n```mermaid\nA --> B\n```\n\n:::\n\n"
+                 "```mermaid\nC --> D\n```\n")
+        svg (faithful 2 "A" "moves" "B" "then" "C")
+        html (with-figures {"fig-1.svg" svg "fig-2.svg" svg}
+               #(book-build/build src ""))]
+    (is (str/includes? html "<section class=\"move move-proposed\">") )
+    (is (str/includes? html "From vision/&lt;old&gt;.md → To vision/new.md"))
+    (is (str/includes? html ">Proposed</span>"))
+    (is (= 1 (count (re-seq #"Moved &lt;body&gt;\." html))))
+    (is (not (str/includes? html "<meta name=\"viewport\"")))
+    (is (not (str/includes? html "<title>Inner</title>")))
+    (is (= 2 (count (re-seq #"class=\"figure\"" html))) "move and adjacent figure share numbering")))
+
+(deftest move-container-refusals-and-fenced-delimiter
+  (doseq [op ["::: move" "::: move bogus"]]
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #"source line 1"
+          (book-build/build (str op "\nfrom: a\nto: b\n\nbody\n:::") ""))))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"source line 1"
+        (book-build/build "::: move proposed\nfrom:   \nto: b\n\nbody\n:::" "")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"source line 1"
+        (book-build/build "::: move proposed\nfrom: a\nto:   \n\nbody\n:::" "")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"source line 1"
+        (book-build/build "::: move proposed\nfrom: a\nto: b\n\nbody" "")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"nested move container"
+        (book-build/build "::: move proposed\nfrom: a\nto: b\n\n::: move landed\nfrom: c\nto: d\n\nbody\n:::\n:::" "")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"required move figure"
+        (book-build/build "::: move landed\nfrom: a\nto: b\n\n```mermaid\nA --> B\n```\n:::" "")))
+  (with-figures {"fig-1.svg" "not svg"}
+    #(is (thrown-with-msg? clojure.lang.ExceptionInfo #"required move figure"
+          (book-build/build "::: move landed\nfrom: a\nto: b\n\n```mermaid\nA --> B\n```\n:::" ""))))
+  (doseq [fence ["```rust\n::: move bogus\n```" "~~~rust\n::: move bogus\n~~~" "````rust\n::: move bogus\n````"]]
+    (is (str/includes? (book-build/build (str "::: move proposed\nfrom: a\nto: b\n\n" fence "\n:::") "") "::: move bogus"))))
+
 (let [{:keys [fail error]} (binding [book-build/*highlight* false] (run-tests 'book-build-test))]
   (System/exit (if (zero? (+ fail error)) 0 1)))
 
