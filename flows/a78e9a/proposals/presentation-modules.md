@@ -35,14 +35,12 @@ flowchart TB
 + A presentation is a page the living reads. A proposal, a review and an account are presentations. Its source opens with its title, and the source is handed to the publisher as made.
 +
 + ## Figures
++
++ A figure is a Mermaid flowchart that shows one thing, where the idea has a shape.
 
 ::: move proposed
 from: psyche-belief › vision/book.md
 to: psyche-belief › vision/presentation.md
-
-A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A figure is boxes joined by verbed arrows. A diagram in a book's source is a Mermaid flowchart in that grammar, drawn so a phone shows it; every sketch carries its arrows before it is sent. The published book shows the figure drawn from the Mermaid source by a Tertiary or Quaternary subflow given the grammar with the sketch; the figure keeps every box, label and arrow, and says only what the source says; a figure that lost an arrow is returned. A sizable book carries several figures.
-
-A figure shows one thing, where the idea has a shape, and its colours and marks mean the same in every book.
 
 Every flowchart, in a book or in a belief module, is Mermaid, in the figure grammar; a book shows the SVG drawn from it.
 :::
