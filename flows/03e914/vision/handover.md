@@ -32,3 +32,8 @@ Context: the living, same chat, agreeing that the flow writes its own living log
 Yes that's what I mean. The Nexus, like you said, doesn't have any mechanism for this right now but it would essentially send a message to the current Flow and tell him that his time has come. That would mean that it's time. It's just a few code words, right, like "write your living log," and the Flow would do it. And then what?
 
 There are many ways this can happen, right? Maybe the Nexus tells the Flow that it's time and I don't see that, right? I keep talking with the same Flow, which ends up putting more living into that chat, and then every time I talk the Flow would have to redo the living log. What do we do there?
+
+## 2026-10-31 — The living types straight into the harness; the Nexus cannot intercept his chat yet
+Context: the living, in the Psyche core Primary chat 03e914, when the flow proposed that the Nexus redirect his chat to the successor at refresh.
+
+I type directly in the harness. We didn't make an app that goes through the Flow for me to talk to the models. I'm using the Claude remote access to talk to you right now, not a special app that the Flow can intercept. But I understand your design. That's the design I already have but we're not anywhere near that yet. I'm not even talking about it because it would just confuse you.
