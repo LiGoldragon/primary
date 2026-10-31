@@ -1770,6 +1770,11 @@
             (and (not md?) (not-any? signed-line? lines) (drawing? lines))
             (emit (show-fig lines))
 
+            ;; A text fence in a moved block is the moved text word for word: its + and - lines
+            ;; are its own words, not a change.
+            (and *move-context* (= lang "text") (not md?) (not (diagram? lines)))
+            (emit (code-html (target-lang @target) lines))
+
             ;; Checked only for being the file word for word; never parsed.
             ;; An Ethos file no current ethos-zero reads carries a tag.
             code-file?
