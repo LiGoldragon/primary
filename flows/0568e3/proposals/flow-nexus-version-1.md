@@ -4,7 +4,7 @@ Presentation.{ «The Flow Nexus, version 1» }
 
 ### Proposal 1: What holds in every version · psyche-belief › vision/flow-nexus.md
 
-**Comment** The module keeps what holds in every version. Its version-0 lines go to vision:short:flow-nexus, the sleeping, the waking and the further shapes of a flow to vision:long:flow-nexus. Gone: the one-model paragraph; the id taken from the harness session id and lengthened on collision; the real-world test, said under Metaflows in version 1; what a refresh carries, which is vision:remembering's.
+**Comment** The module keeps what holds in every version. Its version-0 lines go to vision:short:flow-nexus, the sleeping, the waking and the further shapes of a flow to vision:long:flow-nexus. Gone: the one-model paragraph; the id taken from the harness session id and lengthened on collision; the real-world test, said under Versions in version 1; what a refresh carries, which is vision:remembering's.
 
 - ---
 - description: The Flow Nexus — the Nexus that launches, names, tracks and ends flows — or a metaflow, a side flow, a hook or the Capsule is being designed or judged against what the living wants.
@@ -190,11 +190,11 @@ flowchart TB
 
 ### Proposal 3: Version 1 · psyche-belief › vision/medium/flow-nexus.md, a new file
 
-**Comment** The bare proposal with your comments of 2026-10-30 in: the permaflow is named on the user side and the Nexus works with flows and addresses; the Nexus gives a flow its id and keeps the harness session id beside it, nothing lengthened; the one-model paragraph is gone. vision:versioning is folded in, its messaging between metaflows sent to the long module. The harness datom is Claude Code 2.1.294 as installed today: its tool names and the opening words of their texts were read from the harness binary, and the command's flags are the harness's own.
+**Comment** The bare proposal with your comments of 2026-10-30 in: the permaflow is named on the user side and the Nexus works with flows and addresses; the Nexus gives a flow its id and keeps the harness session id beside it, nothing lengthened; the one-model paragraph is gone. Each operation reads as an actor. Under Versions it names vision:versioning and adds the refill of a fresh store by a cheap flow, which the meta signal makes possible by being complete over Memory. The harness datom is Claude Code 2.1.294 as installed today: its tool names and the opening words of their texts were read from the harness binary, and the command's flags are the harness's own.
 
 + ---
-+ description: Flow Nexus version 1, the full rewrite, is being designed or built — how it starts, messages, refreshes and ends flows — or a Nexus's versioning, stable and next, or metaflows are being designed.
-+ dependencies: [vision-flow-nexus, vision-nexus, vision-aspects, vision-signal, vision-memory]
++ description: Flow Nexus version 1, the full rewrite, is being designed or built: how it starts, messages, refreshes and ends flows, and how it is tested and upgraded.
++ dependencies: [vision-flow-nexus, vision-nexus, vision-aspects, vision-signal, vision-memory, vision-versioning]
 + ---
 
 + ## Address
@@ -321,6 +321,8 @@ flowchart TB
 
 + ## Operation
 
++ Each operation is an actor: an object that acts, holding what it acts on. Its outcome is what the actor answers.
+
 ```ethos
 + Operation
 + [ flow:[ Address
@@ -328,7 +330,7 @@ flowchart TB
 +          FlowId
 +          Request
 +          Declaration ] ]
-+ [ Start.{ Address
++ [ Start.{ Address                  ; actors
 +           Remembering
 +           Brief.String
 +           Declaration }
@@ -336,7 +338,7 @@ flowchart TB
 +   Enqueue.{ Address Request }
 +   Replace.FlowId
 +   Stop.FlowId ]
-+ [ Started.FlowId
++ [ Started.FlowId                   ; their answers
 +   Delivered
 +   Enqueued
 +   Replaced.FlowId
@@ -363,17 +365,21 @@ flowchart TB
 
 + ## Meta signal
 
-+ Configuration alone passes through the owner's socket, the declarations and the thresholds among it.
++ Configuration alone passes through the owner's socket, the declarations and the thresholds among it. The meta signal is complete over Memory: every record type is writable through it.
 
 ```ethos
 + Signal
-+ [ flow:[ Address Declaration ] ]
++ [ flow:[ Address Declaration ]
++   memory:[ Flow Queue ] ]
 + [ Declare.Declaration
 +   Threshold.{ Model.String Tokens.Integer }
-+   Observe ]
++   Observe
++   FillFlow.Flow
++   FillQueue.Queue ]
 + [ Declared
 +   Thresholded
 +   Observed.Vector<Declaration>
++   Filled
 +   Refused.[ NotOwner ] ]
 + []
 ```
@@ -393,41 +399,32 @@ flowchart TB
 + Declared
 ```
 
-+ ## The three numbers
++ ## Versions
 
-+ A Nexus's version is three numbers. Any change that leaves the memory format alone is a new revision. A change of the memory format is a new subversion, and carries the upgrade from the previous format: the old store is upgraded to the new format on open, and a Nexus is never crippled to run on an old format; where a format cannot be upgraded in code, its data is migrated by interpretation. A complete rewrite is a new version. No build is ever the finished one: each takes the next number, and one or two revisions ship a day.
++ Version 1 is numbered, run as stable and next, and upgraded while the system runs, as vision:versioning says.
 
-```mermaid
-flowchart TB
-    a["0.40.4"] -- "revision: any change, same memory format" --> b["0.40.5"]
-    b -- "subversion: the memory format changed, upgrade on open" --> c["0.41.0"]
-    c -- "revision" --> d["0.41.1"]
-    e["1.0.0"] -- "version: a complete rewrite, sharing nothing with 0" --> e
++ Version 1 is tested in a metaflow of its own, with cheap flows messaging one another and starting flows. The test shows whether the prompts, the system prompts and the tools are right, and which features are missing.
+
++ When an upgrade of the store looks or proves difficult, a cheap flow refills a fresh store: it reads the old store and sends the meta signals that repopulate the new one.
+
+```datom
++ ; a cheap flow refilling a fresh store;
++ ; the session id is an example
++ FillFlow.{ b0d3ae
++   { Psyche core Primary }
++   Some.«0e2b6f4c-9d1a-4c7e-8f3b-5a2d6c1e9f70»
++   Ended
++   None }
++ Filled
 ```
-
-+ ## A full rewrite
-
-+ A full rewrite is the next version: built from the vision alone, reusing nothing of the implementation it replaces. It may live in the same repository, as a branch forked from the root commit and starting empty; this is one way of doing it, in Git or Jujutsu alike, and the rule is the empty start, not the tool. It runs beside the stable in a metaflow of its own and is switched to when it has proved itself.
-
-+ ## One source
-
-+ Every part of a Nexus, its daemon and its clients, is built from one source at one version, so that none diverges.
-
-+ ## Stable and next
-
-+ Every Nexus runs as a stable and a next, each declared in Nix and each on its own sockets; the stable is declared with the Nexuses it pairs with, as the fallback. A configuration names which of the two a new flow or a refresh starts on, and a running flow keeps running where it is. When every flow has moved onto next, next becomes stable and the newer version takes next. An upgrade is never all-or-nothing: the stable is there to fall back on, and a big change carries a countdown rollback that is cancelled once the new stack is seen working. Before the first deployment there is nothing to roll back to, and the system rolls forward.
-
-+ ## Metaflows
-
-+ A metaflow is one whole running system: its Nexuses, their stores and their panes. Several metaflows run side by side, each on its own sockets and store, and nothing in them depends on an environment variable: a flow is bound to its metaflow by configuration. A new version is tested in a metaflow of its own, with cheap flows messaging one another and starting flows, while the stable metaflow keeps running. The test shows whether the prompts, the system prompts and the tools are right, and which features are missing.
 
 ### Proposal 4: Sleeping, waking and metaflows speaking · psyche-belief › vision/long/flow-nexus.md, a new file
 
-**Comment** The sleeping and waking of permaflows and the further shapes of a flow, from vision:flow-nexus; messaging between metaflows, from vision:versioning.
+**Comment** The sleeping and waking of permaflows and the further shapes of a flow, from vision:flow-nexus; the Flow Nexus's part in messaging between metaflows, whose interface is vision:versioning's.
 
 + ---
 + description: The Flow Nexus as it is to be ideally — permaflows sleeping and waking, metaflows messaging one another, and the further shapes of a flow — is being designed.
-+ dependencies: [vision-flow-nexus, vision-medium-flow-nexus]
++ dependencies: [vision-flow-nexus, vision-medium-flow-nexus, vision-versioning]
 + ---
 
 + ## Sleeping and waking
@@ -444,7 +441,7 @@ flowchart TB
 
 + ## Messaging between metaflows
 
-+ Metaflows talk to each other through an inter-metaflow interface, so that the flows of a new version speak with the permaflows of the metaflow being upgraded from. An upgrade then proceeds flow by flow, each new flow started in the new metaflow, and needs no store compatibility between the two.
++ The Flow Nexus of a new version speaks with the Flow Nexus of the metaflow being upgraded from, through the inter-metaflow interface of vision:versioning, so that an upgrade proceeds flow by flow.
 
 + ## Topics
 
@@ -472,45 +469,13 @@ flowchart TB
 
 + The Capsule encrypts the sensitive parts of the filesystem under a volatile key. Herdr is one backend of the Capsule; the backend may be exchanged.
 
-### Proposal 5: Folded into version 1 · psyche-belief › vision/versioning.md, a deleted file
+### Proposal 5: The horizon modules hold a version in the making · psyche-belief › vision/versioning.md
 
-**Comment** Its lines stand in vision:medium:flow-nexus, and its messaging between metaflows in vision:long:flow-nexus. The paragraph giving a version in the making its own module goes: the horizon modules hold version 1.
+**Comment** vision:versioning stays, holding for every Nexus; only its per-version module gives way to the horizon split.
 
-**Archive** vision:versioning, as it stands.
+  ## A full rewrite
 
-- ---
-- description: A Nexus is versioned, rewritten whole, run as stable and next, or upgraded while the system runs.
-- dependencies: [vision-nexus]
-- ---
-
-- ## The three numbers
-
-- A Nexus's version is three numbers. Any change that leaves the memory format alone is a new revision. A change of the memory format is a new subversion, and carries the upgrade from the previous format: the old store is upgraded to the new format on open, and a Nexus is never crippled to run on an old format; where a format cannot be upgraded in code, its data is migrated by interpretation. A complete rewrite is a new version. No build is ever the finished one: each takes the next number, and one or two revisions ship a day.
-
-```mermaid
-flowchart TB
-    a["0.40.4"] -- "revision: any change, same memory format" --> b["0.40.5"]
-    b -- "subversion: the memory format changed, upgrade on open" --> c["0.41.0"]
-    c -- "revision" --> d["0.41.1"]
-    e["1.0.0"] -- "version: a complete rewrite, sharing nothing with 0" --> e
-```
-
-- ## A full rewrite
-
-- A full rewrite is the next version: built from the vision alone, reusing nothing of the implementation it replaces. It may live in the same repository, as a branch forked from the root commit and starting empty; this is one way of doing it, in Git or Jujutsu alike, and the rule is the empty start, not the tool. It runs beside the stable in a metaflow of its own and is switched to when it has proved itself.
+  A full rewrite is the next version: built from the vision alone, reusing nothing of the implementation it replaces. It may live in the same repository, as a branch forked from the root commit and starting empty; this is one way of doing it, in Git or Jujutsu alike, and the rule is the empty start, not the tool. It runs beside the stable in a metaflow of its own and is switched to when it has proved itself.
 
 - While two versions live, each has its own vision module: the running version keeps vision:<nexus> and goes on taking fixes, and the rewrite is designed in vision:<nexus>-<version>, as vision:flow-nexus-1; when the rewrite is the stable, the old module is archived and the new one takes the name.
-
-- ## One source
-
-- Every part of a Nexus, its daemon and its clients, is built from one source at one version, so that none diverges.
-
-- ## Stable and next
-
-- Every Nexus runs as a stable and a next, each declared in Nix and each on its own sockets; the stable is declared with the Nexuses it pairs with, as the fallback. A configuration names which of the two a new flow or a refresh starts on, and a running flow keeps running where it is. When every flow has moved onto next, next becomes stable and the newer version takes next. An upgrade is never all-or-nothing: the stable is there to fall back on, and a big change carries a countdown rollback that is cancelled once the new stack is seen working. Before the first deployment there is nothing to roll back to, and the system rolls forward.
-
-- ## Metaflows
-
-- A metaflow is one whole running system: its Nexuses, their stores and their panes; it is what was called a capsule. A permaflow is one persistent address, { Aspect topic Layer }, with its succession of flows; it is what was called a metaflow. Several metaflows run side by side, each on its own sockets and store, and nothing in them depends on an environment variable: a flow is bound to its metaflow by configuration. A new version is tested in a metaflow of its own, with cheap flows messaging one another and starting flows, while the stable metaflow keeps running.
-
-- Metaflows talk to each other through an inter-metaflow interface, so that the flows of a new version speak with the permaflows of the metaflow being upgraded from. An upgrade then proceeds flow by flow, each new flow started in the new metaflow, and needs no store compatibility between the two.
++ While two versions live, the running version is described in vision:short:<nexus> and goes on taking fixes, and the rewrite is designed in vision:medium:<nexus>, as vision:medium:flow-nexus; when the rewrite is the stable, its vision becomes the short module.

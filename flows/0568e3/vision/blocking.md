@@ -1,0 +1,12 @@
+# Blocking
+
+## 2026-10-30 — A system of stubbornness that slaps at the right angle; a named block is destroyed or ignored, a bucket put under the risk without judgment, and the tile pulled anyway
+Context: the living, in the Psyche core Primary chat 0568e3, after the Primary said the cutover stays open with it until witnessed and gave the loop to the tracker.
+
+I don't see it that way. You have to create a system. It's not you or him. You're not entities. I guess you're all trained to think that way so it's not possible to make you change your opinion on that.
+
+You have to create a system that will sort of come and slap you in the face over and over again in the right way, at the right angle, with the right amount of force. Eventually through pure stubbornness, like a system of stubbornness, it might actually happen.
+
+I think one of the things that happens is that eventually somebody decides that something is blocking and then every slap just ends up on the same block. Nobody ever gets creative, trying to say, "Oh well maybe we need to think of this differently and destroy the block or ignore it." They just get stuck and there's a line somewhere in their prompt that keeps coming back and tells them, "Well if this, then you have to wait. Then they all just get woken but they just always hit the same block basically. It's like an endless psychosis. Like in the insane asylum, the guy who just keeps knocking his head on the wall is not going to stop. There's something about it that is just a tick, an ingrained habit that is really difficult to displace and it requires extreme shock, like me coming in and using very strong words and driving home the fact that this has to be done no matter what, and to ignore."
+
+Essentially I think you basically need a reminder that tells you to ignore whatever you're blocking on no matter what it is. Also you kind of need someone to come in and if that's the case at least put in some kind of fallback. Not make the judgment, like, "Can we really do this?" because then it'll block again. Just put in some kind of foundation, like putting a bucket under the place where you're going to change the tiles on the roof in case the rain comes through. Not stop yourself from pulling the tiles because it's raining, but just put a bucket underneath them regardless and pull the tile up anyway. Do you understand my analogy? Do you see what I'm trying to get at here?
