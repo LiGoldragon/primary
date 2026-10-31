@@ -77,13 +77,29 @@
     (is (str/includes? css "font:17px/1.6 var(--f-prose)") "module prose keeps ordinary body type")))
 
 (deftest move-state-theme-contract
-  (let [css (slurp (str (fs/path tools-dir "book-code.html")))]
-    (is (str/includes? css ".move-proposed") "proposed move has its own light state")
-    (is (str/includes? css ".move-landed") "landed move has its own dark state")
-    (is (str/includes? css "--move-proposed-bg:#eef1ff") "light proposed move colour")
-    (is (str/includes? css "--move-landed-bg:#d9e0ff") "light landed move colour")
-    (is (str/includes? css "--move-proposed-bg:#252e54") "dark proposed move colour")
-    (is (str/includes? css "--move-landed-bg:#171e3b") "dark landed move colour")))
+  (let [css (slurp (str (fs/path tools-dir "book-code.html")))
+        move-rules (map second (re-seq #"(?s)\.move(?![A-Za-z0-9_-])[^\{]*\{([^}]*)\}" css))
+        regression-css (str/replace css "padding:4px 0 4px 12px" "padding:4px 0 4px 12px;background:#fff;color:red")
+        regression-rules (map second (re-seq #"(?s)\.move(?![A-Za-z0-9_-])[^\{]*\{([^}]*)\}" regression-css))]
+    (is (seq move-rules) "move declarations are present")
+    (is (str/includes? css ".move{border-left:4px solid var(--move-edge)") "move is a single left margin border")
+    (is (str/includes? css ".move-proposed{--move-edge:var(--move-proposed-edge)}") "proposed move edge")
+    (is (str/includes? css ".move-landed{--move-edge:var(--move-landed-edge)}") "landed move edge")
+    (is (str/includes? css "--move-proposed-edge:#6b7ed6") "light proposed edge")
+    (is (str/includes? css "--move-landed-edge:#304aa8") "light landed edge")
+    (is (str/includes? css "--move-proposed-edge:#9aaeff") "dark proposed edge")
+    (is (str/includes? css "--move-landed-edge:#7e95f5") "dark landed edge")
+    (is (not (str/includes? css ".move{border:2px")) "move has no full surround")
+    (is (every? #(not (re-find #"(?m)(?:^|;)\s*(?:background|color)\s*:" %)) move-rules)
+        "move rules do not recolour their body")
+    (is (not (every? #(not (re-find #"(?m)(?:^|;)\s*(?:background|color)\s*:" %)) regression-rules))
+        "regression witness detects recolour declarations after padding")
+    (is (not (str/includes? css "--move-bg:")) "move has no background variable")
+    (is (not (str/includes? css "--move-fg:")) "move has no foreground variable")
+    (is (not (str/includes? css ".move h2")) "move heading keeps ordinary colour")
+    (is (not (str/includes? css ".move>p")) "move descendants keep ordinary colours")
+    (is (str/includes? css ".ts-keyword,.ts-type,.ts-constructor{color:var(--hl-type)}") "code token colours remain internal")
+    (is (str/includes? css ".figure{overflow-x:auto") "figure rendering remains unchanged")))
 
 (let [{:keys [fail error]} (binding [book-build/*highlight* false] (run-tests 'book-static-output-test))]
   (when (pos? (+ fail error)) (System/exit 1)))
