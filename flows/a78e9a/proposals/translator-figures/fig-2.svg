@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 684" width="420" height="684" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" xml:space="preserve">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <g fill="#f3f4f6" stroke="#374151" stroke-width="1.5">
+    <rect x="20" y="20" width="380" height="44" rx="6"/>
+    <rect x="20" y="120" width="380" height="44" rx="6"/>
+    <rect x="20" y="220" width="380" height="44" rx="6"/>
+    <rect x="20" y="320" width="380" height="44" rx="6"/>
+    <rect x="20" y="420" width="380" height="44" rx="6"/>
+    <rect x="20" y="520" width="380" height="44" rx="6"/>
+    <rect x="20" y="620" width="380" height="44" rx="6"/>
+  </g>
+  <g stroke="#6b7280" stroke-width="2" fill="none">
+    <line x1="60" y1="64" x2="60" y2="118" marker-end="url(#ah)"/>
+    <line x1="60" y1="164" x2="60" y2="218" marker-end="url(#ah)"/>
+    <line x1="60" y1="264" x2="60" y2="318" marker-end="url(#ah)"/>
+    <line x1="60" y1="364" x2="60" y2="418" marker-end="url(#ah)"/>
+    <line x1="60" y1="464" x2="60" y2="518" marker-end="url(#ah)"/>
+    <line x1="60" y1="564" x2="60" y2="618" marker-end="url(#ah)"/>
+  </g>
+  <g fill="#e5e7eb" stroke="#6b7280" stroke-width="1">
+    <rect x="72" y="80" width="86" height="24" rx="5"/>
+    <rect x="72" y="180" width="78" height="24" rx="5"/>
+    <rect x="72" y="280" width="180" height="24" rx="5"/>
+    <rect x="72" y="380" width="48" height="24" rx="5"/>
+    <rect x="72" y="480" width="212" height="24" rx="5"/>
+    <rect x="72" y="580" width="260" height="24" rx="5"/>
+  </g>
+  <g fill="#111827" font-size="13">
+    <text x="80" y="97">protosize</text>
+    <text x="80" y="197">datomize</text>
+    <text x="80" y="297">compose as flow:Input</text>
+    <text x="80" y="397">rkyv</text>
+    <text x="80" y="497">Launched.7 back as signal</text>
+    <text x="80" y="597">datomize, protosize, textualize</text>
+  </g>
+  <g fill="#111827" text-anchor="middle">
+    <text x="210" y="47">Relay.Flow.Launch.{ … }  as text</text>
+    <text x="210" y="147">Protos</text>
+    <text x="210" y="247">Datom</text>
+    <text x="210" y="347">Launch { … }</text>
+    <text x="210" y="447">signal to flow.sock</text>
+    <text x="210" y="547">Output</text>
+    <text x="210" y="647">Relayed.Ok.Flow.Launched.7  as text</text>
+  </g>
+</svg>
