@@ -37,3 +37,7 @@ There are many ways this can happen, right? Maybe the Nexus tells the Flow that 
 Context: the living, in the Psyche core Primary chat 03e914, when the flow proposed that the Nexus redirect his chat to the successor at refresh.
 
 I type directly in the harness. We didn't make an app that goes through the Flow for me to talk to the models. I'm using the Claude remote access to talk to you right now, not a special app that the Flow can intercept. But I understand your design. That's the design I already have but we're not anywhere near that yet. I'm not even talking about it because it would just confuse you.
+
+## 2026-10-31 — A design is not sent to be built before the living rules on it
+Context: the living, in the Psyche core Primary chat 03e914, after the flow sent the living-log design to the Secondary for Mind core to build.
+Nobody gave you the authority to decide what we're going to do.
