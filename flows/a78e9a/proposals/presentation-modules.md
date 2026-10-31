@@ -32,7 +32,7 @@ flowchart TB
 +
 + ## A presentation
 +
-+ A presentation is a page the living reads. A proposal, a review and an account are presentations. Its source opens with its title, and the source is handed to the publisher as made.
++ Its source opens with its title, and the source is handed to the publisher as made.
 +
 + ## Figures
 +
@@ -184,7 +184,6 @@ A book the living has commented on stays as he saw it; what his comments change 
 +
 + ## The publisher builds and publishes
 +
-+ The publisher builds the source and publishes the page.
 
 - A proposal opens with `### Proposal N: title · repo › path`, numbered from 1; a new module ends the heading with `, a new file`, a deleted one with `, a deleted file`. A line moved between modules is one proposal headed `### Proposal N: title · repoA › pathA, and repoB › pathB`, with a level-four heading for each path, the line in red under the first and green under the second. No other level-three heading exists.
 
