@@ -105,10 +105,6 @@ A module shown whole, as it stands, situates the landing.
 
 A module shown beside another, both as they stand, serves comparison: psyche with knowledge.
 
-A line added shows in green.
-
-A line removed shows in red.
-
 A line replaced shows its removal and its addition together, and only the changed words are marked.
 
 A new module shows whole in green, under the path it will have.
@@ -116,7 +112,7 @@ A new module shows whole in green, under the path it will have.
 A module deleted shows whole in red, with a Destroy or Archive mark.
 :::
 
-+ A line moved between modules is shown once, in the colour of a move, distinct from the colours of a line added and a line removed, under a heading that names the module it leaves and the module it enters; light while proposed, dark once landed, as the other colours are.
++ Every change is marked by the colour of its margin alone, text and code left as they are: green for a line added, red for a line removed, a third colour for a line moved, which is shown once under the module it leaves and the module it enters; light while proposed, dark once landed.
 
 ::: move proposed
 from: psyche-belief › vision/book.md
@@ -279,3 +275,9 @@ Code the proposed lines land is shown in labelled fences, the Datom it reads or 
 **Comment** The one sentence in the publisher's procedure that tells it what a proposal carries; the publisher checks nothing of the kind. The role's composed agent file follows the module.
 
 - Every proposal names its witnessed repository/path and carries its proposed lines.
+
+### Proposal 10: Code is highlighted · psyche-belief › vision/book.md
+
+**Comment** The book-colour book of 2026-10-31 (https://claude.ai/artifact/JzcG6XQUqgtc2jebn37vC7) is withdrawn; its two rulings now stand here.
+
++ Code in a book is syntax-highlighted; Ethos and Datom by their tree-sitter grammars.
