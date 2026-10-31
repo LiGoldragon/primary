@@ -1,0 +1,1216 @@
+{
+  "authorized_by": "Psyche core Primary HardAbrupt via Psyche core Secondary: Mind core Secondary direct executor",
+  "started_utc": "2026-10-31T05:06:06.492197+00:00",
+  "scope": "Flow linked worktrees only; preserve canonical source/index and existing canonical locks",
+  "meta_lock": 24939,
+  "original_locks_snapshot": "Observed.Locks.[ { 24491 Bead6lxA 28efec [ /git/github.com/LiGoldragon/signal-sema /git/github.com/LiGoldragon/memory-engine ] \u00abSema to Memory A source/API and memory-engine integration\u00bb } { 24851 BookFenceLanguages a5d5f5 [ /home/li/primary/tools/book-fence-languages.json ] \u00abInclude required builder language contract in primary-ctiy\u00bb } { 24850 BookStaticOutput a5d5f5 [ /home/li/primary/tools/book-build.clj /home/li/primary/tools/book-static-output-test.clj ] \u00abImplement primary-ctiy static fence and page-form output\u00bb } { 24855 CodexNextTerra61 c2b552 [ /git/github.com/LiGoldragon/CriomOS-home/owned-agents/codex-next/default.nix /git/github.com/LiGoldragon/CriomOS-home/checks/codex-next/default.nix ] \u00abPromote declared codex-next package to version offering gpt-6.1-terra\u00bb } { 24656 CriomOSHomeInquiryKinds fffb2f [ /home/li/worktrees/criomos-home-fffb2f-inquiry ] \u00abRemove inquiry kind from loader list and test\u00bb } { 15109 FieldRemoteNixCLI42265e 42265e [ /git/github.com/LiGoldragon/field-clj/src/field_clj/schema.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/core.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/commit.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/remote.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/jj.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/git.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/publish_test.clj /git/github.com/LiGoldragon/field-clj/src/field_clj/nix_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/core_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/commit_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/repo_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/support.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/test_runner.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/publish_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/nix_test.clj /git/github.com/LiGoldragon/field-clj/README.md /git/github.com/LiGoldragon/field-clj/nix/default.nix /git/github.com/LiGoldragon/field-clj/flake.nix ] \u00abSingle bounded worker replaces shared-JJ publication and adds typed remote Nix testing; no local heavy tests or runtime changes.\u00bb } { 15125 FieldRemoteNixTestNamespaces42265e 42265e [ /git/github.com/LiGoldragon/field-clj/test/field_clj/publish_test_test.clj /git/github.com/LiGoldragon/field-clj/test/field_clj/nix_test_test.clj ] \u00abDistinct regression namespaces for remote Field client/executor; no collision with production namespaces.\u00bb } { 24674 FlowBatch2Deploy 2c06c7 [ /home/li/worktrees/flow-b2-deploy-2c06c7 ] \u00abBuild test and deploy minimal typed message Datom release\u00bb } { 24675 FlowBatch2DeployContracts 2c06c7 [ /home/li/worktrees/signal-flow-b2-deploy-2c06c7 /home/li/worktrees/meta-signal-flow-b2-deploy-2c06c7 ] \u00abAdd typed Primary route refusal and repin minimal Batch 2 release\u00bb } { 24682 FlowCurriculumOmissions 2c06c7 [ /home/li/worktrees/flow-curriculum-omissions-2c06c7 ] \u00abUpdate Flow to the typed Curriculum omitted-module contract\u00bb } { 24764 FlowD0Repair 4db1d3 [ /home/li/worktrees/flow-d0-repair-4db1d3 ] \u00abRepair the bounded D0 test lifecycle on immutable fb0d351\u00bb } { 24809 FlowDatomRed851681 851681 [ /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/delivery/body.rs /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/composition.rs /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/tests/queue_drain.rs /home/li/worktrees/flow-datom-red-851681/flake.nix ] \u00abPrepare only future Datom-first red tests after canonical contract is ruled\u00bb } { 24679 FlowDeleteEdn 2c06c7 [ /home/li/worktrees/flow-primary-jvm-2c06c7 ] \u00abDelete the last Flow EDN readers\u00bb } { 24937 FlowHeartbeat 24eb5c [ /home/li/worktrees/flow-heartbeat-24eb5b /home/li/worktrees/meta-heartbeat-24eb5b ] \u00abImplement configured sampling heartbeat source and tests\u00bb } { 24578 FlowLifecycleD50d70 d50d70 [ /home/li/worktrees/flow-lifecycle-d50d70 ] \u00abUnified terminal lifecycle and availability repair from fecbff9\u00bb } { 24751 FlowMainIntegration 851681 [ /home/li/worktrees/flow-main-integration-851681 /home/li/worktrees/meta-signal-flow-main-integration-851681 ] \u00abIntegrate approved Flow 0.40.5 and 0.40.6 fixes plus configured cohort and FullConfig\u00bb } { 24794 FlowNight2CodexQueue 7f0b01 [ /home/li/worktrees/flow-night2-codex-7f0b01 ] \u00abImplement isolated Codex queue drain and capsule endpoint from 0.40.4\u00bb } { 24670 FlowQueueWatcher 2c06c7 [ /home/li/worktrees/flow-queue-watcher-2c06c7 ] \u00abBuild temporary held-queue watcher\u00bb } { 24892 FlowV1FreshAnatomy 7a6502 [ /git/github.com/LiGoldragon/flow-nexus /git/github.com/LiGoldragon/signal-flow-nexus /git/github.com/LiGoldragon/meta-signal-flow-nexus ] \u00abImplement fresh boundary-one anatomy\u00bb } { 24900 FlowV1TestScenarios 7a6502 [ /git/github.com/LiGoldragon/flow-nexus-tests ] \u00abPrepare separately owned Nix acceptance scenarios at immutable implementation pins\u00bb } { 24939 FlowWorktreeConsolidation fe42a5 [ /git/github.com/LiGoldragon/flow/.git/worktrees /git/github.com/LiGoldragon/flow/.git/refs /home/li/primary/flows/fe42a5/reports/flow-worktree-execution.json /home/li/primary/flows/fe42a5/reports/flow-worktree-cleanup.md ] \u00abPsyche Primary direct executor authorization: retain commits then consolidate linked Flow copies\u00bb } { 24938 FlowWorktreeInventoryReport fe42a5 [ /home/li/primary/flows/fe42a5/reports/flow-worktree-inventory.json /home/li/primary/flows/fe42a5/reports/flow-worktree-plan.md ] \u00abRead-only Flow consolidation inventory under current single-copy ruling\u00bb } { 24816 LaptopBuildGuardConfiguration 39db6f [ /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/flake.nix ] \u00abExplicitly enable laptop build guards in concrete Home configuration\u00bb } { 24815 LaptopBuildGuardCorrection 39db6f [ /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/modules/home/profiles/min/default-opener.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/modules/home/profiles/min/flow.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/modules/home/profiles/min/herdr.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/modules/home/profiles/min/codex-remote-control.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/checks/remote-build-command-guard/default.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/checks/flow-service-path/default.nix ] \u00abCorrect explicit laptop build guards and native ancestor service PATHs\u00bb } { 24817 LaptopBuildGuardServiceChecks 39db6f [ /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/checks/herdr-server/default.nix /home/li/worktrees/belief-rename-8d9ef9/CriomOS-home/gates/codex-remote-control/default.nix ] \u00abAssert enabled and disabled native ancestor service PATHs\u00bb } { 24672 LaptopSuspendFix 4d05d1 [ /git/github.com/LiGoldragon/CriomOS/modules/nixos/metal/default.nix /git/github.com/LiGoldragon/CriomOS/modules/nixos/metal/suspend-wake-policy.nix /git/github.com/LiGoldragon/CriomOS/checks/metal-suspend-policy/default.nix ] \u00abRetained Ouranos suspend-drain handoff; bounded source ownership\u00bb } { 24579 MetaFlowAvailabilityD50d70 d50d70 [ /home/li/worktrees/meta-signal-flow-lifecycle-d50d70 ] \u00abTyped persisted metaflow availability contract for lifecycle repair\u00bb } { 24604 OvernightBatch3 2256c2 [ /home/li/worktrees/flow-2256c2-batch3 ] \u00abImplement overnight design batch 3 Gate\u00bb } { 24605 OvernightBatch3Meta 2256c2 [ /home/li/worktrees/meta-signal-flow-2256c2-batch3 ] \u00abImplement overnight batch 3 Gate contract\u00bb } { 24606 OvernightBatch4 2256c2 [ /home/li/worktrees/flow-2256c2-batch4 ] \u00abImplement overnight batch 4 Commands\u00bb } { 24611 OvernightBatch4Meta 2256c2 [ /home/li/worktrees/meta-signal-flow-2256c2-batch4 ] \u00abAdd Commands variants Line Keys Clear ReadPane\u00bb } { 24631 OvernightIntegration 2c06c7 [ /home/li/worktrees/flow-36ac89-unrestrict ] \u00abIntegrate Flow rebuild batches in order\u00bb } { 24633 OvernightIntegrationContracts 2c06c7 [ /home/li/worktrees/signal-flow-36ac89-unrestrict /home/li/worktrees/meta-signal-flow-36ac89-unrestrict ] \u00abIntegrate Flow rebuild contracts in order\u00bb } { 24836 PrimaryPublish 6eda8a [ /home/li/primary/.PrimaryPublish.lock ] \u00abLifetime standing committer hold\u00bb } { 24562 Ruling73FlowCliFixtures c27520 [ /git/github.com/LiGoldragon/flow/crates/flow/src/main.rs ] \u00abUpdate LaunchProfile wire fixtures for Remembering\u00bb } { 24561 Ruling73FlowCodexFixture c27520 [ /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/codex.rs ] \u00abUpdate removed LaunchProfile field and canonical module fixtures\u00bb } { 24552 Ruling73FlowComposition c27520 [ /git/github.com/LiGoldragon/flow/Cargo.toml /git/github.com/LiGoldragon/flow/Cargo.lock /git/github.com/LiGoldragon/flow/flake.nix /git/github.com/LiGoldragon/flow/crates/flow-nexus/ethos/curriculum.ethos /git/github.com/LiGoldragon/flow/crates/flow-nexus/ethos/starter.ethos /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/generated/curriculum.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/generated/starter.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/context.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/composition.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/sending.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/values.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/title.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/waking.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/tests/model.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/herdr/launch.rs ] \u00abImplement Remembering resolution and verified records-first startup composition\u00bb } { 24555 Ruling73FlowLaunchResolution c27520 [ /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/launching.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/lib.rs ] \u00abNormalize Remembering against durable Past before launch composition\u00bb } { 24558 Ruling73FlowRemainingFixtures c27520 [ /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/tests/waking.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/tests/send_admission.rs /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/store/metaflow_declaration.rs ] \u00abUpdate canonical context IDs and Remembering fixtures while preserving foreign dirt\u00bb } { 24560 Ruling73FlowStoreMigration c27520 [ /git/github.com/LiGoldragon/flow/crates/flow-nexus/src/store.rs ] \u00abMigrate launch attempt storage from RememberedFlow to Remembering while preserving foreign Memory edits\u00bb } { 24554 Ruling73MetaContract c27520 [ /git/github.com/LiGoldragon/meta-signal-flow/tests/contract.rs ] \u00abUpdate metaflow declaration contract for launch-only Remembering\u00bb } { 24550 Ruling73MetaSignalFlow c27520 [ /git/github.com/LiGoldragon/meta-signal-flow/ethos/signal.ethos /git/github.com/LiGoldragon/meta-signal-flow/src/generated/signal.rs /git/github.com/LiGoldragon/meta-signal-flow/Cargo.toml /git/github.com/LiGoldragon/meta-signal-flow/Cargo.lock ] \u00abRemove startup topic and configured lineage declaration fields\u00bb } { 24549 Ruling73SignalFlow c27520 [ /git/github.com/LiGoldragon/signal-flow/ethos/signal.ethos /git/github.com/LiGoldragon/signal-flow/src/generated/signal.rs /git/github.com/LiGoldragon/signal-flow/tests/contract.rs /git/github.com/LiGoldragon/signal-flow/Cargo.toml /git/github.com/LiGoldragon/signal-flow/Cargo.lock ] \u00abLand approved Remembering wire and generated contract\u00bb } { 24548 Ruling76Refresh c27520 [ /home/li/worktrees/flow-refresh-c27520/crates/flow-nexus/src/waking.rs /home/li/worktrees/flow-refresh-c27520/crates/flow-nexus/src/tests/refresh_and_compaction.rs ] \u00abGuarantee every threshold refresh starts confirmed successor before predecessor closes\u00bb } { 24902 SetupHomeFlowPair c2b552 [ /home/li/worktrees/criomos-home-flow-pair-c2b552 /git/github.com/LiGoldragon/CriomOS-home/.git/refs/heads/field-flow-stable-next-c2b552 /git/github.com/LiGoldragon/CriomOS-home/.git/worktrees ] SetupHomeFlowPair } { 24745 SignalTypedPaneMessages 2c06c7 [ /home/li/worktrees/signal-flow-typed-pane-messages-2c06c7 ] \u00abRepin existing signal contract to the typed Flow ethos without a routing refusal\u00bb } { 24829 TrackerProcessWatch c2b552 [ /home/li/tracker/role.md ] \u00abClarify approved process-watch beat sequence\u00bb } { 24934 WisprFlowStableHome cb6398 [ /home/li/worktrees/criomos-home-wispr-flow-stable-cb6398 ] \u00abPrepare and deploy isolated Wispr 0.12 plus Flow 0.42.1 stable Home change\u00bb } { 24847 x 9140db [ /x ] x } ]\n",
+  "transferred_lock_ids": [
+    24548,
+    24578,
+    24604,
+    24606,
+    24631,
+    24674,
+    24679,
+    24682,
+    24751,
+    24764,
+    24794,
+    24809
+  ],
+  "releases": [
+    {
+      "id": 24548,
+      "exit": 0,
+      "reply": "Released.{ 24548 Ruling76Refresh c27520 [ /home/li/worktrees/flow-refresh-c27520/crates/flow-nexus/src/waking.rs /home/li/worktrees/flow-refresh-c27520/crates/flow-nexus/src/tests/refresh_and_compaction.rs ] \u00abGuarantee every threshold refresh starts confirmed successor before predecessor closes\u00bb }"
+    },
+    {
+      "id": 24578,
+      "exit": 0,
+      "reply": "Released.{ 24578 FlowLifecycleD50d70 d50d70 [ /home/li/worktrees/flow-lifecycle-d50d70 ] \u00abUnified terminal lifecycle and availability repair from fecbff9\u00bb }"
+    },
+    {
+      "id": 24604,
+      "exit": 0,
+      "reply": "Released.{ 24604 OvernightBatch3 2256c2 [ /home/li/worktrees/flow-2256c2-batch3 ] \u00abImplement overnight design batch 3 Gate\u00bb }"
+    },
+    {
+      "id": 24606,
+      "exit": 0,
+      "reply": "Released.{ 24606 OvernightBatch4 2256c2 [ /home/li/worktrees/flow-2256c2-batch4 ] \u00abImplement overnight batch 4 Commands\u00bb }"
+    },
+    {
+      "id": 24631,
+      "exit": 0,
+      "reply": "Released.{ 24631 OvernightIntegration 2c06c7 [ /home/li/worktrees/flow-36ac89-unrestrict ] \u00abIntegrate Flow rebuild batches in order\u00bb }"
+    },
+    {
+      "id": 24674,
+      "exit": 0,
+      "reply": "Released.{ 24674 FlowBatch2Deploy 2c06c7 [ /home/li/worktrees/flow-b2-deploy-2c06c7 ] \u00abBuild test and deploy minimal typed message Datom release\u00bb }"
+    },
+    {
+      "id": 24679,
+      "exit": 0,
+      "reply": "Released.{ 24679 FlowDeleteEdn 2c06c7 [ /home/li/worktrees/flow-primary-jvm-2c06c7 ] \u00abDelete the last Flow EDN readers\u00bb }"
+    },
+    {
+      "id": 24682,
+      "exit": 0,
+      "reply": "Released.{ 24682 FlowCurriculumOmissions 2c06c7 [ /home/li/worktrees/flow-curriculum-omissions-2c06c7 ] \u00abUpdate Flow to the typed Curriculum omitted-module contract\u00bb }"
+    },
+    {
+      "id": 24751,
+      "exit": 0,
+      "reply": "Released.{ 24751 FlowMainIntegration 851681 [ /home/li/worktrees/flow-main-integration-851681 /home/li/worktrees/meta-signal-flow-main-integration-851681 ] \u00abIntegrate approved Flow 0.40.5 and 0.40.6 fixes plus configured cohort and FullConfig\u00bb }"
+    },
+    {
+      "id": 24764,
+      "exit": 0,
+      "reply": "Released.{ 24764 FlowD0Repair 4db1d3 [ /home/li/worktrees/flow-d0-repair-4db1d3 ] \u00abRepair the bounded D0 test lifecycle on immutable fb0d351\u00bb }"
+    },
+    {
+      "id": 24794,
+      "exit": 0,
+      "reply": "Released.{ 24794 FlowNight2CodexQueue 7f0b01 [ /home/li/worktrees/flow-night2-codex-7f0b01 ] \u00abImplement isolated Codex queue drain and capsule endpoint from 0.40.4\u00bb }"
+    },
+    {
+      "id": 24809,
+      "exit": 0,
+      "reply": "Released.{ 24809 FlowDatomRed851681 851681 [ /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/delivery/body.rs /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/composition.rs /home/li/worktrees/flow-datom-red-851681/crates/flow-nexus/src/tests/queue_drain.rs /home/li/worktrees/flow-datom-red-851681/flake.nix ] \u00abPrepare only future Datom-first red tests after canonical contract is ruled\u00bb }"
+    }
+  ],
+  "events": [
+    {
+      "event": "archive verification caught added-index-only path missing from temporary-index tracked update; retained incomplete commit and wrote verified descendant",
+      "retained_incomplete_commit": "277b18915959e390800127182a253e5bb462f57b",
+      "corrected_commit": "4adb9f5472f5a56f88f2bf3e3a5640759850ab88"
+    }
+  ],
+  "archives": [
+    {
+      "path": "/home/li/worktrees/flow-0.40-74e4d1",
+      "original_head": "5e4d28b1cec90b64509598b99311a2bd54a976aa",
+      "original_branch": null,
+      "archive_ref": "refs/heads/worktree/flow-0.40-74e4d1",
+      "archive_commit": "a8730b7e5c5cc0cb5ee7a132c315cab375712dce",
+      "new_commit": true,
+      "tree": "5cfa6ca84593f67df20c5bdc63e223268b1eb1da",
+      "verified_source_blobs": [
+        {
+          "path": "crates/flow-nexus/src/store.rs",
+          "blob": "6f77a740e8fc587331e79fb54ce50d0bb282e00e",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/examples/truncate_table.rs",
+          "blob": "5adcbd6d7528a6c97fa117170cb2f3bcf4ac763d",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-2256c2-batch4",
+      "original_head": "127277c916ad2fcfb7d4226f6ed2aaa37ff1c64d",
+      "original_branch": "refs/heads/overnight-batch4-2256c2",
+      "archive_ref": "refs/heads/worktree/flow-2256c2-batch4",
+      "archive_commit": "8ee3030e8c7822311873ae41c7a411c298ab3c6b",
+      "new_commit": true,
+      "tree": "1b693a2decfeca04b4b9bc2c33f3b44c6ea4e758",
+      "verified_source_blobs": [
+        {
+          "path": "Cargo.lock",
+          "blob": "140c3c22d5666f7a54a575be9cb9ba7e97c6e9cd",
+          "mode": "100644"
+        },
+        {
+          "path": "Cargo.toml",
+          "blob": "42d0cdaea76b7466b630938f5130aa77c3d2f59f",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch3",
+      "original_head": "e904c86c36db95bd1d91506e448b73f87fc2efe4",
+      "original_branch": "refs/heads/2c06c7-batch3",
+      "archive_ref": "refs/heads/worktree/flow-2c06c7-batch3",
+      "archive_commit": "e904c86c36db95bd1d91506e448b73f87fc2efe4",
+      "new_commit": false,
+      "tree": "84616d9d8e11382f3ee630745938261184066de1",
+      "verified_source_blobs": [],
+      "build_product_links": [
+        {
+          "path": "result",
+          "target": "/nix/store/3x7a9j5lqg3395ljhyfys8c74n8fc5si-flow-workspace-test-0.40.0"
+        }
+      ],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-36ac89-unrestrict",
+      "original_head": "f70a54be593c880d32e6c973852490f927ee2751",
+      "original_branch": "refs/heads/36ac89-unrestrict",
+      "archive_ref": "refs/heads/worktree/flow-36ac89-unrestrict",
+      "archive_commit": "f70a54be593c880d32e6c973852490f927ee2751",
+      "new_commit": false,
+      "tree": "efc5a2d34e1b00f21530b08f8ddd9f29c7de0c81",
+      "verified_source_blobs": [],
+      "build_product_links": [
+        {
+          "path": "result",
+          "target": "/nix/store/nygs0aj2rb0caz6bdfjqm89h3qm1imm4-flow-0.40.0"
+        }
+      ],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-b11-capsule-2c06c7",
+      "original_head": "7ecc01e2b8d96bf8356c9a25c61970dfabc0bcb9",
+      "original_branch": null,
+      "archive_ref": "refs/heads/worktree/flow-b11-capsule-2c06c7",
+      "archive_commit": "28ea9d43fd46bf00e4e54dd0c237167b344221d0",
+      "new_commit": true,
+      "tree": "1bd7d59c64cb5b5b8589d12b8088842462b48e81",
+      "verified_source_blobs": [
+        {
+          "path": "capsule/configure.datom",
+          "blob": "1ae9f673068a38190fd354d30cf7f80c09d2e9ba",
+          "mode": "100644"
+        },
+        {
+          "path": "capsule/flow-capsule.clj",
+          "blob": "811c8d5626aed7677c151ee9b307f6279a9bd611",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-b2-deploy-2c06c7",
+      "original_head": "12a79ae3d06dc5f3cc75d17c8a69571255d7fe4a",
+      "original_branch": "refs/heads/b2-deploy-2c06c7",
+      "archive_ref": "refs/heads/worktree/flow-b2-deploy-2c06c7",
+      "archive_commit": "e43ff349514c8f2918768ea13672ae92d54c5a27",
+      "new_commit": true,
+      "tree": "a8a3d900e540b165e5fb74a64fcb89696ccccbff",
+      "verified_source_blobs": [
+        {
+          "path": "Cargo.lock",
+          "blob": "37e7efd20bb37c21c933bbc45a84e5e92abd306d",
+          "mode": "100644"
+        },
+        {
+          "path": "Cargo.toml",
+          "blob": "15aada52bc644cbd05e82d510099cbc0f5e8e8b2",
+          "mode": "100644"
+        },
+        {
+          "path": "UPGRADES.md",
+          "blob": "3feabc789c038e69e8a0db5f43544c2258b31b00",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/ethos/send_tool.ethos",
+          "blob": "71e97391555ecaba5d2ffdaf811ce6d49585efc5",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/generated/send_tool.rs",
+          "blob": "d2433becfcb7df59dc81bef391b3878d8e0b8c29",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/send_tool.rs",
+          "blob": "1131689e9afd6c89f7d09be01a7f62b99a81e79d",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/sending.rs",
+          "blob": "4f16a4a8d592aecde5232a38ad0c28de478b7649",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch10-2c06c7",
+      "original_head": "7bd2e4417123474480c57c0d0caef2ac86bd09db",
+      "original_branch": "refs/heads/batch10-2c06c7",
+      "archive_ref": "refs/heads/worktree/flow-batch10-2c06c7",
+      "archive_commit": "7bd2e4417123474480c57c0d0caef2ac86bd09db",
+      "new_commit": false,
+      "tree": "6e1a63e2227d4b1f7e89c214fc107315c6380ac4",
+      "verified_source_blobs": [],
+      "build_product_links": [
+        {
+          "path": "result",
+          "target": "/nix/store/n6w1k10dkzygfkn8mi39ax8dls7l9kj0-flow-workspace-test-0.40.0"
+        }
+      ],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch7-2c06c7",
+      "original_head": "0abe10e7f7cb48bfb4053eb2ea3e90c78193613a",
+      "original_branch": "refs/heads/batch7-2c06c7",
+      "archive_ref": "refs/heads/worktree/flow-batch7-2c06c7",
+      "archive_commit": "0abe10e7f7cb48bfb4053eb2ea3e90c78193613a",
+      "new_commit": false,
+      "tree": "9cd19d124d87718a5674fd1caf98d297cd33a81d",
+      "verified_source_blobs": [],
+      "build_product_links": [
+        {
+          "path": "result",
+          "target": "/nix/store/m7zzhcw5hfmfvdsqajcxa4xvl4zglk09-flow-workspace-test-0.40.0"
+        }
+      ],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-queue-emergency-2c06c7",
+      "original_head": "a0ca884ed679c86322d020a7a3303d6357d57e31",
+      "original_branch": "refs/heads/queue-emergency-2c06c7",
+      "archive_ref": "refs/heads/worktree/flow-queue-emergency-2c06c7",
+      "archive_commit": "7fc67285f41e30e338c6f6eda8e8ca4a3d08c456",
+      "new_commit": true,
+      "tree": "876662cb1bff83cb5dd9633425c87cd1596baaf2",
+      "verified_source_blobs": [
+        {
+          "path": "crates/flow-nexus/src/claude.rs",
+          "blob": "4bcd97d96737dc392ef9e3939ab635c78625aa69",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/performing.rs",
+          "blob": "375cbbe008aea64557d0fcc2003e73f031363074",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/logical_delivery.rs",
+          "blob": "4f3dcba115a8e80bb35f7b3ec591d51d6bbd7c8e",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/queue_delivery.rs",
+          "blob": "b7b4ac462c0c37335bbf15633f43c1e7421921d4",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/waking.rs",
+          "blob": "e33c4b19d3cfe03276e9d96c9e06a4398bdd28ac",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-refresh-c27520",
+      "original_head": "fecbff9d2805cd067b92fb1b0ee95ece5d894f84",
+      "original_branch": "refs/heads/repair/refresh-successor-first",
+      "archive_ref": "refs/heads/worktree/flow-refresh-c27520",
+      "archive_commit": "b59f989dc60b0f78a3655cb2b4f585a040cb211c",
+      "new_commit": true,
+      "tree": "57c0121fe8f41ce662439cf25a876d8c6b48f0dd",
+      "verified_source_blobs": [
+        {
+          "path": "crates/flow-nexus/src/store.rs",
+          "blob": "e1d53e676294c59b109e578db650e35e50e5f2b6",
+          "mode": "100644"
+        },
+        {
+          "path": "crates/flow-nexus/src/tests/waking.rs",
+          "blob": "96c4490ece707c79f5869502cdfc9a8b8107c087",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/home/li/worktrees/flow-store-migration",
+      "original_head": "b6d08d1647d4d7b646eef0e7d54367d069c93cd0",
+      "original_branch": "refs/heads/store-migration",
+      "archive_ref": "refs/heads/worktree/flow-store-migration",
+      "archive_commit": "c520059011380d822d7e3b948da1bbd9b482fc04",
+      "new_commit": true,
+      "tree": "aadfc424cf16e1b52d747eff4e17bcd9610e2f24",
+      "verified_source_blobs": [
+        {
+          "path": "crates/flow-nexus/src/store.rs",
+          "blob": "c875b40d5af5d5f101d6c8d4782ace69c42154e3",
+          "mode": "100644"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    },
+    {
+      "path": "/tmp/wt-flow",
+      "original_head": "5e4d28b1cec90b64509598b99311a2bd54a976aa",
+      "original_branch": "refs/heads/bf-send-busy",
+      "archive_ref": "refs/heads/worktree/wt-flow",
+      "archive_commit": "4adb9f5472f5a56f88f2bf3e3a5640759850ab88",
+      "new_commit": true,
+      "tree": "e39710760b1a7d98b4cb712d97eee8b75755b300",
+      "verified_source_blobs": [
+        {
+          "path": "Cargo.lock",
+          "blob": "068e075d9c7502fbce5519eeadc2f50447f4ba3e"
+        },
+        {
+          "path": "Cargo.toml",
+          "blob": "6b1cff016054ee4e93b0e70dc07944cab74ab148"
+        },
+        {
+          "path": "README.md",
+          "blob": "14cd5953190c7e1b92f7d3710931f1a2c6d7164f"
+        },
+        {
+          "path": "UPGRADES.md",
+          "blob": "bc684c799bab04f33f69169eb717def93b5c6037"
+        },
+        {
+          "path": "crates/flow-nexus/ethos/send_tool.ethos",
+          "blob": "816e5684cd0b1b4e36b7f3759b8f1082c3d836f3"
+        },
+        {
+          "path": "crates/flow-nexus/ethos/starter.ethos",
+          "blob": "1990423ea3586712d4e1e54fc4654a10330863a9"
+        },
+        {
+          "path": "crates/flow-nexus/src/composition.rs",
+          "blob": "71d806abc0c73762703b2a29ab46e382b82d995d"
+        },
+        {
+          "path": "crates/flow-nexus/src/generated/send_tool.rs",
+          "blob": "edc74adfd0d9e3db9059a4c453023f18becb4659"
+        },
+        {
+          "path": "crates/flow-nexus/src/generated/starter.rs",
+          "blob": "567a40fa9064d32f21ba16c53586b801269f3e30"
+        },
+        {
+          "path": "crates/flow-nexus/src/herdr/launch.rs",
+          "blob": "995efb04d94d006e3bdb7b9596b43dc250b9c4c6"
+        },
+        {
+          "path": "crates/flow-nexus/src/lean.rs",
+          "blob": "3a983160688c4ca900882454628e3c066036751e"
+        },
+        {
+          "path": "crates/flow-nexus/src/lib.rs",
+          "blob": "fc48c59a8dce73fc623fd8afd175df25316d5bda"
+        },
+        {
+          "path": "crates/flow-nexus/src/metaflow.rs",
+          "blob": "79e641177105c2e97a7a365ee9ffb2087399d59c"
+        },
+        {
+          "path": "crates/flow-nexus/src/sending.rs",
+          "blob": "d946c4246603de1dc63dc6bf077c6395cee80c91"
+        },
+        {
+          "path": "crates/flow-nexus/src/store.rs",
+          "blob": "1187f2931ea2e085dfa9b32b338370369fd7e965"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/logical_delivery.rs",
+          "blob": "3861625fca865b5f556ce3ecbcfae9ced1da00d6"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/send_call.rs",
+          "blob": "7c7573baa2e52cadebe080a4c5254799deb4d479"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/send_outcome.rs",
+          "blob": "9b36a2acbc74247f143ec6372b2569d6ccd138c3"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/send_v31.rs",
+          "blob": "cb52ce6bf8cb7e60e9282fba06d91c0321fd9f6a"
+        },
+        {
+          "path": "crates/flow-nexus/src/store/send_v32.rs",
+          "blob": "db1a6e68796825f42f0df4acae0fbebc71e39ee6"
+        },
+        {
+          "path": "crates/flow-nexus/src/tests/refresh_and_compaction.rs",
+          "blob": "37c97a2029e714b5f76a4bed14ad9bd277c896a3"
+        },
+        {
+          "path": "crates/flow-nexus/src/tests/refreshing.rs",
+          "blob": "e219471ebfe79f70555b9330b932523d93d8c756"
+        },
+        {
+          "path": "crates/flow-nexus/src/tests/send_admission.rs",
+          "blob": "479c0ff0d40bf951ffea420dc58f32f8f29c7ef7"
+        },
+        {
+          "path": "crates/flow-nexus/src/tests/send_tool.rs",
+          "blob": "386226effd2eadf20e12b014168fcdf3e0e0b583"
+        }
+      ],
+      "build_product_links": [],
+      "verified_original_head_ancestor": true
+    }
+  ],
+  "removals": [
+    {
+      "path": "/home/li/worktrees/flow-0.40-63a06a",
+      "original_head": "5e4d28b1cec90b64509598b99311a2bd54a976aa",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.081768+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-0.40-74e4d1",
+      "original_head": "5e4d28b1cec90b64509598b99311a2bd54a976aa",
+      "archive_ref": "refs/heads/worktree/flow-0.40-74e4d1",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.180725+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-0.40.5-2a9116",
+      "original_head": "ac652a8443059472f2dd58b18695326472a4adba",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.200784+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2256c2-batch3",
+      "original_head": "127277c916ad2fcfb7d4226f6ed2aaa37ff1c64d",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.220018+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2256c2-batch4",
+      "original_head": "127277c916ad2fcfb7d4226f6ed2aaa37ff1c64d",
+      "archive_ref": "refs/heads/worktree/flow-2256c2-batch4",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.268517+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch11",
+      "original_head": "f13db4cd2cfb75d7bdf4602df0ceebe8a99da792",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.289923+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch13",
+      "original_head": "0dbc76eeefbc3f7d85865629cfd999d104f52175",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.385264+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch14",
+      "original_head": "84828e40496ea741b664f7444d90dbff55ae9a69",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.409191+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch16",
+      "original_head": "70d506421a581683627d9379c991ba1813c0e6d9",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.430203+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch3",
+      "original_head": "e904c86c36db95bd1d91506e448b73f87fc2efe4",
+      "archive_ref": "refs/heads/worktree/flow-2c06c7-batch3",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.568088+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch6",
+      "original_head": "2a588ed28fafa03f7779e9346f8eff40c51a3a72",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.587042+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-2c06c7-batch9",
+      "original_head": "cd2da44cdeece6a2b6172fddb0e45e1b09a4a6f1",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.609077+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-36ac89-unrestrict",
+      "original_head": "f70a54be593c880d32e6c973852490f927ee2751",
+      "archive_ref": "refs/heads/worktree/flow-36ac89-unrestrict",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.757182+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-9457ab-idle-wake",
+      "original_head": "6b2b0042905038386ccc471cfbcd570263d1685e",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.781204+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b11-capsule-2c06c7",
+      "original_head": "7ecc01e2b8d96bf8356c9a25c61970dfabc0bcb9",
+      "archive_ref": "refs/heads/worktree/flow-b11-capsule-2c06c7",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.842591+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b13-close-tests-2c06c7",
+      "original_head": "a67ad2a9c053a92f20870c7f0bfb4e2107e031d8",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.863358+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b13-fixture-2c06c7",
+      "original_head": "7c8160258f13cad8a412e77731740dae286366c3",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.882729+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b13-fixture-policy-2c06c7",
+      "original_head": "3c293812266ebea62029dd5d4d908cb7d35c3b7d",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.902265+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b18-authority-2c06c7",
+      "original_head": "234b6d9ba365fb294ee6481982ff32b20418a8bf",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.919795+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-b2-deploy-2c06c7",
+      "original_head": "12a79ae3d06dc5f3cc75d17c8a69571255d7fe4a",
+      "archive_ref": "refs/heads/worktree/flow-b2-deploy-2c06c7",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:14.994191+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch10-2c06c7",
+      "original_head": "7bd2e4417123474480c57c0d0caef2ac86bd09db",
+      "archive_ref": "refs/heads/worktree/flow-batch10-2c06c7",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.134313+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch12-2c06c7",
+      "original_head": "990a5417bb6495f35d8bfaddb2702f446b967e4d",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.221001+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch15-2c06c7",
+      "original_head": "7e90c966e0d2c5e8fd9dcef5b8b214470245a557",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.244587+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch17-2c06c7",
+      "original_head": "0b83b3ab2847aeb9cabb80790b39f2aeb8c8c2f3",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.268192+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch18-herdr-2c06c7",
+      "original_head": "6a8372e647823a307e175ab29d17abc91fca7a3f",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.291133+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch18-herdr-views-2c06c7",
+      "original_head": "7b1d2267d4356852fb0dbe3691db386f0173d328",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.313269+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch2",
+      "original_head": "f75df8d5b59b9a9366f59ba8b84d0b1c5aad628b",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.413468+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch4-2c06c7",
+      "original_head": "26dfe7e2055725d20736ae5eaf4026e67aaf579f",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.495381+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch5",
+      "original_head": "e12139d5a79f47c155b0008dff2ed6e0d5db525c",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.518093+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch7-2c06c7",
+      "original_head": "0abe10e7f7cb48bfb4053eb2ea3e90c78193613a",
+      "archive_ref": "refs/heads/worktree/flow-batch7-2c06c7",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.609738+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-batch8-2c06c7",
+      "original_head": "787b498a6b3d2468ad87b98e51f113696c0aa76e",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.681090+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-codex-receipt-2c06c7",
+      "original_head": "e7a217df685108dbea20c29683e6a1cf30455102",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.698290+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-curriculum-omissions-2c06c7",
+      "original_head": "abe66036ca8e0797281bcefaf8d121b03b99ea85",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.718701+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-d0-repair-4db1d3",
+      "original_head": "26faebdc3032f39ab62c012e05e15535f9d14dbd",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.739911+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-datom-red-851681",
+      "original_head": "230b3bb0e489c3f3c30256591cb88623a8675849",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.757997+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-delivery-b7e124",
+      "original_head": "7061cf7e6645943dbddf352f2ac67a522080a6b7",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.779455+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-full-configuration-2c06c7",
+      "original_head": "230b3bb0e489c3f3c30256591cb88623a8675849",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.799631+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-lifecycle-d50d70",
+      "original_head": "267372335af8b82e73106380b00447ccd93c2044",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.821531+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-lifecycle-test-42bca7",
+      "original_head": "42bca7e2f2adba8840d90fe0f850151bc2007ffc",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.839970+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-lifecycle-test-597aa8",
+      "original_head": "597aa829a9e29ddb48f7d0a650fd135418f5c35f",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:15.860704+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-main-integration-851681",
+      "original_head": "be8115b7cdd5b8a7d2c996e93d897369ed9c4a32",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.139511+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-night2-codex-7f0b01",
+      "original_head": "ed6f115960853eb2b83bb61ac0b9ab74cb312f9a",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.158056+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-primary-jvm-2c06c7",
+      "original_head": "796dc5d463ab52352bcf3e03f9ca96a6bd46277f",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.175145+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-queue-emergency",
+      "original_head": "230b3bb0e489c3f3c30256591cb88623a8675849",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.192067+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-queue-emergency-2c06c7",
+      "original_head": "a0ca884ed679c86322d020a7a3303d6357d57e31",
+      "archive_ref": "refs/heads/worktree/flow-queue-emergency-2c06c7",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.255228+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-queue-prebuild-2c06c7",
+      "original_head": "61ec68c241fc6b4036ef6c9f3e5ddb79e31a19eb",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.275719+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-refresh-c27520",
+      "original_head": "fecbff9d2805cd067b92fb1b0ee95ece5d894f84",
+      "archive_ref": "refs/heads/worktree/flow-refresh-c27520",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.331674+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-store-migration",
+      "original_head": "b6d08d1647d4d7b646eef0e7d54367d069c93cd0",
+      "archive_ref": "refs/heads/worktree/flow-store-migration",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.389404+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-tools-039-bb495f",
+      "original_head": "c3662dead69ab469390befaf5571f85d120af1c3",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.408989+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-tools-9ed-exact",
+      "original_head": "9ed7b8ae5a17655a0bb90fcab1e2c0d99306a548",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.429522+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-tools-bb495f",
+      "original_head": "714c1be44e1267adeebce9c4abfa29519d73f57a",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.451092+00:00"
+    },
+    {
+      "path": "/home/li/worktrees/flow-typed-pane-messages-2c06c7",
+      "original_head": "edc47c0b22089940d8d78ca80381c372f27ebfd9",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.468265+00:00"
+    },
+    {
+      "path": "/tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/flow",
+      "original_head": "f3c59c4b15bb208ec4455f208d7ba0b103c65cd5",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.486371+00:00"
+    },
+    {
+      "path": "/tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/wt",
+      "original_head": "5c890e9ada861c7aea7828d815a1d4e8621c0fc3",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.503524+00:00"
+    },
+    {
+      "path": "/tmp/flow-baseline-b878b1b",
+      "original_head": "b878b1b1aa622bb884ba3498a099f1c772716ea7",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.524630+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b10",
+      "original_head": "802ce7226bc94217a6e52688315a7aed404512a9",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.543455+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b11",
+      "original_head": "7ecc01e2b8d96bf8356c9a25c61970dfabc0bcb9",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.562196+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12",
+      "original_head": "9ddd7065f1b533188c593fa0dc03067db53c8e79",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.581537+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12-accepted",
+      "original_head": "64d380a33e0499a807b289d0c84b0be769c84537",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.600690+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12-final",
+      "original_head": "4aced1cc1e10f1fb4f2385d17159270627dfdf72",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.615109+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12-final2",
+      "original_head": "188ca27f70bb43e22b1c2afa9da1615ccf24c745",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.631119+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12-final3",
+      "original_head": "ffc8b8cc7c37c42d279987147b16a2cb8c8ed3f9",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.649191+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b12-final4",
+      "original_head": "118c07a8ea83dcf9366291da005f18633b1ea18e",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.667684+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b2",
+      "original_head": "ee7e86128f19f54646d8ad4847018ffc503666fb",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.685833+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b3",
+      "original_head": "4dae871171ee0cd3d1eb29044893de8172f30c61",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.701106+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b4",
+      "original_head": "dc39672bb58d4d6d08225faa109dee0497ddbde7",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.718349+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b5",
+      "original_head": "34b74d69bcb3e80be381f7b90daf3f15f19e606c",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.739594+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b6",
+      "original_head": "97cb17efc0c1d51b6f7d10377a89aec80e0d6c5f",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.756731+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b7",
+      "original_head": "7d4c63c328cbdb988ce343f8b7faeffa1fe9e5db",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.772701+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b8",
+      "original_head": "333f086e0c879915eb6162d266cbb1d4c9a1a9eb",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.789779+00:00"
+    },
+    {
+      "path": "/tmp/flow-integration-b9",
+      "original_head": "441f72065eca1df0dc1a8fac22deae902fa72d7c",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.806493+00:00"
+    },
+    {
+      "path": "/tmp/flow-startup-identity-gate",
+      "original_head": "d9970f37282131b8b1ce3c2189304b90733d7271",
+      "archive_ref": null,
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.826258+00:00"
+    },
+    {
+      "path": "/tmp/wt-flow",
+      "original_head": "5e4d28b1cec90b64509598b99311a2bd54a976aa",
+      "archive_ref": "refs/heads/worktree/wt-flow",
+      "exit": 0,
+      "stderr": "",
+      "removed": true,
+      "utc": "2026-10-31T05:08:16.929056+00:00"
+    }
+  ],
+  "ref_push": {
+    "utc": "2026-10-31T05:07:44.450882+00:00",
+    "refs": [
+      "refs/heads/worktree/flow-0.40-74e4d1",
+      "refs/heads/worktree/flow-2256c2-batch4",
+      "refs/heads/worktree/flow-2c06c7-batch3",
+      "refs/heads/worktree/flow-36ac89-unrestrict",
+      "refs/heads/worktree/flow-b11-capsule-2c06c7",
+      "refs/heads/worktree/flow-b2-deploy-2c06c7",
+      "refs/heads/worktree/flow-batch10-2c06c7",
+      "refs/heads/worktree/flow-batch7-2c06c7",
+      "refs/heads/worktree/flow-queue-emergency-2c06c7",
+      "refs/heads/worktree/flow-refresh-c27520",
+      "refs/heads/worktree/flow-store-migration",
+      "refs/heads/worktree/wt-flow",
+      "refs/tags/archive/worktree-flow-d0-repair-4db1d3",
+      "refs/tags/archive/worktree-flow-tools-9ed-exact"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "To github.com:LiGoldragon/flow.git\n * [new branch]      worktree/flow-0.40-74e4d1 -> worktree/flow-0.40-74e4d1\n * [new branch]      worktree/flow-2256c2-batch4 -> worktree/flow-2256c2-batch4\n * [new branch]      worktree/flow-2c06c7-batch3 -> worktree/flow-2c06c7-batch3\n * [new branch]      worktree/flow-36ac89-unrestrict -> worktree/flow-36ac89-unrestrict\n * [new branch]      worktree/flow-b11-capsule-2c06c7 -> worktree/flow-b11-capsule-2c06c7\n * [new branch]      worktree/flow-b2-deploy-2c06c7 -> worktree/flow-b2-deploy-2c06c7\n * [new branch]      worktree/flow-batch10-2c06c7 -> worktree/flow-batch10-2c06c7\n * [new branch]      worktree/flow-batch7-2c06c7 -> worktree/flow-batch7-2c06c7\n * [new branch]      worktree/flow-queue-emergency-2c06c7 -> worktree/flow-queue-emergency-2c06c7\n * [new branch]      worktree/flow-refresh-c27520 -> worktree/flow-refresh-c27520\n * [new branch]      worktree/flow-store-migration -> worktree/flow-store-migration\n * [new branch]      worktree/wt-flow -> worktree/wt-flow\n * [new tag]         archive/worktree-flow-d0-repair-4db1d3 -> archive/worktree-flow-d0-repair-4db1d3\n * [new tag]         archive/worktree-flow-tools-9ed-exact -> archive/worktree-flow-tools-9ed-exact\n"
+  },
+  "path_lock_reply": "Locked.{ 24940 FlowLinkedWorktreePaths fe42a5 [ /home/li/primary/flows/e3c8c1/flow-938ec35-fix /home/li/worktrees/flow-0.40-63a06a /home/li/worktrees/flow-0.40-74e4d1 /home/li/worktrees/flow-0.40.5-2a9116 /home/li/worktrees/flow-2256c2-batch3 /home/li/worktrees/flow-2256c2-batch4 /home/li/worktrees/flow-2c06c7-batch11 /home/li/worktrees/flow-2c06c7-batch13 /home/li/worktrees/flow-2c06c7-batch14 /home/li/worktrees/flow-2c06c7-batch16 /home/li/worktrees/flow-2c06c7-batch3 /home/li/worktrees/flow-2c06c7-batch6 /home/li/worktrees/flow-2c06c7-batch9 /home/li/worktrees/flow-36ac89-unrestrict /home/li/worktrees/flow-9457ab-idle-wake /home/li/worktrees/flow-b11-capsule-2c06c7 /home/li/worktrees/flow-b13-close-tests-2c06c7 /home/li/worktrees/flow-b13-fixture-2c06c7 /home/li/worktrees/flow-b13-fixture-policy-2c06c7 /home/li/worktrees/flow-b18-authority-2c06c7 /home/li/worktrees/flow-b2-deploy-2c06c7 /home/li/worktrees/flow-batch10-2c06c7 /home/li/worktrees/flow-batch12-2c06c7 /home/li/worktrees/flow-batch15-2c06c7 /home/li/worktrees/flow-batch17-2c06c7 /home/li/worktrees/flow-batch18-herdr-2c06c7 /home/li/worktrees/flow-batch18-herdr-views-2c06c7 /home/li/worktrees/flow-batch2 /home/li/worktrees/flow-batch4-2c06c7 /home/li/worktrees/flow-batch5 /home/li/worktrees/flow-batch7-2c06c7 /home/li/worktrees/flow-batch8-2c06c7 /home/li/worktrees/flow-codex-receipt-2c06c7 /home/li/worktrees/flow-curriculum-omissions-2c06c7 /home/li/worktrees/flow-d0-repair-4db1d3 /home/li/worktrees/flow-datom-red-851681 /home/li/worktrees/flow-delivery-b7e124 /home/li/worktrees/flow-full-configuration-2c06c7 /home/li/worktrees/flow-lifecycle-d50d70 /home/li/worktrees/flow-lifecycle-test-42bca7 /home/li/worktrees/flow-lifecycle-test-597aa8 /home/li/worktrees/flow-main-integration-851681 /home/li/worktrees/flow-night2-codex-7f0b01 /home/li/worktrees/flow-primary-jvm-2c06c7 /home/li/worktrees/flow-queue-emergency /home/li/worktrees/flow-queue-emergency-2c06c7 /home/li/worktrees/flow-queue-prebuild-2c06c7 /home/li/worktrees/flow-refresh-c27520 /home/li/worktrees/flow-store-migration /home/li/worktrees/flow-tools-039-bb495f /home/li/worktrees/flow-tools-9ed-exact /home/li/worktrees/flow-tools-bb495f /home/li/worktrees/flow-typed-pane-messages-2c06c7 /tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/flow /tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/wt /tmp/flow-baseline-b878b1b /tmp/flow-integration-b10 /tmp/flow-integration-b11 /tmp/flow-integration-b12 /tmp/flow-integration-b12-accepted /tmp/flow-integration-b12-final /tmp/flow-integration-b12-final2 /tmp/flow-integration-b12-final3 /tmp/flow-integration-b12-final4 /tmp/flow-integration-b2 /tmp/flow-integration-b3 /tmp/flow-integration-b4 /tmp/flow-integration-b5 /tmp/flow-integration-b6 /tmp/flow-integration-b7 /tmp/flow-integration-b8 /tmp/flow-integration-b9 /tmp/flow-startup-identity-gate /tmp/wt-flow ] \u00abPsyche Primary authorized linked-worktree retention and consolidation\u00bb }",
+  "canonical_index_before_execution": "9b63722a77426b1d2cef29ab5340e6a1b81f8f47a1ad30037960ab97bf7b3549",
+  "ignored_review": {
+    "result_symlinks": "four untracked result links point only into /nix/store; recorded as reproducible build products, not source",
+    "target_directories": "checked once: Cargo metadata/debug build directories, empty tmp; no valuable nonbuild root entry found",
+    "nested_repositories": "walk excluding .git and target/node_modules/.direnv found no nested .git in linked copies",
+    "credentials": "changed source paths allowlisted and content screened for strong private-key/API-key patterns, none recorded"
+  },
+  "tags": [
+    {
+      "ref": "refs/tags/archive/worktree-flow-d0-repair-4db1d3",
+      "commit": "26faebdc3032f39ab62c012e05e15535f9d14dbd",
+      "path": "/home/li/worktrees/flow-d0-repair-4db1d3"
+    },
+    {
+      "ref": "refs/tags/archive/worktree-flow-tools-9ed-exact",
+      "commit": "9ed7b8ae5a17655a0bb90fcab1e2c0d99306a548",
+      "path": "/home/li/worktrees/flow-tools-9ed-exact"
+    }
+  ],
+  "canonical_index_after_archiving": "9b63722a77426b1d2cef29ab5340e6a1b81f8f47a1ad30037960ab97bf7b3549",
+  "remote_verified_refs": {
+    "refs/heads/worktree/flow-0.40-74e4d1": "a8730b7e5c5cc0cb5ee7a132c315cab375712dce",
+    "refs/heads/worktree/flow-2256c2-batch4": "8ee3030e8c7822311873ae41c7a411c298ab3c6b",
+    "refs/heads/worktree/flow-2c06c7-batch3": "e904c86c36db95bd1d91506e448b73f87fc2efe4",
+    "refs/heads/worktree/flow-36ac89-unrestrict": "f70a54be593c880d32e6c973852490f927ee2751",
+    "refs/heads/worktree/flow-b11-capsule-2c06c7": "28ea9d43fd46bf00e4e54dd0c237167b344221d0",
+    "refs/heads/worktree/flow-b2-deploy-2c06c7": "e43ff349514c8f2918768ea13672ae92d54c5a27",
+    "refs/heads/worktree/flow-batch10-2c06c7": "7bd2e4417123474480c57c0d0caef2ac86bd09db",
+    "refs/heads/worktree/flow-batch7-2c06c7": "0abe10e7f7cb48bfb4053eb2ea3e90c78193613a",
+    "refs/heads/worktree/flow-queue-emergency-2c06c7": "7fc67285f41e30e338c6f6eda8e8ca4a3d08c456",
+    "refs/heads/worktree/flow-refresh-c27520": "b59f989dc60b0f78a3655cb2b4f585a040cb211c",
+    "refs/heads/worktree/flow-store-migration": "c520059011380d822d7e3b948da1bbd9b482fc04",
+    "refs/heads/worktree/wt-flow": "4adb9f5472f5a56f88f2bf3e3a5640759850ab88",
+    "refs/tags/archive/worktree-flow-d0-repair-4db1d3": "26faebdc3032f39ab62c012e05e15535f9d14dbd",
+    "refs/tags/archive/worktree-flow-tools-9ed-exact": "9ed7b8ae5a17655a0bb90fcab1e2c0d99306a548"
+  },
+  "stale_registration_prune": "Removing worktrees/flow-938ec35-fix: gitdir file points to non-existent location\n",
+  "final_worktree_porcelain": "worktree /git/github.com/LiGoldragon/flow\nHEAD 60434783b3ed292e3f0b8f4efe3a3c5561a76b96\nbranch refs/heads/main\n\n",
+  "canonical_index_after_removal": "9b63722a77426b1d2cef29ab5340e6a1b81f8f47a1ad30037960ab97bf7b3549",
+  "canonical_head_after_removal": "60434783b3ed292e3f0b8f4efe3a3c5561a76b96",
+  "completed_utc": "2026-10-31T05:08:16.939631+00:00",
+  "post_removal_original_heads_checked": 74,
+  "post_removal_unreachable_original_heads": [],
+  "lock_releases_after_cleanup": [
+    {
+      "id": 24940,
+      "exit": 0,
+      "reply": "Released.{ 24940 FlowLinkedWorktreePaths fe42a5 [ /home/li/primary/flows/e3c8c1/flow-938ec35-fix /home/li/worktrees/flow-0.40-63a06a /home/li/worktrees/flow-0.40-74e4d1 /home/li/worktrees/flow-0.40.5-2a9116 /home/li/worktrees/flow-2256c2-batch3 /home/li/worktrees/flow-2256c2-batch4 /home/li/worktrees/flow-2c06c7-batch11 /home/li/worktrees/flow-2c06c7-batch13 /home/li/worktrees/flow-2c06c7-batch14 /home/li/worktrees/flow-2c06c7-batch16 /home/li/worktrees/flow-2c06c7-batch3 /home/li/worktrees/flow-2c06c7-batch6 /home/li/worktrees/flow-2c06c7-batch9 /home/li/worktrees/flow-36ac89-unrestrict /home/li/worktrees/flow-9457ab-idle-wake /home/li/worktrees/flow-b11-capsule-2c06c7 /home/li/worktrees/flow-b13-close-tests-2c06c7 /home/li/worktrees/flow-b13-fixture-2c06c7 /home/li/worktrees/flow-b13-fixture-policy-2c06c7 /home/li/worktrees/flow-b18-authority-2c06c7 /home/li/worktrees/flow-b2-deploy-2c06c7 /home/li/worktrees/flow-batch10-2c06c7 /home/li/worktrees/flow-batch12-2c06c7 /home/li/worktrees/flow-batch15-2c06c7 /home/li/worktrees/flow-batch17-2c06c7 /home/li/worktrees/flow-batch18-herdr-2c06c7 /home/li/worktrees/flow-batch18-herdr-views-2c06c7 /home/li/worktrees/flow-batch2 /home/li/worktrees/flow-batch4-2c06c7 /home/li/worktrees/flow-batch5 /home/li/worktrees/flow-batch7-2c06c7 /home/li/worktrees/flow-batch8-2c06c7 /home/li/worktrees/flow-codex-receipt-2c06c7 /home/li/worktrees/flow-curriculum-omissions-2c06c7 /home/li/worktrees/flow-d0-repair-4db1d3 /home/li/worktrees/flow-datom-red-851681 /home/li/worktrees/flow-delivery-b7e124 /home/li/worktrees/flow-full-configuration-2c06c7 /home/li/worktrees/flow-lifecycle-d50d70 /home/li/worktrees/flow-lifecycle-test-42bca7 /home/li/worktrees/flow-lifecycle-test-597aa8 /home/li/worktrees/flow-main-integration-851681 /home/li/worktrees/flow-night2-codex-7f0b01 /home/li/worktrees/flow-primary-jvm-2c06c7 /home/li/worktrees/flow-queue-emergency /home/li/worktrees/flow-queue-emergency-2c06c7 /home/li/worktrees/flow-queue-prebuild-2c06c7 /home/li/worktrees/flow-refresh-c27520 /home/li/worktrees/flow-store-migration /home/li/worktrees/flow-tools-039-bb495f /home/li/worktrees/flow-tools-9ed-exact /home/li/worktrees/flow-tools-bb495f /home/li/worktrees/flow-typed-pane-messages-2c06c7 /tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/flow /tmp/claude-1001/-home-li-primary/d12d2692-5e48-567a-bf57-16c100a266ce/scratchpad/wt /tmp/flow-baseline-b878b1b /tmp/flow-integration-b10 /tmp/flow-integration-b11 /tmp/flow-integration-b12 /tmp/flow-integration-b12-accepted /tmp/flow-integration-b12-final /tmp/flow-integration-b12-final2 /tmp/flow-integration-b12-final3 /tmp/flow-integration-b12-final4 /tmp/flow-integration-b2 /tmp/flow-integration-b3 /tmp/flow-integration-b4 /tmp/flow-integration-b5 /tmp/flow-integration-b6 /tmp/flow-integration-b7 /tmp/flow-integration-b8 /tmp/flow-integration-b9 /tmp/flow-startup-identity-gate /tmp/wt-flow ] \u00abPsyche Primary authorized linked-worktree retention and consolidation\u00bb }"
+    },
+    {
+      "id": 24938,
+      "exit": 0,
+      "reply": "Released.{ 24938 FlowWorktreeInventoryReport fe42a5 [ /home/li/primary/flows/fe42a5/reports/flow-worktree-inventory.json /home/li/primary/flows/fe42a5/reports/flow-worktree-plan.md ] \u00abRead-only Flow consolidation inventory under current single-copy ruling\u00bb }"
+    }
+  ],
+  "late_validation": {
+    "utc": "2026-10-31T05:10:25.875419+00:00",
+    "canonical_index_current_sha256": "e6785bbd32434dc32250edd7b2b6ce8a899a467558b7cfdb5cb0779c160877e1",
+    "canonical_xy_and_path_inventory_same_as_before": true,
+    "canonical_cached_source_delta": "",
+    "physical_index_digest_changed_after_execution": "Later validator confirmed running git write-tree; it can update cache-tree metadata. Its Git tree OID was not comparable to physical SHA256. Canonical staged source delta remains empty and initial45status/pathentries preserved."
+  },
+  "independent_validation": {
+    "one_canonical_checkout": true,
+    "local_12_archive_branches_and_2_tags_match_recorded_oids": true,
+    "archive_original_heads_are_ancestors": true,
+    "recorded_source_blobs_match": true,
+    "validation_command_caveat": "Tester ran git write-tree. Its tree object ID cabd8bea is not the physical index SHA256 and was initially compared incorrectly. write-tree can update cache-tree metadata; no staged source delta and canonical45status/pathentries remain identical. Execution boundary physical-index digest was unchanged before that command."
+  }
+}
