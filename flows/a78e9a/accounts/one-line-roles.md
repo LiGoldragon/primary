@@ -78,7 +78,7 @@ This job could have gone, in one line, to write-ordinary: it carries the book mo
 
 ### Proposal 1: Roles are briefed in one line · psyche-belief › vision/subflows.md
 
-**Comment** The roster names each role by its job, with the one line a caller sends it; each line is an example, not a template.
+**Comment** One line of vision; the one-line brief of each role is its description file, not a roster.
 
   ## Long term: actual flows replace the harness subagent tool
 
@@ -87,34 +87,6 @@ This job could have gone, in one line, to write-ordinary: it carries the book mo
 + ## A role takes one line
 +
 + A subflow role is trained by the belief modules it composes and, where needed, a small role module, so one line directs it: the caller names what it wants and trusts the role's judgment for how.
-+
-+ A main flow runs no command for an errand; it sends the line.
-+
-+ read-trivial: "Fetch the description line of vision-subflows."
-+
-+ read-ordinary: "Find his words of yesterday on one-line roles."
-+
-+ read-demanding: "How does a book comment reach the Secondary?"
-+
-+ write-trivial: "Rename translator.md to translator-2.md; commit."
-+
-+ write-ordinary: "Make the book builder accept a figures directory."
-+
-+ write-demanding: "Build the datom socket's parser."
-+
-+ scripter: "Count my tool calls and tokens since his question."
-+
-+ tester: "Test the translator at this commit against its proposal."
-+
-+ book: "Publish flows/a78e9a/accounts/one-line-roles.md."
-+
-+ book-reader: "What did he decide in this stretch of my transcript?"
-+
-+ comment-relay: "Relay the comments on the translator book."
-+
-+ lander: "Land proposals 1 and 3 of the translator book."
-+
-+ librarian: "Translator book: check the commented-book rule stands; restore its commented source and republish it to its link."
 
 ### Proposal 2: The librarian · field-belief › role/librarian.md, a new file
 
