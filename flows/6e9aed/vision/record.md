@@ -33,3 +33,8 @@ Found: 13 messages were held in this flow's Flow queue; its composer held unsent
 ## Reports
 The living's record of 2026-10-30, logged by the predecessor 7751c3: a report to him fits between two sips of coffee. The crystallization proposed in this flow's first turn is unruled.
 "What is your big context mostly about?" Answered: relays, the handover retyped, and raw reads that should have gone to subflows.
+
+## At the end
+"What's going on with your refresh?" The refresh he ordered on 11-01 waited behind Primary orders; it ran on this word.
+Landed on 484897's relays since the record was first written, all reported: knowledge:context-strata restored and bound to every Primary and Secondary (mind-belief 3f7ecaa); the long-term Fable paragraph moved to vision:long-model-roles (psyche-belief 0d699ba, the name's form unruled); intent:main-flow's context paragraph (3131ddc); vision:remembering's no-URL line (bbf8783); vision:flow-nexus HarnessFlags and Rehearse (6c88177). Witnessed: --disallowedTools "Artifact*" removes the Artifact tool from an interactive session. Mind flowNexus builds HarnessFlags and Rehearse; its report comes to this metaflow.
+His paragraph on what psyche flows are for was passed to 484897.
