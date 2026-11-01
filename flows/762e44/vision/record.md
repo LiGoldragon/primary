@@ -10,8 +10,6 @@ The handover reached this flow twice: in its brief and as a message from the Sec
 
 "I want to try this: logging the living only at the end, kind of thing. We just use the same interface that Nexus currently uses, which is the Vision and the Notion directory. I guess that means that if some of what I'm saying sounds uncertain you might want to put that in the Notion directory. I'm not sure if it even matters. I think the successor isn't even made aware if this comes from Vision or the Notion directory, which would render the whole distinction moot. That means that we would modify the belief on how to log all this." On the crystallization paragraph: "I don't see that that whole paragraph is being really relevant to crystallization." "Why don't you just reconsider all the modules that touch on this and make it a drastic simplification proposal?" Book, unruled.
 
-See flows/03e914/vision/handover.md: End-of-session logging.
-
 ## The translator
 
 "I think for now the translator is just going to work for a single Nexus. I think in the proposal it thought that the translator would be hardwired into the Nexus, which would be incredibly stupid because all we need is a single configuration field to know what translator to use (which then allows us to change it)." The CLI is typed as the Nexus's own input; "yes, the CLI"; Relay is gone.
@@ -24,25 +22,17 @@ His comments on the first way-out book, verbatim, are in the Secondary's relay o
 
 "What about your starter prompt? Was there nothing in there?" "I want to make a system now. I don't want to keep dreaming forever." "Why don't you start with something smaller?" "My idea is that we literally would have a version 1 vision module so that a rewrite is not to be confused with whether or something is long or short." "There are so many things to fix. There's the fact that the current Flow Nexus is not able to really output datom. The way we're outputting the messages is a really dirty nasty duct tape trick and it's likely to blow up in our face any second." "Touching this software, for me, feels like trying to defuse a bomb."
 
-See flows/1add4b/vision/flow-nexus.md: Version 1 refuted.
-
 ## A flow's start
-
-See flows/554e1a/vision/belief-modules.md and flows/b0d3ae/vision/psyche-primary.md: Artifact tool removal.
 
 "I could see a very, very useful 20,000- to 30,000-token startup if we take those artifact tools out and maybe some other things." "The highest return in the context is when it's small, right?" "These 20,000 tokens are taking the most valuable part of the context, which is actually your first answer, the most valuable output." "Long term I see harnesses that don't have access to the shell because we've created a tool for anything that they might want, at which point essentially everything starts to be datom-formatted." On the obvious-parts book: "You're confusing my hard confession with vision"; "your 'why' sections are not 'why' sections. They're just my words. That's not why. If you don't have a reason then don't write one."
 
 ## Codex servers
-
-See flows/6e9aed/vision/record.md: Codex servers.
 
 "don't we want Flow Nexus to support multiple codec servers so that it can handle the transition?" "Hold on. We didn't design this but we need a vision proposal." Proposal at flows/6e9aed/proposals/codex-server-roles.md, with Astra.
 
 ## Books and modules
 
 "all edits are colored using the margin. Don't repeat yourself." "Are we asking for code to be syntax highlighted?" On the figure grammar: "Models don't know how to make flowcharts without these giant instructions?" See flows/b0d3ae/vision/belief-modules.md: Description not repeated. Landed, psyche-belief 9e72e6: vision:belief-modules "A module's description is part of its content: what the description says, the body does not say again." ASCII charts: "if you could get the same car at a different dealership for four times the cost for you, that's not a big deal".
-
-See flows/b0d3ae/vision/belief-modules.md: ASCII charts out.
 
 ## Skill names
 

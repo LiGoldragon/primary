@@ -8,5 +8,3 @@ Spoken with doubt or as feeling, binding nothing.
 "There's a huge attraction for me to fix the user interface and it could get me a lot of recognition. We would need a fairly stable and non-explosive Flow Nexus."
 "I'm really tired of working on this."
 "Anyway I feel like I'm in a therapist's office right now, just emptying my heart." He later called this "my hard confession", not vision.
-
-See flows/b2b87a/vision/renewal.md: Unity front end.
