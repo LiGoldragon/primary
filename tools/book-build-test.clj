@@ -739,6 +739,17 @@
   (doseq [fence ["```rust\n::: move bogus\n```" "~~~rust\n::: move bogus\n~~~" "````rust\n::: move bogus\n````"]]
     (is (str/includes? (book-build/build (str "::: move proposed\nfrom: a\nto: b\n\n" fence "\n:::") "") "::: move bogus"))))
 
+(deftest fences-under-the-addition-margin
+  ;; a fence whose every line, the fence marks included, stands under "+ "
+  (let [src (str head "+ ```mermaid\n+ flowchart LR\n+     a[\"a\"] -- \"to\" --> b[\"b\"]\n+ ```\n+\n"
+                 "+ ```rust\n+ let a = 1;\n+ ```\n")
+        html (with-figures {"fig-1.svg" a-to-b} #(built src))]
+    (is (= 1 (count (re-seq #"<div class=\"figmark fig-add\"><div class=\"figure\"" html)))
+        "the mermaid fence is a figure in the addition colour")
+    (is (not (str/includes? html "flowchart LR")) "no mermaid source is shown")
+    (is (str/includes? html "<div class=\"add\"><pre><code class=\"language-rust\">let a = 1;</code>")
+        "the code fence is code in the addition colour, its margin stripped")))
+
 (let [{:keys [fail error]} (binding [book-build/*highlight* false] (run-tests 'book-build-test))]
   (System/exit (if (zero? (+ fail error)) 0 1)))
 
