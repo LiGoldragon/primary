@@ -1,3 +1,5 @@
+Superseded by flows/4a2631/notion/curriculum.md (2026-11-02): the Curriculum rewrite is named Belief. The living: "No it's not training. I know what you're talking about but that's so long ago it's like a different person."
+
 ## 2026-08-17 — Curriculum is the wrong name; training is right; keep Curriculum, the rewrite is a new repo `training`
 
 Design session `358f143a`, typed (captured 2026-08-17T19:20+02:00).

@@ -5,3 +5,5 @@
 > "Make sure that now we're going to have multiple workspaces. This is more long-term but we can even isolate which skills are generated in different workspaces if not all of them need all of them. This is just a notion for now and I think we also need to redesign the curriculum. I think the rewrite was going to be called Believe, right?"
 
 > "Not believe. Belief"
+
+> "No it's not training. I know what you're talking about but that's so long ago it's like a different person."
