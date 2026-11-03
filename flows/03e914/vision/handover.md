@@ -21,11 +21,6 @@ Well I guess one way of doing it would be to rewrite or maybe we can move the ra
 
 Then we would replace it with this one final vision or maybe it's not the vision log, maybe it's just the psyche log, right? It's the living log. This one thing would be the thing that I asked for and then we could use the same mechanism as long as the files, I guess, are in the vision directory, right? They would be passed over to the new flow. Isn't that right?
 
-## 2026-10-31 — The flow that had the conversation writes the living log, not another flow
-Context: the living, in the Psyche core Primary chat 03e914, when the flow proposed a separate writer flow or script.
-
-So you want another flow that does not understand the conversation (because it's not the flow that's been having the conversation) to give his opinion on what the conversation is, instead of letting the one who knows the conversation (because he had it) do it?
-
 ## 2026-10-31 — The Nexus tells the flow its time has come; what if the living keeps talking
 Context: the living, same chat, agreeing that the flow writes its own living log before its refresh.
 
