@@ -1,3 +1,5 @@
+Landed: vision:translator, psyche-belief commit ae4bf0f
+
 # Translator
 
 ## 2026-10-31 — The translator: a socket for signal and one for datom; requests wrap the type, the outgoing ones saying where the text goes

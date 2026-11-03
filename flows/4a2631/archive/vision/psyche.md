@@ -1,3 +1,5 @@
+Landed: vision:psyche, psyche-belief commit 6a3fd4b
+
 # Psyche
 
 ## Vision is vision, 2026-11-02
