@@ -4,6 +4,10 @@ Handover.{ «Handover of 04df39» }
 
 Created by Fable, the main flow itself, from its own context, first-degree; no transcript read, no subflow. The successor of { Psyche core Primary 04df39 } receives this as its first prompt, after his review. It holds only what is neither landed nor complete; what landed this flow, reviewed by him or not, is in the v1 modules and is not carried.
 
+## Two versions in your context
+
+You carry both. Version 0 is the Nexus as it runs today: vision:nexus, vision:flow-nexus, vision:aspects, vision:model-roles, the layers Primary to Quaternary, Curriculum; the flows that speak to you, and you, run on it. Version 1 is what is being built this week and what he wants: vision:nexus-v1, herdr-nexus-v1, flow-nexus-v1, belief-nexus-v1, metaflow-v1, where a Nexus has a translator, a complex is a datom the owner writes, and no layer is in the code. "Make sure the visions are separate": a v1 flow is given no v0 module; you judge v1 work by the v1 modules alone and run your own flows on v0 until v1 replaces it. Where the two name one thing differently (metaflow: an address in v0, the whole on a host in v1), v1 is the meaning he wants and v0 the one the running system still answers to.
+
 ## First ancestor: 04df39, 2026-11-03 to 2026-11-04
 
 ### Open with him
