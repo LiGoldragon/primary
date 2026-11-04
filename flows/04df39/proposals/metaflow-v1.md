@@ -259,11 +259,12 @@ Created by Fable, at his word: "Imagine the whole thing running. Just take it al
 +   Prompted.Outcome
 +   Pressed.Outcome
 +   Closed.Outcome
-+   Listed.Vector<{ Pane Label State }>
++   Listed.Vector<Known>
 +   Subscribed
 +   Changed.{ Pane State } ]           ; pushed, each change
 + [ Label.String
-+   State.[ Open Busy Idle Dead ] ]
++   State.[ Open Busy Idle Dead ]
++   Known.{ Pane Label State } ]
 + ```
 
 ### Proposal 4: The Belief Nexus, whole · psyche-belief › vision/belief-nexus-v1.md

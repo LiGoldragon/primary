@@ -8,6 +8,8 @@ Created by Fable, the main flow itself, from its own context; first-degree. Kept
 
 psyche-belief 3ac8d7b: vision/nexus-v1.md, herdr-nexus-v1.md, flow-nexus-v1.md, belief-nexus-v1.md (books "Version one"), vision/translator.md deleted, lines in vision/proposal.md ("How a proposal is made"); mind-belief 2f1f9fa: knowledge/book-making.md flowchart rule. Unreviewed by him: "I can just review it tomorrow morning if I have to."
 
+psyche-belief edef955 + 1f83684: vision/metaflow-v1.md and the whole complex (routes, speaker, perma flow, response reading, pane subscription, live belief) in the three v1 Nexus modules; book "The metaflow, version 1" https://claude.ai/artifact/PFLQVK2Kwg1kq9NUJhV8U9. His order: "Imagine the whole thing running… just land it. I'll just review the whole thing tomorrow… have it implemented by Codex… If it doesn't work, change your vision or audit it… use the reset, and keep going." Sent to codexManager a53796 with the build order herdr → Belief → Flow → metaflow shell, Emission written as a Signal meanwhile.
+
 ## Open
 
 - "Ethos for Emission" (https://claude.ai/artifact/VeM2XuALb99GRHfs27XhyE): three alternatives for a root ethos-zero does not know, a sigil among them; awaiting his ruling. Ethos design belongs to the ethosNexus Primary (addd04), not to core.
