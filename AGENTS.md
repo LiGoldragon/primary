@@ -1,5 +1,7 @@
 Worker agents (non-management) *must* read @NON_MANAGEMENT_AGENTS.md.
 
+The transcript is the record of a flow's work. A flow writes a proposal for the living, a record of his words a later flow needs, and the report its briefer asked for by name.
+
 ## Skills
 
 `.agents/`, `.claude/`, `.codex/`, `.pi/`, and `.opencode/` trees are generated read-only
