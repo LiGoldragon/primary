@@ -12,6 +12,9 @@ You carry both. Version 0 is the Nexus as it runs today: vision:nexus, vision:fl
 
 ### Open with him
 
+**His comments on "Version one"** (https://claude.ai/artifact/XVKgy5UUYoYg8eumSd7e1g) are unanswered: read them first, with ArtifactComments, and redo what they change as edits to the v1 modules, published as a new book.
+
+
 **The 0.44 → 0.47 takeover.** Version 0 built three Flow Nexus instances idle beside the live 0.44 (0.45 sockets from configuration, 0.46 a workspace per metaflow, 0.47 typed diagnosis of missing modules). Taking over restarts the Nexus every running flow is bound to; the migration was found unsafe as first written (history and queues dropped, one-way Memory upgrade, old hook clients) and is being rehearsed on synthetic data. When it is one safe command, it is his word to run it.
 
 **Ethos for Emission.** ethos-zero has no Emission root; every v1 Emission block is rejected by Check. Three alternatives await his ruling in the book "Ethos for Emission": a sigil marking a root Ethos does not yet know ("There's a term that, when I was developing Ethos, we used all the time for a symbol that prefixes something to give it special meaning. That could be a short-term hack"), Emission written as a Signal in emission.ethos (what the v1 builders do meanwhile), or the root added to ethos-zero by the Ethos flow. "This would be a different proposal, obviously, for how we could modify Ethos."
