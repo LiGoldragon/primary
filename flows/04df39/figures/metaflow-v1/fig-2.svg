@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 338" style="max-width:100%;height:auto" width="412" height="338" font-family="monospace" font-size="11" fill="currentColor">
+<defs><marker id="m2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="currentColor"/></marker>
+<marker id="m2b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e8832a"/></marker></defs>
+<polyline points="105,43 105,90" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m2a)"/>
+<polyline points="309,43 309,90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#m2a)"/>
+<text x="315" y="72" text-anchor="start">refused</text>
+<polyline points="105,123 105,183" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m2a)"/>
+<text x="111" y="159" text-anchor="start">Speaks.opus</text>
+<polyline points="309,123 309,183" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m2a)"/>
+<text x="303" y="159" text-anchor="end">Speaks.Living</text>
+<polyline points="105,216 105,276" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m2a)"/>
+<text x="111" y="246" text-anchor="start">Speaks.Complex.</text>
+<text x="111" y="261" text-anchor="start">implementer</text>
+<rect x="10" y="10" width="190" height="33" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5"/>
+<text x="105" y="32" text-anchor="middle">complex: designer</text>
+<rect x="215" y="10" width="187" height="33" rx="6" fill="#999" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="308.5" y="32" text-anchor="middle">anything else</text>
+<rect x="60" y="90" width="290" height="33" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="2.5"/>
+<text x="205" y="112" text-anchor="middle">speaker: fable</text>
+<rect x="10" y="183" width="190" height="33" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5"/>
+<text x="105" y="205" text-anchor="middle">member: opus</text>
+<rect x="215" y="183" width="187" height="33" rx="6" fill="#999" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5"/>
+<text x="308.5" y="205" text-anchor="middle">the living</text>
+<rect x="10" y="276" width="190" height="48" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5"/>
+<text x="105" y="298" text-anchor="middle">complex: implementer, its</text>
+<text x="105" y="313" text-anchor="middle">speaker</text>
+</svg>

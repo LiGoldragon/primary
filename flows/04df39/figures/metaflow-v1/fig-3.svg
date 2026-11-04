@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 328" style="max-width:100%;height:auto" width="412" height="328" font-family="monospace" font-size="11" fill="currentColor">
+<defs><marker id="m3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="currentColor"/></marker>
+<marker id="m3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e8832a"/></marker></defs>
+<polyline points="205,43 205,90" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m3a)"/>
+<text x="211" y="66" text-anchor="start">Report, from the hook</text>
+<polyline points="105,123 105,193" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m3a)"/>
+<text x="111" y="151" text-anchor="start">actualizes as</text>
+<text x="111" y="166" text-anchor="start">Input?</text>
+<polyline points="309,123 309,193" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m3a)"/>
+<text x="315" y="161" text-anchor="start">no</text>
+<polyline points="105,226 105,281" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#m3a)"/>
+<rect x="60" y="10" width="290" height="33" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5"/>
+<text x="205" y="32" text-anchor="middle">flow's response, as text</text>
+<rect x="60" y="90" width="290" height="33" rx="6" fill="#6b8fb5" fill-opacity="0.32" stroke="currentColor" stroke-width="2.5"/>
+<text x="205" y="112" text-anchor="middle">translator</text>
+<rect x="10" y="193" width="190" height="33" rx="6" fill="#8fb56b" fill-opacity="0.32" stroke="currentColor" stroke-width="2.5"/>
+<text x="105" y="215" text-anchor="middle">yes: the Input, as signal</text>
+<rect x="215" y="193" width="187" height="48" rx="6" fill="#999" fill-opacity="0.32" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="308.5" y="215" text-anchor="middle">Heard: kept, nothing</text>
+<text x="308.5" y="230" text-anchor="middle">acted</text>
+<rect x="10" y="281" width="190" height="33" rx="6" fill="#e8832a" fill-opacity="0.32" stroke="#e8832a" stroke-width="2.5"/>
+<text x="105" y="303" text-anchor="middle">Flow Nexus acts</text>
+</svg>
