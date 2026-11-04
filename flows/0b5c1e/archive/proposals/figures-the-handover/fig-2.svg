@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 913" width="360" height="913" font-family="sans-serif" font-size="13">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<rect x="10" y="10" width="340" height="280" rx="8" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 4"/><text x="180" y="32" text-anchor="middle" fill="#999">flow-nexus-v1 as it stands</text>
+<rect x="60.0" y="46" width="240" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="68" text-anchor="middle" fill="#111">context passes Threshold</text>
+<rect x="80.0" y="144" width="200" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="166" text-anchor="middle" fill="#111">flow</text>
+<rect x="80.0" y="242" width="200" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="264" text-anchor="middle" fill="#111">successor</text>
+<line x1="180" y1="80" x2="180" y2="144" stroke="#555" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="64.5" y="101.0" width="231" height="22" rx="4" fill="#fff"/><text x="180.0" y="116.0" text-anchor="middle" fill="#111">flow told to write its handover</text>
+<line x1="180" y1="178" x2="180" y2="242" stroke="#555" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="64.5" y="199.0" width="231" height="22" rx="4" fill="#fff"/><text x="180.0" y="214.0" text-anchor="middle" fill="#111">handover is the first prompt of</text>
+<rect x="10" y="306" width="340" height="591" rx="8" fill="none" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5 4"/><text x="180" y="328" text-anchor="middle" fill="#2e7d32">flow-nexus-v1 proposed</text>
+<rect x="60.0" y="342" width="240" height="51" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="364" text-anchor="middle" fill="#111">Tokens left falls to</text>
+<text x="180" y="381" text-anchor="middle" fill="#111">Warning percent</text>
+<rect x="80.0" y="457" width="200" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="479" text-anchor="middle" fill="#111">flow</text>
+<rect x="60.0" y="555" width="240" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="577" text-anchor="middle" fill="#111">flows/id/handover.md</text>
+<rect x="80.0" y="653" width="200" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="675" text-anchor="middle" fill="#111">successor</text>
+<rect x="80.0" y="751" width="200" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="773" text-anchor="middle" fill="#111">no file at refresh</text>
+<rect x="80.0" y="849" width="200" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="871" text-anchor="middle" fill="#111">its definition alone</text>
+<line x1="180" y1="393" x2="180" y2="457" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="71.5" y="414.0" width="217" height="22" rx="4" fill="#fff"/><text x="180.0" y="429.0" text-anchor="middle" fill="#111">Nexus sends HardAbrupt Notice</text>
+<line x1="180" y1="491" x2="180" y2="555" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="152.0" y="512.0" width="56" height="22" rx="4" fill="#fff"/><text x="180.0" y="527.0" text-anchor="middle" fill="#111">writes</text>
+<line x1="180" y1="589" x2="180" y2="653" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="75.0" y="610.0" width="210" height="22" rx="4" fill="#fff"/><text x="180.0" y="625.0" text-anchor="middle" fill="#111">Nexus gives, as first prompt</text>
+<line x1="180" y1="785" x2="180" y2="849" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="99.5" y="806.0" width="161" height="22" rx="4" fill="#fff"/><text x="180.0" y="821.0" text-anchor="middle" fill="#111">successor starts from</text>
+</svg>

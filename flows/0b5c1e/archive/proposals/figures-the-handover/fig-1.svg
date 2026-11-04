@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 751" width="360" height="751" font-family="sans-serif" font-size="13">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<rect x="10" y="10" width="340" height="395" rx="8" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 4"/><text x="180" y="32" text-anchor="middle" fill="#999">remembering as it stands</text>
+<rect x="80.0" y="46" width="200" height="51" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="68" text-anchor="middle" fill="#111">the flow that had</text>
+<text x="180" y="85" text-anchor="middle" fill="#111">the conversation</text>
+<rect x="80.0" y="161" width="200" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="183" text-anchor="middle" fill="#111">Handover book</text>
+<rect x="80.0" y="259" width="200" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="281" text-anchor="middle" fill="#111">reviewed file</text>
+<rect x="80.0" y="357" width="200" height="34" rx="6" fill="#f4f4f4" stroke="#555" stroke-width="1.5"/>
+<text x="180" y="379" text-anchor="middle" fill="#111">successor</text>
+<line x1="180" y1="97" x2="180" y2="161" stroke="#555" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="68.0" y="118.0" width="224" height="22" rx="4" fill="#fff"/><text x="180.0" y="133.0" text-anchor="middle" fill="#111">composes his words by ancestor</text>
+<line x1="180" y1="195" x2="180" y2="259" stroke="#555" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="103.0" y="216.0" width="154" height="22" rx="4" fill="#fff"/><text x="180.0" y="231.0" text-anchor="middle" fill="#111">he reviews as psyche</text>
+<line x1="180" y1="293" x2="180" y2="357" stroke="#555" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="96.0" y="314.0" width="168" height="22" rx="4" fill="#fff"/><text x="180.0" y="329.0" text-anchor="middle" fill="#111">is the first prompt of</text>
+<rect x="10" y="421" width="340" height="314" rx="8" fill="none" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5 4"/><text x="180" y="443" text-anchor="middle" fill="#2e7d32">remembering proposed</text>
+<rect x="20.0" y="457" width="150" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="95" y="479" text-anchor="middle" fill="#111">raw logs</text>
+<rect x="190.0" y="457" width="150" height="51" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="265" y="479" text-anchor="middle" fill="#111">Psyche core</text>
+<text x="265" y="496" text-anchor="middle" fill="#111">Primary</text>
+<rect x="80.0" y="572" width="200" height="51" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="594" text-anchor="middle" fill="#111">its handover,</text>
+<text x="180" y="611" text-anchor="middle" fill="#111">a broad overview</text>
+<rect x="80.0" y="687" width="200" height="34" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="180" y="709" text-anchor="middle" fill="#111">successor</text>
+<line x1="95" y1="491" x2="180" y2="572" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="46.5" y="520.5" width="182" height="22" rx="4" fill="#fff"/><text x="137.5" y="535.5" text-anchor="middle" fill="#111">pass so a flow may write</text>
+<line x1="265" y1="508" x2="180" y2="572" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="159.5" y="529.0" width="126" height="22" rx="4" fill="#fff"/><text x="222.5" y="544.0" text-anchor="middle" fill="#111">is its main user</text>
+<line x1="180" y1="623" x2="180" y2="687" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#a)"/>
+<rect x="131.0" y="644.0" width="98" height="22" rx="4" fill="#fff"/><text x="180.0" y="659.0" text-anchor="middle" fill="#111">starts fresh</text>
+</svg>
