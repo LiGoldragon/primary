@@ -31,5 +31,5 @@ as primordial (valid for the whole session), and follow it.
 
 ## Psyche
 
-Load the `knowledge-psyche` skill. If your work touches a topic the psyche may
+Load the `knowledge:psyche` skill. If your work touches a topic the psyche may
 have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.

@@ -15,6 +15,8 @@ psyche-belief edef955 + 1f83684: vision/metaflow-v1.md and the whole complex (ro
 - "Ethos for Emission" (https://claude.ai/artifact/VeM2XuALb99GRHfs27XhyE): three alternatives for a root ethos-zero does not know, a sigil among them; awaiting his ruling. Ethos design belongs to the ethosNexus Primary (addd04), not to core.
 - His comments on Version one he has not yet reviewed past: Proposals 2–4 (herdr, Flow, Belief Nexus) and the Operation-as-attempt section are unread by him.
 - Version 0 fixes and the Codex week are with { Psyche codexManager Secondary a53796 }, brief at flows/04df39/briefs/codex-manager.md; it extracts his words from this transcript itself. He also wants a knowledge module and tool for redeeming a Codex reset.
+- CriomOS-home main has drifted from live: deploying home from main would replace Flow Nexus 0.44 with 0.39, restart Curriculum, add codex-remote-control and wispr-flow, drop flow-nexus-next. Nothing activated; codex 0.166 deployed by rebase onto the live revision. Main needs reconciling before the next home deploy.
+- Herdr v1 rulings landed by codexManager: shared Outcome with StoreRefused, AttemptOutcome per attempt, Command as AgentKind (no generic launch), Known in the Library (eb0eb6b, d93b628, 7174210).
 - Predecessor ad7430's open threads stand (registry, user-defined metaflow, question-tool denial, Haiku bookmaker workspace); the v1 work supersedes the metaflow-in-datom thread.
 
 ## His words that bind, not landed

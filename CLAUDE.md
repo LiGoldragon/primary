@@ -21,7 +21,7 @@ Follow `vision-committing`: Primary is committed through its sole committer.
 
 ## Psyche
 
-Load the `knowledge-psyche` skill. If your work touches a topic the psyche may
+Load the `knowledge:psyche` skill. If your work touches a topic the psyche may
 have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.
 
 ## Private part — chartered, NOT ACTIVE

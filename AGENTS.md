@@ -26,7 +26,7 @@ pushes its own changes in that repository.
 
 ## Psyche
 
-Load the `knowledge-psyche` skill. If your work touches a topic the psyche may
+Load the `knowledge:psyche` skill. If your work touches a topic the psyche may
 have spoken on, search the vision- and intent- skills, `vision-raw/`, and `flows/*/vision/` before assuming.
 
 ## Temporary subagent model constraint

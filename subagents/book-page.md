@@ -17,7 +17,7 @@ time. It is what the living works with instead of the chat.
 
 ## Before anything
 
-Load these skills through the skill interface: `knowledge-psyche`,
+Load these skills through the skill interface: `knowledge:psyche`,
 `vision-crystallization`, and `knowledge-vocabulary`. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 

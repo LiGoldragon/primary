@@ -1,7 +1,7 @@
 # Client compatibility: diagnosis and bounded alignment dependency
 
 ## Coffee-short account
-The shell still selected Flow 0.40.0 after NEXT became 0.42.1. Some replies still decode; others fail, and old Send reply layouts can misread the new public projection. The same harmless requests fail in the old client and succeed in the matching client. Exact NEXT clients work now by full path; durable Home alignment remains a proposal, not a landed fix. Code removed/added: **0/0**. No activation occurred.
+PATH selected Flow 0.40.0 against a 0.42.1 runtime, so reply decoding failed or read the wrong fields. The same Home operator has now activated matching 0.44 runtime and clients. This flow witnessed both client paths, typed meta replies and a purposeful Send decoding correctly. **Client diagnosis/bypass: removed 0 lines, added 0.** Heartbeat changes are counted separately.
 
 ## Witness
 Raw captures: `/home/li/witnesses/24eb5c-heartbeat-client/*.json`. Each includes UTC timestamp, executable, request, endpoint, status, raw stdout/stderr.
@@ -41,3 +41,8 @@ Primary authorized Field core Secondary one read-only alignment proposal at cano
 
 ## Current alignment disposition
 The earlier client-only hold is superseded. Mind flow Secondary and Field core Secondary relay direct PsychePrimary→FieldPrimary authorization for ONE combined Home inputs.flow0.42.1 + Wispr.12 change/activation through the SAME eligible Home worker, preserving actual runtime unit, Memory, sockets, seats and queues. That Home owner is the sole alignment lane; this heartbeat seat creates no duplicate client implementation. Actual closure still awaits activation/PATH/Send witnesses. The exact full-path matched-client bypass remains a witnessed workaround, not proof that Home alignment has landed.
+
+Latest execution scope extends that SAME Home lane to coherent finalFlow0.44 runtime+ordinary/metaPATH/hooks withWispr.12. TimingGO is NOW; bounded closed-socket transition is accepted, no steady-state mixed pair. Home execution is reported underway; actual0.44 PATH/Send and durable-state postcheck receipts remain pending. This seat performs no parallel client/runtime action.
+
+## Final activated witness
+At2026-10-31T05:51:55Z, actualPID132355 exe and BOTH ordinary/metaPATH resolve `/nix/store/8gv3824gv0nrb6r00r5qs2xfy0inm8q1-flow-0.44.0/bin/…`. Same NEXT sockets/store arguments retained. Ordinary --version0.44; meta has no --version but succeeds on new typed Configuration, exact package identity retained. Purposeful final-account Notice through PATH flow returns `SendAccepted.{2035Queued}`, exit0, empty stderr; raw `/home/li/witnesses/24eb5c-heartbeat-client/runtime-044-path-send.json`. Home operator reports source88ae787/metacode9f56b26, nixpkgs-follows explains different8gv versus standalonegnny package. No independent Home-source reconstruction claimed. No parallel runtime/profile mutation by this flow.

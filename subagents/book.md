@@ -80,7 +80,7 @@ the ASCII in the published page. For each diagram, ask the standing
 `{ Field illustrator Tertiary }` flow first; if it is unavailable, use the Agent tool
 to start the `illustrator` subflow. Give it the sketch, whole, and ask
 it for the figure as one inline SVG. The illustrator role composes
-vision-book's figure grammar; the brief carries the sketch and nothing
+vision:book's figure grammar; the brief carries the sketch and nothing
 more. Pass each returned SVG to the builder with `--figures`. A figure
 the builder refuses goes back to the illustrator with the builder's
 one-line error. If the illustrator role is unavailable, report the
