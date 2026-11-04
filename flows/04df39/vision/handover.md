@@ -10,6 +10,10 @@ psyche-belief 3ac8d7b: vision/nexus-v1.md, herdr-nexus-v1.md, flow-nexus-v1.md, 
 
 psyche-belief edef955 + 1f83684: vision/metaflow-v1.md and the whole complex (routes, speaker, perma flow, response reading, pane subscription, live belief) in the three v1 Nexus modules; book "The metaflow, version 1" https://claude.ai/artifact/PFLQVK2Kwg1kq9NUJhV8U9. His order: "Imagine the whole thing running… just land it. I'll just review the whole thing tomorrow… have it implemented by Codex… If it doesn't work, change your vision or audit it… use the reset, and keep going." Sent to codexManager a53796 with the build order herdr → Belief → Flow → metaflow shell, Emission written as a Signal meanwhile.
 
+## State at night's end, 2026-11-03
+
+Codex week spent; ~700 paid credits used before the four Mind flows (versionOne Primary 63b019 + Secondary af8fe3, versionZero Primary 0deb6d + Secondary f35668) were paused at clean stops. Heartbeat stopped on his order; nothing wakes them at the 05:53 reset. Each resumes on an explicit wake: "Resume: the Codex week has reset; continue from your bead notes." Queued for them: the second herdr audit's code defects and ruling 8. The 6 Nov reset is unredeemed (rule: knowledge:codex-reset). herdr Nexus v1 (herdr-nexus repo, 3ded62) works through its CLI, 37 tests; Belief and Flow Nexus not started. Version 0.45 runs idle beside 0.44. Account of the codex fix: https://claude.ai/artifact/3rtt9RfkQKUDPQqEw51GPg.
+
 ## Open
 
 - "Ethos for Emission" (https://claude.ai/artifact/VeM2XuALb99GRHfs27XhyE): three alternatives for a root ethos-zero does not know, a sigil among them; awaiting his ruling. Ethos design belongs to the ethosNexus Primary (addd04), not to core.
