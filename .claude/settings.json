@@ -1,5 +1,11 @@
 {
   "worktree": {
     "bgIsolation": "none"
+  },
+  "permissions": {
+    "deny": [
+      "SendMessage",
+      "ListAgents"
+    ]
   }
 }
