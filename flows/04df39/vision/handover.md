@@ -14,6 +14,10 @@ psyche-belief edef955 + 1f83684: vision/metaflow-v1.md and the whole complex (ro
 
 Codex week spent; ~700 paid credits used before the four Mind flows (versionOne Primary 63b019 + Secondary af8fe3, versionZero Primary 0deb6d + Secondary f35668) were paused at clean stops. Heartbeat stopped on his order; nothing wakes them at the 05:53 reset. Each resumes on an explicit wake: "Resume: the Codex week has reset; continue from your bead notes." Queued for them: the second herdr audit's code defects and ruling 8. The 6 Nov reset is unredeemed (rule: knowledge:codex-reset). herdr Nexus v1 (herdr-nexus repo, 3ded62) works through its CLI, 37 tests; Belief and Flow Nexus not started. Version 0.45 runs idle beside 0.44. Account of the codex fix: https://claude.ai/artifact/3rtt9RfkQKUDPQqEw51GPg.
 
+## 2026-11-04, morning
+
+herdr Nexus v1 accepted (herdr-nexus 27e126d, 56 tests, four Opus audits in flows/a53796/audits/); Mind versionOne builds the Flow Nexus v1 on it; Mind versionZero builds the Belief Nexus v1 (repo belief-nexus). Version 0 done: 0.45 sockets from configuration, 0.46 workspace per metaflow, 0.47 typed missing-module diagnosis, all idle beside live 0.44; takeover 0.44 → 0.47 not yet safe (state transfer and hook-client upgrade being rehearsed synthetically), and it is his word when ready. Rulings landed in the v1 modules this night: shared Outcome with StoreRefused; AgentKind command; Emission's own observed outcome; an attempt composes several emissions, each one call; signal between Nexuses through a typed Peer list bound by kernel credentials; meta sets one value at a time, meta acts on any pane; Tools.[ HarnessDefault Restricted ]. Credits: ~700 spent before the pause; the 6 Nov reset unredeemed.
+
 ## Open
 
 - "Ethos for Emission" (https://claude.ai/artifact/VeM2XuALb99GRHfs27XhyE): three alternatives for a root ethos-zero does not know, a sigil among them; awaiting his ruling. Ethos design belongs to the ethosNexus Primary (addd04), not to core.
