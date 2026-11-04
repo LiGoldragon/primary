@@ -2,41 +2,30 @@ Handover.{ «Handover of 04df39» }
 
 # Handover of 04df39
 
-Created by Fable, the main flow itself, from its own context; first-degree. Kept current as the flow goes; holds only what is not landed. Updated 2026-11-04 early.
+Created by Fable, the main flow itself, from its own context, first-degree; no transcript read, no subflow. The successor of { Psyche core Primary 04df39 } receives this as its first prompt, after his review. It holds only what is neither landed nor complete; what landed this flow, reviewed by him or not, is in the v1 modules and is not carried.
 
-## Landed this flow
+## First ancestor: 04df39, 2026-11-03 to 2026-11-04
 
-psyche-belief 3ac8d7b: vision/nexus-v1.md, herdr-nexus-v1.md, flow-nexus-v1.md, belief-nexus-v1.md (books "Version one"), vision/translator.md deleted, lines in vision/proposal.md ("How a proposal is made"); mind-belief 2f1f9fa: knowledge/book-making.md flowchart rule. Unreviewed by him: "I can just review it tomorrow morning if I have to."
+### Open with him
 
-psyche-belief edef955 + 1f83684: vision/metaflow-v1.md and the whole complex (routes, speaker, perma flow, response reading, pane subscription, live belief) in the three v1 Nexus modules; book "The metaflow, version 1" https://claude.ai/artifact/PFLQVK2Kwg1kq9NUJhV8U9. His order: "Imagine the whole thing running… just land it. I'll just review the whole thing tomorrow… have it implemented by Codex… If it doesn't work, change your vision or audit it… use the reset, and keep going." Sent to codexManager a53796 with the build order herdr → Belief → Flow → metaflow shell, Emission written as a Signal meanwhile.
+**The 0.44 → 0.47 takeover.** Version 0 built three Flow Nexus instances idle beside the live 0.44 (0.45 sockets from configuration, 0.46 a workspace per metaflow, 0.47 typed diagnosis of missing modules). Taking over restarts the Nexus every running flow is bound to; the migration was found unsafe as first written (history and queues dropped, one-way Memory upgrade, old hook clients) and is being rehearsed on synthetic data. When it is one safe command, it is his word to run it.
 
-## State at night's end, 2026-11-03
+**Ethos for Emission.** ethos-zero has no Emission root; every v1 Emission block is rejected by Check. Three alternatives await his ruling in the book "Ethos for Emission": a sigil marking a root Ethos does not yet know ("There's a term that, when I was developing Ethos, we used all the time for a symbol that prefixes something to give it special meaning. That could be a short-term hack"), Emission written as a Signal in emission.ethos (what the v1 builders do meanwhile), or the root added to ethos-zero by the Ethos flow. "This would be a different proposal, obviously, for how we could modify Ethos."
 
-Codex week spent; ~700 paid credits used before the four Mind flows (versionOne Primary 63b019 + Secondary af8fe3, versionZero Primary 0deb6d + Secondary f35668) were paused at clean stops. Heartbeat stopped on his order; nothing wakes them at the 05:53 reset. Each resumes on an explicit wake: "Resume: the Codex week has reset; continue from your bead notes." Queued for them: the second herdr audit's code defects and ruling 8. The 6 Nov reset is unredeemed (rule: knowledge:codex-reset). herdr Nexus v1 (herdr-nexus repo, 3ded62) works through its CLI, 37 tests; Belief and Flow Nexus not started. Version 0.45 runs idle beside 0.44. Account of the codex fix: https://claude.ai/artifact/3rtt9RfkQKUDPQqEw51GPg.
+**The Codex week.** "My Codex reset expires on the 6th at 5 pm local time… we have basically a week of Codex to use… Let's max that out and put out these proofs of concept." { Psyche codexManager Secondary b862a0 } runs it: Mind versionOne builds the Flow Nexus v1 on the accepted herdr Nexus (herdr-nexus repo, 70 tests), Mind beliefNexus the Belief Nexus v1, one goal now: the simplest Launch end to end. Three-hourly fresh Opus reviews against the v1 modules. The 6 Nov reset is unredeemed; the rule is knowledge:codex-reset, unreviewed by him; about 700 paid credits were spent before the first night's pause. "If it doesn't work, change your vision or audit it, see if it doesn't fit the vision, start again, use the reset, and keep going."
 
-## 2026-11-04, morning
+**CriomOS-home drift.** Home's main has drifted from what is live: deploying from main would downgrade the Flow Nexus to 0.39, restart Curriculum, add codex-remote-control and wispr-flow, drop flow-nexus-next. Nothing activated; codex 0.166 was deployed by rebase onto the live revision (account: https://claude.ai/artifact/3rtt9RfkQKUDPQqEw51GPg). Main needs reconciling before the next home deploy. The Secondary also proposed to him a search rule and a definition-index tool after a Codex flow's runaway grep over /git.
 
-herdr Nexus v1 accepted (herdr-nexus 27e126d, 56 tests, four Opus audits in flows/a53796/audits/); Mind versionOne builds the Flow Nexus v1 on it; Mind versionZero builds the Belief Nexus v1 (repo belief-nexus). Version 0 done: 0.45 sockets from configuration, 0.46 workspace per metaflow, 0.47 typed missing-module diagnosis, all idle beside live 0.44; takeover 0.44 → 0.47 not yet safe (state transfer and hook-client upgrade being rehearsed synthetically), and it is his word when ready. Rulings landed in the v1 modules this night: shared Outcome with StoreRefused; AgentKind command; Emission's own observed outcome; an attempt composes several emissions, each one call; signal between Nexuses through a typed Peer list bound by kernel credentials; meta sets one value at a time, meta acts on any pane; Tools.[ HarnessDefault Restricted ]. Credits: ~700 spent before the pause; the 6 Nov reset unredeemed.
+### His words not yet landed
 
-## Open
+On the versions: "I've kind of taken a new drastic approach just today so I want you to value my approach in this session much more highly than anything else I've said before." "Make sure the visions are separate. If you're reviewing version 1, don't pass the vision for version 0 with it." I read "the old Ethos" as vision:long-ethos and the old Ethos Nexus, and kept vision:ethos in the v1 flows as the syntax they read; he has not confirmed. vision:signal's and vision:memory's dependency on vision:nexus leaked v0 into v1 flows and is being removed.
 
-- "Ethos for Emission" (https://claude.ai/artifact/VeM2XuALb99GRHfs27XhyE): three alternatives for a root ethos-zero does not know, a sigil among them; awaiting his ruling. Ethos design belongs to the ethosNexus Primary (addd04), not to core.
-- His comments on Version one he has not yet reviewed past: Proposals 2–4 (herdr, Flow, Belief Nexus) and the Operation-as-attempt section are unread by him.
-- Version 0 fixes and the Codex week are with { Psyche codexManager Secondary a53796 }, brief at flows/04df39/briefs/codex-manager.md; it extracts his words from this transcript itself. He also wants a knowledge module and tool for redeeming a Codex reset.
-- CriomOS-home main has drifted from live: deploying home from main would replace Flow Nexus 0.44 with 0.39, restart Curriculum, add codex-remote-control and wispr-flow, drop flow-nexus-next. Nothing activated; codex 0.166 deployed by rebase onto the live revision. Main needs reconciling before the next home deploy.
-- Herdr v1 rulings landed by codexManager: shared Outcome with StoreRefused, AttemptOutcome per attempt, Command as AgentKind (no generic launch), Known in the Library (eb0eb6b, d93b628, 7174210).
-- Predecessor ad7430's open threads stand (registry, user-defined metaflow, question-tool denial, Haiku bookmaker workspace); the v1 work supersedes the metaflow-in-datom thread.
+Notions, binding nothing: "I wonder if it means that we have another nexus per harness"; an accountant complex "that keeps track of which subscription has the most usage left"; "it would be cool to have specialized primaries with their own secondaries"; the Unity app, long term, in front of the living; several metaflows on Prometheus, "one might be in charge of my private affairs and would have access to different keys."
 
-## His words that bind, not landed
+### Conduct, to the Primary
 
-"I've kind of taken a new drastic approach just today so I want you to value my approach in this session much more highly than anything else I've said before."
+"Did you act in a wasteful manner?" — never retype his words into a brief; a subflow reads the transcript. "We don't need to log my words. We're just going to do a handover at the end." "Keep your answers short. Save your output. Don't pollute your context by talking too much." "Fable is really just to speak to me, so use secondaries." "You have all the authority. You can refresh yourself and create your own handover if you have to." A proposal is the idea, edited on his comments; a book is one publication, never republished once commented: "We can reuse the vectors if they're still relevant, but we cannot reuse the page." A subagent given a previously published file path redeploys over that page: a new book is a new path.
 
-Vocabulary: "it's really a 'flow complex' than a 'complex flow'… In everyday language we would just say 'complex.'" Metaflow is the whole on one host; perma flow the continuity; flow one run. "Be careful when you say a complex is a type": the Ethos types are the Nexus's vocabulary; a complex is the user's datom definition.
+## Older ancestors, carried from ad7430's handover where still open
 
-"We don't need to log my words. We're just going to do a handover at the end." A record is not written as we go. "Did you act in a wasteful manner?": never retype his words into a brief; a subflow reads the transcript.
-
-"Fable is really just to speak to me, so use secondaries." "You can have all the authority. You can refresh yourself and create your own handover if you have to."
-
-"We cannot reuse a page that was already commented": a proposal is edited; a book is one publication; the commented book stays. "When you say a proposal states what the system is, that's exactly the opposite of what I mean": a proposal states what is wanted.
-
-Codex: reset expires the 6th at 17:00 local; "Maximize my words, maximize your proposal, maximize Codex." `codex` resolves to 0.158, wrong.
+The Ethos registry ("one registry but it has multiple entries. Some are declarative and some are of the development kind… the overrides are only going to apply to the names that they override"); Ethos design belongs to the Psyche ethosNexus Primary, and a brief to it was offered, not sent. Where the question tool is denied for flows: "Pass that over to primary and we'll discuss it there." The Haiku bookmaker workspace with the artifact tools, the Primary without them, in progress with the core Secondary. The Curriculum redesign is Belief, now the Belief Nexus v1. The user-defined metaflow and per-topic rollover are superseded by the v1 modules.
