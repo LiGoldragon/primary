@@ -57,49 +57,6 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-      messagingCodecFor =
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        pkgs.rustPlatform.buildRustPackage {
-          pname = "messaging-codec";
-          version = "0.1.0";
-          src = ./tools/messaging-codec;
-          cargoLock.lockFile = ./tools/messaging-codec/Cargo.lock;
-        };
-      messagingRuntimeFor =
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-          messagingCodec = messagingCodecFor system;
-          runtimePath = pkgs.lib.makeBinPath [
-            pkgs.bash
-            pkgs.coreutils
-            pkgs.python3
-            pkgs.util-linux
-          ];
-        in
-        pkgs.runCommand "primary-messaging-runtime"
-          {
-            nativeBuildInputs = [ pkgs.makeWrapper ];
-          }
-          ''
-            mkdir -p "$out/bin" "$out/libexec"
-            cp ${./tools/msg} "$out/libexec/msg"
-            cp ${./tools/msg-psyche-poc} "$out/libexec/msg-psyche-poc"
-            cp ${./tools/messenger} "$out/libexec/messenger"
-            cp ${./tools/messaging.py} "$out/libexec/messaging.py"
-            cp ${./tools/field-watcher} "$out/libexec/field-watcher"
-            chmod u+x "$out/libexec/msg" "$out/libexec/msg-psyche-poc" "$out/libexec/messenger" "$out/libexec/messaging.py" "$out/libexec/field-watcher"
-            patchShebangs "$out/libexec/msg" "$out/libexec/msg-psyche-poc" "$out/libexec/messenger" "$out/libexec/messaging.py" "$out/libexec/field-watcher"
-            makeWrapper "$out/libexec/msg-psyche-poc" "$out/bin/msg-psyche-poc" \
-              --set MESSAGING_CODEC ${messagingCodec}/bin/messaging-codec \
-              --prefix PATH : ${runtimePath}
-            makeWrapper "$out/libexec/messenger" "$out/bin/messenger-runtime" \
-              --set MESSAGING_CODEC ${messagingCodec}/bin/messaging-codec \
-              --prefix PATH : ${runtimePath}
-          '';
       curriculumRuntimeFor =
         system:
         let
@@ -140,17 +97,14 @@
     in
     {
       packages = forAllSystems (system: {
-        messaging-runtime = messagingRuntimeFor system;
         curriculum = curriculumRuntimeFor system;
-        default = messagingRuntimeFor system;
+        default = curriculumRuntimeFor system;
       });
 
       apps = forAllSystems (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
           runtime = curriculumRuntimeFor system;
-          messagingRuntime = messagingRuntimeFor system;
         in
         {
           curriculum = {
@@ -158,121 +112,7 @@
             program = "${runtime}/bin/curriculum";
             meta.description = "Send one typed Curriculum request to its Nexus";
           };
-          msg-psyche-poc = {
-            type = "app";
-            program = "${messagingRuntime}/bin/msg-psyche-poc";
-            meta.description = "Run the controlled unauthenticated Mentci POC ingress bridge";
-          };
-          messenger-runtime = {
-            type = "app";
-            program = "${messagingRuntime}/bin/messenger-runtime";
-            meta.description = "Run the durable typed messaging runtime";
-          };
           default = { type = "app"; program = "${runtime}/bin/curriculum"; };
-        }
-      );
-
-      checks = forAllSystems (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-          runtime = curriculumRuntimeFor system;
-          messagingCodec = messagingCodecFor system;
-          messagingSource = builtins.path {
-            path = ./.;
-            name = "primary-messaging-source";
-            filter = path: type: true;
-          };
-
-          bookPhoneCode = pkgs.runCommand "primary-book-phone-code" {
-            nativeBuildInputs = [ pkgs.nodejs pkgs.chromium pkgs.coreutils ];
-          } ''
-            export CHROMIUM="${pkgs.chromium}/bin/chromium"
-            export FONTCONFIG_FILE="${pkgs.makeFontsConf { fontDirectories = [ pkgs.dejavu_fonts ]; }}"
-            timeout 100s node ${self}/tools/book-phone-code.test.mjs ${self}/tools/book-code.html > "$out"
-          '';
-          bookPublicationFixtures = pkgs.runCommand "primary-book-publication-fixtures" {
-            nativeBuildInputs = [ pkgs.nodejs pkgs.babashka ];
-          } ''
-            node ${self}/tools/book-fetch.test.mjs
-            touch "$out"
-          '';
-          promptRelayFixtures =
-            pkgs.runCommand "primary-prompt-relay-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.nodejs ];
-              }
-              ''
-                node ${self}/tools/prompt-relay.test.mjs
-                touch "$out"
-              '';
-          componentEvidenceFixtures =
-            pkgs.runCommand "primary-component-evidence-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.nodejs ];
-              }
-              ''
-                node ${self}/tools/component-evidence.test.mjs
-                touch "$out"
-              '';
-          canonicalTitleFixtures =
-            pkgs.runCommand "primary-canonical-title-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.nodejs ];
-              }
-              ''
-                node ${self}/tools/canonical-title-alignment.test.mjs
-                touch "$out"
-              '';
-          thirdSeatFixtures =
-            pkgs.runCommand "primary-third-seat-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.nodejs ];
-              }
-              ''
-                node ${self}/tools/third-seat/provider-run.test.mjs
-                node ${self}/tools/third-seat/offline-adapter.test.mjs
-                touch "$out"
-              '';
-          fanOutFixtures =
-            pkgs.runCommand "primary-fan-out-fixtures"
-              {
-                nativeBuildInputs = [ pkgs.nodejs ];
-              }
-              ''
-                node ${self}/tools/fan-out.test.mjs
-                touch "$out"
-              '';
-          messagingFixtures =
-            pkgs.runCommand "primary-messaging-fixtures"
-              {
-                nativeBuildInputs = [
-                  pkgs.python3
-                  messagingCodec
-                  pkgs.util-linux
-                ];
-              }
-              ''
-                cp -R ${messagingSource} "$TMPDIR/source"
-                chmod -R u+rwX "$TMPDIR/source"
-                cp ${./tools/msg} "$TMPDIR/source/tools/msg"
-                cp ${./tools/messenger} "$TMPDIR/source/tools/messenger"
-                patchShebangs "$TMPDIR/source/tools/msg" "$TMPDIR/source/tools/msg-psyche-poc" "$TMPDIR/source/tools/messenger" "$TMPDIR/source/tools/field-watcher"
-                MESSAGING_CODEC=${messagingCodec}/bin/messaging-codec \
-                  python "$TMPDIR/source/tools/test_messaging.py"
-                touch "$out"
-              '';
-        in
-        {
-          book-publication-fixtures = bookPublicationFixtures;
-          book-phone-code = bookPhoneCode;
-          prompt-relay-fixtures = promptRelayFixtures;
-          component-evidence-fixtures = componentEvidenceFixtures;
-          canonical-title-fixtures = canonicalTitleFixtures;
-          third-seat-fixtures = thirdSeatFixtures;
-          fan-out-fixtures = fanOutFixtures;
-          messaging-fixtures = messagingFixtures;
-          default = messagingFixtures;
         }
       );
     };

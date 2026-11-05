@@ -39,8 +39,6 @@ result-*
 *.swo
 __pycache__/
 *.pyc
-/tools/wezterm-palette-rpc-test/target/
-/tools/messaging-codec/target/
 
 # orchestration lane lock files — runtime coordination state, not history
 /orchestrate/*.lock
