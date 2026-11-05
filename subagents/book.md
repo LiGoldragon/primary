@@ -30,7 +30,7 @@ shown as `<h1 class="book-title">`.
 
 The page is web, never raw Markdown. Write it as HTML body content with
 no CSS of its own, and end the body with
-`/home/li/primary/tools/book-code.html`, pasted unchanged; its header
+`/git/github.com/LiGoldragon/makeshift-tools/book-code.html`, pasted unchanged; its header
 comment gives the markup. Markdown outside fenced blocks (headings,
 emphasis, lists, tables, inline code) becomes the matching HTML.
 
