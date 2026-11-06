@@ -2,7 +2,7 @@
 name: write-trivial
 description: "The change is fully specified. No decisions remain."
 model: "haiku"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, LSP]
 ---
 

@@ -2,7 +2,7 @@
 name: book
 description: "\nPublish a living-messenger presentation from the source file the calling flow wrote and named by path.\n"
 model: sonnet
-effort: medium
+effort: high
 tools: [Read, Bash, Agent, Artifact, ArtifactComments]
 ---
 

@@ -2,7 +2,7 @@
 name: book-reader
 description: "Read one transcript stretch and return its relevant subjects and source lines."
 model: "sonnet"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP]
 ---
 

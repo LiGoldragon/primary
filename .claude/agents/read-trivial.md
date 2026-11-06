@@ -2,7 +2,7 @@
 name: read-trivial
 description: "The answer is in one known place. You are fetching it, not finding it."
 model: "haiku"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP]
 ---
 

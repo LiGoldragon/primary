@@ -2,7 +2,7 @@
 name: read-ordinary
 description: "You know what you are looking for but not where it is."
 model: "sonnet"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP]
 ---
 

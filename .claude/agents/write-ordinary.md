@@ -2,7 +2,7 @@
 name: write-ordinary
 description: "The approach is known. Applying it is the work."
 model: "sonnet"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, LSP]
 ---
 

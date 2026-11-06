@@ -2,7 +2,7 @@
 name: write-demanding
 description: "The approach has to be chosen."
 model: "opus"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, LSP]
 ---
 

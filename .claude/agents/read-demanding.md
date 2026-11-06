@@ -2,7 +2,7 @@
 name: read-demanding
 description: "The answer is written nowhere. Assemble it from how the parts behave."
 model: "opus"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP]
 ---
 

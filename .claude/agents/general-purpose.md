@@ -2,7 +2,7 @@
 name: general-purpose
 description: "\nThe approach is known. Applying it is the work.\n"
 model: sonnet
-effort: medium
+effort: high
 ---
 
 These are your skills, given here; do not reload them.

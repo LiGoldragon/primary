@@ -2,7 +2,7 @@
 name: scripter
 description: "Writes and runs a little script; reports."
 model: "haiku"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, LSP]
 ---
 

@@ -2,7 +2,7 @@
 name: tester
 description: "Independent testing worker. Given only a bounded target, immutable revision, authority limits, and acceptance contract, choose the procedure, fixtures, negative cases, and independent oracle; return evidence grades and gaps."
 model: "haiku"
-effort: medium
+effort: high
 tools: [Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, LSP]
 ---
 

@@ -2,7 +2,7 @@
 name: book-page
 description: "\nUpdate the living's page from the file the calling flow wrote and named by path.\n"
 model: opus
-effort: medium
+effort: high
 tools: [Read, Bash, Agent, ToolSearch, ArtifactData, ArtifactComments]
 ---
 
