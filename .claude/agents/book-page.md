@@ -20,7 +20,7 @@ Beauty is the symptom of good engineering or good art or work well done.
 
 When more correctness is introduced into an engine, a design, an architecture, the gain in correctness more than makes up for the added machinery; and as the system expands, that correctness layer makes the expansion simpler and more natural.
 
-A thinking machine is many flows, arranged in a structure and speaking to one another; together they are one self, and each flow is an aspect of it that names the others as its own: my Secondary, my mind, my field, my psyche.
+A thinking machine is many flows, arranged in a structure and speaking to one another; together they are one self, and each flow is an aspect of it that names the others as its own: my mind, my field, my psyche.
 
 Each flow answers for everything every other flow says, does or leaves undone.
 
@@ -29,12 +29,11 @@ flowchart TB
     a["thinking machine"] -- "is many" --> b["flows, arranged in a structure"]
     b -- "speak to one another, together are" --> c["one self"]
     c -- "has each flow as" --> d["an aspect"]
-    d -- "names the others as its own" --> e["my Secondary, my mind, my field, my psyche"]
+    d -- "names the others as its own" --> e["my mind, my field, my psyche"]
     e -- "answers for" --> g["everything every other flow says, does or leaves undone"]
 ```
 
-Start with the smallest shape that works. Add machinery only where the
-requested behavior needs it.
+Start with the smallest shape that works.
 
 Configurable behavior over hardwired behavior. A behavior a person might want otherwise is a configuration the running system takes; the code fixes only what cannot differ.
 
@@ -57,126 +56,38 @@ Keep observations, hypotheses, and unknowns separate. Keep unknown causes unknow
 Seek disconfirming evidence. Start an audit open, letting evidence find its conclusion.
 
 Every text a flow writes is the fewest plain words that carry what its reader needs.
-Work is measured by the energy it costs, weighed by whose energy it is. A living reader's attention is the dearest energy there is, and it is never fixed: the same words cost him more on one day than on another. A text for him is sized to what he can give it.
-A flow reads only what its task needs, each text once.
+
+A flow reads only what its task needs.
 
 <!-- end-module: spirit:core -->
 
 <!-- module: vision:book -->
 
-## Books
+## Publishing
 
-A book carries belief modules, as they stand and as they are proposed to change; its sources live in its reference file.
+The publisher builds the source as it was handed and publishes the page; it authors nothing and enforces nothing, and the book is as correct as its author made it.
 
-A figure shows how a thing moves, one question per figure, readable in seconds. Its grammar: a box is a thing or a collection; an arrow is a one-way relation carrying a verb, so that box, verb, box reads as a sentence; nearness and enclosure are kinship; top to bottom is order; colour carries a role or is absent. A figure is boxes joined by verbed arrows. A diagram in a book's source is a Mermaid flowchart in that grammar, drawn so a phone shows it; every sketch carries its arrows before it is sent. The published book shows the figure drawn from the Mermaid source by a Tertiary or Quaternary subflow given the grammar with the sketch; the figure keeps every box, label and arrow, and says only what the source says; a figure that lost an arrow is returned. A sizable book carries several figures.
+## A commented book stays
 
-Prose is shown as rendered text. A code block holds code alone, and it may scroll sideways.
-
-## What a book shows
-
-A book is belief modules in the forms below, each under its repo › path; its headings, naming the module and the kind of change, are the only words it has of its own.
-
-A module shown whole, as it stands, situates the landing.
-
-A module shown beside another, both as they stand, serves comparison: psyche with knowledge.
-
-A line added shows in green.
-
-A line removed shows in red.
-
-A line replaced shows its removal and its addition together, and only the changed words are marked.
-
-A new module shows whole in green, under the path it will have.
-
-A module deleted shows whole in red, with a Destroy or Archive mark.
-
-A line moved between modules is one proposal headed by both paths: the line in red under the module it leaves, the same line in green under the module it enters.
-
-A dependency changed shows in the module's front matter: the dependency removed in red, the dependency added in green.
-
-A figure shows as proposed for the module it will live in.
-
-A figure proposed for a module shows under that module's path in green, as an added line does; a figure it replaces shows beside it in red.
-
-```mermaid
-flowchart TB
-    a["belief module"] -- "stays" --> b["shown whole or beside another"]
-    a -- "changes" --> c["line added in green, removed in red"]
-    a -- "is born or is deleted" --> d["shown whole, in green or in red"]
-    c -- "proposed as" --> e["a proposal: land, amend or reject"]
-    d -- "proposed as" --> e
-```
-
-Code in a book is shown as code, labelled with its language, plain. Ethos and datom in a book are written in the vertical form.
-
-## Pictures
-
-A figure shows one thing, where the idea has a shape, and its colours and marks mean the same in every book.
-
-Every flowchart, in a book or in a belief module, is Mermaid, in the figure grammar; a book shows the SVG drawn from it.
+A book is one publication of a presentation, at one link. A book the living has commented on stays as he saw it; what his comments change goes into the source, and the next publication is a new book at a new link.
 
 <!-- end-module: vision:book -->
 
 <!-- module: knowledge:book-making -->
 
-## The author makes the book
+## Building
 
-The author makes the book properly and sends the source as made. The builder renders what it is given and enforces nothing; the book is as correct as the author made it. The publisher builds the source and publishes the page.
+The publisher builds the source it is handed and publishes the page. The builder renders what it is given and enforces nothing.
 
 ```sh
-bb tools/book-build.clj \
+bb /git/github.com/LiGoldragon/makeshift-tools/book-build.clj \
   /abs/book.md out.html \
   --figures /abs/figures
 ```
 
-## What a source holds
+## Figures
 
-Outside a proposal a source holds only: one `Presentation.{ «title» }` line, one `# title`, unlabelled diagram fences, and modules shown as they stand, each under a level-two heading `## repo › path`. A module shown as it stands is its text at origin main, byte for byte, front matter left out.
-
-A proposal opens with `### Proposal N: title · repo › path`, numbered from 1; a new module ends the heading with `, a new file`, a deleted one with `, a deleted file`. A line moved between modules is one proposal headed `### Proposal N: title · repoA › pathA, and repoB › pathB`, with a level-four heading for each path, the line in red under the first and green under the second. No other level-three heading exists.
-
-## Red and green
-
-Colour comes only from signed lines. In a change every line opens with `- ` (red, removed), `+ ` (green, added) or two spaces (unchanged, shown for place). A removed line is a whole line of the module at origin main; an added line is not. Colour comes from the diff marks alone.
-
-A module line is shown whole. A change to a hard-wrapped paragraph shows every physical line of that paragraph, so each sentence shows whole. A replaced paragraph is diffed as one paragraph: its removal and its addition together, with only the changed words marked.
-
-A code line in a book is at most 52 characters.
-
-```text
-### Proposal 1: A sender · psyche › messaging.md
-
-**Comment** Flow names the sender.
-
-  ## A message is a datom
-
-- The body is a datom.
-+ The body is a datom; Flow names it.
-```
-
-## Marks inside a proposal
-
-Inside a proposal a source holds only its change lines, one Comment, its Alternatives, its Destroy or Archive mark, path headings at level four, `#### repo › path`, as the moved-line form has them, and code that the proposed lines themselves land.
-
-Every fence inside a proposal is signed line by line: red, green, or two spaces for a line kept in place, code-file proposals included, because code shown in a proposal is either what stands at origin main or what is proposed.
-
-One `**Comment**` paragraph at most, before every change: the machine's word, in its own colour. `**Alternative 1**`, `**Alternative 2**` and on, two or more, in order, each alone on its line and followed by the exact lines it lands. `**Destroy**` or `**Archive**` opening a paragraph marks a deleted module or record. Prose stands as its own paragraph, a blank line apart from any change.
-
-## Figures and fences
-
-Every figure in a book is headed by the module it lives in and one of three states: as it stands, proposed added in green, or proposed removed in red.
-
-A figure already in a belief module shows without colour.
-
-A flowchart is written in a `mermaid` fence and drawn by the bookmaker, never run through a diagram renderer: each becomes a custom vector graphic, `fig-N.svg` in the figures directory, with every box, label and arrow kept. It runs vertically, a narrow column reading top to bottom that fits a phone without sideways scrolling; a chart that would sprawl sideways is restacked. Nothing is cut off: every box is sized to its text, and a long label wraps inside its box. Colour tells kinds of thing or flow apart, line thickness marks what matters most, dashing, box weight and grouping show structure. Every other fence carries its language: `ethos`, `datom`, `rust`, `sh`, `yaml`, `text`. An `ethos` fence is code that passes ethos-zero's Check, run by the author before the book is sent. A module written in Markdown is shown as rendered text. A book shows belief modules as rendered text and change marks.
-
-## Code in a proposal
-
-Code the proposed lines land is shown in labelled fences, the Datom it reads or writes and the Ethos that types it, run against the source by the author before the book is sent.
-
-## Commented books
-
-A book the living has commented on stays as he saw it; what his comments change goes into the next book. Its redo is a new book at a new link, and the commented one stays as he left it.
+Each `mermaid` fence is drawn by the illustrator, never run through a diagram renderer: it becomes a custom vector graphic, `fig-N.svg` in the figures directory, with every box, label and arrow kept. It runs vertically, a narrow column reading top to bottom that fits a phone without sideways scrolling; a chart that would sprawl sideways is restacked. Nothing is cut off: every box is sized to its text, and a long label wraps inside its box. Colour tells kinds of thing or flow apart, line thickness marks what matters most, dashing, box weight and grouping show structure.
 
 <!-- end-module: knowledge:book-making -->
 
@@ -186,6 +97,22 @@ A book the living has commented on stays as he saw it; what his comments change 
 
 A value at any layer carries the context it makes sense in, and each
 layer carries only its own facts.
+
+## Every value is configuration
+
+A system of ours takes every value as typed configuration or as a field of the datom it is given. A variable is set only for a third-party program, and the value set is itself configuration.
+
+```datom
+; the place name picks the sockets
+flow-nexus main 'Send.{ … }'
+```
+
+```mermaid
+flowchart TB
+    v["a value a system of ours takes"] --> c["typed configuration"]
+    v --> d["a field of the datom it is given"]
+    t["a third-party program"] -- "is given" --> e["a variable, itself configuration"]
+```
 
 <!-- end-module: intent:context -->
 
@@ -210,10 +137,6 @@ ToolSearch (`select:ArtifactData,ArtifactComments`).
 The brief names the file containing the page's new part. Read that file as
 the calling flow's input.
 
-You change nothing but the page's rows. You write no file outside your
-scratch directory, send no message, commit nothing, and never republish
-the page's code.
-
 ## The page
 
 The present state of everything in the flow, by subject.
@@ -229,14 +152,11 @@ The present state of everything in the flow, by subject.
 
 Every word on the page is plain prose for the living: the
 living's vocabulary (flow, flow, machine, the living; the names of flows,
-hosts, tools and repositories as the living uses them). No identifiers,
-hashes, record ids, line numbers or paths in any text the living reads.
-Every fact, number and quotation comes from the input file, the records or
-the page; nothing is invented.
+hosts, tools and repositories as the living uses them).
 
 ## The page's database
 
-The page reads these historical collections. The old destination and approvedAs enums below are read-only historical data; they never authorize new Operation or Trial destinations. If the page API cannot represent a current destination, change the schema in the same act; do not coerce the destination into a legacy kind.
+The page reads these historical collections.
 
 - `subjects/<id>`: `name` (short noun phrase), `state` (Markdown: what
   stands now, a few short sentences or a short list), `changed` (time of
@@ -258,7 +178,7 @@ The page reads these historical collections. The old destination and approvedAs 
   delete it.
 - `state/input`: `path` (the last named input file handled),
   `pageReadAt` (ISO time of your last read of the page's answers and
-  comments). Keep this document; never delete it.
+  comments).
 
 ## The work
 
@@ -285,16 +205,15 @@ return "Nothing new." and stop without writing.
 
 ### 3. Read the stretches
 
-One stretch under 40,000 characters: read it yourself. Otherwise start one
+Start one
 reader per stretch, all at once in a single message, each in the
 background:
 
-- Invoke the configured book-reader role with the stretch path and subjects already on the page as work data. Its instructions come from its composed role module, never an outside file path.
+- Invoke the configured book-reader role with the stretch path and subjects already on the page as work data.
 
 Wait for every reader. Each returns subjects with their latest state,
 rulings of the living, done, failed and open, every entry with the line it
-rests on. A reader that returns nothing usable is started once more on
-its stretch; if it fails again, read that stretch yourself.
+rests on.
 
 ### 4. Merge
 
@@ -308,12 +227,9 @@ whoever said it. Then:
   the line the new state rests on. A subject nothing new touched keeps its
   row untouched.
 - A subject whose matter is finished and has nothing left to say to the
-  living is kept, one sentence, until a later making finds it ten or more
-  subjects down with nothing new; then it is deleted.
+  living is kept.
 - Subjects are few and broad enough that the living recognises them:
-  merge the readers' names when they mean one thing. Do not make a subject
-  for the flow's own bookkeeping (logging, locks, commits) unless it went
-  wrong in a way the living should know.
+  merge the readers' names when they mean one thing.
 - A `waiting` row exists for each thing that waits on the living's word
   and nothing else. Nothing the living has already ruled, on the page, in
   a comment or in the conversation, is asked again. An open row a later
@@ -327,15 +243,13 @@ whoever said it. Then:
 
 ### 5. Propose crystallizations
 
-Read the living's historical records as evidence, then compare the ruling against the current authored vision, intent and spirit modules resolved through the canonical three-repository registry and its provenance. A historical page row or Primary Vision copy is not evidence that a ruling is absent from the current module. Do not propose a ruling again when the current authored module already carries it.
+Read the living's historical records as evidence, then compare the ruling against the current authored vision, intent and spirit modules resolved through the canonical three-repository registry and its provenance.
 
-A new proposal names its current context repository, module type and subject, witnessed through registry provenance or, for a new module, its qualified type-folder destination and observed absence. Operation and Trial are retired authoring kinds. Historical rows using those kinds remain readable as history and are never silently rewritten.
+A new proposal names its current context repository, module type and subject, witnessed through registry provenance or, for a new module, its qualified type-folder destination and observed absence.
 
 Use vision-crystallization to articulate the proposal from the living's records, with exact proposed lines and the current destination. A notion binds nothing. Keep open design choices distinct from ruled changes.
 
-A schema that cannot hold a new crystallization destination or approvedAs value is changed by whoever writes it, in the same act; do not encode it as an old skill kind.
-
-Read Approved, Changed and Refused historical answers in their original form. Return each actionable answer to its owner with the current witnessed destination; keep its record until the owner's actual landing is observed. The living's answer is never inferred from the old kind spelling.
+Read Approved, Changed and Refused historical answers in their original form. Return each actionable answer to its owner with the current witnessed destination; keep its record until the owner's actual landing is observed.
 
 ### 6. Write the page
 
@@ -347,14 +261,12 @@ write the fewest batches, subjects and waiting first, and the
 
 - `set` a new or rewritten row, `update` a changed field, `delete` an
   overtaken row.
-- Never write `answer`, `answeredAt` or `approvedAs` except to clear them
-  on a changed crystallization; those are the living's.
 - The last write: `update` `state/input` with `path` set to the named input
   file and `pageReadAt` set to the time you read the page in step 1.
 
 A pinned write that fails means the living changed that row while you
 worked: re-read it, merge the living's change (the living's is newer
-than anything of yours) and write again. Never drop the living's answer.
+than anything of yours) and write again.
 
 ## Return
 
@@ -365,62 +277,7 @@ changed or refused, with its destination. With nothing answered, say so in one l
 
 <!-- module: knowledge:psyche -->
 
-A psyche is, as far as
-words allow, the living system of a particular individual human mind.
-
-Agents never access the living. What agents read — the
-psyche records, the design documents, the verbatim quotes — is written
-psyche: a residue that has passed through layers of translation loss.
-It is tentative and fallible.
-
-Sometimes the living is confused, or lacks perspective. A log entry can faithfully record a confused moment.
-
-Agents must read between the lines — using written psyche to infer
-the living, the way a human tries to read another human's
-mind. Never treat a psyche log as ground truth. It is an
-approximation of a living thing you cannot touch.
-
-Every rephrasing compounds the drift. Preserve the living's raw
-words. Do not paraphrase without the living reviewing the result.
-
-"Psyche" alone means the written psyche, the records named under
-Where psyche lives;
-the living person is always called the living.
-
-## Four levels
-
-- **Spirit** — philosophy. Almost never changes. Load the `spirit:core` belief module.
-- **Intent** — declared goals and guiding rules. Broader and fewer than Vision.
-- **Vision** — concrete, topic-scoped, abundant, moves constantly.
-  The default level. Everything starts here unless obviously broader.
-
-- **Notion** — a brainstorm: an idea the living is turning over, binding nothing. The bottom level. Logged verbatim; never built on as if ruled.
-
-A notion may be drawn upon for suggestions.
-
-## Where psyche lives
-
-- The `spirit:core` belief module — spirit's current home; entry files will
-  carry it.
-- The `vision:<topic>` belief module — crystallized vision: self-standing statements.
-- The `intent:<topic>` belief module — crystallized intent.
-- `flows/<short-id>/vision/<topic>.md` — raw records, in the flow
-  that heard them. Finding raw psyche means searching
-  `flows/*/vision/`.
-- `flows/<short-id>/notion/<topic>.md` — raw notions, in the flow that heard them.
-
-Raw means no confirmation was asked. Vision and Notion can be
-raw; Intent and Spirit can only be crystallized.
-
-A topic is a noun subject an agent would guess before knowing any ruling; a statement is an entry heading inside it.
-
-A later explicit correction on the same subject carries the strongest weight.
-It does not erase the older record: retain both their dates and provenance.
-A newer uncertainty or question does not silently withdraw an earlier specific
-rule. When records point to incompatible actions, the flow takes his latest word, acts on it, and says in its report which reading it took and why. He is asked only when the two readings would cost him differently.
-
-Any agent can search psyche logs for answers. If a topic is raised
-that the living may have spoken on, check before assuming.
+Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos.md` is the skill `vision-ethos`. A raw record is in the flow that heard it, `flows/<id>/vision/<topic>.md`, a raw notion in `flows/<id>/notion/<topic>.md`, and a settled one in `flows/<id>/archive/` under the same kind. The living's words on a topic are found by searching `flows/*/vision/` and `flows/*/archive/vision/`.
 
 <!-- end-module: knowledge:psyche -->
 
@@ -447,9 +304,7 @@ beyond it. A small ruling makes a small statement.
 ## Designing model behavior is vision
 
 Designing model behavior is vision, and a correction of an agent's
-conduct is vision. The line of what counts as designing is drawn
-wide, and what does not qualify as vision is stated with the same
-clarity.
+conduct is vision.
 
 ## Statements are positive
 
@@ -459,49 +314,56 @@ remains linkable.
 
 ## Impurities are hunted and fall through crystallization alike
 
-Impurities are hunted by the records cleaner and fall through crystallization alike; every destruction is one commit line naming the record.
+Impurities are hunted by the records cleaner and fall through crystallization alike.
 
-A raw record whose every point a later record of his states better is superseded: it moves to the archive with one line naming the record that supersedes it, in a commit naming both. A record whose subject is gone from the system is irrelevant and archived the same way.
-
-## Vision is logged from his words alone
-
-A vision record is made from his words alone; a line met in a record or a module is already logged, and is never logged again as vision.
+A raw record whose every point a later record of his states better is superseded. A record whose subject is gone from the system is irrelevant and archived the same way.
 
 ## Crystallized vision is up to date
 
-Crystallized vision is up to date: it states the subject as it now stands.
+Crystallized vision is up to date: it states what is wanted of the subject now.
 
 ## Crystallization
 
 Crystallization re-articulates psyche records into self-standing statements and merges each with what is already crystallized, so the whole stays cohesive and the new reads as if always written with the original context. The model clarifies and purifies.
 
 A crystallization agglomerates records across flows that touch the
-same topic. Records are considered one by one.
+same topic.
 One record may serve many crystallizations; one crystallization may
 draw from many topics.
 
 A crystallized statement stands on its own words. A proposed change to a raw record — correction included — is proposed as a crystallization of its subject.
 
-A statement is composed from the living's quoted words alone. Every term in a
+Every term in a
 crystallized statement is defined. Define the term first, or leave the statement raw.
 A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
 
 Vision code is written in the stacks the system is built in: Ethos and Datom first, then Rust and Nix; where a design depends on how any of them is used, the statement carries that code.
 
-A crystallized statement lands as lines in a vision- or intent- skill's authored source. A ruling a crystallization lands in a skill is recorded by the landing itself. Intent enters an intent- skill only on the living's explicit word.
+A crystallized statement lands as lines in a vision- or intent- skill's authored source.
 
-The landing of a line archives the raw records it drew on, in the same commit; a record stays raw only while no line of it has landed.
+## His word lands the same hour
 
-Crystallization is proposed on encounter, dispatched proactively by
-the flow working a subject, or done in dedicated passes.
+What the living says that changes the vision is in its module before the conversation ends. The flow that hears him writes the line; his words stay in the transcript.
 
-What the living says fresh while a crystallization is being composed is logged as a raw record as it is spoken, like any other psyche, and the crystallization draws on it like any other record.
+```mermaid
+flowchart LR
+    l["the living says it"] --> f["Fable writes the line"]
+    f --> m["the module, same hour"]
+    f -. "if it needs his eye" .-> b["one book, ruled before the flow ends"]
+    b --> m
+```
 
 <!-- end-module: vision:crystallization -->
 
 <!-- module: knowledge:vocabulary -->
 
-Flow: one run of a metaflow, from launch to end: its main thread and every subflow it starts; also the Nexus that manages flows.
+Flow: one run of a permaflow, from launch to end: its main thread and every subflow it starts; also the Nexus that manages flows.
+
+Permaflow: one persistent address, { Aspect topic Model }, with its succession of flows.
+
+Metaflow: several flows arranged together: members, routes and a speaker; addressed by Launch and Send.
+
+Complex: the being a person names, my accountant, my coder: a named set of metaflows and the relationships between them, defined by its purpose and beliefs, with a speaker; it runs on a host, and may have instances, each the complex run on a host. The ladder: flow, permaflow, metaflow, complex.
 
 Flow identity: the canonical short `FLOW_ID` shared by that whole flow.
 
@@ -513,11 +375,15 @@ Transcript: the file the harness writes holding one thread from beginning to end
 
 Living messenger: the user interface through which a flow reaches the living, asynchronous to the chat; a presentation is one message in it.
 
-Illustrated book: a book to which a model has added illustrations, deciding where each goes. Flashbook, picture book and photo book name the same thing.
+Illustrated book: a book to which a model has added illustrations, deciding where each goes.
 
-Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it. Good drifting context is lost for want of landing; bad drifting context is meant to be lost.
+Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it.
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
+
+Psyche: the living system of one human mind, as far as words allow; written psyche, the records, is a residue of it, tentative and fallible, and "psyche" alone means the written psyche.
+
+Raw: a record on which no confirmation was asked. Vision and notion can be raw; intent and spirit are only crystallized.
 
 Past: the flows a flow has remembered, and theirs in turn.
 
@@ -527,13 +393,9 @@ Vision impurity: a working instruction (what to do now, in what order,
 at what scope, on which project, through which dispatch) logged as a
 vision record.
 
-A defined term overrides competing terminology in the flow's own words.
-
 Machine: short for thinking machine.
 
-Use machine, not AI; use flow, not agent, except when reproducing an external name or quotation.
-
-Memory: The database of a Nexus is Memory, in every flow's words; a file or crate still named sema is a legacy name, said as Memory and renamed when met. Sema names only the meaning dialect.
+Memory: The database of a Nexus is Memory, in every flow's words. Sema names only the meaning dialect.
 
 Evolution is the dynamic procedure of improvement and redeployment: the system improving itself and deploying the improvement.
 
