@@ -41,6 +41,14 @@
 			"path": "/git/github.com/LiGoldragon/terminal-cell"
 		},
 		{
+			"name": "memory",
+			"path": "/git/github.com/LiGoldragon/memory"
+		},
+		{
+			"name": "memory-engine",
+			"path": "/git/github.com/LiGoldragon/memory-engine"
+		},
+		{
 			"name": "sema",
 			"path": "/git/github.com/LiGoldragon/sema"
 		},
