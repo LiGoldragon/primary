@@ -48,7 +48,8 @@
 
   ;; Sema
   (Repo sema github:LiGoldragon/sema (Family Sema) Code Active Architecture [])
-  (Repo sema-engine github:LiGoldragon/sema-engine (Family Sema) Code Active Architecture [])
+  (Repo memory github:LiGoldragon/memory (Family Sema) Code Active Architecture [])
+  (Repo memory-engine github:LiGoldragon/memory-engine (Family Sema) Code Active Architecture [])
 
   ;; Signal — ordinary wire contracts and the foundational signal layer
   (Repo signal github:LiGoldragon/signal (Family Signal) Code Active Architecture [])

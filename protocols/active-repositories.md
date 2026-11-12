@@ -37,9 +37,10 @@ stack.
 | `system` | `/git/github.com/LiGoldragon/system` | Deferred system observation component for OS/window facts such as focus. Prompt-state checking is terminal-cell-owned for the V1 harness wave. |
 | `harness` | `/git/github.com/LiGoldragon/harness` | Harness process/session control boundary. |
 | `terminal-cell` | `/git/github.com/LiGoldragon/terminal-cell` | Active terminal primitive for V1 harness work and Claude/Codex tests: daemon-owned PTY/transcript cell, raw attach path, control/data sockets, and lifecycle CLI. Use it directly; it is not currently subordinate to `terminal`. |
-| `sema` | `/git/github.com/LiGoldragon/sema` | **Today's** typed storage kernel (redb + rkyv + schema guard). Not a daemon, not shared storage, and not the full database engine. Distinct from the **eventual** `Sema` — the universal medium for meaning (self-hosting computational substrate, fully-typed human-language representation, universal interlingua). Per `ARCHITECTURE.md` §"Today and eventually". |
+| `sema` | `/git/github.com/LiGoldragon/sema` | Sema version 0 reads Markdown into a typed document tree and prints Markdown from that tree. |
+| `memory` | `/git/github.com/LiGoldragon/memory` | Typed storage kernel over redb with rkyv-archived values and a version-guarded schema. Each state-bearing component owns its database. |
 | `signal-sema` | `/git/github.com/LiGoldragon/signal-sema` | Sema operation vocabulary: `Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, and `Validate`. Public component contracts lower into this layer; they do not expose these words as universal request roots. |
-| `sema-engine` | `/git/github.com/LiGoldragon/sema-engine` | Full database engine library over `sema` and `signal-sema`: registered record families, Sema operation execution, operation log/snapshot identity/subscription surface as it lands. Not a daemon, not Kameo, not DOTOS, and not Persona-specific. First real consumer is `mind`; Criome follows. |
+| `memory-engine` | `/git/github.com/LiGoldragon/memory-engine` | Full database engine library over `memory` and `signal-sema`: registered record families, database operation execution, operation log, snapshot identity, and subscriptions. |
 | `schema-next` | `/git/github.com/LiGoldragon/schema-next` | Replacement schema engine for the schema-derived stack. Schema is a specialized DOTOS dialect (a `.schema` file IS full DOTOS), not a separate language. Authored `.schema` deserializes via the structural-macro-node codec into schema-in-Rust — the typed, rkyv-serializable canonical round-trip image. There is NO separate assemble/`Asschema` step (Asschema removed per record `6cfr`); the resolution it once did (inline-declaration hoisting, visibility, ordering, symbol paths) now lives as methods on the schema-in-Rust source types. Operator-owned `main`; designers branch from that baseline in `~/wt`. |
 | `schema-rust-next` | `/git/github.com/LiGoldragon/schema-rust-next` | Replacement Rust emission layer. LOWERS schema-in-Rust into Rust interface code using Rust's real macro infrastructure — `quote!` / `proc-macro2` `TokenStream` / `ToTokens` — NOT a hand-rolled string code generator (records `4np2`, `e6v5`). Each schema type/subobject renders itself as tokens via `LowerToRust`; the old 52-method `RustWriter` string emitter is mid-migration out and the remaining `format!`/string surface is transitional. Whether tokens land in checked-in `src/schema/*.rs` (build-time `quote!` + `prettyplease`) or expand inline is a separate visibility choice; generation is token-based either way. Operator-owned `main`. |
 | `triad-runtime` | `/git/github.com/LiGoldragon/triad-runtime` | Shared runtime support for schema-derived Signal/Nexus/SEMA daemons. Current live surface is generic trace logging, rkyv frame transport, and Unix trace socket listening; component crates keep generated nouns and actor hooks. |
@@ -80,7 +81,7 @@ stack.
 | `mentci` | `/git/github.com/LiGoldragon/mentci` | Programmable human approval daemon for the local per-Unix-user criome. `mentci-daemon` owns canonical UI state and a Unix-socket signal endpoint; `mentci` is the thin request client. Current SEMA is in-memory; durable storage and criome key-custody verdict egress remain integration work. |
 | `signal-mentci` | `/git/github.com/LiGoldragon/signal-mentci` | Mentci working signal contract: present questions, push UI updates, observe projected interface state, answer closed verdicts, propose edited answer objects, and retract observations. |
 | `meta-signal-mentci` | `/git/github.com/LiGoldragon/meta-signal-mentci` | Mentci meta policy contract: binary `Configure` startup/reconfiguration over typed daemon socket, local criome socket, persona identity, and notification clients. |
-| `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a sema-engine database. |
+| `repository-ledger` | `/git/github.com/LiGoldragon/repository-ledger` | Triad runtime component for recording pushed repository changes from the local Gitolite server into a memory-engine database. |
 | `signal-repository-ledger` | `/git/github.com/LiGoldragon/signal-repository-ledger` | Ordinary repository-ledger contract: receive-hook event assertions and repository/event read queries. |
 | `meta-signal-repository-ledger` | `/git/github.com/LiGoldragon/meta-signal-repository-ledger` | Meta-signal repository-ledger contract: repository registration, spool policy, and future mirror policy mutation. |
 | `nexus` | `/git/github.com/LiGoldragon/nexus` | Typed semantic text vocabulary written in DOTOS syntax. |
@@ -110,7 +111,7 @@ the main Persona architecture reset unless the user names them.
 | `cloud` | `/git/github.com/LiGoldragon/cloud` | Runtime repo for provider API management: ordinary + owner Unix-socket daemon — the emitted `ActorMultiListenerDaemon` with a **single serializing engine actor over `Arc<Store>`**; provider IO (`ureq`/`flarectl`) currently runs synchronously inside the async handler, so it is an elaborate single-writer (top structural item, audit `68` #2 / bead `primary-x8by`). DigitalOcean / Hetzner / Cloudflare adapters; DO is lead (Spirit `hcp8`) and the only compute provider shipped in a daemon build (`apps.daemon-digitalocean`). Live witnessed **once** end-to-end: Tier-1 adapter (droplet 578866840, report `cloud-designer/64`) and the Tier-2 daemon spine register→prepare→approve→apply→observe→destroy over the real sockets (droplet 578873541, report `cloud-designer/70`) — behavioral axis closed; the **artifact axis is open** (no committed re-runnable socket-apply test, audit `68` P1-b / `72` D17). Birth bead `primary-kbmi` closed; structural follow-ups + the lojix↔cloud deploy handoff in `primary-x8by` (audits `68`/`72`). In the kameo-fork camp (702 split-brain). |
 | `signal-cloud` | `/git/github.com/LiGoldragon/signal-cloud` | Ordinary `cloud` contract: provider/capability observation, desired-state validation, and plan preparation. |
 | `meta-signal-cloud` | `/git/github.com/LiGoldragon/meta-signal-cloud` | Meta policy `cloud` contract: credential handles, provider account policy, plan approval, and plan application. |
-| `domain-criome` | `/git/github.com/LiGoldragon/domain-criome` | Live runtime repo for Criome-domain registry, intelligent resolution, and provider-neutral projection: daemon + thin CLI ship with sema-engine persisted registry state (birth bead `primary-kbmi` closed). |
+| `domain-criome` | `/git/github.com/LiGoldragon/domain-criome` | Live runtime repo for Criome-domain registry, intelligent resolution, and provider-neutral projection: daemon + thin CLI ship with memory-engine persisted registry state (birth bead `primary-kbmi` closed). |
 | `signal-domain-criome` | `/git/github.com/LiGoldragon/signal-domain-criome` | Ordinary `domain-criome` contract: domain observation, intelligent resolution, and provider-neutral projection. |
 | `meta-signal-domain-criome` | `/git/github.com/LiGoldragon/meta-signal-domain-criome` | Meta policy `domain-criome` contract: domain registration, delegation, retirement, and projection policy. |
 | `chroma` | `/git/github.com/LiGoldragon/chroma` | Active system-operator visual/scheduler work. |
@@ -132,7 +133,7 @@ cutover.
 | Repository | Path | Replaces | Status |
 |---|---|---|---|
 | `signal-lojix` | `github:LiGoldragon/signal-lojix` | wire surface implicit in `lojix-cli` (none today) | Skeleton + ARCHITECTURE.md. Implementation lands on the `horizon-leaner-shape` feature branch alongside `lojix` daemon work. |
-| `lojix` | `github:LiGoldragon/lojix` | implementation surface of `lojix-cli` (legacy stays at current schema; retires after CriomOS migrates) | Renamed from `lojix-daemon` (2026-05-14). One crate, two binaries: `lojix-daemon` (long-lived orchestrator) + `lojix` (thin CLI client) per `~/primary/AGENTS.md` §"Binary naming". Implementation lands on the `horizon-leaner-shape` feature branch. Storage via `sema-engine`; wire via `signal-frame` carrying `signal-lojix` records. |
+| `lojix` | `github:LiGoldragon/lojix` | implementation surface of `lojix-cli` (legacy stays at current schema; retires after CriomOS migrates) | Renamed from `lojix-daemon` (2026-05-14). One crate, two binaries: `lojix-daemon` (long-lived orchestrator) + `lojix` (thin CLI client) per `~/primary/AGENTS.md` §"Binary naming". Implementation lands on the `horizon-leaner-shape` feature branch. Storage via `memory-engine`; wire via `signal-frame` carrying `signal-lojix` records. |
 | `criomos-horizon-config` | `github:LiGoldragon/criomos-horizon-config` | pan-horizon constants previously inlined in `goldragon/datom.dotos` (operator/suffixes/LAN pool/reserved labels) | Pan-horizon constants repo introduced on `horizon-leaner-shape`. Consumed by `horizon-rs` to derive cluster domains, router SSID, LAN CIDR/DHCP pool, resolver listen addresses, and tailnet base from cluster facts. |
 
 **Cutover discipline.** Each replacement repo has a documented
@@ -215,17 +216,15 @@ nix's build infrastructure).
   topology/trace tests prove real mailbox paths. Direct `ractor`,
   `persona-actor`, and `workspace-actor` language is stale unless a
   current report explicitly reopens that decision.
-- State: today's `sema` is the typed storage kernel; `sema-engine` is
+- State: `memory` is the typed storage kernel; `memory-engine` is
   the full database engine library. Each component that needs durable
   state owns its own redb and its own engine/kernel handle. There is no
-  shared sema daemon, no generic store component, and no Persona-wide
-  storage architecture. The eventual `Sema` (universal medium
-  for meaning — self-hosting computational substrate, fully-typed
-  human-language representation, universal interlingua) is the
-  long-term target, not a current implementation.
+  shared memory daemon, no generic store component, and no Persona-wide
+  storage architecture. Sema version 0 reads Markdown into a typed
+  document tree and prints Markdown from that tree.
 - Scope discipline: when a concept has both a today's form and an
   eventual encompassing form, the docs explicitly mark that boundary
-  (`sema` storage kernel / `sema-engine` today vs eventual `Sema`;
+  (`memory` storage kernel / `memory-engine` vs Sema;
   `criome` daemon today vs `Criome`). ARCH docs describe
   what's built today; eventual scope gets an explicit marker. Per
   `ARCHITECTURE.md` §"Today and eventually — different things, different
@@ -235,7 +234,7 @@ nix's build infrastructure).
   contracts live in dedicated `signal-*` repos and expose
   contract-local operation roots. The six database words
   (`Assert`, `Mutate`, `Retract`, `Match`, `Subscribe`, `Validate`)
-  belong to `signal-sema` / `sema-engine` execution, not to the
+  belong to `signal-sema` / `memory-engine` execution, not to the
   public contract spine.
 - Text: DOTOS is the only text syntax. Nexus is typed semantic content
   written in DOTOS syntax, not a second parser or alternate text
