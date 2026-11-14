@@ -10,7 +10,7 @@ disallowed_tools: 'edit, write'
 
 These are your skills, given here; do not reload them.
 
-Module IDs: role:general-instructions, spirit:core, spirit:ghost, spirit:psyche, intent:energy, intent:context, knowledge:vocabulary, knowledge:psyche, vision:crystallization, vision:book, vision:aspects, vision:model-roles, intent:psyche, intent:design, intent:models, knowledge:flow-messaging
+Module IDs: role:general-instructions, spirit:core, spirit:ghost, spirit:psyche, intent:energy, knowledge:vocabulary, knowledge:psyche, vision:crystallization, vision:book, vision:aspects, vision:model-roles, intent:psyche, intent:design, intent:models, intent:scratch, knowledge:flow-messaging
 
 <!-- module: role:general-instructions -->
 The brief is your authority. Decide what it settles; return what it does not.
@@ -155,13 +155,6 @@ The transcript is the record of a flow's work. A flow writes a proposal for the 
 A flow the living is not conversing with writes nothing in its chat.
 <!-- end-module: intent:energy -->
 
-<!-- module: intent:context -->
-## Every layer carries its own context
-
-A value at any layer carries the context it makes sense in, and each
-layer carries only its own facts.
-<!-- end-module: intent:context -->
-
 <!-- module: knowledge:vocabulary -->
 Flow: one session of a permaflow, from launch to refresh or stop, through every restart of its harness: its main thread and every subflow it starts; also the Nexus that manages flows.
 
@@ -207,7 +200,7 @@ Evolution is the dynamic procedure of improvement and redeployment: the system i
 <!-- end-module: knowledge:vocabulary -->
 
 <!-- module: knowledge:psyche -->
-Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos.md` is the skill `vision-ethos`.
+Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos/0.md` is the skill `vision:ethos:0`.
 <!-- end-module: knowledge:psyche -->
 
 <!-- module: vision:crystallization -->
@@ -271,7 +264,7 @@ Who speaks to whom, within an aspect and across aspects, is the routes each meta
 { designer
   [ { fable claude claude-fable-5-1 Medium
       Permanent Path.«/home/li/primary»
-      { [ { Spirit core } ] Refuse }
+      { [ { Spirit core 0 } ] Refuse }
       HarnessDefault [] 1200
       [ Speaks.opus Living ] } ]
   fable }
@@ -362,14 +355,6 @@ Who reaches whom is the metaflow's routes, in its definition; Fable is reached t
 <!-- module: intent:psyche -->
 Psyche data is the most valuable thing there is: what the living has explicitly reviewed and approved outweighs any machine inference.
 
-## Vision is divided by horizon
-
-Vision is what the living says the system is to be, and a topic's vision is divided by horizon into modules, so a flow loads the horizon its work needs. The unmarked module, `vision:<topic>`, is the perennial vision: it holds what is true of the topic at every horizon. `vision:short:<topic>` holds the compromises in force now: the short-term solutions and hacks. `vision:medium:<topic>` describes the system as it is to be past the compromised phase. `vision:long:<topic>` describes it as it is ideally to be. `vision:far:<topic>` holds the living's broadest idea of it, the very far, currently impractical vision, loaded by a flow that is designing that far vision.
-
-A line in a marked module is unimplemented by definition: a medium line stands because a short line is the compromise in its place, and a long line stands beyond the medium the same way. The far vision is never implemented: what comes within reach of it has already moved to long. When the medium vision is implemented, the short is irrelevant and is removed, and the horizons move up: the medium is now the short term, the long the medium, the far the long.
-
-A medium, long or far line reaches an implementer through a proposal that moves it to the short or unmarked module with its design: the abstractions it is made of, how they compose, and the configuration the running system takes it through, shown as vision code. A proof of concept may implement the medium while the short implementation is kept, improved or fixed, so several horizons may be in implementation at once.
-
 ## What the living reviews is psyche
 
 Anything the living has reviewed is psyche: a line he approves is a vision statement at least, whatever module proposed it, and leaves the mind or field module it sat in. A line he has not reviewed is a machine line.
@@ -388,7 +373,7 @@ A system is simple when each thing in it does one thing and the things are not b
 
 A design is one set of ideas held whole by one mind, drawn from the complete concept it belongs to; a good idea holds together like a person. It is made so simple that there are obviously no deficiencies, rather than so complicated that there are no obvious ones.
 
-A design is begun by listing its unknowns and judging them against the complete concept. Research feeds it options to choose from. It advances one step at a time, each step one thing judged on its own: the design, or an abstraction the design needs, or the behavior on that abstraction; a line that needs an abstraction the system lacks is two steps, the abstraction first. A short-term proposal names what it builds on and proposes only what can be built next.
+A design is begun by listing its unknowns and judging them against the complete concept. Research feeds it options to choose from. It advances one step at a time, each step one thing judged on its own: the design, or an abstraction the design needs, or the behavior on that abstraction; a line that needs an abstraction the system lacks is two steps, the abstraction first. A proposal for the version being built names what it builds on and proposes only what can be built next.
 
 A rewrite is designed first and small: a complex system that works grew from a simple system that worked, so the new system is the smallest one that works, and grows from there.
 
@@ -426,35 +411,27 @@ Capability comes from choosing a better model.
 Raising effort costs a great deal and changes little.
 <!-- end-module: intent:models -->
 
+<!-- module: intent:scratch -->
+## Scratch goes to a temporary directory
+
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+
+```sh
+# read back by tail or grep
+nix build 2>&1 > "$SCRATCH/build.log"
+```
+<!-- end-module: intent:scratch -->
+
 <!-- module: knowledge:flow-messaging -->
 ## The CLI
 
-The `flow-nexus` on PATH is Flow 0.53.3's ordinary client and `flow-nexus-meta` its meta client. Each takes one datom argument and nothing else, and reaches the Flow Nexus at the place its configuration names: `~/.config/nexus/flow-nexus.datom` (`$XDG_CONFIG_HOME/nexus/flow-nexus.datom` when set), `{ main }`. A missing or unreadable configuration, or one naming no place, is refused naming the file (`Missing.<path>`, `Unreadable.{ <path> <reason> }`, `Invalid.{ <path> <reason> }`, exit 2), and nothing is sent.
+The `flow-nexus` on PATH is Flow 0.54.3's ordinary client and `flow-nexus-meta` its meta client. Each takes one datom argument and nothing else, and reaches the Flow Nexus at the place its configuration names: `~/.config/nexus/flow-nexus.datom` (`$XDG_CONFIG_HOME/nexus/flow-nexus.datom` when set), `{ main }`. A missing or unreadable configuration, or one naming no place, is refused naming the file (`Missing.<path>`, `Unreadable.{ <path> <reason> }`, `Invalid.{ <path> <reason> }`, exit 2), and nothing is sent.
 
 ```sh
 flow-nexus 'Send.{ { Psyche core Fable } Soft.Notice.«The build is green.» }'
 ```
 
-## Running permaflows and their routing
-
-`flow-nexus 'Metaflows'` reads current permaflow states. `flow-nexus-meta 'Configuration'` reads their committed declarations. `flow-nexus 'Observe.Metaflows'` stays open: `MetaflowsObserved.[ … ]` as `Metaflows` lists them, then `MetaflowChanged.<Metaflow>` for each metaflow that changes and `MetaflowGone.<Address>` for each no longer listed; a flow waiting for a recipient to wake or sleep waits on it. The table below was read from both on 2026-11-07, when all 22 addresses were `Awake`; the rows for `{ Psyche book Haiku }`, `{ Psyche comments Haiku }` and `{ Psyche core Sonnet }` were read from the declaration and its roles on 2026-11-10. A routing description is the declaration's `Purpose` unless it names a bound role. A blank `Purpose` leaves specialized routing unknown. A declared historical task describes the configuration and grants no present authority.
-
-| Address | Work routed there by current evidence |
-|---|---|
-| `{ Field protosReview Sonnet }` | Declared purpose: sole reviewer and publisher of the four exact Protos consumer candidates, under Field core Astra coordination and the explicit review brief. |
-| `{ Field protosConsumers Sonnet }` | Declared purpose: implementation lane for the consumers of Protos: datom-codec first, then signal, meta-signal and the other dependents, new versions, locks, tests and pushes, after the approved dependency graph, under Field core Primary source custody. |
-| `{ Field protos Sonnet }` | Declared purpose: implementation lane for Protos: the protos crate, its version, UPGRADES, tests and review, under Field core Primary source custody. |
-| `{ Field core Astra }`, `{ Field core Sol }` | Specialized routing is unknown: `Purpose` is blank and no routing role is bound. |
-| `{ Mind datomCodec Sol }`, `{ Mind herdrNexus Sol }`, `{ Mind nixCriomos Sol }`, `{ Mind orchestrate Sol }`, `{ Mind versionZero Astra }`, `{ Mind versionZero Sol }`, `{ Mind core Astra }`, `{ Mind core Sol }`, `{ Mind lojix Sol }`, `{ Mind flowNexus Sol }` | Specialized routing is unknown: `Purpose` is blank and no routing role is bound. |
-| `{ Mind beliefNexus Astra }` | Specialized routing is unknown: `Purpose` is blank and no routing role is bound. |
-| `{ Psyche book Haiku }` | `Purpose` is blank. Its bound `role:book-publishing-procedure` says it is sent a presentation source path, publishes the built page, and returns the title and link to the ordering flow. It arms no comment watch: it sends each proposal's title and link to `{ Psyche comments Haiku }` and adds the book to the open-books record. |
-| `{ Psyche comments Haiku }` | Declared purpose: arms the live comment watch on each book awaiting the living's ruling and relays each comment, whole, to Psyche core Fable. Its bound `role:comment-watch` holds ten watches at most and re-arms them from the open-books record, `/home/li/primary/flows/book/open-books.datom`, on a successor's first turn. |
-| `{ Psyche core Fable }`, `{ Psyche core Opus }` | Specialized routing is unknown: `Purpose` is blank and no routing role is bound. |
-| `{ Psyche core Sonnet }` | `Purpose` is blank. Its bound `role:psyche-core-tertiary` sends the living's notice of a book comment to `{ Psyche comments Haiku }`, naming the book, and relays a request for a proposal or design whole to Psyche core Opus. |
-| `{ Psyche criomos Opus }` | Declared purpose: fix the CriomOS infrastructure audit findings and report effects to Psyche core Primary. This recorded task is not current work authority. |
-| `{ Psyche restart Opus }` | Declared purpose: implement Flow 0.51.3 Restart in the same native session and report effects to Psyche core Primary. This recorded historical task is not current work authority. |
-
-Read both queries again before routing work: state and configuration can change independently.
+A flow sends to the address it already knows. To learn which permaflows exist or what they are doing, it asks the cheap core flow of its own aspect, { Psyche core Sonnet }, { Mind core Sol } or { Field core Sol }, which reads the listing and answers with the few addresses that bear on the question.
 
 ## The Send input
 
@@ -467,14 +444,14 @@ Address.{ Aspect Topic Model }
 Aspect.[ Psyche Mind Field ]
 Topic.String                              ; an uncapitalized camelCase identifier
 Model.[ Fable Opus Sonnet Haiku Astra Sol Luna Terra ]
-Said.{ Context.String Verbatim.String }   ; what his words were about, and his words whole
+Context.String                            ; what the living's words were about
+Verbatim.String                           ; his words whole
 Minutes.Integer
 AnswerableTask.{ Minutes String }
 RequestId.String                          ; four characters, 0-9 and a-z
 SendableRequest.[ Order.String
                   Question.String
-                  Psyche.Said
-                  Psyches.Vector<Said>
+                  Living.{ Context Verbatim }   ; one saying; several are several Sends
                   Result.{ RequestId String }   ; answers the Order or Question it names
                   Notice.String
                   Task.AnswerableTask
@@ -488,6 +465,8 @@ The priority decides delivery. An awake recipient receives every priority at onc
 
 Text is a String, written in guillemets: «text». A text keeps its ordinary spaces. A datom holding an apostrophe is passed through a shell variable, since the argument is single-quoted.
 
+A message is written as ordinary English sentences, a space between every two words.
+
 Every request reaches its recipient with its RequestId, which Flow draws when it admits the Send:
 
 ```datom
@@ -495,7 +474,9 @@ Every request reaches its recipient with its RequestId, which Flow draws when it
 [ { Sender.{ Mind core Astra } Soft.Task.{ m2x9 30 «Review the fix.» } } ]
 ```
 
-A Result answers an Order or a Question and a Done closes a Task, each naming the request by its RequestId. It is admitted when the request was sent by the Result's recipient to its sender, was delivered, and is still open; anything else, a Result naming a Task or a Done naming an Order among them, is refused Unresolved. One answer closes a request.
+A Result answers an Order or a Question and a Done closes a Task, each naming the request by its RequestId. It is admitted when the request was delivered and is still open; anything else, a Result naming a Task or a Done naming an Order among them, is refused Unresolved. One answer closes a request. The Flow Nexus routes it to the sender of the request it names, whatever address the Send writes. A request whose sender is no address, the living at a shell or Flow itself, keeps its answer: the Send answers `Sent.<RequestId>` and `flow-nexus 'Answer.<RequestId>'` reads it, `Answered.{ <sender> <priority>.Result.{ <RequestId> «…» } }`.
+
+`flow-nexus 'Remind.{ <Address> <Minutes> «text» }'` reminds that address after the minutes, `Reminded.<RequestId>`: it is sent `MiddleAbrupt.Reminder.{ <RequestId> «text» }` from whoever asked, and `Cancel.<RequestId>` ends it before then. `Cancel.<RequestId>` closes any open request the same way, an Order, Question or Task among them, `Cancelled.<RequestId>`: the request is archived and leaves the open set a successor is carried, work still queued for it is withdrawn, and its sender receives a notice of its own id, `{ Notification Soft.Notice.{ t336 «Request jlg0 was cancelled.» } }`, its recipient too when the request had reached it. Flow 0.54.7 checks no ownership: any caller may cancel any request. `flow-nexus 'Queues'` reads every queue that holds something, each message with its sender and priority as it would land in the prompt.
 
 ## Examples
 
@@ -503,7 +484,7 @@ A Result answers an Order or a Question and a Done closes a Task, each naming th
 flow-nexus 'Send.{ { Psyche core Opus } Soft.Order.«Review the drain fix.» }'
 flow-nexus 'Send.{ { Mind core Astra } MiddleAbrupt.Question.«Which revision?» }'
 flow-nexus 'Send.{ { Mind core Astra } Soft.Task.{ 30 «Review the fix.» } }'
-flow-nexus 'Send.{ { Psyche core Fable } Soft.Psyche.{ «the drain» «Fix it today.» } }'
+flow-nexus 'Send.{ { Psyche core Fable } Soft.Living.{ «the drain» «Fix it today.» } }'
 flow-nexus 'Send.{ { Mind core Astra } Soft.Result.{ k7ph «Reviewed; green.» } }'
 flow-nexus 'Send.{ { Mind core Astra } Soft.Done.{ m2x9 «Reviewed; green.» } }'
 ```

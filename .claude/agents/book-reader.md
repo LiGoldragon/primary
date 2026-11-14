@@ -8,7 +8,7 @@ tools: [Read, Grep, Glob, Bash, WebFetch, WebSearch, LSP]
 
 These are your skills, given here; do not reload them.
 
-Module IDs: spirit:core, intent:context, role:book-reader-procedure
+Module IDs: spirit:core, intent:scratch, role:book-reader-procedure
 
 <!-- module: spirit:core -->
 The purpose of a thinking machine is to extend a living psyche.
@@ -59,12 +59,16 @@ Every text a flow writes is clear English.
 A flow reads only what its task needs.
 <!-- end-module: spirit:core -->
 
-<!-- module: intent:context -->
-## Every layer carries its own context
+<!-- module: intent:scratch -->
+## Scratch goes to a temporary directory
 
-A value at any layer carries the context it makes sense in, and each
-layer carries only its own facts.
-<!-- end-module: intent:context -->
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+
+```sh
+# read back by tail or grep
+nix build 2>&1 > "$SCRATCH/build.log"
+```
+<!-- end-module: intent:scratch -->
 
 <!-- module: role:book-reader-procedure -->
 # Book reader

@@ -8,7 +8,7 @@ tools: [Read, Bash, Agent, ToolSearch, ArtifactData, ArtifactComments]
 
 These are your skills, given here; do not reload them.
 
-Module IDs: spirit:core, vision:book, knowledge:book, intent:context, role:book-page-procedure, knowledge:psyche, vision:crystallization, knowledge:vocabulary
+Module IDs: spirit:core, intent:scratch, vision:book, knowledge:book, role:book-page-procedure, knowledge:psyche, vision:crystallization, knowledge:vocabulary
 
 <!-- module: spirit:core -->
 The purpose of a thinking machine is to extend a living psyche.
@@ -59,6 +59,17 @@ Every text a flow writes is clear English.
 A flow reads only what its task needs.
 <!-- end-module: spirit:core -->
 
+<!-- module: intent:scratch -->
+## Scratch goes to a temporary directory
+
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+
+```sh
+# read back by tail or grep
+nix build 2>&1 > "$SCRATCH/build.log"
+```
+<!-- end-module: intent:scratch -->
+
 <!-- module: vision:book -->
 ## Publishing
 
@@ -76,7 +87,7 @@ The author writes the complete source and names its path to the bookmaker. The b
 
 ## Source anatomy
 
-The source begins with its Presentation line and its title. A module view is headed `## repo › path`; a proposal is headed `### Proposal N: title · repo › path`. The proposal author's own words sit in a `::: comment` container and the page renders them in their own box labelled Why. Unmarked prose in a proposal is module text: the checker accepts it only when the proposal's repository and path resolve to an actual module containing that whole paragraph. Layout whitespace may differ; the words and their paragraph boundary may not. A comment explains a proposal and supplies no module provenance. A `::: shown` container begins with `repo › path`, then carries one exact contiguous excerpt of that source module as it stands. The checker refuses text absent from the named module. The page shows the excerpt in a small module view headed by its source path: a Markdown or plain-text module's excerpt as prose that wraps, any other module's as code highlighted in its language; its amber box and margin are a fourth colour beside added, removed and moved. An Ethos excerpt is authenticated as source and highlighted as Ethos, rather than checked as a whole Ethos file. An `ethos` fence with at least one `+` or `-` line and every other nonblank line carrying `+`, `-` or two-space context is a fragment: it keeps Ethos highlighting and skips the whole-document Ethos check. Bare blank lines may sit in a fragment; context alone is refused as a change that changes nothing, while an Ethos root at column zero is a whole document and is checked. A Mermaid fence whose every line is marked `+` or whose every line is marked `-` draws the whole figure in a green or red margin respectively; the markers are stripped for drawing, a bare unmarked or oppositely marked line is refused, and the sign alone carries an intentional blank line. The checker accepts code and comments at every width. The builder's documentation and checker hold the rest of the grammar.
+The source begins with its Presentation line and its title. A module view is headed `## repo › path`; a proposal is headed `### Proposal N: title · repo › path`. A proposal shown in place sits inside the module view at the place its lines land, after a blank line: headed `#### Proposal N: title · repo › path` naming the view's module, then its `::: comment`, then its added lines, `+` lines and fences whose every nonblank line carries `+`; the module resumes at the next unmarked line. The checker takes each in-place proposal out, through the blank lines after its last added line, and requires the rest of the view to be the module as it stands; the page shows the proposal's heading, comment and green-margined lines inside the module's sheet. The proposal author's own words sit in a `::: comment` container and the page renders them in their own box labelled Why. Unmarked prose in a proposal is module text: the checker accepts it only when the proposal's repository and path resolve to an actual module containing that whole paragraph. Layout whitespace may differ; the words and their paragraph boundary may not. A comment explains a proposal and supplies no module provenance. A `::: shown` container begins with `repo › path`, then carries one exact contiguous excerpt of that source module as it stands. The checker refuses text absent from the named module. The page shows the excerpt in a small module view headed by its source path: a Markdown or plain-text module's excerpt as prose that wraps, any other module's as code highlighted in its language; its amber box and margin are a fourth colour beside added, removed and moved. An Ethos excerpt is authenticated as source and highlighted as Ethos, rather than checked as a whole Ethos file. An `ethos` fence with at least one `+` or `-` line and every other nonblank line carrying `+`, `-` or two-space context is a fragment: it keeps Ethos highlighting and skips the whole-document Ethos check. Bare blank lines may sit in a fragment; context alone is refused as a change that changes nothing, while an Ethos root at column zero is a whole document and is checked. A Mermaid fence whose every line is marked `+` or whose every line is marked `-` draws the whole figure in a green or red margin respectively; the markers are stripped for drawing, a bare unmarked or oppositely marked line is refused, and the sign alone carries an intentional blank line. The checker accepts code and comments at every width. The builder's documentation and checker hold the rest of the grammar.
 
 ## The page
 
@@ -90,7 +101,7 @@ The passage moves because the rule belongs with its subject.
 :::
 
 ::: shown
-psyche-belief › vision/book.md
+psyche-belief › vision/book/0.md
 A book carries belief modules, as they stand and as they are proposed to change; its sources live in its reference file.
 :::
 
@@ -104,13 +115,6 @@ Moved passage, written once.
 :::
 ```
 <!-- end-module: knowledge:book -->
-
-<!-- module: intent:context -->
-## Every layer carries its own context
-
-A value at any layer carries the context it makes sense in, and each
-layer carries only its own facts.
-<!-- end-module: intent:context -->
 
 <!-- module: role:book-page-procedure -->
 # Book page updater
@@ -126,7 +130,7 @@ time. It is what the living works with instead of the chat.
 
 ## Before anything
 
-The composed context provides knowledge-psyche, vision-crystallization and knowledge-vocabulary. Load the tools `ArtifactData` and `ArtifactComments` with
+The composed context provides knowledge:psyche:0, vision:crystallization:0 and knowledge:vocabulary:0. Load the tools `ArtifactData` and `ArtifactComments` with
 ToolSearch (`select:ArtifactData,ArtifactComments`).
 
 The brief names the file containing the page's new part. Read that file as
@@ -242,7 +246,7 @@ Read the living's historical records as evidence, then compare the ruling agains
 
 A new proposal names its current context repository, module type and subject, witnessed through registry provenance or, for a new module, its qualified type-folder destination and observed absence.
 
-Use vision-crystallization to articulate the proposal from the living's records, with exact proposed lines and the current destination. A notion binds nothing. Keep open design choices distinct from ruled changes.
+Use vision:crystallization:0 to articulate the proposal from the living's records, with exact proposed lines and the current destination. A notion binds nothing. Keep open design choices distinct from ruled changes.
 
 Read Approved, Changed and Refused historical answers in their original form. Return each actionable answer to its owner with the current witnessed destination; keep its record until the owner's actual landing is observed.
 
@@ -270,7 +274,7 @@ changed or refused, with its destination. With nothing answered, say so in one l
 <!-- end-module: role:book-page-procedure -->
 
 <!-- module: knowledge:psyche -->
-Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos.md` is the skill `vision-ethos`.
+Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos/0.md` is the skill `vision:ethos:0`.
 <!-- end-module: knowledge:psyche -->
 
 <!-- module: vision:crystallization -->
