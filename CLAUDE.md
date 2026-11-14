@@ -17,7 +17,7 @@ Skill variables are the values that differ between setups. They are set in @SKIL
 
 ## Committing
 
-Follow `vision-committing`: Primary is committed through its sole committer.
+A flow commits the files it edited.
 
 ## Psyche
 

@@ -79,3 +79,10 @@ agent-worktrees/agent-toolchain-refresh-tracker/
 /flows/374411/0mlh-release/rollback/context-refresh-rehearsal/
 /flows/374411/0mlh-release/rollback/stopped-runtime-current-j8/
 /flows/896bac/jg4u/release4/rollback/stopped-curriculum-context/
+
+# agent output dumps and loose scratch at the root stay out of history
+/agent-outputs/
+/publications/
+/SHA256SUMS
+/msg-*.txt
+/open.txt
