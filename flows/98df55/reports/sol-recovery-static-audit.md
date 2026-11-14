@@ -1,0 +1,39 @@
+# Recovery candidate static audit — Astra Order zrq6
+
+Reviewed immutable 47e9b1b6fb446f2a76bacd95b86b87ce49d2b5e9 in /git/worktrees/flow-context-warnings-7cd167. Reviewer: Mind flowNexus Sol, flow 72d107. Static source/history inspection only: no compilation, tests, native execution, source edits, lock changes or live configuration changes. Requests ttkb/6k78/kick remain open.
+
+## Conclusion
+
+No definite migration field-loss or setter-reset defect found in the inspected bodies. Acceptance still needs the known runtime/exhaustive-match integration, one immutable full gate, and the missing negative assertions below. Historical verification is partial: parent V2 and V3 layouts match; the original V1 implementation predates the shallow boundary and was not available. Test source is evidence of intended coverage, not a passing test.
+
+## Historical layouts
+
+- Candidate store/handover_configuration.rs:15–31 freezes V1 as policies, archive, count, in that order, with v1 schema label and memory version 1. This is unchanged from parent 2456a0b4 and boundary eabddc8d. It verifies retention of the previously frozen V1, not its equivalence to the original V1 producer. Both warning worktree and canonical flow clone report shallow repositories; eabddc8d has no traversable parent. Obtain the original producer revision or a producer-created archive before calling this independently verified.
+- Candidate store/handover_configuration.rs:34–52 freezes V2 as policies configuration, archive configuration, count configuration, Duration, in that order. Parent generated/memory.rs:218–223 contains exactly that field/type sequence; parent handover_configuration.rs declares version 2 and v2 schema label. Relevant rkyv derives are present in both. Extra Eq/Hash/text derives do not add serialized fields. This is a source-layout comparison, not byte-compatibility execution.
+- Candidate store/successor_upgrade.rs:11–35 freezes V3 enum order Refresh/Exit/Ordered/Replace and intent fields Address, Predecessor, SuccessionCauseV3, LaunchRequestId. Parent generated/memory.rs:897–911 has the same enum order and field/type sequence; parent store/successor.rs:24–37 supplies the v3 label/version. Both use the same imported constituent types. Original old-producer archives have not been decoded in this audit.
+
+## Value preservation and upgrade routing
+
+- store/handover_configuration.rs:63–86 directly maps V2→V3 and V1→V3, retaining every predecessor field and seeding recovery text; V1 alone seeds the already-existing 60000ms deadline. This is direct migration from each supported version, not an executed V1→V2→V3 chain.
+- Its descriptor :105–114 admits both predecessors; :224–253 selects V1 by schema and otherwise invokes the V2 upgrade engine. Current-version reopening delegates to AlreadyCurrent and does not call the seed. Unknown schemas delegate to engine refusal rather than being decoded as an ad hoc fallback; refusal behavior remains unexecuted.
+- store/successor_upgrade.rs:38–51 copies Address, predecessor and launch id and maps each historical cause to its ordinary equivalent. Old Refresh does not acquire emergency provenance. store/successor.rs:24–53 declares V4 and admits frozen V3; store.rs:2728 opens through the upgrader.
+- store.rs:6522–6525 replaces only recovery text via struct update. Four existing handover setters preserve the text explicitly at :6569, :6589, :6614 and :6638. The fixture configuring.rs:2356–2426 covers these setters, equal-value no-announcement, refused negative count, reopen and empty text. Subscription fixture :2430–2468 checks initial/change delivery. None was run.
+
+## Rendering and identity
+
+- composition.rs:277–308 checks requested address, intent predecessor and emergency provenance predecessor before using emergency recovery. No predecessor, no intent and ordinary causes yield no emergency recovery. The optional transcript path is carried as typed data and is never opened here.
+- composition.rs:357–379 prefers a real handover; absence renders current configured text followed by typed emergency cause. Store read faults have RecoveryUnavailable; identity faults have RecoveryPredecessorMismatch. Shared code is used by regular and simplified paths, including simplified empty brief when emergency provenance exists.
+- composition.rs:2123–2186 enumerates both harnesses × both flow kinds × empty/nonempty brief × None/Some path × changed guidance and checks nonempty prompt parts, predecessor presence and recovery-before-open-request ordering. configuring.rs:2471–2555 changes one live store behind the same composer/source and checks both kinds and empty/nonempty brief. Those are fixtures, not native proof.
+
+## Missing assertions and acceptance gaps
+
+1. **Identity guards are not independently tested.** composition.rs:2259–2264 changes the expected predecessor, simultaneously violating intent and provenance comparisons. Removing either check at :297–298 would still satisfy the existing test. Add isolated wrong recorded address, wrong intent predecessor, and wrong emergency predecessor cases, checking every typed error field. Exercise full regular and simplified-empty composition, not only the private helper. This is a test defect; no faulty guard body was observed.
+2. **RecoveryUnavailable branches lack fault injection.** FixtureSuccessorRecovery always returns Ok (:187–201). Add intent-read and text-read failures independently, checking address/predecessor/diagnostic and both composition paths; retain HandoverUnreadable distinction.
+3. **V2 policy preservation is not asserted.** handover_configuration.rs:416–424 supplies Unconfigured policies; :443–455 checks archive/count/deadline/text but omits policies. Use a nonempty configured policy and assert equality before and after reopen. Current migration body does copy it.
+4. **Migration fixture archives are authored by frozen types in the new build.** They can pass even if the frozen definition misstates history. Keep a producer-revision fixture or run old-producer→new-consumer compatibility. Original V1 history is unavailable locally. No golden archive or actual V1→V2→V3 chain is established by these tests.
+5. **Seed wording assertions share the seed implementation.** :282–288, :372–378 and :455–458 compare against initial(), so editing that one seed would alter both implementation and expected value. Static text at :60 matches the handed-over approved wording; add an independent expected-wording fixture for preservation evidence.
+6. **Persistence path coverage is None-only.** successor_upgrade.rs:140–167 persists and reopens emergency provenance only with None. Add Some(TranscriptPath) reopen, plus identity/launch-id assertions after final reopen. All old enum causes are mapped in a separate in-memory test, while the persisted old cause is only Refresh.
+7. **Optional path assertion checks string occurrence, not typed roundtrip.** composition.rs:2177–2181 proves the supplied path string appears iff Some in those fixtures, not that the rendered cause roundtrips with exact FlowId and None/Some. Add typed parse/equality. Missing/ambiguous native-path capture is runtime-owned and is not proved by injecting None.
+8. **Unread-root behavior needs an explicit boundary assertion.** composition.rs:346 returns before emergency text rendering for HandoverRoot::Unread. Current recovery tests all pass At(root). This is observed behavior, not established as a defect: confirm Unread is rehearsal-only, then assert that contract; use Unresolved with the real memory source to show production recovery needs no filesystem root. No source change proposed pending runtime integration context.
+
+All paths above are beneath crates/flow-nexus unless otherwise stated. No independent full gate or native proof is claimed. Reservations 246–250/252 remain untouched and still name bdb323 as observed.
