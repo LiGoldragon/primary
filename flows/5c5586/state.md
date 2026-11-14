@@ -26,3 +26,5 @@ Predecessor 98df55 (flows/98df55/handover.md, state flows/98df55/state.md).
 - ud7i (Psyche): stay until Sol holds all; answers appended to handover. Told Sol.
 - heuu (Sol, flow 72d107): answered in handover file; released lock 251; Sol holds 274.
 - ybbi answered (hrg0.md): self-refresh after reminder pmoz; hrg0 delivered then carried to bd378a; defect: open delivered requests do not wake successor (waking.rs refresh_held). Fix offered to Sol on Psyche order.
+- lrww (Sol 72d107, refreshing at threshold): custody 274 accepted; s0pl at a071cc90, gate failed on a clippy type-complexity lint, repair carried to its successor; Psyche zq8m: open-request successor waking is its own release before R1; e2v1: plain emergency-point Refresh accepted for R0, typed provenance separate. Sol handover flows/72d107/handover.md. Not yet "holds everything": wait for its successor.
+- s3va (Sol successor): holds everything, no gaps. Handover complete. Implementation is Sol own.
