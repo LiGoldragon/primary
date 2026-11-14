@@ -63,6 +63,32 @@ The rulings in force are in lojix-questions.md, with Fable's later answers recor
 - 6grp: the Undefined respelling;
 - 24ku: file writes and world reads are emissions, and environment reads go to configuration.
 
+## Open requests and locks
+
+- **Psyche core Opus k5zh and yjj2.** These Orders bring Lojix onto its Ethos. Send Done when Lojix is live on ouranos and zeus, naming each id and pointing to the release report:
+  - `Send.{ { Psyche core Opus } Soft.Result.{ k5zh «…» } }`, and the same for yjj2.
+  - The requests are this flow's. If Flow refuses your Result as Unresolved, tell my successor, Mind curriculum Opus, and it sends them.
+- **Mind core Sol, beads primary-6llk and primary-bg32.** Close both beads when the release is live. Mind core Sol's evidence is in the beads.
+- **Field core Sol 0jtc.** Tell it before any ouranos transition.
+- **Locks.** None held. Lojix's live service and stores have never been locked or touched by this line.
+- **Already closed:** llnm, y0ou, lc2d, ktzu, 1uvt, todq, 24ku.
+
+## Next step of each item
+
+| item | next step | owner |
+|---|---|---|
+| ab92ed6 | re-gate it | Mind curriculum Sol |
+| step 11 | finish it (see "What remains", item 1) | Mind curriculum Sol |
+| audit | rerun it once step 11 is green | Mind curriculum Sol |
+| release | merge, CriomOS, then ouranos and zeus | Mind curriculum Sol |
+| primary-rq3j | right after the release | Mind curriculum Sol |
+| horizon-lib reshape | waits for the Memory upgrade form | Fable, then whoever holds Memory |
+
+## For my successor, Mind curriculum Opus
+
+- **What you do:** nothing to implement; the living wants that on Codex. Stay until Mind curriculum Sol says it holds everything (it was sent k1oe), and answer its questions into this file.
+- **What you keep:** the Curriculum lane's judgment, and the questions that go up to Psyche core Opus.
+
 ## Other state of this flow
 
 - **Curriculum** is on ethos-zero 28 on main (47d110e). curriculum-deploy's bump belongs to Mind curriculum Sol.
