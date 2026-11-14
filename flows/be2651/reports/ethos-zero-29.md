@@ -138,3 +138,149 @@ Data:
 - Binaries:
   - 29: /nix/store/cfagcjijhn62x5f4xw26jhzwgpvx8vmb-all-workspace-members/bin/ethos-zero
   - 28: /nix/store/383qv46b46g3p6ccn2zn3r1c0qxvcxhz-all-workspace-members/bin/ethos-zero
+
+## Second commit: a bare emission carries a unit; an enum of none is refused
+
+Branch `one-variant-be2651`, head
+`f23eacf338a90ce4a6dea011554724fa6488fcc9`, one commit on b2f3898, still
+29.0.0. Pushed and not merged. Same worktree.
+
+### A bare emission (Fable's ruling y0ou)
+
+How it stood: a bare emission was accepted, but a bare emission whose name
+the file neither declared nor imported generated the unit variant
+`Emission::Go`. A variant has no type, so nothing could carry `Emitted` or
+implement `Emittable` for it. This is why Energy declares
+`CodexRateLimits.{}` and `ClaudeUsage.{}` in its types.
+
+Now such an emission carries a unit of its own: `pub struct Go {}`,
+`Emission::Go(Go)`, `impl Emitted for Go { type Outcome = <n-th outcome> }`.
+Outcome pairing by position is unchanged. A bare emission naming a declared
+or imported type still carries that type and gets no unit. An outcome with
+the same name as a unit carries nothing.
+
+- `src/checking.rs`:
+  - A trait `Uniting` on File lists the units, each at its emission's path
+    `[1 at]`. Only an Emission root has any.
+  - `Implying` counts the units as implied names, so they resolve as types
+    the way `Input` does, and no other bare variant carries them.
+  - `Declared for File` adds the units, so the existing duplicate pass
+    refuses a unit named `Emission`, `Outcome`, `Emitted`, `Emittable` or a
+    derived name as `Duplicate.<name>`.
+  - `Checkable for Emission` runs each unit name through `declare`, so an
+    intrinsic name is refused as `Intrinsic.<name>`.
+- `src/generation.rs`:
+  - The units are emitted after the types section, as a struct of no
+    fields, the same item `Go.{}` gives.
+  - A trait `United` maps a unit's bare emission to the variant carrying it,
+    both in the `Emission` enum and in the `Emitted` bindings.
+- Energy's `ethos-565bc8` emission.ethos (aafd0eb), with the two `.{}`
+  declarations removed, generates the same items under the new head; only
+  the order of the two unit structs differs.
+
+### An enum of no variants
+
+`SingleVariant` is renamed `TooFewVariants`, since 29.0.0 is unreleased. The
+one refusal reads true for one variant or none. `Plural` refuses
+`len() < 2`. `Never.[]` is now
+`Rejected.{ F { 1 20 } Conceptual.{ [ 1 1 0 1 ] TooFewVariants.Never } }`.
+The finiteness walk's special case for an empty enum ("declared empty on
+purpose") could no longer be reached, so it is removed.
+
+A root's sections still count as the root's and may hold one variant or
+none. A Signal with no inputs generates no `Input` enum at all, so it never
+relied on an empty enum: `Signal [] [] [] []` and `Emission [] [] [] []`
+still check.
+
+`error.ethos` and `src/error.rs` were renamed together, and the hand edit
+matches a fresh generation. README and UPGRADES (29.0.0, now in three
+parts) and the `Emission` doc in `src/lib.rs` are updated.
+
+### Tests
+
+- `tests/ethos.rs`:
+  - `an_enum_of_no_variants_is_refused_naming_the_enum`: a declared enum;
+    `Never.[] Holder.{ Never }`; an inline enum; a struct position
+    `State.[]` in a Memory; an Emission's types. Empty Signal and Emission
+    roots are still accepted.
+  - `an_enum_of_two_variants_is_accepted_declared_and_inline` no longer
+    carries `Never.[]`, and the finite-type test drops its `Never` line.
+  - `a_bare_emission_carries_a_unit_of_its_own_and_binds_its_outcome`:
+    `Go(Go)`, `Emitted for Go = Gone_Data`, a declared `Ask` carried with no
+    unit, an outcome named as a unit carrying nothing, an imported `Pane`
+    carried.
+  - `a_bare_emission_whose_unit_a_type_may_not_take_is_refused`: the four
+    implied names as `Duplicate` at `[ 1 1 0 ]`, `String` as `Intrinsic`, and
+    `Go_Data` beside `Go.{ String }` as `Duplicate.Go_Data`.
+  - The past-the-last test now counts three bindings: `Stop` binds `i64`.
+- `fixtures/bare-emission.ethos` and `tests/generated/bare-emission.rs` are
+  new. Freshness counts 24 fixtures and print counts 26 sources.
+- `tests/generated.rs`:
+  `a_bare_emission_carries_its_unit_and_yields_the_outcome_its_position_binds`
+  implements `Emittable<Prober>` for `Probe` (yielding `Probed_Data`) and
+  for `Ping` (yielding `()`), and builds `Emission::Probe(Probe {})`. It
+  compiles with datom enabled.
+- `tests/cli.rs`: the located refusal now reads `TooFewVariants.Refused`.
+- I checked all 213 source literals in tests/ and src/ with the b2f3898
+  binary and the new one. Only the intended literals differ: the rename,
+  the new zero-variant refusals, and the two new emission refusals. Every
+  fixture and `error.ethos` and `ethos-zero.ethos` regenerate byte-equal,
+  except the new fixture.
+
+### Gate
+
+`nix-fast-build --remote li@prometheus.goldragon.criome --no-nom
+--no-download --eval-workers 1` on `checks.x86_64-linux` at f23eacf exited
+0, with all 13 checks passing. The crate's test binaries ran 66, 26, 22,
+20, 9, 4 and 0 tests, with 0 failures.
+
+- Log:
+  /tmp/claude-1001/-home-li-primary/be26511c-e6c3-597a-9e57-a86a1ac3a1e0/scratchpad/gate-f23eacf.log
+- The first push, 27c67e3, failed one test: print's fixture count, still
+  25. Log:
+  /tmp/claude-1001/-home-li-primary/be26511c-e6c3-597a-9e57-a86a1ac3a1e0/scratchpad/gate-27c67e3.log
+- I amended the commit with the count and force-pushed it with a lease.
+
+New binary:
+/nix/store/d9nv1n77gypi90h9jy9vqdb450xd6cgx-all-workspace-members/bin/ethos-zero
+
+### Radius additions
+
+- **Zero-variant enums: none in any active repository.** I swept every
+  `.ethos` file at origin/main in every LiGoldragon clone, the radius's 23
+  repositories freshly fetched, for an empty bracket after a head. Every hit
+  was one of these:
+  - a trait with no capabilities in a Library's traits section (protos
+    `Canonicalizable.[]`; datom-codec `Branchable.[] Budgeted.[]
+    Positional.[]`; primary-next's vendored copies of both);
+  - a comment (signal-flow, signal-orchestrate).
+
+  The protos and datom-codec files check under the new head, and
+  dependency-ethos passes.
+- **No file relies on an empty Signal.** An empty Signal section never
+  generated an enum.
+- **No file changes from b2f3898 to f23eacf.** Check over 303 `.ethos` files
+  (119 repositories at origin/main, plus the ethos-565bc8 branches of
+  energy-nexus at aafd0eb, signal-energy-nexus and
+  meta-signal-energy-nexus) gives the same result under both binaries, with
+  `SingleVariant` read as `TooFewVariants`.
+- **No active Emission root holds a bare emission without a type of its
+  name.** The active Emission roots are:
+  - Curriculum emission.ethos;
+  - energy-nexus ethos-565bc8 emission.ethos;
+  - flow-nexus emission.ethos, which I probed past its five one-variant
+    enums;
+  - the fixture.
+
+  The three repository files generate byte-equal under both binaries.
+- Data:
+  - /tmp/claude-1001/-home-li-primary/be26511c-e6c3-597a-9e57-a86a1ac3a1e0/scratchpad/radius2.tsv
+    (columns: repo@rev, file, new result, b2f3898 result)
+  - /tmp/claude-1001/-home-li-primary/be26511c-e6c3-597a-9e57-a86a1ac3a1e0/scratchpad/zero-text.txt
+  - Script:
+    /tmp/claude-1001/-home-li-primary/be26511c-e6c3-597a-9e57-a86a1ac3a1e0/scratchpad/tools/radius2.py
+
+To deploy: Energy may drop `CodexRateLimits.{}` and `ClaudeUsage.{}` once
+it pins this head. That step is Energy's, and I left it untouched. The
+build-base `crate-versions.json` and `crate-features.json` entry for 29.0.0
+is still owed at merge.
