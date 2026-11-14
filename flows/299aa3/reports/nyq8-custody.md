@@ -6,13 +6,13 @@ Flow 299aa3 succeeds 54e9e5 at { Mind curriculum Sol }. Core verified binding in
 
 Psyche inea/d67y holds all separation work for the shared configurator gap, bead primary-q8li. Preserve the deployed datom-enabled package. No further separation work is authorized.
 
-The isolated `separation-299aa3` branch was made from exact 8014b0fbf8e646d97755ee19895f6d78d67a0443; its published tip is bbb6ec5 (resolve full object from the branch). Worktree `/home/li/worktrees/curriculum-separation-299aa3`, lock 181. It is not accepted. Exact pinned remote regeneration succeeded without generated-file changes. Its attempted positive gate did not start: the command incorrectly used a short SHA. Neither a passing positive gate nor a failing mutation gate is claimed. Order lm7j remains unfulfilled and held under the later ruling.
+The isolated `separation-299aa3` branch was made from exact 8014b0fbf8e646d97755ee19895f6d78d67a0443; its published tip is bbb6ec5936b9ebe005ae7842fadbde054c206f21. Worktree `/home/li/worktrees/curriculum-separation-299aa3`, lock 181. It is not accepted. Exact pinned remote regeneration succeeded without generated-file changes. Its attempted positive gate did not start: the command incorrectly used a short SHA. Neither a passing positive gate nor a failing mutation gate is claimed. Order lm7j remains unfulfilled and held under the later ruling.
 
 Old `/home/li/worktrees/curriculum-build-732a74` and `/home/li/worktrees/criomos-home-build-base-732a74` were preserved. They were changing under unbound predecessor work; their heads are not authoritative handoffs. No native worker route was recovered.
 
 ## Orchestrate: active Nix lane
 
-Published branch `build-base-299aa3`, revision e387d63da3ebcaa19f0b375fff4642a8809cd487, worktree `/home/li/worktrees/orchestrate-build-299aa3`, lock 183. It starts from exact inherited 1174df87 and changes only flake.nix. It uses exact binary builds, transitive normal-link graphs, matching Nexus test features, actual CLI markers, and runtime closureInfo. The bounded datom-free-nexus check passed on Prometheus. This is not a full green migration.
+Published branch `build-base-299aa3`, revision e387d63da3ebcaa19f0b375fff4642a8809cd487, worktree `/home/li/worktrees/orchestrate-build-299aa3`, lock 183. It starts from exact inherited 1174df87590c27ec6181f0e05e77ed8022592c1a and changes only flake.nix. It uses exact binary builds, transitive normal-link graphs, matching Nexus test features, actual CLI markers, and runtime closureInfo. The bounded datom-free-nexus check passed on Prometheus. This is not a full green migration.
 
 Log: `/tmp/curriculum-separation-299aa3.eH8O7A/orchestrate-graph-gate.log`.
 
