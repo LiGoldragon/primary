@@ -1,0 +1,57 @@
+# 0.52 Fable origin gate
+
+Core new ruling relayed verbatim from Psyche: Flow refuses Launch and refresh-successor composition whose modelFable unless Say from living himself; no brief/flow/refresh successor startsFable; typed refusal/tests, immediate visionlines. No caller text/claim substitutes authenticated origin.
+
+Chain briefed before effects: versionZeroPrimary+verifiedSecondary534808 identify actual052owner/candidate+Say/origin/trustboundary; existing owner implementation only after design/custody; independent audit_test_diff read-only immutable trust/diffreview waiting; owner exactrevision directLaunch+flow/brief/refreshdenial+genuine livingexception tests; actual052releaseowner composition/inclusion/readback with existinggates. Main90ff48coordinates, roles awaitingconfirmation,no duplicatewriter/sharedGitholdbypass. PsycheSecondaryaskedvisionlines+pointer,notcodeproof.
+
+Releasebaseline:051916b54574ae0024b893a9f4252f2e97704db48c1 over3a202a439f55d13b34c12c0255d232aeb8cba87f,581/0/6PASSacceptedlimits,witness578950report+cleanup.052mustcompose916,noacceptedpin. Fourroot25388owner84/originalchildACKstillsharedGitgate;25436/25427testassetsheld norepeat/mainintegration. a6g3handlefstatdevino/privateownerlink/samehandlepromotion,pathdiagnostic,recovery-v9ambiguityrefuses,no modernroot takeover. Sourcebie3.16onlyafteraccepted052,latencyseparate. OldHome/Nexusblockerssuperseded,notreopened.
+
+Namedreleaseowner84fdc5;Secondary534808read-only. Existingchild01a1a884activebutunreachable/unreattached,NOcommandableverifiedwriter/newedit.25388exacta6g3roots/base3a202a,lastwitness,finalcompose916. Sourcefacts→Coretrustdecision→recoveredwriter→immutablereview/tests→84inclusion/readback. Coreinformedblocker,noinclusionproof. NewFablemessageorderflow-0.51Sendallseats,nativepromptonlyFailed.NotSent/refusal,notSendAccepted.
+
+Visionlandedpsyche-belief56f0a0d,PsycheauditSecondary,skillsregenerated. ExacttypedrefusalFableNeedsTheLiving.Address;livingownSayidentifiedcallingprocess. ThresholdFablekeepsQUEUEuntillivingrefreshrequest,noautosuccessor. OldabsoluteFableneversuperseded. Sent84/534808+reviewer;actualtrustsourceevidencestillrequired,no052proof.
+
+PsycheSecondarydirectvisionparityreceipt56f0a0d: model-roles section A Fable flow starts on the living's word; flow-nexus Startingflows same rule+queue. Ethos Refused.[FableNeedsTheLiving.Address],flowprocessLaunchanswersRefused.FableNeedsTheLiving.<address>;SignalRefused.[NoCapsule AddressBusy.Address FableNeedsTheLiving.Address]. Callingprocessauth,notmessageclaim. Existingrelaycoversvocab/queue,notcodeproof.
+
+VerifiedtrustGAP3a202a/916:NoSayordinary/metaEthos. LaunchRequestAddress/Remembering/InstructionPrompt,RefreshAddress. OriginFlow{FlowId,SessionId}|Unbound;payloadSaid/Psyche/SenderLivingNOTauthority. peercredPIDrealcaller66-70,origin_of399flow/paneancestryorUnbound;Unboundalsoshell/service/internalwake/refresh. Refresh245-247noorigin,waking1633noorigin,successor2840Unbound. Metapeer57-93sameuseraccidentguardnotlivingattestation. Coreaskedtrustedexecutable/sessioningress+unforgeableforwarding+refreshpropagationdesign. Fullpacket534808,noedits/inclusion.
+
+CoretrustjudgmentUnboundneverliving,payload/textnoauthority. Directionadmittedkernel-bound realingress+request-specific internalintentpropagation,nopublicclaimbit. Psycheestablishactualingress;534808askedminimaltypedproposalreadonly,noinventedexecutable/implementation.
+
+84DIRECTqueuehazard916:genericrefusal2897-2945recordsrefresh_refusalswhichliftsbarrier1924-31;2946-2958takesgate,reconcile,ifnonemptyEMITSDrain. Fabledenialbypassgenericpath,testsNO Drain+exactunchangedorderedqueue+nosuccessor. Relayed534/Core/reviewer. Writer/ingressholdsremain.
+
+SUPERSEDINGFabletrust:owner speaksmeta,FableLaunch/RefreshMETAONLY. OrdinaryrefuseseverycallerFableNeedsTheLiving. Metaisspecifiedtrustsurface/manualuseassumption,NOhumanproof/flag/table;prioradmittedprocessingressdesignsuperseded.534808askedmissingmetaLaunch/Refreshvariants+smallesttypedproposalbeforeimplementation;preservesurfaceinternally,automationcannotmanufacturemeta. NoDrain/orderedqueuehold,custody/releaseunchanged. Reviewer+84notified,Psychevisionparityrequested.
+
+534808oldverifierproposalarrivedaftermetaruling;explicitlysupersededLivingSay/verifier/trustprereq,noapproval. Retainaction-scopedpropagation/configuredmodelpre-mutationgate/dedicatedqueueoutcomeconcepts,askrevisedexistingmetavariants. Coreinformedstaleproposalnotimplementationauthority.
+
+534808REVISEDmeta-onlyproposal: exactmeta54/281f5inputsNOlaunch/refresh/start/replace. AddLaunch.LaunchRequest/Refresh.Address usingordinarytypes,outputsLaunchAnswered.Response/RefreshAnswered.Response(singleFlowAnsweredalternativeforCore). Noauthorityfield. InternalOrdinary/Meta/Internalcontextmintedbyadmittedhandler,actionscoped/notpersisted/history/sidelaunch,actualconfiguredFablepre-effectgate,crashrecoveryinternal. DedicatedAwaitingLivingRefreshbypassgenericDrain/reconcile/refusalmark,exactqueue+appendprefix tests. ForwardedCorejudgment,noimplementation/writercustody.
+
+84supportsrequestspecificwrappersandrequiresnewRefusalpersistedreachabilityaudit(send/outcome/queue),nosilentsameschemaenummut. RelayedCorebeforewire/routingjudgment,custodyheld.
+
+CoreAPPROVESpairedmetaoutputs/no catchall,requestscopedsurface/directaction,checkedresolvedmodel==launchedmodel,ordinary/internaldeny/metaexception/crashclosed. DedicatedqueueholdnoDrain/reconcile/refusalmark,append/repeatedrecovery/exactlyonceownerrefresh tests,nonFableunchanged. ONLYrecoveredverifiedwriter,no takeover/sharedGit. Pre-editexactcontractversions/pins/allconsumers+Refusalpersistedreachabilityaudit;layoutchangeneedsversionedupgrade/refusalplanBEFOREtypes,boundary-onlyneedsconcreteexclusion.534808+84+reviewerbriefed,052notaccepted.
+
+PRE-EDITstorageaudit916:RefusalpersistedStoredSendOutcome6/metaSendOutcomeRecord+SendAcceptance/SendFailure;CurrentLogicalDelivery5/LogicalDeliveryEvent5snapshotDeliveryState;SendCall6acceptedbranch. Queuelifecyclefeedslogical,rawqueue/attemptpayloadnotdirect. SendInvocationeprintlnonly,StoredLaunchOutcomeindependentmustboundaryrejectbeforestored. Explicitschemalabelsnottransitivecompatproof.
+
+534proposalfreezeexactsig42archives+rows;bumpoutcome7/current6/event6/sendcall7newlabels,fullpredecessorchains/value-preservingUpgradeFrom;admission/decodefailtypedrefusalMemoryunchanged,newSignaltypesneveroldmirrors. Separatelegacyarchiveauditnotcomplete. Queue/attempt/launchunchangedprovidedshapesunchanged. Corejudgmentrequestedbeforetypes,nowrites/builds.
+
+Wireproposalordinary43/meta55(actualhashespending),meta→newordinary/workspaceallpins;FlowCLI/meta/Nexusdispatch/projection/generated/tests/mirrors/upgrades/openfixturescoherent. Indexedexternalabsenceonlybounded. Globalversionnotperfamilyreplacement.
+
+CoreapprovesfrozenmirrordirectionNOTtypes. Pre-editfullretainedlegacy/transitivealladmittedpredecessorsclosure+actualEngineatomictransaction/preflightboundary,mustsurfaceadditionalfamily/missingmechanism. Per-tableupgradenotatomicproof. Concreteunchangedqueue/request/attempt/launchshapes+pre-settlementdeny;OLDindependent/predecessorbytesallrefusal/optionsreadback/reopen/failureinjection,no partialwritesproof. Namespaceauditversions/labelsunallocated,534+84briefed,custodyholds.
+
+Narrowarchiveclosure916:legacyparkedqueuesStoredDeliveryRequest/QueueEvidencequeue-request-v6,attemptsrequest/evidence/phase,norefusal;QuarantinedLaunchAttemptrawattemptbytesnoordinaryRefusal. Oldsend_v31/v32/v34/v41localfixedenumsfrozen. Fourcurrentrootsunchanged,newwrapperwireonlyunlessnewpersistence(notapproved).
+
+Corefixtureclarification:exactpredecessorCODEproducedarchives/databaseprimary,independentexpectedVALUESoracle,notinventedoldencoding/mirrorroundtrip. No partialupgrade/logicalrows vs preopenadmission vs DBbyteidentitydistinct;unsafeopenercannotclaimbytesunchanged. Engineboundary+smallestsafeplanpending,versions/historyunallocated.
+
+STOPcurrentpass:534808confirmsatomicity/fullpredecessorclosureUNPROVED,combinedsend/source-readinterruptednoEngineevidence. Collisionresultscompletedonly,nofetchedit/build/ref/lockchanges.84finalpassreports052notready,backendresultunreported,writercontactunresolved. ChildstopNOTdelivered/crossparentunreachable,build/workpreserved,nokill/interrupt/idleclaim. Recoveryrequiredtolaterrelay,notnewpermission.
+
+CollisionpassCOMPLETE:ordinary43occupiedd3a5fbc5beb595b53a739f8f75e768f16c21e20e(next/a8f7-70a111);meta55historycb317d7. current-v6history12a79ae3/8e733e8b,sendcall-v7history127277c9. outcome-v7/event-v6localreachableabsenceONLY,noallocation. 71ordinary/95metaobjectsread-only, nofetch/writes. Enginepasspending.
+
+## Later rulings recorded while waiting — no work resumed
+
+Core relays Psyche ruling superseding meta-only gate: ordinary LaunchRequest becomes { Address Remembering Brief.String Option<Living> }; Living.{ Context.String Verbatim.String }. Fable Launch/refresh admitted only for kernel-identified Nexus-held Fable caller (Primary if052 still layers) plus Some.Living; else FableNeedsTheLiving. Meta remains root. Memory tentative LaunchedBy.[ Living.FlowId Meta ]. Old meta-only proposal/tests invalidated, completed evidence retained. Refresh input and provenance coverage need clarification through Psyche Secondary. No workers resumed, custody/storage/version holds unchanged.
+
+Core relays later Resume ruling: Resume.FlowId restarts Nexus-held flow from own transcript (claude --resume session), Herdr under flow name/address, Maintained. Resumed.FlowId or typed UnknownFlow/Awake.FlowId/NoTranscript. Launch creates NEW flow only. DefaultContinuity is meta Configure.DefaultContinuity, no Rust default. Version0 idle keeps harnesses; sleep-at-idle far vision. Eventual authorized work must reconcile existing resume/lifecycle, all harness backends, default seed and storage/contracts BEFORE edits. No new pass/worker; clarification routed Psyche Secondary,052gates preserved.
+
+Psyche core Primary closed until living speaks tomorrow: only Soft.Notice may queue there. Judgments route Psyche core Secondary.
+
+Further clarification recorded without resuming: Refresh.{ Address Option<Living> }, same Launchgate. Fable needs Some.Living from Nexus-held Fable caller; othermodelspermitNone. LaunchedBy.[ Living.FlowId Flow.FlowId Meta ]:Living=flowcarryinglivingwords,Flow=otherflow,Meta=root. Supersedes tentative2variantprovenance. FableResumeadmission/unsetDefaultContinuitypendingPsycheSecondary,visionpending. Internal/automaticnocallerstartsneedtruthfuldesign,nofabricatedFlowId. Holds/waitunchanged.
+
+Further052design recorded underSTOP:Resume.{ FlowId Option<Living> } sameLaunch/Refreshgate,FableResume livingwordscarriedbyconversingFableflow. MemberContinuity.Option<Continuity>,NoneresolvesConfigure.DefaultContinuity;ifbothunsetDefineSUCCEEDS/launchrefusesNotConfigured. MemoryStartedBy.[ Living.FlowId Flow.FlowId Meta ] SUPERSEDESLaunchedBy. ResumeRefusalsUnknownFlow.FlowId Awake.FlowId NoTranscript.FlowId. Idleretainsharness. Fullproposal /home/li/primary/flows/5aa8b4/proposals/flow-nexus-rulings.md beingpublishedforlivingruling;visionlandingNOTclaimed. No newpass/worker/edit;laterreconcileactual052layers/membertypes+origin/storage/versionholds,notexistingAPIassumption.

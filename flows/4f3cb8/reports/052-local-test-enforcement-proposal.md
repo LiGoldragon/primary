@@ -1,0 +1,26 @@
+# Local-only tests after scope violation — proposal, no execution grant
+
+All worker edits/tests/build/network/publication remain held until the appointed controller obtains the actual HOLD acknowledgment and Core reconciles scope. This document authorizes no preflight, build, process, configuration change or retry.
+
+## Observed cause at the command boundary
+
+Retained command exec-ede196b1-c761-420e-b643-1263f5790479 in go-progress-evidence.json ran `nix build --no-link --impure --expr ...` using `<nixpkgs>` and a mutable source path, with no explicit builder/substitution restriction. Retained stdout proves the configured daemon selected ssh-ng://nix-ssh@prometheus.goldragon.criome and copied source/result across that connection. Calling this “local changed-body evidence” did not constrain the actual tool. The remote effect is definite; no new probe is needed to establish it.
+
+## Proposed enforceable path
+
+1. After a NEW explicit grant, witness exact candidate commit/tree and held-source disposition, pinned Nixpkgs/toolchain/lock/source identities. Export an immutable local source snapshot for the test; do not build a changing worktree or use an unpinned `<nixpkgs>` search path. Preserve the existing registry import manifest as provenance, not candidate content.
+2. Use the local Unix-socket Nix store/daemon explicitly, not an environment-selected remote store. Require effective remote-builder list empty, substitutions disabled, builder substitutions disabled, offline operation, sandboxed normal derivation, and explicit bounded local jobs. The proposed command settings are `--offline --option builders '' --option substitute false --option builders-use-substitutes false --option sandbox true --max-jobs 1`, with the exact supported local store URI and immutable expression chosen from witnessed installed capabilities. Those flags are a proposed control set, NOT yet proof that this daemon honors them.
+3. Before a build, a bounded authorized read-only preflight must prove effective store endpoint/settings and that the installed daemon accepts the caller's restrictions. If administrative policy overrides/ignores them, refuse the test path. Do not weaken policy, change daemon configuration, use escalation or silently fall back to a remote builder.
+4. Materialize ONLY dependencies already available locally under their exact immutable identities. A missing source/output/lock dependency is a typed test prerequisite gap. No fetch, substitute, remote Git resolution, registry/cache mutation, Cargo path patch or use of a different crate identity is permitted. A local commit existing in Git is not proof that Cargo/Nix can materialize its declared source.
+5. The actual build sandbox has no external network; test processes receive no production sockets/stores/homes/credentials. Neither a fixed-output derivation with network permission nor an out-of-sandbox Cargo command substitutes for this boundary. If the supported build infrastructure cannot provide this local/offline isolation, return the exact capability gap for Core to choose a separately explicit build authority; do not run it anyway.
+6. Retain exact command, effective settings, daemon/builder identity, derivation/source/toolchain hashes, stdout/stderr/exit, test list and before/after source/custody witness. A result path alone is insufficient. Independent reviewer checks that there was no remote copy/build and that the tested source matches the candidate before counting test evidence.
+
+For redb, the existing lock and local dependencies may permit a local library/test derivation; this is unverified until the approved preflight. For Sema/Datom, the unpublished candidate dependency gaps remain explicit. They do not authorize a path override or another publication attempt. A fixture that depends on predecessor crates is not a substitute for compiling the changed dependency graph.
+
+Request Core judgment on this path and, only after actual HOLD acknowledgment, a bounded read-only enforcement preflight. Execution needs a separate exact grant if the preflight passes. No claim of feasibility or renewed test authority is made here.
+
+## SUPERSEDED by authoritative vision:nix-builds ruling
+
+The local-only proposal above is withdrawn. Psyche Primary rules the ordinary route is a Nix build of a COMMITTED revision on the REMOTE builder, with bare repository URLs and pins in the lock. Remote build alone is not a breach and requires no extra remote grant. Read vision module at /git/github.com/LiGoldragon/psyche-belief/vision/nix-builds.md: builds live in the remote builder's store; flake input URL is bare, revision/ref only in flake.lock.
+
+The actual prior command still used an impure `<nixpkgs>` search path and mutable working-tree src/Cargo.lock. It did not establish a committed candidate source and locked flake inputs. That evidence/accounting defect remains; do not relabel the confirmed remote execution as inherently forbidden. Existing HOLD remains until explicitly reconciled and acknowledged by the worker; policy correction is not a hidden execution release. Correct next test path is commit exact candidate, coherent bare-URL/locked-input derivation, ordinary remote build, retained exact source/lock/derivation/test receipts. No source publication/other-ref/deploy/capsule authority follows from this correction.

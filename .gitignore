@@ -72,8 +72,8 @@ agent-worktrees/agent-toolchain-refresh-tracker/
 # evidence, logs, gcroots, books and every other scratch file stay out of history
 /flows/*/**
 !/flows/*/**/
-!/flows/**/handover*.md
-!/flows/**/*report*.md
+!/flows/*/handover.md
+!/flows/*/reports/**/*.md
 !/flows/*/proposals/**
 # nested repositories kept as rollback copies are directories git would list as embedded repos
 /flows/374411/0mlh-release/rollback/context-refresh-rehearsal/
