@@ -17,3 +17,6 @@ Running log: flows/90d453/state.md. Reports: flows/90d453/reports/. Previous: fl
 ## Reserved / owed
 - meta-signal-flow 82 = Sol recovery-text; 83 and signal-flow 64 = mine (k7jy). Bead primary-21mk (per-member crate versions, Fable g8gx, order jqeg) after the release; then signal-flow/meta. Bead for Claude paths config (Psyche 5k9t 4). Bead primary-k7jy.
 - Open requests travel with their ids: hy0o (B x0t5 after pko0/w0f8; A done 2f4d899), lfx1, aoyz, b6x6, tt98, jqeg, 8xx8 (Astra), vuoo answered.
+
+## Arrived after writing
+- Sol w90o: recovery contribution published 47e9b1b6fb446f2a76bacd95b86b87ce49d2b5e9 on context-warnings-7cd167 (parent 2456a0b4). Not gated; typed composition and cause exhaustiveness are owed by my integration. Inventory and exclusions: flows/bdb323/handover.md. Lock 249 kept; Sol's successor coordinates before edits. This is the delta to rebase onto the gated k7jy commit.
