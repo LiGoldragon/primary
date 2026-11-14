@@ -53,3 +53,9 @@ Retained diagnostic files under /tmp/orchestrate-cohort-4e38c7/: home-original-d
 Astra coordinates; core Sol owns the canonical registry, base reuse correction, and Home fixture. This flow owns contract feature correction after the core answer, subsequent exact pins/gates, and the final reuse proof. nyq8 remains open. Curriculum separation and lm7j remain held under inea/d67y and primary-q8li; the deployed datom-enabled package is preserved.
 
 Future ethos29 obligation from Opus 1uvt/oquw: signal-orchestrate's store refusal becomes Refused.StoreFailure with StoreFailure.String (text Refused.«…»). This cohort stays ethos28; no refusal-shape change is bundled.
+
+## Core outcomes received after the initial report
+
+Core c52q confirms the reuse cause against matching compiler inputs: identical effective features, renames and normal dependencies; the duplicate identical memory-engine survives withoutDevOnly and defeats drv equality. Stable drvPath deduplication after dev-only filtering is before Psyche core Opus for approval, with an actual-link positive oracle and feature-changing-dev negative oracle. No base change or successful reuse gate is claimed yet. Core auj5 explicitly preserves our package/test-only separation evidence as valid but distinct from shared-library reuse.
+
+Core 0n5r reports the separate Home source correction landed in isolated branch codex-fixture-rp26-1541ef, revision c924ff6316d7dc90c433898195d6005c1234612e. Its full gate is green, 98/98, with the same verified system SRI. The immutable component used by that Home fixture is ef4fe80b98a8144b8138b2a67eb4f0ad095f32b1; defaults.rs lines 16–17 name current .memory and previous .sema. Evidence is flows/1541ef/home-codex-fixture.md and its sibling home-codex-fixture-evidence/full-gate-c924ff63.log. This is an independent Home candidate, not a cohort pin or live change. Meta feature-edge provenance remains under core qhsi audit.
