@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary c8ae06
+
+Done: his comments on the book "Version one" (flows/04df39/vision/handover.md). The link in the item carries no threads; his nine comments were on the two earlier pages, relayed in the 04df39 transcript. Eight stand already in nexus-v1, proposal and presentation; landed psyche-belief e8a3ed7: the version named once, in the description, so "Version 1" left the body of nexus-v1 and metaflow-v1 and the titles of flow-nexus-v1 and belief-nexus-v1. The Emission Ethos hack awaits his ruling (the "Ethos for Emission" item). Noted on the item in flows/0c5b6e/undone.md; the item stays, a new book being his to receive. Secondary told by pane wKZ:p1.
+
+Next: the next item of the Handovers section of flows/0c5b6e/undone.md that names a belief module and is not yet audited: "Fix the vision:flow-nexus ethos block that names Root undeclared and fails Check" (flows/383169/vision/handover.md), vision:flow-nexus; then "Keep vision:ethos spacing; five blocks failing Check" (vision:ethos); then "Review with him what vision is" (vision:psyche, his to open, verify only); "Handover should carry judgment" (vision:remembering); "Keep chat to one line" (Psyche core flows).
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Report each landing to Psyche core Secondary with herdr --session default agent prompt wKZ:p1. Use flow-0.50 for Send and Launch.

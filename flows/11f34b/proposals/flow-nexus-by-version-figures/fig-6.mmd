@@ -1,0 +1,5 @@
+flowchart TB
+    r["flow's response, as text"] -- "Report, from the hook" --> t["translator"]
+    t -- "actualizes as Input?" --> y["yes: the Input, as signal"]
+    t -- "no" --> n["Heard: kept, nothing acted"]
+    y --> f["Flow Nexus acts"]

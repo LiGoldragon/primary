@@ -1,0 +1,4 @@
+flowchart TB
+    t["Tailscale, the company"] -- "publishes, open source" --> c["the client: one on each node"]
+    t -- "runs, closed" --> s["the coordination server: who is in the network, and each node's addresses"]
+    t -- "runs" --> r["the relays: carry encrypted traffic when no direct path works"]

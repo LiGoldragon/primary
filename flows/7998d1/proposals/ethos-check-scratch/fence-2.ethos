@@ -1,0 +1,21 @@
+Signal
+[ flow:[ Address FlowId ] ]                  ; imports
+[ Permaflows                                 ; inputs: the default, the caller's own, nothing taken
+  PermaflowsVerbose.Scope                    ;   a scope taken, more answered
+  PermaflowsDebug.Scope                      ;   what the Nexus keeps for its own work
+  Metaflows ]                                ;   the metaflows, each with its members
+[ Permaflows.Vector<Brief>                   ; outputs: each variation answered by its own
+  PermaflowsVerbose.Vector<Entry>
+  PermaflowsDebug.Vector<Internal>
+  Metaflows.Vector<Metaflow> ]
+[ Scope.[ Mine                               ; types: those of the caller's metaflows and of its topic
+          All ]
+  State.[ Awake Asleep ]
+  Purpose.String
+  Waiting.Integer                            ;   messages queued for the permaflow
+  StorageId.String
+  MetaflowName.String                        ;   a camelCase expression: psycheCore
+  Brief.{ Address State }
+  Entry.{ Address State Purpose Vector<MetaflowName> Waiting }
+  Internal.{ Entry FlowId Vector<StorageId> }
+  Metaflow.{ MetaflowName Vector<Address> } ]

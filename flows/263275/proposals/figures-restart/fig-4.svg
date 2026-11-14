@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="1360" viewBox="0 0 490 1360" font-family="DejaVu Sans, Arial, Helvetica, sans-serif">
+<defs><marker id="arr" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#1a1a1a"/></marker></defs>
+<rect x="0" y="0" width="490" height="1360" rx="14" fill="#f7f7f7"/>
+<rect x="15" y="20" width="160" height="56" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="95.0" y="57" font-size="26" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Restart</text>
+<polyline points="95.0,76 95.0,136.0 129,136.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,208.0 129,208.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,308.0 129,308.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,422.0 129,422.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,564.0 129,564.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,762.0 129,762.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,918.0 129,918.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,1032.0 129,1032.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,1146.0 129,1146.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,1232.0 129,1232.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<polyline points="95.0,76 95.0,1304.0 129,1304.0" fill="none" stroke="#1a1a1a" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="130" y="110" width="340" height="52" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="144" font-size="22" fill="#1a1a1a">the flow awake</text>
+<rect x="130" y="182" width="340" height="52" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="216" font-size="22" fill="#1a1a1a">the flow asleep</text>
+<rect x="130" y="254" width="340" height="108" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="288" font-size="22" fill="#1a1a1a">a message arriving</text>
+<text x="144" y="316" font-size="22" fill="#1a1a1a">mid-restart: queued,</text>
+<text x="144" y="344" font-size="22" fill="#1a1a1a">delivered once</text>
+<rect x="130" y="382" width="340" height="80" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="416" font-size="22" fill="#1a1a1a">the harness already</text>
+<text x="144" y="444" font-size="22" fill="#1a1a1a">dead: resume alone</text>
+<rect x="130" y="482" width="340" height="164" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="516" font-size="22" fill="#1a1a1a">the resume failing:</text>
+<text x="144" y="544" font-size="22" fill="#1a1a1a">session, queue and</text>
+<text x="144" y="572" font-size="22" fill="#1a1a1a">address kept, Failed</text>
+<text x="144" y="600" font-size="22" fill="#1a1a1a">answered, retried or</text>
+<text x="144" y="628" font-size="22" fill="#1a1a1a">stopped by the owner</text>
+<rect x="130" y="666" width="340" height="192" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="700" font-size="22" fill="#1a1a1a">the Nexus dying</text>
+<text x="144" y="728" font-size="22" fill="#1a1a1a">mid-restart: the phase</text>
+<text x="144" y="756" font-size="22" fill="#1a1a1a">recorded, an unproven</text>
+<text x="144" y="784" font-size="22" fill="#1a1a1a">spawn Interrupted,</text>
+<text x="144" y="812" font-size="22" fill="#1a1a1a">never respawned</text>
+<text x="144" y="840" font-size="22" fill="#1a1a1a">blindly</text>
+<rect x="130" y="878" width="340" height="80" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="912" font-size="22" fill="#1a1a1a">an awake flow asked</text>
+<text x="144" y="940" font-size="22" fill="#1a1a1a">Asleep</text>
+<rect x="130" y="978" width="340" height="108" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="1012" font-size="22" fill="#1a1a1a">the resumed seat's</text>
+<text x="144" y="1040" font-size="22" fill="#1a1a1a">hooks reaching the</text>
+<text x="144" y="1068" font-size="22" fill="#1a1a1a">live Nexus</text>
+<rect x="130" y="1106" width="340" height="80" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="1140" font-size="22" fill="#1a1a1a">asked by the flow</text>
+<text x="144" y="1168" font-size="22" fill="#1a1a1a">itself</text>
+<rect x="130" y="1206" width="340" height="52" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="1240" font-size="22" fill="#1a1a1a">asked from outside</text>
+<rect x="130" y="1278" width="340" height="52" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+<text x="144" y="1312" font-size="22" fill="#1a1a1a">asked Asleep</text>
+</svg>

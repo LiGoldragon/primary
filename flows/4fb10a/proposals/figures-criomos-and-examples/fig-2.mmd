@@ -1,0 +1,12 @@
+flowchart TD
+    c["ordinary caller connection"] --> p["read and decode once"]
+    p -->|"codec error"| u["Unreadable: exact request codec error"]
+    p -->|"Register / Resolve / Furnish"| q["checked single-reply query"]
+    p -->|"Subscribe"| s["existing streaming path"]
+    q --> f["prepare call; contact Nexus"]
+    f -->|"connect fails"| n["NexusDown"]
+    f -->|"connected"| w["forward request"]
+    w --> r["receive and decode domain response"]
+    r --> o["write unchanged domain response"]
+    o -->|"write succeeds"| a["Answered"]
+    o -->|"write fails"| e["owned observed response + native write error"]

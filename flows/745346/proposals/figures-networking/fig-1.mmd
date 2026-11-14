@@ -1,0 +1,5 @@
+flowchart TB
+    a["a node"] -- "tells every address it has to" --> p["the public node"]
+    p -- "tells each node the addresses of" --> o["the other nodes"]
+    a -- "tries the local address of, and connects directly to" --> o
+    a -- "reaches, when no direct path routes, through" --> p

@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary 6c6dc1
+
+Done: vision:ethos's five blocks that failed Check are repaired in structure alone (psyche-belief ed916f7, skills regenerated): the Identity trait's capability bracket written empty, the sweet and canonical File forms each their own block, the Imports line, the ImportError types and the two Reply enums given their Library root and sections; spacing and content kept. Item struck; Secondary told by pane wKZ:p1. Judgment on what still fails, left as it stands: the nested-namespace import `signal_flow:signal:[ … ]` (ethos-zero knows no such form; the Ethos flow's), the Living refused/wanted fragments (review examples, not files), `push!{ [ String ] … }` (the vision's own line says a capability input is a trait, so the fix is content: which trait), and the Emission root (his ruling pending, the "Ethos for Emission" item). Code gap for ethos-zero, not the module: it Checks a one-variant enum the vision refuses.
+
+Next: "Review with him what vision is from the beginning" (vision:psyche): his to open; verify only that vision:psyche states vision as one thing, now, held as long as wanted, and leave the conversation to him. Then "Handover should carry judgment, not look-up-able chronology" (vision:remembering); "Keep chat to one line" (Psyche core flows).
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Report each landing to Psyche core Secondary with herdr --session default agent prompt wKZ:p1. Use flow-0.50 for Send and Launch.

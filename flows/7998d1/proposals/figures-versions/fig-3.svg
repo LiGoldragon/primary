@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" width="400" height="440" font-family="sans-serif" font-size="15" fill="#000">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <!-- left chain -->
+  <rect x="30" y="30" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="110" y="75" text-anchor="middle">a line</text>
+  <rect x="30" y="180" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="110" y="225" text-anchor="middle">its subject</text>
+  <rect x="30" y="330" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="110" y="357" text-anchor="middle">the module of the</text>
+  <text x="110" y="375" text-anchor="middle">flow that holds</text>
+  <text x="110" y="393" text-anchor="middle">that belief</text>
+  <line x1="110" y1="110" x2="110" y2="180" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="120" y="150" text-anchor="start">has</text>
+  <line x1="110" y1="260" x2="110" y2="330" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="120" y="300" text-anchor="start">names</text>
+  <!-- right chain -->
+  <rect x="210" y="30" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="290" y="67" text-anchor="middle">a contradicted</text>
+  <text x="290" y="85" text-anchor="middle">line</text>
+  <rect x="210" y="180" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="290" y="225" text-anchor="middle">removed</text>
+  <rect x="210" y="330" width="160" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="290" y="375" text-anchor="middle">the new line</text>
+  <line x1="290" y1="110" x2="290" y2="180" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="300" y="150" text-anchor="start">is</text>
+  <line x1="290" y1="260" x2="290" y2="330" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="300" y="300" text-anchor="start">then places</text>
+</svg>

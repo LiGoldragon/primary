@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 600" width="420" height="600" role="img" aria-label="complex: main metaflow: designer metaflow: implementer the living">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+    <style>
+      text, line, path { stroke: none; fill: currentColor; }
+      .edge { stroke: currentColor; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .node { stroke: currentColor; stroke-width: 2.5; fill: none; }
+      .label { font: 15px sans-serif; text-anchor: middle; }
+      .node-label { font: 17px sans-serif; text-anchor: middle; }
+    </style>
+  </defs>
+  <g color="#111827">
+    <line class="edge" marker-end="url(#arrow)" x1="210" y1="78" x2="210" y2="157"/>
+    <text class="label" x="282" y="116">Say.{ main … }</text>
+
+    <line class="edge" marker-end="url(#arrow)" x1="170" y1="205" x2="112" y2="331"/>
+    <text class="label" x="86" y="250">
+      <tspan x="86" dy="0">names as its</tspan>
+      <tspan x="86" dy="19">speaker</tspan>
+    </text>
+
+    <line class="edge" marker-end="url(#arrow)" x1="250" y1="205" x2="314" y2="461"/>
+    <text class="label" x="333" y="280">
+      <tspan x="333" dy="0">relationship:</tspan>
+      <tspan x="333" dy="19">designer may</tspan>
+      <tspan x="333" dy="19">address</tspan>
+      <tspan x="333" dy="19">implementer</tspan>
+    </text>
+
+    <line class="edge" marker-end="url(#arrow)" x1="185" y1="355" x2="280" y2="477"/>
+    <text class="label" x="204" y="418">
+      <tspan x="204" dy="0">Metaflow.implementer,</tspan>
+      <tspan x="204" dy="19">inside that relationship</tspan>
+    </text>
+
+    <rect class="node" x="130" y="30" width="160" height="48" rx="8"/>
+    <text class="node-label" x="210" y="60">the living</text>
+
+    <rect class="node" x="130" y="157" width="160" height="48" rx="8"/>
+    <text class="node-label" x="210" y="187">complex: main</text>
+
+    <rect class="node" x="25" y="331" width="175" height="48" rx="8"/>
+    <text class="node-label" x="112.5" y="361">metaflow: designer</text>
+
+    <rect class="node" x="235" y="461" width="170" height="48" rx="8"/>
+    <text class="node-label" x="320" y="491">metaflow: implementer</text>
+  </g>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1080" role="img" aria-label="flowchart">
+  <style>
+    :root { color-scheme: light dark; }
+    .box { fill: #fff; stroke: #18202a; stroke-width: 3; }
+    .ink { fill: #18202a; stroke: #18202a; }
+    .label { fill: #18202a; font: 18px system-ui, sans-serif; text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .box { fill: #18202a; stroke: #f5f7fa; }
+      .ink { fill: #f5f7fa; stroke: #f5f7fa; }
+      .label { fill: #f5f7fa; }
+    }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path class="ink" d="M 0 0 L 10 5 L 0 10 z"/>
+    </marker>
+  </defs>
+
+  <rect class="box" x="35" y="70" width="190" height="76" rx="12"/>
+  <text class="label" x="130" y="101"><tspan x="130" dy="0">CLI: one datom</tspan></text>
+
+  <rect class="box" x="275" y="70" width="150" height="76" rx="12"/>
+  <text class="label" x="350" y="114">translator</text>
+
+  <rect class="box" x="475" y="355" width="170" height="76" rx="12"/>
+  <text class="label" x="560" y="399">Nexus</text>
+
+  <rect class="box" x="275" y="790" width="150" height="76" rx="12"/>
+  <text class="label" x="350" y="834">world</text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M225 108 H275"/>
+  <text class="label" x="250" y="95">text</text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M425 115 C485 145 520 250 555 355"/>
+  <text class="label" x="488" y="217"><tspan x="488" dy="0">Call.{ Caller Input },</tspan><tspan x="488" dy="23">signal</tspan></text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M475 382 C425 330 405 235 425 145"/>
+  <text class="label" x="445" y="292"><tspan x="445" dy="0">Output,</tspan><tspan x="445" dy="23">signal</tspan></text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M275 132 C220 190 165 190 130 146"/>
+  <text class="label" x="197" y="184">text</text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M500 355 C455 290 420 215 390 146"/>
+  <text class="label" x="455" y="265"><tspan x="455" dy="0">Emission,</tspan><tspan x="455" dy="23">signal</tspan></text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M350 146 C350 330 350 575 350 790"/>
+  <text class="label" x="256" y="545">the call</text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M300 790 C245 675 235 430 285 146"/>
+  <text class="label" x="245" y="650"><tspan x="245" dy="0">exit status</tspan></text>
+
+  <path class="ink" fill="none" stroke-width="3" marker-end="url(#arrow)" d="M425 95 C570 40 675 170 620 355"/>
+  <text class="label" x="584" y="104"><tspan x="584" dy="0">Outcome,</tspan><tspan x="584" dy="23">signal</tspan></text>
+</svg>

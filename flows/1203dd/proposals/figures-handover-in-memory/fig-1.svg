@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 480" width="420" height="480" font-family="system-ui, sans-serif" font-size="16">
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="10" y="50" width="90" height="215" rx="6"/>
+    <rect x="10" y="320" width="90" height="135" rx="6"/>
+    <rect x="250" y="50" width="160" height="405" rx="6"/>
+  </g>
+  <g fill="currentColor" text-anchor="middle">
+    <text x="55" y="157">the flow</text>
+    <text x="55" y="393">any flow</text>
+    <text x="330" y="216">Memory:</text>
+    <text x="330" y="236">the permaflow's</text>
+    <text x="330" y="256">handover, a</text>
+    <text x="330" y="276">vector of</text>
+    <text x="330" y="296">sections</text>
+    <text x="175" y="70">Keep: a section</text>
+    <text x="175" y="90">added, or</text>
+    <text x="175" y="110">replaced by</text>
+    <text x="175" y="130">its title</text>
+    <text x="175" y="190">Drop: a section</text>
+    <text x="175" y="210">removed by its</text>
+    <text x="175" y="230">title</text>
+    <text x="175" y="330">Glance: titles</text>
+    <text x="175" y="350">and descriptions</text>
+    <text x="175" y="400">Read: the whole,</text>
+    <text x="175" y="420">bodies included</text>
+  </g>
+  <g stroke="currentColor" stroke-width="2" fill="none">
+    <line x1="100" y1="150" x2="250" y2="150" marker-end="url(#arrow)"/>
+    <line x1="100" y1="250" x2="250" y2="250" marker-end="url(#arrow)"/>
+    <line x1="100" y1="370" x2="250" y2="370" marker-end="url(#arrow)"/>
+    <line x1="100" y1="440" x2="250" y2="440" marker-end="url(#arrow)"/>
+  </g>
+</svg>

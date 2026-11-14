@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="760" viewBox="0 0 720 760" role="img">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#243447"/>
+    </marker>
+    <style>
+      .box { fill:#f7fafc; stroke:#243447; stroke-width:3; }
+      .edge { stroke:#243447; stroke-width:3; fill:none; marker-end:url(#arrow); }
+      .label { fill:#16202a; font-family:Arial,Helvetica,sans-serif; font-size:24px; font-weight:600; text-anchor:middle; }
+      .edge-label { fill:#16202a; font-family:Arial,Helvetica,sans-serif; font-size:22px; font-weight:600; text-anchor:middle; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill:#1c2733; stroke:#d9e2ec; }
+        .edge { stroke:#d9e2ec; }
+        .edge-label,.label { fill:#f5f7fa; }
+        #arrow path { fill:#d9e2ec; }
+      }
+    </style>
+  </defs>
+  <rect class="box" x="35" y="35" width="650" height="150" rx="12"/>
+  <text class="label" x="360" y="92">
+    <tspan x="360" dy="0">complex: a named set of metaflows, the</tspan>
+    <tspan x="360" dy="36">relationships between them, a speaker</tspan>
+  </text>
+
+  <line class="edge" marker-end="url(#arrow)" x1="360" y1="185" x2="360" y2="285"/>
+  <text class="edge-label" x="360" y="242">is made of</text>
+
+  <rect class="box" x="35" y="285" width="650" height="150" rx="12"/>
+  <text class="label" x="360" y="342">
+    <tspan x="360" dy="0">metaflow: several flows defined together,</tspan>
+    <tspan x="360" dy="36">with their routes and a speaker</tspan>
+  </text>
+
+  <line class="edge" marker-end="url(#arrow)" x1="360" y1="435" x2="360" y2="535"/>
+  <text class="edge-label" x="360" y="492">is made of</text>
+
+  <rect class="box" x="35" y="535" width="650" height="150" rx="12"/>
+  <text class="label" x="360" y="592">
+    <tspan x="360" dy="0">flow: one run of a model in a harness;</tspan>
+    <tspan x="360" dy="36">a permanent flow runs on under its address</tspan>
+  </text>
+</svg>

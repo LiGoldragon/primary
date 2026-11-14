@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="980" viewBox="0 0 720 980" role="img">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#25324a"/>
+    </marker>
+  </defs>
+  <rect width="720" height="980" fill="#ffffff"/>
+  <g fill="#f5f8ff" stroke="#25324a" stroke-width="3">
+    <rect x="42" y="92" width="245" height="112" rx="16"/>
+    <rect x="433" y="92" width="245" height="112" rx="16"/>
+    <rect x="222" y="400" width="276" height="112" rx="16"/>
+    <rect x="187" y="742" width="346" height="112" rx="16"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="25" fill="#172033" text-anchor="middle">
+    <text x="164.5" y="140"><tspan x="164.5" dy="0">Memory: each flow's</tspan><tspan x="164.5" dy="32">state</tspan></text>
+    <text x="555.5" y="157">Broadcast.Request</text>
+    <text x="360" y="466">the hot flows</text>
+    <text x="360" y="789"><tspan x="360" dy="0">Broadcast.Vector of</tspan><tspan x="360" dy="32">FlowId</tspan></text>
+  </g>
+  <g fill="none" stroke="#25324a" stroke-width="3">
+    <line x1="210" y1="204" x2="313" y2="400" marker-end="url(#arrow)"/>
+    <line x1="510" y1="204" x2="407" y2="400" marker-end="url(#arrow)"/>
+    <line x1="360" y1="512" x2="360" y2="742" marker-end="url(#arrow)"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#172033" text-anchor="middle">
+    <text x="224" y="310" transform="rotate(28 224 310)">Running or Idle</text>
+    <text x="496" y="310" transform="rotate(-28 496 310)"><tspan x="496" dy="0">one prompt into</tspan><tspan x="496" dy="27">each</tspan></text>
+    <text x="430" y="635">who received it</text>
+  </g>
+</svg>

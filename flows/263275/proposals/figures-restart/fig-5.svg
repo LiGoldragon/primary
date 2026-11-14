@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 760" width="460" height="760" font-family="Helvetica, Arial, sans-serif" font-size="22">
+  <defs>
+    <marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#111111"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="460" height="760" fill="#ffffff"/>
+
+  <!-- old Nexus, stopped -->
+  <rect x="110" y="30" width="220" height="60" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+  <text x="220" y="66" text-anchor="middle" fill="#111111">old Nexus, stopped</text>
+
+  <!-- new Nexus -->
+  <rect x="110" y="300" width="220" height="60" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+  <text x="220" y="336" text-anchor="middle" fill="#111111">new Nexus</text>
+
+  <!-- the native session -->
+  <rect x="110" y="640" width="220" height="60" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+  <text x="220" y="676" text-anchor="middle" fill="#111111">the native session</text>
+
+  <!-- old Nexus to the native session: session kept in the harness -->
+  <polyline points="110,60 50,60 50,670 106,670" fill="none" stroke="#111111" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrow)"/>
+  <text x="66" y="150" fill="#111111">session kept in</text>
+  <text x="66" y="176" fill="#111111">the harness</text>
+
+  <!-- new Nexus to the native session: Adopt -->
+  <line x1="180" y1="360" x2="180" y2="638" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="170" y="430" text-anchor="end" fill="#111111">Adopt.{</text>
+  <text x="170" y="456" text-anchor="end" fill="#111111">Address</text>
+  <text x="170" y="482" text-anchor="end" fill="#111111">Session }</text>
+
+  <!-- new Nexus to the native session: Restart, Woken -->
+  <line x1="260" y1="360" x2="260" y2="638" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="272" y="430" fill="#111111">Restart,</text>
+  <text x="272" y="456" fill="#111111">Woken</text>
+
+  <!-- the native session to new Nexus: hooks report -->
+  <polyline points="330,670 380,670 380,330 334,330" fill="none" stroke="#111111" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="392" y="480" fill="#111111">hooks</text>
+  <text x="392" y="506" fill="#111111">report</text>
+</svg>

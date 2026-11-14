@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 560" width="440" height="560" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="440" height="560" fill="#ffffff"/>
+
+  <!-- things -->
+  <rect x="90" y="20" width="260" height="60" rx="8" fill="#f4f4f4" stroke="#333333" stroke-width="2"/>
+  <text x="220" y="58" font-size="24" text-anchor="middle" fill="#111111">Lojix</text>
+
+  <rect x="90" y="130" width="260" height="60" rx="8" fill="#f4f4f4" stroke="#333333" stroke-width="2"/>
+  <text x="220" y="168" font-size="24" text-anchor="middle" fill="#111111">the derivation</text>
+
+  <rect x="90" y="240" width="260" height="60" rx="8" fill="#f4f4f4" stroke="#333333" stroke-width="2"/>
+  <text x="220" y="278" font-size="24" text-anchor="middle" fill="#111111">the closure</text>
+
+  <rect x="90" y="350" width="260" height="60" rx="8" fill="#f4f4f4" stroke="#333333" stroke-width="2"/>
+  <text x="220" y="388" font-size="24" text-anchor="middle" fill="#111111">the target</text>
+
+  <rect x="90" y="460" width="260" height="60" rx="8" fill="#f4f4f4" stroke="#333333" stroke-width="2"/>
+  <text x="220" y="498" font-size="24" text-anchor="middle" fill="#111111">the action</text>
+
+  <!-- arrows: one-way verbed relations -->
+  <line x1="220" y1="80" x2="220" y2="128" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="240" y="108" font-size="22" fill="#111111">evaluates</text>
+
+  <line x1="220" y1="190" x2="220" y2="238" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="240" y="218" font-size="22" fill="#111111">is built into</text>
+
+  <line x1="220" y1="300" x2="220" y2="348" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="240" y="328" font-size="22" fill="#111111">is copied to</text>
+
+  <line x1="220" y1="410" x2="220" y2="458" stroke="#333333" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="240" y="438" font-size="22" fill="#111111">is switched by</text>
+</svg>

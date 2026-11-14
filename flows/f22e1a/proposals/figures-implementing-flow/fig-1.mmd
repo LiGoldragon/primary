@@ -1,0 +1,5 @@
+flowchart TB
+    d["default modules: one Nexus value"] -- "composed first" --> f["the flow's start set"]
+    r["role:implementer, with its dependencies"] -- "composed next" --> f
+    v["the vision named, with its dependencies"] -- "composed last, highest in the first prompt" --> f
+    f -- "starts" --> i["an implementing flow: the basics, implementing, its vision, nothing else"]

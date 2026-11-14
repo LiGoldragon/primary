@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 580" width="480" height="580" font-family="sans-serif" font-size="18">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <!-- boxes -->
+  <rect x="40" y="30" width="400" height="60" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="240" y="66" text-anchor="middle" fill="#000">a Primary driving a fix</text>
+
+  <rect x="40" y="170" width="400" height="60" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="240" y="206" text-anchor="middle" fill="#000">every step in order</text>
+
+  <rect x="20" y="330" width="190" height="60" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="115" y="366" text-anchor="middle" fill="#000">who holds each</text>
+
+  <rect x="270" y="330" width="190" height="60" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="365" y="356" text-anchor="middle" fill="#000">the beat that</text>
+  <text x="365" y="378" text-anchor="middle" fill="#000">measures it</text>
+
+  <rect x="40" y="500" width="400" height="60" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="240" y="536" text-anchor="middle" fill="#000">it says nothing blocks on it</text>
+
+  <!-- arrows -->
+  <line x1="240" y1="90" x2="240" y2="170" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="252" y="128" fill="#000">briefs from its</text>
+  <text x="252" y="150" fill="#000">first turn</text>
+
+  <line x1="160" y1="230" x2="115" y2="330" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="125" y="285" text-anchor="end" fill="#000">names</text>
+
+  <line x1="320" y1="230" x2="365" y2="330" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="355" y="285" fill="#000">names</text>
+
+  <line x1="115" y1="390" x2="200" y2="500" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="140" y="440" text-anchor="end" fill="#000">all briefed</text>
+  <text x="140" y="462" text-anchor="end" fill="#000">before</text>
+
+  <line x1="365" y1="390" x2="280" y2="500" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="345" y="440" fill="#000">all briefed</text>
+  <text x="345" y="462" fill="#000">before</text>
+</svg>

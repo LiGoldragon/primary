@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 600" width="540" height="600" font-family="sans-serif" font-size="20">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+  <rect x="140" y="30" width="260" height="70" fill="white" stroke="black" stroke-width="2"/>
+  <text x="270" y="72" text-anchor="middle" fill="black">his vision</text>
+
+  <line x1="270" y1="100" x2="270" y2="200" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="285" y="155" text-anchor="start" fill="black">is inferred into</text>
+
+  <rect x="140" y="200" width="260" height="100" fill="white" stroke="black" stroke-width="2"/>
+  <text x="270" y="243" text-anchor="middle" fill="black">the proposal:</text>
+  <text x="270" y="275" text-anchor="middle" fill="black">prose + invariant code</text>
+
+  <line x1="200" y1="300" x2="200" y2="460" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="340" text-anchor="end" fill="black">he reviews</text>
+  <text x="190" y="364" text-anchor="end" fill="black">where he would</text>
+  <text x="190" y="388" text-anchor="end" fill="black">do otherwise</text>
+
+  <line x1="340" y1="300" x2="340" y2="460" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="350" y="370" text-anchor="start" fill="black">Mind implements</text>
+  <text x="350" y="394" text-anchor="start" fill="black">as it stands</text>
+
+  <rect x="140" y="460" width="260" height="100" fill="white" stroke="black" stroke-width="2"/>
+  <text x="270" y="503" text-anchor="middle" fill="black">the implementation,</text>
+  <text x="270" y="535" text-anchor="middle" fill="black">which holds the code</text>
+</svg>

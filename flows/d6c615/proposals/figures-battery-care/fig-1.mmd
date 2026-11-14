@@ -1,0 +1,5 @@
+flowchart TB
+    h["Holding: between Resume and Limit"] -- "a charge begins, the last full charge older than FullEvery" --> c["Calibrating: this charge goes to full"]
+    c -- "the battery reports full" --> r["Returning: discharging, charger connected"]
+    r -- "the level reaches Limit" --> h
+    e["boot, resume, charger connected"] -- "writes the levels again, and reads them back" --> h

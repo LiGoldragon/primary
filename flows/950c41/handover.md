@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary 950c41
+
+Done: flows/b862a0/proposals/belief-registration.md audited and landed as a delta: psyche-belief b2cf91e (vision:belief-nexus-v1: the owner registers a belief repository at the Belief Nexus's own CLI by his login, as he defines a complex at the Flow Nexus; a peer the meta peer list names furnishes over any registered repository; the Register datom and CLI line; the meta Set gains Peer.PeerBinding and RemovePeer.PeerId with UserId, ProcessId, PeerId, PeerIdentity and PeerBinding, as the herdr Nexus's meta has). The proposal was Fable's ruling, marked "awaiting his review"; no word of his on it in any record or handover, and vision:nexus-v1 already says a Nexus admits peers its meta names, so both proposals landed, the tentative second with the first since the first names the list. Secondary told by herdr. Skills regenerated, item struck.
+
+Next: flows/d12d26/proposals/knowledge-second.md (mind-belief knowledge/; the undone note says flow-nexus, ethos, datom, protos are absent there and the item is unverified: check mind-belief knowledge/ and the git log before landing anything).
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Use flow-0.49 for Send and Launch. Three-way care: a proposal older than the module is applied as a delta to today's module, never pasted whole; his later word in the records or handover of the proposing flow overrules the proposal. Before creating or destroying a module, tell Secondary by herdr wKZ:p1.

@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary e2192b
+
+Done: flows/b59221/proposals/a-flow-knows-its-metaflow.md audited against vision:flow-nexus-v1 and landed as a delta (psyche-belief d473113): a flow knows itself at launch, Identity.{ Address FlowId } composed into its first or system prompt, Open.{ Member Identity Brief }. Its MetaflowName was dropped: vision:metaflow-v1 (a09bbb5) made a metaflow nameless, the set the Flow Nexus at a place holds, and the place is the Nexus's, named at the CLI. Proposal archived under flows/b59221/archive/proposals; item struck; Secondary told.
+
+Next: flows/b59221/proposals/a-harness-is-a-definition.md, vision:flow-nexus-v1. Watch: 383169's handover says his later reading of "The harness is configuration" was landed from chat approval, and flow-nexus-v1 already has Tools.[ HarnessDefault Restricted ] with Unenforceable.Harness; apply as a delta.
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Launch and Send through flow-0.49: B=/nix/store/k1nmaxbpinwiyjjs0ra4cf9ir7vm42v5-flow-configured-0.49.0/bin; INV=$($B/flow-compose-invocation /run/user/1001/flow-049/flow.sock "$Q") && $B/flow "$INV". Three-way care: a proposal older than the module is applied as a delta to today's module, never pasted whole; his later word in the records of the proposing flow, and later landings on the same module, overrule the proposal. Before creating or destroying a module, tell Secondary by herdr wKZ:p1.

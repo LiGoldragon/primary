@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 370" width="480" height="370" font-family="sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <rect x="40" y="20" width="400" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="240" y="50" font-size="20" text-anchor="middle" fill="#000">Address:</text>
+  <text x="240" y="80" font-size="20" text-anchor="middle" fill="#000">Aspect, Topic, Model</text>
+  <line x1="120" y1="100" x2="120" y2="268" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <line x1="360" y1="100" x2="360" y2="268" stroke="#000" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="135" y="170" font-size="18" text-anchor="start" fill="#000">{ Psyche core</text>
+  <text x="135" y="192" font-size="18" text-anchor="start" fill="#000">Fable }</text>
+  <text x="345" y="230" font-size="18" text-anchor="end" fill="#000">{ Mind core Opus },</text>
+  <text x="345" y="252" font-size="18" text-anchor="end" fill="#000">{ Psyche core Astra }</text>
+  <rect x="20" y="270" width="200" height="70" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="120" y="312" font-size="20" text-anchor="middle" fill="#000">one permaflow</text>
+  <rect x="260" y="270" width="200" height="90" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="360" y="306" font-size="20" text-anchor="middle" fill="#000">any model in</text>
+  <text x="360" y="332" font-size="20" text-anchor="middle" fill="#000">any aspect</text>
+</svg>

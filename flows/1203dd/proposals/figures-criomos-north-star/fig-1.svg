@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 630" width="440" height="630" font-family="sans-serif" font-size="15">
+  <style>svg{color:#1a1a1a}@media (prefers-color-scheme: dark){svg{color:#ececec}}</style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- boxes -->
+  <rect x="130" y="20" width="210" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="130" y="124" width="210" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="130" y="268" width="210" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="130" y="412" width="210" height="84" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+  <rect x="130" y="556" width="210" height="50" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+
+  <!-- box labels -->
+  <text x="235" y="47" text-anchor="middle" fill="currentColor">Lojix: the only</text>
+  <text x="235" y="67" text-anchor="middle" fill="currentColor">interface</text>
+
+  <text x="235" y="151" text-anchor="middle" fill="currentColor">cluster data:</text>
+  <text x="235" y="171" text-anchor="middle" fill="currentColor">hosts, users,</text>
+  <text x="235" y="191" text-anchor="middle" fill="currentColor">hardware, features</text>
+
+  <text x="235" y="295" text-anchor="middle" fill="currentColor">Horizon: the typed</text>
+  <text x="235" y="315" text-anchor="middle" fill="currentColor">cluster, one contract</text>
+  <text x="235" y="335" text-anchor="middle" fill="currentColor">in Ethos</text>
+
+  <text x="235" y="439" text-anchor="middle" fill="currentColor">CriomOS: the</text>
+  <text x="235" y="459" text-anchor="middle" fill="currentColor">interpreter, universal</text>
+  <text x="235" y="479" text-anchor="middle" fill="currentColor">to every host</text>
+
+  <text x="235" y="586" text-anchor="middle" fill="currentColor">a host</text>
+
+  <!-- spine arrows: order top to bottom -->
+  <path d="M235,208 V268" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M235,352 V412" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M235,496 V556" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Lojix side arrows -->
+  <path d="M130,52 H110 V310 H130" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M340,52 H362 V581 H340" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- arrow verbs -->
+  <text x="250" y="243" text-anchor="start" fill="currentColor">is read into</text>
+  <text x="250" y="377" text-anchor="start" fill="currentColor">is the only</text>
+  <text x="250" y="397" text-anchor="start" fill="currentColor">input of</text>
+  <text x="250" y="531" text-anchor="start" fill="currentColor">builds</text>
+  <text x="102" y="166" text-anchor="end" fill="currentColor">projects the</text>
+  <text x="102" y="186" text-anchor="end" fill="currentColor">data and</text>
+  <text x="102" y="206" text-anchor="end" fill="currentColor">drives</text>
+  <text x="370" y="321" text-anchor="start" fill="currentColor">deploys</text>
+</svg>

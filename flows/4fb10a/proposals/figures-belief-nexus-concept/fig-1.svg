@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 1040" width="560" height="1040" font-family="sans-serif" font-size="18" fill="black">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <!-- arrows -->
+  <g fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="280" y1="70" x2="280" y2="120"/>
+    <polyline points="165,145 85,145 85,230"/>
+    <line x1="280" y1="170" x2="280" y2="260"/>
+    <polyline points="395,145 520,145 520,260"/>
+    <line x1="280" y1="340" x2="280" y2="390"/>
+    <polyline points="165,430 70,430 70,500"/>
+    <line x1="280" y1="470" x2="280" y2="520"/>
+    <line x1="280" y1="570" x2="280" y2="620"/>
+    <line x1="280" y1="700" x2="280" y2="750"/>
+    <polyline points="200,830 200,865 100,865 100,900"/>
+    <polyline points="360,830 360,865 440,865 440,900"/>
+  </g>
+
+  <!-- boxes -->
+  <g fill="white" stroke="black" stroke-width="2">
+    <rect x="130" y="20" width="300" height="50"/>
+    <rect x="165" y="120" width="230" height="50"/>
+    <rect x="10" y="230" width="150" height="100"/>
+    <rect x="165" y="260" width="230" height="80"/>
+    <rect x="402" y="260" width="148" height="80"/>
+    <rect x="165" y="390" width="230" height="80"/>
+    <rect x="10" y="500" width="120" height="50"/>
+    <rect x="165" y="520" width="230" height="50"/>
+    <rect x="165" y="620" width="230" height="80"/>
+    <rect x="165" y="750" width="230" height="80"/>
+    <rect x="20" y="900" width="160" height="50"/>
+    <rect x="340" y="900" width="200" height="110"/>
+  </g>
+
+  <!-- box labels -->
+  <g text-anchor="middle">
+    <text x="280" y="52">ordinary caller connection</text>
+    <text x="280" y="152">read and decode once</text>
+    <text x="85" y="263">Unreadable:</text>
+    <text x="85" y="287">exact request</text>
+    <text x="85" y="311">codec error</text>
+    <text x="280" y="295">checked single-reply</text>
+    <text x="280" y="319">query</text>
+    <text x="476" y="295">existing</text>
+    <text x="476" y="319">streaming path</text>
+    <text x="280" y="425">prepare call;</text>
+    <text x="280" y="449">contact Nexus</text>
+    <text x="70" y="532">NexusDown</text>
+    <text x="280" y="552">forward request</text>
+    <text x="280" y="655">receive and decode</text>
+    <text x="280" y="679">domain response</text>
+    <text x="280" y="785">write unchanged</text>
+    <text x="280" y="809">domain response</text>
+    <text x="100" y="932">Answered</text>
+    <text x="440" y="938">owned observed</text>
+    <text x="440" y="962">response + native</text>
+    <text x="440" y="986">write error</text>
+  </g>
+
+  <!-- edge labels -->
+  <text x="158" y="136" text-anchor="end">codec error</text>
+  <text x="292" y="205">Register /</text>
+  <text x="292" y="228">Resolve / Furnish</text>
+  <text x="458" y="137" text-anchor="middle">Subscribe</text>
+  <text x="158" y="421" text-anchor="end">connect fails</text>
+  <text x="292" y="500">connected</text>
+  <text x="190" y="858" text-anchor="end">write succeeds</text>
+  <text x="372" y="858">write fails</text>
+</svg>

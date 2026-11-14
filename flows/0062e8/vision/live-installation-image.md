@@ -1,3 +1,5 @@
+Landed in vision:horizon, psyche-belief 6a784dd: A USB disk for installing, Deterministically named and added on to the cluster synthetically, An external additional input to Lojix. Open: Review what they are (the tools).
+
 # Live installation image
 
 ## A USB disk for installing

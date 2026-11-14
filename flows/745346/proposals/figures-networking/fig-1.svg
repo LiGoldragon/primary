@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" font-family="sans-serif" font-size="16" fill="#000">
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <!-- boxes -->
+  <rect x="280" y="20" width="160" height="50" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="360" y="51" text-anchor="middle">a node</text>
+  <rect x="40" y="230" width="200" height="56" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="140" y="263" text-anchor="middle">the public node</text>
+  <rect x="460" y="460" width="220" height="56" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="570" y="493" text-anchor="middle">the other nodes</text>
+  <!-- a -> p : tells every address it has to -->
+  <line x1="300" y1="70" x2="110" y2="230" stroke="#000" stroke-width="2" marker-end="url(#head)"/>
+  <text x="215" y="165" text-anchor="start">tells every address</text>
+  <text x="215" y="183" text-anchor="start">it has to</text>
+  <!-- a -> p : reaches, when no direct path routes, through -->
+  <path d="M280,45 C150,45 60,110 60,230" fill="none" stroke="#000" stroke-width="2" marker-end="url(#head)"/>
+  <text x="270" y="22" text-anchor="end">reaches, when no direct path</text>
+  <text x="270" y="40" text-anchor="end">routes, through</text>
+  <!-- a -> o : tries the local address of, and connects directly to -->
+  <line x1="430" y1="70" x2="560" y2="460" stroke="#000" stroke-width="2" marker-end="url(#head)"/>
+  <text x="500" y="250" text-anchor="start">tries the local address of,</text>
+  <text x="500" y="268" text-anchor="start">and connects directly to</text>
+  <!-- p -> o : tells each node the addresses of -->
+  <polyline points="140,286 140,488 460,488" fill="none" stroke="#000" stroke-width="2" marker-end="url(#head)"/>
+  <text x="300" y="470" text-anchor="middle">tells each node the addresses of</text>
+</svg>

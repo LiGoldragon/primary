@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="540" viewBox="0 0 400 540" font-family="sans-serif">
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs>
+  <g fill="none" stroke="#000" stroke-width="2">
+    <line x1="120" y1="92" x2="120" y2="198" marker-end="url(#arrow)"/>
+    <line x1="330" y1="92" x2="330" y2="198" marker-end="url(#arrow)"/>
+    <line x1="135" y1="320" x2="135" y2="378" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#fff" stroke="#000" stroke-width="2">
+    <rect x="100" y="20" width="200" height="72" rx="6"/>
+    <rect x="20" y="200" width="230" height="120" rx="6"/>
+    <rect x="275" y="200" width="110" height="90" rx="6"/>
+    <rect x="20" y="380" width="230" height="120" rx="6"/>
+  </g>
+  <g fill="#000" font-size="15" text-anchor="middle">
+    <text x="200" y="46">a metaflow,</text>
+    <text x="200" y="68">configured in datom</text>
+    <text x="135" y="226">model:</text>
+    <text x="135" y="250">Fable, Opus, Sonnet,</text>
+    <text x="135" y="274">Haiku, Astra, Sol, Luna</text>
+    <text x="330" y="225" font-size="14">routes:</text>
+    <text x="330" y="247" font-size="14">who speaks</text>
+    <text x="330" y="269" font-size="14">to whom</text>
+    <text x="135" y="434">personality:</text>
+    <text x="135" y="458">what it designs,</text>
+    <text x="135" y="482">does, speaks</text>
+  </g>
+  <g fill="#000" font-size="14">
+    <text x="132" y="140">names each</text>
+    <text x="132" y="158">member's</text>
+    <text x="342" y="140">names</text>
+    <text x="147" y="355">has</text>
+  </g>
+</svg>

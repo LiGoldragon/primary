@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 440" width="500" height="440" font-family="sans-serif" fill="black">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+  <rect x="120" y="20" width="220" height="56" fill="white" stroke="black" stroke-width="2"/>
+  <text x="230" y="54" font-size="18" text-anchor="middle">his vision</text>
+
+  <line x1="230" y1="76" x2="230" y2="150" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="245" y="118" font-size="16">is inferred into</text>
+
+  <rect x="40" y="150" width="380" height="76" fill="white" stroke="black" stroke-width="2"/>
+  <text x="230" y="180" font-size="18" text-anchor="middle">the proposal:</text>
+  <text x="230" y="206" font-size="18" text-anchor="middle">prose + invariant code</text>
+
+  <line x1="100" y1="226" x2="100" y2="340" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="115" y="272" font-size="16">he reviews where</text>
+  <text x="115" y="294" font-size="16">he would do otherwise</text>
+
+  <line x1="330" y1="226" x2="330" y2="340" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="345" y="280" font-size="16">Mind implements</text>
+  <text x="345" y="302" font-size="16">as it stands</text>
+
+  <rect x="40" y="340" width="380" height="76" fill="white" stroke="black" stroke-width="2"/>
+  <text x="230" y="370" font-size="18" text-anchor="middle">the implementation,</text>
+  <text x="230" y="396" font-size="18" text-anchor="middle">which holds the code</text>
+</svg>

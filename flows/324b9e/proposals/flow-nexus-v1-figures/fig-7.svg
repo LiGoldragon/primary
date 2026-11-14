@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 900" width="700" height="900" role="img" aria-label="metaflow designer flowchart">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="205" y="38" width="290" height="76" rx="12"/>
+    <rect x="205" y="194" width="290" height="76" rx="12"/>
+    <rect x="205" y="350" width="290" height="76" rx="12"/>
+    <rect x="165" y="506" width="370" height="76" rx="12"/>
+    <rect x="20" y="350" width="180" height="76" rx="12"/>
+    <rect x="500" y="80" width="180" height="76" rx="12"/>
+    <line x1="350" y1="114" x2="350" y2="194" marker-end="url(#arrow)"/>
+    <line x1="350" y1="270" x2="350" y2="350" marker-end="url(#arrow)"/>
+    <line x1="350" y1="426" x2="350" y2="506" marker-end="url(#arrow)"/>
+    <line x1="205" y1="232" x2="200" y2="388" marker-end="url(#arrow)"/>
+    <line x1="500" y1="118" x2="495" y2="232" stroke-dasharray="10 9" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">
+    <text x="350" y="70">metaflow: designer</text>
+    <text x="350" y="226">speaker: fable</text>
+    <text x="350" y="382">member: opus</text>
+    <text x="350" y="538">metaflow: implementer,</text>
+    <text x="350" y="568">its speaker</text>
+    <text x="130" y="382">the living</text>
+    <text x="590" y="112">anything else</text>
+  </g>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="21" text-anchor="middle">
+    <text x="350" y="170">Speaks.opus</text>
+    <text x="350" y="482">Metaflow.implementer</text>
+    <text x="275" y="300">Living</text>
+    <text x="525" y="178">refused</text>
+  </g>
+</svg>

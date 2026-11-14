@@ -1,0 +1,21 @@
+# Psyche restart Opus f1b516 (successor of b060be): working notes
+- b060be's notes stand (flows/b060be/handover.md).
+- Revision agent on request-id-0533.md died at restart (file unchanged, 867550d4); relaunched same prompt. On its report: send new digest to Mind nixCriomos Sol 93db2b; send Fable findings+judgment when review answers.
+- Revision done: request-id-0533.md sha cf1ede4c (sixth revision, items k l m). Digest sent as Order to Mind nixCriomos Sol (delivered). Waiting its PASS/findings; then Fable gets all findings + my judgment. New judgment item 5: identical Orders with one old Result both close.
+- Flow client: plain `flow` on PATH (wraps 0.53.1, flow-0531 socket); the 0.53.0 store path in the skill is gone.
+- Sol reviewed cf1ede4c: k/l closed, m addressed at design level; no PASS: version baseline (0.53.2 owns signal53/meta66, /tmp/0532-consumer-preparation.txt); item 5 is Fable's. Message reconnect/replay still under Sol's review.
+- Mind core Astra: rebase onto ACCEPTED 0.53.2 source/schema, distinct next majors, freeze old shapes against that base; no source until corrected design review; Astra routes item 5 to Fable; do not silently close both or reopen one.
+- Edited to c8afff4c then item-5-undecided edit: majors unallocated until 0.53.2 accepted; frozen shapes unverified vs 0.53.2; item 5 marked waiting for Fable. Full rebase blocked on 0.53.2 acceptance (not yet: delivery-custody repair pending).
+- Fable ruled item 5 (o) as I judged: earliest unanswered identical Order before the Result gets it; other stays open; upgrade reports each pair with both ids. Agent applying this + Sol's Message held-buffer/cursor crash blocker (from 45b02542).
+- Fable: (l) is SETTLED, not for the living: archive by sending flow alone, through its own address; Nexus archives nothing of itself. After the agent finishes: remove open question 6 (own-request archival) and state this as settled; to the living only as a line in the 0.53.3 proposal.
+- Still owed: rebase onto ACCEPTED 0.53.2 (not yet accepted).
+- Eighth revision b05991ed: R6 folded (key = first Delivered event cursor), Message crash fix, R5 settled (Q5-7 removed; remaining For-the-living 5 R6 scope, 6 correcting assignment, sent to Fable). Sent to Sol for re-review; Fable notified. Rebase on accepted 0.53.2 pending.
+- Fable ruled R6 scope + no closure-moving input + owner=sending flow; folded as R6 extended; sha eff49c45; Sol told. Awaiting Sol review; 0.53.2 acceptance for rebase.
+- Sol PASS on n (Message crash) at b05991ed; asked ledger-entry selection precision -> added (sha babb3339). Only rebase onto accepted 0.53.2 remains for whole PASS (plus Sol re-confirming R6 extended + selection).
+- Asked Fable: R6 Order with no Delivered event (Uncertain) -> after delivered ones by admission cursor? Mark design accordingly when answered. Astra answered.
+- Fable ruled no-Delivered as proposed; folded; sha 47edc706. Sol+Astra told. Sole remaining: rebase onto accepted 0.53.2 (watch for acceptance), then Sol whole-design PASS.
+- Sol bounded PASS on ledger selection; read-through precision folded, sha 761b5d41. Only gate: accepted 0.53.2 rebase + frozen-shape proof incl. delivery-order keys.
+- Asked Mind flowNexus Sol for accepted 0.53.2 revision (commit + wire versions). On answer: rebase design (write-demanding agent), freeze shapes from it, prove delivery-order keys/fallback on its data, send immutable sha to Mind nixCriomos Sol for final check.
+- flowNexus Sol: no accepted 0.53.2 yet (bf8f withdrawn; later heads diagnostic). Current contract work signal53@3596, meta66@b365 (/tmp/handover-contract-pointers), not a promise. Sol will send accepted head + contract revs + receipts. Both the request-id rebase and the 0.53.2 canary wait on that.
+- HANDED the 0.53 line to Mind versionZero Astra by Fable order (canary A + request-id B). Going idle; no beat; nothing to Fable until morning except rulings via Astra.
+- 0.53.2 accepted source 87b9 (signal53@3596, meta66@b365, /tmp/0532-87b9-accepted-source.txt) relayed to Astra; Field core Sol owns capsule. Idle.

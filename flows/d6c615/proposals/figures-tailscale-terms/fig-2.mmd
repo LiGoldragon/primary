@@ -1,0 +1,4 @@
+flowchart TB
+    c["the Tailscale client, on each node"] -- "is pointed at one of" --> a["the company's coordination server"]
+    c -- "is pointed at one of" --> h["Headscale, on your own public node"]
+    h -- "replaces" --> a

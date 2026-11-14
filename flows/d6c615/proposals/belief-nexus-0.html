@@ -1,0 +1,516 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Belief Nexus, version 0</title>
+<h1 class="book-title">The Belief Nexus, version 0</h1>
+<p class="book-subtitle">Created by Fable 5.2; Sonnet readers found the lines.</p>
+<aside class="key" aria-label="Key to the colours"><div class="key-label">Colours</div><ul><li><span class="sw sw-add"></span><span class="sw sw-add-landed"></span>added</li><li><span class="sw sw-del"></span><span class="sw sw-del-landed"></span>removed</li><li><span class="sw sw-move"></span><span class="sw sw-move-landed"></span>moved</li><li><span class="sw sw-shown"></span>an excerpt, as it stands</li><li><span class="sw sw-module"></span>a module, as it stands</li></ul><p class="key-note">Light shade: proposed. Dark shade: landed.</p></aside>
+<article class="proposal"><header><span class="pnum">1</span><h2>The Belief Nexus, retaken whole as version 0 · psyche-belief › vision/belief-nexus/0.md</h2></header>
+<aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>His words, 13 November: «I don't see that we are at belief nexus version 1 yet. I think we're still at version 0.» «No, curriculum is not belief. There, we renamed the concept, but that doesn't mean that belief version 0 is curriculum.» «Maybe we just make a belief nexus that can work now, that does this, and that has a version number all the time for everything.» «No, the belief nexus is not what furnishes the workspace. It's either the flow nexus or another nexus made for that, but the belief nexus furnishes beliefs, not workspaces.» And 12 November: «I'd also like to be able to configure everything. You could have the modules come from different repositories, so they're configured in the belief nexus.» «Subagents should be composed of the same modules as well. Composing a subagent should be the same thing as composing a flow. It just has a different kind of effect.» The module that stands holds two contracts that disagree; this one is written from his words as one concept with one contract. It takes in what «Belief is composed, for a flow or a subagent» and the three-field names of «Every belief module is versioned» proposed, so those lines are ruled here. The Operation and Memory parts are tentative in their names.</p></div></aside>
+<pre class="code-add"><code class="language-yaml">---
+description: The Belief Nexus, version 0, which holds the belief modules and furnishes a workspace it is handed with a composition of them, is being designed or judged against what the living wants it to be.
+dependencies: [vision-nexus, vision-ethos]
+---</code></pre>
+<div class="diff"><div class="add"><h3>The Belief Nexus</h3></div></div>
+<div class="diff"><div class="add"><p>The Belief Nexus holds the belief modules and furnishes belief: it writes a composition of modules into the workspace it is handed, and makes no workspace. Belief is the word: what a model believes when it starts. Every belief is reached through the Belief Nexus, and everything about belief is its configuration.</p></div></div>
+<div class="diff"><div class="figmark fig-add"><div class="figure" style="position:relative;height:0;padding-bottom:137.93%;overflow:hidden"><svg viewBox="0 0 580 800" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="20" style="color:var(--fg);fill:var(--fg);stroke:var(--fg);display:block;position:absolute;left:0;top:0;width:100%;height:100%">
+  <defs>
+    <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" stroke="none" style="fill:var(--fg)"/>
+    </marker>
+  </defs>
+
+  
+  <line x1="180" y1="110" x2="180" y2="200" stroke-width="2" marker-end="url(#f1-arrow)"/>
+  <line x1="180" y1="280" x2="180" y2="370" stroke-width="2" marker-end="url(#f1-arrow)"/>
+  <line x1="180" y1="450" x2="180" y2="560" stroke-width="2" marker-end="url(#f1-arrow)"/>
+  <path d="M350,70 L380,70 L380,740 L350,740" fill="none" stroke-width="2" marker-end="url(#f1-arrow)"/>
+
+  
+  <rect x="10" y="30" width="340" height="80" stroke-width="2" style="fill:var(--chip)"/>
+  <text x="180" y="63" text-anchor="middle" stroke="none">sources: a repository,</text>
+  <text x="180" y="89" text-anchor="middle" stroke="none">or a directory</text>
+
+  <rect x="10" y="200" width="340" height="80" stroke-width="2" style="fill:var(--chip)"/>
+  <text x="180" y="233" text-anchor="middle" stroke="none">modules, each named by</text>
+  <text x="180" y="259" text-anchor="middle" stroke="none">kind, topic and version</text>
+
+  <rect x="10" y="370" width="340" height="80" stroke-width="2" style="fill:var(--chip)"/>
+  <text x="180" y="403" text-anchor="middle" stroke="none">a composition, saved</text>
+  <text x="180" y="429" text-anchor="middle" stroke="none">under its name</text>
+
+  <rect x="10" y="560" width="340" height="80" stroke-width="2" style="fill:var(--chip)"/>
+  <text x="180" y="593" text-anchor="middle" stroke="none">the workspace the Belief</text>
+  <text x="180" y="619" text-anchor="middle" stroke="none">Nexus is handed</text>
+
+  <rect x="10" y="700" width="340" height="80" stroke-width="2" style="fill:var(--chip)"/>
+  <text x="180" y="733" text-anchor="middle" stroke="none">every workspace it changed</text>
+  <text x="180" y="759" text-anchor="middle" stroke="none">is furnished again</text>
+
+  
+  <rect x="148" y="141" width="64" height="28" stroke="none" style="fill:var(--chip)"/>
+  <text x="180" y="162" text-anchor="middle" stroke="none">hold</text>
+
+  <rect x="94" y="311" width="172" height="28" stroke="none" style="fill:var(--chip)"/>
+  <text x="180" y="332" text-anchor="middle" stroke="none">are placed by</text>
+
+  <rect x="40" y="480" width="280" height="52" stroke="none" style="fill:var(--chip)"/>
+  <text x="180" y="498" text-anchor="middle" stroke="none">is written, for a flow</text>
+  <text x="180" y="522" text-anchor="middle" stroke="none">or a subagent, into</text>
+
+  <text x="392" y="400" text-anchor="start" stroke="none">a repository's</text>
+  <text x="392" y="426" text-anchor="start" stroke="none">main moves</text>
+</svg></div></div></div>
+<div class="diff"><div class="add"><h4>Library</h4></div></div>
+<div class="diff"><div class="add"><p>A module's name is three fields, its kind, its topic and its version; a topic with one module has it at version 0. Modules come from several sources at once: a repository, the pure reference, or a directory, the quick one, for developing and debugging.</p></div></div>
+<div class="diff"><div class="add"><p>A composition is a saved configuration of belief: the modules, and for each its placement. A subagent is composed as a flow is, from the same modules; the effect differs, the composition being written as one subagent file for the flow of that workspace.</p></div></div>
+<pre class="code-add"><code class="language-ethos">Library
+[ :flow:Harness ]                    ; imports: the harness, which names the skills directory
+[ Path.String                        ; types: a directory holding &lt;kind&gt;/&lt;topic&gt;/&lt;version&gt;.md
+  Source.[ Repository.Path           ; a git repository, watched: its main moving furnishes again
+           Directory.Path ]          ; a directory, read as it stands at each furnishing
+  Kind.[ Spirit Intent Vision
+         Knowledge Role ]
+  Topic.String
+  Version.Integer
+  ModuleName.{ Kind Topic Version }  ; the three fields of every name
+  Placement.[ SystemPrompt           ; where a composition puts a module
+              StartupPrompt          ;   in the first prompt
+              VisibleSkill           ;   a skill the flow sees listed
+              HiddenSkill ]          ;   a skill it is not shown
+  Placed.{ ModuleName Placement }
+  CompositionName.String
+  Composition.{ CompositionName      ; a saved configuration of belief
+                Vector&lt;Placed&gt; }
+  Workspace.String                   ; the directory the Belief Nexus is handed
+  SubagentName.String
+  Target.[ Flow                      ; written as a flow's prompts and skills
+           Subagent.SubagentName ]   ; written as one subagent file
+  Furnishing.{ Workspace Harness     ; what is asked: this composition,
+               CompositionName       ;   into this workspace,
+               Target }              ;   for a flow or a subagent
+  BundlePath.String                  ; the system prompt file written
+  StartupPath.String                 ; the first prompt file written
+  SkillsPath.String                  ; the harness's skills directory
+  SubagentPath.String                ; the subagent file written
+  Location.[ Flow.{ BundlePath       ; where the belief was written
+                    StartupPath
+                    SkillsPath }
+             Subagent.SubagentPath ] ]
+[]                                   ; traits
+[]                                   ; associations</code></pre>
+<div class="diff"><div class="add"><h4>Signal</h4></div></div>
+<div class="diff"><div class="add"><p>A composition may name a module no source holds: the Belief Nexus answers which names are missing and writes the rest, and what is done about a missing module is the policy of the definition that asked. A definition in the Flow Nexus refers to a composition by its name.</p></div></div>
+<div class="diff"><div class="add"><p>A registered repository is watched: when its main moves, every workspace furnished with a module it changed is furnished again, and each subscriber is told, so the Flow Nexus knows which flows now run on old belief.</p></div></div>
+<pre class="code-add"><code class="language-ethos">Signal
+[ :belief:[ Source ModuleName        ; imports
+            Composition CompositionName
+            Furnishing Workspace Location ] ]
+[ Register.Source                    ; inputs: a source of modules
+  Compose.Composition                ;   a composition saved, or replaced, under its name
+  Furnish.Furnishing                 ;   a composition written into a workspace
+  Subscribe ]                        ;   the changes, as they happen
+[ Registered.Source                  ; outputs
+  Composed.{ CompositionName
+             Missing.Vector&lt;ModuleName&gt; }   ; named, and held by no source
+  Furnished.{ Location
+              Missing.Vector&lt;ModuleName&gt; }  ; left out of what was written
+  Subscribed
+  Changed.{ Source                   ; a reaction: a repository's main moved
+            Vector&lt;ModuleName&gt;       ;   the modules it changed
+            Vector&lt;Workspace&gt; }      ;   the workspaces furnished again
+  Refused.[ UnknownSource.Source
+            UnknownComposition.CompositionName
+            Unwritable.Workspace ] ]
+[]                                   ; types</code></pre>
+<pre class="code-add"><code class="language-datom">; an example: the names are examples
+Register.Repository.«/git/example/belief»
+Registered.Repository.«/git/example/belief»
+Compose.{ reviewer
+          [ { { Spirit core 0 } SystemPrompt }
+            { { Intent design 0 } SystemPrompt }
+            { { Vision ethos 0 } StartupPrompt }
+            { { Knowledge search 0 } VisibleSkill }
+            { { Vision absent 0 } VisibleSkill } ] }
+Composed.{ reviewer [ { Vision absent 0 } ] }
+Furnish.{ «/home/example/workspace» Claude reviewer Flow }
+Furnished.{ Flow.{ «/home/example/workspace/.bundle»
+                   «/home/example/workspace/.startup»
+                   «/home/example/workspace/.claude/skills» }
+            [ { Vision absent 0 } ] }
+Furnish.{ «/home/example/workspace» Claude reviewer Subagent.reviewer }
+Furnished.{ Subagent.«/home/example/workspace/.claude/agents/reviewer.md»
+            [ { Vision absent 0 } ] }</code></pre>
+<div class="diff"><div class="add"><h4>Operation</h4></div></div>
+<pre class="code-add"><code class="language-ethos">Operation
+[ :belief:[ Source Composition       ; imports
+            Furnishing Location ModuleName ] ]
+[ Registering.Source                 ; attempts, one per input
+  Composing.Composition
+  Furnishing                         ;   the furnishing asked, carried bare
+  Refurnishing.Source ]              ;   answers the event of a repository's main moving
+[ Registered                         ; outcomes
+  Composed.Vector&lt;ModuleName&gt;        ;   the missing
+  Furnished.{ Location Vector&lt;ModuleName&gt; }
+  Failed.[ SourceUnreadable WorkspaceUnwritable MemoryRefused ] ]
+[]                                   ; types</code></pre>
+<div class="diff"><div class="add"><h4>Emission</h4></div></div>
+<div class="diff"><div class="add"><p>Furnishing is writing. Each module's content is written between delimiters that name it, so the flow or subagent knows which module a belief comes from.</p></div></div>
+<pre class="code-add"><code class="language-ethos">Emission
+[ :belief:[ Workspace Placed Target Location ]
+  :flow:Harness ]                    ; imports
+[ Write.{ Workspace Harness Target   ; emissions: the files of one furnishing, written
+          Vector&lt;Placed&gt; } ]
+[ Written.Location                   ; outcomes: what the translator observed
+  Unwritable ]
+[]                                   ; types</code></pre>
+<div class="diff"><div class="add"><h4>Memory</h4></div></div>
+<pre class="code-add"><code class="language-ethos">Memory
+[ :belief:[ Source ModuleName Composition Furnishing ] ]  ; imports
+[ Held.{ Source Vector&lt;ModuleName&gt; } ; records: each registered source and the modules it holds
+  Composition                        ;   each composition, under its name
+  Furnishing                         ;   each furnishing, so a change finds the workspaces to furnish again
+  Answer.[ Succeeded Failed ] ]</code></pre>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>The version 1 module is archived · psyche-belief › vision/belief-nexus-v1.md, a deleted file</h2></header>
+<aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>The concept part of the module, shown as it stands, is what Proposal 1 retakes. The rest of the module, from «The ordinary single-reply boundary» to its end, is the built service, and «The Belief Nexus vision keeps the concept» moves it to mind-belief › knowledge/belief-nexus.md. Mark: Archive.</p></div></aside>
+<div class="diff"><div class="del"><div class="fm"><div class="fm-label">Front matter</div><dl><dt>Description</dt><dd>The Belief Nexus, version 1, which holds the belief modules and furnishes workspaces with them in place of Curriculum, is being designed or judged against what the living wants it to be.</dd><dt>Dependencies</dt><dd>vision-ethos</dd></dl></div></div><div class="del"><h3>The Belief Nexus</h3></div><div class="del"><p>The Belief Nexus holds the belief modules and furnishes workspaces with them. Belief is the word: what a model believes when it starts. It replaces Curriculum. Its memory is its own; a definition in the Flow Nexus refers to a module by name only, and a name may resolve to nothing: the Belief Nexus answers which names are missing, and what is done about it is the definition's policy, never the Nexus's.</p></div><div class="del"><h4>Signal</h4></div><div class="del"><p>The owner registers a belief repository at the Belief Nexus's own CLI, by his login, as he defines a complex at the Flow Nexus. A peer the meta peer list names furnishes over any registered repository.</p></div><div class="del"><p>A registered repository is watched: when its main moves, every workspace furnished with a module it changed is furnished again, and the Flow Nexus is told which flows now run on old belief, so a perma flow can be refreshed on it. A module is named by kind and subject; its front matter names its placement, system prompt or skill. The skills directory is the harness's.</p></div></div>
+<pre class="code-del"><code class="language-ethos">Signal
+[ belief:[ ModuleSource ModuleName    ; imports
+           Workspace Location ]
+  flow:[ Harness ] ]
+[ Register.ModuleSource              ; inputs: a module source
+  Resolve.Vector&lt;ModuleName&gt;
+  Furnish.{ Workspace Harness        ; the harness's
+            Vector&lt;ModuleName&gt; }     ;   skills directory
+  Subscribe ]
+[ Registered.ModuleSource            ; outputs
+  Resolved.{ Vector&lt;ModuleName&gt;      ; found
+             Vector&lt;ModuleName&gt; }    ; missing
+  Furnished.{ Location
+              Vector&lt;ModuleName&gt; }   ; missing, left out
+  Subscribed
+  Changed.{ ModuleSource              ; pushed: main moved
+            Vector&lt;ModuleName&gt;        ;   modules changed
+            Vector&lt;Workspace&gt; }       ;   workspaces refurnished
+  Refused.[ UnknownSource.ModuleSource
+            Unwritable.Workspace ] ]
+[]</code></pre>
+<pre class="code-del"><code class="language-datom">Register.Repository.
+  /git/github.com/LiGoldragon/psyche-belief
+Registered.Repository.
+  /git/github.com/LiGoldragon/psyche-belief
+Register.Directory./home/li/psyche-belief-edits</code></pre>
+<pre class="code-del"><code class="language-sh">belief-nexus '
+  Register.
+    /git/github.com/LiGoldragon/psyche-belief'</code></pre>
+<div class="diff"><div class="del"><h4>Meta</h4></div><div class="del"><p>A module's front matter names its placement; the default per Kind is a meta setting, set one value at a time, never in the Rust. The meta peer list names the peers admitted to Furnish, each bound by kernel credentials as a Nexus's peers are.</p></div></div>
+<pre class="code-del"><code class="language-ethos">Signal
+[ belief:[ Kind Placement ] ]        ; imports
+[ Configure.Set ]                    ; inputs: one value at a time
+[ Configured.Set ]                   ; outputs: the value set
+[ Set.[ Placement.{ Kind             ; types: the default
+                    Placement }      ;   placement per Kind
+        Peer.PeerBinding             ;   a peer admitted to Furnish
+        RemovePeer.PeerId ]          ;   a peer removed
+  UserId.Integer                     ; a login
+  ProcessId.Integer
+  PeerId.String                      ; a peer's name
+  PeerIdentity.{ UserId ProcessId }  ; checked by kernel credentials
+  PeerBinding.{ PeerId PeerIdentity } ]</code></pre>
+<div class="diff"><div class="del"><h4>Library</h4></div></div>
+<pre class="code-del"><code class="language-ethos">Library
+[ sema:[ Document Block Edit Place Outline ] ]
+[ Path.String                        ; a directory holding
+                                     ;   &lt;type&gt;/&lt;subject&gt;.md
+  ModuleSource.[ Repository.Path     ; a git repository, watched:
+                                     ;   main moving refurnishes
+                 Directory.Path ]    ; a directory read as it
+                                     ;   stands, watched by nobody
+  Kind.[ Spirit Intent Vision
+         Knowledge Role ]
+  ModuleName.{ Kind Subject.String }
+  Workspace.String                   ; the flow's directory
+  Placement.[ SystemPrompt Skill ]   ; named in front matter;
+                                     ;   default per Kind: meta
+  Location.{ SystemPrompt.String     ; the bundle file written
+             Skills.String } ]       ; the skills directory
+[]
+[]</code></pre>
+<div class="diff"><div class="del"><h4>Emission</h4></div><div class="del"><p>Furnishing is writing: each module into the workspace's system-prompt bundle or the harness's skills directory, as its placement says.</p></div></div>
+<pre class="code-del"><code class="language-ethos">Emission
+[ belief:[ Workspace ModuleName Location ]
+  flow:[ Harness ] ]                   ; imports: the harness names the skills directory
+[ Write.{ Workspace Harness Vector&lt;ModuleName&gt; } ] ; emissions: the bundle and the skills, written
+[ Written.Location ]                   ; outcomes
+[]</code></pre>
+<div class="diff"><div class="del"><h4>Memory</h4></div></div>
+<pre class="code-del"><code class="language-ethos">Memory
+[ belief:[ ModuleSource ModuleName ] ]
+[ Source.{ ModuleSource Vector&lt;ModuleName&gt; } ; records: each registered source and the modules it holds
+  Answer.[ Succeeded Failed ] ]</code></pre>
+<pre class="code-del"><code class="language-datom">Furnish.{ /home/li/primary Claude
+          [ { Spirit core } { Vision nexus-v1 }
+            { Vision none } ] }
+Furnished.{ { /home/li/primary/.bundle
+              /home/li/primary/.claude/skills }
+            [ { Vision none } ] }</code></pre>
+</article>
+<h2>Questions</h2>
+<ol class="choices" start="1"><li>Version 0 admits any caller, by «A Nexus keeps nobody out» in the Nexus vision; the version 1 module admitted to Furnish only the peers a meta list named. Is any caller right?</li><li>The module's directory, and the component's name in paths: belief-nexus, or BeliefNexus?</li><li>A fifth placement was proposed, a module held in the Belief Nexus and read from it on demand. Version 0 leaves it out, since it needs an input of its own. Left for version 1?</li></ol>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red highlight, never struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A module as it stands (not a proposal): <article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code>repo/path.md</code></h2></header> … its headings as h3, h4 … </article>
+       A deleted module shown whole, under the red del margin, with a Destroy or Archive mark (drawn by the class):
+         <div class="record destroy">  or  <div class="record archive">
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the module deleted
+           <div class="ctx">…</div>                  its text, shown whole
+         </div>
+       The proposal author's reason on the proposal it sits in, before its lines (an indigo box visibly labelled "Why"):
+         <aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>…</p></div></aside>
+       Each alternative is its own proposal; there is no alternatives group.
+       A review (<meta name="book-kind" content="review"> in the page) shows every added and removed line in the dark shade
+       (--add-landed-edge, --del-landed-edge); a proposal or an account shows the light shade.
+       A proposal of a review that declared itself proposed (class "proposal proposed", from `::: proposed`) shows the light shade too.
+       <p class="book-subtitle">Created by …</p>   the signature line under the title: the creating model and each helper's help
+       <aside class="key">…</aside>                 the key to the colours, after the title and signature line of a page that carries a change (the builder emits it)
+       <div class="figure"><svg>…</svg></div>       a figure: its ink var(--fg), its fills var(--chip), written by the builder, so it follows the theme
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     Colour is the sign of a change and lives in the margin: <div class="add">/<div class="del"> and <tr class="row-add|row-del"> carry a green or red edge, their text in the page's colour.
+     Code is highlighted at build time (tree-sitter, classes ts-*): <pre class="code-add|code-del"> is a fence wholly added or removed, one margin;
+     <pre class="code-diff"> holds <span class="ln ln-add|ln-del"> lines, each signed in its gutter. Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width), a shade at the edge where code is hidden. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-proposed-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-proposed-edge:#c2372b;--del-fg:#5b1a14;
+  --moved-bg:#e4e9fb;--moved-edge:#3a5bc7;--moved-fg:#1c2b66;
+  --move-proposed-edge:#6b7ed6;--move-landed-edge:#304aa8;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --add-landed-edge:#14602b;--del-landed-edge:#8e1d12;
+  --comment-bg:#e8ebfa;--comment-edge:#3f51b5;--comment-fg:#1f2756;
+  --shown-bg:#fff4d6;--shown-edge:#b87500;--shown-fg:#4d3100;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#6a3fa0;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --add-edge:var(--add-proposed-edge);--del-edge:var(--del-proposed-edge);
+}
+.move{border-left:4px solid var(--move-edge);padding:4px 0 4px 12px;min-width:0}
+.move-proposed{--move-edge:var(--move-proposed-edge)}
+.move-landed{--move-edge:var(--move-landed-edge)}
+.move>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
+.move-state{font-family:var(--f-label);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+p.book-subtitle{color:var(--muted);font-size:.95rem;margin-block:-14px 0}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A module view: the module as it stands, framed apart from a proposal (blue edge, tinted ground, a label) and from page text. */
+.module{background:color-mix(in srgb,var(--accent) 7%,var(--sheet));border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;padding:14px 16px 20px;min-width:0}
+.module>header{display:grid;gap:6px;justify-items:start}
+.module>header>*{margin:0;min-width:0}
+.module>.in-place{margin:18px 0}
+.in-place>header h3{font-size:1.05rem}
+.mlabel{font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.module h3{font-size:1.05rem;margin-top:1em}
+.markdown{min-width:0}
+.markdown>*+*{margin-top:.7em}
+.module h4{font-size:.95rem;font-weight:600;font-family:var(--f-label);margin-top:.9em}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:transparent;color:var(--fg)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del,.diff .add{color:var(--fg);background:transparent;text-decoration:none}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .moved{color:var(--moved-fg);background:var(--moved-bg);padding:6px 10px 6px 12px;border-radius:6px;min-width:0}
+.diff .moved>*{overflow-wrap:anywhere}
+.diff .moved :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff .del{border-left-color:var(--del-edge)}
+/* A figure's colours are the page's: the builder writes its ink as --fg and its fills as --chip, so it follows the theme.
+   A surround alone marks it added or removed. */
+.figmark{border:2px solid;border-left-width:8px;border-radius:6px;padding:4px;min-width:0}
+.fig-add{border-color:var(--add-edge)}
+.fig-del{border-color:var(--del-edge)}
+.part{margin:.6em 0 .2em;font-size:.95rem;font-weight:600;font-family:var(--f-label)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A deleted module shown whole: under the red margin of a removal, with its Destroy or Archive mark. */
+.record{border-left:4px solid var(--del-edge);padding:4px 0 4px 12px;min-width:0}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--del-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* A review: every added and removed line shows in the dark shade, the landed edge. */
+:root:has(meta[name="book-kind"][content="review"]){--add-edge:var(--add-landed-edge);--del-edge:var(--del-landed-edge)}
+
+/* A proposal of a review that declared itself proposed (`::: proposed`): its marks show in the light shade. */
+.proposal.proposed{--add-edge:var(--add-proposed-edge);--del-edge:var(--del-proposed-edge)}
+
+/* The machine's comment: why it proposes the lines that follow; its own colour (indigo), never module text, green or red. */
+.comment{border:1px solid var(--comment-edge);border-left-width:4px;background:var(--comment-bg);color:var(--comment-fg);border-radius:8px;margin:18px 0 20px;padding:10px 12px 12px;min-width:0;font-family:var(--f-label);font-size:.95rem;line-height:1.5}
+.comment-label{display:table;margin:0 0 7px;padding:1px 9px;border-radius:999px;background:var(--comment-edge);color:var(--sheet);font-weight:600;font-size:.74rem;letter-spacing:.04em}
+.comment-body> :first-child{margin-top:0}.comment-body> :last-child{margin-bottom:0}.comment-body p{overflow-wrap:anywhere}
+
+/* An excerpt of its named source module as it stands: a fourth colour beside added, removed and moved. */
+.shown{border:1px solid var(--shown-edge);border-left-width:5px;border-radius:8px;background:var(--shown-bg);color:var(--shown-fg);margin:16px 0;padding:10px 12px;min-width:0}
+.shown>header{display:flex;align-items:center;gap:9px;margin:0 0 8px;font-family:var(--f-label)}
+.shown>header code{overflow-wrap:anywhere}.shown>pre{margin:0}
+.shown>.markdown,.shown>.textblock{overflow-wrap:anywhere}
+
+/* The key to the colours, under the title of a page that carries a change: a swatch per colour, proposed (light) beside landed (dark). */
+.key{border:1px solid var(--line);border-radius:8px;padding:8px 12px 10px;font-family:var(--f-label);font-size:.9rem;line-height:1.4;min-width:0}
+.key-label{color:var(--muted);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.key ul{list-style:none;padding:0;margin:.4em 0 0;display:flex;flex-wrap:wrap;gap:.35em 1.1em}
+.key li{display:flex;align-items:center;gap:3px;margin:0}
+.key li>*{margin:0}.key li>.sw:last-of-type{margin-inline-end:5px}
+.sw{display:inline-block;width:.95em;height:.95em;border-radius:3px}
+.sw-add{background:var(--add-proposed-edge)}.sw-add-landed{background:var(--add-landed-edge)}
+.sw-del{background:var(--del-proposed-edge)}.sw-del-landed{background:var(--del-landed-edge)}
+.sw-move{background:var(--move-proposed-edge)}.sw-move-landed{background:var(--move-landed-edge)}
+.sw-shown{background:var(--shown-edge)}.sw-module{background:var(--accent)}
+.key-note{color:var(--muted);font-size:.85rem;margin-top:.4em}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block, and a shade at the edge shows there is more:
+   the covers move with the code (local), the shades stay at the box's edges (scroll), so a shade shows only where code is hidden. */
+pre:has(>code[class*="language-"]){--scroll-shade:color-mix(in srgb,var(--fg) 45%,transparent);
+  background:linear-gradient(to right,var(--hl-bg) 40%,transparent) left/28px 100% no-repeat local,
+    linear-gradient(to left,var(--hl-bg) 40%,transparent) right/28px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,var(--scroll-shade),transparent) left/12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,var(--scroll-shade),transparent) right/12px 100% no-repeat scroll,
+    var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+/* A change in code: one margin for a fence wholly added or removed; per line in the gutter otherwise. */
+pre.code-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff:has(>code){padding-inline:0}
+pre.code-diff .ln{display:block;padding-inline:14px;position:relative}
+pre.code-diff .ln-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-diff .ln-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff .ln-add::before,pre.code-diff .ln-del::before{position:absolute;left:5px;font-weight:600}
+pre.code-diff .ln-add::before{content:"+";color:var(--add-edge)}
+pre.code-diff .ln-del::before{content:"\2212";color:var(--del-edge)}
+tr.row-add>:first-child{box-shadow:inset 4px 0 var(--add-edge)}
+tr.row-del>:first-child{box-shadow:inset 4px 0 var(--del-edge)}
+/* Syntax colours, from tree-sitter's captures. */
+.ts-keyword,.ts-type,.ts-constructor{color:var(--hl-type)}
+.ts-punctuation,.ts-operator{color:var(--hl-punct)}
+.ts-comment{color:var(--hl-comment);font-style:italic}
+.ts-string,.ts-number,.ts-constant{color:var(--hl-string)}
+.ts-function,.ts-module,.ts-attribute,.ts-property,.ts-label,.ts-string.ts-special{color:var(--hl-meta)}
+.ts-type.ts-builtin,.ts-function.ts-builtin,.ts-keyword{font-weight:600}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+</script>

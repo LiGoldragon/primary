@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 500" width="660" height="500" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    svg { color: #1d1d1f; }
+    @media (prefers-color-scheme: dark) { svg { color: #ececec; } }
+  </style>
+  <defs>
+    <marker id="arr" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- boxes: things -->
+  <g stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity="0.06">
+    <rect x="20" y="30" width="170" height="70" rx="8"/>
+    <rect x="220" y="30" width="370" height="70" rx="8"/>
+    <rect x="20" y="230" width="170" height="80" rx="8"/>
+    <rect x="220" y="230" width="170" height="80" rx="8"/>
+    <rect x="420" y="230" width="170" height="80" rx="8"/>
+    <rect x="20" y="410" width="620" height="70" rx="8"/>
+  </g>
+
+  <!-- box labels -->
+  <g fill="currentColor" font-size="26" text-anchor="middle">
+    <text x="105" y="74">CriomOS</text>
+    <text x="405" y="74">CriomOS-home</text>
+    <text x="105" y="279">a host</text>
+  </g>
+  <g fill="currentColor" font-size="24" text-anchor="middle">
+    <text x="305" y="264">a user</text>
+    <text x="305" y="292">environment</text>
+    <text x="505" y="264">each running</text>
+    <text x="505" y="292">Nexus</text>
+    <text x="330" y="454" font-size="26">a generation switch</text>
+  </g>
+
+  <!-- arrows: one-way relations, each carrying a verb -->
+  <g stroke="currentColor" stroke-width="2.5" fill="none">
+    <line x1="105" y1="100" x2="105" y2="230" marker-end="url(#arr)"/>
+    <line x1="305" y1="100" x2="305" y2="230" marker-end="url(#arr)"/>
+    <line x1="505" y1="100" x2="505" y2="230" marker-end="url(#arr)"/>
+    <line x1="105" y1="310" x2="105" y2="410" marker-end="url(#arr)"/>
+    <line x1="305" y1="310" x2="305" y2="410" marker-end="url(#arr)"/>
+    <line x1="505" y1="310" x2="505" y2="410" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- arrow verbs -->
+  <g fill="currentColor" font-size="24">
+    <text x="117" y="170">declares</text>
+    <text x="317" y="170">declares</text>
+    <text x="517" y="146">declares,</text>
+    <text x="517" y="172">one unit</text>
+    <text x="517" y="198">per version</text>
+    <text x="117" y="350">reaches the</text>
+    <text x="117" y="378">machine by</text>
+    <text x="317" y="350">reaches the</text>
+    <text x="317" y="378">machine by</text>
+    <text x="517" y="350">reaches the</text>
+    <text x="517" y="378">machine by</text>
+  </g>
+</svg>

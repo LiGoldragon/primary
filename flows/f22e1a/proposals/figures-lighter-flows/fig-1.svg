@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 674" width="400" height="674" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#222222"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="400" height="674" fill="#ffffff"/>
+
+  <rect x="20" y="20" width="360" height="44" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="47" font-size="17" text-anchor="middle" fill="#222222">every main flow</text>
+  <line x1="200" y1="64" x2="200" y2="122" stroke="#222222" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="212" y="98" font-size="16" font-style="italic" fill="#222222">starts with</text>
+  <rect x="20" y="124" width="360" height="90" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="152" font-size="16" text-anchor="middle" fill="#222222">the default set:</text>
+  <text x="200" y="174" font-size="16" text-anchor="middle" fill="#222222">spirit, intent, messaging, search,</text>
+  <text x="200" y="196" font-size="16" text-anchor="middle" fill="#222222">vocabulary, model roles, aspects</text>
+
+  <rect x="20" y="262" width="360" height="44" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="289" font-size="17" text-anchor="middle" fill="#222222">a permaflow's purpose</text>
+  <line x1="200" y1="306" x2="200" y2="364" stroke="#222222" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="212" y="340" font-size="16" font-style="italic" fill="#222222">adds</text>
+  <rect x="20" y="366" width="360" height="68" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="394" font-size="16" text-anchor="middle" fill="#222222">its aspect module, its role,</text>
+  <text x="200" y="416" font-size="16" text-anchor="middle" fill="#222222">the vision of its topic</text>
+
+  <rect x="20" y="482" width="360" height="44" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="509" font-size="17" text-anchor="middle" fill="#222222">every other module</text>
+  <line x1="200" y1="526" x2="200" y2="584" stroke="#222222" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="212" y="560" font-size="16" font-style="italic" fill="#222222">waits as</text>
+  <rect x="20" y="586" width="360" height="68" rx="6" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <text x="200" y="614" font-size="16" text-anchor="middle" fill="#222222">a skill, loaded when the work</text>
+  <text x="200" y="636" font-size="16" text-anchor="middle" fill="#222222">meets its subject</text>
+</svg>

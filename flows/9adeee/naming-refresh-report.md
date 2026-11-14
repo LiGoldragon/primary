@@ -1,0 +1,9 @@
+# Naming refresh — 9adeee
+
+Continues 0mlh; this is a progress report, not the release proof.
+Mind naming tree now derives from published main 1635921c7a968c926ab6c030cd709c337d58f775. All eight approved model bodies are present, transformed only for naming. All nine model-module front matters remain byte-identical, including disable-model-invocation.
+Fresh complete migration replays match the isolated trees byte for byte: Psyche 73 renames / 74 files at 36d0d3e; Mind 43 / 44 at 1635921; Field 16 / 18 at a3d1c91. Prior proven Mind tree is preserved in its named Git stashes before advancing its base. A shallow fetch initially lacked ancestry; fetching eight commits established the fast-forward before applying it.
+Executable proof: /tmp/curriculum-naming-9adeee.2Xwsa3Ks/prove.py; result: proof.txt beside it. Original and refreshed replay trees are preserved there.
+Persona intent-placement commit fe4d475ad68dce68ea78fb6fcca9babb09081b4f is published independently above e513230; all 768 module positions of its 35 changed entries resolve exactly once against the refreshed inventory. Details and early-live option are in intent-placement-report.md beside this report. Opus mwhp and n7h7 answered; no early-live action taken.
+Locks 154 and 155 carry current successor ownership for persona and belief candidates. Curriculum 137 and Flow 139 remain predecessor reservations; no source edit there in this turn. Mind core Sol was asked gx5o for current Flow consumer custody; existing fzl8 authorization and exact source inventory are in flows/229167/handover.md.
+Remaining 0mlh chain: Flow strict-ID consumers and immutable whole gate, separately reviewed Home consumer candidate from verified published main (not held544), real composition dry run, implementation/proof report, coordinated release order. No main merge, deployment, live replay, generated-tree edit or Primary commit occurred.

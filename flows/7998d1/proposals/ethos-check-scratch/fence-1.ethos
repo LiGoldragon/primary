@@ -1,0 +1,14 @@
+Signal
+[]                                    ; imports
+[ Records                             ; inputs: the default, plainly named, takes nothing
+  RecordsVerbose.Limit                ;   a variation: takes an option, answers more
+  RecordsDebug.Limit ]                ;   a variation: answers what the Nexus keeps for its own work
+[ Records.Vector<Name>                ; outputs: the default answer, the names alone
+  RecordsVerbose.Vector<Record>       ;   each record whole
+  RecordsDebug.Vector<Stored> ]       ;   each record with its storage id
+[ Name.String                         ; types
+  Limit.Integer                       ;   how many records at most
+  Size.Integer
+  StorageId.String
+  Record.{ Name Size }
+  Stored.{ Record StorageId } ]

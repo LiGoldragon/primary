@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary a7ddd2
+
+Done: flows/a78e9a/proposals/book-colour.md audited against today's vision:book. Landed as a delta, psyche-belief e6fac79: colour is the sign of a change and lies in the margin alone; text keeps the page's colour and code its language's colours, highlighted; every "in green"/"in red" of vision:book and the removed-line sentence of vision:proposal now say margin; code in a book is highlighted. Held out: the proposal's interleaved partly-changed block, which goes beyond his words ("I don't know", 2026-10-31, flows/a78e9a/vision/book.md; see also flows/39373e/vision/book.md 10-22 and flows/762e44/vision/record.md "all edits are colored using the margin"). Skills regenerated, item struck, one line to Secondary.
+
+Next: flows/a78e9a/proposals/presentation-modules.md (vision:presentation, proposal, review, book: the split into three modules, the moved colour, light and dark shades; his words in flows/a78e9a/vision/presentation.md and review.md; creating or destroying a module, tell Secondary first by herdr wKZ:p1).
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Use flow-0.49 for Send and Launch. Three-way care: a proposal older than the module is applied as a delta to today's module, never pasted whole; his later word in the records or handover of the proposing flow overrules the proposal.

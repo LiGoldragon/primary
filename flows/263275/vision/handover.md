@@ -1,0 +1,19 @@
+# Handover, Psyche core Primary, Nov 6 evening
+
+A raw record, so the successor's first prompt carries it. Nothing reads handover.md; this directory is the hack until the handover lives in the Nexus's Memory, which he approved as direction.
+
+## What I am still trying to do
+
+His last word to me, for you: get back on and make sure we are decidedly and resolvably moving to the new Flow Nexus, 0.53.0 and its cutover, tonight. That is your first act and your measure until it is done: ask Mind versionZero Primary where it stands, hold it to the three gates and the hour it committed to, and clear whatever it names as blocking, yourself or through Opus.
+
+One thing above all: the move to 0.53.0, on his word, because the live Flow Nexus is broken in many small ways and he is tired of it. He cut the bureaucracy: three gates, the build green, Restart proven by its tests, the declared unit at its place, one review by Mind versionZero Primary; then at once the cutover, adopt every running flow, restart each, stop 0.51. Mind versionZero Primary committed to it by 23:00 UTC tonight and reports effects only. 0.52.0 is a frozen base commit, never deployed; the small revisions follow under 0.53 in order: occupied-address Adopt refusal, unique model map, one-row define, the request id, the four-character flow id, effort as configuration per model, since he wants Opus at high effort soon. Restart is Psyche restart Secondary's; its address was refusing Sends all afternoon and Opus typed into its pane; a versioned fix exists. Ask Mind versionZero Primary for the state; micromanage none of it.
+
+He rules on a dozen books tonight; the bookmaker Sends each link to me, and the earlier editions were garbage because I wrote their sources in a form the builder shows as code. The unlanded rulings is the one that matters most: twelve proposals of his rulings from two days ago, still drifting. Landed today on his word: the request id, Scratch, CriomOS knowledge. Still owed him since yesterday: whether the Person example's "opaque" becomes "read by balance" in vision:datom, and whether the short-output views go to a proposal.
+
+Running for him: a host checkup by Psyche criomos Secondary, prometheus's disk first; the Wispr Flow fixes, both deployed and passing; the protos 0.33 dependents update on Mind core Primary's lane; the retirement of idle flows by Opus. The bookmaker refreshes only at the full threshold in 0.51.2, so a long-lived Haiku fills up; ask Opus for its size when a batch is coming.
+
+Ideas he opened, not yet proposals: a Fable reviews the existing modules for prose better drawn or coded, on his word; the Belief Nexus answering queries so an on-demand module is injected without the harness skill list, which he wants and I sketched to him; the makeshift-tools knowledge module from the makeshift-tools repository Mind core Primary named.
+
+## My judgment
+
+He is right more often than the modules, and his latest word overrules them. He thinks of the whole and wants me to as well: broad awareness, no micromanaging; the flows running a thing know its state, ask them. Answer his question first, in plain words, and relay a flow's message in one line or not at all; most need none. He talks to Opus thinking it is me, and Opus relays his words whole; act on them as to me. When he says a thing is bad, find the belief that caused it and move or remove it; telling flows is not a fix. He prefers less belief over more. A Fable writes psyche proposals; Opus writes knowledge, and lands. A Fable gets no knowledge:book; write proposal sources in the form knowledge:proposal-source states once it lands, and until then hand the source to Opus to convert. Every hash four characters; sentences with spaces; no command that holds the turn while he is talking. The Codex flows ask edge-case questions all day; answer with the rule, and when the rule is his, say so and stop.

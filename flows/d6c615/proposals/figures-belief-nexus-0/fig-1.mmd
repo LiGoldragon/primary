@@ -1,0 +1,5 @@
+flowchart TB
+    s["sources: a repository, or a directory"] -- "hold" --> m["modules, each named by kind, topic and version"]
+    m -- "are placed by" --> c["a composition, saved under its name"]
+    c -- "is written, for a flow or a subagent, into" --> w["the workspace the Belief Nexus is handed"]
+    s -- "a repository's main moves" --> r["every workspace it changed is furnished again"]

@@ -67,3 +67,15 @@ agent-worktrees/agent-toolchain-refresh-tracker/
 /.codex/skills
 /.opencode/skills
 /.pi/skills
+
+# a flow directory keeps only its handover, its reports and its proposals;
+# evidence, logs, gcroots, books and every other scratch file stay out of history
+/flows/*/**
+!/flows/*/**/
+!/flows/**/handover*.md
+!/flows/**/*report*.md
+!/flows/*/proposals/**
+# nested repositories kept as rollback copies are directories git would list as embedded repos
+/flows/374411/0mlh-release/rollback/context-refresh-rehearsal/
+/flows/374411/0mlh-release/rollback/stopped-runtime-current-j8/
+/flows/896bac/jg4u/release4/rollback/stopped-curriculum-context/

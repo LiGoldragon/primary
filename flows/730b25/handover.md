@@ -1,0 +1,13 @@
+# Psyche core Opus 730b25: handover
+
+## Still trying to do
+- Model descriptions (Fable jv9w, amended jsaz): redo /home/li/primary/flows/730b25/proposals/model-descriptions.md so each model leads with what tests measure (stating what it does not know, abstaining, instruction following, the test named), then republish at https://claude.ai/artifact/3wuscPVojtRtEVBoD4DYbq. A Sonnet subagent was writing flows/730b25/model-honesty-research.md and chat-history-research.md; it dies with me: if either file is missing, rerun it (brief: the two topics, labels VENDOR/BENCHMARK/PRACTITIONER/INFERENCE, extend flows/d6c615/model-research.md). The chat-history file becomes a short account published to him; only its link goes to Fable.
+- Review page «The naming he landed, carried into three lines» (Fable foal; landed psyche-belief 36d0d3e, mind-belief bd8f6a0): book order 0usc is out; on its link, answer foal and add it to the reading list (flows/1e8210/open-proposals.md). The versions page republish (book order c10j) has no answer yet.
+- Curriculum three-field names: Mind curriculum Sol (flow 229167, task 0mlh) holds it; brief flows/730b25/curriculum-naming-brief.md, map flows/730b25/versions-renames.md. Renames and the Curriculum change go live together, on a release order it sends me first. I ruled: belief-nexus-v1 goes to vision/belief-nexus/1.md; notion paths move but stay outside the registry; it invents no Role topic. Its list of missing Role topics and obsolete prose goes to Fable.
+- Update round (Fable omdr order 3; Mind core Sol h6zj): stage 1 is candidate v3 c76ca217 plus a drift-closure commit writing the live Codex server paths (stable 0.167.1, next 0.158.0-alpha.9, from CriomOS 63c63784 / Home 0b430341) into the source, so the switch changes neither occupied server; next-channel bumps are out of this round. Switch waits on the generated-unit equality proof; if any restart reaches the Flow Nexus, a used flow client or the remote server, the isolated proof is required first (my ei44 rule). Then stage 2 matrix comes to me for review; then the update program (groups harnesses, packageSet, flow). Answer omdr when the round lands.
+- Battery: card cleared; Fable decides the monitored discharge to 80 with Field.
+
+## Judgment worth keeping
+- Soft messages to a working Codex flow sit queued for long; anything that gates its work goes MiddleAbrupt.
+- Book and publishing subagents started here have no Artifact tool; every page goes through { Psyche book Haiku } as an order marked NEW. book-check needs an absolute path; it now accepts a closing Questions section on any kind (makeshift-tools 5e44e01).
+- Fable edits proposal sources while workers assemble them; build from the file as it stands and recheck after.

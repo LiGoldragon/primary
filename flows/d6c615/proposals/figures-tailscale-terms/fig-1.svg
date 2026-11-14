@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580" font-family="sans-serif" fill="black">
+  <defs>
+    <marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="black"/>
+    </marker>
+  </defs>
+  <rect x="20" y="16" width="360" height="56" fill="white" stroke="black" stroke-width="2"/>
+  <text x="200" y="50" font-size="18" text-anchor="middle">Tailscale, the company</text>
+
+  <line x1="40" y1="72" x2="40" y2="510" stroke="black" stroke-width="2"/>
+
+  <line x1="40" y1="165" x2="170" y2="165" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="52" y="138" font-size="15">publishes,</text>
+  <text x="52" y="158" font-size="15">open source</text>
+  <rect x="170" y="130" width="210" height="70" fill="white" stroke="black" stroke-width="2"/>
+  <text x="275" y="160" font-size="15" text-anchor="middle">the client:</text>
+  <text x="275" y="180" font-size="15" text-anchor="middle">one on each node</text>
+
+  <line x1="40" y1="340" x2="170" y2="340" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="52" y="334" font-size="15">runs, closed</text>
+  <rect x="170" y="290" width="210" height="100" fill="white" stroke="black" stroke-width="2"/>
+  <text x="275" y="325" font-size="15" text-anchor="middle">the coordination server:</text>
+  <text x="275" y="345" font-size="15" text-anchor="middle">who is in the network,</text>
+  <text x="275" y="365" font-size="15" text-anchor="middle">and each node's addresses</text>
+
+  <line x1="40" y1="510" x2="170" y2="510" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="52" y="504" font-size="15">runs</text>
+  <rect x="170" y="460" width="210" height="100" fill="white" stroke="black" stroke-width="2"/>
+  <text x="275" y="495" font-size="15" text-anchor="middle">the relays:</text>
+  <text x="275" y="515" font-size="15" text-anchor="middle">carry encrypted traffic</text>
+  <text x="275" y="535" font-size="15" text-anchor="middle">when no direct path works</text>
+</svg>

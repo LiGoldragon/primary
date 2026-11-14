@@ -1,3 +1,5 @@
+Landed, in psyche-belief vision/clojure.md 2daa5df.
+
 ## Clojure developed data-oriented, as ethos is; an ethos anatomy comes first
 
 Context: 2026-10-09; on the id-conversion tool and Clojure generally.

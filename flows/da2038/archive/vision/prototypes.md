@@ -1,3 +1,5 @@
+Landed, in psyche-belief vision/clojure.md 2daa5df.
+
 # Prototypes
 
 ## Short-term prototypes are written in Clojure

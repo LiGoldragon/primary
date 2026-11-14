@@ -1,0 +1,2 @@
+Authorized handover content witness: HandoverWitnessCobaltRaven044c773bbeea4ec79c0201a11d0f1e72
+Existing work stays with its current owner.

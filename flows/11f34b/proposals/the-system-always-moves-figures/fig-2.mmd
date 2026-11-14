@@ -1,0 +1,5 @@
++ flowchart TB
++     s["a flow that is stuck"] -- "says so to" --> y["the system"]
++     y -- "frees, before anything else" --> s
++     c["a change that may fail"] -- "gets" --> b["a catch under it"]
++     b -- "and then" --> m["the change is made"]

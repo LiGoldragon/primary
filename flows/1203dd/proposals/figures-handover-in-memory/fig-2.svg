@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1160" width="1100" height="1160" font-family="DejaVu Sans, sans-serif">
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6b7a99"/>
+    </marker>
+  </defs>
+
+  <!-- things -->
+  <rect x="380" y="40" width="340" height="84" rx="12" fill="#e8eef8" stroke="#6b7a99" stroke-width="3"/>
+  <text x="550" y="93" text-anchor="middle" font-size="36" font-weight="700" fill="#1a2238">Flow Nexus</text>
+
+  <rect x="380" y="420" width="340" height="84" rx="12" fill="#e8eef8" stroke="#6b7a99" stroke-width="3"/>
+  <text x="550" y="473" text-anchor="middle" font-size="36" font-weight="700" fill="#1a2238">the flow</text>
+
+  <rect x="380" y="1040" width="340" height="84" rx="12" fill="#e8eef8" stroke="#6b7a99" stroke-width="3"/>
+  <text x="550" y="1093" text-anchor="middle" font-size="36" font-weight="700" fill="#1a2238">the successor</text>
+
+  <!-- Flow Nexus to the flow, and back -->
+  <line x1="490" y1="124" x2="490" y2="416" stroke="#6b7a99" stroke-width="4" marker-end="url(#head)"/>
+  <text x="470" y="220" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">handover untouched in</text>
+  <text x="470" y="256" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">the refresh window:</text>
+  <text x="470" y="292" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">reminds, every</text>
+  <text x="470" y="328" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">configured interval</text>
+
+  <line x1="610" y1="416" x2="610" y2="124" stroke="#6b7a99" stroke-width="4" marker-end="url(#head)"/>
+  <text x="630" y="256" text-anchor="start" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">Keep or Drop inside</text>
+  <text x="630" y="292" text-anchor="start" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">the window:</text>
+  <text x="630" y="328" text-anchor="start" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">the green light</text>
+
+  <!-- Flow Nexus to the successor, down the left -->
+  <path d="M380,82 H50 V1082 H380" fill="none" stroke="#6b7a99" stroke-width="4" marker-end="url(#head)"/>
+  <text x="80" y="575" text-anchor="start" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">at the threshold,</text>
+  <text x="80" y="611" text-anchor="start" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">refreshes</text>
+
+  <!-- Flow Nexus to the successor, down the right -->
+  <path d="M720,62 H1050 V1102 H720" fill="none" stroke="#6b7a99" stroke-width="4" marker-end="url(#head)"/>
+  <text x="1020" y="575" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">composes the first</text>
+  <text x="1020" y="611" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">prompt: belief modules,</text>
+  <text x="1020" y="647" text-anchor="end" font-size="30" fill="#1a2238" stroke="#ffffff" stroke-width="7" stroke-linejoin="round" paint-order="stroke">then the handover last</text>
+</svg>

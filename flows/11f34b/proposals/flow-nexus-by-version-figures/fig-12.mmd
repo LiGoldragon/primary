@@ -1,0 +1,5 @@
+flowchart LR
+    t["translator: codex app-server, Claude usage, words"] -- "Reading, signal" --> n["Energy Nexus: levels, typed"]
+    n -- "Changed.{ Provider Level }, pushed" --> f["Flow Nexus, later: more flows or fewer"]
+    n -- "Remind, signal" --> t
+    t -- "Send, to a permaflow" --> p["a flow's prompt"]

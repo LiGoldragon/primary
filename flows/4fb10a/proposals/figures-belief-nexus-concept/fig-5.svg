@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580" font-family="sans-serif" font-size="16" fill="black">
+  <defs>
+    <marker id="head" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <!-- boxes -->
+  <rect x="125" y="16" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="200" y="44" text-anchor="middle" font-size="17">CLI</text>
+
+  <rect x="125" y="136" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="200" y="164" text-anchor="middle" font-size="17">translator A</text>
+
+  <rect x="20" y="276" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="95" y="304" text-anchor="middle" font-size="17">Nexus A</text>
+
+  <rect x="230" y="276" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="305" y="304" text-anchor="middle" font-size="17">Nexus B</text>
+
+  <rect x="230" y="396" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="305" y="424" text-anchor="middle" font-size="17">translator B</text>
+
+  <rect x="230" y="516" width="150" height="44" fill="white" stroke="black" stroke-width="2"/>
+  <text x="305" y="544" text-anchor="middle" font-size="17">world</text>
+
+  <!-- arrows -->
+  <line x1="200" y1="60" x2="200" y2="134" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="212" y="103" text-anchor="start">datom</text>
+
+  <line x1="150" y1="180" x2="80" y2="274" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="104" y="226" text-anchor="end">signal</text>
+
+  <line x1="120" y1="276" x2="170" y2="182" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="152" y="236" text-anchor="start">Emission,</text>
+  <text x="152" y="254" text-anchor="start">signal</text>
+
+  <line x1="250" y1="180" x2="290" y2="274" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="286" y="222" text-anchor="start">Input of B,</text>
+  <text x="286" y="240" text-anchor="start">signal</text>
+
+  <line x1="305" y1="320" x2="305" y2="394" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="313" y="356" text-anchor="start">Emission,</text>
+  <text x="313" y="374" text-anchor="start">signal</text>
+
+  <line x1="305" y1="440" x2="305" y2="514" stroke="black" stroke-width="2" marker-end="url(#head)"/>
+  <text x="313" y="483" text-anchor="start">the call</text>
+</svg>

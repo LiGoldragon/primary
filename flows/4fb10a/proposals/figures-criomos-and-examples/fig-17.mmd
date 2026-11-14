@@ -1,0 +1,5 @@
+flowchart TB
+    m["complex: main"] -- "names as its speaker" --> d["metaflow: designer"]
+    m -- "relationship: designer may address implementer" --> i["metaflow: implementer"]
+    d -- "Metaflow.implementer, inside that relationship" --> i
+    l["the living"] -- "Say.{ main … }" --> m

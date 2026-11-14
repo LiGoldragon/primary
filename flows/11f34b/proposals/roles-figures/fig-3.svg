@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 z" fill="#000"/>
+    </marker>
+  </defs>
+  <rect x="40" y="30" width="560" height="90" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="320" y="65" font-size="22" text-anchor="middle" fill="#000">the thinker:</text>
+  <text x="320" y="95" font-size="22" text-anchor="middle" fill="#000">Fable, Astra</text>
+  <rect x="40" y="520" width="560" height="90" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="320" y="555" font-size="22" text-anchor="middle" fill="#000">the lifter:</text>
+  <text x="320" y="585" font-size="22" text-anchor="middle" fill="#000">Opus, Sol</text>
+  <line x1="100" y1="120" x2="100" y2="520" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="115" y="300" font-size="20" fill="#000">leads</text>
+  <line x1="300" y1="520" x2="300" y2="120" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="315" y="240" font-size="20" fill="#000">brings back</text>
+  <text x="315" y="270" font-size="20" fill="#000">what matters,</text>
+  <text x="315" y="300" font-size="20" fill="#000">and the work done</text>
+  <line x1="560" y1="120" x2="560" y2="520" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="545" y="380" font-size="20" text-anchor="end" fill="#000">reviews,</text>
+  <text x="545" y="410" font-size="20" text-anchor="end" fill="#000">designs,</text>
+  <text x="545" y="440" font-size="20" text-anchor="end" fill="#000">decides</text>
+</svg>

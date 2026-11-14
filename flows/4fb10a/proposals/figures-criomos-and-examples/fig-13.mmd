@@ -1,0 +1,7 @@
+flowchart LR
+    i["Input: Prompt"] --> a["Attempt: Prompting"]
+    a --> m["Memory: the pane is known"]
+    a --> e["Emission: Herdr call"]
+    m --> r["Outcome: Prompted or Failed"]
+    e --> r
+    r --> o["Output: Prompted.Outcome"]

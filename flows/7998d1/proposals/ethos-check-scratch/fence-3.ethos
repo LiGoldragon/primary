@@ -1,0 +1,8 @@
+Signal
+[ flow:[ Address MetaflowName Metaflow ] ]  ; imports
+[ Configure.Set ]                           ; inputs
+[ Configured.Set ]                          ; outputs
+[ Set.[ Metaflow                            ; types: a metaflow added or replaced, whole
+        Join.{ MetaflowName Address }       ;   one permaflow added to it
+        Leave.{ MetaflowName Address }
+        Dissolve.MetaflowName ] ]

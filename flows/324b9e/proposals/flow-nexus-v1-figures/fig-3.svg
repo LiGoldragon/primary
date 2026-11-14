@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="700" viewBox="0 0 480 700" role="img" aria-label="Input Prompt flowchart">
+  <style>
+    :root { color-scheme: light dark; }
+    .node { fill: Canvas; stroke: CanvasText; stroke-width: 2; }
+    .label { fill: CanvasText; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 16px; text-anchor: middle; dominant-baseline: middle; }
+    .arrow { fill: none; stroke: CanvasText; stroke-width: 2; }
+  </style>
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="CanvasText"/>
+    </marker>
+  </defs>
+  <line class="arrow" x1="240" y1="90" x2="240" y2="145" marker-end="url(#arrowhead)"/>
+  <line class="arrow" x1="240" y1="195" x2="145" y2="270" marker-end="url(#arrowhead)"/>
+  <line class="arrow" x1="240" y1="195" x2="335" y2="270" marker-end="url(#arrowhead)"/>
+  <line class="arrow" x1="145" y1="320" x2="205" y2="400" marker-end="url(#arrowhead)"/>
+  <line class="arrow" x1="335" y1="320" x2="275" y2="400" marker-end="url(#arrowhead)"/>
+  <line class="arrow" x1="240" y1="450" x2="240" y2="505" marker-end="url(#arrowhead)"/>
+
+  <rect class="node" x="155" y="40" width="170" height="50" rx="10"/>
+  <text class="label" x="240" y="65">Input: Prompt</text>
+
+  <rect class="node" x="135" y="145" width="210" height="50" rx="10"/>
+  <text class="label" x="240" y="170">Attempt: Prompting</text>
+
+  <rect class="node" x="20" y="270" width="250" height="50" rx="10"/>
+  <text class="label" x="145" y="295">Memory: the pane is known</text>
+
+  <rect class="node" x="210" y="270" width="250" height="50" rx="10"/>
+  <text class="label" x="335" y="295">Emission: Herdr call</text>
+
+  <rect class="node" x="90" y="400" width="300" height="50" rx="10"/>
+  <text class="label" x="240" y="425">Outcome: Prompted or Failed</text>
+
+  <rect class="node" x="115" y="505" width="250" height="50" rx="10"/>
+  <text class="label" x="240" y="530">Output: Prompted.Outcome</text>
+</svg>

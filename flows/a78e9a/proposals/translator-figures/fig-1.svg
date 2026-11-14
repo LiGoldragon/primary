@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 310" width="390" height="310" font-family="sans-serif" font-size="13">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="390" height="310" fill="#f4f1ea"/>
+
+  <g fill="#222" text-anchor="middle">
+    <text x="50" y="30">text world</text>
+    <text x="195" y="30">translator</text>
+    <text x="340" y="30">signal world</text>
+  </g>
+
+  <g fill="#fff" stroke="#333" stroke-width="1.5">
+    <rect x="5" y="60" width="90" height="110" rx="6"/>
+    <rect x="150" y="60" width="90" height="40" rx="6"/>
+    <rect x="295" y="60" width="90" height="110" rx="6"/>
+    <rect x="150" y="130" width="90" height="160" rx="6"/>
+    <rect x="5" y="230" width="90" height="40" rx="6"/>
+    <rect x="295" y="200" width="90" height="40" rx="6"/>
+    <rect x="295" y="250" width="90" height="40" rx="6"/>
+  </g>
+
+  <g fill="#222" text-anchor="middle">
+    <text x="50" y="119">CLI, hook</text>
+    <text x="195" y="84">compose</text>
+    <text x="340" y="119">target Nexus</text>
+    <text x="195" y="214">textualize</text>
+    <text x="50" y="254">Nexus</text>
+    <text x="340" y="224">descriptor</text>
+    <text x="340" y="274">reply</text>
+  </g>
+
+  <g stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <line x1="97" y1="80" x2="148" y2="80"/>
+    <line x1="242" y1="80" x2="293" y2="80"/>
+    <line x1="148" y1="150" x2="97" y2="150"/>
+    <line x1="293" y1="150" x2="242" y2="150"/>
+    <line x1="97" y1="250" x2="148" y2="250"/>
+    <line x1="242" y1="220" x2="293" y2="220"/>
+    <line x1="242" y1="270" x2="293" y2="270"/>
+  </g>
+
+  <g fill="#222" text-anchor="middle">
+    <text x="122" y="73">datom</text>
+    <text x="267" y="73">signal</text>
+    <text x="122" y="143">datom</text>
+    <text x="267" y="143">signal</text>
+    <text x="122" y="243">signal</text>
+    <text x="267" y="213">text</text>
+    <text x="267" y="263">text</text>
+  </g>
+</svg>

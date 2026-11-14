@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 780" width="440" height="780" font-family="sans-serif">
+  <defs>
+    <marker id="arr" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" fill="none" stroke-width="2">
+    <rect x="20" y="20" width="400" height="56" rx="6"/>
+    <rect x="20" y="130" width="400" height="56" rx="6"/>
+    <rect x="20" y="240" width="400" height="56" rx="6"/>
+    <rect x="20" y="370" width="400" height="80" rx="6"/>
+    <rect x="20" y="530" width="400" height="80" rx="6"/>
+    <rect x="20" y="690" width="400" height="56" rx="6"/>
+    <line x1="60" y1="76" x2="60" y2="130" marker-end="url(#arr)"/>
+    <line x1="60" y1="186" x2="60" y2="240" marker-end="url(#arr)"/>
+    <line x1="60" y1="296" x2="60" y2="370" marker-end="url(#arr)"/>
+    <line x1="60" y1="450" x2="60" y2="530" marker-end="url(#arr)"/>
+    <line x1="60" y1="610" x2="60" y2="690" marker-end="url(#arr)"/>
+  </g>
+  <g fill="currentColor" font-size="18" text-anchor="middle">
+    <text x="220" y="54">Restart.{ FlowId Waking }</text>
+    <text x="220" y="164">permaflow locked</text>
+    <text x="220" y="274">harness closed</text>
+    <text x="220" y="400">new pane: harness</text>
+    <text x="220" y="426">resumes the session</text>
+    <text x="220" y="562">bound and unlocked, one write;</text>
+    <text x="220" y="588">the old seat fenced</text>
+    <text x="220" y="724">the resumed seat</text>
+  </g>
+  <g fill="currentColor" font-size="17">
+    <text x="76" y="109">recorded in Memory</text>
+    <text x="76" y="219">Close, through herdr</text>
+    <text x="76" y="322">Resume, through herdr,</text>
+    <text x="76" y="346">environment composed whole</text>
+    <text x="76" y="479">verified bind: session, model,</text>
+    <text x="76" y="503">the seat's own process</text>
+    <text x="76" y="656">queue delivered once</text>
+  </g>
+</svg>

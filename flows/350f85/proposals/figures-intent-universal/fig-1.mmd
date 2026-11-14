@@ -1,0 +1,4 @@
+flowchart TB
+    i["inputs: source, toolchain, dependency set"] -- "name" --> d["one derivation"]
+    d -- "has, on every host" --> p["one store path"]
+    c["a change to one input"] -- "rebuilds" --> r["that derivation and its dependents, nothing else"]

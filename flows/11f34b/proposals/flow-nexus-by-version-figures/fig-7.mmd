@@ -1,0 +1,6 @@
+flowchart TB
+    n["the Flow Nexus"] -- "roster in the first prompt, each change pushed" --> f["any flow"]
+    f -- "Send" --> p["permanent flow, hot"]
+    p -- "answers as a message" --> f
+    f -. "only if no running flow holds the work" .-> h["harness subagent"]
+    p -- "past threshold, replaced by" --> s["successor, from its modules"]

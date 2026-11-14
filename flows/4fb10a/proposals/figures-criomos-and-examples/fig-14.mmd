@@ -1,0 +1,9 @@
+flowchart LR
+    c["CLI: one datom"] -- "text" --> t["translator"]
+    t -- "Call.{ Caller Input }, signal" --> n["Nexus"]
+    n -- "Output, signal" --> t
+    t -- "text" --> c
+    n -- "Emission, signal" --> t
+    t -- "the call" --> w["world"]
+    w -- "exit status" --> t
+    t -- "Outcome, signal" --> n

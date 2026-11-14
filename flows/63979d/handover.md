@@ -1,0 +1,7 @@
+# Handover, Psyche audit Primary 63979d
+
+Done: vision:flow-nexus's harness declaration block, landed by 383169 as a fragment, is now a Library root that ethos-zero Check accepts (psyche-belief 5570b29, skills regenerated): Root.String declared as the flow's working directory, HarnessName.[ Claude Codex ] and FeatureName.String in place of the twice-inline Name, Permaflow.{ Address Option<Root> HarnessName LeaveOuts.Vector<FeatureName> }; the datom examples stand unchanged. Item struck; Secondary told by pane wKZ:p1. Observed, untouched: the SendableRequest block of the same module is also a fragment (no root) and fails Check for the same reason; it is of a kind with the vision:ethos item next.
+
+Next: "Keep vision:ethos spacing; five blocks failing Check on content left as they stood, to be repaired" (flows/383169/vision/handover.md), vision:ethos: extract each ```ethos block, Check it with /git/github.com/LiGoldragon/ethos-zero/result/bin/ethos-zero 'Check./abs/file', repair only the structure (root, sections, declared names), keeping the spacing and the content as the vision names its types. Then "Review with him what vision is" (vision:psyche, his to open, verify only); "Handover should carry judgment" (vision:remembering); "Keep chat to one line" (Psyche core flows).
+
+Belief repos: /git/github.com/LiGoldragon/{psyche,mind,field}-belief, commit and push main, then context-skills-regenerate. Report each landing to Psyche core Secondary with herdr --session default agent prompt wKZ:p1. Use flow-0.50 for Send and Launch.

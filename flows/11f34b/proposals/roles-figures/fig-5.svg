@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="200" viewBox="0 0 920 200" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <g fill="#fff" stroke="#000" stroke-width="2">
+    <rect x="20" y="30" width="170" height="120" rx="6"/>
+    <rect x="375" y="30" width="170" height="120" rx="6"/>
+    <rect x="730" y="30" width="170" height="120" rx="6"/>
+  </g>
+  <g fill="none" stroke="#000" stroke-width="2">
+    <line x1="190" y1="90" x2="375" y2="90" marker-end="url(#arrow)"/>
+    <line x1="545" y1="66" x2="730" y2="66" marker-end="url(#arrow)"/>
+    <line x1="730" y1="118" x2="545" y2="118" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#000" text-anchor="middle" font-size="18">
+    <text x="105" y="84">Psyche:</text>
+    <text x="105" y="108">designs the tools</text>
+    <text x="460" y="84">Mind:</text>
+    <text x="460" y="108">makes them</text>
+    <text x="815" y="84">Field:</text>
+    <text x="815" y="108">uses them</text>
+  </g>
+  <g fill="#000" text-anchor="middle" font-size="16">
+    <text x="282" y="80">rules, as vision</text>
+    <text x="637" y="36">lands, as a running</text>
+    <text x="637" y="56">system</text>
+    <text x="637" y="140">what is not running,</text>
+    <text x="637" y="160">as a question</text>
+  </g>
+</svg>

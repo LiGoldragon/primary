@@ -1,0 +1,4 @@
+flowchart TB
+    n["Flow Nexus"] -- "warns, before the threshold" --> f["the flow"]
+    f -- "writes" --> h["handover: its judgment on what it is still trying to do"]
+    h -- "first prompt of" --> s["the successor, fresh"]

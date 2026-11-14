@@ -1,0 +1,6 @@
+flowchart TB
+    b["build base: nixpkgs, toolchain, overrides, one pin"] -- "input of" --> r["every active repository"]
+    r -- "one derivation per crate" --> c["a crate at one version and feature set: one hash everywhere"]
+    c -- "built once, served by" --> s["the remote builder's store"]
+    c -- "its tests compiled with it" --> t["test binaries"]
+    t -- "run by" --> k["the crate's check: runs, compiles nothing"]

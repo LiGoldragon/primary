@@ -1,0 +1,5 @@
+flowchart TB
+    a["Configure.Amend: an address and one change"] -- "changes" --> b["one value of one permaflow"]
+    c["Configure.Permaflow: one definition, whole"] -- "adds or replaces" --> d["one permaflow"]
+    b -- "takes effect at" --> e["that permaflow's next flow"]
+    d -- "takes effect at" --> e

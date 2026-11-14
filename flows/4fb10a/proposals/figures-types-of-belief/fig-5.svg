@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 640" width="400" height="640" font-family="sans-serif" font-size="18">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="black"/>
+    </marker>
+  </defs>
+  <g fill="white" stroke="black" stroke-width="2">
+    <rect x="40" y="20" width="320" height="50"/>
+    <rect x="40" y="120" width="320" height="50"/>
+    <rect x="40" y="220" width="320" height="80"/>
+    <rect x="40" y="360" width="320" height="50"/>
+    <rect x="40" y="460" width="320" height="50"/>
+    <rect x="40" y="560" width="320" height="50"/>
+  </g>
+  <g fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="200" y1="70" x2="200" y2="120"/>
+    <line x1="200" y1="170" x2="200" y2="220"/>
+    <line x1="200" y1="410" x2="200" y2="460"/>
+    <line x1="200" y1="510" x2="200" y2="560"/>
+  </g>
+  <g fill="black" text-anchor="middle" dominant-baseline="middle">
+    <text x="200" y="45">a line</text>
+    <text x="200" y="145">its subject</text>
+    <text x="200" y="245">the module of the flow that</text>
+    <text x="200" y="275">holds that belief</text>
+    <text x="200" y="385">a contradicted line</text>
+    <text x="200" y="485">removed</text>
+    <text x="200" y="585">the new line</text>
+    <text x="214" y="95" text-anchor="start">has</text>
+    <text x="214" y="195" text-anchor="start">names</text>
+    <text x="214" y="435" text-anchor="start">is</text>
+    <text x="214" y="535" text-anchor="start">then places</text>
+  </g>
+</svg>

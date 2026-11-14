@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 650" width="420" height="650" font-family="sans-serif" font-size="16">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker>
+</defs>
+<g fill="none" stroke="#000" stroke-width="2">
+<line x1="180" y1="130" x2="180" y2="270" marker-end="url(#arrow)"/>
+<line x1="240" y1="270" x2="240" y2="130" marker-end="url(#arrow)"/>
+<line x1="260" y1="370" x2="260" y2="530" marker-end="url(#arrow)"/>
+<path d="M110,80 H40 V530" marker-end="url(#arrow)"/>
+</g>
+<g fill="#fff" stroke="#000" stroke-width="2">
+<rect x="110" y="30" width="220" height="100"/>
+<rect x="110" y="270" width="220" height="100"/>
+<rect x="230" y="530" width="170" height="100"/>
+<rect x="10" y="530" width="160" height="100"/>
+</g>
+<g fill="#000" text-anchor="middle">
+<text x="220" y="68">translator:</text>
+<text x="220" y="88">codex app-server,</text>
+<text x="220" y="108">Claude usage, words</text>
+<text x="220" y="312">Energy Nexus:</text>
+<text x="220" y="332">levels, typed</text>
+<text x="315" y="568">Flow Nexus,</text>
+<text x="315" y="588">later: more</text>
+<text x="315" y="608">flows or fewer</text>
+<text x="90" y="584">a flow's prompt</text>
+</g>
+<g fill="#000">
+<text x="170" y="192" text-anchor="end">Reading,</text>
+<text x="170" y="212" text-anchor="end">signal</text>
+<text x="254" y="192">Remind,</text>
+<text x="254" y="212">signal</text>
+<text x="274" y="412">Changed.{</text>
+<text x="274" y="432">Provider Level</text>
+<text x="274" y="452">}, pushed</text>
+<text x="54" y="440">Send, to</text>
+<text x="54" y="460">a permaflow</text>
+</g>
+</svg>

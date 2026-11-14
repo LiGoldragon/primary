@@ -1,0 +1,690 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belief is composed, for a flow or a subagent</title>
+<h1 class="book-title">Belief is composed, for a flow or a subagent</h1>
+<p class="book-subtitle">Created by Fable 5.2; a worker assembled the page.</p>
+<aside class="key" aria-label="Key to the colours"><div class="key-label">Colours</div><ul><li><span class="sw sw-add"></span><span class="sw sw-add-landed"></span>added</li><li><span class="sw sw-del"></span><span class="sw sw-del-landed"></span>removed</li><li><span class="sw sw-move"></span><span class="sw sw-move-landed"></span>moved</li><li><span class="sw sw-shown"></span>an excerpt, as it stands</li><li><span class="sw sw-module"></span>a module, as it stands</li></ul><p class="key-note">Light shade: proposed. Dark shade: landed.</p></aside>
+<article class="module diff"><header><h2 class="target"><code style="font-size:.95rem">psyche-belief › vision/belief-nexus-v1.md</code></h2></header>
+<p>The Belief Nexus holds the belief modules and furnishes workspaces with them. Belief is the word: what a model believes when it starts. It replaces Curriculum. Its memory is its own; a definition in the Flow Nexus refers to a module by name only, and a name may resolve to nothing: the Belief Nexus answers which names are missing, and what is done about it is the definition's policy, never the Nexus's.</p>
+<h3>Signal</h3>
+<p>The owner registers a belief repository at the Belief Nexus's own CLI, by his login, as he defines a complex at the Flow Nexus. A peer the meta peer list names furnishes over any registered repository.</p>
+<section class="proposal in-place"><header><span class="pnum">1</span><h3>A composition names the placement</h3></header>
+<div class="diff"><p>A registered repository is watched: when its main moves, every workspace furnished with a module it changed is furnished again, and the Flow Nexus is told which flows now run on old belief, so a perma flow can be refreshed on it. A module is named by kind and subject; <del>its front matter</del><ins>a composition</ins> names its placement<del>, system prompt or skill</del>. The skills directory is the harness's.</p></div>
+<pre class="code-diff"><code class="language-ethos"><span class="ln">Signal
+</span><span class="ln">[ belief:[ ModuleSource ModuleName    ; imports
+</span><span class="ln ln-del">           Workspace Location ]
+</span><span class="ln ln-add">           Workspace Location CompositionName Composition Target ]
+</span><span class="ln">  flow:[ Harness ] ]
+</span><span class="ln">[ Register.ModuleSource              ; inputs: a module source
+</span><span class="ln ln-add">  Compose.Composition                ; a composition saved, or replaced, under its name
+</span><span class="ln">  Resolve.Vector&lt;ModuleName&gt;
+</span><span class="ln ln-del">  Furnish.{ Workspace Harness        ; the harness's
+</span><span class="ln ln-del">            Vector&lt;ModuleName&gt; }     ;   skills directory
+</span><span class="ln ln-add">  Furnish.{ Workspace Harness        ; the harness's skills directory
+</span><span class="ln ln-add">            CompositionName Target }
+</span><span class="ln">  Subscribe ]
+</span><span class="ln">[ Registered.ModuleSource            ; outputs
+</span><span class="ln ln-add">  Composed.CompositionName
+</span><span class="ln">  Resolved.{ Vector&lt;ModuleName&gt;      ; found
+</span><span class="ln">             Vector&lt;ModuleName&gt; }    ; missing
+</span><span class="ln">  Furnished.{ Location
+</span><span class="ln">              Vector&lt;ModuleName&gt; }   ; missing, left out
+</span><span class="ln">  Subscribed
+</span><span class="ln">  Changed.{ ModuleSource              ; pushed: main moved
+</span><span class="ln">            Vector&lt;ModuleName&gt;        ;   modules changed
+</span><span class="ln">            Vector&lt;Workspace&gt; }       ;   workspaces refurnished
+</span><span class="ln">  Refused.[ UnknownSource.ModuleSource
+</span><span class="ln ln-add">            UnknownComposition.CompositionName
+</span><span class="ln">            Unwritable.Workspace ] ]
+</span><span class="ln">[]
+</span></code></pre>
+</section>
+<pre><code class="language-datom">Register.Repository.
+  /git/github.com/LiGoldragon/psyche-belief
+Registered.Repository.
+  /git/github.com/LiGoldragon/psyche-belief
+Register.Directory./home/li/psyche-belief-edits</code></pre>
+<pre><code class="language-sh">belief-nexus '
+  Register.
+    /git/github.com/LiGoldragon/psyche-belief'</code></pre>
+<h3>Meta</h3>
+<section class="proposal in-place"><header><span class="pnum">1</span><h3>A composition names the placement</h3></header>
+<div class="diff"><p>A <del>module's front matter</del><ins>composition</ins> names <del>its </del><ins>each module's </ins>placement; the default per Kind is a meta setting, set one value at a time, never in the Rust. The meta peer list names the peers admitted to Furnish, each bound by kernel credentials as a Nexus's peers are.</p></div>
+</section>
+<pre><code class="language-ethos">Signal
+[ belief:[ Kind Placement ] ]        ; imports
+[ Configure.Set ]                    ; inputs: one value at a time
+[ Configured.Set ]                   ; outputs: the value set
+[ Set.[ Placement.{ Kind             ; types: the default
+                    Placement }      ;   placement per Kind
+        Peer.PeerBinding             ;   a peer admitted to Furnish
+        RemovePeer.PeerId ]          ;   a peer removed
+  UserId.Integer                     ; a login
+  ProcessId.Integer
+  PeerId.String                      ; a peer's name
+  PeerIdentity.{ UserId ProcessId }  ; checked by kernel credentials
+  PeerBinding.{ PeerId PeerIdentity } ]</code></pre>
+<h3>Library</h3>
+<section class="proposal in-place"><header><span class="pnum">1</span><h3>A composition names the placement</h3></header>
+<pre class="code-diff"><code class="language-ethos"><span class="ln">Library
+</span><span class="ln">[ sema:[ Document Block Edit Place Outline ] ]
+</span><span class="ln">[ Path.String                        ; a directory holding
+</span><span class="ln">                                     ;   &lt;type&gt;/&lt;subject&gt;.md
+</span><span class="ln">  ModuleSource.[ Repository.Path     ; a git repository, watched:
+</span><span class="ln">                                     ;   main moving refurnishes
+</span><span class="ln">                 Directory.Path ]    ; a directory read as it
+</span><span class="ln">                                     ;   stands, watched by nobody
+</span><span class="ln">  Kind.[ Spirit Intent Vision
+</span><span class="ln">         Knowledge Role ]
+</span><span class="ln">  ModuleName.{ Kind Subject.String }
+</span><span class="ln ln-add">  CompositionName.String
+</span><span class="ln ln-add">  Placed.{ ModuleName Placement }
+</span><span class="ln ln-add">  Composition.{ CompositionName      ; a saved configuration of belief
+</span><span class="ln ln-add">                Vector&lt;Placed&gt; }
+</span><span class="ln ln-add">  SubagentName.String
+</span><span class="ln ln-add">  Target.[ Flow                      ; furnished as a flow's prompts and skills
+</span><span class="ln ln-add">           Subagent.SubagentName ]   ; furnished as one subagent file, for the flow of that workspace
+</span><span class="ln">  Workspace.String                   ; the flow's directory
+</span><span class="ln ln-del">  Placement.[ SystemPrompt Skill ]   ; named in front matter;
+</span><span class="ln ln-del">                                     ;   default per Kind: meta
+</span><span class="ln ln-add">  Placement.[ SystemPrompt           ; named by the composition; default per Kind: meta
+</span><span class="ln ln-add">              StartupPrompt          ;   in the first prompt
+</span><span class="ln ln-add">              VisibleSkill           ;   a skill the flow sees listed
+</span><span class="ln ln-add">              HiddenSkill            ;   a skill it is not shown
+</span><span class="ln ln-add">              Held ]                 ;   reached through the Belief Nexus alone
+</span><span class="ln">  Location.{ SystemPrompt.String     ; the bundle file written
+</span><span class="ln">             Skills.String } ]       ; the skills directory
+</span><span class="ln">[]
+</span><span class="ln">[]
+</span></code></pre>
+<div class="diff"><div class="add"><h4>Composition</h4></div><div class="add"><p>Everything about belief is configuration. Modules come from several sources at once, each configured in the Belief Nexus: a repository, the pure reference, or a local path, the quick one, for developing and debugging.</p></div><div class="add"><p>A composition is a saved configuration of belief: the modules, and for each its placement: the system prompt, the startup prompt, a skill the flow sees, a skill it is not shown, or held in the Belief Nexus alone. Every belief is reached through the Belief Nexus. A composition is kept in the Belief Nexus under its name, and a definition in the Flow Nexus refers to it by that name.</p></div><div class="add"><p>A subagent is composed as a flow is, from the same modules, by a composition. The effect differs: the composition is written as one subagent file, for the flow it is intended for.</p></div><div class="add"><p>Each module's content is inserted between delimiters that name it, where it starts and where it ends, so a flow or a subagent knows where each of its beliefs comes from, and which one probably influenced an action.</p></div></div>
+<pre class="code-add"><code class="language-datom">Compose.{ reviewer
+          [ { { Spirit core } SystemPrompt }
+            { { Intent design } SystemPrompt }
+            { { Vision ethos } StartupPrompt }
+            { { Knowledge search } VisibleSkill } ] }
+Composed.reviewer
+Furnish.{ /home/example/workspace Claude reviewer Subagent.reviewer }</code></pre>
+<div class="diff"><div class="add"><p>&lt;!-- module: spirit:core --&gt; The purpose of a thinking machine is to extend a living psyche. &lt;!-- end-module: spirit:core --&gt;</p></div></div>
+</section>
+<h3>Emission</h3>
+<p>Furnishing is writing: each module into the workspace's system-prompt bundle or the harness's skills directory, as its placement says.</p>
+<pre><code class="language-ethos">Emission
+[ belief:[ Workspace ModuleName Location ]
+  flow:[ Harness ] ]                   ; imports: the harness names the skills directory
+[ Write.{ Workspace Harness Vector&lt;ModuleName&gt; } ] ; emissions: the bundle and the skills, written
+[ Written.Location ]                   ; outcomes
+[]</code></pre>
+<h3>Memory</h3>
+<pre><code class="language-ethos">Memory
+[ belief:[ ModuleSource ModuleName ] ]
+[ Source.{ ModuleSource Vector&lt;ModuleName&gt; } ; records: each registered source and the modules it holds
+  Answer.[ Succeeded Failed ] ]</code></pre>
+<pre><code class="language-datom">Furnish.{ /home/li/primary Claude
+          [ { Spirit core } { Vision nexus-v1 }
+            { Vision none } ] }
+Furnished.{ { /home/li/primary/.bundle
+              /home/li/primary/.claude/skills }
+            [ { Vision none } ] }</code></pre>
+<h3>The ordinary single-reply boundary</h3>
+<p>The ordinary translator prepares a request once. Register, Resolve and Furnish enter a checked single-reply capability. Subscribe keeps its existing streaming path. The meta service keeps its existing path, including configuration application and recovery.</p>
+<p>Preparation retains the direct request codec's structured error. A valid single-reply request enters execution with its caller connection. Execution returns Answered after the domain reply frame has been written successfully, or NexusDown when connecting to the Nexus fails before forwarding. These are in-process observations. The caller's successful domain datom keeps its existing form.</p>
+<p>The composed service's Unreadable observation belongs to request preparation. Checked execution has no unreadable-request branch.</p>
+<div class="figure" style="position:relative;height:0;padding-bottom:178.75%;overflow:hidden"><svg viewBox="0 0 800 1430" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" style="color:var(--fg);fill:var(--fg);display:block;position:absolute;left:0;top:0;width:100%;height:100%">
+<defs><marker id="f1-arr" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="16" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16 z" style="fill:var(--fg)"/></marker></defs>
+<rect x="230.0" y="30" width="340" height="96" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="71" font-size="28" text-anchor="middle" style="fill:var(--fg)">ordinary caller</text>
+<text x="400" y="105" font-size="28" text-anchor="middle" style="fill:var(--fg)">connection</text>
+<rect x="230.0" y="170" width="340" height="70" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="215" font-size="28" text-anchor="middle" style="fill:var(--fg)">read and decode once</text>
+<rect x="20.0" y="380" width="240" height="130" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="140" y="421" font-size="28" text-anchor="middle" style="fill:var(--fg)">Unreadable:</text>
+<text x="140" y="455" font-size="28" text-anchor="middle" style="fill:var(--fg)">exact request</text>
+<text x="140" y="489" font-size="28" text-anchor="middle" style="fill:var(--fg)">codec error</text>
+<rect x="280.0" y="380" width="240" height="130" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="421" font-size="28" text-anchor="middle" style="fill:var(--fg)">checked</text>
+<text x="400" y="455" font-size="28" text-anchor="middle" style="fill:var(--fg)">single-reply</text>
+<text x="400" y="489" font-size="28" text-anchor="middle" style="fill:var(--fg)">query</text>
+<rect x="540.0" y="380" width="240" height="130" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="660" y="438" font-size="28" text-anchor="middle" style="fill:var(--fg)">existing</text>
+<text x="660" y="472" font-size="28" text-anchor="middle" style="fill:var(--fg)">streaming path</text>
+<rect x="230.0" y="580" width="340" height="110" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="628" font-size="28" text-anchor="middle" style="fill:var(--fg)">prepare call;</text>
+<text x="400" y="662" font-size="28" text-anchor="middle" style="fill:var(--fg)">contact Nexus</text>
+<rect x="30.0" y="740" width="200" height="80" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="130" y="790" font-size="28" text-anchor="middle" style="fill:var(--fg)">NexusDown</text>
+<rect x="250.0" y="740" width="300" height="80" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="790" font-size="28" text-anchor="middle" style="fill:var(--fg)">forward request</text>
+<rect x="210.0" y="870" width="380" height="110" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="918" font-size="28" text-anchor="middle" style="fill:var(--fg)">receive and decode</text>
+<text x="400" y="952" font-size="28" text-anchor="middle" style="fill:var(--fg)">domain response</text>
+<rect x="210.0" y="1030" width="380" height="110" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="400" y="1078" font-size="28" text-anchor="middle" style="fill:var(--fg)">write unchanged</text>
+<text x="400" y="1112" font-size="28" text-anchor="middle" style="fill:var(--fg)">domain response</text>
+<rect x="20.0" y="1240" width="240" height="80" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="140" y="1290" font-size="28" text-anchor="middle" style="fill:var(--fg)">Answered</text>
+<rect x="505.0" y="1240" width="290" height="160" rx="6" stroke-width="3" style="fill:var(--chip);stroke:var(--fg)"/>
+<text x="650" y="1279" font-size="28" text-anchor="middle" style="fill:var(--fg)">owned observed</text>
+<text x="650" y="1313" font-size="28" text-anchor="middle" style="fill:var(--fg)">response +</text>
+<text x="650" y="1347" font-size="28" text-anchor="middle" style="fill:var(--fg)">native write</text>
+<text x="650" y="1381" font-size="28" text-anchor="middle" style="fill:var(--fg)">error</text>
+<polyline points="400,126 400,170" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<polyline points="290,240 290,262 140,262 140,380" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="20" y="250" font-size="28" text-anchor="start" style="fill:var(--fg)">codec error</text>
+<polyline points="400,240 400,380" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="416" y="300" font-size="28" text-anchor="start" style="fill:var(--fg)">Register /</text>
+<text x="416" y="328" font-size="28" text-anchor="start" style="fill:var(--fg)">Resolve /</text>
+<text x="416" y="356" font-size="28" text-anchor="start" style="fill:var(--fg)">Furnish</text>
+<polyline points="530,240 530,262 660,262 660,380" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="580" y="252" font-size="28" text-anchor="start" style="fill:var(--fg)">Subscribe</text>
+<polyline points="400,510 400,580" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<polyline points="230,635 130,635 130,740" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="222" y="626" font-size="28" text-anchor="end" style="fill:var(--fg)">connect fails</text>
+<polyline points="400,690 400,740" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="416" y="720" font-size="28" text-anchor="start" style="fill:var(--fg)">connected</text>
+<polyline points="400,820 400,870" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<polyline points="400,980 400,1030" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<polyline points="300,1140 300,1190 140,1190 140,1240" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="20" y="1178" font-size="28" text-anchor="start" style="fill:var(--fg)">write succeeds</text>
+<polyline points="500,1140 500,1190 650,1190 650,1240" fill="none" stroke-width="3" marker-end="url(#f1-arr)" style="stroke:var(--fg)"/>
+<text x="516" y="1178" font-size="28" text-anchor="start" style="fill:var(--fg)">write fails</text>
+</svg></div>
+<h4>Conceptual observations and the executable capability</h4>
+<p>The Belief ordinary single-reply service realizes the conceptual connection-level observations through one preparation boundary followed by checked execution. Its executable capability takes a checked request and connection, rather than the conceptual example's bare Connection; it returns a fallible SingleReplyOutcome rather than the composed Outcome. Preparation contributes Unreadable; checked execution contributes Answered or NexusDown.</p>
+<p><code>Unreadable.Error</code> corresponds exactly to the direct <code>datom_codec::Error</code>. The decoder preserves that value rather than converting it to a diagnostic string. This executable contract belongs to the Belief Nexus; the general example in vision:nexus-v1 remains conceptual.</p>
+<h4>Authored Rust — in-process types</h4>
+<p>This is author-written Rust, not generated Rust. Ethos lowering for these generic/native-error shapes is unverified; no new Ethos spelling is asserted.</p>
+<p>The native leaves retain their dependency-owned types: <code>datom_codec::Error</code>, <code>signal::FrameError</code>, <code>rkyv::rancor::Error</code>, <code>std::io::Error</code>, <code>std::string::FromUtf8Error</code>, and the existing local <code>TranslatorError</code>. These values remain in process; this contract adds no serialization requirement to them.</p>
+<pre><code class="language-rust">use std::io;
+use std::os::unix::net::UnixStream;
+use std::string::FromUtf8Error;
+use signal::FrameError;
+use signal_belief_nexus as public;
+
+// Existing local diagnostic type, retained rather than redesigned.
+#[derive(Debug)]
+pub enum TranslatorError {
+    Text(String),
+    Signal(String),
+    Peer(String),
+    Configuration(String),
+    Io(io::Error),
+}
+
+// Observations of preparation composed with single-reply execution.
+pub enum Outcome {
+    Answered,
+    Unreadable(datom_codec::Error),
+    NexusDown,
+}
+
+// A decoded, checked request can produce only these successful observations.
+pub enum SingleReplyOutcome {
+    Answered,
+    NexusDown,
+}
+
+impl From&lt;SingleReplyOutcome&gt; for Outcome {
+    fn from(value: SingleReplyOutcome) -&gt; Self {
+        match value {
+            SingleReplyOutcome::Answered =&gt; Self::Answered,
+            SingleReplyOutcome::NexusDown =&gt; Self::NexusDown,
+        }
+    }
+}
+
+pub enum PreparationFailure {
+    RequestFrame(FrameError),
+    RequestText(FromUtf8Error),
+    Precondition(TranslatorError),
+}
+
+pub enum BeforeForwardFailure {
+    Precondition(TranslatorError),
+    Archive(rkyv::rancor::Error),
+    NexusSetup(io::Error),
+}
+
+pub enum ReplyFailure {
+    Frame(FrameError),
+    Decode(rkyv::rancor::Error),
+}
+
+pub struct ResponseWriteFailure&lt;Response&gt; {
+    pub response: Response,
+    pub error: FrameError,
+}
+
+pub enum SingleReplyFailure&lt;Response&gt; {
+    BeforeForward(BeforeForwardFailure),
+    Forwarding(FrameError),
+    Awaiting(ReplyFailure),
+    ResponseWriteFailure(ResponseWriteFailure&lt;Response&gt;),
+}</code></pre>
+<p>PreparationFailure records a failure before a checked query exists. Its Precondition retains existing preparation configuration errors. BeforeForward records that this checked call's request has not been forwarded to the Nexus. It makes no claim that the process performed no local work: preparation, peer/configuration checks, archiving and socket setup remain their own acts. NexusSetup is configuration of an already-connected socket; a failed Nexus connection produces NexusDown instead.</p>
+<p>Forwarding records a failed request write, which may have been partial. Awaiting records a failed response read or typed restoration after forwarding, when the requested effect may already have occurred. ResponseWriteFailure moves the observed typed domain response into the failure together with the native caller-write error. That response records the Nexus's answer; it does not assert caller delivery or retry safety.</p>
+<p>A frame error or invalid UTF-8 is transport evidence, distinct from a malformed Datom. The request-codec error is carried intact. Native archive/restoration errors remain native errors.</p>
+<h4>Authored Rust — preparation and routing</h4>
+<p><code>SingleReplyQuery</code> owns the original domain query. Its private field is constructed only by the exhaustive route match below; Subscribe has its own route. The four existing ordinary query variants are Register, Resolve, Furnish and Subscribe.</p>
+<pre><code class="language-rust">pub struct SingleReplyQuery {
+    query: public::Query,
+}
+
+pub enum PreparedOrdinary {
+    SingleReply(SingleReplyQuery),
+    Subscribe,
+    Unreadable(datom_codec::Error),
+}
+
+impl From&lt;public::Query&gt; for PreparedOrdinary {
+    fn from(query: public::Query) -&gt; Self {
+        match query {
+            query @ public::Query::Register(_)
+            | query @ public::Query::Resolve(_)
+            | query @ public::Query::Furnish(_) =&gt;
+                Self::SingleReply(SingleReplyQuery { query }),
+            public::Query::Subscribe =&gt; Self::Subscribe,
+        }
+    }
+}
+
+
+pub trait OrdinaryPreparing {
+    fn prepare(
+        &amp;self,
+        connection: &amp;mut UnixStream,
+    ) -&gt; Result&lt;PreparedOrdinary, PreparationFailure&gt;;
+}
+
+pub trait SingleReplyServing {
+    type Response;
+
+    fn serve(
+        &amp;self,
+        request: SingleReplyQuery,
+        connection: &amp;mut UnixStream,
+    ) -&gt; Result&lt;SingleReplyOutcome, SingleReplyFailure&lt;Self::Response&gt;&gt;;
+}</code></pre>
+<p>The ordinary decoder/router site becomes the typed preparation boundary. Its decoder preserves the direct codec error instead of converting it into the existing Text diagnostic; the request is still decoded once. The unreadable branch supplies <code>Outcome::Unreadable(error)</code> by moving the exact error. Its unary branch invokes SingleReplyServing and maps the returned SingleReplyOutcome into Outcome. A preparation failure remains PreparationFailure evidence. RequestFrame and RequestText are preparation-only cases; checked unary execution has neither variant. Its Subscribe branch invokes the existing stream path with its existing return semantics. These are separate branches, not a common session-completion wrapper.</p>
+<p>The unary capability owns peer/precondition checks, call archiving, Nexus contact and setup, request forwarding, response restoration and caller response writing. The response type stays associated with the capability; ResponseWriteFailure stores that same type. Domain refusals are domain responses, so successfully writing one produces Answered.</p>
+<p>The existing meta path is outside this capability. Its post-response apply/restore sequence and nested Nexus call retain their own design boundary.</p>
+<h4>Existing native evidence shapes</h4>
+<p>The direct request codec's error structure is retained whole. These are dependency declarations shown for correspondence, not newly authored replacements.</p>
+<pre><code class="language-rust">// datom_codec
+pub type Integer = i64;
+pub type Path = Vec&lt;Integer&gt;;
+pub enum ErrorLayer { Protos, Datom, Composition }
+pub struct Error {
+    pub layer: ErrorLayer,
+    pub path: Path,
+    pub kind: ErrorKind,
+}
+pub enum ErrorKind {
+    Budget,
+    Structural(protos::Error),
+    Form { expected: String, found: String },
+    Arity { expected: Integer, found: Integer },
+    Value { expected: String, value: String },
+    Variant { expected: String, found: String },
+}</code></pre>
+<pre><code class="language-rust">// protos
+pub struct Extent { pub start: usize, pub end: usize }
+pub struct Error { pub extent: Extent, pub problem: Problem }
+pub enum Problem {
+    Empty, Multiple, Unclosed(char), Unexpected(char),
+    MissingHead, MissingBody, Budget, Depth,
+}</code></pre>
+<pre><code class="language-rust">// signal
+pub enum FrameError {
+    Io(std::io::Error),
+    BodyTooLarge { found: usize, capacity: usize },
+}</code></pre>
+<p>The standard-library I/O and UTF-8 errors and the rkyv native error remain opaque dependency-owned evidence. This module specifies their placement and ownership, not their private representation.</p>
+<h4>Existing ordinary domain contract</h4>
+<p>The domain vocabulary is retained. This is its existing Ethos, including the declarations needed by Query and Response. The service types above use the compiled ordinary contract as <code>public</code>.</p>
+<pre><code class="language-ethos">Library
+[]                                      ; imports
+[ UserId.Integer                        ; types: authenticated identity
+  GroupId.Integer
+  ProcessId.Integer
+  Caller.{ ProcessId UserId }            ; caller credentials
+  PeerIdentity.{ UserId ProcessId }      ; peer binding identity
+  PeerId.String
+  PeerBinding.{ PeerId PeerIdentity }    ; named peer
+  Principal.[ Login.UserId               ; authenticated owner
+              Peer.PeerId ] ]
+[]                                      ; traits
+[]                                      ; associations</code></pre>
+<pre><code class="language-ethos">Signal
+[ :translator:[ Caller PeerBinding UserId PeerId ] ] ; imports
+[ Register.Repository                   ; inputs
+  Resolve.Vector&lt;ModuleName&gt;
+  Furnish.FurnishRequest
+  Subscribe ]
+[ Registered.RepositoryState            ; outputs
+  Resolved.Resolution
+  Furnished.FurnishedWorkspace
+  Subscribed.Vector&lt;FurnishedWorkspace&gt;
+  Changed.FurnishedWorkspace
+  RefurnishFailed.RefurnishFailure
+  CleanupFailed.CleanupFailure
+  SubscriptionClosed.CloseReason
+  MemoryAfterPublication.MemoryAfterPublication
+  Refused.Refusal ]
+[ Kind.[ Spirit Intent Vision Knowledge Role ] ; types
+  Subject.String
+  ModuleName.{ Kind Subject }            ; module identity
+  RepositoryPath.String
+  Repository.RepositoryPath
+  WorkspacePath.String
+  Workspace.WorkspacePath
+  RelativePath.String
+  SourceRevision.String
+  PublicationRevision.Integer
+  GenerationId.String
+  Harness.[ Claude Codex ]               ; harness choice
+  Owner.[ Login.UserId Peer.PeerId ]      ; workspace owner
+  RepositoryState.{ Repository SourceRevision } ; observed source
+  Found.ModuleName
+  Resolution.{ Vector&lt;Found&gt; Vector&lt;ModuleName&gt; } ; found and missing
+  FurnishRequest.{ Workspace Harness Vector&lt;ModuleName&gt; } ; request
+  Placement.[ SystemPrompt Skills ]      ; destination kind
+  SystemPromptPath.String
+  SkillsPath.String
+  FurnishedPaths.{ SystemPromptPath SkillsPath } ; published paths
+  FurnishedWorkspace.{                   ; publication receipt
+     Workspace GenerationId PublicationRevision FurnishedPaths
+     Vector&lt;Found&gt; Vector&lt;ModuleName&gt; }
+  ExecutablePath.String
+  ContractDigest.String
+  PeerList.Vector&lt;PeerBinding&gt;
+  Call.{ Caller Query }                  ; authenticated input
+  SourceOperation.[ Registering Snapshotting Resolving Watching ] ; source act
+  FileOperation.[ Reading Staging Linking Replacing Inspecting Cleaning ] ; file act
+  MemoryOperation.[ Loading Recording BeginningPublication ; Memory act
+                    CompletingPublication AfterPublication Recovering ]
+  ExitStatus.Integer
+  Diagnostic.{ ExecutablePath Option&lt;ExitStatus&gt; String } ; external diagnostic
+  InvalidPlacement.[ Unknown.String NonScalar Duplicate ] ; placement error
+  InvalidModule.{ ModuleName RelativePath InvalidPlacement } ; source error
+  SourceEvidence.[ NotRepository MainUnavailable RevisionUnavailable ; evidence
+                   InvalidModule
+                   Ambiguous.{ ModuleName Vector&lt;Repository&gt; }
+                   Translator.Diagnostic ]
+  SourceFailure.{ Repository SourceOperation SourceEvidence } ; source failure
+  FileEvidence.[ OutsideBoundary.{ RelativePath RelativePath } ; evidence
+                 PermissionDenied
+                 MissingRequired.RelativePath
+                 Conflict.{ Option&lt;PublicationRevision&gt;
+                            Option&lt;PublicationRevision&gt; }
+                 Translator.Diagnostic ]
+  FileFailure.{ Workspace FileOperation FileEvidence } ; file failure
+  MemoryEvidence.[ Unavailable Corrupt Conflict ] ; Memory evidence
+  MemoryFailure.{ MemoryOperation MemoryEvidence } ; Memory failure
+  RefusalKind.[ Source File Memory NotAuthorized ; refusal class
+                SubscriberCapacityReached NotReady ]
+  RefurnishFailure.{ Workspace RefusalKind } ; refurnish failure
+  CleanupFailure.{ Workspace GenerationId PublicationRevision FileFailure } ; cleanup
+  CloseReason.[ QueueOverflow WriteTimeout ] ; existing stream terminal reason
+  MemoryAfterPublication.{                ; Memory failure after publication
+     Workspace GenerationId PublicationRevision MemoryFailure }
+  Refusal.[ Source.SourceFailure         ; domain refusals
+            File.FileFailure
+            Memory.MemoryFailure
+            NotAuthorized.Caller
+            SubscriberCapacityReached.Integer
+            NotReady ] ]</code></pre>
+</article>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red highlight, never struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A module as it stands (not a proposal): <article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code>repo/path.md</code></h2></header> … its headings as h3, h4 … </article>
+       A deleted module shown whole, under the red del margin, with a Destroy or Archive mark (drawn by the class):
+         <div class="record destroy">  or  <div class="record archive">
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the module deleted
+           <div class="ctx">…</div>                  its text, shown whole
+         </div>
+       The proposal author's reason on the proposal it sits in, before its lines (an indigo box visibly labelled "Why"):
+         <aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>…</p></div></aside>
+       Each alternative is its own proposal; there is no alternatives group.
+       A review (<meta name="book-kind" content="review"> in the page) shows every added and removed line in the dark shade
+       (--add-landed-edge, --del-landed-edge); a proposal or an account shows the light shade.
+       <p class="book-subtitle">Created by …</p>   the signature line under the title: the creating model and each helper's help
+       <aside class="key">…</aside>                 the key to the colours, after the title and signature line of a page that carries a change (the builder emits it)
+       <div class="figure"><svg>…</svg></div>       a figure: its ink var(--fg), its fills var(--chip), written by the builder, so it follows the theme
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     Colour is the sign of a change and lives in the margin: <div class="add">/<div class="del"> and <tr class="row-add|row-del"> carry a green or red edge, their text in the page's colour.
+     Code is highlighted at build time (tree-sitter, classes ts-*): <pre class="code-add|code-del"> is a fence wholly added or removed, one margin;
+     <pre class="code-diff"> holds <span class="ln ln-add|ln-del"> lines, each signed in its gutter. Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width), a shade at the edge where code is hidden. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-proposed-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-proposed-edge:#c2372b;--del-fg:#5b1a14;
+  --moved-bg:#e4e9fb;--moved-edge:#3a5bc7;--moved-fg:#1c2b66;
+  --move-proposed-edge:#6b7ed6;--move-landed-edge:#304aa8;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --add-landed-edge:#14602b;--del-landed-edge:#8e1d12;
+  --comment-bg:#e8ebfa;--comment-edge:#3f51b5;--comment-fg:#1f2756;
+  --shown-bg:#fff4d6;--shown-edge:#b87500;--shown-fg:#4d3100;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#6a3fa0;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --add-edge:var(--add-proposed-edge);--del-edge:var(--del-proposed-edge);
+}
+.move{border-left:4px solid var(--move-edge);padding:4px 0 4px 12px;min-width:0}
+.move-proposed{--move-edge:var(--move-proposed-edge)}
+.move-landed{--move-edge:var(--move-landed-edge)}
+.move>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
+.move-state{font-family:var(--f-label);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+p.book-subtitle{color:var(--muted);font-size:.95rem;margin-block:-14px 0}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A module view: the module as it stands, framed apart from a proposal (blue edge, tinted ground, a label) and from page text. */
+.module{background:color-mix(in srgb,var(--accent) 7%,var(--sheet));border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;padding:14px 16px 20px;min-width:0}
+.module>header{display:grid;gap:6px;justify-items:start}
+.module>header>*{margin:0;min-width:0}
+.module>.in-place{margin:18px 0}
+.in-place>header h3{font-size:1.05rem}
+.mlabel{font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.module h3{font-size:1.05rem;margin-top:1em}
+.markdown{min-width:0}
+.markdown>*+*{margin-top:.7em}
+.module h4{font-size:.95rem;font-weight:600;font-family:var(--f-label);margin-top:.9em}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:transparent;color:var(--fg)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del,.diff .add{color:var(--fg);background:transparent;text-decoration:none}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .moved{color:var(--moved-fg);background:var(--moved-bg);padding:6px 10px 6px 12px;border-radius:6px;min-width:0}
+.diff .moved>*{overflow-wrap:anywhere}
+.diff .moved :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff .del{border-left-color:var(--del-edge)}
+/* A figure's colours are the page's: the builder writes its ink as --fg and its fills as --chip, so it follows the theme.
+   A surround alone marks it added or removed. */
+.figmark{border:2px solid;border-left-width:8px;border-radius:6px;padding:4px;min-width:0}
+.fig-add{border-color:var(--add-edge)}
+.fig-del{border-color:var(--del-edge)}
+.part{margin:.6em 0 .2em;font-size:.95rem;font-weight:600;font-family:var(--f-label)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A deleted module shown whole: under the red margin of a removal, with its Destroy or Archive mark. */
+.record{border-left:4px solid var(--del-edge);padding:4px 0 4px 12px;min-width:0}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--del-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* A review: every added and removed line shows in the dark shade, the landed edge. */
+:root:has(meta[name="book-kind"][content="review"]){--add-edge:var(--add-landed-edge);--del-edge:var(--del-landed-edge)}
+
+/* The machine's comment: why it proposes the lines that follow; its own colour (indigo), never module text, green or red. */
+.comment{border:1px solid var(--comment-edge);border-left-width:4px;background:var(--comment-bg);color:var(--comment-fg);border-radius:8px;margin:18px 0 20px;padding:10px 12px 12px;min-width:0;font-family:var(--f-label);font-size:.95rem;line-height:1.5}
+.comment-label{display:table;margin:0 0 7px;padding:1px 9px;border-radius:999px;background:var(--comment-edge);color:var(--sheet);font-weight:600;font-size:.74rem;letter-spacing:.04em}
+.comment-body> :first-child{margin-top:0}.comment-body> :last-child{margin-bottom:0}.comment-body p{overflow-wrap:anywhere}
+
+/* An excerpt of its named source module as it stands: a fourth colour beside added, removed and moved. */
+.shown{border:1px solid var(--shown-edge);border-left-width:5px;border-radius:8px;background:var(--shown-bg);color:var(--shown-fg);margin:16px 0;padding:10px 12px;min-width:0}
+.shown>header{display:flex;align-items:center;gap:9px;margin:0 0 8px;font-family:var(--f-label)}
+.shown>header code{overflow-wrap:anywhere}.shown>pre{margin:0}
+.shown>.markdown,.shown>.textblock{overflow-wrap:anywhere}
+
+/* The key to the colours, under the title of a page that carries a change: a swatch per colour, proposed (light) beside landed (dark). */
+.key{border:1px solid var(--line);border-radius:8px;padding:8px 12px 10px;font-family:var(--f-label);font-size:.9rem;line-height:1.4;min-width:0}
+.key-label{color:var(--muted);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.key ul{list-style:none;padding:0;margin:.4em 0 0;display:flex;flex-wrap:wrap;gap:.35em 1.1em}
+.key li{display:flex;align-items:center;gap:3px;margin:0}
+.key li>*{margin:0}.key li>.sw:last-of-type{margin-inline-end:5px}
+.sw{display:inline-block;width:.95em;height:.95em;border-radius:3px}
+.sw-add{background:var(--add-proposed-edge)}.sw-add-landed{background:var(--add-landed-edge)}
+.sw-del{background:var(--del-proposed-edge)}.sw-del-landed{background:var(--del-landed-edge)}
+.sw-move{background:var(--move-proposed-edge)}.sw-move-landed{background:var(--move-landed-edge)}
+.sw-shown{background:var(--shown-edge)}.sw-module{background:var(--accent)}
+.key-note{color:var(--muted);font-size:.85rem;margin-top:.4em}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block, and a shade at the edge shows there is more:
+   the covers move with the code (local), the shades stay at the box's edges (scroll), so a shade shows only where code is hidden. */
+pre:has(>code[class*="language-"]){--scroll-shade:color-mix(in srgb,var(--fg) 45%,transparent);
+  background:linear-gradient(to right,var(--hl-bg) 40%,transparent) left/28px 100% no-repeat local,
+    linear-gradient(to left,var(--hl-bg) 40%,transparent) right/28px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,var(--scroll-shade),transparent) left/12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,var(--scroll-shade),transparent) right/12px 100% no-repeat scroll,
+    var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+/* A change in code: one margin for a fence wholly added or removed; per line in the gutter otherwise. */
+pre.code-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff:has(>code){padding-inline:0}
+pre.code-diff .ln{display:block;padding-inline:14px;position:relative}
+pre.code-diff .ln-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-diff .ln-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff .ln-add::before,pre.code-diff .ln-del::before{position:absolute;left:5px;font-weight:600}
+pre.code-diff .ln-add::before{content:"+";color:var(--add-edge)}
+pre.code-diff .ln-del::before{content:"\2212";color:var(--del-edge)}
+tr.row-add>:first-child{box-shadow:inset 4px 0 var(--add-edge)}
+tr.row-del>:first-child{box-shadow:inset 4px 0 var(--del-edge)}
+/* Syntax colours, from tree-sitter's captures. */
+.ts-keyword,.ts-type,.ts-constructor{color:var(--hl-type)}
+.ts-punctuation,.ts-operator{color:var(--hl-punct)}
+.ts-comment{color:var(--hl-comment);font-style:italic}
+.ts-string,.ts-number,.ts-constant{color:var(--hl-string)}
+.ts-function,.ts-module,.ts-attribute,.ts-property,.ts-label,.ts-string.ts-special{color:var(--hl-meta)}
+.ts-type.ts-builtin,.ts-function.ts-builtin,.ts-keyword{font-weight:600}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+</script>

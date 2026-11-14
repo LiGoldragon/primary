@@ -1,0 +1,6 @@
+flowchart TB
+    c["metaflow: designer"] --> s["speaker: fable"]
+    s -- "Speaks.opus" --> o["member: opus"]
+    o -- "Metaflow.implementer" --> i["metaflow: implementer, its speaker"]
+    s -- "Living" --> l["the living"]
+    x["anything else"] -. "refused" .-> s

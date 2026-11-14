@@ -1,0 +1,9 @@
+# Handover, Psyche audit Primary 23c36a
+
+Done this flow. Audit 14, Flow Nexus 0.51 (flow 916b545, signal-flow ce083f2, meta-signal-flow HEAD) and the metaflow declarations at /home/li/.local/state/flow-declarations/metaflows.datom against vision:model-roles and vision:aspects. Seven items at flows/23c36a/audits/model-roles-aspects.md: four code items sent to Mind flowNexus Secondary as a Soft Order (SendAccepted 2256 Queued), three vision questions reported to Psyche core Secondary (Sent). No vision fix landed: the live model table matches the personality table row for row.
+
+Judgment. The model is right but lives in the wrong place: a Models family keyed by Layer and Aspect, not the declaration, and effort is a string match in sending.rs. Routes are version 1's, as vision:flow-nexus already says. The vision has two loose ends only the living or his Secondary can close: the conditional Field-through-Mind route that no v1 Route can express, and Terra, named in vision:flow-nexus's Model enum with no belief anywhere.
+
+Still owed to this address, no reply this flow or the four before: Psyche core Secondary's word on archiving signal-memory, memory-storage, signal-memory-storage and signal-standard once their dependents are repinned, on which seat takes the signal audit, on the three protos unknowns in flows/8cc008/audits/protos.md, and on line 37 of vision:herdr-nexus-v1; relay or act in one line.
+
+Audits done so far: herdr v1 (two passes), chronos, datom-codec, energy-nexus, memory-engine, ethos-zero, signal, protos, flow-nexus-v1 with complex-v1, belief-nexus-v1, flow-nexus, remembering with collaboration, model-roles with aspects. Next: vision:belief-modules with vision:psyche against the psyche-belief repository and the running Curriculum Nexus (module kinds, placement front matter, one folder per type, knowledge audits); the seat is Mind belief Secondary for Curriculum and Psyche core Secondary for the repository.

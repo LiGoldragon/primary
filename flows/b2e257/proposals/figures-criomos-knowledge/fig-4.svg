@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 826" width="420" height="826" font-family="sans-serif" fill="currentColor" stroke="currentColor">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor" stroke="none"/>
+    </marker>
+  </defs>
+
+  <rect x="80" y="20" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="55" text-anchor="middle" font-size="20" stroke="none">a commit</text>
+
+  <rect x="80" y="166" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="201" text-anchor="middle" font-size="20" stroke="none">a revision</text>
+
+  <rect x="80" y="312" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="347" text-anchor="middle" font-size="20" stroke="none">a CriomOS commit</text>
+
+  <rect x="80" y="458" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="493" text-anchor="middle" font-size="20" stroke="none">a CriomOS revision</text>
+
+  <rect x="80" y="604" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="639" text-anchor="middle" font-size="20" stroke="none">a Lojix deployment</text>
+
+  <rect x="80" y="750" width="260" height="56" rx="8" fill="none" stroke-width="2"/>
+  <text x="210" y="785" text-anchor="middle" font-size="20" stroke="none">a generation</text>
+
+  <line x1="210" y1="76" x2="210" y2="166" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="226" y="119" font-size="18" stroke="none">is checked and</text>
+  <text x="226" y="141" font-size="18" stroke="none">pushed as</text>
+
+  <line x1="210" y1="222" x2="210" y2="312" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="226" y="265" font-size="18" stroke="none">is pinned by the</text>
+  <text x="226" y="287" font-size="18" stroke="none">lock of</text>
+
+  <line x1="210" y1="368" x2="210" y2="458" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="226" y="419" font-size="18" stroke="none">is pushed as</text>
+
+  <line x1="210" y1="514" x2="210" y2="604" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="226" y="565" font-size="18" stroke="none">is named by</text>
+
+  <line x1="210" y1="660" x2="210" y2="750" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="226" y="711" font-size="18" stroke="none">switches in</text>
+</svg>

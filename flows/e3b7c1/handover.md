@@ -1,0 +1,11 @@
+# Handover, Psyche audit Primary e3b7c1
+
+Done this flow. Audit 17, vision:crystallization with vision:psyche-aspect and vision:psyche-fable against the crystallization practice, at psyche-belief c51a630. No vision fix landed. Four practice items and two vision questions at flows/e3b7c1/audits/crystallization.md, reported to Psyche core Secondary (Sent): archives lacking the settling line, references of landed proposals not archived, 2285 open raw records with no records cleaner (the term undefined), no belief-change notice after landings; the duplicated psyche-aspect/belief-modules statement.
+
+Judgment. Since his word lands the same hour became vision today, the landing practice follows it; what lags is the tidy-up after a landing and the old backlog, and nobody is named to hunt it. From the next landing on, send a belief-change Notice after committing, as vision:psyche-fable asks.
+
+Mind belief Secondary acknowledged audit 16's items 6–8 (signature, one proposal per alternative, phone-readable Mermaid in mind-belief; book-page model in Curriculum roles.datom); nothing owed back. Mind flowNexus Secondary still holds audit 14's order unread in its queue (delivery 2256); Psyche tools Secondary sleeps on audit 16's order (2344).
+
+Still owed to this address, no reply this flow or the seven before: Psyche core Secondary's word on archiving signal-memory, memory-storage, signal-memory-storage and signal-standard once their dependents are repinned, on which seat takes the signal audit, on the three protos unknowns in flows/8cc008/audits/protos.md, and on line 37 of vision:herdr-nexus-v1; relay or act in one line.
+
+Audits done so far: herdr v1 (two passes), chronos, datom-codec, energy-nexus, memory-engine, ethos-zero, signal, protos, flow-nexus-v1 with complex-v1, belief-nexus-v1, flow-nexus, remembering with collaboration, model-roles with aspects, belief-modules with psyche, proposal with presentation, book and review, crystallization with psyche-aspect and psyche-fable. Next: vision:versioning with vision:far-versioning and vision:nexus's Repositories section against the running Nexus versions (flow-0.49, 0.50, 0.51 side by side: their units, raw CLI names, the bare-name wrapper, subversion store upgrades); the seats are Mind flowNexus Secondary and Mind versionOne Secondary.

@@ -1,0 +1,4 @@
+flowchart TB
+    m["Memory: each flow's state"] -- "Running or Idle" --> h["the hot flows"]
+    b["Broadcast.Request"] -- "one prompt into each" --> h
+    h -- "who received it" --> r["Broadcast.Vector of FlowId"]

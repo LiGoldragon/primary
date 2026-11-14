@@ -1,3 +1,5 @@
+Landed, in psyche-belief vision/clojure.md 2daa5df.
+
 # languages
 
 ## 2026-10-23, living, direct, to Psyche core Primary a68420

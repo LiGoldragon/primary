@@ -1,0 +1,4 @@
+flowchart TB
+    r["a request delivered to the flow"] -- "is open until" --> a["its Result or Done"]
+    f["the flow refreshes"] -- "the Nexus carries, with the handover" --> s["the successor's first prompt: every open request, same ids"]
+    s -- "answers with" --> a

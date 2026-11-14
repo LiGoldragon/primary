@@ -1,0 +1,6 @@
+flowchart LR
+    s["Signal: what it says"] --> o["Operation: what it attempts"]
+    o --> m["Memory: what it remembers"]
+    m -- "succeeded or failed" --> o
+    o --> e["Emission: what it sends into the world"]
+    e -- "its process, the translator" --> w["world"]

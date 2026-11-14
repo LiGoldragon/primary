@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1430" width="800" height="1430" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="arr" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="16" refY="8" orient="auto"><path d="M0,0 L16,8 L0,16 z" fill="#000"/></marker></defs>
+<rect x="230.0" y="30" width="340" height="96" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="71" font-size="28" text-anchor="middle" fill="#000">ordinary caller</text>
+<text x="400" y="105" font-size="28" text-anchor="middle" fill="#000">connection</text>
+<rect x="230.0" y="170" width="340" height="70" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="215" font-size="28" text-anchor="middle" fill="#000">read and decode once</text>
+<rect x="20.0" y="380" width="240" height="130" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="140" y="421" font-size="28" text-anchor="middle" fill="#000">Unreadable:</text>
+<text x="140" y="455" font-size="28" text-anchor="middle" fill="#000">exact request</text>
+<text x="140" y="489" font-size="28" text-anchor="middle" fill="#000">codec error</text>
+<rect x="280.0" y="380" width="240" height="130" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="421" font-size="28" text-anchor="middle" fill="#000">checked</text>
+<text x="400" y="455" font-size="28" text-anchor="middle" fill="#000">single-reply</text>
+<text x="400" y="489" font-size="28" text-anchor="middle" fill="#000">query</text>
+<rect x="540.0" y="380" width="240" height="130" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="660" y="438" font-size="28" text-anchor="middle" fill="#000">existing</text>
+<text x="660" y="472" font-size="28" text-anchor="middle" fill="#000">streaming path</text>
+<rect x="230.0" y="580" width="340" height="110" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="628" font-size="28" text-anchor="middle" fill="#000">prepare call;</text>
+<text x="400" y="662" font-size="28" text-anchor="middle" fill="#000">contact Nexus</text>
+<rect x="30.0" y="740" width="200" height="80" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="130" y="790" font-size="28" text-anchor="middle" fill="#000">NexusDown</text>
+<rect x="250.0" y="740" width="300" height="80" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="790" font-size="28" text-anchor="middle" fill="#000">forward request</text>
+<rect x="210.0" y="870" width="380" height="110" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="918" font-size="28" text-anchor="middle" fill="#000">receive and decode</text>
+<text x="400" y="952" font-size="28" text-anchor="middle" fill="#000">domain response</text>
+<rect x="210.0" y="1030" width="380" height="110" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="400" y="1078" font-size="28" text-anchor="middle" fill="#000">write unchanged</text>
+<text x="400" y="1112" font-size="28" text-anchor="middle" fill="#000">domain response</text>
+<rect x="20.0" y="1240" width="240" height="80" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="140" y="1290" font-size="28" text-anchor="middle" fill="#000">Answered</text>
+<rect x="505.0" y="1240" width="290" height="160" rx="6" fill="#fff" stroke="#000" stroke-width="3"/>
+<text x="650" y="1279" font-size="28" text-anchor="middle" fill="#000">owned observed</text>
+<text x="650" y="1313" font-size="28" text-anchor="middle" fill="#000">response +</text>
+<text x="650" y="1347" font-size="28" text-anchor="middle" fill="#000">native write</text>
+<text x="650" y="1381" font-size="28" text-anchor="middle" fill="#000">error</text>
+<polyline points="400,126 400,170" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="290,240 290,262 140,262 140,380" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="20" y="250" font-size="28" text-anchor="start" fill="#000">codec error</text>
+<polyline points="400,240 400,380" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="416" y="300" font-size="28" text-anchor="start" fill="#000">Register /</text>
+<text x="416" y="328" font-size="28" text-anchor="start" fill="#000">Resolve /</text>
+<text x="416" y="356" font-size="28" text-anchor="start" fill="#000">Furnish</text>
+<polyline points="530,240 530,262 660,262 660,380" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="580" y="252" font-size="28" text-anchor="start" fill="#000">Subscribe</text>
+<polyline points="400,510 400,580" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="230,635 130,635 130,740" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="222" y="626" font-size="28" text-anchor="end" fill="#000">connect fails</text>
+<polyline points="400,690 400,740" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="416" y="720" font-size="28" text-anchor="start" fill="#000">connected</text>
+<polyline points="400,820 400,870" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="400,980 400,1030" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<polyline points="300,1140 300,1190 140,1190 140,1240" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="20" y="1178" font-size="28" text-anchor="start" fill="#000">write succeeds</text>
+<polyline points="500,1140 500,1190 650,1190 650,1240" fill="none" stroke="#000" stroke-width="3" marker-end="url(#arr)"/>
+<text x="516" y="1178" font-size="28" text-anchor="start" fill="#000">write fails</text>
+</svg>

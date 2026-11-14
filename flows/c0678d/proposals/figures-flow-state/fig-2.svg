@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 880" width="600" height="880" font-family="sans-serif">
+  <style>
+    text { fill: #1b1b1b; font-size: 22px; }
+    text.edge-label { font-size: 20px; }
+    .box { fill: none; stroke: #8a8a8a; stroke-width: 2; }
+    .margin { fill: #7ed99a; }
+    .edge { fill: none; stroke: #7ed99a; stroke-width: 4; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #f2f2f2; }
+      .box { stroke: #9a9a9a; }
+    }
+  </style>
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7ed99a"/>
+    </marker>
+  </defs>
+
+  <!-- nodes: all added, green margin -->
+  <rect class="box" x="20" y="30" width="280" height="80" rx="8"/>
+  <rect class="margin" x="20" y="30" width="10" height="80"/>
+  <text x="160" y="78" text-anchor="middle">the transcript</text>
+
+  <rect class="box" x="20" y="170" width="280" height="80" rx="8"/>
+  <rect class="margin" x="20" y="170" width="10" height="80"/>
+  <text x="160" y="218" text-anchor="middle">a hook</text>
+
+  <rect class="box" x="20" y="310" width="280" height="80" rx="8"/>
+  <rect class="margin" x="20" y="310" width="10" height="80"/>
+  <text x="160" y="340" text-anchor="middle">the pane, from the</text>
+  <text x="160" y="366" text-anchor="middle">herdr Nexus</text>
+
+  <rect class="box" x="200" y="440" width="320" height="80" rx="8"/>
+  <rect class="margin" x="200" y="440" width="10" height="80"/>
+  <text x="360" y="488" text-anchor="middle">translator</text>
+
+  <rect class="box" x="20" y="600" width="160" height="80" rx="8"/>
+  <rect class="margin" x="20" y="600" width="10" height="80"/>
+  <text x="100" y="622" text-anchor="middle">Heard: kept,</text>
+  <text x="100" y="646" text-anchor="middle">nothing</text>
+  <text x="100" y="670" text-anchor="middle">acted</text>
+
+  <rect class="box" x="200" y="600" width="320" height="80" rx="8"/>
+  <rect class="margin" x="200" y="600" width="10" height="80"/>
+  <text x="360" y="648" text-anchor="middle">yes: the Input, as signal</text>
+
+  <rect class="box" x="200" y="760" width="320" height="80" rx="8"/>
+  <rect class="margin" x="200" y="760" width="10" height="80"/>
+  <text x="360" y="808" text-anchor="middle">Flow Nexus acts</text>
+
+  <!-- edges: all added, green -->
+  <polyline class="edge" points="300,70 560,70 560,480 520,480" marker-end="url(#arw)"/>
+  <text class="edge-label" x="312" y="40">each write, read</text>
+  <text class="edge-label" x="312" y="62">as it lands</text>
+
+  <polyline class="edge" points="300,210 560,210 560,480 520,480" marker-end="url(#arw)"/>
+  <text class="edge-label" x="312" y="180">Report: what the</text>
+  <text class="edge-label" x="312" y="202">file lacks</text>
+
+  <polyline class="edge" points="300,350 560,350 560,480 520,480" marker-end="url(#arw)"/>
+  <text class="edge-label" x="312" y="320">Changed: Open, Busy,</text>
+  <text class="edge-label" x="312" y="342">Idle, Dead</text>
+
+  <line class="edge" x1="360" y1="520" x2="360" y2="598" marker-end="url(#arw)"/>
+  <text class="edge-label" x="372" y="552">actualizes</text>
+  <text class="edge-label" x="372" y="574">as Input?</text>
+
+  <polyline class="edge" points="200,480 100,480 100,598" marker-end="url(#arw)"/>
+  <text class="edge-label" x="112" y="545">no</text>
+
+  <line class="edge" x1="360" y1="680" x2="360" y2="758" marker-end="url(#arw)"/>
+</svg>

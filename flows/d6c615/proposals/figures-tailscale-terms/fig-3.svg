@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 580" font-family="sans-serif" font-size="18" fill="#000" stroke="#000">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000" stroke="none"/>
+    </marker>
+  </defs>
+  <!-- boxes -->
+  <rect x="110" y="20" width="220" height="110" fill="#fff" stroke-width="2"/>
+  <text x="220" y="50" text-anchor="middle" stroke="none">the coordination</text>
+  <text x="220" y="74" text-anchor="middle" stroke="none">server: Tailscale's,</text>
+  <text x="220" y="98" text-anchor="middle" stroke="none">or Headscale</text>
+
+  <rect x="20" y="330" width="160" height="70" fill="#fff" stroke-width="2"/>
+  <text x="100" y="358" text-anchor="middle" stroke="none">node:</text>
+  <text x="100" y="382" text-anchor="middle" stroke="none">the laptop</text>
+
+  <rect x="340" y="330" width="130" height="70" fill="#fff" stroke-width="2"/>
+  <text x="405" y="358" text-anchor="middle" stroke="none">node:</text>
+  <text x="405" y="382" text-anchor="middle" stroke="none">the desktop</text>
+
+  <rect x="200" y="520" width="140" height="40" fill="#fff" stroke-width="2"/>
+  <text x="270" y="546" text-anchor="middle" stroke="none">a relay</text>
+
+  <!-- arrows -->
+  <path d="M40,330 V75 H110" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="50" y="175" stroke="none">reports its</text>
+  <text x="50" y="199" stroke="none">addresses to</text>
+
+  <path d="M170,130 V330" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="180" y="270" stroke="none">tells each node</text>
+  <text x="180" y="294" stroke="none">its peers</text>
+
+  <path d="M420,330 V75 H330" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="410" y="175" text-anchor="end" stroke="none">reports its</text>
+  <text x="410" y="199" text-anchor="end" stroke="none">addresses to</text>
+
+  <path d="M180,365 H340" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="186" y="388" stroke="none">sends encrypted</text>
+  <text x="186" y="410" stroke="none">traffic</text>
+  <text x="186" y="432" stroke="none">directly to</text>
+
+  <path d="M60,400 V540 H200" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="70" y="450" stroke="none">sends through,</text>
+  <text x="70" y="472" stroke="none">when no direct</text>
+  <text x="70" y="494" stroke="none">path works</text>
+
+  <path d="M340,540 H440 V400" fill="none" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="430" y="470" text-anchor="end" stroke="none">passes it,</text>
+  <text x="430" y="492" text-anchor="end" stroke="none">unread, to</text>
+</svg>

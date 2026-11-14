@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 980" width="720" height="980" role="img" aria-label="the living, Flow Nexus: definitions, flows, queues, Belief Nexus: the modules, herdr Nexus: the panes">
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#111" stroke="#fff" stroke-width="1"/>
+    </marker>
+    <filter id="halo" x="-20%" y="-20%" width="140%" height="140%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="expanded"/>
+      <feFlood flood-color="#fff" result="white"/>
+      <feComposite in="white" in2="expanded" operator="in" result="outline"/>
+      <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .box { fill:#fff; stroke:#111; stroke-width:3; rx:14; }
+      .label { fill:#111; font-family:Arial,Helvetica,sans-serif; font-size:22px; font-weight:600; text-anchor:middle; dominant-baseline:middle; }
+      .edge-label { fill:#111; stroke:#fff; stroke-width:6px; paint-order:stroke; stroke-linejoin:round; font-family:Arial,Helvetica,sans-serif; font-size:19px; font-weight:500; text-anchor:middle; dominant-baseline:middle; }
+      .arrow { fill:none; stroke:#111; stroke-width:3; marker-end:url(#arrow); filter:url(#halo); }
+    </style>
+  </defs>
+
+  <!-- nodes -->
+  <rect class="box" x="245" y="48" width="230" height="70"/>
+  <text class="label" x="360" y="83">the living</text>
+
+  <rect class="box" x="150" y="265" width="420" height="90"/>
+  <text class="label" x="360" y="300">Flow Nexus: definitions,</text>
+  <text class="label" x="360" y="330">flows, queues</text>
+
+  <rect class="box" x="35" y="620" width="300" height="90"/>
+  <text class="label" x="185" y="655">Belief Nexus: the</text>
+  <text class="label" x="185" y="685">modules</text>
+
+  <rect class="box" x="385" y="620" width="300" height="90"/>
+  <text class="label" x="535" y="655">herdr Nexus: the</text>
+  <text class="label" x="535" y="685">panes</text>
+
+  <!-- relations -->
+  <path class="arrow" marker-end="url(#arrow)" d="M360 118 L360 265"/>
+  <text class="edge-label" x="455" y="190">Say, at the CLI, by his login</text>
+
+  <path class="arrow" marker-end="url(#arrow)" d="M260 355 L185 620"/>
+  <text class="edge-label" x="115" y="485">Furnish, signal</text>
+
+  <path class="arrow" marker-end="url(#arrow)" d="M460 355 L535 620"/>
+  <text class="edge-label" x="605" y="485">Start, Prompt, Close, signal</text>
+
+  <path class="arrow" marker-end="url(#arrow)" d="M570 290 C680 235 680 385 570 330"/>
+  <text class="edge-label" x="625" y="210">Version: what runs, asked</text>
+
+  <path class="arrow" marker-end="url(#arrow)" d="M535 620 C665 535 665 410 475 350"/>
+  <text class="edge-label" x="625" y="565">Report, from a hook</text>
+</svg>

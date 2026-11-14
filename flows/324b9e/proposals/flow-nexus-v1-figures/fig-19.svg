@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="1000" viewBox="0 0 700 1000" style="color:CanvasText">
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="currentColor"/>
+    </marker>
+    <style>
+      .ink { fill: currentColor; stroke: currentColor; }
+      .box { fill: none; stroke-width: 3; }
+      .edge { fill: none; stroke-width: 3; }
+      .label { font: 24px sans-serif; text-anchor: middle; }
+      .node { font: 25px sans-serif; text-anchor: middle; }
+      @media (prefers-color-scheme: dark) { :root { color: #f5f5f5; } }
+    </style>
+  </defs>
+
+  <rect class="ink box" x="75" y="45" width="550" height="120" rx="14"/>
+  <text class="ink node" x="350" y="92">
+    <tspan x="350" dy="0">a metaflow, configured in</tspan>
+    <tspan x="350" dy="34">datom</tspan>
+  </text>
+
+  <rect class="ink box" x="55" y="300" width="590" height="130" rx="14"/>
+  <text class="ink node" x="350" y="350">
+    <tspan x="350" dy="0">model: Fable, Opus, Sonnet, Haiku,</tspan>
+    <tspan x="350" dy="36">Astra, Sol, Luna</tspan>
+  </text>
+
+  <rect class="ink box" x="55" y="565" width="590" height="130" rx="14"/>
+  <text class="ink node" x="350" y="615">
+    <tspan x="350" dy="0">personality: what it designs, does,</tspan>
+    <tspan x="350" dy="36">speaks</tspan>
+  </text>
+
+  <rect class="ink box" x="95" y="820" width="510" height="100" rx="14"/>
+  <text class="ink node" x="350" y="880">routes: who speaks to whom</text>
+
+  <path class="ink edge" marker-end="url(#arrow)" d="M350 165 L350 300"/>
+  <text class="ink label" x="455" y="237">names each member's</text>
+
+  <path class="ink edge" marker-end="url(#arrow)" d="M350 430 L350 565"/>
+  <text class="ink label" x="450" y="505">has</text>
+
+  <path class="ink edge" marker-end="url(#arrow)" d="M75 105 L25 105 L25 870 L95 870"/>
+  <text class="ink label" x="95" y="490">names</text>
+</svg>

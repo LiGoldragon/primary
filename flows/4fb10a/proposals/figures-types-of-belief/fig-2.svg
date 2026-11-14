@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 420" width="440" height="420" font-family="sans-serif" font-size="18">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+  <!-- boxes -->
+  <rect x="120" y="10" width="200" height="56" fill="white" stroke="black" stroke-width="2"/>
+  <text x="220" y="44" text-anchor="middle" font-size="20">the living</text>
+
+  <rect x="60" y="150" width="320" height="80" fill="white" stroke="black" stroke-width="2"/>
+  <text x="220" y="183" text-anchor="middle">psyche:</text>
+  <text x="220" y="210" text-anchor="middle">spirit, intent, vision</text>
+
+  <rect x="60" y="320" width="320" height="80" fill="white" stroke="black" stroke-width="2"/>
+  <text x="220" y="353" text-anchor="middle">the machine's:</text>
+  <text x="220" y="380" text-anchor="middle">knowledge, role</text>
+
+  <!-- the living reviews, line by line -> psyche -->
+  <line x1="220" y1="66" x2="220" y2="148" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="236" y="104" text-anchor="start">reviews,</text>
+  <text x="236" y="128" text-anchor="start">line by line</text>
+
+  <!-- psyche rules over -> machine's -->
+  <line x1="220" y1="230" x2="220" y2="318" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="236" y="262" text-anchor="start">rules over:</text>
+  <text x="236" y="286" text-anchor="start">a line it contradicts</text>
+  <text x="236" y="310" text-anchor="start">is removed</text>
+
+  <!-- the living skims -> machine's -->
+  <path d="M320,38 H410 V360 H380" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="365" y="30" text-anchor="middle">skims</text>
+</svg>

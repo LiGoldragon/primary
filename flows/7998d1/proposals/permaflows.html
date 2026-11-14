@@ -1,0 +1,305 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permaflows, listed briefly</title>
+<h1 class="book-title">Permaflows, listed briefly</h1>
+<p class="book-subtitle">Created by Fable 5.2; a worker assembled the page.</p>
+<aside class="key" aria-label="Key to the colours"><div class="key-label">Colours</div><ul><li><span class="sw sw-add"></span><span class="sw sw-add-landed"></span>added</li><li><span class="sw sw-del"></span><span class="sw sw-del-landed"></span>removed</li><li><span class="sw sw-move"></span><span class="sw sw-move-landed"></span>moved</li><li><span class="sw sw-shown"></span>an excerpt, as it stands</li><li><span class="sw sw-module"></span>a module, as it stands</li></ul><p class="key-note">Light shade: proposed. Dark shade: landed.</p></aside>
+<article class="proposal"><header><span class="pnum">1</span><h2>The listing · psyche-belief › vision/flow-nexus.md</h2></header>
+<aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>His words, 12 November: «I see all of the noise in there. There's all this logical delivery, and then 000000, like endless zeros. Super expensive, useless garbage, and not everybody needs to know about all the metaflows.» «We should have a command that's very brief so that it doesn't take much context. If anything, the topic should be pretty self-descriptive.» «I think the rename is good: Permaflows instead of Metaflow. A Metaflow is a composition of Permaflows, like a sector that is coherent together, like a fable and its assistant opus, and maybe some kind of small task-managing flow along with it. It doesn't have any other effect than to decide which other Permaflows are listed, and then we could have a way to list the Metaflows themselves. It's more like an information-based thing than a constraint-based thing. It doesn't constrain any flow or messaging. Let's keep the system open so that nothing blocks flows from messaging each other if they need to.» «I want all of the default commands to not show this. We can have debug versions of the same commands that can show this more backend-related information.»</p></div></aside>
+<section class="shown"><header><span class="mlabel">as it stands</span><code>psyche-belief › vision/flow-nexus.md</code></header><div class="markdown"><h3>A message</h3><p>A message is a datom and lands in the recipient's prompt as one; the datom is the whole message. Its priority is a head on the request: HardAbrupt, MiddleAbrupt or Soft. A pressing message wakes its recipient; a message that only queues carries what may wait. A message is addressed to a permaflow and reaches the flow running when it arrives; a request to deliver a recipient's queue delivers every queued message, or nothing when none is queued.</p><p>A message carries what its reader acts on: what the sender intends, or what it has done. It carries no hash: a flow is named by its permaflow, a book by its title, a commit by what it landed.</p><p>Inducing an interrupt, placing prompt text, submitting it, and the recipient consuming it are four separate observations. None of them stands for another, and a submission is never a read receipt.</p><p>A task carries the minutes it is expected to take; the Flow Nexus reminds the sender when they pass, and the done reply names the task and cancels the reminder. A receiver going idle with a task open fires a notice to the flow waiting on it, so that nothing is forgotten. Any flow asks the Flow Nexus for a reminder after a number of minutes.</p></div></section>
+<div class="diff"><div class="add"><h4>Permaflows and metaflows</h4></div></div>
+<div class="diff"><div class="add"><p>A permaflow is one address. A metaflow is a cohesion of permaflows that work together, as a Fable, the Opus that assists it and a small flow that keeps their tasks: it has a name, a camelCase expression that says what it is for, and it is configuration, changed while the Nexus runs. A metaflow informs: it decides which permaflows a member is shown. It constrains nothing: any flow messages any flow.</p></div></div>
+<div class="diff"><div class="add"><p>A topic says what its permaflow is for, in its name.</p></div></div>
+<div class="diff"><div class="add"><p>The listing is brief. A flow asking for the permaflows is shown those of its own metaflows and those of its own topic, each as its address and whether it is awake; the Nexus knows the caller by its process, so the flow names nothing. A flow that carries messages between concerns lists the metaflows themselves.</p></div></div>
+<div class="diff"><div class="add"><pre><code class="language-ethos">Signal
+[ flow:[ Address ] ]                        ; imports
+[ Permaflows.Scope                          ; inputs: the permaflows, briefly
+  Metaflows ]                               ;   the metaflows, each with its members
+[ Permaflows.Vector&lt;Listed&gt;                 ; outputs
+  Metaflows.Vector&lt;Metaflow&gt; ]
+[ Scope.[ Mine                              ; types: those of the caller's metaflows and of its topic
+          All ]
+  State.[ Awake Asleep ]
+  Listed.{ Address State }
+  MetaflowName.String                       ;   a camelCase expression: psycheCore
+  Metaflow.{ MetaflowName Vector&lt;Address&gt; } ]</code></pre></div></div>
+<div class="diff"><div class="add"><pre><code class="language-datom">Permaflows.Mine
+Permaflows.[ { { Psyche core Opus } Awake }
+             { { Psyche core Sonnet } Asleep } ]
+Metaflows
+Metaflows.[ { psycheCore [ { Psyche core Fable } { Psyche core Opus } { Psyche core Sonnet } ] } ]</code></pre></div></div>
+<div class="diff"><div class="add"><p>The owner arranges the metaflows over the meta socket, one value at a time, and a launch may name the metaflows its permaflow joins:</p></div></div>
+<div class="diff"><div class="add"><pre><code class="language-ethos">Signal
+[ flow:[ Address MetaflowName Metaflow ] ]  ; imports
+[ Configure.Set ]                           ; inputs
+[ Configured.Set ]                          ; outputs
+[ Set.[ Metaflow                            ; types: a metaflow added or replaced, whole
+        Join.{ MetaflowName Address }       ;   one permaflow added to it
+        Leave.{ MetaflowName Address }
+        Dissolve.MetaflowName ] ]</code></pre></div></div>
+<div class="diff"><div class="add"><p>What the Nexus keeps for its own work, a queue's storage ids among it, is shown by the debugging form of a query and by no other.</p></div></div>
+</article>
+<article class="proposal"><header><span class="pnum">2</span><h2>The word, in the vocabulary · mind-belief › knowledge/vocabulary.md</h2></header>
+<section class="shown"><header><span class="mlabel">as it stands</span><code>mind-belief › knowledge/vocabulary.md</code></header><div class="markdown"><p>Permaflow: one persistent address, { Aspect topic Model }, with its succession of flows.</p><p>Metaflow: several flows arranged together: members, routes and a speaker; addressed by Launch and Send.</p></div></section>
+<div class="diff"><p>Metaflow: <del>several flows arranged together: members, routes and a speaker</del><ins>a named cohesion of permaflows that work together</ins>; <del>addressed by Launch</del><ins>it informs,</ins> and <del>Send</del><ins>constrains nothing</ins>.</p></div>
+</article>
+<article class="proposal"><header><span class="pnum">3</span><h2>Questions stand in the proposal · psyche-belief › vision/proposal.md</h2></header>
+<aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>His words, 12 November: «Instead of asking me here, let's make a special section, and it has to be short, like extremely short. You can ask me questions in the proposal.»</p></div></aside>
+<section class="shown"><header><span class="mlabel">as it stands</span><code>psyche-belief › vision/proposal.md</code></header><div class="markdown"><p>A question between alternative lines shows each alternative as its own proposal, with the exact lines it lands; the living rules land, amend or reject.</p></div></section>
+<div class="diff"><div class="add"><p>A proposal's questions to the living stand in a section of their own at its end, each a line or two.</p></div></div>
+</article>
+<h2>Questions</h2>
+<ol class="choices" start="1"><li>Version 1's vision says a metaflow has routes and a message off them is refused. Should version 1 take this meaning too, a cohesion that informs and refuses nothing, until recovery is solid?</li><li>Should a listing still show a permaflow's purpose on request, or does the purpose leave the listing entirely, the topic's name being enough?</li></ol>
+<!-- Book page code. Paste this whole file, unchanged, at the end of a book page's body. The page writes no CSS of its own.
+     Markup, all optional except what the source has:
+       <h1 class="book-title">                       the book's title
+       <article class="proposal">                    one proposal (one ## section)
+         <header><span class="pnum">1</span><h2>…</h2></header>
+         <p class="target"><code>repo/skills/name.md</code></p>   the target file, as a chip
+         <p>…</p>                                    the section's prose, as text
+         <div class="diff">                          one change
+           <div class="ctx">…</div>                  unchanged context (muted)
+           <del>…</del> / <ins>…</ins>               removed words (red highlight, never struck through) / added words (green), inline in one text
+         </div>
+       </article>
+       A module as it stands (not a proposal): <article class="module"><header><span class="mlabel">as it stands</span><h2 class="target"><code>repo/path.md</code></h2></header> … its headings as h3, h4 … </article>
+       A deleted module shown whole, under the red del margin, with a Destroy or Archive mark (drawn by the class):
+         <div class="record destroy">  or  <div class="record archive">
+           <p class="target"><code>flows/ab12cd/vision/topic.md</code></p>   the module deleted
+           <div class="ctx">…</div>                  its text, shown whole
+         </div>
+       The proposal author's reason on the proposal it sits in, before its lines (an indigo box visibly labelled "Why"):
+         <aside class="comment" aria-label="Why"><div class="comment-label">Why</div><div class="comment-body"><p>…</p></div></aside>
+       Each alternative is its own proposal; there is no alternatives group.
+       A review (<meta name="book-kind" content="review"> in the page) shows every added and removed line in the dark shade
+       (--add-landed-edge, --del-landed-edge); a proposal or an account shows the light shade.
+       <p class="book-subtitle">Created by …</p>   the signature line under the title: the creating model and each helper's help
+       <aside class="key">…</aside>                 the key to the colours, after the title and signature line of a page that carries a change (the builder emits it)
+       <div class="figure"><svg>…</svg></div>       a figure: its ink var(--fg), its fills var(--chip), written by the builder, so it follows the theme
+       <section class="rulings"><h2>Rulings</h2><ol>   (a single ruling may sit inside its proposal; <li value="N"> keeps its number)
+         <li><p>Proposal 1:</p><ol class="choices"><li>land</li><li>amend</li></ol></li>
+       </ol></section>
+     Prose inside ctx is formatted HTML (p, ul, ol, h3, strong, inline code), never pre.
+     Literal fenced file text: <div class="textblock">HTML-escaped text</div>; keep Markdown markers and whitespace, no heading parsing.
+     Code: a full-width row outside choices and indented columns, <pre><code class="language-ethos|language-datom|language-rust|language-clojure|language-bash">.
+     Colour is the sign of a change and lives in the margin: <div class="add">/<div class="del"> and <tr class="row-add|row-del"> carry a green or red edge, their text in the page's colour.
+     Code is highlighted at build time (tree-sitter, classes ts-*): <pre class="code-add|code-del"> is a fence wholly added or removed, one margin;
+     <pre class="code-diff"> holds <span class="ln ln-add|ln-del"> lines, each signed in its gutter. Code never wraps midline; a line wider than the block
+     scrolls inside it (56 characters at 360 px, 61 at 390 px, 85 at desktop width), a shade at the edge where code is hidden. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each proposal is a sheet with its file chip on top, its change shown as stacked diff panels. */
+:root{
+  --bg:#f6f7f4;--sheet:#ffffff;--fg:#1d2420;--muted:#66726b;--line:#dde2dc;--chip:#e9ede7;
+  --add-bg:#e3f5e6;--add-proposed-edge:#2f8a46;--add-fg:#14351f;
+  --del-bg:#fbe5e3;--del-proposed-edge:#c2372b;--del-fg:#5b1a14;
+  --moved-bg:#e4e9fb;--moved-edge:#3a5bc7;--moved-fg:#1c2b66;
+  --move-proposed-edge:#6b7ed6;--move-landed-edge:#304aa8;
+  --ctx-bg:#f1f3ef;--accent:#1c5f8a;
+  --add-landed-edge:#14602b;--del-landed-edge:#8e1d12;
+  --comment-bg:#e8ebfa;--comment-edge:#3f51b5;--comment-fg:#1f2756;
+  --shown-bg:#fff4d6;--shown-edge:#b87500;--shown-fg:#4d3100;
+  --hl-bg:#eceee9;--hl-type:#1c5f8a;--hl-punct:#9a5b13;--hl-comment:#6b7a72;--hl-string:#6a3fa0;--hl-meta:#8a3d6b;
+  --hl-add:rgba(47,138,70,.16);--hl-del:rgba(194,55,43,.15);
+  --f-prose:"Literata",Georgia,"Times New Roman",serif;
+  --f-label:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-code:"JetBrains Mono",ui-monospace,"DejaVu Sans Mono",monospace;
+  --add-edge:var(--add-proposed-edge);--del-edge:var(--del-proposed-edge);
+}
+.move{border-left:4px solid var(--move-edge);padding:4px 0 4px 12px;min-width:0}
+.move-proposed{--move-edge:var(--move-proposed-edge)}
+.move-landed{--move-edge:var(--move-landed-edge)}
+.move>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
+.move-state{font-family:var(--f-label);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815;--sheet:#1a211d;--fg:#e4e9e5;--muted:#93a199;--line:#2c3631;--chip:#25302a;
+  --add-bg:#16301f;--add-proposed-edge:#5cc47a;--add-fg:#cdeed5;
+  --del-bg:#361a18;--del-proposed-edge:#f07a6e;--del-fg:#f6d0cb;
+  --moved-bg:#1f2747;--moved-edge:#8fa6f5;--moved-fg:#d7defa;
+  --move-proposed-edge:#9aaeff;--move-landed-edge:#7e95f5;
+  --ctx-bg:#1e2622;--accent:#7cc0ee;
+  --add-landed-edge:#2f9a52;--del-landed-edge:#c4493d;
+  --comment-bg:#1d2240;--comment-edge:#9fa8f0;--comment-fg:#dde1fb;
+  --shown-bg:#3a2b10;--shown-edge:#e6aa42;--shown-fg:#ffe4aa;
+  --hl-bg:#1c2420;--hl-type:#7cc0ee;--hl-punct:#e0a45a;--hl-comment:#7f8e85;--hl-string:#c3a6ef;--hl-meta:#d58fb9;
+  --hl-add:rgba(92,196,122,.17);--hl-del:rgba(240,122,110,.16);color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-prose);margin:0 auto;max-width:44rem;padding-inline:16px;padding-block:20px 48px;display:grid;gap:22px;align-content:start}
+body>*{min-width:0;margin:0}
+h1,h2,h3{font-family:var(--f-label);text-wrap:balance;line-height:1.25}
+h1,.book-title{font-size:1.65rem;font-weight:600;letter-spacing:.005em;margin-block:4px}
+p.book-subtitle{color:var(--muted);font-size:.95rem;margin-block:-14px 0}
+h2{font-size:1.18rem;font-weight:600;margin:0}
+h3{font-size:1rem;font-weight:600;margin:.4em 0 .2em}
+p,ul,ol{margin:0}
+.textblock{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+:where(article,section,div,li)>*+*{margin-top:.7em}
+a{color:var(--accent)}
+:not(pre)>code{font-family:var(--f-code);font-size:.84em;background:var(--chip);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere;word-break:normal}
+/* A figure keeps the size it is drawn at; a column narrower than it scrolls it sideways, never up and down.
+   overflow-x:auto makes the box a scroll container, whose automatic minimum height is 0, so a grid row that is short of room
+   (a page without a doctype is in quirks mode, where the body is held to the screen's height) shrinks it to nothing and the
+   next element overlaps it. A min-height does not stop that; a definite height does: height:max-content is the whole content height. */
+.figure{overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0}
+/* Likewise a table: sideways scroll only, its whole height always (see .figure). */
+table{border-collapse:collapse;font-family:var(--f-label);font-size:.95rem;display:block;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px 6px 0;text-align:left}
+th{color:var(--muted);font-weight:600;letter-spacing:.03em}
+
+/* A proposal: a sheet with a numbered header and its target chip. */
+.proposal{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 16px 20px;min-width:0}
+.proposal>header{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.proposal>header>*{margin:0;min-width:0}
+.pnum{font-family:var(--f-label);font-weight:600;font-size:.95rem;width:1.9rem;height:1.9rem;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--sheet);font-variant-numeric:tabular-nums}
+.target{display:flex}
+.target code,.target{font-family:var(--f-code);font-size:.78rem}
+.target>code{display:inline-block;background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 10px;overflow-wrap:anywhere;max-width:100%}
+.target>code::before{content:"\25A4  ";color:var(--muted)}
+
+/* A module view: the module as it stands, framed apart from a proposal (blue edge, tinted ground, a label) and from page text. */
+.module{background:color-mix(in srgb,var(--accent) 7%,var(--sheet));border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:10px;padding:14px 16px 20px;min-width:0}
+.module>header{display:grid;gap:6px;justify-items:start}
+.module>header>*{margin:0;min-width:0}
+.module>.in-place{margin:18px 0}
+.in-place>header h3{font-size:1.05rem}
+.mlabel{font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.module h3{font-size:1.05rem;margin-top:1em}
+.markdown{min-width:0}
+.markdown>*+*{margin-top:.7em}
+.module h4{font-size:.95rem;font-weight:600;font-family:var(--f-label);margin-top:.9em}
+
+/* A change: stacked panels, each with a sign gutter. */
+.diff{display:grid;gap:6px;min-width:0}
+.diff>*{margin:0;min-width:0}
+.ctx{display:grid;grid-template-columns:1.6rem 1fr;border-radius:8px;overflow:hidden;min-width:0}
+.ctx::before{font-family:var(--f-code);font-weight:600;font-size:.95rem;text-align:center;padding-top:12px;grid-row:1/span 999}
+.ctx>*{grid-column:2;min-width:0;padding-inline:4px 14px;margin:0}
+.ctx>:first-child{padding-top:10px}
+.ctx>:last-child{padding-bottom:12px}
+.ctx>*+*{padding-top:.6em}
+.ctx{background:transparent;color:var(--fg)}
+.ctx::before{content:"";}
+.diff del,pre del{color:var(--del-edge);background:var(--hl-del);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff ins,pre ins{color:var(--add-edge);background:var(--hl-add);text-decoration:none;overflow-wrap:anywhere;word-break:break-word}
+.diff del *,pre del *{color:inherit;text-decoration:inherit}
+.diff ins *,pre ins *{color:inherit;text-decoration:none}
+/* Fallback for publishers that emit prose panels instead of inline marks. */
+.diff .del,.diff .add{color:var(--fg);background:transparent;text-decoration:none}
+.del>*,.add>*{overflow-wrap:anywhere}
+.diff .add,.diff .del{padding:6px 10px 6px 12px;border-left:4px solid;border-radius:6px;min-width:0}
+.diff .add{border-left-color:var(--add-edge)}
+.diff .moved{color:var(--moved-fg);background:var(--moved-bg);padding:6px 10px 6px 12px;border-radius:6px;min-width:0}
+.diff .moved>*{overflow-wrap:anywhere}
+.diff .moved :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff .del{border-left-color:var(--del-edge)}
+/* A figure's colours are the page's: the builder writes its ink as --fg and its fills as --chip, so it follows the theme.
+   A surround alone marks it added or removed. */
+.figmark{border:2px solid;border-left-width:8px;border-radius:6px;padding:4px;min-width:0}
+.fig-add{border-color:var(--add-edge)}
+.fig-del{border-color:var(--del-edge)}
+.part{margin:.6em 0 .2em;font-size:.95rem;font-weight:600;font-family:var(--f-label)}
+.diff .add :is(h3,h4,h5,h6),.diff .del :is(h3,h4,h5,h6){margin:0;color:inherit}
+.diff :is(ul,ol){padding-inline-start:1.3em}
+.diff :is(ul,ol)>li+li{margin-top:.25em}
+.diff pre:has(>code[class*="language-"]){margin-top:.4em}
+/* Front matter of a proposed module: a small labelled card. */
+.fm{border:1px solid var(--line);background:var(--sheet);color:var(--fg);border-radius:8px;padding:8px 12px 10px;min-width:0}
+.fm-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fm dl{margin:.3em 0 0;display:grid;gap:.15em .8em;grid-template-columns:auto 1fr}
+.fm dt{font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.fm dd{margin:0;min-width:0;overflow-wrap:anywhere}
+@media (max-width:540px){.fm dl{grid-template-columns:1fr}.fm dd{margin-bottom:.4em}}
+.ctx pre{padding-inline:12px}
+.diff-label{font-family:var(--f-label);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* A deleted module shown whole: under the red margin of a removal, with its Destroy or Archive mark. */
+.record{border-left:4px solid var(--del-edge);padding:4px 0 4px 12px;min-width:0}
+.record::before{display:inline-block;margin-bottom:.5em;padding:2px 10px;border-radius:999px;background:var(--del-edge);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.record.destroy::before{content:"\2715  Destroy"}
+.record.archive::before{content:"\25A3  Archive"}
+.record .ctx{background:transparent}
+
+/* A review: every added and removed line shows in the dark shade, the landed edge. */
+:root:has(meta[name="book-kind"][content="review"]){--add-edge:var(--add-landed-edge);--del-edge:var(--del-landed-edge)}
+
+/* The machine's comment: why it proposes the lines that follow; its own colour (indigo), never module text, green or red. */
+.comment{border:1px solid var(--comment-edge);border-left-width:4px;background:var(--comment-bg);color:var(--comment-fg);border-radius:8px;margin:18px 0 20px;padding:10px 12px 12px;min-width:0;font-family:var(--f-label);font-size:.95rem;line-height:1.5}
+.comment-label{display:table;margin:0 0 7px;padding:1px 9px;border-radius:999px;background:var(--comment-edge);color:var(--sheet);font-weight:600;font-size:.74rem;letter-spacing:.04em}
+.comment-body> :first-child{margin-top:0}.comment-body> :last-child{margin-bottom:0}.comment-body p{overflow-wrap:anywhere}
+
+/* An excerpt of its named source module as it stands: a fourth colour beside added, removed and moved. */
+.shown{border:1px solid var(--shown-edge);border-left-width:5px;border-radius:8px;background:var(--shown-bg);color:var(--shown-fg);margin:16px 0;padding:10px 12px;min-width:0}
+.shown>header{display:flex;align-items:center;gap:9px;margin:0 0 8px;font-family:var(--f-label)}
+.shown>header code{overflow-wrap:anywhere}.shown>pre{margin:0}
+.shown>.markdown,.shown>.textblock{overflow-wrap:anywhere}
+
+/* The key to the colours, under the title of a page that carries a change: a swatch per colour, proposed (light) beside landed (dark). */
+.key{border:1px solid var(--line);border-radius:8px;padding:8px 12px 10px;font-family:var(--f-label);font-size:.9rem;line-height:1.4;min-width:0}
+.key-label{color:var(--muted);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.key ul{list-style:none;padding:0;margin:.4em 0 0;display:flex;flex-wrap:wrap;gap:.35em 1.1em}
+.key li{display:flex;align-items:center;gap:3px;margin:0}
+.key li>*{margin:0}.key li>.sw:last-of-type{margin-inline-end:5px}
+.sw{display:inline-block;width:.95em;height:.95em;border-radius:3px}
+.sw-add{background:var(--add-proposed-edge)}.sw-add-landed{background:var(--add-landed-edge)}
+.sw-del{background:var(--del-proposed-edge)}.sw-del-landed{background:var(--del-landed-edge)}
+.sw-move{background:var(--move-proposed-edge)}.sw-move-landed{background:var(--move-landed-edge)}
+.sw-shown{background:var(--shown-edge)}.sw-module{background:var(--accent)}
+.key-note{color:var(--muted);font-size:.85rem;margin-top:.4em}
+
+/* Rulings: one card per ruling, numbered choices. */
+.rulings{display:grid;gap:12px}
+.rulings>ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rulings>ol>li{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px 16px 16px 3.4rem;position:relative;margin:0}
+.rulings>ol>li::before{content:counter(list-item);position:absolute;left:14px;top:13px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--sheet);font-family:var(--f-label);font-weight:600;font-size:.9rem}
+.choices{list-style:none;padding:0;display:grid;gap:6px;counter-reset:choice}
+.choices>li{counter-increment:choice;display:block;position:relative;padding-inline-start:calc(1.8rem + 8px);min-width:0;margin:0}
+.choices>li::before{content:counter(choice);position:absolute;left:0;top:0;width:1.8rem;font-family:var(--f-label);font-weight:600;text-align:center;border:1.5px solid var(--accent);color:var(--accent);border-radius:6px;line-height:1.5}
+
+/* Code: never wraps; wide lines scroll inside their block, and a shade at the edge shows there is more:
+   the covers move with the code (local), the shades stay at the box's edges (scroll), so a shade shows only where code is hidden. */
+pre:has(>code[class*="language-"]){--scroll-shade:color-mix(in srgb,var(--fg) 45%,transparent);
+  background:linear-gradient(to right,var(--hl-bg) 40%,transparent) left/28px 100% no-repeat local,
+    linear-gradient(to left,var(--hl-bg) 40%,transparent) right/28px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,var(--scroll-shade),transparent) left/12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,var(--scroll-shade),transparent) right/12px 100% no-repeat scroll,
+    var(--hl-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;overflow-y:hidden;height:max-content;max-width:100%;min-width:0;margin:0}
+pre>code[class*="language-"]{background:none;padding:0;white-space:pre;font-family:var(--f-code);font-size:.82rem;line-height:1.5;display:block;tab-size:4;position:relative;isolation:isolate;min-width:max-content}
+pre>code[class*="language-"],pre>code[class*="language-"] *{white-space:pre!important}
+@media (max-width:540px){pre>code[class*="language-"]{font-size:12px}body{font-size:16px}}
+:where(*):has(pre>code[class*="language-"]){min-width:0}
+/* A change in code: one margin for a fence wholly added or removed; per line in the gutter otherwise. */
+pre.code-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff:has(>code){padding-inline:0}
+pre.code-diff .ln{display:block;padding-inline:14px;position:relative}
+pre.code-diff .ln-add{box-shadow:inset 4px 0 var(--add-edge)}
+pre.code-diff .ln-del{box-shadow:inset 4px 0 var(--del-edge)}
+pre.code-diff .ln-add::before,pre.code-diff .ln-del::before{position:absolute;left:5px;font-weight:600}
+pre.code-diff .ln-add::before{content:"+";color:var(--add-edge)}
+pre.code-diff .ln-del::before{content:"\2212";color:var(--del-edge)}
+tr.row-add>:first-child{box-shadow:inset 4px 0 var(--add-edge)}
+tr.row-del>:first-child{box-shadow:inset 4px 0 var(--del-edge)}
+/* Syntax colours, from tree-sitter's captures. */
+.ts-keyword,.ts-type,.ts-constructor{color:var(--hl-type)}
+.ts-punctuation,.ts-operator{color:var(--hl-punct)}
+.ts-comment{color:var(--hl-comment);font-style:italic}
+.ts-string,.ts-number,.ts-constant{color:var(--hl-string)}
+.ts-function,.ts-module,.ts-attribute,.ts-property,.ts-label,.ts-string.ts-special{color:var(--hl-meta)}
+.ts-type.ts-builtin,.ts-function.ts-builtin,.ts-keyword{font-weight:600}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<script>
+  // A meta tag in the body is not reliably honoured: make sure the head carries the viewport.
+  if(!document.head.querySelector('meta[name="viewport"]')){var vm=document.createElement('meta');vm.name='viewport';vm.content='width=device-width, initial-scale=1';document.head.appendChild(vm)}
+</script>

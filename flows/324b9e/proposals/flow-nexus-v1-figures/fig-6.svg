@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1760" viewBox="0 0 800 1760" role="img" aria-label="ordinary caller connection flowchart">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#263238"/>
+    </marker>
+    <style>
+      .node { fill:#ffffff; stroke:#263238; stroke-width:2.5; }
+      .edge { fill:none; stroke:#263238; stroke-width:2.5; marker-end:url(#arrow); }
+      .label { fill:#111827; font-family:Arial,Helvetica,sans-serif; font-size:18px; text-anchor:middle; dominant-baseline:middle; }
+      .edge-label { fill:#111827; font-family:Arial,Helvetica,sans-serif; font-size:17px; text-anchor:middle; dominant-baseline:middle; }
+    </style>
+  </defs>
+  <rect width="800" height="1760" fill="#f7f9fb"/>
+
+  <!-- nodes -->
+  <rect class="node" x="235" y="30" width="330" height="64" rx="12"/>
+  <text class="label" x="400" y="62">ordinary caller connection</text>
+
+  <rect class="node" x="235" y="150" width="330" height="64" rx="12"/>
+  <text class="label" x="400" y="182">read and decode once</text>
+
+  <rect class="node" x="35" y="300" width="250" height="86" rx="12"/>
+  <text class="label" x="160" y="343"><tspan x="160" dy="-10">Unreadable: exact request</tspan><tspan x="160" dy="22">codec error</tspan></text>
+
+  <rect class="node" x="290" y="300" width="220" height="64" rx="12"/>
+  <text class="label" x="400" y="332"><tspan x="400" dy="-10">checked single-reply</tspan><tspan x="400" dy="22">query</tspan></text>
+
+  <rect class="node" x="515" y="300" width="250" height="64" rx="12"/>
+  <text class="label" x="640" y="332">existing streaming path</text>
+
+  <rect class="node" x="290" y="450" width="220" height="76" rx="12"/>
+  <text class="label" x="400" y="488"><tspan x="400" dy="-10">prepare call; contact</tspan><tspan x="400" dy="22">Nexus</tspan></text>
+
+  <rect class="node" x="35" y="590" width="250" height="64" rx="12"/>
+  <text class="label" x="160" y="622">NexusDown</text>
+
+  <rect class="node" x="290" y="590" width="220" height="64" rx="12"/>
+  <text class="label" x="400" y="622">forward request</text>
+
+  <rect class="node" x="290" y="720" width="220" height="76" rx="12"/>
+  <text class="label" x="400" y="758"><tspan x="400" dy="-10">receive and decode</tspan><tspan x="400" dy="22">domain response</tspan></text>
+
+  <rect class="node" x="290" y="860" width="220" height="64" rx="12"/>
+  <text class="label" x="400" y="892"><tspan x="400" dy="-10">write unchanged domain</tspan><tspan x="400" dy="22">response</tspan></text>
+
+  <rect class="node" x="35" y="1000" width="250" height="64" rx="12"/>
+  <text class="label" x="160" y="1032">Answered</text>
+
+  <rect class="node" x="515" y="980" width="250" height="104" rx="12"/>
+  <text class="label" x="640" y="1032"><tspan x="640" dy="-22">owned observed response +</tspan><tspan x="640" dy="22">native write error</tspan></text>
+
+  <!-- arrows -->
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="94" x2="400" y2="150"/>
+  <path class="edge" marker-end="url(#arrow)" d="M400 214 L400 250 L160 250 L160 300"/>
+  <text class="edge-label" x="190" y="240">codec error</text>
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="214" x2="400" y2="300"/>
+  <text class="edge-label" x="400" y="270">Register / Resolve / Furnish</text>
+  <path class="edge" marker-end="url(#arrow)" d="M400 214 L400 250 L640 250 L640 300"/>
+  <text class="edge-label" x="630" y="240">Subscribe</text>
+
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="364" x2="400" y2="450"/>
+  <path class="edge" marker-end="url(#arrow)" d="M290 488 L160 488 L160 590"/>
+  <text class="edge-label" x="215" y="478">connect fails</text>
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="526" x2="400" y2="590"/>
+  <text class="edge-label" x="450" y="560">connected</text>
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="654" x2="400" y2="720"/>
+  <line class="edge" marker-end="url(#arrow)" x1="400" y1="796" x2="400" y2="860"/>
+  <path class="edge" marker-end="url(#arrow)" d="M400 924 L400 960 L160 960 L160 1000"/>
+  <text class="edge-label" x="190" y="950">write succeeds</text>
+  <path class="edge" marker-end="url(#arrow)" d="M400 924 L400 950 L640 950 L640 980"/>
+  <text class="edge-label" x="620" y="940">write fails</text>
+</svg>

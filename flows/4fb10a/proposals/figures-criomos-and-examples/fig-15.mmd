@@ -1,0 +1,7 @@
+flowchart LR
+    c["CLI"] -- "datom" --> ta["translator A"]
+    ta -- "signal" --> a["Nexus A"]
+    a -- "Emission, signal" --> ta
+    ta -- "Input of B, signal" --> b["Nexus B"]
+    b -- "Emission, signal" --> tb["translator B"]
+    tb -- "the call" --> w["world"]

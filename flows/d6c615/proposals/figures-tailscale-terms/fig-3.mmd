@@ -1,0 +1,7 @@
+flowchart TB
+    n1["node: the laptop"] -- "reports its addresses to" --> k["the coordination server: Tailscale's, or Headscale"]
+    n2["node: the desktop"] -- "reports its addresses to" --> k
+    k -- "tells each node its peers" --> n1
+    n1 -- "sends encrypted traffic directly to" --> n2
+    n1 -- "sends through, when no direct path works" --> y["a relay"]
+    y -- "passes it, unread, to" --> n2

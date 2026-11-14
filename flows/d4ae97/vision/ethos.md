@@ -71,11 +71,6 @@ Context: comment on `Settings`, among the types Curriculum defines in Rust.
 
 -- psyche, comment on «Curriculum's ethos, and every Nexus's three roots» (https://claude.ai/artifact/117Cd1V9Hsp2UTMKmipHtU), 2026-10-07.
 
-## Variants are ordered by seniority, the first most senior
-> I guess we should represent it in the order, so whenever you have a variant in ethos you need to position the variants hierarchically. There's an implied hierarchy: the first one is most senior. That's going to be the case with spirit being first and, in the field, compensation is above trial, right? It's tested, trial, and field work.
-
--- psyche, STT, 2026-10-07.
-
 ## Traits are written in ethos
 > We can have other kinds of checks to make sure that all implementations are done under a [trait] but that's very mechanical. The model is just code around it and writing really dumb traits. We have to teach people how to design traits, which is why we have to look at the traits, which is why all the traits should not now [sic] have to be written in the ethos. We can mechanically make sure there's no trait.
 

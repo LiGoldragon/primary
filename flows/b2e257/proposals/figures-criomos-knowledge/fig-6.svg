@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 550" width="560" height="550" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333333"/>
+    </marker>
+  </defs>
+  <!-- white card so the figure reads on light and dark surfaces -->
+  <rect x="0" y="0" width="560" height="550" rx="12" fill="#ffffff" stroke="#999999" stroke-width="1"/>
+
+  <!-- things -->
+  <rect x="20" y="20" width="250" height="56" rx="8" fill="#f2f2f2" stroke="#333333" stroke-width="2"/>
+  <text x="145" y="54" font-size="18" text-anchor="middle" fill="#111111">cluster-definition.datom</text>
+
+  <rect x="290" y="20" width="250" height="56" rx="8" fill="#f2f2f2" stroke="#333333" stroke-width="2"/>
+  <text x="415" y="54" font-size="18" text-anchor="middle" fill="#111111">horizon-configuration.datom</text>
+
+  <rect x="130" y="170" width="300" height="56" rx="8" fill="#f2f2f2" stroke="#333333" stroke-width="2"/>
+  <text x="280" y="204" font-size="18" text-anchor="middle" fill="#111111">horizon-definition</text>
+
+  <rect x="130" y="320" width="300" height="56" rx="8" fill="#f2f2f2" stroke="#333333" stroke-width="2"/>
+  <text x="280" y="354" font-size="18" text-anchor="middle" fill="#111111">nix flake check</text>
+
+  <rect x="130" y="470" width="300" height="56" rx="8" fill="#f2f2f2" stroke="#333333" stroke-width="2"/>
+  <text x="280" y="504" font-size="18" text-anchor="middle" fill="#111111">the proposal path</text>
+
+  <!-- verbed relations -->
+  <polyline points="60,76 60,198 130,198" fill="none" stroke="#333333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="70" y="134" font-size="17" text-anchor="start" fill="#222222">is composed into</text>
+
+  <polyline points="500,76 500,198 430,198" fill="none" stroke="#333333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="490" y="134" font-size="17" text-anchor="end" fill="#222222">is composed into</text>
+
+  <line x1="280" y1="226" x2="280" y2="320" stroke="#333333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="296" y="278" font-size="17" text-anchor="start" fill="#222222">is projected per node by</text>
+
+  <line x1="280" y1="376" x2="280" y2="470" stroke="#333333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="296" y="428" font-size="17" text-anchor="start" fill="#222222">passing, yields</text>
+</svg>

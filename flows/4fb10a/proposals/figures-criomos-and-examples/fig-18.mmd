@@ -1,0 +1,8 @@
+flowchart TB
+    d["definitions: one datom file per complex, metaflow and harness"] -- "Define, through the CLI" --> f["Flow Nexus"]
+    f -- "Furnish, signal" --> b["Belief Nexus"]
+    f -- "Create, Start, Prompt, signal" --> h["herdr Nexus"]
+    b -- "writes the bundle and the skills" --> w["workspace"]
+    h -- "runs herdr" --> p["pane: the harness, the flow"]
+    p -- "Report, through the CLI, from a hook" --> f
+    l["the living, at a CLI"] -- "Say" --> f

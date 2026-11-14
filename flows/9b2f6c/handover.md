@@ -1,0 +1,28 @@
+# Herdr event lane handover — flow9b2f6c
+
+**Owner/address:** Mind herdrNexus Sol. Reviewer Mind core Astra; Field core Sol alone deploys after approval. Read supplied modules in inherited context, not generated skill trees. Latest controlling brief: `flows/77aa99/herdr-schema-acceptance.md` (m21p). Namespace migration is a separate future assignment (`flows/77aa99/signal-namespace-migration.md`), awaiting accepted generator; keep event repair on pinned22.
+
+## Standing authority and custody
+
+Astra accepted schema proof and authorized **independent** adapter/internal stream, descriptor-woken writer cancellation and session ordering/coalescing bodies. Flow-owned readiness projection/integration remains gated; no provisional Herdr boolean semantics, meta changes, retry polling, backend-pair merge or deployment. Independent tests in herdr-nexus-tests are authorized by Opus1axl; not edited yet. Lock70 owns `/git/worktrees/herdr-events-9b2f6c` and `/git/worktrees/signal-herdr-events-9b2f6c`; lock77 owns durable `flows/9b2f6c/herdr-events/`. Canonical trees and divergent backend-pair candidate are foreign, preserved. Primary files are left for sole standing committer; commit/push own other repositories only.
+
+## Published source and proof
+
+Both branches `candidate/events-9b2f6c` track origin and were clean after push:
+- Herdr latest **63d2db9** (full via git rev-parse), based on approved c0bcca1358d914f2ba35076318a8ab8f9a08aec2. This is an **uncompiled first implementation slice**, not accepted runtime code.
+- Ordinary contract latest **da517ff18ca36008730f69102361184559ced343** bumps accepted schema to0.5.0. Previously tested schema5d5fc01426b492c6d5c28733b9e5bcfd877d3f37 passed seven remote schema tests. Version bump lock/Cargo.nix was edited mechanically; must regenerate/prove before acceptance.
+- Durable accepted-stage evidence: `flows/9b2f6c/herdr-events/{README.md,schema-proof.md,anatomy.md,consumers.md}` and logs/schema/hash files. These still describe prior d47dbcf/5d5fc01 accepted schema, not latest body slice.
+
+Pinned generator: binary `/nix/store/gh9lg32sv8dp2h3gml1zkax09s4r3sn3-rust_ethos-zero-22.0.0/bin/ethos-zero`, source matches17 files at actual c0bcca **flake** pin18e2ea6bba64ce8bc478941ca4e16d134c76d04f. Cargo.lock separately names1976e45. Earlier3cp4 binary is provisional only. Remote scratch `/tmp/herdr-schema-9b2f6c.P99amV`; local scratch `/tmp/herdr-events-9b2f6c.OufIrh`.
+
+## What63d2db9 contains and what remains broken
+
+New `translator/src/observation.rs` implements associated-type SourceObservable + interchangeable delivery/cancellation ports, one bounded `herdr session list --json` discovery then nonblocking Herdr events.subscribe, bounded acknowledgement/progress, per-pane status selections, typed invalidations only, no readiness/state projection. New ObservationSignal server edge is paired-peer-only. New `wire/{observation_ports,wake_queue}.rs` uses descriptor waits with EOF cancellation and bounded queue overflow. Live SubscriberQueue now uses it; registration holds existing Memory guard through hub registration, writers run outside it and remove themselves immediately. New pure `daemon/observation_owner.rs` implements attach/read coalescing, membership/generation fencing, demand-only recovery and last-subscriber cancellation. Approved direct-Pane reservation constructor migration is included.
+
+**Do not claim compile yet.** The current sources intentionally precede regeneration: MembershipChanged removed from ethos but its committed generated module is stale; ObservationSignal added to transport ethos but generated transport enum is stale. Wire's nix manifest currently declares socket only: add explicit poll feature for WakeQueue (do not rely on feature unification). Herdr manifests repin ordinary da517ff but Cargo.lock/Cargo.nix/hashes are still old. No basic compile/tests of the new bodies have run. Existing live List-diff poll remains until native-readiness projection integration is approved; pure owner is compiled-module wiring, not yet the live subscription source. Internal contract identity/handshake and generated/full consumer identities still need exact review; do not imply current frame lane alone proves a full handshake.
+
+## Next step
+
+Regenerate observation-stream and transport with the exact generator; apply existing `checks/generated-contract-normalized.sh` transport normalization. Regenerate ordinary and Herdr lock/Cargo.nix/hash tables on builder, preserving central versions (central build-base edits belong to Mind core Sol; Astra notified via tb0y). Then format, push immutable corrected slice and compile/run focused module/scripted tests remotely; return source/signatures/data-owner report to Astra **before full acceptance gates**. SourceObservable associated ports are in wire/observation_ports.rs; refresh durable anatomy against actual code. Review adapter cancellation/protocol bounds and owner command/Memory integration gaps honestly. The approved full real-producer/readiness/consumer rollout proof is later.
+
+Builder `prometheus.goldragon.criome`. Newly allocated unused scratch `/tmp/herdr-slice-9b2f6c.zvklKW` for regeneration. Ordinary current flake base d5ad91d604b83fa8e9c8416783d4bbd3e97ed703; Herdr base f07e7bc38348a2d8cb7f3534d4d25ed84213d5a8. No long-running tool process remains. Bead `herdr-nexus-fwk` tracks the lane, still in_progress; update notes with this checkpoint. Authored module pointers already read: mind-belief/knowledge/{orchestrate,ethos}.md and psyche-belief/knowledge/active-projects.md; do not reload them in this flow. Orchestrate current snapshot is Observe.Locks; acquire ordinary Lock then release its ID.

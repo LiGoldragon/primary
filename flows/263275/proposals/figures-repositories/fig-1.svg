@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 620" width="440" height="620" font-family="sans-serif" font-size="20">
+  <style>
+    svg { color: #1a1a1a; }
+    @media (prefers-color-scheme: dark) { svg { color: #f2f2f2; } }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- the remote: a self-loop -->
+  <text x="220" y="50" text-anchor="middle" fill="currentColor">tagged or committed</text>
+  <text x="220" y="76" text-anchor="middle" fill="currentColor">to without a checkout</text>
+  <path d="M140 170 C140 110 300 110 300 170" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#head)"/>
+
+  <!-- the remote -->
+  <rect x="40" y="170" width="360" height="70" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="220" y="200" text-anchor="middle" fill="currentColor">the remote:</text>
+  <text x="220" y="226" text-anchor="middle" fill="currentColor">the source of truth</text>
+
+  <!-- remote -> checkout -->
+  <line x1="220" y1="240" x2="220" y2="340" stroke="currentColor" stroke-width="2" marker-end="url(#head)"/>
+  <text x="236" y="275" fill="currentColor">fetched, shallow,</text>
+  <text x="236" y="299" fill="currentColor">when a machine</text>
+  <text x="236" y="323" fill="currentColor">needs to read it</text>
+
+  <!-- the checkout -->
+  <rect x="40" y="340" width="360" height="70" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="220" y="370" text-anchor="middle" fill="currentColor">the checkout:</text>
+  <text x="220" y="396" text-anchor="middle" fill="currentColor">a cache under /git</text>
+
+  <!-- checkout -> zoekt -->
+  <line x1="50" y1="410" x2="50" y2="530" stroke="currentColor" stroke-width="2" marker-end="url(#head)"/>
+  <text x="66" y="460" fill="currentColor">indexed while</text>
+  <text x="66" y="484" fill="currentColor">it stands</text>
+
+  <!-- checkout -> removed -->
+  <line x1="390" y1="410" x2="390" y2="530" stroke="currentColor" stroke-width="2" marker-end="url(#head)"/>
+  <text x="374" y="460" text-anchor="end" fill="currentColor">unread for the</text>
+  <text x="374" y="484" text-anchor="end" fill="currentColor">set time</text>
+
+  <!-- zoekt -->
+  <rect x="20" y="530" width="180" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="110" y="566" text-anchor="middle" fill="currentColor">zoekt</text>
+
+  <!-- removed -->
+  <rect x="240" y="530" width="180" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="330" y="566" text-anchor="middle" fill="currentColor">removed</text>
+</svg>

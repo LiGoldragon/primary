@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="600" height="700" font-family="sans-serif" font-size="22">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+  <rect x="20" y="30" width="260" height="120" fill="white" stroke="black" stroke-width="2"/>
+  <text x="150" y="85" text-anchor="middle" fill="black">a request delivered</text>
+  <text x="150" y="115" text-anchor="middle" fill="black">to the flow</text>
+
+  <rect x="320" y="30" width="260" height="120" fill="white" stroke="black" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" fill="black">the flow refreshes</text>
+
+  <line x1="450" y1="150" x2="450" y2="290" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="436" y="205" text-anchor="end" fill="black">the Nexus carries,</text>
+  <text x="436" y="233" text-anchor="end" fill="black">with the handover</text>
+
+  <rect x="320" y="290" width="260" height="130" fill="white" stroke="black" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" fill="black">the successor's first</text>
+  <text x="450" y="352" text-anchor="middle" fill="black">prompt: every open</text>
+  <text x="450" y="379" text-anchor="middle" fill="black">request, same ids</text>
+
+  <line x1="150" y1="150" x2="150" y2="560" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="166" y="360" text-anchor="start" fill="black">is open until</text>
+
+  <rect x="20" y="560" width="260" height="100" fill="white" stroke="black" stroke-width="2"/>
+  <text x="150" y="620" text-anchor="middle" fill="black">its Result or Done</text>
+
+  <polyline points="450,420 450,610 282,610" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="436" y="510" text-anchor="end" fill="black">answers with</text>
+</svg>

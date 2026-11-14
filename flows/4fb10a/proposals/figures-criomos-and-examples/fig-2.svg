@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 960" width="640" height="960" font-family="sans-serif" fill="black">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+    </marker>
+  </defs>
+
+  <!-- edges -->
+  <g stroke="black" stroke-width="2" fill="none" marker-end="url(#arrow)">
+    <line x1="320" y1="100" x2="320" y2="140"/>
+    <polyline points="225,180 130,180 130,260"/>
+    <polyline points="415,180 510,180 510,260"/>
+    <line x1="320" y1="220" x2="320" y2="260"/>
+    <line x1="320" y1="340" x2="320" y2="380"/>
+    <polyline points="225,420 130,420 130,500"/>
+    <line x1="320" y1="460" x2="320" y2="500"/>
+    <line x1="320" y1="580" x2="320" y2="620"/>
+    <line x1="320" y1="700" x2="320" y2="740"/>
+    <polyline points="290,820 290,840 130,840 130,860"/>
+    <polyline points="350,820 350,840 510,840 510,860"/>
+  </g>
+
+  <!-- edge labels -->
+  <g font-size="16">
+    <text x="215" y="168" text-anchor="end">codec error</text>
+    <text x="415" y="168">Subscribe</text>
+    <text x="332" y="232">Register /</text>
+    <text x="332" y="250">Resolve / Furnish</text>
+    <text x="215" y="408" text-anchor="end">connect fails</text>
+    <text x="332" y="484">connected</text>
+    <text x="280" y="834" text-anchor="end">write succeeds</text>
+    <text x="360" y="834">write fails</text>
+  </g>
+
+  <!-- boxes -->
+  <g stroke="black" stroke-width="2" fill="white">
+    <rect x="225" y="30" width="190" height="80"/>
+    <rect x="225" y="140" width="190" height="80"/>
+    <rect x="40" y="260" width="180" height="80"/>
+    <rect x="225" y="260" width="190" height="80"/>
+    <rect x="420" y="260" width="180" height="80"/>
+    <rect x="225" y="380" width="190" height="80"/>
+    <rect x="40" y="500" width="180" height="80"/>
+    <rect x="225" y="500" width="190" height="80"/>
+    <rect x="225" y="620" width="190" height="80"/>
+    <rect x="225" y="740" width="190" height="80"/>
+    <rect x="40" y="860" width="180" height="80"/>
+    <rect x="420" y="860" width="180" height="80"/>
+  </g>
+
+  <!-- box labels -->
+  <g font-size="17" text-anchor="middle">
+    <text x="320" y="55">ordinary caller</text>
+    <text x="320" y="75">connection</text>
+
+    <text x="320" y="165">read and decode</text>
+    <text x="320" y="185">once</text>
+
+    <text x="130" y="285">Unreadable: exact</text>
+    <text x="130" y="305">request codec error</text>
+
+    <text x="320" y="285">checked single-reply</text>
+    <text x="320" y="305">query</text>
+
+    <text x="510" y="285">existing</text>
+    <text x="510" y="305">streaming path</text>
+
+    <text x="320" y="405">prepare call;</text>
+    <text x="320" y="425">contact Nexus</text>
+
+    <text x="130" y="545">NexusDown</text>
+
+    <text x="320" y="545">forward request</text>
+
+    <text x="320" y="645">receive and decode</text>
+    <text x="320" y="665">domain response</text>
+
+    <text x="320" y="765">write unchanged</text>
+    <text x="320" y="785">domain response</text>
+
+    <text x="130" y="905">Answered</text>
+
+    <text x="510" y="882">owned observed</text>
+    <text x="510" y="902">response + native</text>
+    <text x="510" y="922">write error</text>
+  </g>
+</svg>

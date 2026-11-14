@@ -1,3 +1,5 @@
+Landed, in psyche-belief vision/clojure.md 2daa5df.
+
 ## Just CLJ, as a suffix: simple standalone CLIs
 
 Relayed by e51411 as #psyche; spoken to e51411 on 2026-09-25, on the -clj tools, then (after "[Then:]") after Flow 0.10.5 went live. The elisions and "[Then:]" are e51411's.
