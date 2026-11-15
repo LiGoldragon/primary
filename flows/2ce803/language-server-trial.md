@@ -11,7 +11,7 @@ The trial is a declared Prometheus service in CriomOS. Whether the capability be
 ## Ownership and completion events
 
 1. Mind researchTools Sol owns this design, immutable question selection, comparison protocol and final report.
-2. A separately allocated implementation worker owns service/client source and its tests. Allocation is pending: applicable AGENTS forbids Sol subagents; Mind core Sol kx1c requires a Sol implementation worker and forbids Luna. A separate permaflow is the requested resolution.
+2. Psyche b3wi and Mind core 82s0 allocate direct implementation to this Sol permaflow, without a child implementation worker. The earlier Luna child was interrupted before any probes, reads or edits; its action audit confirms none occurred.
 3. Mind nixCriomos Sol owns declaration/source-boundary coordination. Implementation acceptance must name an immutable source, configuration, explicit service identity and tested lifecycle before the declaration gate.
 4. Field core Sol exclusively publishes and activates the exact reviewed packet after its coherent gate. Prometheus has no declared li Home; an OS account alone establishes none. Deployment completion must include current host identity and effective configuration.
 5. Two isolated answerers solve the same frozen questions under different tool access. Their completed evidence packets precede scoring and the final report to Psyche core Opus.
@@ -32,7 +32,7 @@ The implementation must prove these properties before activation; this list is a
 
 ## Frozen comparison protocol
 
-The Flow owner is asked to supply one published coherent revision. The earlier trial used `53782fba5e1f5b761b87f09809c0b319bcc27ad0`; current accepted main was reported separately and is not silently substituted. Final question wording and trait positions are frozen against the selected revision before either answerer runs.
+Flow owner reply z7mh supplies published accepted R0 `37980e10bcb8325d9a68c580e0d22c73061bb267` for both answerers, using independent detached disposable checkouts. The earlier trial used `53782fba5e1f5b761b87f09809c0b319bcc27ad0`; any trait-name delta must be reported. Final question wording and trait positions are frozen against R0 before either answerer runs.
 
 Candidate questions, subject only to confirming these names exist in that revision:
 
@@ -51,3 +51,19 @@ Measure cold startup/index-to-readiness elapsed time and peak resident memory on
 ## Report destination
 
 The completed report belongs beside `/home/li/primary/flows/72fb9a/research/code-map.md`. It will contain actual numbers, correctness, exact invocation, immutable sources, deployment/lifecycle evidence and remaining limitations. No results are available yet.
+
+## Proposed declaration interface for boundary review
+
+Pending Psyche's source-placement ruling, the trial source/package is `packages/repository-analysis/` in a clean proposed CriomOS branch. It is a Node.js standard-library application: Unix sockets, child-process LSP framing and event timers; no dependency install or vendor API. It is separate from `modules/nixos/repository-analysis.nix`, which the declaration owner holds. Focused package tests belong with the application; declaration tests belong to `checks/repository-analysis/default.nix` under that owner.
+
+The proposed service identity is `repository-analysis`, with a separate configured access group. A systemd Unix socket with mode 0660 activates the system service; the service has no boot target. The service runs unprivileged, with systemd-owned runtime/state directories. The socket may listen at boot on an enabled server; no analyzer is started until an admitted project query. No TCP listener or laptop module is introduced. The authenticated SSH caller invokes a packaged request command that connects to this socket; access-group membership is explicit cluster data, not a Home declaration.
+
+The daemon owns a map of configured project identities, each pairing canonical repository, full revision, immutable source root and analysis configuration. Callers supply only a configured identity, relative file, zero-based UTF-16 line/character and one supported operation. No caller supplies a command, executable, arbitrary root, environment or replacement initialization options. Startup refuses inconsistent project identity/configuration. The Nix declaration must prove the source pin and advertised revision agree. Revisions coexist as distinct identities; no checkout is switched in place.
+
+A request waits for the server's initialization and an explicit rust-analyzer quiescence event before semantic output is accepted. Per-session promises coalesce concurrent startup. Pending requests and active socket clients count as activity; idle expiry is armed only when no work is in flight. Deadline expiry cancels the LSP request and reports a distinct timeout; process exit rejects pending work and destroys that session. Systemd cgroup ownership ends all children when the service exits. Session idle and service idle are separately configured events.
+
+Runtime JSON names the socket, project identities, analyzer executable/arguments/environment, request/startup/idle deadlines, request/response byte limits and initialization options. The module names the system user/group/access membership, runtime/state directories, package, socket mode and systemd resource limits. Its enablement must be a Horizon capability, not a hostname match; the cluster-data owner must supply that capability and configured project/access data. That owner and the exact capability name remain to be agreed with nixCriomos and Field before declaration edits.
+
+For the first bounded trial, `checkOnSave=false`, `cargo.buildScripts.enable=false`, `procMacro.enable=false`, and locked metadata are explicit analysis configuration. Declarative macros remain queryable; disabled procedural macros/build scripts are recorded semantic limitations rather than silently compiled. Cargo/rustc must be actual declared toolchain executables, not the current command guards. A read-only SSH probe found the guard on Prometheus too; no compiler or analyzer was started by that probe. Dependency metadata/fetch and sysroot-source provisioning must be resolved and accounted for before activation.
+
+Official configuration reference: [rust-analyzer configuration](https://rust-analyzer.github.io/book/configuration) documents initialization options, metadata arguments, cache priming and the build-script/proc-macro switches. [lspmux's published configuration](https://docs.rs/crate/lspmux/0.3.0) exposes periodic garbage collection, so its documented design does not meet this trial's event-only idle contract as-is.
