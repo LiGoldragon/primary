@@ -12,6 +12,15 @@ A separate consumer worktree/branch `nixcriomos-b3e210-energy-after-s60o-consume
 
 ## Event-driven gate queue and authority
 
-Corez37u assigns the next Energy-only heavy gate slot after Mind versionZero Sol's immutable Flow20faa4be whole-gate terminal, provided Field confirms no conflicting host work. Direct terminal-event request jelc and Field confirmation request3mxw are open. No polling or heavy gate is running for this candidate. Core is copied. Full remote Home gate will reuse the accepted exact hash-bound system projection; no host projection is invented.
+Corez37u assigns the next Energy-only heavy gate slot after Mind versionZero Sol's immutable Flow20faa4be whole-gate terminal, provided Field confirms no conflicting host work. Direct terminal-event request jelc and Field confirmation request3mxw are open. The queued gate subsequently ran after both release events, as recorded below. Core is copied. Full remote Home gate will reuse the accepted exact hash-bound system projection; no host projection is invented.
 
 No candidate publication, main promotion, host action or activation authority has been added. After fresh full/coherent gates, Core reviews exact sources before candidate publication/Evaluate. Before any future transition, Field must reverify that Home and consumer still descend the actually active generation; a changed generation requires rebase/regate. Listener follows Energy as a separate lane using retention-only source430c based on actual6905, never the superseded1b8 input.
+
+
+## Fresh full Home gate — terminal
+
+versionZero c293/jelc announced its actual stopped terminal and no competing gate; Fieldfgyc confirmed both hosts actually62b/Home308, all runtime controls closed and no other transition in flight. The Energy-only gate then ran on the existing exact system projection, no extra host query.
+
+Full `checks.x86_64-linux` at exact `a0212e5428012bf8405645eda341ed984265113f`: **exit 0, 98 successful check entries**. Receipts `/tmp/b3e210-energy-after-s60o/home.log` and `home.exit`; log SHA256 `3e2c0830bd8952ba4902c34c1e6c002232bf96e622260d77f18d3e2ea268d7fd`. The invocation ended and remote eval scratch cleanup completed. Actual terminal/quiescence was sent directly to versionZero and Core; later competing gate work requires fresh Field nonoverlap.
+
+Core independent review and authorization for Home candidate-only publication, then coherent consumer candidate pin from actual62b and Field-owned Evaluate, were requested at8ptn. No new candidate publication, consumer edit, main promotion or activation has happened yet.
