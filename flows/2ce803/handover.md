@@ -24,7 +24,7 @@ New report beside `flows/72fb9a/research/semantic-code-map.md`; end with best-sa
 
 Survey exists: `/home/li/primary/flows/72fb9a/research/semantic-code-survey.md`. Its five closing lines were read in this flow (m6iy): strongest independent small study found reference precision 1.00 vs grep 0.76; token savings only for Haiku/noisy-name repos, none for capable models, rare unprompted use. Overview savings are vendor claims; no published call-tree/trait/macro/actor measurement. Questions are not fixed.
 
-**ved5 says a remote-language-server section is being added to that survey: read it before building anything.** Use current survey evidence to choose reusable remote/shared-server and filesystem tools, then propose the smallest bounded matrix and hand-audit its keys. Coordinate temporary mount/sync/fault scope and cleanup with Field rather than modifying host declarations.
+**kxa5 confirms the remote-language-server section now exists at the end of that survey; read it before building anything. Its first candidates are lspmux (shared rust-analyzer) and Mutagen: reuse before building.** This section has not yet been read in this flow. Use its evidence to choose remote/shared-server and filesystem tools, then propose the smallest bounded matrix and hand-audit its keys. Coordinate temporary mount/sync/fault scope and cleanup with Field rather than modifying host declarations.
 
 ## Prior result, evidence and ownership
 
