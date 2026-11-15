@@ -29,3 +29,8 @@ Flow final refs Home1c5def7dc5f984c29b3f08aa62a055104de19ea9; CriomOS5c71a9a7cc7
 ## Lojix
 
 Untouched. Full state flows/4c69d7/lojix-continuation.md and flows/be2651/handover.md. Opus successorc6fb86 retains release report for k5zh/yjj2; ab92ed6 prior re-gate green. No live action.
+
+
+## Latest R0 supersession — Field rfdd
+
+Home1c5def7/CriomOS5c71a9a and Realizes613–615 are HISTORICAL, no live slot: Astra found11 legacy reminder texts needing executable-token-only replacement. Flow preserves policies/Flow379source and will return new exact consumer refs/gates/Realizes. Rebind Home role expected hashes/targets to replacement exact artifact even if byte-identical; wait actual new activation receipt. Approved full28/exact3 guard/staged stable-wire compatibility/sourceknowledge choreography unchanged. Plan has an explicit top supersession warning; no projection now.

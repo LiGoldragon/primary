@@ -2,6 +2,8 @@
 
 Owner/executor: Mind curriculum Sol cc9ab9, after Field's switch receipt. Psyche ue63/b3fz approves this order. No live projection has run.
 
+**Field rfdd supersedes the consumer artifacts below.** Home1c5/CriomOS5c71 and Realizes613–615 are historical: eleven old-executable reminder texts require a replacement consumer. No live slot or projection on those artifacts. Await new exact refs/gates/Realizes, rebind all Home-root hashes/targets to that exact realized artifact, and obtain successful activation receipt. The listed old hashes are historical evidence only, even if new contents match. Approved full28/exact3 cleanup/source-refresh order and pre-slot stable-wire compatibility proof remain unchanged.
+
 ## What changes and who owns it
 
 - Field alone activates accepted R0: Home `1c5def7dc5f984c29b3f08aa62a055104de19ea9`, coherent CriomOS `5c71a9a7cc7f9d0dd99d8127957ab9b54cbb2ae5`, Flow `37980e10bcb8325d9a68c580e0d22c73061bb267`. Owner reports complete consumer gates green.
