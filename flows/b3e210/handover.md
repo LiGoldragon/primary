@@ -14,11 +14,9 @@ OPEN hazj asks Field sole NEW supported Evaluate-only for662c. Field5gyj confirm
 
 Gate concurrency: our fresh Energy gate actually ended exit0/cleaned scratch; terminal v61n sent versionZero/Core. versionZero mqib now owns ONE corrected heartbeatdee46 whole Flow gate on Prometheus after fresh Field8tit release. No competing heavy gate; it promises actual terminal event.
 
-### 2. Launcher failure / durable prevention diagnosis (Field jdv4, Psyche3jzj)
+### 2. Launcher diagnosis CLOSED without source correction
 
-Observed disposable shell resolved /home/li/.local/bin/claude and failed NixOS stub-ld before harness; evidence /tmp/flow-5441e0-spawn-diagnosis/manual-pane-before.txt. Inventory independently identifies that symlink's native-installed ~/.local/share/claude/versions/2.1.325 target, bypassing declared package. Actual Home308 core-packages.nix→owned-agents/claude-code/default.nix uses wrap-buddy and updater-disabled wrapper; codex-remote-control.nix installs it. No tracked .local/bin/claude declaration found. Preliminary finding sent Fieldg9qf: unmanaged PATH shadow, not demonstrated packaged-loader fault. OPEN djd3 asks Mind flowNexus Sol for exact existing executable/symlink/interpreter/PATH and launch-route metadata; no duplicate probe.
-
-LATEST Fieldsdqv: Flow1ngz reports Psyche6qha REMOVED shadow symlink; profile Claude resolves and --version succeeds. Flow ALONE owns ONE real disposable Haiku launch/span proof. Our diagnosis now ONLY durable prevention/provenance; no runtime change, reinstall or competing gate. Need exact source finding/candidate PLAN BEFORE edits. Possible boundary choice (declare canonical launcher/collision-safe activation vs explicit configured executable) needs owner/Psyche ruling; none implemented.
+Flow djd3 confirms unmanaged /home/li/.local/bin/claude→~/.local/share/claude/versions/2.1.325 ELF interpreter /lib64/ld-linux-x86-64.so.2→host stub-ld; local/bin beat Nix profile. Failure occurred before settings/prompt/hooks. Declared Home308 Claude package has wrap-buddy/immutable wrapper and was bypassed. Psyche6qha moved ONLY shadow symlink to scratch; profile version now succeeds. Real Flow Start Haiku34aac8/native34aac834-7a4e-56ba-8071-d70e76349d66 and span-context reply verified, already stopped. Report flows/5441e0/spawn-cause.md; metadata /tmp/flow-5441e0-spawn-diagnosis/. No source/package/pin candidate needed for this cause, no further probe. Field owns optional native-version cleanup; no runtime/source change by us. Field/Core notified.
 
 ### 3. ke1s / cm88 (still open)
 
@@ -38,4 +36,4 @@ n4p4 SCIP packaging review CLOSED ok09: researchTools candidate ab62d218610f35af
 
 /tmp/b3e210-workspace contains scratch root path. Its energy-after-s60o-home and energy-after-s60o-criomos are current source worktrees; older home/energy-home/listener-home/criomos are evidence, not active bases. /git canonical trees untouched. Own reports are in flows/b3e210; git commits on primary are report-only. bd list fails remote schema v32 missing leases; never migrate.
 
-Next: read incoming Field NEW662c Evaluate receipt / Flow launcher metadata and actual proof. Return exact Energy packet after terminal, preserve Field sole activation and fresh ancestry guard. For loader prevention, report confirmed shadowing and seek smallest durable boundary ruling before edits. Wait events; do not poll or start heavy gate while versionZero owns it.
+Next: read incoming Field NEW662c Evaluate receipt. Return exact Energy packet after terminal, preserve Field sole activation and fresh ancestry guard. Launcher cause/proof is closed, no candidate needed. Wait events; do not poll or start heavy gate while versionZero owns it.
