@@ -19,3 +19,7 @@ A green gate does not authorize the broader source adoption. This Home branch is
 The four variables are LISTENER_CAPTURE_RETENTION_DAYS, LISTENER_CAPTURE_RETENTION_MAXIMUM_BYTES, LISTENER_HISTORY_RETENTION_DAYS and LISTENER_HISTORY_MAXIMUM_BYTES. The focused gate proves declaration/example/wrapper absence only. Listener retains an optional `%h/.config/listener/environment` EnvironmentFile and may inherit runtime values. Field must verify name-only presence/absence in the effective environment, suppressing values and unrelated credential-bearing data. This flow read no runtime environment file or credential.
 
 Field's completed raw cleanup and old-package Idle state are separate from adoption of this package. An eventual approved packet must preserve Flow Memory and avoid automatic replay or Flow restart; any Listener lifecycle transition remains explicitly Field-owned.
+
+## Superseding adoption ruling — l206 / Psyche x4ii
+
+The candidate above is now **SUPERSEDED for adoption**, retained unpublished only as historical gate evidence. No consumer or source pin will be published from ecdbb5b4 or Listener1b8. Core's existing sourceworker owns a NEW retention-only patch based exactly on actual `6905a4f115092f0a7c1489aa4ad171785dcb7ec1`, with no 1b8 ancestor adoption and a fresh full source gate. This flow awaits that immutable packet, then owns a separate Home lane AFTER the ujg2 swap, unmixed with Energy. The earlier ancestry audit is resolved by the new-base ruling, not by permission to adopt the old candidate.
