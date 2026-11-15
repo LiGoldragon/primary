@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 460" width="430" height="460" font-family="sans-serif" font-size="15">
+  <defs>
+    <marker id="ab4e4b-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#000"/>
+    </marker>
+  </defs>
+  <rect x="10" y="20" width="190" height="70" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="105" y="50" text-anchor="middle" fill="#000">A. Measures with</text>
+  <text x="105" y="72" text-anchor="middle" fill="#000">healthy ranges</text>
+
+  <rect x="230" y="20" width="190" height="70" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="325" y="50" text-anchor="middle" fill="#000">B. A System 1 model</text>
+  <text x="325" y="72" text-anchor="middle" fill="#000">on each beat</text>
+
+  <line x1="105" y1="90" x2="105" y2="298" stroke="#000" stroke-width="2" marker-end="url(#ab4e4b-arrow)"/>
+  <text x="112" y="200" fill="#000">joined in</text>
+
+  <line x1="325" y1="90" x2="325" y2="298" stroke="#000" stroke-width="2" marker-end="url(#ab4e4b-arrow)"/>
+  <text x="332" y="200" fill="#000">joined in</text>
+
+  <rect x="10" y="300" width="410" height="150" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="215" y="338" text-anchor="middle" fill="#000">C. Both: measures for</text>
+  <text x="215" y="364" text-anchor="middle" fill="#000">what is counted, the model</text>
+  <text x="215" y="390" text-anchor="middle" fill="#000">for the rest</text>
+</svg>
