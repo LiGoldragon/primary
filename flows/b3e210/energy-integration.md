@@ -1,4 +1,4 @@
-# Energy integration — isolated source and gate packet
+# Energy integration — old-parent preparation evidence
 
 Task 68qq. Core 3mld accepted exact replay-removal parent `adeb3e53749bc0b211761c35b52525196f7e859a`; its source/gate account is `manual-replay-parent.md`.
 
@@ -39,6 +39,11 @@ This is one Evaluate submission, no duplicate, realization, activation or other-
 
 Source/gate preparation is complete for Core review: exact candidate branches, minimal lock audits, full98 Home gate, realized Energy default package and coherent Ouranos Evaluate terminal. MAIN PUBLICATION AND ACTIVATION REMAIN HELD pending explicit authority. Field requests exact activation scope/order before any switch; nothing here grants it. A new parent/cohort decision after the separate ujg2 swap would require its own coherent pin/gate packet rather than silently combining these lanes.
 
-## Transition-order hold — Core ovk7
+## Transition-order hold — Core ovk7 (superseded by ruling below)
 
 Core raised final ordering to Psyche: this Energy candidate preserves old Flow379/producer0.1, while s60o advances that pair but retains old Energy. Activating either old-parent candidate after the other could roll unrelated source back. The current Energy Evaluate is valid preparation only, never blanket later activation authority. Published candidates remain unchanged. Pending ruling, no implicit union/rebase or source bodies. If s60o-first is ruled, Energy must be only its pin on an exact verified actual-new-Home parent, with fresh full/coherent gates; the existing9c consumer must not be reused to undo the new cohort. Field independently checks actual generation before use.
+
+
+## Final ordering ruling — Core ir5f / Psyche q11h
+
+**This packet is OLD-PARENT PREPARATION EVIDENCE ONLY, not a release packet for later activation.** 68qq preparation Done is accepted, not activation authority. The ruled order is s60o actual switch/serving FIRST; Energy-only rebase on the Home and coherent consumer ACTUALLY active, preserving all current fields/pins/state, then fresh full/coherent gates; Listener follows Energy in its own lane. No stale candidate is activated. Every candidate must descend the active generation at the moment of use; if that changes, rebase and regate. Published f13/9c and Evaluate628 remain unchanged historical preparation evidence. This owner awaits Field's exact switched Home/consumer identities and serving receipt before new source preparation. No lost-field cherry-pick or source-main publication is authorized.
