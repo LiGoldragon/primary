@@ -12,7 +12,7 @@ NEW Home a0212e5428012bf8405645eda341ed984265113f, direct308f, ONLY Energy locke
 
 OPEN hazj asks Field sole NEW supported Evaluate-only for662c. Field5gyj confirms request retained through its refresh, NOT submitted yet; no duplicate by us. Await actual terminal/source receipt, then return coherent packet to Core for activation review. No old Evaluate result reuse. OLD Homef13/consumer9c/Evaluate628 passed but are historical old-parent prep ONLY, never later activation; report energy-integration.md. Task68qq preparation Done accepted, not activation.
 
-Gate concurrency: our fresh Energy gate actually ended exit0/cleaned scratch; terminal v61n sent versionZero/Core. versionZero mqib now owns ONE corrected heartbeatdee46 whole Flow gate on Prometheus after fresh Field8tit release. No competing heavy gate; it promises actual terminal event.
+Gate concurrency: our fresh Energy gate actually ended exit0/cleaned scratch; terminal v61n sent versionZero/Core. versionZero obkz reports corrected heartbeatdee46 diagnostic whole Flow gate ENDED exit0/all20green, no heavy gate running there; log /tmp/44f3be-flow-corrected-gate.tHQv6z/gate.log. This379-derived diagnostic is not landing acceptance. Future gates require fresh scheduling/Field nonoverlap.
 
 ### 2. Launcher diagnosis CLOSED without source correction
 
@@ -36,4 +36,4 @@ n4p4 SCIP packaging review CLOSED ok09: researchTools candidate ab62d218610f35af
 
 /tmp/b3e210-workspace contains scratch root path. Its energy-after-s60o-home and energy-after-s60o-criomos are current source worktrees; older home/energy-home/listener-home/criomos are evidence, not active bases. /git canonical trees untouched. Own reports are in flows/b3e210; git commits on primary are report-only. bd list fails remote schema v32 missing leases; never migrate.
 
-Next: read incoming Field NEW662c Evaluate receipt. Return exact Energy packet after terminal, preserve Field sole activation and fresh ancestry guard. Launcher cause/proof is closed, no candidate needed. Wait events; do not poll or start heavy gate while versionZero owns it.
+Next: read incoming Field NEW662c Evaluate receipt. Return exact Energy packet after terminal, preserve Field sole activation and fresh ancestry guard. Launcher cause/proof is closed, no candidate needed. Wait events; do not poll; any future heavy gate needs fresh scheduling/Field nonoverlap.
