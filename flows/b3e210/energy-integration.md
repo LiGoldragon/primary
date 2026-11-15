@@ -12,9 +12,13 @@ Source owner Mind survey Sol handed off its published immutable source and 123-t
 
 Full projected `checks.x86_64-linux`: exit 0, 98 successful check entries. Receipts `/tmp/b3e210-energy-gate/home.log` and `home.exit` retain actual immutable archive identity/remote invocation/results. Existing hash-bound system projection from the accepted replay parent was reused. No host projection was invented; no live process was contacted or replaced.
 
-## Consumer/publication barrier
+## Candidate publication and coherent consumer
 
-Home is committed locally and archived to the builder for gates, not published. A proper GitHub Home pin in a coherent CriomOS consumer must resolve a published immutable Home revision. No fake GitHub locked receipt or local-input evaluation is substituted for that production boundary. Core rko6/e7tn retains the candidate-branch publication decision after Home review. Coherent consumer pin and Lojix Evaluate packet remain pending this authority, not passed gates. No consumer or Home main changed.
+Core rko6 independently reviewed the exact Home source delta/full gate and authorized candidate branches only, never main or activation. Home is published at `nixcriomos-b3e210-energy`, remote receipt exactly `f13afbb7bfc74bbea888511d9535edb937204a18`.
+
+Coherent CriomOS candidate `9c44854fc0dc6b687187b2a282175b5022dc751d`, branch `nixcriomos-b3e210-energy-consumer`, direct parent `4305f5cad95ab55a516cf430014a5f7dd7b2575e`, is also published at its exact remote head. Only Home and Energy locked rev/hash/time triples changed. Original URLs, input edges and every other logical root branch remain identical. No fabricated unpublished GitHub receipt or local-input substitute was used. Receipts/audit are `/tmp/b3e210-energy-gate/home-remote.txt`, `consumer-remote.txt`, `consumer-lock.log` and `consumer-lock-audit.json`.
+
+Supported Lojix Evaluate remains pending Field handoff 4weg of current proposal/secrets pointer/explicit transport and executor custody. This packet does not reuse held ujg2 target inputs by assumption. No consumer/Home main changed; no realization/activation or live success is claimed.
 
 ## Activation scope for Field review
 
