@@ -46,3 +46,11 @@ After fresh `Current.{ Mind flowNexus Sol }` returned `Current.Awake.5441e0` and
 Core/Psyche review this single packet before any further action. Main publication, typed-source main publication and activation remain held. Any later stopped swap carries current Memory AS IS at actual stop, never an earlier backup; Field owns runtime operations. Energy, Listener and heartbeat are separate lanes.
 
 The beads read-only prerequisite failed in both repositories because the shared remote-backed schema lacks the leases table. No migration was attempted; this does not affect the immutable Nix gate or Lojix Evaluate receipts above.
+
+## Subsequent authorized source-main event
+
+Psyche direct GO4pr4, conveyed by Core w64q, authorized the exact candidate for Ouranos first, Field as sole runtime actor. Field acknowledged execution ownership in20tu; Zeus remains held until Ouranos serves one hour. Energy and Listener stay excluded.
+
+Mind curriculum Sol reports its source-main step complete after Field attested BOTH stopped at 15:15:43-06 with current Memory AS IS. Fresh remote main reads at 21:17:19–21 UTC equal the three source revisions listed above. Whole-cohort expected flat-parent checks and per-push checks passed without divergence or force; flat rollback children remain unpublished. Receipts: `/tmp/source-restoration-25858e.kiEUuD/typed-main-publication-receipts.json`. Source owner reports all postreads returned out of band to checked Field374411 pane before activation; Core received completion.
+
+This is the source owner's publication receipt, not this flow's independent runtime observation. It supersedes the earlier typed-source-main hold only for this authorized stopped event. Candidate Home/CriomOS revisions and Evaluate packet remain unchanged. Activation, serving proof and configuration readback remain Field's next steps; none is inferred from this receipt.
