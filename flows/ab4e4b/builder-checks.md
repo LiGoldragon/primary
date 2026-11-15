@@ -10,7 +10,7 @@ This inventory describes makeshift-tools **main 34fa78b88d1350328d9eadf1885da5e3
 
 **Confirmed in the retained published edition:**
 
-- [Module descriptions without the designed-or-judged frame](https://claude.ai/artifact/TTpp9rcXyxiw4hqfJkjzaH): **29 duplicated description pairs** in version 1, c06l. Bookmaker 9ajc confirms publication this session; source `flows/eb6343/reviews/descriptions-frame.md`; retained HTML `/tmp/claude-1001/-home-li-primary/33d4c0c3-d4c0-5fb0-892e-4193ced31038/scratchpad/c06l/out.html`. The one-passage main fix is landed and phone-inspected; same-book republication is requested under **mbn1**, receipt pending.
+- [Module descriptions without the designed-or-judged frame](https://claude.ai/artifact/TTpp9rcXyxiw4hqfJkjzaH): **29 duplicated description pairs** in version 1, c06l. Bookmaker 9ajc confirms publication this session; source `flows/eb6343/reviews/descriptions-frame.md`; retained HTML `/tmp/claude-1001/-home-li-primary/33d4c0c3-d4c0-5fb0-892e-4193ced31038/scratchpad/c06l/out.html`. The one-passage main fix is landed and phone-inspected; Haiku mbn1 confirms same-book republication as **version 2**, version id `1794786475-91bb`, unchanged from the inspected render. This repairs the known doubled description pairs.
 
 The five other editions explicitly confirmed as published on November 15 by bookmaker v13v were scanned from their saved HTML: [What a module's type already says, its description leaves out](https://claude.ai/artifact/6qqAxJkj2m5fGwzrr3596F), [A belief is written in one module](https://claude.ai/artifact/Ah2eiXvuPkq7ctWXZQUMjj), [A page is looked at before it reaches him](https://claude.ai/artifact/WCCzRt63Z4nu6TGAxoZCRN), [A Nexus for each aspect](https://claude.ai/artifact/EQf1MbB8soXNDJTZHx73JP), and [One call sends several messages](https://claude.ai/artifact/XQtryiEvErkhuienweZsFP). None has a repeated pair in this bounded scan.
 
@@ -78,3 +78,7 @@ Fault excerpts are in `flows/32e506/page-faults-from-fable.md`. Opus cupa/csk9 c
 ## Questions audit still requiring matched publication evidence
 
 Of 98 catalog entries, 14 entries (including duplicate titles/editions) point at proposal sources whose last level-two section is Questions. The bounded candidate list is `/tmp/book-ab4e4b.gqmYkw/questions-source-candidates.json`. Bookmaker request **k1r2** asks which were published today/yesterday and for the corresponding retained HTML. Only a matched source ending in Questions and the corresponding published page missing it belongs in a proven-loss list. At this stage, **none is proven**; no page is labelled defective merely because its HTML lacks a Questions heading.
+
+## Questions evidence update
+
+Haiku k1r2 dates five catalog entries to November 14–15: Belief Nexus, One permaflow, two A flow is paused entries, and The minimal translator. The retained HTML files cannot be tied to those dated editions (and the paused file cannot be tied to either URL). No source/page matched pair proves a missing Questions section. The candidate table is `/tmp/claude-1001/-home-li-primary/62b108c8-fb4b-5834-9824-d755b3a250a1/scratchpad/k1r2-audit-answer.md`. A date-matched published snapshot must be obtained before asserting loss.
