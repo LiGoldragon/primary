@@ -67,3 +67,20 @@ curriculum 'ResolveSources.[ { Spirit core Single.0 } ]'
 The first answer must be `Modules.[...]` containing exactly the accepted130 typed identity/path inventory (75 Psyche,39 Mind,16 Field), independently compared to `/tmp/curriculum-regression-25858e.PghYG6/module-oracle.json`. The second must be `SourcesResolved.[...]` matching Spirit/core/Single0 at the exact published Psyche source revision and `spirit/core/0.md`; source SHA256 `3fe2afeeafe556f75b3e148d5cc2cca5169ba645465aaa1a8e3c2e56aa2b388f`, Git blob `fb86a44d64dc43ec34ca7545641df558b57213db`. This SHA is the whole source, not its separately decoded body hash. Compare resolved body using its actual metadata/body semantics; do not equate source and body hashes.
 
 Producer `src/client.rs` at0f848baa actualizes the request before connecting to its socket. Field reported an accidental retained0.1 bare-identity request refused locally with REQUESTPARSING Composition Struct/Bare; that is no producer request and no decoder-failure evidence. No retry, runtime query or serving observation was made by this flow. Field's eventual exact typed answers remain the serving proof boundary.
+
+## Actual narrow post-switch threshold correction
+
+Field w8px reported the first valid live proof passed (ModulesVerbose130 and typed Intent/main-flow/Single0 fetch at published Psyche721), while both Fable thresholds read280000 rather than required330000. Those serving observations belong to Field, not this flow. Field explicitly delegated immediate narrow threshold restoration under standing Psychektn1/purc, with no family replay, source edit, refresh or restart.
+
+Before any setter, this flow preserved the existing Field `configuration-after.datom` as `/tmp/flow-5441e0-fable-restoration/post-before-setter-existing.datom` (SHA256 `1f780bee5ede0ab16e97167a3bab3c594fb353a264c5fd1e61156f642dde43e0`). It then read fresh actual Configuration over the deployed typed meta client as userli on Ouranos: both Fable5-1/5-2 were280000. Pinned meta83 exposes `Configure.Refresh.ConfigureThreshold`; Flow52e store.rs line6839 dispatches it as one keyed configuration entry.
+
+Exactly two setters were sent:
+```datom
+Configure.Refresh.{ claude-fable-5-1 330000 }
+Configure.Refresh.{ claude-fable-5-2 330000 }
+```
+Each returned exit0 and exact `Configured.Refresh` with its model and330000. Final supported Configuration read showed both330000,33 Maintained and seven OnDemand addresses: `{ Field core Astra }`, `{ Field semaV0 Astra }`, `{ Mind curriculum Astra }`, `{ Mind beliefNexus Astra }`, `{ Mind versionZero Astra }`, `{ Mind core Astra }`, `{ Mind flowNexus Astra }`.
+
+Independent field-wise comparison of all22 snapshot fields found only the two requested threshold values and allocation counters changed. Every other model threshold, continuity and configuration field was identical. Counters advanced from `{ 32999 8699 8290 }` to `{ 33014 8703 8293 }`; whole-snapshot byte equality was therefore not claimed. Requests, exact replies, before/after snapshots and parsed comparison are retained in `/tmp/flow-5441e0-fable-restoration/`.
+
+Field received Resultw8px; Core and Psyche received the actual change and its limit. The cause of post-switch280000 remains UNKNOWN. Required330000 was established only AFTER this correction. No family replay, restart, refresh, source edit, native witness or further serving query was performed by this flow.
