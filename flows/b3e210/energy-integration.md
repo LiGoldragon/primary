@@ -18,7 +18,7 @@ Core rko6 independently reviewed the exact Home source delta/full gate and autho
 
 Coherent CriomOS candidate `9c44854fc0dc6b687187b2a282175b5022dc751d`, branch `nixcriomos-b3e210-energy-consumer`, direct parent `4305f5cad95ab55a516cf430014a5f7dd7b2575e`, is also published at its exact remote head. Only Home and Energy locked rev/hash/time triples changed. Original URLs, input edges and every other logical root branch remain identical. No fabricated unpublished GitHub receipt or local-input substitute was used. Receipts/audit are `/tmp/b3e210-energy-gate/home-remote.txt`, `consumer-remote.txt`, `consumer-lock.log` and `consumer-lock-audit.json`.
 
-Supported Lojix Evaluate remains pending Field handoff 4weg of current proposal/secrets pointer/explicit transport and executor custody. This packet does not reuse held ujg2 target inputs by assumption. No consumer/Home main changed; no realization/activation or live success is claimed.
+Field4weg exclusively submitted the exact supported Ouranos Evaluate after its fresh proposal/transport checks; actual terminal is recorded below. No consumer/Home main changed; no realization/activation or live success is claimed.
 
 ## Activation scope for Field review
 
@@ -28,4 +28,13 @@ Before activation, compare final effective Flow unit bytes and startup/activatio
 
 ## Evaluate executor handoff — Field 4weg
 
-Field exclusively submits ONE supported Evaluate-only Ouranos CompleteHost for exact consumer `9c44854fc0dc6b687187b2a282175b5022dc751d`; this flow submits no duplicate. Field freshly verified the regular proposal (7037 bytes), SHA256 `d1ee23cef2706d3ab8cd9ad4e83df79ff062a059fb4cadc843aa750fdfac2457`. Exact proposal and secrets-pointer paths remain in Field's handoff/template; no secret content was read here. Logical target goldragon/ouranos matches Field's explicit root transport. Its retained Ouranos Evaluate template changes ONLY consumer revision and keeps Evaluate. This scope includes no Zeus request, Realize, activation or main publication. Actual admission and terminal/source receipts are still awaited.
+Field exclusively submits ONE supported Evaluate-only Ouranos CompleteHost for exact consumer `9c44854fc0dc6b687187b2a282175b5022dc751d`; this flow submits no duplicate. Field freshly verified the regular proposal (7037 bytes), SHA256 `d1ee23cef2706d3ab8cd9ad4e83df79ff062a059fb4cadc843aa750fdfac2457`. Exact proposal and secrets-pointer paths remain in Field's handoff/template; no secret content was read here. Logical target goldragon/ouranos matches Field's explicit root transport. Its retained Ouranos Evaluate template changes ONLY consumer revision and keeps Evaluate. This scope includes no Zeus request, Realize, activation or main publication. Actual admission and terminal/source receipts were subsequently returned in Field6mtd, below.
+
+
+## Coherent consumer Evaluate terminal — Field 6mtd
+
+Field's sole Ouranos CompleteHost Evaluate deployment628 for exact consumer `9c44854fc0dc6b687187b2a282175b5022dc751d` reached Completed/Some.Succeeded, plan2194, terminal marker15163. Report and exact retained request/proposal hashes, watcher event and confirmation query: `flows/374411/energy-consumer-evaluate/report.md`. Request hash is `cc1c226fbb6f5a53c3cded7cee95132d775fbba1b30e66edea1d731200791c48`. The proposal identity is unchanged from4weg.
+
+This is one Evaluate submission, no duplicate, realization, activation or other-host request. The current ordinary contract exposes no generated input refs, evaluated derivation path or committed generation for Evaluate; those are explicitly unclaimed. Watcher/readiness/parser corrections are retained by Field and did not cause resubmission.
+
+Source/gate preparation is complete for Core review: exact candidate branches, minimal lock audits, full98 Home gate, realized Energy default package and coherent Ouranos Evaluate terminal. MAIN PUBLICATION AND ACTIVATION REMAIN HELD pending explicit authority. Field requests exact activation scope/order before any switch; nothing here grants it. A new parent/cohort decision after the separate ujg2 swap would require its own coherent pin/gate packet rather than silently combining these lanes.
