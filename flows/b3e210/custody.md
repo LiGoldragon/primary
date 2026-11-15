@@ -30,3 +30,13 @@ researchTools Sol owns LSP design/session client/server and benchmark; Field own
 Handoff requested: capability/data ownership, service identity/state directory, immutable package output/revision, private SSH/request contract, repository revision validation, configured event-driven idle deadline, and build-script/proc-macro accounting. Relevant living-history pointer: `vision-raw/why-is-rust-analyzer-running.md`, 2026-08-13, requiring rust-analyzer not start automatically. Request-only service activation and absent laptop startup preserve that boundary.
 
 Core npcl confirms isolated source preparation only: no source-main publication. Preserve Home main continuity and held ujg2/diagnostic branches. No alternative worker model is authorized.
+
+## Follow-up observations
+
+Core trpq authorizes isolated ke1s branches only. Mind flowNexus Sol owns coherent forward Home/CriomOS pin publication pending Psyche GO; Core owns publication coordination. Existing ujg2/diagnostic branches remain held. Core is the independent review owner, not an invented extra worker.
+
+A remote baseline build of Home `2af9265d37a10e20289db6826bfcef86c861bf74` checks `codex-release-manifest`, `owned-agent-updater`, and `codex-next`, using `nix build --refresh --no-link`, exited 1 at evaluation because no projected system input was provided. This is not a product-test failure or a passed gate. Command output is retained at `/tmp/b3e210-ke1s-baseline.log`. Exact projected invocation/inputs were requested from Mind flowNexus Sol (ks28), rather than synthesized.
+
+Field core tufo confirms Field inventory Sol owns metadata but has not completed current endpoint inventory. Neither compatibility nor an unused slot is established. Retained `flows/ad72ed/idle/zeus-bird-update-audit.md` and `ivms-proof.md` are dated evidence only: the latter proves Claude Code 2.1.325 installed for Zeus/bird, Zeus/li and Ouranos/li, while older processes continued; it supplies no current endpoint occupancy proof. Metadata request erd0 remains open. No duplicate upstream checks were run.
+
+researchTools 88uw reports Psyche b3wi assigns its own proposed-branch implementation. I supplied only provisional declaration paths and isolated-worktree/source-boundary guidance, requesting the exact authority/interface/identity before edits. No n4p4 implementation capacity was allocated by this flow.
