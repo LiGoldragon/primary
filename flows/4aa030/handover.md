@@ -2,7 +2,13 @@
 
 ## Immediate
 
-Context reminder xs2y. Own `flow Refresh` returned **RefreshRejected.Locked**, NOT queued. One supported read-only check afterward: CurrentAwake4aa030, native01a1dfc4-d8b1-7d30-88ec-22c4aa03084b/w19K still bound; Inspect no exposed locks/attempts/restart record. Journal records10:44:08 refresh call, no cause established. Stop work; Astra must own supported lifecycle diagnosis if going idle does not release it. No repeated refresh/cancel/restart or native intervention. No gate/process remains running.
+Actual4aa030 continues, no successor claimed. Original Refresh was Locked; Field-authorized fresh RefreshQueued at10:49:07 is real. Do not repeat/cancel. ecs7 released read-only kgtf assessment; completed report `reports/ujg2-assessment.md`, no implementation authorized yet. Producer-alone is incompatible; typed consumer needs adapter/provenance/tests/dependency update. Base4ea ready. Conditional full20 gate estimate23:00UTC after implementation authority, not an actual candidate/gate.
+
+LATEST: living/Psyche77ka forbids ALL Astra sends. FlowNexus Sol takes FlowNexus Astra work; Core Mind Sol owns combined ujg2 review. Do not Done.kgtf to its old sender (Flow routes answers there); Core/Opus receive report and must settle its request routing. Final producer/manifests: `flows/92e44e/ujg2-report.md` and assessment. ujg2 BEFORE zq8m/x0t5 under370g, except newer taskuwh5 came first.
+
+uwh5 completed live17:21UTC: only fresh-awake non-Astra OnDemand Field inventory Sol, Psyche book Haiku, Psyche comments Haiku changed individually to Maintained, exact echoes and same native FlowIds;40 rows now9Maintained/31OnDemand. All Astra/asleep/unstarted unchanged. Source report `reports/sleep-disabled-awake.md`, private `/tmp/flow-4aa030-uwh5/`; no launches/restarts/threshold changes. No sleep-only setting exists; closable computed native state is not configurable. Unchanged asleep OnDemand still starts fresh/sleeps on subsequent wake. Original source replay can revert these live-only continuity amendments; no source persistence yet authorized.
+
+Core qtom locally committed prior handover/proposal as36f3afa3; latest assessment/sleep report/handover need standing publication. Lock296 owns this flow directory. No code edits or gate/process running.
 
 R0 is CLOSED by Psyche5r29. Do not repeat its live operations. Completed accepted report: `flows/4aa030/reports/r0-live.md` (Astra gc34); Core qr22 locally committed it alone as Primary11e7ef3659f8d0247ac5bb5c0eebf36aa71669d7, no push. Later handover/proposal publication requested xjfw, receipt not seen.
 
@@ -25,7 +31,7 @@ Accepted report contains stopped-Flow-only disposable typed catalog/zero/full-lo
 
 ## Next ordered implementation
 
-Psyche5r29: **zq8m → x0t5 → ujg2 typed consumer → R1**. Original6k78/kick/zq8m/lt6p remain carried; no native proof invented.
+Historical5r29 order is SUPERSEDED by Psyche370g/Astra kgtf above; ujg2 is FIRST. Original6k78/kick/zq8m/lt6p remain carried; no native proof invented.
 
 Astra kwtq ACCEPTS `flows/4aa030/proposals/zq8m.md` for bounded implementation only; NO code/worktree yet. Two refresh decisions in source379 ignore delivered open requests. One shared trait-borne runtime-owner criterion must read authoritative open_requests before closing; read failure refuses. Add Order/Question/Task boundary coverage, actual Order successor/first-prompt same-id/text proof across immediate/queued/threshold, answered/cancelled and read-failure/launch-refusal controls. Preserve ordinary asleep wake/background rules/x0t5. Fresh separately locked Flow worktree from then-current accepted main (recheck), full immutable20 gate, exact evidence/Astra review before release. Furnished vision:code/nexus is the Rust doctrine; no additional packet.
 
