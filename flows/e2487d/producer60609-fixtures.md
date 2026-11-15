@@ -60,3 +60,9 @@ Binding sources are `spirit/binding/1.md` with exact no-LF body `BINDING_SINGLE_
 ## Consumer receipt
 
 FlowNexus Sol explicitly accepted these selections/bodies in result hqyp and reported copying all four main archives plus binding1 and exact-span captures, decoded oracle outputs, hashes and source revisions into Flow unit fixtures. Its owner retains full immutable Flow gate responsibility; this capture report does not claim that gate.
+
+## Plain-runtime review, pc2p
+
+Source at exact60609 disproves readiness of its exported plain-feature runtime: `Cargo.toml` defaults to no features; `flake.nix` enables datom only in memberChecks. `src/registry.rs`'s non-datom `read_declarations` always returns `source declarations require the datom package feature`. `src/service.rs` requires a successful source read both at Memory open and on each operation. Thus plain Nexus cannot admit these manifests or successfully serve Modules/ModulesVerbose. Datom-enabled check captures do not discharge that boundary.
+
+Retained authority is `flows/299aa3/reports/nyq8-custody.md`: Psyche inea/d67y holds shared-configurator separation under primary-q8li, preserves the deployed datom-enabled package, and requires a new order for separation. `flows/4c69d7/continuation-detail.md:27` corroborates the hold. No embedded producer is evidenced: read-only Flow candidate inspection at d091b11ee7f045aecd6854cc859d5fb003deaaa3 finds `context.rs` using the external Curriculum Unix socket and a contract-only dependency, not an embedded Curriculum library. An explicitly packaged datom-enabled interim producer or an authorized configurator solution remains a deployment dependency; producer60609's current exports alone supply neither. These conclusions were returned to Core in Result pc2p; no source change was requested or made.
