@@ -1,0 +1,11 @@
+# Actual flow-nexus span serving and failed native witness
+
+Authority: Fieldi4qt relaying Psychej3at. Exact production serving is tested first; one cheap fresh witness is authorized, no Astra, configuration amendment or duplicate runtime actor.
+
+Actual Ouranos production `ResolveSources.[ { Vision flow-nexus Single.1 } ]` exits0. It returns the version-specific `vision/flow-nexus/1.md` and dependency span `vision/flow-nexus/0-1.md`, both at served Psyche `e6bb7b3956c9a102b3f13be23fc3f572944f0f1a`. Span source SHA256 `039c03b55d2ee14a8cf4290da343116f2b8eb8c6c36959d6ea5483c4c2981983` matches the exact immutable Git file. Its resolved text contains the paragraph beginning A launch can be rehearsed; the version1 source itself does not contain that paragraph. Both identities/paths/source/body hashes are retained in `serving-proof.json`. Thus source span serving is established independently of startup-context proof.
+
+The existing disposable lane `{ Mind wuovWitness Haiku }` was Asleep. A preliminary Start lacking an explicit seat-intent was rejected by composition, before native launch; its request/reply are preserved. The corrected request `flowSpanWitness5441e0` supplied System `[ spirit:core:0 intent:main-flow:0 ]`, Prompt `[ vision:flow-nexus:1 ]`, Predecessors0, Haiku low, same disposable address, and a no-work brief asking for the actual supplied rehearsal paragraph.
+
+That ONE native launch attempt returned `StartRejected.HarnessSpawnRefused.{ Herdr.{ Some.timeout «timed out waiting for agent startup» } None }`. Supported LaunchStatus confirms NativeLaunchIntentRecorded with no native binding, delivery receipt or FlowNode. Supported Inspect still shows the lane Asleep with its historicalb27733 only; a fresh Herdr listing has no wuov/new witness. No successful actual startup context was captured; no witness was identified to stop. No unrelated pane/flow was stopped. No second native launch attempt was made.
+
+Evidence `/tmp/flow-5441e0-flow-span/`: production source answer and source hashes, preliminary refused request, corrected request and answer, LaunchStatus, Inspect and Herdr list. Field and Core received the precise source PASS/native-timeout boundary and builder-clear notification. gxph actual-context/lifecycle closure remains incomplete; the previous singleton witness is not reused as proof.

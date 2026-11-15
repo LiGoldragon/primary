@@ -35,3 +35,20 @@ This flow copied ONLY that immutable stopped capture, verified its full SHA256, 
 A second scratch binary calls exact published52e `FlowStore::open_configured` on ANOTHER disposable copy, then drops it. It launches no daemon, sockets, harness or native witness. A separate read-only typed read afterwards finds ALL threshold records, including their archived-byte SHA256 values, identical to the stopped-copy read: both Fable330000. Open and read exits0. Evidence `/tmp/flow-5441e0-threshold-open/`: reader.rs (the small opener), default.nix, open/read exits, thresholds-after.json, before/after hashes and unchanged immutable source hash. Both scratch binaries were built on Prometheus against the exact published52e library with dependencies reused; no runtime source was edited.
 
 These actual-copy results supersede the earlier unknown stopped-value boundary and the proposed configured-open experiment. They demonstrate the stopped Memory already held330000 and this exact configured-open path preserves it. They do NOT establish which later live writer or path produced280000. Field has been asked for retained activation/start/configuration writer or wrong-path receipts. A causal source fix remains unchosen; no live restart or mutation beyond the earlier authorized narrow setters was performed.
+
+## Transitional old replay actually re-entered
+
+A subsequent finite joint journal read for Flow and flow-configure,15:14–15:22 local time, identifies a previously missing writer between stop/capture and new245289 startup:
+-15:15:43: old Flow4058088 and its configure unit stopped.
+-15:19:50: OLD Flow restarted as232493, and OLD flow-configure started as232522.
+-15:19:52: configure232522 logged Nexus Configured and Models Configured, then was terminated during the switch.
+-15:21:22: old232493 was SIGKILLed after stop timeout.
+-15:21:27: new245289 started.
+
+Journal metadata for232522 retains its exact script and argument vector. Reading those immutable artifacts shows the old script iterates family requests in order and logs each only after receiving its reply; its THIRD argument is an old thresholds declaration with BOTH Fable models280000. This differs from the final new Home source's asymmetric280000/330000 declaration. The actual old replay thus existed and began changing configuration during transition, despite the configure unit being absent at the final checkpoint.
+
+Evidence `/tmp/flow-5441e0-fable-restoration/`: `transition-unit-journal.txt`, `old-configure-journal.jsonl`, `old-configure-script.txt`, `old-thresholds.datom`. The script was read, never invoked by this flow.
+
+Observation versus inference: actual old replay startup and its first two successful effects are observed; the exact threshold commit has no surviving echo/transaction receipt. An in-flight third request could commit before its client/script was killed. That is the strong causal explanation matching the resulting280000/280000 and the otherwise preserving new opener, but the third commit is an inference, not a witnessed transaction. What caused activation to re-enter the old units requires the deployment owner's activation-order evidence.
+
+The current generation's removal of automatic replay removes that writer from subsequent ordinary starts, and exact52e configured-open is proven to preserve330000 on the stopped-copy experiment. The remaining transition fix is to keep old configure from re-entering between the stopped event and replacement of its unit/declarations, through reviewed deployment ordering or a supported lifecycle hold. No hand mask, speculative deployment patch, live restart or replay was performed here. Current source5-1 declaration debt remains separate and must be aligned before any future explicit owner replay. Field/Core/Psyche received this new writer evidence and its precise limit.
