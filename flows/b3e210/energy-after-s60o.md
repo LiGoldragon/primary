@@ -23,4 +23,17 @@ versionZero c293/jelc announced its actual stopped terminal and no competing gat
 
 Full `checks.x86_64-linux` at exact `a0212e5428012bf8405645eda341ed984265113f`: **exit 0, 98 successful check entries**. Receipts `/tmp/b3e210-energy-after-s60o/home.log` and `home.exit`; log SHA256 `3e2c0830bd8952ba4902c34c1e6c002232bf96e622260d77f18d3e2ea268d7fd`. The invocation ended and remote eval scratch cleanup completed. Actual terminal/quiescence was sent directly to versionZero and Core; later competing gate work requires fresh Field nonoverlap.
 
-Core independent review and authorization for Home candidate-only publication, then coherent consumer candidate pin from actual62b and Field-owned Evaluate, were requested at8ptn. No new candidate publication, consumer edit, main promotion or activation has happened yet.
+Core independent review and authorization for Home candidate-only publication, then coherent consumer candidate pin from actual62b and Field-owned Evaluate, were requested at8ptn. No main promotion or activation happened; the subsequent candidate-only publication is recorded below.
+
+
+## Candidate-only publication — Core bfpl
+
+Core independently reviewed the exact source diff, machine audit, exit0 and matching gate-log hash, then authorized only candidate Home/consumer branches and supported Field Evaluate. Fresh remote compares confirmed both new branch names absent before non-forced pushes.
+
+- Published Home `a0212e5428012bf8405645eda341ed984265113f`, branch `nixcriomos-b3e210-energy-after-s60o`, exact parent actual308f.
+- Published CriomOS `662c2ec6ea55f81487a67fba2c7b8ceff719dab1`, branch `nixcriomos-b3e210-energy-after-s60o-consumer`, exact parent actual `62b83fe6c64b242da31a7751468a002d8a4da59e`.
+- Consumer changes only Home/Energy locked rev/hash/time: twelve-line diff. All original input URLs/edges and other logical root branches remain identical. Fixed producer/Flow52e, belief pins, replay removal and all current fields are preserved. Baseline ordering was restored for unchanged JSON keys after a semantic audit, not by dropping fields.
+
+Receipts `/tmp/b3e210-energy-after-s60o/{home-remote-before,home-remote,consumer-remote-before,consumer-remote}.txt`, push logs, `consumer-lock.log` and `consumer-lock-audit.json`. No fabricated GitHub metadata/local-input substitute.
+
+Field-owned supported Evaluate-only for this NEW immutable consumer was requested in hazj; this owner submits no duplicate, host query or activation. Scope/proposal/transport and actual terminal remain Field handoff evidence. No prior Evaluate628 result is reused for the new revision. After that terminal, Core receives the exact coherent packet for activation review; no main or activation authority is inferred, and actual-active-parent validity must be checked again at transition.
