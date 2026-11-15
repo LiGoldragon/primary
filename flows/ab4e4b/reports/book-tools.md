@@ -1,6 +1,6 @@
 # Book authoring implementation — 18zt
 
-**Superseded disposition:** Fable rejected adoption after reading the preview (ukke/zl75). Main remains fd83f44 only. My isolated source/docs commits below were returned to uncommitted changes at his instruction; their historical test evidence is retained, not an adopted grammar. See `flows/ab4e4b/alternatives-difference.md`. No alternatives publication was requested.
+**Superseded disposition:** Fable rejected adoption after reading the preview (ukke/zl75). Main remains fd83f44 only. My isolated source/docs commits below were returned to uncommitted changes at his instruction; their historical test evidence is retained, not an adopted grammar. See `flows/ab4e4b/alternatives-difference.md`. No alternatives publication was requested. The actual earlier publication is now recovered: all three diagrams were visible, but the preview freshly redrew their SVGs; preserved Mermaid text does not mean identical illustrations. The difference account quantifies both the card changes and the changed figures.
 
 ## Custody and revisions
 

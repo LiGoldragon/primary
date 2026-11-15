@@ -1,13 +1,15 @@
 The preview adds separate, neutral lettered cards; ordinary green addition margins remain inside them, with no fourth change colour.
-All three flowcharts already occur in the earlier source; their SVGs were newly drawn for this preview. Their presence and appearance in the earlier published edition await the bookmaker's retained edition.
+All three flowcharts were visible in the earlier published edition; the preview redraws the same three diagrams with different SVG geometry and line wrapping.
 
 # Reader-visible differences in the balancing alternatives
 
-## Evidence and limit
+## Evidence
 
 Earlier source: `flows/655f27/proposals/balancing-alternatives.md`. Converted source: `flows/ab4e4b/proposals/balancing-alternatives.md`. Preview: `/tmp/book-ab4e4b.gqmYkw/balancing-alternatives.html`; phone/desktop screenshots: `preview-390.png` and `preview-1200.png` alongside it.
 
-The comparison below is exact for those sources and the rendered preview. I also rebuilt the earlier source with unchanged main renderer fd83f44 and the **same three new SVG assets** as a controlled layout comparison: `/tmp/book-ab4e4b.gqmYkw/balancing-earlier-reconstructed.html`. That reconstruction is not a claim to have recovered the earlier publication. The bookmaker was asked for its actual URL/rendered artifact and whether its three diagrams were visible (`objd`). Differences in the old edition's illustrations, if any, remain unknown until that artifact arrives.
+The earlier published edition is [The balancing: alternatives for its first form](https://claude.ai/artifact/HkfGv1RjiRzTawcKzoC4rH), retained version `1794775236-3cef`. Its saved full HTML is `/home/li/.claude/projects/-home-li-primary/33d4c0c3-d4c0-5fb0-892e-4193ced31038/tool-results/artifact-87aac9c0-1794775236-3cef.html`, copied for comparison to `/tmp/book-ab4e4b.gqmYkw/published-earlier.html`. Psyche book Haiku confirmed all three diagrams were visible, the options were prose rather than cards, and no new edition has been published (`objd`).
+
+The comparisons below now use that **actual saved publication**, the converted source and the preview. The separate reconstruction `/tmp/book-ab4e4b.gqmYkw/balancing-earlier-reconstructed.html` was useful for isolating layout, but is not substituted for the actual edition. Parsed visible-text/shape records are retained as `old-visible.json`, `new-visible.json`, `published-earlier-svg.json` and `balancing-alternatives-svg.json` beside the preview.
 
 ## Wording and headings
 
@@ -40,7 +42,7 @@ In particular, the first question's B card is headed with a phrase beginning **A
 
 ## Order, grouping and reading path
 
-- Previously, one numbered proposal sheet held the question, its diagram where present, and the lettered additions below. In the controlled rendering, the adjacent `+ A.`, `+ B.`, `+ C.` source lines join into **one prose paragraph under one green margin**, with the letters in that running text. The five name options also join into one paragraph. The actual earlier publication may have used different line breaks; its retained artifact is still wanted.
+- Previously, one numbered proposal sheet held the question, its diagram where present, and the lettered additions below. The actual earlier publication joins the adjacent `+ A.`, `+ B.`, `+ C.` source lines into **one prose paragraph under one green margin**, with the letters in that running text. The five name options also form one paragraph. The new page splits those four paragraphs into fourteen separate option bodies, each inside its own card and green margin.
 - The preview instead has an outer question enclosure and a separate white, rounded proposal card for each option. Every card has its own heading, letter badge, padding and inner green margin. Added space and repeated headings make the same bodies occupy more vertical room.
 - At phone width the cards read A, then B, then C vertically. At desktop width they form two columns: A and B share a row; C starts the next row on the left. For the name question the rows are A/B, C/D, then E. The last card can therefore have an empty space beside it.
 - The outer question enclosure uses the page background and a neutral border; previously the entire numbered proposal was one sheet. White option-card surfaces now separate the choices from that outer enclosure and from one another.
@@ -50,11 +52,29 @@ In particular, the first question's B card is headed with a phrase beginning **A
 
 - The original source already contains three Mermaid fences: the increasing scope of what it watches; measures/model/both; and tell/hold/stop-and-rollback. The name question has no diagram in either source.
 - No Mermaid fence text, node label, arrow, arrow label, branch or direction was changed by the conversion. All three fences stay under their original question and before that question's options, in their original order.
-- The preview's three actual SVG files were freshly drawn by the Illustrator from those fences. Their geometry, wrapping and size relative to the **actual earlier publication's** graphics cannot yet be compared. The unchanged fence text alone does not establish that the two editions show identical illustrations.
-- In the controlled old-form rendering, each diagram sits directly above the one green-margined paragraph containing all its lettered options, inside the same proposal sheet. In the preview it sits in the outer enclosure **above the whole card grid**, outside every individual card. It is not placed beside a particular option and no diagram node is connected to a card.
+- The preview's three SVG files were freshly drawn by the Illustrator from those fences. They are **not the earlier edition's SVG files**. Node/arrow wording and connections are preserved, but box dimensions, coordinates, spacing, label line breaks and aspect ratios differ, as detailed below.
+- In the actual earlier publication, each diagram sits directly above the one green-margined paragraph containing all its lettered options, inside the same proposal sheet. In the preview it sits in the outer enclosure **above the whole card grid**, outside every individual card. It is not placed beside a particular option and no diagram node is connected to a card.
 - The diagrams' first and third chains run vertically A → B → C. On a wide screen, the cards beneath them instead read A/B across one row and C on the next. The second diagram shows A and B joining C; the card grid uses the same two-column placement as for the other questions, rather than a diagram-specific layout.
 - The first diagram names its B node “Energy and resources” and C node “The whole body”; the new prominent card headings instead say “A, and the machine's resources” and “B, and the whole body.” The diagram/body wording already differed in the earlier source, but those body phrases were not previously separate bold headings.
-- With the same SVG assets and fixed page width, the new outer enclosure's side padding is 12px instead of the earlier proposal's 16px. Its diagrams therefore receive 8px more available width, and their proportional height increases accordingly. Any larger visual difference caused by redrawing the actual older diagrams remains unmeasured.
+- The new outer enclosure's side padding is 12px instead of the earlier proposal's 16px. At fixed available page width, its diagrams receive 8px more width. Separately, their redraw changes height substantially: the first becomes taller in proportion to its width, the second slightly taller, and the third much shorter.
+
+
+### The actual redrawn diagrams
+
+| Diagram | Earlier SVG view box | Preview SVG view box | Height at equal displayed width |
+| --- | --- | --- | --- |
+| What it watches | 400 × 370 | 420 × 460 | About 18.4% taller |
+| How it judges | 400 × 420 | 430 × 460 | About 1.9% taller |
+| What it may do | 400 × 620 | 400 × 400 | About 35.5% shorter |
+
+- In diagram 1, the boxes stay 300 SVG units wide but become 70 units high instead of 56, within a wider/taller canvas. Their x coordinate moves from 50 to 60; the later boxes move down, from y154/y288 to y190/y360. Node labels use authored size 20 instead of 18; arrow labels use 17 instead of 16, within the changed coordinate scale. The second arrow's text was three lines, “and rhythm,” / “what is left lying,” / “itself”; it is now two, “and rhythm, what is” / “left lying, itself.” No words change.
+- In diagram 2, the top boxes are farther apart in the SVG coordinate system and are moved upward. Their size changes from 170 × 80 to 190 × 70. The bottom combined box changes from 300 × 120 to 410 × 150 and becomes nearly canvas-wide. The inherited label size falls from 16 to 15 SVG units. The B label changes from “B. A System 1” / “model on each beat” to “B. A System 1 model” / “on each beat.” The C label changes from “C. Both: measures for” / “what is counted,” / “the model for the rest” to “C. Both: measures for” / “what is counted, the model” / “for the rest.” No words or joins change.
+- Diagram 3 is vertically compressed. The earlier canvas was 620 units high and the preview canvas is 400; its boxes, arrows and arrow labels move accordingly. Its three 340-unit-wide boxes shrink from heights 80/120/80 to 60/90/60; corner radii change from 8 to 6. Node labels remain 18 SVG units, while arrow labels fall from 18 to 16. B was wrapped as “B. It holds:” / “nothing ended, nothing lost”; it becomes “B. It holds: nothing” / “ended, nothing lost.” The original tall diagram also had more canvas beneath its final label; the preview has less. No option or “and may also” arrow is removed.
+- Thus there are two independent visible changes: the options become cards, **and the figures are redrawn**. The preserved Mermaid text did not preserve the earlier figures' visual form.
+
+### Whole-page length
+
+Under the same headless-browser viewport and installed fonts, the actual saved earlier edition is 3,243px tall at phone width 390; the preview is 5,006px, about **54.4% longer**. At desktop viewport 1200 (1,185px of document width after the scrollbar), it grows from 3,754px to 5,171px, about **37.7% longer**. Both remain within the horizontal viewport. These are measured renders, not estimates from source length. The corresponding `earlier-390.png` and `earlier-1200.png` are beside the preview screenshots; `earlier-preview.log` records the earlier DOM measurements.
 
 ## Current disposition
 
