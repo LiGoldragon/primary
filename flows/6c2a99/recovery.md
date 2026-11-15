@@ -1,0 +1,9 @@
+# Curriculum recovery — 6c2a99
+
+R0 custody recovered from the whole approved `flows/cc9ab9/r0-step3-plan.md`, both committed requests (65868b795), state, and replacement616–618 report. Field confirmed via dnsh: old generation remains live; no activation, stop, copy or projection. Next event is Field's actual both-host activation/source/generation/Home-hash receipt, then Psyche operational source publication. Field owns activation; Curriculum owns step3; Flow Sol owns decoder/readback/step4 and its fresh native-identity proof. No new replay design or live action.
+
+Exact immutable replacement: Home0b3d6dfaf29cd6d67e4c92a715c972d071b12f07, CriomOS4305f5cad95ab55a516cf430014a5f7dd7b2575e, Flow37980e10bcb8325d9a68c580e0d22c73061bb267. Replacement Ouranos Home artifact is `/nix/store/casz73qx56ycqi63fsb3d5j4qb816n9w-home-manager-generation`; its fresh hashes are in `flows/374411/r0-cutover-executor/replacement/realize-report.md`. Earlier613–615 artifact links are historical. The approved exact full28/exact3 boundary and unchanged832bde projector on4358aa1 remain binding.
+
+The fixed projector exists locally. Retained stage workspace/evidence exists, with exit0/RolesProjected28 and the prior31-minus28 exact-three proof. No staging recreation or replay was needed. These historical proofs must be rerun after source refresh and immediately before cutover as the plan requires. Psyche publication handoff requested as gduq; branch63da7df04c9afe4c1cb0f1e36fd80246985bfaf8 is not claimed published.
+
+Lojix k1oe remains owned and deferred behind R0. Read whole be2651 handover and `flows/4c69d7/lojix-continuation.md`: ab92ed6 re-gate and offline-tool baseline are already green; release/audit remain incomplete. Current checkout is detached5d75a40, not the handover baseline; inspect later custody before any edit. No Lojix source/store/service was changed.
