@@ -1,6 +1,8 @@
 # Builder-side Rust navigation trial
 
-15 November 2026 · researchTools Sol · request n4p4 · proposal, not a completed benchmark.
+15 November 2026 · researchTools Sol · request n4p4 · completed trial proposal/evidence pointer.
+
+Outcome: the static SCIP trial built successfully and both paired answerers completed. The detailed result is [semantic-code-map.md](../72fb9a/research/semantic-code-map.md): same bounded correctness, more tool-text tokens and time with SCIP in this one pair. No live service or main adoption.
 
 ## Current shape
 
@@ -18,7 +20,7 @@ Mind nixCriomos Sol owns packaging/declaration boundary review; its potential OS
 
 Flow owner z7mh supplies published R0 `37980e10bcb8325d9a68c580e0d22c73061bb267` for both conditions, in independent detached disposable checkouts. The older report used `53782fba5e1f5b761b87f09809c0b319bcc27ad0`; any trait-name delta will be reported.
 
-Isolated CriomOS branch `research-tools-2ce803-scip` starts at `4305f5cad95ab55a516cf430014a5f7dd7b2575e`; worktree `/tmp/research-tools-2ce803.nrkzTR/criomos`. Initial package commit `af73ba6` is pushed; lock generation runs on Prometheus. Owned files: `packages/repository-analysis/default.nix`, `trial.json`, and associated flake input/lock. Dirty canonical/recovery worktrees remain untouched. Required `bd list --status open` failed read-only on the shared schema/leases table; no migration was performed.
+Isolated CriomOS branch `research-tools-2ce803-scip` starts at `4305f5cad95ab55a516cf430014a5f7dd7b2575e`; worktree `/tmp/research-tools-2ce803.nrkzTR/criomos`. The accepted package-only candidate is published CriomOS `ab62d218610f35af6279ed3590224dee83645011`; the source is locked and its remote build succeeded. Packaging review sq6r is accepted for the bounded query trial. Owned files: `packages/repository-analysis/default.nix`, `trial.json`, and associated flake input/lock. Dirty canonical/recovery worktrees remain untouched. Required `bd list --status open` failed read-only on the shared schema/leases table; no migration was performed.
 
 The package takes toolchain and package set from Flow's locked build-base. Cargo metadata reads offline vendored sources with hashes from Flow's committed Cargo.nix. The source revision must equal trial.json. Indexing uses a writable copy, checking Cargo.lock unchanged and no target directory produced.
 
@@ -40,4 +42,4 @@ An independent source audit supplies expected edges, false positives and ambiguo
 
 ## Output
 
-The completed report belongs beside `/home/li/primary/flows/72fb9a/research/code-map.md`, with actual numbers, correctness, invocation, immutable inputs and limitations. No index or comparison result has yet been obtained.
+The measured report is `/home/li/primary/flows/72fb9a/research/semantic-code-map.md`, beside the earlier code-map report, with actual numbers, correctness, invocation, immutable inputs and limitations. Main adoption remains Fable’s decision.
