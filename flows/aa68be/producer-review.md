@@ -1,0 +1,13 @@
+# Producer correction — aa68be
+
+Curriculum `spans-c40e5e`: published immutable `60609c55f90432782625275294636a4e396d9497`, descendant of reviewed `c50925a16906b204b796ff18b5d4405900f61348`. Worktree `/git/worktrees/curriculum-spans-c40e5e` is clean; no main publication or live switch.
+
+Astra approved the capability boundary in Result 2u5p. Admission validates framing/nonempty body, identity/file and dependency graph. Common resolved-source composition validates execution metadata with unconditional duplicate-key refusal, preserving baseline ComposeStartup/ComposeRole behavior. Default inventory does not decode description. Verbose description rejects unquoted leading > or | as one indicator rule, including modifiers; continuation follows its owning top-level key, while orphan indentation refuses.
+
+Five changed files only: `src/registry.rs`, `src/startup_metadata.rs`, `tests/declarations.rs`, `tests/explicit_role_policy.rs`, `tests/startup_bundle.rs`. No contract, manifest, dependency, feature or build changes. The prior accepted contract remains `8e63176cb1c0f1429a9797412391b4035a25cc68`.
+
+Full immutable published-GitHub gate on Prometheus: exit 0, `/tmp/curriculum-aa68be-gate.5Emuey/{gate.log,exit}`. Whole `checks.x86_64-linux` passes default, curriculum, cargo-nix, crate-features and crate-versions. nix-fast-build remote, no-download; no local compilation. Initial abbreviated-SHA invocation was refused before evaluation (`/tmp/curriculum-aa68be-gate.NZoZKW`); corrected full-SHA invocation is the evidence above.
+
+Witnesses passed: 24 empty/populated indicator/modifier combinations; default inventory retains actual identity/file while verbose refusal names both; description-only continuation boundaries and successful unrelated admitted metadata continuations; direct listing versus both composition duplicate-key refusals. Existing `numeric_binding_selects_singleton_and_every_containing_span_with_actual_provenance` passes: binding 1 selects precisely singleton 1 and span 0-1 from singleton 0, singleton 1 and span 0-1. Existing source drift/read-failure and malformed typed identity witnesses remain green. No separate live probe is claimed.
+
+Final fresh authored-main manifests, typed Flow consumer, combined Astra review and Opus authorization remain pending; intermediate manifest evidence and R0 replacement references remain `flows/d486ce/ujg2-review.md`. R0 projection is held until its explicit activation/source-publication evidence. Inherited k1oe Lojix work remains untouched, with state in `flows/4c69d7/lojix-continuation.md` and `flows/be2651/handover.md`. Orders p4ce/k1oe remain open. y56w answered with approved full28/exact3 ownership plan; no fresh activation claimed.
