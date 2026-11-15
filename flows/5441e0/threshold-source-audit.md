@@ -14,7 +14,7 @@ Inspected immutable Flow `52e5687d13446e3cd22583ff31d717f6250e0534`:
 - `store.rs:2599,2649` registers the threshold family using its existing descriptor; `760–777` keys thresholds by model name. No threshold-specific upgrade or default seeding is present in the inspected opening path.
 - `store.rs:3350–3363` obtains the effective threshold from the keyed Memory table. `6155–6160` builds the Configuration threshold vector directly from that table and sorts it.
 - `store.rs:6811–6821` accepts whole-family Thresholds declarations; `6839–6846` accepts a keyed Refresh declaration. These are explicit meta configuration effects.
-- The complete37980e10→52e production `store.rs` diff is empty: its sole change is one test identity string. Related store diff changes only a refresh-caller diagnostic. No new threshold migration or threshold reset appears in this release delta. Retained exact diff: `/tmp/flow-5441e0-fable-restoration/store-379-to-52e.diff`.
+- The complete37980e10→52e production `store.rs` diff is empty: its sole change is one test identity string. Related store and lib.rs diffs likewise change only test identity strings. No new threshold migration or threshold reset appears in this release delta. Retained exact diff: `/tmp/flow-5441e0-fable-restoration/store-379-to-52e.diff`.
 
 Inspected immutable Home `308f2354d21eb79e111d4e0cfd83c58ebe327a21`:
 - `modules/home/profiles/min/flow-nexus-place.nix` declares the daemon with ExecStart alone, no automatic configure service or ExecStartPre setter. The activation hook compiles the place file. Bootstrap families are read only by explicitly invoked `flow-replay-<version>`.
