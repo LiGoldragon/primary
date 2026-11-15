@@ -1,0 +1,21 @@
+# R0 Flow-only State ownership — supersedes whole-State handoff
+
+Psyche ihm5 / Astra pyps and069e rule Flow-only backup/restore. Energy keeps serving. This supersedes every whole-State sentence in field-execution.md and refresh-inventory-plan.md; neither old whole-State executor nor Energy stops are authorized by those documents. Final typed inventory uses a disposable duplicate of the verified Flow-only backup.
+
+## Source evidence at old and accepted revisions
+
+Old deployed source eabddc8d and accepted37980e10 both define `LaysOutPlace::STORE_FILE = "flow.sema"` and `store() = state_directory().join(STORE_FILE)` in `crates/flow-nexus/src/place.rs`. The authoritative persistent Flow database is exactly `/home/li/.local/state/nexus/main/flow.sema`. Flow's sema/redb archive, catalog and commit log are inside that file; the retained typed reader and store-check each copy that one file into a private directory and open it there. The prior deployed-library report establishes redb4.3.0 single-file commit-slot behavior; no external journal/WAL is used by this Flow open path.
+
+Accepted source `crates/flow-nexus/src/store/staged_open.rs` defines only sibling temporary copies `.flow.sema.open-<pid>-<nanos>`: `copy_prefix`, `begin`, `land`, `sweep`, and Drop show their lifetime, copy/rename and whole-file locking. `store.rs` `recognize_repaired_copy` defines `.flow.sema.recognition-<pid>-<nanos>` and removes it on Drop. These are Flow-owned temporary copies, not Energy records. They must be explicitly inventoried after Flow/configure writers stop; any extant names are captured in the Flow backup manifest and examined before first new open. No filename glob may authorize copying/restoring/removing other State files.
+
+Home `flow-nexus-place.nix` declares the Flow daemon and configure client, not a separate Flow translator state-writing unit. `flow`, `flow-meta` and the hook are clients; shared translator placement is a library/config compiler here, not the Energy translator process. No separate Flow translator-owned State record has been established. If Field finds another actual Flow writer or sidecar, stop and obtain its source/ownership evidence before widening this manifest.
+
+## Explicit isolation boundary
+
+Backup/restore input: `flow.sema` plus the exact regular-file temporary names from the two source-proven prefixes, if any, frozen in a manifest after Flow/configure stop. Check paths resolve inside the named State directory, are not symlinks/hardlinks to another owner's files, and have the expected owner. Use a fresh backup directory containing ONLY that manifest set, not `cp -a State` or a directory-wide restore. Restore only these paths while Flow/configure remain stopped; preserve upgraded Flow data separately before restoring old Flow bytes.
+
+EXCLUDED, left in place throughout: `energy.rkyv` and `energy-translator.rkyv`, their writers/units/configuration, every other unmanifested file, and the State directory itself. `flow.sema.leaking-1111` is historical and not referenced by either source open path; its creator/ownership was not established by this source audit. Preserve it untouched rather than inferring it is active Flow state or including it in rollback. Runtime sockets are outside State and are not backup/restore data. Place/configuration/generation rollback remains Field's declared-generation operation, separate from State bytes.
+
+Energy files can legitimately change while serving, so requiring their hashes to remain constant would be the wrong oracle. Require before/after ownership/path and continuous unit-state evidence plus an exact copy/restore command manifest proving no Energy path is addressed. Additional unknown sidecar/writer/ownership evidence stops the plan for review. No Energy snapshot, restore, stop or restart is part of this boundary.
+
+Field supplies the exact post-stop manifest, metadata/copy hashes, and revised executable copy/restore commands for Astra live-package review. This source enumeration authorizes no capture or transition now. The final zero typed inventory still requires Field's explicit event and uninterrupted stopped Flow writers through first upgraded open. Zeus has no serving Flow State; do not invent one.
