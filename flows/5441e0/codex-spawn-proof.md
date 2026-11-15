@@ -1,0 +1,15 @@
+# Codex spawn succeeds; retained-session rest remains unresolved
+
+Psyche7saw/5rjb followed the Claude repair. Supported Current/Inspect confirmed Psyche book Haiku refreshed from33d4c0 to new9effbd/native9effbdc9-912e-50b7-a57e-5dbe1747f3c3, new panew1BP:p1. Core/Psyche were notified.
+
+To distinguish actual Codex startup from the retained-thread queued-refresh stall, this flow announced and ran ONE cheap disposable Luna Flow Start (no configuration amendment or provider/API probe). Request `codexSpawn5441e0` selected gpt-6-luna low, System spirit/core0+intent/main-flow0, no prompt modules, no-work READY brief, disposable Mind spawnWitness Luna address. It returned Started.d09df3/native01a1e193-8051-7b50-b871-aa4d09df32f8, new panew1BR:p1. Actual native transcript replies `READY d09df3` and records task_started23:38:27.482Z then task_complete23:38:28.528Z. Current afterwards was Asleep, pane absent, owner Stop returned AlreadyStopped. No owner-caused termination or second Codex witness is claimed. Evidence `/tmp/flow-5441e0-codex-spawn/`.
+
+Thus current Codex spawn and at least a newly created session's rest-to-sleep path work. This does not establish why retained082e0f/ab4e4b do not refresh. ab4e4b was left unchanged as Psyche requested. Research metadata at its read checkpoint had a new open task, and Herdr Working; earlier native completions still exist, so that instantaneous Working read does not explain its earlier stall. No turn interruption/retry/forced refresh was performed.
+
+## Concrete pending-letter candidate
+
+Supported ReadQueueDeliveries for Mind herdrNexus Sol reports seven Uncertain attempts belonging to current native thread01a1e0f7-c34a-77f1-bf22-c73ab4e4b921; four project SeatNotResting. DebugDelivery.tq5c and DebugDelivery.yin7 project logical Uncertain with no receipt/read association. These are observations of persisted delivery standing, not a direct in-memory ledger query.
+
+Exact52e source `waking.rs:1425–1460,3087–3183` recovers outstanding and other typed uncertain attempts; a receipt lookup failure calls await_letter, seeding LetterTyped for the payload. `codex_turns.rs:260–285` refuses AtRest while any letter remains. `waking.rs:3112–3126` runtime reconciliation examines the latest typed attempt. This yields a specific hypothesis: reconstructed unresolved letters can prevent rest even after native turns complete, without any new spawn attempt. It is not proof of the current live ledger or the precise failed history lookup. Existing Inspect/ReadEvents/DebugDelivery do not expose that internal standing or history-anchor result.
+
+Field has no verified direct app-server ledger read oracle. This flow ran no speculative native read/probe, raw live Memory reader or mutation. Core/Psyche received the concrete candidate and remaining metadata gap. The next bounded diagnostic is a Flow-owned pending-order/rest/subscription/turn/item/letter metadata projection, or equivalent approved source diagnostic; no forced witness refresh or blanket uncertain-attempt clearing is justified by these observations.

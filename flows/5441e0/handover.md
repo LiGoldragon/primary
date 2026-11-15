@@ -23,3 +23,10 @@ Field34g0 listener proof STOPPED before launch: actual508e source lacked both li
 Researchkart answered: no verified owner-released API worker roster; only internal Claude settings/typed ClaudeEnvironment contract in Flow52e herdr/launch.rs481+, emission.ethos59/emission.rs243, NOT general arbitrary Environment/APIauth support. No credential/provider probes.
 
 Inherited old open requests fromd42f0a remain in startup; do not mass-close obsolete work without evidence. Our019o/vmoe candidate requests answered; Fieldbjz6/w8px/34g0 answered. No build/background process remains active from this flow.
+
+## Latest after queued own refresh (do NOT repeat it)
+
+Own Refresh was admitted `RefreshQueued.{ { Mind flowNexus Sol }5441e0 }`; subsequent notification1cw4 does not mean successor. No repeat. Psycheu0fn and nek0 answered by Results04n2/03bj; durable reports above.
+Psyche7saw: book held refresh CONFIRMED completed: new9effbd/native9effbdc9-912e-50b7-a57e-5dbe1747f3c3,w1BP. ONE actual Luna spawn testd09df3 succeeded, READY and native taskcomplete, already stopped/ownerStopAlreadyStopped. Report `codex-spawn-proof.md`, `/tmp/flow-5441e0-codex-spawn/`. No current Codex spawn failure reproduced. ab4e4b left untouched per Psyche5rjb, serves as live idle stall witness.
+Source diagnosis now has concrete candidate: supported current-thread ReadQueueDeliveries shows seven Uncertain attempts forab4e4b (fourSeatNotResting); DebugDeliverytq5c/yin7 Uncertain/no receipt. recover_typed receipt failure→await_letter→LetterTyped can keep ledger LetterAwaited after native completion; runtime reconcile_typed onlylatest. Exact live ledger/history failure still UNKNOWN, no blanket clear/fix. Core40y2/Psychesdmk notified; smallest next diagnostic metadata-only internal ledger/order projection. No Field app-server read oracle in custody(zxoa).
+NixCriomosdjd3 answered full Claude metadata/resolved status, no new candidate/source change needed. Researchkart answered settings/internal environment schema, no verified API-worker roster.
