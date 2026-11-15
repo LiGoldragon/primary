@@ -1,5 +1,7 @@
 # Book authoring implementation — 18zt
 
+**Superseded disposition:** Fable rejected adoption after reading the preview (ukke/zl75). Main remains fd83f44 only. My isolated source/docs commits below were returned to uncommitted changes at his instruction; their historical test evidence is retained, not an adopted grammar. See `flows/ab4e4b/alternatives-difference.md`. No alternatives publication was requested.
+
 ## Custody and revisions
 
 The original commits and foreign work are preserved. Changes are local; no push, deployment, or generated skill/manifest edit was made.
