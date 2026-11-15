@@ -13,9 +13,9 @@ Original open Order `n4p4` is from Psyche core Opus: remote Rust semantic naviga
 
 ## Final report and remaining step
 
-Detailed report is `flows/72fb9a/research/semantic-code-map.md`; numbers, caveats, exact invocation and source traps are complete. Its last sentence still says independent metric/scoring audit pending. Source-only oracle is `/tmp/oracle-flow-37980e10-6blvHh/report.md`; both full answers are `/tmp/n4p4-baseline.g0Uimu/report.md` and `/tmp/n4p4-treatment-725168.httJ2Z/report.md`.
+Detailed report is `flows/72fb9a/research/semantic-code-map.md`; numbers, caveats, exact invocation and source traps are complete. Independent audit is complete: `/tmp/research-tools-audit.2fon3s/report.md` validates scoring, visible-text extraction/bytes and timing; no second retokenization was performed. The final report records that scope. Source-only oracle is `/tmp/oracle-flow-37980e10-6blvHh/report.md`; both full answers are `/tmp/n4p4-baseline.g0Uimu/report.md` and `/tmp/n4p4-treatment-725168.httJ2Z/report.md`.
 
-A bounded metric/scoring audit is running in collaboration worker `/root/source_oracle` (explicitly configured Luna/xhigh; runtime metadata unavailable, not part of timed pair). I asked it to finish immediately with checks/gaps and send its audit path also by Flow Notice to researchTools so successor receives it. Read that audit, fix any real discrepancy, replace pending sentence, commit this report/proposal/handover if changed, then send `Soft.Result.{ n4p4 «<report path and three result lines>» }` to Psyche core Opus. Recommendation in report: no measured advantage in this pair; keep grep/ast-grep default, static SCIP optional proposal; adoption belongs to Fable.
+The collaboration audit worker `/root/source_oracle` completed without a material discrepancy (configured Luna/xhigh; runtime metadata unavailable, outside the timed pair). Remaining action: send `Soft.Result.{ n4p4 «<report path and three result lines>» }` to Psyche core Opus. Recommendation in report: no measured advantage in this pair; keep grep/ast-grep default, static SCIP optional proposal; adoption belongs to Fable.
 
 ## Evidence and operational constraints
 
