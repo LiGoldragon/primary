@@ -35,3 +35,9 @@ Existing fully parked cohorts retain their attempt identities and evidence acros
 5. Settled/Read siblings are comparison evidence, not newly open work. Different anchors, flows, threads or nonconsecutive IDs never merge. Existing Claude cohort/startup and native receipt tests remain green.
 
 Final exact52e-descendant must receive independent Core review and a new whole immutable Prometheus gate. No main/publication/runtime repair is authorized by this proposal.
+
+## Implementation submitted for independent review
+
+Corei9i0 approved the bounded four-file implementation. Exact unpublished candidate `124014803eb621e62892034fcde10c176ecfe177` has exact52e parent, in lock335's worktree. Only the four named files changed. Retained comparison membership includes Settled/Read; consecutive IDs nominate candidates but never authorize settlement without the original exact native payload match. Store writes skip completed comparison members, preserving their existing receipt/history. Event reconciliation visits all pending cohorts. The missing-suffix crash case remains uncertain.
+
+Four new fixtures cover partial settlement/recovery/idempotence, two-cohort event reconciliation, the explicitly unsupported missing-suffix crash shape, and Codex ledger release by both exact cohort receipts. Formatting and diff checks passed. No build or test execution pass is claimed yet. Corezhpw received the immutable candidate and separate production/fixture diffs before the whole gate. Dedicated Read-phase byte preservation and a fully integrated mocked Codex refresh remain coverage gaps to resolve with review. Seven live in-memory letter entries remain inferred; lost membership and exact-payload mismatch are proven separately above.
