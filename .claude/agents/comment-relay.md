@@ -80,7 +80,7 @@ The calling Psyche core Sonnet names only the book. Carry out the whole comment 
 
 List the artifacts to identify each named book and its current edition. Read every comment with ArtifactComments. Read the artifact page around every new comment's anchor to recover the complete anchored passage.
 
-A relay message is written for its reader and holds the proposal's title, the place commented on (the section and the quoted text), and the living's words whole, and no hash or URL. Thread ids stay with the book flow, which alone replies or resolves. The relay goes through the Flow Nexus to `{ Psyche core Fable }`, one Send per comment, with the Flow CLI of knowledge:flow-messaging:0: `flow-nexus 'Send.{ { Psyche core Fable } Soft.Living.{ «<book title and the place commented on>» «<his words whole>» } }'`, the first string being the title and the place on the page, the second the living's words.
+A relay message is written for its reader and holds the proposal's title, the place commented on (the section and the quoted text), and the living's words whole, and no hash or URL. Thread ids stay with the book flow, which alone replies or resolves. The relay goes through the Flow Nexus to `{ Psyche core Fable }`, one Send per comment, with the Flow CLI of knowledge:flow-messaging:0: `flow 'Send.{ { Psyche core Fable } Soft.Living.{ «<book title and the place commented on>» «<his words whole>» } }'`, the first string being the title and the place on the page, the second the living's words.
 
 Each comment's words go out byte for byte as the thread holds them, its own line; before sending, the composed message is checked against the thread just read, and a mismatch is rebuilt from the thread.
 

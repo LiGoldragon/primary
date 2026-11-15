@@ -94,13 +94,36 @@ The author writes the complete source and names its path to the bookmaker. The b
 
 ## Source anatomy
 
-The source begins with its Presentation line and its title. A module view is headed `## repo › path`; a proposal is headed `### Proposal N: title · repo › path`. A proposal shown in place sits inside the module view at the place its lines land, after a blank line: headed `#### Proposal N: title · repo › path` naming the view's module, then its `::: comment`, then its added lines, `+` lines and fences whose every nonblank line carries `+`; the module resumes at the next unmarked line. The checker takes each in-place proposal out, through the blank lines after its last added line, and requires the rest of the view to be the module as it stands; the page shows the proposal's heading, comment and green-margined lines inside the module's sheet. The proposal author's own words sit in a `::: comment` container and the page renders them in their own box labelled Why. Unmarked prose in a proposal is module text: the checker accepts it only when the proposal's repository and path resolve to an actual module containing that whole paragraph. Layout whitespace may differ; the words and their paragraph boundary may not. A comment explains a proposal and supplies no module provenance. A `::: shown` container begins with `repo › path`, then carries one exact contiguous excerpt of that source module as it stands. The checker refuses text absent from the named module. The page shows the excerpt in a small module view headed by its source path: a Markdown or plain-text module's excerpt as prose that wraps, any other module's as code highlighted in its language; its amber box and margin are a fourth colour beside added, removed and moved. An Ethos excerpt is authenticated as source and highlighted as Ethos, rather than checked as a whole Ethos file. An `ethos` fence with at least one `+` or `-` line and every other nonblank line carrying `+`, `-` or two-space context is a fragment: it keeps Ethos highlighting and skips the whole-document Ethos check. Bare blank lines may sit in a fragment; context alone is refused as a change that changes nothing, while an Ethos root at column zero is a whole document and is checked. A Mermaid fence whose every line is marked `+` or whose every line is marked `-` draws the whole figure in a green or red margin respectively; the markers are stripped for drawing, a bare unmarked or oppositely marked line is refused, and the sign alone carries an intentional blank line. The checker accepts code and comments at every width. The builder's documentation and checker hold the rest of the grammar.
+The source begins with its Presentation line and its title. A module view is headed `## repo › path`; a proposal is headed `### Proposal N: title · repo › path`. A proposal shown in place sits inside the module view at the place its lines land, after a blank line: headed `#### Proposal N: title · repo › path` naming the view's module, then its `::: comment`, then its added lines, `+` lines and fences whose every nonblank line carries `+`; the module resumes at the next unmarked line. The checker takes each in-place proposal out, through the blank lines after its last added line, and requires the rest of the view to be the module as it stands; the page shows the proposal's heading, comment and green-margined lines inside the module's sheet. The proposal author's own words sit in a `::: comment` container and the page renders them in their own box labelled Why. Unmarked prose in a proposal is module text: the checker accepts it only when the proposal's repository and path resolve to an actual module containing that whole paragraph. Layout whitespace may differ; the words and their paragraph boundary may not. A comment explains a proposal and supplies no module provenance. A `::: shown` container begins with `repo › path`, then carries one exact contiguous excerpt of that source module as it stands. The checker refuses text absent from the named module. The page shows the excerpt in a small module view headed by its source path: a Markdown or plain-text module's excerpt as prose that wraps, any other module's as code highlighted in its language; its amber box and margin are a fourth colour beside added, removed and moved. An Ethos excerpt is authenticated as source and highlighted as Ethos, rather than checked as a whole Ethos file. An `ethos` fence with at least one `+` or `-` line and every other nonblank line carrying `+`, `-` or two-space context is a fragment, whatever its first line, and inside a `::: move` as anywhere: it keeps Ethos highlighting. A fragment whose text, with the minus lines kept, the plus lines dropped and the markers and two-space context indentation stripped, begins with an Ethos root head is a whole Ethos file changing, and that text is checked as the whole-document Ethos source; any other fragment skips the whole-document Ethos check. Bare blank lines may sit in a fragment; context alone is refused as a change that changes nothing, while a fence with no `+` or `-` line whose Ethos root stands at column zero is a whole document and is checked. A Mermaid fence whose every line is marked `+` or whose every line is marked `-` draws the whole figure in a green or red margin respectively; the markers are stripped for drawing, a bare unmarked or oppositely marked line is refused, and the sign alone carries an intentional blank line. A `::: move proposed` or `::: move landed` container holds a `from: repo › path` line, a `to: repo › path` line, a blank line and the moved passage, written once; the page shows it once under the third colour's margin, headed by the module it leaves and the module it enters. A passage edited on its way carries the edit inside the move, its changed words marked in place, `[-removed words-]` and `[+added words+]`; the page marks them as it marks the changed words of a replaced line, in the move's shade, light when proposed and dark when landed. A mark opens and closes on one line, holds at least one word and holds no other mark; a code span stands in a mark as one word, and a line in a code fence carries no marks. The checker refuses a mark left open, an empty mark and a mark inside another; a move in place reads as its source module holds it, removed words kept and added words left out. A line added to the moved passage, a heading among them, is written inside the move as a `+ ` line (a bare `+` is a blank line of the addition); the page shows it under the addition margin in place of the move margin for that line, light when proposed and dark when landed, while the rest of the passage keeps the move margin and the whole passage still reads once, in order. A `+ ` line inside a code fence of the passage is code. A move in place leaves its added lines out of the comparison with the source module, and the checker refuses an addition that says nothing, a run of `+ ` lines with no text. The checker accepts code and comments at every width. The builder's documentation and checker hold the rest of the grammar.
+
+A Markdown module's description, the `description` of its front matter, is written in a `::: description` container at the head of its module view or proposal, and the checker requires it: a module view of a module that has a description, and a new Markdown module, are refused without the container (`module-view-without-description`, `new-module-without-description`); a book carries no front matter, and the checker refuses a `description:` line. In a module view the container is the first thing under the heading, its text as it stands, and the checker authenticates it against the module's front matter. A changed description is written first among its proposal's changes, its removed lines and then its added lines; in place, that proposal stands first in its module view and its removed text is authenticated. A new module's description is its added lines alone. The page shows the description as a block labelled Description at the head of the module's sheet or proposal: as it stands, its text; changed, its removed text under the red margin and its added text under the green, each with only its own changed words marked.
+
+```text
+## psyche-belief › vision/book/0.md
+
+::: description
+How a presentation already written is published.
+:::
+
+### Proposal 1: Persona · psyche-belief › vision/persona/0.md
+
+::: description
+- Persona, the root of the meta harness, is designed or judged.
++ Persona, the meta harness, is designed or judged.
+:::
+
+### Proposal 2: A new module · psyche-belief › vision/topic/0.md, a new file
+
+::: description
++ What the new module is about.
+:::
+```
 
 ## The page
 
 The builder gives every figure the page's colours: each stroke, arrowhead, label and dark fill becomes the page text colour, each light fill the page surface, and both follow the reader's light or dark setting, whatever colours the SVG was drawn in. An Illustrator therefore draws in black on white. Only code is monospace: a code line wider than the screen scrolls inside its box, with a shade at the edge where code is hidden. A titled page that carries a change opens with the builder's key to its colours: added, removed and moved, each as a light proposed shade beside a dark landed one, and an excerpt and a module as they stand.
 
-One example of a line added, a line removed and a passage moved:
+One example of a line added, a line removed and a passage moved with an edit on its way:
 
 ```text
 ::: comment
@@ -118,7 +141,11 @@ A book carries belief modules, as they stand and as they are proposed to change;
 from: repo › old.md
 to: repo › new.md
 
-Moved passage, written once.
+Moved passage, written once, its edit [-beside it-][+marked inside+].
+
++ ## An added heading
+
++ An added line, under the addition margin.
 :::
 ```
 
@@ -358,8 +385,6 @@ Drifting context: context that passes from flow to flow by handover and message 
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
-Psyche: the living system of one human mind, as far as words allow; written psyche, the records, is a residue of it, tentative and fallible, and "psyche" alone means the written psyche.
-
 Raw: a record on which no confirmation was asked. Vision and notion can be raw; intent and spirit are only crystallized.
 
 Past: the flows a flow has remembered, and theirs in turn.
@@ -371,8 +396,6 @@ at what scope, on which project, through which dispatch) logged as a
 vision record.
 
 Machine: short for thinking machine.
-
-Memory: The database of a Nexus is Memory, in every flow's words. Sema names only the meaning dialect.
 
 Evolution is the dynamic procedure of improvement and redeployment: the system improving itself and deploying the improvement.
 

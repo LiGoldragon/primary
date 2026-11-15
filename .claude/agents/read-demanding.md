@@ -189,8 +189,6 @@ Drifting context: context that passes from flow to flow by handover and message 
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
-Psyche: the living system of one human mind, as far as words allow; written psyche, the records, is a residue of it, tentative and fallible, and "psyche" alone means the written psyche.
-
 Raw: a record on which no confirmation was asked. Vision and notion can be raw; intent and spirit are only crystallized.
 
 Past: the flows a flow has remembered, and theirs in turn.
@@ -202,8 +200,6 @@ at what scope, on which project, through which dispatch) logged as a
 vision record.
 
 Machine: short for thinking machine.
-
-Memory: The database of a Nexus is Memory, in every flow's words. Sema names only the meaning dialect.
 
 Evolution is the dynamic procedure of improvement and redeployment: the system improving itself and deploying the improvement.
 
@@ -454,10 +450,10 @@ nix build 2>&1 > "$SCRATCH/build.log"
 
 ## The CLI
 
-The `flow-nexus` on PATH is Flow 0.54.3's ordinary client and `flow-nexus-meta` its meta client. Each takes one datom argument and nothing else, and reaches the Flow Nexus at the place its configuration names: `~/.config/nexus/flow-nexus.datom` (`$XDG_CONFIG_HOME/nexus/flow-nexus.datom` when set), `{ main }`. A missing or unreadable configuration, or one naming no place, is refused naming the file (`Missing.<path>`, `Unreadable.{ <path> <reason> }`, `Invalid.{ <path> <reason> }`, exit 2), and nothing is sent.
+The `flow` on PATH is the Flow Nexus's ordinary client and `flow-meta` its meta client. Each takes one datom argument and nothing else, and reaches the Flow Nexus at the place its configuration names: `~/.config/nexus/flow-nexus.datom` (`$XDG_CONFIG_HOME/nexus/flow-nexus.datom` when set), `{ main }`. A missing or unreadable configuration, or one naming no place, is refused naming the file (`Missing.<path>`, `Unreadable.{ <path> <reason> }`, `Invalid.{ <path> <reason> }`, exit 2), and nothing is sent.
 
 ```sh
-flow-nexus 'Send.{ { Psyche core Fable } Soft.Notice.«The build is green.» }'
+flow 'Send.{ { Psyche core Fable } Soft.Notice.«The build is green.» }'
 ```
 
 A flow sends to the address it already knows. To learn which permaflows exist or what they are doing, it asks the cheap core flow of its own aspect, { Psyche core Sonnet }, { Mind core Sol } or { Field core Sol }, which reads the listing and answers with the few addresses that bear on the question.
@@ -503,19 +499,19 @@ Every request reaches its recipient with its RequestId, which Flow draws when it
 [ { Sender.{ Mind core Astra } Soft.Task.{ m2x9 30 «Review the fix.» } } ]
 ```
 
-A Result answers an Order or a Question and a Done closes a Task, each naming the request by its RequestId. It is admitted when the request was delivered and is still open; anything else, a Result naming a Task or a Done naming an Order among them, is refused Unresolved. One answer closes a request. The Flow Nexus routes it to the sender of the request it names, whatever address the Send writes. A request whose sender is no address, the living at a shell or Flow itself, keeps its answer: the Send answers `Sent.<RequestId>` and `flow-nexus 'Answer.<RequestId>'` reads it, `Answered.{ <sender> <priority>.Result.{ <RequestId> «…» } }`.
+A Result answers an Order or a Question and a Done closes a Task, each naming the request by its RequestId. It is admitted when the request was delivered and is still open; anything else, a Result naming a Task or a Done naming an Order among them, is refused Unresolved. One answer closes a request. The Flow Nexus routes it to the sender of the request it names, whatever address the Send writes. A request whose sender is no address, the living at a shell or Flow itself, keeps its answer: the Send answers `Sent.<RequestId>` and `flow 'Answer.<RequestId>'` reads it, `Answered.{ <sender> <priority>.Result.{ <RequestId> «…» } }`.
 
-`flow-nexus 'Remind.{ <Address> <Minutes> «text» }'` reminds that address after the minutes, `Reminded.<RequestId>`: it is sent `MiddleAbrupt.Reminder.{ <RequestId> «text» }` from whoever asked, and `Cancel.<RequestId>` ends it before then. `Cancel.<RequestId>` closes any open request the same way, an Order, Question or Task among them, `Cancelled.<RequestId>`: the request is archived and leaves the open set a successor is carried, work still queued for it is withdrawn, and its sender receives a notice of its own id, `{ Notification Soft.Notice.{ t336 «Request jlg0 was cancelled.» } }`, its recipient too when the request had reached it. Flow 0.54.7 checks no ownership: any caller may cancel any request. `flow-nexus 'Queues'` reads every queue that holds something, each message with its sender and priority as it would land in the prompt.
+`flow 'Remind.{ <Address> <Minutes> «text» }'` reminds that address after the minutes, `Reminded.<RequestId>`: it is sent `MiddleAbrupt.Reminder.{ <RequestId> «text» }` from whoever asked, and `Cancel.<RequestId>` ends it before then. `Cancel.<RequestId>` closes any open request the same way, an Order, Question or Task among them, `Cancelled.<RequestId>`: the request is archived and leaves the open set a successor is carried, work still queued for it is withdrawn, and its sender receives a notice of its own id, `{ Notification Soft.Notice.{ t336 «Request jlg0 was cancelled.» } }`, its recipient too when the request had reached it. Flow 0.54.7 checks no ownership: any caller may cancel any request. `flow 'Queues'` reads every queue that holds something, each message with its sender and priority as it would land in the prompt.
 
 ## Examples
 
 ```sh
-flow-nexus 'Send.{ { Psyche core Opus } Soft.Order.«Review the drain fix.» }'
-flow-nexus 'Send.{ { Mind core Astra } MiddleAbrupt.Question.«Which revision?» }'
-flow-nexus 'Send.{ { Mind core Astra } Soft.Task.{ 30 «Review the fix.» } }'
-flow-nexus 'Send.{ { Psyche core Fable } Soft.Living.{ «the drain» «Fix it today.» } }'
-flow-nexus 'Send.{ { Mind core Astra } Soft.Result.{ k7ph «Reviewed; green.» } }'
-flow-nexus 'Send.{ { Mind core Astra } Soft.Done.{ m2x9 «Reviewed; green.» } }'
+flow 'Send.{ { Psyche core Opus } Soft.Order.«Review the drain fix.» }'
+flow 'Send.{ { Mind core Astra } MiddleAbrupt.Question.«Which revision?» }'
+flow 'Send.{ { Mind core Astra } Soft.Task.{ 30 «Review the fix.» } }'
+flow 'Send.{ { Psyche core Fable } Soft.Living.{ «the drain» «Fix it today.» } }'
+flow 'Send.{ { Mind core Astra } Soft.Result.{ k7ph «Reviewed; green.» } }'
+flow 'Send.{ { Mind core Astra } Soft.Done.{ m2x9 «Reviewed; green.» } }'
 ```
 
 ## The replies
@@ -557,7 +553,7 @@ SendRefused.Unresolved                                           ; a Result or D
 
 ## A flow's own refresh
 
-`flow-nexus 'Refresh.{ <Aspect> <topic> <Model> }'` naming the flow's own Address answers `RefreshQueued.{ <Address> <FlowId> }` while the flow works: the refresh is recorded and carried out at its next rest, its background work ended, and until then it receives what is sent to it. A resting flow is refreshed at once, `Refreshed.{ <Address> <FlowId> }`.
+`flow 'Refresh.{ <Aspect> <topic> <Model> }'` naming the flow's own Address answers `RefreshQueued.{ <Address> <FlowId> }` while the flow works: the refresh is recorded and carried out at its next rest, its background work ended, and until then it receives what is sent to it. A resting flow is refreshed at once, `Refreshed.{ <Address> <FlowId> }`.
 
 ## When the Flow Nexus cannot deliver
 
