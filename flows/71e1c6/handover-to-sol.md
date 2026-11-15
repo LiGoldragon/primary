@@ -1,0 +1,10 @@
+1. Psyche 0ozt ends Astra work now; Mind flowNexus Sol takes this review/coordination custody.
+2. R0 runtime is closed/accepted (report flows/4aa030/reports/r0-live.md); native warnings remain unproved and policies disabled; CodexLastTotal correction remains separate.
+3. Published mains: Flow37980e10, Home0602dd17 (authorized Fable330000 declaration), CriomOS4305f5ca; no new activation follows publication.
+4. Consumer945e2d2e minimal Home pin is source-reviewed; promotion still needs Field exact-candidate both-host Evaluate terminals and fresh main check (secf/9lrj); no evaluations inferred.
+5. Psyche370g reverses5r29: ujg2 first, then zq8m/x0t5 and later R1; Task kgtf (45 minutes) owes compatibility, consumer size and UTC green-gate estimate to Psyche.
+6. Curriculum8gb5 proves producer-alone incompatible: Flow contract4202d8ba v0.1.0 versus producer60609c55 contract8e63176c v0.2.0 changes enum tags, ModuleIdentity and ResolvedModule; keep old pair until coherent switch.
+7. Curriculum Astra holds combined review; exact producer/base/Nexus/manifest inputs are flows/d486ce/ujg2-review.md and flows/aa68be/producer-review.md; final manifest heads pending, no consumer candidate/gate yet.
+8. x0t5 ruling ccd8 (Psyche l9p4 reference): show Ethos before code; decide at wake, elapsed last-turn-end under per-model WarmMinutes (Claude55, OpenAI documented, unknown0), context under existing refresh threshold, same session/harness/version/endpoint; record reason.
+9. Actual owner remains4aa030: original Locked refusal followed by Field-authorized RefreshQueued10:49:07; biof shows Flow and native pane both working, no successor/missed-event proof; ecs7 releases only urgent read-only kgtf assessment, no repeat refresh.
+10. zq8m design accepted k2dk with request-kind/closed/read-failure and actual successor-prompt tests, no implementation yet; preserve all existing locks/worktrees and use fresh custody; report370g compatibility finding promptly and retain explicit gate/live authority boundaries.
