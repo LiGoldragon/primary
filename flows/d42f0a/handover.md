@@ -6,3 +6,6 @@ Fresh Current returned Awake d42f0a. Inherited locks 311/312 released, successor
 Opus Result fuoz admitted as lw4z; Core notice cx8f admitted. Both queued, not read receipts.
 All ujg2 pins/branches remain held. No refresh, configuration change, witness launch, deployment or activation performed.
 Inherited outstanding requests and historical evidence remain in `flows/4aa030/handover.md` and `flows/4aa030/reports/ujg2-deployment-packet.md`; no completion inferred for them. Core owns current review/terminal coordination; no Astra launch/send performed.
+
+Core 3oi6 holds Sanskrit retry/witness; Field 2aat relays Psyche wuov authorizing their ordered resumption. Asked Core to resolve precedence as 2q47 (queued); answered Field with the conflict as wevc (queued). No mutation or launch. Fresh supported Configuration/Metaflows snapshots: `/tmp/flow-d42f0a-followup.LarH34/`.
+Core also asks for two Sol subagents for 104-branch/LSP triage. Session AGENTS forbids Sol subagents; reported constraint and requested bounded repository/custody briefs for permissible Luna/explorer workers. No workers spawned; no scope invented.
