@@ -1,0 +1,61 @@
+The preview adds separate, neutral lettered cards; ordinary green addition margins remain inside them, with no fourth change colour.
+All three flowcharts already occur in the earlier source; their SVGs were newly drawn for this preview. Their presence and appearance in the earlier published edition await the bookmaker's retained edition.
+
+# Reader-visible differences in the balancing alternatives
+
+## Evidence and limit
+
+Earlier source: `flows/655f27/proposals/balancing-alternatives.md`. Converted source: `flows/ab4e4b/proposals/balancing-alternatives.md`. Preview: `/tmp/book-ab4e4b.gqmYkw/balancing-alternatives.html`; phone/desktop screenshots: `preview-390.png` and `preview-1200.png` alongside it.
+
+The comparison below is exact for those sources and the rendered preview. I also rebuilt the earlier source with unchanged main renderer fd83f44 and the **same three new SVG assets** as a controlled layout comparison: `/tmp/book-ab4e4b.gqmYkw/balancing-earlier-reconstructed.html`. That reconstruction is not a claim to have recovered the earlier publication. The bookmaker was asked for its actual URL/rendered artifact and whether its three diagrams were visible (`objd`). Differences in the old edition's illustrations, if any, remain unknown until that artifact arrives.
+
+## Wording and headings
+
+- The page title and the creator/researcher line are unchanged.
+- The four questions, their numerical order, their target module and the order of all fourteen options are unchanged.
+- Each earlier running-text prefix `A.`, `B.`, etc. is removed from the option body and becomes a separate circular letter badge in a new card heading. All words after that prefix are preserved exactly, in the same order. No option body is dropped or newly invented.
+- Each card adds a **new bold heading** copied from the option's words before its first colon. If the option has no colon, its entire body is repeated as the heading. This duplicates wording that previously appeared once in running text. These headings are new reader-visible text even though their words were taken from the bodies.
+- The question's module path was part of the same large heading, after `·`. It is now a separate, smaller target line beneath the question. Its spelling is unchanged. The question-number badge is now above the question rather than beside its original combined heading.
+
+The new card headings are:
+
+| Question | Letter | Added heading |
+| --- | --- | --- |
+| What it watches | A | Energy alone |
+| What it watches | B | A, and the machine's resources |
+| What it watches | C | B, and the whole body |
+| How it judges | A | By measures |
+| How it judges | B | By a System 1 model |
+| How it judges | C | By both |
+| What it may do by itself, at first | A | It tells |
+| What it may do by itself, at first | B | It tells and it holds |
+| What it may do by itself, at first | C | It stops what is failing and brings the earlier version back to life. |
+| Its name | A | The balancing. |
+| Its name | B | Homeostasis |
+| Its name | C | Allostasis |
+| Its name | D | Samāna |
+| Its name | E | The steersman, from kybernētēs |
+
+In particular, the first question's B card is headed with a phrase beginning **A**, and its C card with one beginning **B**. Those were cross-references inside the earlier sentences; the conversion promoted them into the most prominent text of the respective cards. The third question's C option and the fourth question's A option now repeat their entire sentences, once as a bold heading and once as body text.
+
+## Order, grouping and reading path
+
+- Previously, one numbered proposal sheet held the question, its diagram where present, and the lettered additions below. In the controlled rendering, the adjacent `+ A.`, `+ B.`, `+ C.` source lines join into **one prose paragraph under one green margin**, with the letters in that running text. The five name options also join into one paragraph. The actual earlier publication may have used different line breaks; its retained artifact is still wanted.
+- The preview instead has an outer question enclosure and a separate white, rounded proposal card for each option. Every card has its own heading, letter badge, padding and inner green margin. Added space and repeated headings make the same bodies occupy more vertical room.
+- At phone width the cards read A, then B, then C vertically. At desktop width they form two columns: A and B share a row; C starts the next row on the left. For the name question the rows are A/B, C/D, then E. The last card can therefore have an empty space beside it.
+- The outer question enclosure uses the page background and a neutral border; previously the entire numbered proposal was one sheet. White option-card surfaces now separate the choices from that outer enclosure and from one another.
+- Option headings use the bold label/headline face, while their bodies keep the ordinary prose face and size. Earlier letters and option labels were ordinary prose within the addition. No option receives a different change colour; the colours key remains the ordinary one.
+
+## Where the diagrams stand
+
+- The original source already contains three Mermaid fences: the increasing scope of what it watches; measures/model/both; and tell/hold/stop-and-rollback. The name question has no diagram in either source.
+- No Mermaid fence text, node label, arrow, arrow label, branch or direction was changed by the conversion. All three fences stay under their original question and before that question's options, in their original order.
+- The preview's three actual SVG files were freshly drawn by the Illustrator from those fences. Their geometry, wrapping and size relative to the **actual earlier publication's** graphics cannot yet be compared. The unchanged fence text alone does not establish that the two editions show identical illustrations.
+- In the controlled old-form rendering, each diagram sits directly above the one green-margined paragraph containing all its lettered options, inside the same proposal sheet. In the preview it sits in the outer enclosure **above the whole card grid**, outside every individual card. It is not placed beside a particular option and no diagram node is connected to a card.
+- The diagrams' first and third chains run vertically A → B → C. On a wide screen, the cards beneath them instead read A/B across one row and C on the next. The second diagram shows A and B joining C; the card grid uses the same two-column placement as for the other questions, rather than a diagram-specific layout.
+- The first diagram names its B node “Energy and resources” and C node “The whole body”; the new prominent card headings instead say “A, and the machine's resources” and “B, and the whole body.” The diagram/body wording already differed in the earlier source, but those body phrases were not previously separate bold headings.
+- With the same SVG assets and fixed page width, the new outer enclosure's side padding is 12px instead of the earlier proposal's 16px. Its diagrams therefore receive 8px more available width, and their proportional height increases accordingly. Any larger visual difference caused by redrawing the actual older diagrams remains unmeasured.
+
+## Current disposition
+
+Fable has not adopted the form. No other page is to use it. Makeshift-tools main remains **fd83f4431e392b57389847565ca80e9ed7a98971**, containing only the separately requested removed-only Ethos fix. The alternative grammar, renderer, authoring commands/tests and authored knowledge changes are now **uncommitted evidence** in the isolated branches/worktrees `/tmp/book-ab4e4b.gqmYkw/{tools,mind}`. The earlier form still works. No publication of this preview was requested from the bookmaker.
