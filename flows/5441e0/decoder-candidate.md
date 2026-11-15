@@ -54,3 +54,16 @@ Psyche direct GO4pr4, conveyed by Core w64q, authorized the exact candidate for 
 Mind curriculum Sol reports its source-main step complete after Field attested BOTH stopped at 15:15:43-06 with current Memory AS IS. Fresh remote main reads at 21:17:19–21 UTC equal the three source revisions listed above. Whole-cohort expected flat-parent checks and per-push checks passed without divergence or force; flat rollback children remain unpublished. Receipts: `/tmp/source-restoration-25858e.kiEUuD/typed-main-publication-receipts.json`. Source owner reports all postreads returned out of band to checked Field374411 pane before activation; Core received completion.
 
 This is the source owner's publication receipt, not this flow's independent runtime observation. It supersedes the earlier typed-source-main hold only for this authorized stopped event. Candidate Home/CriomOS revisions and Evaluate packet remain unchanged. Activation, serving proof and configuration readback remain Field's next steps; none is inferred from this receipt.
+
+## Accepted typed production proof commands
+
+At Field request bjz6, pinned producer `0f848baa` Cargo.lock resolves wire `8e63176cb1c0f1429a9797412391b4035a25cc68`. Its `ethos/signal.ethos` declares `Modules` without payload and `ResolveSources.Vector<ModuleIdentity>`, where identity is `{ ModuleKind ModuleSubject Versions }`, and Versions is `Single.Version` or `Span.{ First Last }`. Wire `tests/text.rs` lines41/47 prove the typed forms. Field alone executes:
+
+```sh
+curriculum 'Modules'
+curriculum 'ResolveSources.[ { Spirit core Single.0 } ]'
+```
+
+The first answer must be `Modules.[...]` containing exactly the accepted130 typed identity/path inventory (75 Psyche,39 Mind,16 Field), independently compared to `/tmp/curriculum-regression-25858e.PghYG6/module-oracle.json`. The second must be `SourcesResolved.[...]` matching Spirit/core/Single0 at the exact published Psyche source revision and `spirit/core/0.md`; source SHA256 `3fe2afeeafe556f75b3e148d5cc2cca5169ba645465aaa1a8e3c2e56aa2b388f`, Git blob `fb86a44d64dc43ec34ca7545641df558b57213db`. This SHA is the whole source, not its separately decoded body hash. Compare resolved body using its actual metadata/body semantics; do not equate source and body hashes.
+
+Producer `src/client.rs` at0f848baa actualizes the request before connecting to its socket. Field reported an accidental retained0.1 bare-identity request refused locally with REQUESTPARSING Composition Struct/Bare; that is no producer request and no decoder-failure evidence. No retry, runtime query or serving observation was made by this flow. Field's eventual exact typed answers remain the serving proof boundary.
