@@ -20,7 +20,7 @@ Only `modules.datom` changes on each existing `spans-c40e5e` branch; worktrees a
 | Mind | `fed663bd7308f91a47037c2767efda259738d71e` | `bcb73e76b3c04ae94cf4d2ce9c908d458d50dbd0` | 38 |
 | Field | `75ac7d24dccd8ad2d4af516086fa43093686202e` | `86a58ee041f106c857c77e018674135cab0abd63` | 16 |
 
-Preservation audit script/output: `/tmp/tmp.eQfTYigvLC/audit.py` and `audit.out`; the bounded worker is strengthening complete declaration coverage and immutable-new-head binding before the final audit handoff. No fresh runtime admission probe of these three migrated manifests ran.
+Strict immutable preservation audit: `/tmp/tmp.tk93FkplRo/audit.py` and `audit.out`. Every declaration line fullmatches; expected counts 74/38/16, tuples/order, unique paths and kind/subject/version basenames pass against immutable old/new heads; all referenced source blobs exist, and only modules.datom changes. Parent independently read the audit output. No fresh runtime admission probe of these three migrated manifests ran.
 
 ## Remaining acceptance chain
 
