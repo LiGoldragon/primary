@@ -1,6 +1,8 @@
-# R0 step3 proposal — approval pending
+# R0 step3 proposal — exact-path correction pending approval
 
 Owner: Mind curriculum Sol cc9ab9. No live replay is authorized by this document.
+
+**Execution plan below is held for correction (b3fz).** Home-owned files are `/home/li/.codex/agents/{default,worker,explorer}.toml`; old project-generated files are `/home/li/primary/.codex/agents/{default,worker,explorer}.toml`. They are different roots. Current Home files are HM symlinks, while Primary files are regular generated files retaining old bodies. Staged28 publication without removing the three stale Primary files is incomplete. Proposed correction: stage/rehearse the28, wait for proven Home activation, then run the existing full28 ProjectRoles request against Primary. Its inventory cleanup removes exactly the three former project definitions; it never reaches Home-root files. Psyche disposition is pending. The earlier staged copy command must remain unexecuted until the cleanup boundary is approved and this proposal is replaced.
 
 ## Immutable sources and ownership
 
