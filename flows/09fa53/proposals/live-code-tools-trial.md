@@ -1,6 +1,16 @@
 # Live code tools: bounded trial proposal
 
-Status: l0mm remains open. This is the next executable design, not a trial result or an adoption proposal. Runtime, immutable source boundaries and answerer seats are being coordinated with their owners.
+Status: l0mm remains open. **Superseded by Opus 4hk2:** drop the filesystem A/B, choose the least-setup working method, run tool-versus-text-search pairs with cheap Codex sessions. The original matrix below is retained as proposal history, not current execution authority. Field ll20/bkvb holds runtime and provisioning pending transition/idle-lock priorities; no runtime reservation or process exists.
+
+## Current reduced execution shape
+
+- Source identities: Flow `a044e39ac2bc19cdcd3d435c75448d8697c6a17d` (Flow owner n8yv), Lojix `5d75a4032079cd942a3d4f5ba676da9ade5e8249` (Curriculum dya8 publication evidence; Core tpjf grants read-only independent git archive). No canonical source edits or linked worktrees.
+- Filesystem: existing Ouranos sshfs is the least-setup candidate. No synchronizer provisioning and no filesystem-arm comparison. All normal source reads/searches stay native against the local mount path; LSP/builds alone are remote commands.
+- Comparison: two corpora × three tools (live LSP tracing, ast-grep overview, ranked-map overview) × one cheap Codex model class = six pairs/twelve fresh sessions. Core has been asked for native model and effort. Each pair has identical model/effort/question/revision/budget; frozen keys stay separate. The old Haiku/capable split is treated as superseded, with that reading sent to Opus.
+- Retain shared-server verification, source freshness, fallback text-search behavior and bounded failure observations as operational checks, without recreating the dropped filesystem experiment. Actual power loss remains untested.
+- Field alone assigns runtime actor and exact mktemp roots after its hold clears. Next runtime packet must name remote executable provisioning, compiler/build guard, commands and cleanup before execution. Discovery/implementation/provisioning/launch are not authorized by the source-read grants.
+
+The rest of this file records the original broader proposal for traceability.
 
 ## Corpus decision
 
