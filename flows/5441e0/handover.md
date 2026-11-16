@@ -1,5 +1,8 @@
 # 5441e0 handover
 
+COMMUNICATION lyxl/Core0fom: stop sending Fable status notices (published/landed/started/received/done); ONLY design/rulings. Links to published pages go to flows/03ebbe/handover.md, to no flow. Exact words relayed to coordinated MindversionZero/nixCriomos/curriculum. Corec84l reconfirms resume fullpace/currentAwake5441e0; no coldwake. Field freshgeneration requestfhk0 already admitted, do NOTduplicate. No source/gen process started; pinnedrecipe0rug pending.
+
+
 RESUME xuco/Psychery07: energyrest LIFTED, existing0.56.3 source/review resumed; no automatic heavy/runtime clearance. Fresh ordinary66 generation-only slot requested exactd96 (fhk0), Core asked retained pinned remote recipe (0rug; correctionuwcr confirms Cargo.nix+hashes DO exist at64). No generator/process started. Full semanticbody scope protecting/restarting/waking/launching/reaping pending Core exactgo-to-bodies; contract edits only reviewed d96. Surveyfd3u >60 additional threshold notices retained only, no duplicate lifecycle probe/refresh.
 
 
