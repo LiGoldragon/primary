@@ -1,5 +1,8 @@
 # 5441e0 handover
 
+PRIORITY/CUSTODY clarified Core29fz/Field0jif/Psycher8sf: guardFIRST, SendSeveralNEXT; NOW rhetoric waivesNOTHING. I own SOURCE/review/coherentpacket, FieldSOLEruntime/deploy. All protectedFable/source/tests/configcomparison/gates stand. Fieldtruthfulreadiness sent: guard16bdraft/notcoherent/gateOWED, ordinary66gen9ebreviewpending/unpushed, meta86untouched83, no consumerpacket/heavyslot/runtime. Do not interpret earlier deploy coordination wording as authority to run activation here.
+
+
 NEW gp9b/gsol + VersionZero5xdv: SendSeveral release2 immediately AFTER handovergate, VersionZero sole build/I own sourceacceptance+Fieldcoherentdeploy+realCLIproof; no secondbuild. Exact0459 reviewed (report send-several-semantic-findings.md): originmechanics preserved, resolverunusedsnapshot. Required inherentflow_kind→traitfix; ownermustreturn narrow correctedtrait/configdispatchguarddiff+lock-orderproof before modebehavior. Minimal sharedguard declarationedits Metaflows/Permaflow/Amend/RemovePermaflow with authoritative resolve→premark, activebinding transitions also proveguard; release before apply/events/joins; no copiedprecedence/newMemory/schema. Preserve separate350protectionchanges on finalacceptedparent later. Producer65now731d9868a98728f0d7491b9dc65c6da89c90b640 generation0 awaitsCore review; noheavy slotassignedmg8j. Guard66review9eb stillpending; no impliedmeta/gate/runtime. Ownrefreshstillqueued, many furthernotifications/no successor, Corebngg informed once; no forcedaction.
 
 
