@@ -203,3 +203,64 @@ Prepared 2026-11-16T23:28:58.419980+00:00. Supersedes previous cancelled predica
 | { Psyche comments Haiku } | 3f955b / 3f955b75-2518-54d9-b9d1-7de9bee5f587 / w1AN:p1 | /home/li/.claude/projects/-home-li-primary/3f955b75-2518-54d9-b9d1-7de9bee5f587.jsonl / 2026-11-16T23:27:04.023301+00:00 / 0.03h | idle | KEEP / Exact transcript younger than three hours |
 
 Planned Stop set: 911657, bbc5e8, a9855e, 663f98, ad72ed, 479cca, 25858e, b1218b, ed66e6, 09fa53, 3be788, 164576, 4fb10a, bac2fc, 92d026. Each will have exact identity, transcript mtime and work-state rechecked immediately before the supported `flow Stop.<flowid>` call. No Retire/Remove or herdr close is authorized/executed by this pass.
+
+- 2026-11-16T23:29:27.020460+00:00 { Field protosConsumers Sonnet } / 911657: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:27.123581+00:00 { Field protos Opus } / bbc5e8: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:27.219171+00:00 { Field protos Sonnet } / a9855e: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:27.344909+00:00 { Field semaV0 Opus } / 663f98: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:27.523459+00:00 { Field inventory Sol } / ad72ed: Stopped.ad72ed (exit 0)
+
+- 2026-11-16T23:29:27.676664+00:00 { Mind curriculum Opus } / 479cca: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:27.921564+00:00 { Mind curriculum Sol } / 25858e: Stopped.25858e (exit 0)
+
+- 2026-11-16T23:29:28.119130+00:00 { Mind herdrNexus Sol } / b1218b: Stopped.b1218b (exit 0)
+
+- 2026-11-16T23:29:28.359636+00:00 { Mind sourceNexus Opus } / ed66e6: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:28.526117+00:00 { Mind researchTools Sol } / 09fa53: Stopped.09fa53 (exit 0)
+
+- 2026-11-16T23:29:28.713423+00:00 { Mind research Sol } / 3be788: Stopped.3be788 (exit 0)
+
+- 2026-11-16T23:29:28.828760+00:00 { Mind flowNexus Opus } / 164576: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:28.943128+00:00 { Psyche beliefReview Fable } / 4fb10a: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:29.058605+00:00 { Psyche beliefReview Opus } / bac2fc: StopRejected.AlreadyStopped (exit 0)
+
+- 2026-11-16T23:29:29.174053+00:00 { Psyche nexusVariations Fable } / 92d026: StopRejected.AlreadyStopped (exit 0)
+
+### gdlg verification and final counts
+
+Observed 2026-11-16T23:30:27.913823+00:00. New successful Stops: **5** — ad72ed, 25858e, b1218b, 09fa53, 3be788. Previously stopped no-pane records: **10** returned `StopRejected.AlreadyStopped` — 911657, bbc5e8, a9855e, 663f98, 479cca, ed66e6, 164576, 4fb10a, bac2fc, 92d026. All RPC exits were 0; the typed AlreadyStopped refusals are not counted as new closures.
+
+Herdr after: **12 panes / 12 detected agents**, versus 17 panes / 17 agents immediately before this pass. The helper's 11 earlier orphan closures are not repeated or included in my five closures. The 39 declarations/history listings remain; Stop only, no Retire/Remove.
+
+| Newly stopped | Old pane absent | Address now Asleep | Queue still returned |
+| --- | --- | --- | --- |
+| ad72ed | True | True | yes |
+| 25858e | True | True | yes |
+| b1218b | True | True | yes |
+| 09fa53 | True | True | yes |
+| 3be788 | True | True | yes |
+
+Kept without new Stop: **24 addresses** (7 explicit protected/bookmaker, 5 too young/working, 12 exact transcript-mapping gaps); the 10 AlreadyStopped records remain declared and stopped. Final live-pane residue: 12 panes, kept. No requests/queues/history/declarations/files were deleted.
+
+### Exact unavailable reads / age decisions
+
+- { Field browserBridge Sol }: ReadEvents.3fa769 returned EventsRead.{ 3fa769 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Field upkeep Sol }: ReadEvents.a8ab9c returned EventsRead.{ a8ab9c [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Field heartbeat Sol }: ReadEvents.bd34c0 returned EventsRead.{ bd34c0 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind curriculum Astra }: ReadEvents.fab701 returned EventsRead.{ fab701 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind datomCodec Sol }: ReadEvents.7e98f4 returned EventsRead.{ 7e98f4 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind orchestrate Sol }: ReadEvents.aabab6 returned EventsRead.{ aabab6 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind core Astra }: ReadEvents.b32a58 returned EventsRead.{ b32a58 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind lojix Sol }: ReadEvents.725168 returned EventsRead.{ 725168 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind survey Sol }: Fresh Inspect retained native identity, but no current agent/process-to-Codex-home route was available; the exact home could not be established from current metadata. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind flowNexus Astra }: ReadEvents.71e1c6 returned EventsRead.{ 71e1c6 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Mind typedCall Sol }: ReadEvents.ce62d5 returned EventsRead.{ ce62d5 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+- { Psyche criomos Opus }: ReadEvents.40fefd returned EventsRead.{ 40fefd [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
