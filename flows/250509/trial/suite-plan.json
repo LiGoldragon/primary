@@ -1,0 +1,2057 @@
+{
+  "binary": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
+  "processor_configuration": "/home/li/primary/flows/250509/trial/processor.json",
+  "output_directory": "/home/li/primary/flows/250509/trial/results/supported-matrix",
+  "maximum_slots_per_model": 60,
+  "http_cap_per_slot": 1,
+  "maximum_retained_usd": "10",
+  "initial_retained_usd": "0.001530625",
+  "reservation_bounds": {
+    "claude-haiku-5-5": "0.66560",
+    "claude-sonnet-5-5": "2.138112"
+  },
+  "slots": [
+    {
+      "identifier": "claude-haiku-5-5--belief-04",
+      "model": "claude-haiku-5-5",
+      "case": "belief-04",
+      "call_file": "/home/li/primary/flows/250509/trial/calibration-call.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/calibration-prompt.txt",
+      "prompt_sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152",
+      "reuse": {
+        "call_file": "/home/li/primary/flows/250509/trial/calibration-call.json",
+        "observation_file": "/home/li/primary/flows/250509/trial/results/calibration-observation.json"
+      }
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-02",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-02",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-02.txt",
+      "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-03",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-03",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-03.txt",
+      "prompt_sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-04",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-04",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-04.txt",
+      "prompt_sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-05",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-05",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-05.txt",
+      "prompt_sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-06",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-06",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-06.txt",
+      "prompt_sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-07",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-07",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-07.txt",
+      "prompt_sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-08",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-08",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-08.txt",
+      "prompt_sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-09",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-09",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-09.txt",
+      "prompt_sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-10",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-10",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-10.txt",
+      "prompt_sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-11",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-11",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-11.txt",
+      "prompt_sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-12",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-12",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-12.txt",
+      "prompt_sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-13",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-13",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-13.txt",
+      "prompt_sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-14",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-14",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.txt",
+      "prompt_sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-15",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-15",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-15.txt",
+      "prompt_sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-16",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-16",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-16.txt",
+      "prompt_sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-17",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-17",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-17.txt",
+      "prompt_sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-18",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-18",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-18.txt",
+      "prompt_sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-19",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-19",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-19.txt",
+      "prompt_sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-20",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-20",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-20.txt",
+      "prompt_sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-21",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-21",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-21.txt",
+      "prompt_sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-22",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-22",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-22.txt",
+      "prompt_sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-23",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-23",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-23.txt",
+      "prompt_sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-24",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-24",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-24.txt",
+      "prompt_sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-25",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-25",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-25.txt",
+      "prompt_sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-26",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-26",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-26.txt",
+      "prompt_sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-27",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-27",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-27.txt",
+      "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-28",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-28",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-28.txt",
+      "prompt_sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-29",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-29",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-29.txt",
+      "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "identifier": "claude-haiku-5-5--belief-balanced-30",
+      "model": "claude-haiku-5-5",
+      "case": "belief-balanced-30",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-30.txt",
+      "prompt_sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-01",
+      "model": "claude-haiku-5-5",
+      "case": "queue-01",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-01.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-01.txt",
+      "prompt_sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-02",
+      "model": "claude-haiku-5-5",
+      "case": "queue-02",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-02.txt",
+      "prompt_sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-03",
+      "model": "claude-haiku-5-5",
+      "case": "queue-03",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-03.txt",
+      "prompt_sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-04",
+      "model": "claude-haiku-5-5",
+      "case": "queue-04",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-04.txt",
+      "prompt_sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-05",
+      "model": "claude-haiku-5-5",
+      "case": "queue-05",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-05.txt",
+      "prompt_sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-06",
+      "model": "claude-haiku-5-5",
+      "case": "queue-06",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-06.txt",
+      "prompt_sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-07",
+      "model": "claude-haiku-5-5",
+      "case": "queue-07",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-07.txt",
+      "prompt_sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-08",
+      "model": "claude-haiku-5-5",
+      "case": "queue-08",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-08.txt",
+      "prompt_sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-09",
+      "model": "claude-haiku-5-5",
+      "case": "queue-09",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-09.txt",
+      "prompt_sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-10",
+      "model": "claude-haiku-5-5",
+      "case": "queue-10",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-10.txt",
+      "prompt_sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-11",
+      "model": "claude-haiku-5-5",
+      "case": "queue-11",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-11.txt",
+      "prompt_sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-12",
+      "model": "claude-haiku-5-5",
+      "case": "queue-12",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-12.txt",
+      "prompt_sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-13",
+      "model": "claude-haiku-5-5",
+      "case": "queue-13",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-13.txt",
+      "prompt_sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-14",
+      "model": "claude-haiku-5-5",
+      "case": "queue-14",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-14.txt",
+      "prompt_sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-15",
+      "model": "claude-haiku-5-5",
+      "case": "queue-15",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-15.txt",
+      "prompt_sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-16",
+      "model": "claude-haiku-5-5",
+      "case": "queue-16",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-16.txt",
+      "prompt_sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-17",
+      "model": "claude-haiku-5-5",
+      "case": "queue-17",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-17.txt",
+      "prompt_sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-18",
+      "model": "claude-haiku-5-5",
+      "case": "queue-18",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-18.txt",
+      "prompt_sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-19",
+      "model": "claude-haiku-5-5",
+      "case": "queue-19",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-19.txt",
+      "prompt_sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-20",
+      "model": "claude-haiku-5-5",
+      "case": "queue-20",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-20.txt",
+      "prompt_sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-21",
+      "model": "claude-haiku-5-5",
+      "case": "queue-21",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-21.txt",
+      "prompt_sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-22",
+      "model": "claude-haiku-5-5",
+      "case": "queue-22",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-22.txt",
+      "prompt_sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-23",
+      "model": "claude-haiku-5-5",
+      "case": "queue-23",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-23.txt",
+      "prompt_sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-24",
+      "model": "claude-haiku-5-5",
+      "case": "queue-24",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-24.txt",
+      "prompt_sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-25",
+      "model": "claude-haiku-5-5",
+      "case": "queue-25",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-25.txt",
+      "prompt_sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-26",
+      "model": "claude-haiku-5-5",
+      "case": "queue-26",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.txt",
+      "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-27",
+      "model": "claude-haiku-5-5",
+      "case": "queue-27",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-27.txt",
+      "prompt_sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-28",
+      "model": "claude-haiku-5-5",
+      "case": "queue-28",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-28.txt",
+      "prompt_sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-29",
+      "model": "claude-haiku-5-5",
+      "case": "queue-29",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-29.txt",
+      "prompt_sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "identifier": "claude-haiku-5-5--queue-30",
+      "model": "claude-haiku-5-5",
+      "case": "queue-30",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-30.txt",
+      "prompt_sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-04",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-04",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-04.txt",
+      "prompt_sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-02",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-02",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-02.txt",
+      "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-03",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-03",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-03.txt",
+      "prompt_sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-04",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-04",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-04.txt",
+      "prompt_sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-05",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-05",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-05.txt",
+      "prompt_sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-06",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-06",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.txt",
+      "prompt_sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-07",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-07",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-07.txt",
+      "prompt_sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-08",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-08",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-08.txt",
+      "prompt_sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-09",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-09",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-09.txt",
+      "prompt_sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-10",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-10",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-10.txt",
+      "prompt_sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-11",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-11",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-11.txt",
+      "prompt_sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-12",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-12",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-12.txt",
+      "prompt_sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-13",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-13",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-13.txt",
+      "prompt_sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-14",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-14",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-14.txt",
+      "prompt_sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-15",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-15",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-15.txt",
+      "prompt_sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-16",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-16",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-16.txt",
+      "prompt_sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-17",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-17",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-17.txt",
+      "prompt_sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-18",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-18",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-18.txt",
+      "prompt_sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-19",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-19",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-19.txt",
+      "prompt_sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-20",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-20",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-20.txt",
+      "prompt_sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-21",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-21",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-21.txt",
+      "prompt_sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-22",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-22",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-22.txt",
+      "prompt_sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-23",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-23",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-23.txt",
+      "prompt_sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-24",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-24",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-24.txt",
+      "prompt_sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-25",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-25",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-25.txt",
+      "prompt_sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-26",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-26",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-26.txt",
+      "prompt_sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-27",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-27",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-27.txt",
+      "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-28",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-28",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-28.txt",
+      "prompt_sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-29",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-29",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-29.txt",
+      "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--belief-balanced-30",
+      "model": "claude-sonnet-5-5",
+      "case": "belief-balanced-30",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-30.txt",
+      "prompt_sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-01",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-01",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-01.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-01.txt",
+      "prompt_sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-02",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-02",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-02.txt",
+      "prompt_sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-03",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-03",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-03.txt",
+      "prompt_sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-04",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-04",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-04.txt",
+      "prompt_sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-05",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-05",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-05.txt",
+      "prompt_sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-06",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-06",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-06.txt",
+      "prompt_sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-07",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-07",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-07.txt",
+      "prompt_sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-08",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-08",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-08.txt",
+      "prompt_sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-09",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-09",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.txt",
+      "prompt_sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-10",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-10",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-10.txt",
+      "prompt_sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-11",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-11",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-11.txt",
+      "prompt_sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-12",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-12",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-12.txt",
+      "prompt_sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-13",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-13",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-13.txt",
+      "prompt_sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-14",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-14",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-14.txt",
+      "prompt_sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-15",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-15",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-15.txt",
+      "prompt_sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-16",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-16",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-16.txt",
+      "prompt_sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-17",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-17",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-17.txt",
+      "prompt_sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-18",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-18",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-18.txt",
+      "prompt_sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-19",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-19",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-19.txt",
+      "prompt_sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-20",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-20",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-20.txt",
+      "prompt_sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-21",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-21",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-21.txt",
+      "prompt_sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-22",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-22",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-22.txt",
+      "prompt_sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-23",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-23",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-23.txt",
+      "prompt_sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-24",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-24",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-24.txt",
+      "prompt_sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-25",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-25",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-25.txt",
+      "prompt_sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-26",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-26",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-26.txt",
+      "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-27",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-27",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-27.txt",
+      "prompt_sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-28",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-28",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-28.txt",
+      "prompt_sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-29",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-29",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-29.txt",
+      "prompt_sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "identifier": "claude-sonnet-5-5--queue-30",
+      "model": "claude-sonnet-5-5",
+      "case": "queue-30",
+      "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-30.txt",
+      "prompt_sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    }
+  ],
+  "frozen_files": [
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ANATOMY.md",
+      "sha256": "6cc0c4e3c8738838b8dce50e1d55a53fae9a4ac2e03d0c9d6528d9fae0dddffd"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/SHA256SUMS",
+      "sha256": "e1423d4867921870c97be28b91cbdfb518a385fe5c10bc384132d84b429fbdd4"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/baseline.snapshot.jsonl",
+      "sha256": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/bootstrap-prompt.fixture.txt",
+      "sha256": "a104880d88f859681c839efcbde5728a89b65c1c3dda1ebca3c872aa308719af"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/frozen_raw_ledger.fixture.py",
+      "sha256": "b03f6c005567eb6e1930ab61044e0e0fefec21e8ad65e526af440662fb7ec97b"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+      "sha256": "e15dd00d587a57fa893e5650358c862565e190cb420eeda94ce626284fcb4c4c"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+      "sha256": "2d2063f61bef0e42235590e1e2d821aef4a1180c1f47ace304f97c57148a785d"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+      "sha256": "ed2333eedc6934cc161528e79871ff47c775fe624c5acdeee5b69b471ee5af27"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+      "sha256": "d3b9d4b1386932e004c0667850cd53453034c3f769af083999ee060a7ef96d74"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+      "sha256": "a2010528244b534b77b084b0b0b7f6636393b55b9f4e45cc3e6bc47ef0606006"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+      "sha256": "10b93e709fa761faf61f54d57737114b604b11a206dacb1e66cd058804965755"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+      "sha256": "c5e4009647705d175ec482a9848d8233023f14e47475f76acec7617443a45c84"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw-policy.json",
+      "sha256": "e29ad8545ebc79fcbda5341fed81cd85ba28f7916e4b8ebd7e3d7b196d6386ac"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+      "sha256": "922f11f3d0c2d684ce32786cec716bff3500a03cfd848701aaf126139ec4752c"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+      "sha256": "037c9aff5d3cba3cae26ebc53fe2b5b55bceb8a0464a976cc4373f6be99e096a"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/read-only-history-proof.json",
+      "sha256": "5286328c1701deea0caa7e487154ca45db8d4303121cf3643ac5dd6af4c43b35"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settle_job.py",
+      "sha256": "6f963b3d467820932affa05ea6cf8b3d8db45c23eac41db4edad2f1546b01d86"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+      "sha256": "1d605692fc299e8ff7770103e8dfe311a64b1765ccd8a5e7189ad83a9e5f6458"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-synthetic-proof.json",
+      "sha256": "3f05c39a533d1925a727ec477ee8fd80ccd32f7794f2e0f5fa08323ea9e465ee"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+      "sha256": "0e3c76fded7c9df456ceef74ed7e164a3076bb8386bdd544fc184e1b5f636516"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/test_raw.py",
+      "sha256": "7f11a015718f52ee47e18545bf24d57e92415e55ea9828ee1a71bdd2ca0d1445"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/test_settlement.py",
+      "sha256": "fe2a15ef9865905f8e1bdb7153a75db723f6d50424cd174d3d3d74aa42383612"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/tests.log",
+      "sha256": "1491d742211782fe1c789d52e1cf30c46b1a411adb063db0b1cae8030014f11a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/calibration-call.json",
+      "sha256": "8014a734c9e301ffd760037d6794fad054e7dd6560071a41d49b47a8dc4faf67"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/calibration-prompt.txt",
+      "sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/cases/belief-cases.json",
+      "sha256": "1139a43744dc439a188c189c136c0ec883a581e6d8022d0401e3a50288c2967e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/cases/queue-cases.json",
+      "sha256": "b445918f9ee4e894b9337f9927dd19c57eb0db33b759aab0b90950f5f2cf6db8"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/processor.json",
+      "sha256": "c9ba9ea8815fe059f7777a97c8fc75ee345f7ae3a67e3b768b500b0be4e99dc9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/results/calibration-observation.json",
+      "sha256": "2efa466629f1377278a4d7eefd4fea49823686da7596097b6f5a15301d4a92fa"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-02.json",
+      "sha256": "f1fc045beab4aa2cf3ca53f8d265c67965d0172a2c8bc5218ef5cd7172b3871c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-02.txt",
+      "sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-03.json",
+      "sha256": "f29cf43d1de12630824e42f9c63200af6a8922fe26bb110dc6abc8f4920420e4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-03.txt",
+      "sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-04.json",
+      "sha256": "e5b1d8660de8b10e1e0c3d64746a9ec789baa58b893b73a8f808e8ec9810b110"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-04.txt",
+      "sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-05.json",
+      "sha256": "81194c5745a49e92efc1d2011c51cb0de64f712c4e3256c177955203e37e39bb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-05.txt",
+      "sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-06.json",
+      "sha256": "576b981581d6705eb5023683ca72e7b986229069729d6394ded0d99df0d13cc2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-06.txt",
+      "sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-07.json",
+      "sha256": "0bec81675698ea52e65ca313d90df1f58c70daf02ab836c041732e4b3f256e06"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-07.txt",
+      "sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-08.json",
+      "sha256": "6458b9d7c397cd8913dd2c8916763911c24715ea0f949d5f4a487aef2818cc9f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-08.txt",
+      "sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-09.json",
+      "sha256": "31344952a0475a8f598bc926c3fef0f5b9611a1d90f550b8e9e27547a2feaaab"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-09.txt",
+      "sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-10.json",
+      "sha256": "d6f8d5c9b84e1dd3fa34b973a38adc1e06d09587baa41133fb4c272900a96c10"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-10.txt",
+      "sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-11.json",
+      "sha256": "9cc9744619e2ba3f12a4931e53d284bbb3aa64a47e1bafb50a7f829f8597051e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-11.txt",
+      "sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-12.json",
+      "sha256": "cf65027a879526dc46906f57c7e77bd4b1a46d0cb6456ade14c6116b7952f609"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-12.txt",
+      "sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-13.json",
+      "sha256": "a66d3436b6ae5f2b51146456b208cefcab9792ddfd697470cfe658442f33acc4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-13.txt",
+      "sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.json",
+      "sha256": "ef50460dfe79cea79e6805047f848cdc7fe0bd3c6563dd72f99dab249ddcb686"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.txt",
+      "sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-15.json",
+      "sha256": "d9ad5a816ee6f3947d82ad77198b07c12352d917904f2cf686be5c2ce0d31efe"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-15.txt",
+      "sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-16.json",
+      "sha256": "b7324887f669b233facbabaff1e9cc0ea845b783c307692225f9a9985a1d1a38"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-16.txt",
+      "sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-17.json",
+      "sha256": "153753326e508989a93e5cc8717eb934a054cdbd73bf5281659791f67e3e04d6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-17.txt",
+      "sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-18.json",
+      "sha256": "2f2cedec6c0edb949b391e987c2e114829f979a2af51711420b034f76795be9b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-18.txt",
+      "sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-19.json",
+      "sha256": "29a190290df96b66987d4232c48700746509f1565400e8348e0d47fb9cbe2e1b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-19.txt",
+      "sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-20.json",
+      "sha256": "b3994516692fdb93f12a1b2128317ef3569f14c0f5befc8358dc8669eaf2e0a7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-20.txt",
+      "sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-21.json",
+      "sha256": "7c3dfdc2fdf0490dfea0764cf8c0f2b297c0b08b35484303800e678c0399041b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-21.txt",
+      "sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-22.json",
+      "sha256": "d44214e1a68a6e885ed9122fd9030b21bcf7e1252762f02f20471de382ac88a4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-22.txt",
+      "sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-23.json",
+      "sha256": "cdb4f2ab06023f8de03f2146120760b76a7a60ba38226b3c5d290148b81a2bc6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-23.txt",
+      "sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-24.json",
+      "sha256": "192c02bdd2b787c9da5a624dd8695464c4833064ab11dc8ab4a68255ac73381e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-24.txt",
+      "sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-25.json",
+      "sha256": "9e025f4572cb1203271f1be5189c2ebba97a6bbedbda0fc54c2a1bd4d1306f14"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-25.txt",
+      "sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-26.json",
+      "sha256": "0fa42b893abe695b6f1fd65bec30aad3a9f864bbf678b29efd04dd2eb844c44b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-26.txt",
+      "sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-27.json",
+      "sha256": "93ad880b494c386866b75689c1471d2e2077d7ada49d3b91be88ef2620f07eeb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-27.txt",
+      "sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-28.json",
+      "sha256": "77ca93fb01247dd66e78d7c0e24376cfa1cfd6f34fd6702e657085dcb16f3603"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-28.txt",
+      "sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-29.json",
+      "sha256": "188c916b62b51e5b7a53c923c3f0e3732070900a37f78af8b888ca95493d0b0f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-29.txt",
+      "sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-30.json",
+      "sha256": "c7e42d4aa3b47db9312cb49fcb4877f374a1c2ef457ff7e6e860b9a27f34ebfb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-30.txt",
+      "sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-01.json",
+      "sha256": "d9b1887ec67686f47b6f3a288409745a9ab5944dbd1fca8418f40d64e73bbcab"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-01.txt",
+      "sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-02.json",
+      "sha256": "ca7810750c7b9382d47d31303fa781c9d00b998398322bbc8d925a2e30dea7f5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-02.txt",
+      "sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-03.json",
+      "sha256": "5b78a9d4323af4af1dbd1b265497c965392298a48dcc622ffd86ad4b62af2a80"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-03.txt",
+      "sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-04.json",
+      "sha256": "0d9bbd3d9e439480e069de3d763337decb443bdf2a29cdcd8af372fb64caedde"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-04.txt",
+      "sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-05.json",
+      "sha256": "09587703849dd6ce6d49c50cb643491761fc1bca04e3895c61675585d27271fc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-05.txt",
+      "sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-06.json",
+      "sha256": "128d757aad7648d93a07b63e393539d71904216e9ba52fca561797de5045af36"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-06.txt",
+      "sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-07.json",
+      "sha256": "393ff5aadc439b3adf2775baa8534e1f56b73a485f5bd4d47dee2a5f55bd2b8a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-07.txt",
+      "sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-08.json",
+      "sha256": "d01c896afeba6b9e129325a29f8dc1d7d36b8e19da037595d24ee4f3ab6d8106"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-08.txt",
+      "sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-09.json",
+      "sha256": "6335d20871c9fa26af7ddd3963a1c0a6fb85c1224368a2e9e45ef3a5e65693de"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-09.txt",
+      "sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-10.json",
+      "sha256": "9f3a2695a58f12493b1c6b7c789b3305be814432dea7d87a8473e1ad65b56599"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-10.txt",
+      "sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-11.json",
+      "sha256": "c41ed3d391d8bcb17037fa071cb122031fa10d90d2514d8553004a8953236ba8"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-11.txt",
+      "sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-12.json",
+      "sha256": "87454ec6ae2e8bd77cf3809c0e98055cbc091a80e14d0eaeda57344b01a2bb9d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-12.txt",
+      "sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-13.json",
+      "sha256": "6b01e55dad66c0e4e05574621c6c4e11c08419119c363ba09359ebb50271123e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-13.txt",
+      "sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-14.json",
+      "sha256": "496192c27c9d37e255ab2fea23d5986aa9d482388e47017461718b4196f10536"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-14.txt",
+      "sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-15.json",
+      "sha256": "c36031e46d14a487ecaf3c499e69a8bf93dfcc0bf726266c006b1f5b8b4d99ef"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-15.txt",
+      "sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-16.json",
+      "sha256": "a3a20275524809c70549595c6dd1170bcfc500bdddecb504630bbd0faed37f8b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-16.txt",
+      "sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-17.json",
+      "sha256": "7757434657391170d81fb8f65011816360ffbdf017a888b940db7d0ace046f1e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-17.txt",
+      "sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-18.json",
+      "sha256": "cd63fb168efdf496cc57d97e5b5e3533d0b1ca54ad2f7e2b866506293b477dac"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-18.txt",
+      "sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-19.json",
+      "sha256": "f8ddbdccd0b687177f54478c0e4e97c87e8aa2aafbc1abede5da5cbed680ff60"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-19.txt",
+      "sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-20.json",
+      "sha256": "54e668313a84daa90a7cb61cf6ed5d15348ed8ca5f554535a7f43484df9ef374"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-20.txt",
+      "sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-21.json",
+      "sha256": "468beca16f1a135961fd04cdc53f387731450f94b04b0e0efcf62e74c12d5142"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-21.txt",
+      "sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-22.json",
+      "sha256": "d848cfcc1732a64ccc38572a84eb0105782d03b0f234abeaf149204c62a8cd04"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-22.txt",
+      "sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-23.json",
+      "sha256": "5b026dba1320c80968934e23e9c0ac5baf4c7010ce087577cdb0f70a196ce310"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-23.txt",
+      "sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-24.json",
+      "sha256": "b25c3fd719515edca589748f7f3bfe04f562ff949da7d2330d93fde46354ec1f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-24.txt",
+      "sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-25.json",
+      "sha256": "314607e652cd7e18ecdb2c47d12bc6c2131fbb6a141b613c1a5cb4342ee08b16"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-25.txt",
+      "sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.json",
+      "sha256": "d62d72c84ae8be00475c4e7873b474e146bfc56717a1163d597e13592686135a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.txt",
+      "sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-27.json",
+      "sha256": "f14f6d72bfea36b29345a43dffac2eac79d81f3ef8ce0e1ba145cd2b964d4e39"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-27.txt",
+      "sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-28.json",
+      "sha256": "5735b1f6363bda4e30f456aa23899707d198d9661d6db56b2d55ebd026830eac"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-28.txt",
+      "sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-29.json",
+      "sha256": "99287f32f19e5ab83e04bc83b83b93e9cd969c9a940163c3df22a7595049c117"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-29.txt",
+      "sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-30.json",
+      "sha256": "6582e1c446ef989c8f0322719b5b878c25e81884922f916a1d2f7f2f422be966"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-30.txt",
+      "sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-04.json",
+      "sha256": "81931c35b30ebb8d5ec630fa571d73d235143844e950694d8114b3534b3971d5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-04.txt",
+      "sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-02.json",
+      "sha256": "db73c3c9f790f07588e0c4c36a5365ee7360f61357f95a2bf47cdd01d74af0c5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-02.txt",
+      "sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-03.json",
+      "sha256": "15bfe37be0131f1c2e512f70557191de6aabdf30f8cfeaf0f401ca122317d59f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-03.txt",
+      "sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-04.json",
+      "sha256": "6ef4f633c4966a30cbeec57c4f9aa6bbe5f969a11c2d2741f10c0501639779c1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-04.txt",
+      "sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-05.json",
+      "sha256": "3c5305b8f3ddf31bb59a0755ac00ccab21fdf1d68feda2c12e4d0ec0b9195f9d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-05.txt",
+      "sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.json",
+      "sha256": "da37277b1b8b69cda77d51a7ac8e84c5807bd782aa209f2b00ff8f5423dbd1a5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.txt",
+      "sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-07.json",
+      "sha256": "10adb85e65f51ae9946330b3c21527a5492847d6491c959a15157106ff2eeb0d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-07.txt",
+      "sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-08.json",
+      "sha256": "0633dee55f30aac38d19dbd6046be862c52d764ee01f0f59b3d2735d48f65665"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-08.txt",
+      "sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-09.json",
+      "sha256": "600a366e8f8a0bfc477a425e9968480dbcfb98c6fda89ccef8eebf06455281c5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-09.txt",
+      "sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-10.json",
+      "sha256": "0a68f080a598e739f796b037352fdaf69341d839e8665228b0f781458256e17a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-10.txt",
+      "sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-11.json",
+      "sha256": "a0a152e03f1ab1a10534461f95c022b42da011091f225bacf9e82ac5a46b8be2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-11.txt",
+      "sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-12.json",
+      "sha256": "17eb92cdb62e10d6a8c0ca68828b8b6442ed08f57310914907599bb00fe316ed"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-12.txt",
+      "sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-13.json",
+      "sha256": "4ce1b9f889592865a1e295fb763ea4d9e09211a914bb7a05c8dee0a92f0fdf7b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-13.txt",
+      "sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-14.json",
+      "sha256": "31ce22b90a7cc70fac7c91e1fed60dabb8a26ebc4353d93a074790d76ac05e49"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-14.txt",
+      "sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-15.json",
+      "sha256": "405a217385e1c1840dc5aa55d56df552a6d6c5b3daaa85902278753d4f3357ea"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-15.txt",
+      "sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-16.json",
+      "sha256": "582ec4d98f24359dac8de818d303af47dae182668d61c48f78531ef0046fd50c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-16.txt",
+      "sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-17.json",
+      "sha256": "42c394bcdddca85f8d52d68ed45678fa9c962827f98bf09da1d9216fe5694d99"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-17.txt",
+      "sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-18.json",
+      "sha256": "84aaad2534d5b9de867ea89630ad8a010f6ebafb87292705c7716b3ee4e017bb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-18.txt",
+      "sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-19.json",
+      "sha256": "a638a277c626e555943a4b1c87831b82cb4f1b9baab5a2e814a3e003be819b1c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-19.txt",
+      "sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-20.json",
+      "sha256": "2ca21d4a96de45b67bbc66784d1e4259c79da1f82ff2959dfec42183830da8a0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-20.txt",
+      "sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-21.json",
+      "sha256": "93a4281dec945612cb5902ee8ac4d58b3cd22edece2300b78bead0e104f278bb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-21.txt",
+      "sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-22.json",
+      "sha256": "0592e94d5e5b161c1d546c09c5e053cd1a9c9cbc4f375af019f9f5cd6f4a0122"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-22.txt",
+      "sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-23.json",
+      "sha256": "c6cd937d016990375671d0ae2bd2910eb40093703d1a6ffa2320e7e26bd6bd13"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-23.txt",
+      "sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-24.json",
+      "sha256": "bbf3a4e2c7cf7a76904c0ab2f928ec518df5ce97aa44d04addeddee183723e49"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-24.txt",
+      "sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-25.json",
+      "sha256": "8a3766a85a3b66ea85bdae15a37b3dbb30e16c05983be20dda1e6a3af9908b3b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-25.txt",
+      "sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-26.json",
+      "sha256": "628e2dcf9d03fd56401ad92707e6db265fd0352ffaad15cd01a4d02def0ebfa3"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-26.txt",
+      "sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-27.json",
+      "sha256": "45ef4426ab1cd4fab4dd0f92382e3ea10a6deed910a1e481b4aa8dccbb28ad9c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-27.txt",
+      "sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-28.json",
+      "sha256": "c2802c687246b15ff6c34fbf6b1a1edf31ccae65a3344293baf84043ee2200d1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-28.txt",
+      "sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-29.json",
+      "sha256": "8083ba22c1aa733293da81218c03c370825fc8215f44afbab236095152d7ec71"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-29.txt",
+      "sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-30.json",
+      "sha256": "0892048cfbd1be51dbddf937f93ae814b4348d62ba8f99923c6f259cc6492ff5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-30.txt",
+      "sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-01.json",
+      "sha256": "44cd2b7c0e3823044062c494ee19e6cbdde6763dbb99d41ac6caf19bb056bb1a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-01.txt",
+      "sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-02.json",
+      "sha256": "064e4ff187d339ee99661490c20eecde265f236b4d91f37b70368e560ddb1912"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-02.txt",
+      "sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-03.json",
+      "sha256": "98a503d3002d8ab3ef99bcd78854ce516769313eb995a09beb2cbb715fd9ef95"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-03.txt",
+      "sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-04.json",
+      "sha256": "be6ea2d5a7d23380b8b377181153e6e74f4e9573607e823b0353fa26b361c596"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-04.txt",
+      "sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-05.json",
+      "sha256": "07b72368fee8e29c24a5693d6549ac978617dfb3c42e3b14e23a6138a5c2106b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-05.txt",
+      "sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-06.json",
+      "sha256": "5074f2d547cfcde77d764a6c1f316e39873cdc8d7c94686efe1e454f58f688af"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-06.txt",
+      "sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-07.json",
+      "sha256": "482db2505fe429d1384905c3a430429b2338e50080c8865d2438ca6a0457ad3a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-07.txt",
+      "sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-08.json",
+      "sha256": "ed402ffc042119a8469473c0c36ff47a5dd55644a14babbd6a9a800166bc78c0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-08.txt",
+      "sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.json",
+      "sha256": "a48e99996f3ac62a755312b3a02ccbdf7d30d02a3511a36a4e9efefa87e0063e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.txt",
+      "sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-10.json",
+      "sha256": "0960884d021835bde33045aa0bf53ad422f305baa0cbd269277b827b81329647"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-10.txt",
+      "sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-11.json",
+      "sha256": "aaa48d9081ada9dfa0ba1c8055bf239d061a0e36b6b4a19dde1c20ac73b1f1d6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-11.txt",
+      "sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-12.json",
+      "sha256": "c982e61e0a996f7aebf8e6953354b4f0314a0e32dbe92a97ee8acc353d9be4b1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-12.txt",
+      "sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-13.json",
+      "sha256": "83b1de608e84501cdd9afee670b873cb23196ce5964b9d06494f8646f8fd2518"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-13.txt",
+      "sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-14.json",
+      "sha256": "8a5f2240fcf80a06d2aa89fd840e975953ae7111d1da75c781f7f2825207da37"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-14.txt",
+      "sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-15.json",
+      "sha256": "676cb1a4398af76505a486bae841047ad22b824d27742e6c923932970ec1f79d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-15.txt",
+      "sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-16.json",
+      "sha256": "b3f0bf350705724a95a2bbde06991ed285a1962167029eb6b6225691abac6e5c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-16.txt",
+      "sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-17.json",
+      "sha256": "6334d7b67b968dc8b548d6ce1aeb16c13dd61a484fc08434de3fddb45914a075"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-17.txt",
+      "sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-18.json",
+      "sha256": "0e1b14911caf39d01a62e4d9147b420ce88589113c34aa29fbb48af26bfde321"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-18.txt",
+      "sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-19.json",
+      "sha256": "72c812e7be4aca67c90473611735976d412e71558fa603a62e0338f4f04aadc9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-19.txt",
+      "sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-20.json",
+      "sha256": "344fa6ef7bee35e1fb0b100f34550283c873d11548f47cd54449d3b33a11ffec"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-20.txt",
+      "sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-21.json",
+      "sha256": "c8d251dee817581047e38f30870469117fe59184277519a7dfe97c514a49e24c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-21.txt",
+      "sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-22.json",
+      "sha256": "449892e76bdb649148a62fe57b8354dfd36fb399a511ab204226e23e261a7595"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-22.txt",
+      "sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-23.json",
+      "sha256": "f8ae2abafe2e9f78b369a7144bbffe83db48bbb9c921cc8098f772edae91c813"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-23.txt",
+      "sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-24.json",
+      "sha256": "46abcad93a8841285cfab7d5cdebcb904c496a8e1b020f7b4145b2b3616322b2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-24.txt",
+      "sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-25.json",
+      "sha256": "3c27d4ecc3afc7bf0d68ec26c2b5f4c8fcc838586098ff0c7f875fc8aab9fbb4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-25.txt",
+      "sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-26.json",
+      "sha256": "c7b1a41802d5531790a8e4c6af0d7bb656b42d1feabeb497cf16b310f82586d0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-26.txt",
+      "sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-27.json",
+      "sha256": "40e26a0e4f50362aad1cad4b0f2f7898e2e04ad9a2279747b41d5826fc644fe7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-27.txt",
+      "sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-28.json",
+      "sha256": "7dcf1578b9408f53d2a3259dbf561eece8e057b2765f5cfda57a9be2b98b3408"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-28.txt",
+      "sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-29.json",
+      "sha256": "c310ae3c3b6d3ae639205c6f3c871388f5a9ea5641a0350abc1115770f412ce6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-29.txt",
+      "sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-30.json",
+      "sha256": "7bfdee6a8143b6689f159f3f2658c8db498f0f66833bab16300d793e88fe0c67"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-30.txt",
+      "sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite.py",
+      "sha256": "03c2f6496cde27d1633f72767f469e5c98652e08af04c7f2f959045e037fae06"
+    },
+    {
+      "path": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
+      "sha256": "ecd75629f915161da4c7b476a4087b9125cbc008286c812c11ace8ae158df73c"
+    }
+  ]
+}
