@@ -4,6 +4,10 @@
 
 Mind Core coordinates; Field core Sol alone does host reads/deployments/activation. No main publication, native probe/launch, handlink/reinstall, endpoint retarget, Flow restart or Memory rollback by us. Candidate branches only when explicitly approved. No harness subagents used. Skill-interface injection unavailable; do not open generated skill files. Canonical Home/CriomOS checkouts dirty/read-only; own worktrees below. All edited source/report files committed.
 
+### NEW urgent source-only permaflow request — Field8c0e / Psycheytoq
+
+Add EXACT rows from flows/32e506/{listener-permaflow,flow-anatomy-permaflow}.datom beside Mind rows in Home modules/home/profiles/min/flow-nexus-config/metaflows.datom on fresh current main, commit/push, launch NEITHER; Field applies later. NO EDIT YET: fresh remote main is still2af, actual active308. Both supplied rows omit post-None leave-outs vector (packets None [base] [loadable], existing schema None [] [base] [loadable]). Requested owner-corrected files/schema-only insertion authority and explicit main-vs-candidate push scope in Fieldnbu8; copied Core3m66. Do not silently change exact rows or infer permission to drop active cohort. Respond promptly after exact authority; no switch/replay/launch. This source request is separate from Energy pins.
+
 ### 1. Fresh Energy after s60o — highest integration priority
 
 Psyche q11h / Core ir5f rules s60o ACTUAL serving first, then Energy-only descendants of ACTUAL active Home+consumer with fresh gates; Listener later in separate lane. Field fgyc verifies both Ouranos/Zeus now actual CriomOS62b83fe6c64b242da31a7751468a002d8a4da59e→Home308f2354d21eb79e111d4e0cfd83c58ebe327a21, Flow52e/fixed Curriculum0f848; serving/listing passes. Every future transition rechecks active ancestry; stale means rebase/regate.
