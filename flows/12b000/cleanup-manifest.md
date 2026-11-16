@@ -1,0 +1,79 @@
+# Proposed-close manifest — zz65
+
+Actor: Field browser Sol 12b000. Inventory observed 2026-11-16T23:14:50.483490+00:00.
+
+Assumption: cold requires at least four hours since last touch, resting, no open requests in either direction, no queued work, and known owner/continuity. Every uncertainty is KEEP. This is the pre-mutation manifest; **proposed-close set is empty** under the evidence currently available. No Stop or pane close has run.
+
+Flow inventory: 39 addresses. Herdr inventory: 29 panes, 18 detected agents.
+
+## Flow Nexus held addresses — KEEP
+
+| Address | Listed state / flow history | Queue | Pane / native evidence | Reason |
+| --- | --- | --- | --- | --- |
+| { Field browserBridge Sol } | Asleep / cf1021 3fa769 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field protosConsumers Sonnet } | Asleep / 911657 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field core Sol } | Awake.437627 / fb0a2c 1cc5ce 029f32 66f659 374411 | yes | w1C3:p1 / term_6605afbc82671165 / codex-0ea296cc65ff3591911d81ad | working/awake; queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field protos Opus } | Asleep / bbc5e8 | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field protos Sonnet } | Asleep / 66828b 1abdfc 507b28 996539 a9855e | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field semaV0 Opus } | Asleep / 663f98 | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field upkeep Sol } | Asleep / a8ab9c | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field browser Sol } | Awake.12b000 / beeb7e 9df236 | not shown | w1CN:p1 / term_660682d648dcb178 / codex-82deb3c11ddc4a1a15b5e8a6 | working/awake; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field heartbeat Sol } | Asleep / cbf749 bd34c0 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Field inventory Sol } | Awake.ad72ed / 866c08 db9025 a93e10 250bbd 2d90d4 333b2b | yes | w16M:p1 / term_6603ece39a360b5 / codex-7810b2f2140fcb8d7cefbf0c | working/awake; queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind curriculum Astra } | Asleep / 80fcd4 66ddda 55520e bbc467 6873cb 1277f0 19ff24 0b019f 8b8d82 21e4e3 93bd73 1327ee a7b168 7f8942 97d92a b7b7ef 51383f 8d7456 dea96a fb5141 09c3ae 068413 bef149 fd10e8 2e37fc fdeb37 abbc8d 422981 58a027 d620cb 1d5620 b62d36 773706 5ff890 c9169a 93a749 72cf7f 43fa09 e382da 30453b e0e81b 7ad043 8c6c09 40f83b e71e23 07d269 8c06d8 5556c4 82a5ab fab701 | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind curriculum Opus } | Asleep / f71ae7 f0f146 896bac 2e404d be2651 d1284e d7f32c c6fb86 479cca | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind curriculum Sol } | Awake.25858e / bb8a0a 472b2e e12a0b 706b16 fda519 229167 6c5320 be1bf6 9adeee 9cdc95 e3d6b3 b0ee3f 8704bf 732a74 54e9e5 299aa3 bd6e22 4e38c7 1d9e19 c40e5e 4c69d7 cc9ab9 d486ce aa68be 3d014c a384c0 a0ebe3 6c2a99 013dc3 53d6b8 92e44e e2487d d8ade5 | not shown | w1AB:p1 / term_6605465347b4a12c / codex-ce0b1405988f52967e2a401f | working/awake; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind datomCodec Sol } | Asleep / 7e98f4 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind herdrNexus Sol } | Awake.b1218b / 9b2f6c 1485bd cdc93e 6c7c70 eb7933 4886f9 02c307 ab4e4b | yes | w1C5:p1 / term_6605afcd1ad9e167 / codex-d21996dd4625f6d68a6e170f | working/awake; queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind nixCriomos Sol } | Awake.b30c1b / b3e210 | not shown | w1C4:p1 / term_6605afc4c4323166 / codex-8c079f2ddbbd8f5b0bca648d | working/awake; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind flowAnatomy Opus } | Awake.add4ff / cb2def e7d6ba 7e2400 a76864 | not shown | w1CJ:p1 / term_6605cf60f88a1174 / claude-e46a74803c3e5066549602f8 | working/awake; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind orchestrate Sol } | Asleep / 123d51 aabab6 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind sourceNexus Opus } | Asleep / ed66e6 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind versionZero Sol } | Awake.6cfd0c / 44f3be | yes | w1C2:p1 / term_6605afb438dec164 / codex-6adc13189f352588ed472c07 | working/awake; queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind researchTools Sol } | Awake.09fa53 / 72fb9a 2ce803 | yes | w1B0:p1 / term_6605afa3ac801162 / codex-046c0f57809eee8970c802ea | working/awake; queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind core Astra } | Asleep / 77aa99 b32a58 | yes | mapping unknown; keep | queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind core Sol } | Awake.29c9a7 / 121cc5 d76b4c a57a68 f16b0a c3e3c1 d09f73 1541ef | yes | w1C6:p1 / term_6605afe0041a3168 / codex-dccce63ae23b72a0438f0657 | working/awake; queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind lojix Sol } | Asleep / 725168 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind survey Sol } | Awake.d94525 / a0410e 4719b9 da02ab fc7e01 9d5f5c 302f4c 3ddb40 | not shown | w1AH:p1 / term_66056963672c2132 / codex-b88e50dade98b380a33b6a81 | working/awake; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind research Sol } | Awake.3be788 / 959100 a9a8d6 90bd85 e0395d 2d22b4 8525c7 082e0f | yes | w1C1:p1 / term_6605afabf085a163 / codex-7bf24044328778880e3f023a | working/awake; queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind flowNexus Astra } | Asleep / 8e9e57 afa66d e803f9 a0d683 eeded8 4381d2 876b97 477893 1ded2b 063a50 d08fc1 ee7f02 5cbe65 7f9f42 e19445 1453b8 5fa76d c1182e 9f624b e46ac4 7b9458 694b74 32e0b5 37f3d3 f85e84 af11c6 3df332 71e1c6 | not shown | mapping unknown; keep | protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind flowNexus Opus } | Asleep / 5e88e5 95f729 dd9587 2687f8 e3a7d1 565bc8 521d44 90d453 98df55 5c5586 164576 | yes | mapping unknown; keep | queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind flowNexus Sol } | Awake.5441e0 / d7225e 4ee445 a6be39 751881 7a5153 2bc724 d99e39 2b83e2 c6f682 5d5aad 99bb5b 9d4963 9c3bb9 affd83 f3225d 31dfb0 383f45 2cba39 cefbeb d4b59d 13d552 71a771 3c0254 b5fa74 3e36a4 7cd167 6be617 28c285 9a6da2 1dd428 0e068b 3fd2ab bd14ba afc2ca bdb323 72d107 9b7035 13d54e 4aa030 a3f746 d42f0a | yes | w1AX:p1 / term_66056ed0198a313e / codex-09f46bc965e60cb1225ebb33 | working/awake; queued work; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Mind typedCall Sol } | Asleep / 250509 ce62d5 | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche beliefReview Fable } | Asleep / 4fb10a | not shown | mapping unknown; keep | protected Psyche core/Fable; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche beliefReview Opus } | Asleep / bac2fc | yes | mapping unknown; keep | queued work; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche nexusVariations Fable } | Asleep / 92d026 | not shown | mapping unknown; keep | protected Psyche core/Fable; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche book Haiku } | Awake.15ff61 / e4bd4b 7f0a6d c9521d 8130b1 ec9358 683eb2 b6389b 231869 434b6e 703da6 3ac399 be05cc acfae8 17e257 3f169a b62c49 bd378a 77d982 cf0747 ebfec3 33d4c0 9effbd 62b108 81cc06 706497 9a8120 0e765a 800e4a 57de3d 413c6e | not shown | w1CV:p1 / term_6606cb867f5d117e / claude-08b10bf68109e57187832055 | working/awake; bookmaker protection; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche core Fable } | Awake.01aef1 / 11f34b 7998d1 350f85 d6c615 745346 1203fb 2f2e2c 0eb295 655f27 d9cedc 03ebbe a9592f | not shown | w1CT:p1 / term_6606c9d4929f417d / claude-3a24638ebd9522f0077a6471 | protected Psyche core/Fable; working/awake; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche core Opus } | Awake.ef68c8 / 678f21 4429a6 2c7a2d c0d2de 7eaa22 1e8210 730b25 93617e 743764 00e2a8 e8852d 54269e 2987ba ddcdff 7d0e5b 65c59d ff7a5a eb6343 32e506 180a7f 5e646f | not shown | w1CP:p1 / term_66068494925cd179 / claude-2fa474ffc6ee54f3b0b15afa | protected Psyche core/Fable; working/awake; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche core Sonnet } | Awake.1592c0 / c3c1a0 373248 | not shown | w1AZ:p1 / term_660572908f299140 / claude-1f1de193e7fde6c0e546b136 | protected Psyche core/Fable; working/awake; protected active guard/SendSeveral/self; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche criomos Opus } | Asleep / 40fefd | not shown | mapping unknown; keep | last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+| { Psyche comments Haiku } | Awake.3f955b / ce107a 08fc5d | not shown | w1AN:p1 / term_66056beb9162a136 / claude-29b4669ea1808ce963ea055a | working/awake; last-touch >=4h, bidirectional open-request and continuity/Maintained evidence UNKNOWN |
+
+## Other Herdr panes — KEEP
+
+A title mismatch is not proof of being unheld. Flow ownership, native session, resting state, last-touch time, open requests and continuity must all be proved before a herdr-only close. Idle/done/unknown display states do not establish coldness.
+
+| Pane | Terminal / native agent metadata | Label / title | Reason |
+| --- | --- | --- | --- |
+| wHB:p1 | term_6600932a13be81 / native session unknown | { Field core Primary 554808 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHC:p1 | term_6600932a142272 / native session unknown | { Field core Secondary cb6398 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHD:p1 | term_6600932a145d53 / native session unknown | { Field flow Secondary 24eb5c } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHG:p1 | term_6600932a149da4 / native session unknown | { Mind core Primary 332fe6 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHK:p1 | term_6600932a14dda5 / native session unknown | { Mind flowNexus Primary 9d07c6 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHV:p1 | term_6600932a152236 / native session unknown | { Mind flow Primary 97bef3 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHW:p1 | term_6600932a157077 / native session unknown | { Mind flowNexus Secondary 77bdde } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wHX:p1 | term_6600932a15cd18 / native session unknown | { Mind core Secondary fe42a5 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wJ3:p1 | term_6600932a162439 / native session unknown | { Mind flow Secondary 58cfaf } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| wZT:p1 | term_6600932a16834a / native session unknown | { Mind versionZero Astra 07d926 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+| w11D:p1 | term_6600932a17c8511 / native session unknown | { Mind versionZero Astra 7f0952 } / ~/primary | KEEP: owner/held status, last-touch age, requests, continuity or resting evidence unknown |
+
+## Supported contract checks and gaps
+
+`flow Metaflows` and `flow Queues` returned listings. These ordinary commands include message payloads; the manifest extracts metadata only and no payloads are used to infer unused status. `flow-meta Metaflows`, `flow-meta Help`, `flow Requests`, and `flow --help` were refused as unknown inputs; no mutation resulted. Supported Flow Stop shape and request/age/continuity inspection are being requested from Field core/owner before any stop.
+
+`herdr pane close --help` supports `herdr pane close <pane_id>`. `herdr agent list/get` and `herdr pane list/get` expose identity and display state but the inspected responses expose no absolute last-touch timestamps or bidirectional request evidence. This close command is not used against a possibly held pane.
+
+No context was awakened. No pane text, transcript contents, browser/account/token state, process signals, unlock/rebind, server/unit changes, deletion or lifecycle mutation was used. Four-hour safety and preserved protected roles remain in force.
+
+Current proposed closed: 0. Kept: 39 Flow addresses and all 29 Herdr panes (overlapping inventories; not additive). Immediate pre-close revalidation is inapplicable until a nonempty proven-cold set exists.
