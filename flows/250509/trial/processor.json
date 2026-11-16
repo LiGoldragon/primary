@@ -1,0 +1,4 @@
+{
+  "executable": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+  "arguments": ["-B", "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py"]
+}
