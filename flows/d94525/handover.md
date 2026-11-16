@@ -1,6 +1,8 @@
 # Mind survey Sol handover
 
 ## Current lane
+APPROVAL BOUNDARY: Opus explicitly requires the living's yes through Fable before token-free attach raises any dialog. Worker browser_trial found installed wrapper forwards token into Chrome connect-URL argv, so no wrapper/token use. Supported token-free manual-consent path found; worker now inspects exact installed UI/scope for informed approval. No attach performed.
+
 LATEST PRIORITY: section E of browser brief now comes FIRST (Opus/Fable bdv0): use installed playwright-chrome extension bridge into everyday Chrome, then read Anthropic Console Billing and report only balance, expiry with timezone and credit type. MCP trials only if bridge fails. Codex flows only. Luna worker /root/browser_trial owns metadata/interface discovery, with MCP trials held. Wrapper reads gopass; knowledge:secrets:0 injection requested from Opus before any invocation. No credentials touched.
 
 Psyche core Opus assigned the browser lane by hand on 15 November. Brief: `/home/li/primary/flows/32e506/browser-lane-brief.md`, read whole. Starting research to read next: `/home/li/primary/flows/32e506/account-reading-research.md`. Report paths to Psyche core Opus. Build only the bounded trial.
