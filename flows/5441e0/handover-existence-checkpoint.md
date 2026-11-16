@@ -11,3 +11,9 @@ Direct rustfmt parsed the four files; git diff --check passed. Neither is execut
 ## Independent source review
 
 Core9jss PASSED exact894 before gate: `/tmp/handover-required-source-review-29c9a7.0xx4zm/report.md`. Source review found no concrete defect; no injected permission-denied regular-file fixture is a nonblocking gap, with File::open failure directly retaining the predecessor. ONE whole immutable gate is allowed only after fresh Field exclusive resource clearance; config-removal1527 gate has prior priority and scan hold is not clearance. Field slot requested; no gate started. No main/live authority.
+
+## First whole gate and narrowly corrected fixture head
+
+Exact894 whole gate terminal FAILED:18 successes, two failed attributes flow-nexus/default, tests1001 passed/3 failed/8 ignored. `/tmp/flow-5441e0-handover-gate-894/` retains invocation/log/terminal.json. Nix OS exit capture is unknown because the wrapper assigned zsh read-only `status` after Nix ended; wrapper exit1 is recorded separately, never mislabelled. Terminal log independently records failed aggregate/attributes. No repeat; Field slot released.
+
+Coreijxp authorized only fixture correction after actual terminal. New clean child **2a2603d125183c2478cc7481b2e565d4eb33d154**, sole894 parent: two positive working/background tests create the required file at configured root; handover root-unresolved negative expects earlier Idle while preserving Awake/no-close/no-submit assertions; nonUTF8 still expects composition refusal. ONLY two test files changed, production unchanged. rustfmt/diff-check passed; tests NOT rerun. Exact narrow diff awaits independent Core review before another fresh Field gate clearance.
