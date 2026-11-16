@@ -1,3 +1,5 @@
+LATEST: guard350 clean immutable894cff82a9db99fff32440c0bdb2d584c4aa66cb authored on exacta044 under m685/csqz, four files (handover.rs,waking.rs,waking fixtures,refresh_and_compaction fixtures), UNRUN. Report handover-existence-checkpoint.md; independent source review requested BEFORE any gate. Empty readable regular file qualifies, failures keep, Emergency test configured, explicit lifecycle unchanged, OnDemand must not sleep around missing-file guard. No335/348 writes. VersionZero348 exact419c source-preservation confirmed by Core; complete admission/handler/group/startup semantic review STILL OWED by us, not yet done; Coreh9g2 review identifies fixture-plan gaps. Effort configuration is separate backlog behind guard+SendSeveral (Core9j1s), hardwired model.rs medium exceptTerra low verified. New research3be788/surveyd94525/Curriculum cases queued refresh still stall, unexplored, no universal a044 claim. OwnRefresh already queued; do not repeat.
+
 # 5441e0 current handover — latest update
 
 ## First: separate handover-existence guard
