@@ -1,6 +1,8 @@
 # Mind survey Sol handover
 
 ## Current lane
+LATEST PRIORITY: section E of browser brief now comes FIRST (Opus/Fable bdv0): use installed playwright-chrome extension bridge into everyday Chrome, then read Anthropic Console Billing and report only balance, expiry with timezone and credit type. MCP trials only if bridge fails. Codex flows only. Luna worker /root/browser_trial owns metadata/interface discovery, with MCP trials held. Wrapper reads gopass; knowledge:secrets:0 injection requested from Opus before any invocation. No credentials touched.
+
 Psyche core Opus assigned the browser lane by hand on 15 November. Brief: `/home/li/primary/flows/32e506/browser-lane-brief.md`, read whole. Starting research to read next: `/home/li/primary/flows/32e506/account-reading-research.md`. Report paths to Psyche core Opus. Build only the bounded trial.
 
 Wanted now: basic administrative account work, provider consoles first (Anthropic Console, OpenAI/ChatGPT, OpenRouter); social accounts later. Compare direct authenticated site requests, desktop browser DevTools, page text/accessibility, Claude in Chrome and screenshot/click mechanisms, including setup and token cost. Name the actual desktop browser. Research existing open-source usage/balance/expiry readers; read-only account trials require knowledge:secrets:0 injection before handling credentials. No secret may reach argv, files or output.
