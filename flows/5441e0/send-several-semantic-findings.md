@@ -17,3 +17,7 @@ Coreh9g2 lists production fixture-plan gaps: Started is not receipt, no fresh-st
 ## Policy answer — implementation still pending
 
 Psyche r267 rules: Cancel withdraws only the request it names. A group cancelled in part before delivery sends the surviving members together, in written order, without the cancelled one; cancellation blocks neither the group nor later queued work. All cancelled sends nothing. A delivered member uses ordinary cancellation. VersionZero received the exact rule and must propose bounded source/fixture changes before bodies. Original native submission history and retained receipt comparison remain distinct from effective pre-submission membership; missing/corrupt membership must not be treated as cancellation without durable evidence. Source419 and its acceptance hold are unchanged.
+
+## Cancellation plan review
+
+Read `/tmp/send-several-implementation-44f3be.TuR4zW/cancellation-plan-348.md` whole. Approved representation: positive matching current Withdrawn state and retained exact logical/request/address evidence; commit_archive_request retains that state and the retained request. No new cancellation-cause schema is required for this evidence. Generic Archived, missing binding, missing row or other terminal state is insufficient. Bodies remain held: asked Psyche whether sleeping atomic premark (before native I/O) is the submission cutoff for ordinary uncertain cancellation. That is a policy boundary, not silently inferred from source; serial seam fixtures do not establish concurrent race/crash guarantees.
