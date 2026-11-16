@@ -28,3 +28,9 @@ Flow owner froze four distinct witness results in `flows/5441e0/ke1s-isolated-pr
 ## Collision completion and approved direct seams
 
 Corewbb2 approved endpoint/sourceRoot/WantedBy options in the same own-change release, preserving production defaults, and explicitly required collision rejection. A shared enabled-instance declaration registry now asserts distinct service/place/activation/client/hook/socket names, disjoint endpoint homes including ancestor nesting, normalized absolute endpoint paths and Home-relative hook paths. Shared read-only source roots are allowed. The new fixture has named negative cases for each resource collision and undeclared place. These are lexical declaration-time checks, not proof against runtime symlink aliases; Field still verifies actual identity/paths before provisioning. No evaluation/test pass is claimed yet.
+
+## Core im3x correction — pending review, no gate
+
+Candidate `70d15ae9fe959e6253fed11d123406209746389c` supersedes 2ada. The registry now checks every endpoint socket against every *other* endpoint home, rejecting equality and path-component containment while permitting the owner's own socket beneath its own home. Focused fixtures cover equality and nesting in both stable→next and next→stable directions, baseline own-home acceptance, and both shared-prefix sibling positive controls. The assertion lookup requires exactly one matching assertion.
+
+Only registry/check files changed from 2ada; production defaults and all pins remain unchanged. `git diff --check` passed; Nix checks have NOT executed. Exact incremental correction is `/tmp/b3e210-instance-parameters/cross-owner-socket-correction.diff`; cumulative diff, candidate.rev and refreshed source-audit.json are alongside it. Independent Core review remains required before the separately scheduled heavy gate.
