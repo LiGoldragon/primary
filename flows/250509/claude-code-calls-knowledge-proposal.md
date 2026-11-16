@@ -1,103 +1,123 @@
 # Calling Claude from code
 
 Proposed new module: `knowledge:claude-code-calls:0` in Mind belief.
-Status: proposal, not landed. Measurements below are preliminary; the comparison
-final three-model table formatting and Fable's rulings remain pending. The eight-prompt Opus extension has completed; final-summary.json holds all 180 results.
+Status: proposal only; no belief landed. All 180 unique paid jobs are complete.
+Task accuracy remains unestablished pending Fable's rulings.
 
 ## Proposed module
 
-Description: Claude model calls from code: the typed boundary, supported trial
-models, measured call costs and observed failure cases.
+Description: Claude calls from Rust: typed Emission, measured trial profiles and
+costs, strict answer decoding, and the limits of structural validation.
 
-A model call is a typed Emission. Its operation supplies the question and its
-evidence; the translator calls the provider; its observation is decoded into a
-declared answer type before the operation uses it.
+The Rust trial has two operations: belief admission into a disposable snapshot
+and a queue recommendation that launches no flow. Each emits a typed ModelCall,
+receives the processor observation, and decodes it into the task's declared
+answer type before using it. The trial proves this domain-core/process boundary;
+full Nexus socket serving, binary Signal transport, generated Ethos contracts,
+actors and persistent Memory serving remain unimplemented.
 
-The reviewed trial processor has completed calls on `claude-haiku-5-5`,
-`claude-sonnet-5-5` and `claude-opus-5-5`.
-Supported models and rates belong to the reviewed processor's configuration.
+The caller supplies the whole question and evidence. The trial gives the model
+no facility to open referenced files: a path in a prompt is text, not contents.
+The observed processor makes one Messages request per invocation without tools,
+caching, redirects or retries. The Rust caller receives its result, never the
+API key. Failed or uncertain calls remain evidence for owner review.
 
-The processor makes one Messages request per invocation, without tools, caching,
-redirects or retries. The measured Haiku and Sonnet profiles cap output at 4096
-and use disabled thinking and low-effort between-tools thinking respectively.
-The initial Opus profile uses medium-effort adaptive thinking with its display
-omitted and caps total generated output, thinking included, at 1024. These are
-reviewed processor profiles, not general limits of the Messages API.
+The measured profiles were `claude-haiku-5-5` with thinking disabled and a 4096
+output-token cap; `claude-sonnet-5-5` with low-effort between-tools thinking and
+the same cap; and `claude-opus-5-5` with medium-effort adaptive thinking, display
+omitted and a 1024 total output-token cap including thinking. These are trial
+configurations, not general Messages API limits. Compare profiles, not model
+names alone. Supported models, rates and bounds belong to configuration.
 
-The caller supplies the whole question and evidence; this processor gives the
-model no facility to open a referenced file. An absolute path in a prompt is
-text rather than file contents.
-
-The credential producer pipes directly to the provider client's supported
-header-stdin interface. The Rust caller receives the processor's result, never
-the API key. Failed or uncertain calls are preserved for owner review rather
-than automatically repeated.
-
-The output passes two checks: decoding the declared answer type, then validating
-references and nonempty fields against the supplied evidence. Unknown fields,
-duplicate fields, trailing values, missing referenced lines and wrong-task
-answers are unsuccessful outcomes. A valid existing reference can still be
-semantically wrong: decoding establishes shape, not judgment truth.
+Answer checking separates declared-shape decoding from evidence constraints.
+Unknown or duplicate fields, trailing values, wrong-task answers, absent line
+or module references and required empty wording are unsuccessful outcomes. A
+real line identifier can still identify the wrong proposition: structural
+validity and semantic correctness are distinct.
 
 Provider failure, malformed answer, explicit model refusal and incomplete
-generation are distinct outcomes. A successful accounting settlement alone
-does not establish generation completion: inspect the native `stop_reason` and
-require the completion state the task accepts.
+generation are distinct outcomes. Accounting settlement alone does not establish
+generation completion; the task must check the native stop reason. All 180 paid
+responses in this trial ended with `end_turn`. Evidence-insufficiency refusals
+were JSON task responses, not native provider or content-policy refusals.
 
-One completed Haiku admission call took 1.957 seconds for the processor boundary,
-used 2249 input and 50 output tokens, and had a raw usage estimate of
-0.0002499 USD. Its conservative retained ledger charge was 0.001530625 USD.
-These are different accounting quantities. Neither is an invoice or proof of
-account balance. One call does not establish a typical price or latency.
+Each profile completed thirty belief and thirty queue cases, with one paid call
+per slot and no paid retry. The decoder results were:
 
-The completed Haiku/Sonnet comparison has thirty belief and thirty queue cases
-per model, with 120 unique paid receipts including that first call. Total raw
-usage estimate is 0.5795420 USD and total retained commitment 0.720953125 USD.
-Mean raw estimated cost per belief call is 0.00075201 USD for Haiku and
-0.01515913 USD for Sonnet; median boundary time is 2.148 and 3.329 seconds.
-Per queue call the means are 0.00017373 and 0.00323320 USD; medians are 2.940
-and 4.270 seconds. The one Haiku queue outlier took 142.382 seconds; its cause
-was not established.
+| Profile/task | Schema decoded (refusals included) | Constraint failures | Judgments | Evidence refusals | Shape failures |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Haiku / belief | 29/30 | 8 | 21 | 0 | 1 |
+| Haiku / queue | 30/30 | 0 | 23 | 7 | 0 |
+| Sonnet / belief | 28/30 | 0 | 20 | 8 | 2 |
+| Sonnet / queue | 29/30 | 0 | 29 | 0 | 1 |
+| Opus / belief | 30/30 | 0 | 30 | 0 | 0 |
+| Opus / queue | 30/30 | 0 | 27 | 3 | 0 |
 
-On these thirty belief cases, Haiku produced 29 declared-shape answers, eight
-of which failed a reference/nonempty check. Sonnet produced 28 declared-shape
-answers: twenty judgments and eight evidence-insufficiency refusals. On the
-queue cases, Haiku produced thirty declared-shape answers including seven
-refusals; Sonnet produced twenty-nine and one malformed refusal. An explicit
-refusal in the wrong nesting position is a shape failure rather than an
-accepted answer. No failed answer was repaired or automatically repeated.
+A refusal in the wrong JSON nesting position is a shape failure. Eight Haiku
+belief answers decoded to the declared shape but failed evidence constraints.
+No failed answer was repaired or automatically repeated.
 
-The initial Opus stage completed 52 paid responses, all ending with `end_turn`,
-for 0.807456 USD estimated and retained. Eight long belief questions were refused
-locally without calling the provider. Opus used a conservative admission bound
-of prompt UTF-8 bytes plus system UTF-8 bytes plus a configured framing allowance;
-that bound is not a token estimate. A prompt can fit an observed token count
-from another model while failing this processor's local byte-bound contract.
+| Profile/task | Mean raw estimate USD/call | Mean retained USD/call | Median boundary seconds |
+| --- | ---: | ---: | ---: |
+| Haiku / belief | 0.00075201 | 0.00466331 | 2.1475 |
+| Haiku / queue | 0.00017373 | 0.00097612 | 2.9400 |
+| Sonnet / belief | 0.01515913 | 0.01515913 | 3.3285 |
+| Sonnet / queue | 0.00323320 | 0.00323320 | 4.2700 |
+| Opus / belief | 0.03434360 | 0.03434360 | 6.4745 |
+| Opus / queue | 0.01260507 | 0.01260507 | 8.1935 |
 
-On the actually shared twenty-two belief cases, valid judgments numbered fifteen
-for Haiku, fifteen for Sonnet and twenty-two for Opus. Historical construction
-class agreement was ten, twelve and twenty; adding exact-reference agreement
-made it nine, eleven and eighteen. Those are small, correlated-case construction
-comparisons, not accuracy estimates: Fable has not ruled on the labels, and the
-operation's add/replace intent and comparison retrieval were incomplete.
+Total raw usage estimate was 1.9880020 USD; conservative retained commitment was
+2.129413125 USD. These are different accounting quantities, neither an invoice
+nor proof of balance. Boundary time includes the processor, reservation and
+settlement, not inference alone. One Haiku queue call took 142.382 seconds;
+its cause is unknown. Opus output usage includes its thinking profile.
 
-That call decoded as a repeat with a real line identifier, but the identified
-line concerned a different proposition. Historical evidence says the submitted
-line landed. The semantic judgment therefore needs review independently of
-the successful typed integration. The original change operation and its
-authorization belong in the question: a landed replacement can still collide
-when presented as an additional line against the old snapshot.
+Opus initially completed 52 paid jobs. Eight long belief questions failed the
+local conservative admission bound before any provider call. The bound summed
+prompt UTF-8 bytes, system UTF-8 bytes and a framing allowance against 20000;
+it was not an actual token count. A reviewed exact-prompt-hash one-shot extension
+raised that bound to 60000 for those eight prompts, retaining the 1024 output
+cap. All eight then completed once. The local no-call refusals remain separately
+recorded; they are not paid retries or failed provider requests.
 
-## Evidence, outside the proposed module
+The belief construction was eight admitted, eight repeats, seven collides and
+seven elsewhere, made from real historical paragraphs and snapshots. Repeated
+and wrong-placement cases reuse admission paragraphs; collision cases share four
+change families. The cases are correlated and their labels provisional. Adding
+versus replacing a line, authorization, retrieval sufficiency and policy ordering
+can change the right judgment. Historical class agreement was Haiku 12/30,
+Sonnet 16/30 and Opus 28/30; class plus exact-reference agreement was 10/30,
+13/30 and 24/30. These are construction comparisons, not established accuracy.
+A different line in the same paragraph is not necessarily a semantic error.
 
-- Trial report: `flows/250509/typed-call-report.md`.
-- Rust source and case data: `flows/250509/trial/`, revision `f387b046c`.
-- Builder default gate: `/tmp/typed-call-250509-gate-final.log`; 22 dry tests pass,
-  plus Cargo.nix, crate-version and crate-feature checks. Tests are authored by
-  the implementer, not an independent test flow.
-- Call receipt: `/tmp/typed-call-250509-calibration-observation.json`.
-- Paid job: `raw-general-082e0f-5dcdc8f6abe8492b9da002df17ca77dd`, retained by
-  Research under its authoritative paid-jobs directory and ledger.
-- The domain-core trial has not implemented full Nexus socket serving,
-  binary Signal transport, generated Ethos contracts or a production store.
-  This proposal records what the code-call experiment proves, not deployment.
+The calibration returned a valid repeat referencing a real but unrelated line,
+although the submitted paragraph historically landed. This directly demonstrates
+why valid decoding and reference existence cannot alone authorize a live write.
+Some Sonnet refusals identify missing comparison content: module names alone
+provide no such content, particularly for empty new-module snapshots.
+
+The thirty queue cases are real captured messages with unknown recipient live
+state and no final labels. Sender and priority were retained in provenance but
+not supplied as model-facing fields. Haiku returned 21 KeepQueued, 2 StartFresh
+and 7 evidence refusals; Sonnet 28 KeepQueued, 1 StartFresh and 1 malformed
+refusal; Opus 26 KeepQueued, 1 StartFresh and 3 evidence refusals. Agreement or
+successful decoding on these cases establishes no queue-policy accuracy.
+
+## Evidence and companion proposal, outside the proposed module
+
+- Final report: `flows/250509/typed-call-report.md`; all sixty case rows include
+  the three model outcomes, with provenance and limitations.
+- Aggregation: `flows/250509/trial/results/final-summary.json`, including 180
+  unique paid job references and eight prior local no-call refusals.
+- Rust trial: `flows/250509/trial/`, Rust revision `f387b046c`; builder default
+  gate passed with 22 dry Rust tests. Final driver has twelve synthetic tests.
+  Tests are implementer-authored, not independent tester certification.
+- Research owns the companion worker draft at
+  `flows/082e0f/knowledge-claude-api-draft.md`, still due at this finalization.
+  That draft is the home for verified secret/ledger/adapter invocation guidance;
+  this proposal records Rust trial learning and adds no competing worker manual.
+- Research retains the sole authoritative spend ledger and raw paid receipts.
+  The final accepted scoped worker archive is
+  `04731745b5875cd19ef52ce107883845df63cccfbbacd55b920c99b8492d9ea7`.
+- Fable's post-run belief and queue rulings remain requested. No additional paid
+  calls are required, and neither authored belief nor live queues were changed.
