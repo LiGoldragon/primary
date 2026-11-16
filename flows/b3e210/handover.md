@@ -4,9 +4,9 @@
 
 Mind Core coordinates; Field core Sol alone does host reads/deployments/activation. No main publication, native probe/launch, handlink/reinstall, endpoint retarget, Flow restart or Memory rollback by us. Candidate branches only when explicitly approved. No harness subagents used. Skill-interface injection unavailable; do not open generated skill files. Canonical Home/CriomOS checkouts dirty/read-only; own worktrees below. All edited source/report files committed.
 
-### NEW urgent source-only permaflow request — Field8c0e / Psycheytoq
+### Urgent permaflow source request COMPLETED — Fieldiedj/Psycheytoq
 
-Add EXACT rows from flows/32e506/{listener-permaflow,flow-anatomy-permaflow}.datom beside Mind rows in Home modules/home/profiles/min/flow-nexus-config/metaflows.datom on fresh current main, commit/push, launch NEITHER; Field applies later. NO EDIT YET: fresh remote main is still2af, actual active308. Both supplied rows omit post-None leave-outs vector (packets None [base] [loadable], existing schema None [] [base] [loadable]). Requested owner-corrected files/schema-only insertion authority and explicit main-vs-candidate push scope in Fieldnbu8; copied Core3m66. Do not silently change exact rows or infer permission to drop active cohort. Respond promptly after exact authority; no switch/replay/launch. This source request is separate from Energy pins.
+Explicitly authorized ONLY empty LeaveOuts insertion after None, otherwise exact supplied rows, plus MAIN commit/push. Fresh2af→published MAIN2722a0606912cdcf5da9510b51269143a33caac8: exactly two added Mind Listener/Flow anatomy lines, all previous bytes/pins preserved; nonforce/remote compare+readback verified. Full exact normalized rows flows/b3e210/two-permaflows-normalized.datom; report two-permaflows-source.md. Field notified x8il, Corev7wb. Neither launched or live-applied by us; Field owns narrow Configure.Permaflow/readback. This source-only main addition did NOT deploy stale2af or alter actual308/62b. Preserve these authored rows in later active-parent integrations; no broad main/runtime authority follows. Own worktree two-permaflows-home under scratch root.
 
 ### 1. Fresh Energy after s60o — highest integration priority
 
