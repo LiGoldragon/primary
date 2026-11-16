@@ -2,7 +2,10 @@
 
 Proposed new module: `knowledge:claude-code-calls:0` in Mind belief.
 Status: proposal only; no belief landed. All 180 unique paid jobs are complete.
-Task accuracy remains unestablished pending Fable's rulings.
+Semantic findings are preliminary: task accuracy remains unestablished pending
+Fable's belief and queue rulings, held for the morning in
+`flows/03ebbe/held-for-fable.md`, entry 1. Measured transport, decoding and cost
+results are complete; no further model calls are planned.
 
 ## Proposed module
 
