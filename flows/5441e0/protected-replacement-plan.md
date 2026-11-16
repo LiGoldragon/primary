@@ -1,0 +1,22 @@
+# 0.56.3 protected replacement scope
+
+Authority: Psyche20nx/pcre and Coreu7hs join this protection correction to the already accepted handover guard before the one new immutable gate. Generic configured protection, never an address-specific branch. Current authored metadata preparation changes only flow-nexus manifest/lock to0.56.3 and flake release identity; unchanged members stay0.56.2. Cargo.nix generation has NOT run and this is not a buildable immutable candidate yet.
+
+## Invariant
+A protected address cannot cross any replacement/close-and-resume effect boundary. Existing durable restart, successor, ordered-replacement and predecessor-reap obligations remain unchanged while protected, and produce a truthful typed held-for-protection observation. Removing protection permits ordinary event-driven recovery later. Unknown protection/store state must not perform the destructive effect. No pending work is erased, marked failed, silently settled or retried by a timer.
+
+## Source impact to review before bodies
+- `protecting.rs`: one shared protection decision on the address, with current-flow/record identity support. Replace its old threshold-only documentation.
+- `restarting.rs`: direct/idle entry and recovered records, including Closing/Closed/Opening/Spawning/Failed; guard before any destructive call or durable advancement. Existing protected-Restart-success fixtures must change under the new policy.
+- `waking.rs`: explicit Refresh, queue_refresh, replace_held, replace_owed/replace_as_ordered, refresh_successor_first, take_up_owed, recover_ordered_replacements/orphan handling, automatic rest and startup-recovery traversal. Check before intent deletion and native effects, not only at the top of recover_wakes.
+- `launching.rs`: shared Replace effect boundary and interrupted-launch reconciliation. Pending native launch confirmation must not lead to protected predecessor retirement through a separate path.
+- `reaping.rs`: recovered derived/pending reaps and asynchronous pane-close workers can outlive successor confirmation; protecting only the successor entrypoint is insufficient. Determine protected target from preserved obligation identity, not merely the address current flow, before retirement effects/settlement.
+- `main.rs`/shutdown bodies: source audit; no unnecessary behavioral edits. Field process/cgroup receipt remains the service-stop evidence.
+
+## Typed-report boundary (not yet authorized)
+Current local KeptAtStop lacks Protected. Public RefreshRejection and ReplaceRejection have no protection refusal; existing restart refusal vocabulary also requires exact pinned-contract audit. Additive local typed held outcome and a single reusable wire protection reason are candidates, not permission to alter the contracts. No misleading Locked/Busy/Store/String substitute. Core asked to allocate exact paired-contract custody/version independently of SendSeveral65/85. Memory rows should require NO migration: retain existing obligations unchanged and derive held state from current protection. Any persisted new held status or wire expansion must be reviewed before editing.
+
+## Regression inventory
+For each recovered obligation variant, reopen existing-format Memory in a fixture, protect its address, run the actual recovery/effect path and assert: original obligation bytes/identity unchanged; original flow/native route/session unchanged; zero native close/start/resume/replace/reap calls; typed protection hold reported. Cover ordered successor and ordinary refresh, direct and idle restart, pre-confirmation launch/derived-reap retirement, asynchronous pane-close callback, and store-read failure. Include remove-protection then next genuine recovery event resumes the original obligation; nonprotected fixtures unchanged. Preserve accepted receipt cohorts/four seams and handover guard behavior byte-for-byte except an independently reviewed unavoidable overlap. These are planned tests, not execution evidence.
+
+Independent review of the complete immutable metadata+semantic+fixture delta precedes the sole fresh-Field-cleared whole gate. No runtime, publication, raw Memory read or new recovery mechanism is authorized by this plan.
