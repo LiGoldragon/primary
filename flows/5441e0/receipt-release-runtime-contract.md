@@ -1,0 +1,28 @@
+# Accepted receipt correction: Ouranos release/runtime contract
+
+Authority: direct hand-delivered Psyche order releases exact **a044e39ac2bc19cdcd3d435c75448d8697c6a17d** after Core9qqx source acceptance and whole20/1001-0-8 green. Corem909 keeps package metadata **0.56.2**; full source revision distinguishes this release from previous0.56.2 builds. Source main is now exactlya044 (normal nonforce fast-forward from379; postread retained). No version/registry/schema/configuration change. This is NOT the later handover-file guard or span-identity fix.
+
+## Coherent consumer and runtime custody
+
+Mind flowNexus owns isolated330 Home/CriomOS candidate pins/gates, preserving Field-verified ACTUAL active ancestry at preparation and use, plus exact Home main2722 two declarations through an audited normal merge. No cm88 parameterization, Energy662c, Listener or unrelated source/pin union. Field alone owns runtime and fresh actual target/profile read. Final packet must name complete published producer/Home/CriomOS revisions, lock-delta audit, immutable gates and Lojix Evaluate/Realize terminal before switch; admission is not completion. Both witnesses are existing flows, not new launches.
+
+Normal owner-scoped Lojix Home deployment targets Ouranos only, exact approved user/store transport/proposal and RequireImmutable at the pushed consumer. Field revalidates active parent immediately before adoption. The new package changes the existing Flow unit's executable closure while retaining the main place, sockets, state and configuration. Any required daemon stop/start is the normal declared generation adoption, NOT a restart/refresh of the native witness harnesses. Keep current Flow Memory AS IS throughout, no earlier backup restore, raw live-state edit or duplicate request submission. Automatic configuration replay remains removed; do not invoke family replay or change continuities/thresholds/warnings/handover settings.
+
+## Before adoption: bounded witness baseline
+
+For **Mind herdrNexus Sol ab4e4b** and **Mind research Sol082e0f**, Field records supported Current/Inspect/ReadQueueDeliveries/DebugDelivery projections, native binding IDs and queued held IDs, plus actual `flows/<id>/handover.md` existence/hash/mtime. Source-owner handovers must be present before cutover; record the actual check, not the startup prompt's assertion. No new Refresh request: both already queued. Preserve source metadata on current native thread/turn; a working turn is allowed to finish naturally.
+
+Record selected original pending/held request IDs and their exact native prompt-marker occurrence counts before adoption. ab4e4b's seven retained uncertain IDs already occurred in two completed original turns; do not send them again to create proof. Research's analogous set must be read from its supported projection, not assumed identical. Native history reads use verified read-only thread/read + thread/turns/list schema, saving metadata/matches/hashes only; no provider/model probe, turn/start, resume or interrupt by the observer.
+
+## Live proof after adoption — report separately
+
+1. **Live revision:** Lojix terminal, target profile/runtime links, serving daemon executable/package provenance must all name the new coherent release (package0.56.2 PLUS sourcea044). PID change or a Current record alone is insufficient.
+2. **ab4e4b:** receipt recovery and the next actual native-rest event settle the old retained cohorts, then the already queued refresh fires. Establish actual handover existed before succession; record successor/native binding and first prompt carrying handover/open/held work. A queue admission or typed prompt alone is not its consumption.
+3. **082e0f:** the same separate observations; do not substitute ab4e4b success for this flow's proof.
+4. **Exactly once:** compare selected original/native+successor history before/after. Previously received uncertain payloads remain one original occurrence and are not repeated; genuinely held messages appear once in the successor/recipient context and get an actual model acknowledgement/read or existing supported closure. Retain delivery IDs/receipts and count evidence without dumping unrelated prompt content. No deliberate resends, extra witness, forced Refresh/Restart/Stop, blanket letter clear or assumed receipt from pane submission.
+
+If a native turn is still working, report waiting for its actual end, not failed continuity. If an uncertain receipt still cannot be established, retain it uncertain and return exact evidence; no manufactured absence or manual settlement. One line to Psyche when the exact revision is live, and a separate line/report when BOTH live witness proofs are established; copy Core. No Zeus adoption is included.
+
+## Recovery boundary
+
+The old/new Memory schema and wire remain unchanged. Keep the pre-transition accepted consumer identity and the current Memory AS IS as recovery inputs. A failed activation can be partial: Field reports Lojix and live profile/unit state separately before any further action. Coherent recovery to the previously accepted executable is a NEW approved Lojix deployment using CURRENT Memory, never restoration of old ledger bytes or resetting production configuration. Preserve source main2722 declarations and current configured rows; automatic replay remains absent. Exact recovery candidate/permission is confirmed with Core/Psyche before a retry/switch, not inferred from this proof plan.
