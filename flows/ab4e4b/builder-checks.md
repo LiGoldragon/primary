@@ -4,7 +4,7 @@
 
 The builder checks structural source grammar, authenticated module context, selected Ethos, required Mermaid assets and two specific properties of its emitted HTML. It does **not** establish that a layout was ruled on, that every source passage survived publication, or that the final published version matches the inspected local HTML. Browser/test checks are separate procedures, not automatically invoked by the publication command.
 
-This inventory describes makeshift-tools **main 34fa78b88d1350328d9eadf1885da5e3987c8451**, after the first 6l4f fix. The rejected card branch is not part of it. The remaining code/list/table inline-replacement work is explicitly a follow-up, as Opus ovey allows.
+This inventory describes makeshift-tools **main 69e7ab897f6b461cc106eb607ca46797f6f05a74**, including the separate prose/description fix and its code/list/table follow-up. The rejected card branch is not part of it.
 
 ## Books published today that print a replaced passage twice
 
@@ -53,9 +53,9 @@ Container closure additionally generates `unclosed-comment-container`, `unclosed
 `check-built-page`, called by `build` before output is written, currently checks:
 
 1. Page chrome (`meta`, `title`, `h1.book-title`) is not emitted inside an authenticated module article. It names the offending element.
-2. Adjacent rendered `.del` and `.add` blocks that repeat a majority of the shorter passage's words are refused as **`replaced-line-printed-twice`**, naming both complete passages and their line. Balanced nested divs are included. This catches the former two-description-block output. It is a targeted generated-HTML check, not a general DOM validator or a detection of arbitrary semantic repetition. Rendered code-line/table-row shapes remain a follow-up scope.
+2. Adjacent rendered `.del` and `.add` blocks that repeat a majority of the shorter passage's words are refused as **`replaced-line-printed-twice`**, naming both complete passages and their line. Balanced nested divs are included. This catches the former two-description-block output. It is a targeted generated-HTML check, not a general DOM validator or a detection of arbitrary semantic repetition. The follow-up covers adjacent code-line and table-row runs too, comparing each complete run rather than only its boundary lines.
 
-The ordinary word-diff renderer now prints prose/headings and replaced descriptions once, including unrelated old/new descriptions with no shared words. Removed tokens are struck through and additions marked inline, under the normal change margin. There is no low-overlap fallback.
+The word-diff renderer prints prose/headings, descriptions, list items, table rows and code lines once, including replacements with no shared words. Code marks are projected onto the syntax highlights computed from the complete old and new sides; table cells and list items pair in order, with unmatched rows/items retained separately. Removed tokens are struck through and additions marked inline, under the normal change margin. There is no low-overlap fallback.
 
 ## Tests and human inspection are separate from publication checks
 
@@ -82,3 +82,7 @@ Of 98 catalog entries, 14 entries (including duplicate titles/editions) point at
 ## Questions evidence update
 
 Haiku k1r2 dates five catalog entries to November 14–15: Belief Nexus, One permaflow, two A flow is paused entries, and The minimal translator. The retained HTML files cannot be tied to those dated editions (and the paused file cannot be tied to either URL). No source/page matched pair proves a missing Questions section. The candidate table is `/tmp/claude-1001/-home-li-primary/62b108c8-fb4b-5834-9824-d755b3a250a1/scratchpad/k1r2-audit-answer.md`. A date-matched published snapshot must be obtained before asserting loss.
+
+## Follow-up verification
+
+Code/list/table change `69e7ab897f6b461cc106eb607ca46797f6f05a74` passed its committed remote gate: 7 files, 164 tests, 1,201 assertions (`followup-committed-gate.log`). Phone tests cover single code/list/table representations, syntax captures, change margins, strikes and no overflow in light/dark. Both 390px screenshots were visually inspected: `/tmp/book-ab4e4b.gqmYkw/followup-{light,dark}.png`. This is a separate landed local-main change; no push or deployment was made.
