@@ -21,3 +21,7 @@ Psyche r267 rules: Cancel withdraws only the request it names. A group cancelled
 ## Cancellation plan review
 
 Read `/tmp/send-several-implementation-44f3be.TuR4zW/cancellation-plan-348.md` whole. Approved representation: positive matching current Withdrawn state and retained exact logical/request/address evidence; commit_archive_request retains that state and the retained request. No new cancellation-cause schema is required for this evidence. Generic Archived, missing binding, missing row or other terminal state is insufficient. Bodies remain held: asked Psyche whether sleeping atomic premark (before native I/O) is the submission cutoff for ordinary uncertain cancellation. That is a policy boundary, not silently inferred from source; serial seam fixtures do not establish concurrent race/crash guarantees.
+
+## Simplified-recipient policy answer
+
+Psyche3vro: a simplified group may have at most one awaiting request (Order/Question/Task), at any position; other Living/Notice/Result/Done members are context. Its response answers that one awaiting request; with none, no request is answered. Two or more are refused atomically at admission, naming the second. Regular recipients are unchanged. VersionZero must propose bounded selector/binding/admission/fixture and contract-impact changes before bodies. Existing first-member binding does not satisfy this policy; typed second-member refusal may require an ordinary65/paired85 vocabulary amendment, coordinated with Core before generation. Current953 stays immutable; no full-feature or uptake/gate acceptance.
