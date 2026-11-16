@@ -264,3 +264,7 @@ Kept without new Stop: **24 addresses** (7 explicit protected/bookmaker, 5 too y
 - { Mind flowNexus Astra }: ReadEvents.71e1c6 returned EventsRead.{ 71e1c6 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
 - { Mind typedCall Sol }: ReadEvents.ce62d5 returned EventsRead.{ ce62d5 [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
 - { Psyche criomos Opus }: ReadEvents.40fefd returned EventsRead.{ 40fefd [] }. Transcript mtime UNKNOWN, therefore KEEP. No filename or age was guessed.
+
+#### Survey current-read clarification
+
+The retained ammo-pass process metadata proves survey native UUID `01a1e0eb-1016-75f1-b4e9-ebed94525488` used the candidate Codex home. However its previously readable exact file `/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/15/rollout-2026-11-15T14-34-23-01a1e0eb-1016-75f1-b4e9-ebed94525488.jsonl` is now absent. A filename search for that exact UUID under that home's sessions returns no file. Cause unknown; no transcript or browser state was moved/deleted by this actor. Consequently the current decision is **KEEP: exact transcript stat unavailable and current work identity unknown**, not a fresh younger-than-three-hours finding. Final kept breakdown remains **7 protected/bookmaker, 5 too young, 12 exact transcript-read/mapping gaps**. This clarifies the overstrong survey age claim in the gdlg result message; the manifest's earlier survey gap and kept decision were correct. Counts and actual Stop receipts are unchanged.
