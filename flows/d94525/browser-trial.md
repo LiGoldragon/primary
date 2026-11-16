@@ -61,3 +61,36 @@ Source was inspected in both installed copies, without opening Chrome:
 * Revocation/lifetime: the source closes the debugger connection on relay close and removes listeners; 0.5.0 ungroups its controlled tabs. The connect page's warning says token-approved connections may reconnect without the dialog until token regeneration plus browser restart. For no-token interactive approval, the source provides no persistent approval record: each new CLI relay opens the consent page and requires selection. The extension's own action/status UI can disconnect active connections. `playwright-cli detach` tears down the relay while leaving Chrome running; it does not revoke the extension installation or alter account sessions.
 
 These are source observations for the installed versions. They do not establish which profile owns the desired account tab until the living sees the consent page's tab list.
+
+## CLI output and bounded billing extraction
+
+The installed CLI documentation says it provides a page snapshot after each command. `outputMode: "stdout"` (the default) emits that content to stdout; `outputMode: "file"` writes snapshots/logs under the configured output directory. There is no documented config field that disables automatic snapshots. The global `--raw` option is the relevant containment control: the installed skill documentation says it strips page status, generated code, and snapshot sections, returning only the command result. `eval --help` confirms `--filename` would persist a result, so do not use `--filename`.
+
+Avoid `snapshot`, `tab-list`, or broad `eval(() => document.body.innerText)` commands. For the already-selected Billing tab, use `--raw` and return only rows matching the three requested fields, keeping the result in the shell pipe rather than writing a page dump:
+
+```sh
+playwright-cli --raw -s=d94525-billing eval \
+  '() => { const rows = [...document.querySelectorAll("tr")].map(r => r.innerText.replace(/\\s+/g, " ").trim()).filter(Boolean); return rows.filter(r => /balance|remaining|credit|expir|valid until|renew/i.test(r)).slice(0, 8); }'
+```
+
+If the page is not table-based, use the same `--raw` envelope with a bounded line selector, never full body text:
+
+```sh
+playwright-cli --raw -s=d94525-billing eval \
+  '() => { const lines = document.body.innerText.split(/\\n+/).map(x => x.trim()).filter(Boolean); return lines.filter(x => /balance|remaining|credit|expir|valid until|renew/i.test(x)).slice(0, 8); }'
+```
+
+The output is still account data and must stay in the private scratch channel; report only balance, expiry including timezone, and credit type. `goto` also normally emits a snapshot, so if navigation is required use `playwright-cli --raw -s=d94525-billing goto <known-billing-url>` and discard its empty/result output before the bounded `eval`. Do not use `--json` as a substitute for `--raw`, and do not retain output files containing page text.
+
+## Saved-token attach wait and snapshot artifact risk
+
+Source inspection shows extension attach creates a `ManualPromise` for the extension connection and `establishExtensionConnection()` awaits it without a visible timeout wrapper. If Chrome opens the connect page in a profile whose extension token does not match the saved token, the extension UI takes the invalid-token branch and the CLI can wait indefinitely for the relay handshake; the source provides no attach timeout or automatic fallback. The same symptom can occur if the connect page is opened in another Chrome profile/window or never reaches the extension relay.
+
+Bounded cancellation should be applied by the owner before launch, for example an outer `timeout --signal=INT --kill-after=5s 60s ... playwright-chrome ... attach --extension=chrome`, with stdout/stderr discarded to a private scratch path. Do not kill the user's Chrome process; cancel only the CLI wrapper/session process. The owner currently owns the running process.
+
+Observed in the first token-free attach: an automatic `page-*.yml` snapshot artifact was created even though the configured output mode was `stdout`; it was deleted without being read. Therefore `outputMode=stdout` is not sufficient evidence that page snapshots are never written. The installed CLI documentation says snapshots follow each command, while `--raw` strips snapshot sections from command output; it does not guarantee that internal snapshot artifact files are not created. Keep the CLI working directory and output directory in an isolated scratch directory, inspect no generated page files, and delete them after detach. `--raw eval` remains the narrowest result channel for the requested credit rows.
+
+## Main-flow execution and revised ruling
+The living's yes arrived via Opus reb3. Later Opus72y7 explicitly authorized the saved-token wrapper as it stands, accepting transient local Chrome URL argv and deferring stronger hiding. No further Allow click may be requested. The token was never printed or manually read by a model.
+Token-free attachment exited0 but its sole controlled page was extension connect.html, not Billing; detached. Saved-token attachment did not complete its handshake; stopped only trial CLI/relay, leaving Chrome running. Two further60-second forced-profile trials, Default0.5.0 and Profile1 0.2.1, each exited124. Protocol versions match2 and extension disable_reasons metadata are empty. These observations do not establish the token is invalid or identify the cause. No account page or credit rows have been read.
+Output correction: coreBundle.js around58760 has rawSections=[Error,Result,Snapshot], so raw is not a blanket snapshot suppressor. Around65300 CLI configuration explicitly overrides snapshotMode to full. One automatically generated page-*.yml from the token-free attach was deleted unread; no raw artifact was inspected. Filtered eval calls generated no further snapshot file. Main asked Mind core Sol for the existing pairing/working-session holder, not a duplicate producer or fresh human approval.
