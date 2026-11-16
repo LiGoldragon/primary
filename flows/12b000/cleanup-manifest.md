@@ -77,3 +77,9 @@ A title mismatch is not proof of being unheld. Flow ownership, native session, r
 No context was awakened. No pane text, transcript contents, browser/account/token state, process signals, unlock/rebind, server/unit changes, deletion or lifecycle mutation was used. Four-hour safety and preserved protected roles remain in force.
 
 Current proposed closed: 0. Kept: 39 Flow addresses and all 29 Herdr panes (overlapping inventories; not additive). Immediate pre-close revalidation is inapplicable until a nonempty proven-cold set exists.
+
+## Execution receipt
+
+The proposed-close set remained empty at disposition. Closed **0**; kept **39 Flow Nexus addresses and all 29 Herdr panes**, including 18 detected-agent panes mapped by address/title and 11 others whose held/native ownership remains unproved. These inventories overlap and are not added together. No Stop or pane-close receipt exists because no lifecycle mutation was attempted. All browser/server/unit state was preserved.
+
+Residual uncertainty: owner-verified Flow Stop contract and authoritative open-request/continuity/last-touch metadata had not been received when this report was completed. Public inspected metadata cannot prove any entry satisfies the four-hour cold predicate. Consequently each unknown is explicitly KEEP, as ordered; process-idle or an old-looking title was never substituted for that evidence. A later evidence-bearing instruction can narrow the kept set without guessing identities or reviving old contexts.
