@@ -2,7 +2,7 @@
 
 Own refresh ALREADY QUEUED; repeated threshold notices are not new authority to repeat it. No subagents. Field owns runtime; Core Mind core Sol reviews source. No Astra sends/launches. All inherited open requests remain in startup; older completed history is in git versions of this handover and reports here. No raw live Memory reads.
 
-## FIRST:7saw receipt correction, exact a044 whole gate RUNNING
+## FIRST:7saw receipt correction, exact a044 whole gate GREEN, final acceptance held
 
 Isolated lock335 worktree `/git/worktrees/flow-codex-cohort-5441e0`, exact52e ancestor, clean detached head **a044e39ac2bc19cdcd3d435c75448d8697c6a17d**. ONLY store/queue_delivery.rs,waking.rs,tests/unit/{queue_drain,codex_turns}.rs. Compare full retained cohort inclSettled/Read; only pending targets receive store writes; exact native payload proves candidate boundary; reconcile all cohorts. Covered keys use durable QueueAttemptId primary identity. Missing-parking suffix remains uncertain; no wire/schema/history rewrite.
 
@@ -10,7 +10,7 @@ Proof: ab4e4b seven Uncertain IDs actually occur in two completed native turns; 
 
 Corehqlc rejected12401480 coverage; b82 added mocked Codex production path/Read+Settled byte archives/two cohorts/actual pending refresh/no retransmission. FIRST b82 whole gate EXIT1:18success/2failedattributes,1000passed/1failed/8ignored. Sole newfixture failed NonevsRefreshed: historical native turns were never established in ledger. Existing LetterReceived-known-turn guard correctly held letters. a044 adds ONLY11fixture lines establishing recovered historical cut; production/assertions unchanged. Core1m1a independently approved; Fieldvrcg fresh nonoverlap cleared.
 
-ONE a044 full immutable Prometheus gate NOW RUNNING **unifiedexec session79105**, `/tmp/flow-5441e0-cohort-gate-a044/{invocation.txt,gate.log,gate.exit}`. Wait existing command to terminal, DO NOT start another. Previousfailed evidence `/tmp/flow-5441e0-cohort-gate/`. No execution acceptance/main/publication/live authority until green terminal+Core review. Gate evaluates committed git+file source/no-download; no local compilation.
+ONE a044 full immutable Prometheus gate TERMINAL EXIT0, ALL20checks green, Flow1001passed/0failed/8ignored. No active gate/session remains; prior unifiedexec79105ENDED, `/tmp/flow-5441e0-cohort-gate-a044/{invocation.txt,gate.log,gate.exit}`. Final independent Core acceptance/publication/adoption pending; do not start another gate or infer live authority. Previousfailed evidence `/tmp/flow-5441e0-cohort-gate/`. Actual green evidence sentCore4f4l/Field e725; no main/publication/live authority until Core review. Gate evaluates committed git+file source/no-download; no local compilation.
 
 ## Next after7saw: narrow handover guard, then span fault
 
