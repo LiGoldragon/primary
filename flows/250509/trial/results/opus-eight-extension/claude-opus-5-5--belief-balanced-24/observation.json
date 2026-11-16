@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 6596,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-2e48060e01fb424eb7e31489400b4bae",
+    "ledger": {
+      "committed_usd": "7.798714355",
+      "job": "raw-general-082e0f-2e48060e01fb424eb7e31489400b4bae",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "abc09cfd382b1b14fb469c7da5902032ddd42b25de431b0ca264d985ad91748d",
+      "reservation_sha256": "355841a6821a45e15a874e782db4a6dc5a2565ea57b451a2ebdf8d5449310bf8",
+      "reservation_usd": "0.195824",
+      "retained_usd": "0.076848",
+      "unreserved_usd": "29.201285645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Elsewhere\",\"module\":\"vision:belief-modules:0\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.076848",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 43836,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 42662,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-2e48060e01fb424eb7e31489400b4bae",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "abc09cfd382b1b14fb469c7da5902032ddd42b25de431b0ca264d985ad91748d",
+      "retained_bound_usd": "0.076848",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18137,
+        "output_tokens": 215
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:belief-modules:0",
+        "wording": null
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 7884,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ca49700141e647ff84f239a9249f464f",
+    "ledger": {
+      "committed_usd": "7.721866355",
+      "job": "raw-general-082e0f-ca49700141e647ff84f239a9249f464f",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "0daf3b1f7aedbcc3f7315c4c4e254c602fcc1063ffa218ddeffc276009555f49",
+      "reservation_sha256": "e7c2e8945059febde60b1ac4fd4a75fa0c486edfb20c882a0536f0f643808771",
+      "reservation_usd": "0.129688",
+      "retained_usd": "0.056592",
+      "unreserved_usd": "29.278133645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Collides\",\"line\":\"vision:herdr-nexus-v1:L8\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.056592",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 27302,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 26128,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-ca49700141e647ff84f239a9249f464f",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "0daf3b1f7aedbcc3f7315c4c4e254c602fcc1063ffa218ddeffc276009555f49",
+      "retained_bound_usd": "0.056592",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 12338,
+        "output_tokens": 362
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Collides",
+        "line": "vision:herdr-nexus-v1:L8",
+        "wording": null
+      }
+    }
+  }
+}

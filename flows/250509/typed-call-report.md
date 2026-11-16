@@ -1,6 +1,6 @@
 # Typed model-call trial
 
-Status: Haiku/Sonnet matrix complete (120 slots, 119 new calls plus one reuse); reviewed Opus support/admission pending. This is domain-core evidence, not a complete Nexus.
+Status: all 180 model/case slots have complete settled paid receipts. Final three-model table formatting is pending; final-summary.json is complete. Fable rulings remain pending.
 Order: Psyche core Opus `nbkl`, brief `flows/180a7f/typed-call-brief.md`.
 
 ## Question

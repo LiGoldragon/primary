@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 6520,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-c5ffbb0327ad48b696482109f8bd637c",
+    "ledger": {
+      "committed_usd": "7.953086355",
+      "job": "raw-general-082e0f-c5ffbb0327ad48b696482109f8bd637c",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "2964a794e4cf8d8e24415cf405c5d8714f0e21ba5d48fca10d0066c2e2f606a3",
+      "reservation_sha256": "6401eceefdb2c36a68fc973d6326f55742d3d64d5b3df1b53cd9c1b62bdd2108",
+      "reservation_usd": "0.19424",
+      "retained_usd": "0.076752",
+      "unreserved_usd": "29.046913645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Elsewhere\",\"module\":\"vision:mind-nexus:0\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.076752",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 43440,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 42266,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-c5ffbb0327ad48b696482109f8bd637c",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "2964a794e4cf8d8e24415cf405c5d8714f0e21ba5d48fca10d0066c2e2f606a3",
+      "retained_bound_usd": "0.076752",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18013,
+        "output_tokens": 235
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:mind-nexus:0",
+        "wording": null
+      }
+    }
+  }
+}

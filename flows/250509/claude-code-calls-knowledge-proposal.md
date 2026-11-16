@@ -2,7 +2,7 @@
 
 Proposed new module: `knowledge:claude-code-calls:0` in Mind belief.
 Status: proposal, not landed. Measurements below are preliminary; the comparison
-Opus extension and Fable's rulings remain pending.
+final three-model table formatting and Fable's rulings remain pending. The eight-prompt Opus extension has completed; final-summary.json holds all 180 results.
 
 ## Proposed module
 

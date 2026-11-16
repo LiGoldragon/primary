@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-opus-5-5--belief-balanced-29",
+    "model": "claude-opus-5-5",
+    "case": "belief-balanced-29",
+    "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.txt",
+    "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

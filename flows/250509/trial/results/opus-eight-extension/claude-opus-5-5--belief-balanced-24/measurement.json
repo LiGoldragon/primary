@@ -1,0 +1,30 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-24",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-24",
+  "reused": false,
+  "prompt_sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da",
+  "job": "raw-general-082e0f-2e48060e01fb424eb7e31489400b4bae",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-2e48060e01fb424eb7e31489400b4bae",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 18137,
+    "output_tokens": 215
+  },
+  "raw_estimated_cost_usd": "0.076848",
+  "retained_usd": "0.076848",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 6596,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:belief-modules:0",
+        "wording": null
+      }
+    }
+  }
+}

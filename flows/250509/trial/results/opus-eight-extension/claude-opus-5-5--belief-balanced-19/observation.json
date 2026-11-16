@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 6180,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-2ba230d187994285b8067acde531b55e",
+    "ledger": {
+      "committed_usd": "7.585090355",
+      "job": "raw-general-082e0f-2ba230d187994285b8067acde531b55e",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "c31e22d3a630ec3f67876308eb699acca7d4f61c8e641773b9fe90a8ea8e4199",
+      "reservation_sha256": "707e9a52f71fa54717145020eb95cd437a3945db61c84444693bd5cebbe37b49",
+      "reservation_usd": "0.192752",
+      "retained_usd": "0.074492",
+      "unreserved_usd": "29.414909645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Collides\",\"line\":\"vision:flow-nexus:0:L80\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.074492",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 43068,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 41894,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-2ba230d187994285b8067acde531b55e",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "c31e22d3a630ec3f67876308eb699acca7d4f61c8e641773b9fe90a8ea8e4199",
+      "retained_bound_usd": "0.074492",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 17828,
+        "output_tokens": 159
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Collides",
+        "line": "vision:flow-nexus:0:L80",
+        "wording": null
+      }
+    }
+  }
+}

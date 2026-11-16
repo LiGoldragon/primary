@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 8027,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1cef841b3f3b424899a2e7c8e9d24b34",
+    "ledger": {
+      "committed_usd": "7.665274355",
+      "job": "raw-general-082e0f-1cef841b3f3b424899a2e7c8e9d24b34",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "0dda027c8d8a098d87e1760934b83eeb270c48e9d27d3f3ea57333789b8df4ae",
+      "reservation_sha256": "0bd1aec4dab1c14330c736be649fcc4556410a67b533fbb1ee90e4ba4a2f6865",
+      "reservation_usd": "0.185832",
+      "retained_usd": "0.080184",
+      "unreserved_usd": "29.334725645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Collides\",\"line\":\"vision:flow-nexus-v1:L19\",\"wording\":\"The submitted line defines an ephemeral flow as continuous and taking many jobs. L19 says an ephemeral flow is a single flow with a single job and no continuity.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.080184",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 41338,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 40164,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-1cef841b3f3b424899a2e7c8e9d24b34",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "0dda027c8d8a098d87e1760934b83eeb270c48e9d27d3f3ea57333789b8df4ae",
+      "retained_bound_usd": "0.080184",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18311,
+        "output_tokens": 347
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Collides",
+        "line": "vision:flow-nexus-v1:L19",
+        "wording": "The submitted line defines an ephemeral flow as continuous and taking many jobs. L19 says an ephemeral flow is a single flow with a single job and no continuity."
+      }
+    }
+  }
+}
