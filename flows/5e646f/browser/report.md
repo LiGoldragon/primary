@@ -45,3 +45,27 @@ Promotional balance: US$393.54. Purchased credit balance: US$0.00. The navigatio
 Wrapper: `/home/li/.nix-profile/bin/playwright-chrome`. Delegated installed CLI: `/nix/store/29jvfww5dd4682wvqliqdrrdaqzibir4-playwright-cli-0.1.13/bin/playwright-cli`. Ordinary installed wrapper source was inspected. The supported token consumer is its environment variable `PLAYWRIGHT_MCP_EXTENSION_TOKEN`; no token argument is supplied by the flow. No new helper, bridge installation, Allow click, or sign-in was needed. Existing extension inventory and implementation caveats: `flows/d94525/browser-trial.md`.
 
 Scratch configuration used `outputDir`, `outputMode: "stdout"`, and `codegen: "none"`; commands ran from a private temporary directory. `--raw` is an output formatter, not a guarantee against snapshot files. Reuse one named session for attach, goto, eval, tab-close, and detach; close only its controlled trial tab, leaving external Chrome running. This report records one successful invocation, not the cause of previous handshake failures.
+
+## Second trial — OpenAI API credit grants
+
+Authorization: Psyche core Opus oerw/ar62. Observed 16 November 2026, approximately 17:44–17:47 UTC. The instruction corrections were first folded into `instructions.md`, including display inheritance, exact attach syntax, structural/positional field selection, second page, and cleanup (commit f602cdd0a).
+
+**Requested balance:** US$183.88 remaining, calculated from the two available grant balances (US$120.00 + US$63.88). Independently, the summary tooltip explicitly said US$156.12 used of US$340.00 total granted, giving the same US$183.88 remaining. The displayed summary fraction is used/total, not remaining/total.
+
+| Grant amount | Remaining | Expiry shown | Credit type |
+| --- | --- | --- | --- |
+| US$120.00 | US$120.00 | 3 December 2026; time and timezone not displayed | API credit grant; subtype not displayed |
+| US$100.00 | US$63.88 | 31 March 2027; time and timezone not displayed | API credit grant; subtype not displayed |
+| US$10.00 | US$0.00 | Not displayed (`-`); inactive | API credit grant; subtype not displayed |
+| US$100.00 | US$0.00 | Not displayed (`-`); inactive | API credit grant; subtype not displayed |
+| US$10.00 | US$0.00 | Not displayed (`-`); inactive | API credit grant; subtype not displayed |
+
+The table exposes received date, state, balance and expires columns, not a type column. Available/inactive are states, not credit types. No expiry cell supplied title, datetime or accessible-label metadata containing a time zone. Time, timezone and grant subtype remain **unknown**, rather than inferred from the Anthropic page or local timezone.
+
+### Step outcomes
+
+1. **Done:** reused the external Chrome already running from the earlier trial; no profile copy, new browser launch or profile-selection flag.
+2. **Done:** a new private temporary CLI working/output directory and explicit named session were used. The saved token went directly from the authorized gopass entry to the wrapper environment; no value was printed or logged.
+3. **Done:** `playwright-chrome --raw -s=openai-12b000 attach --extension=chrome --config=<scratch>/config.json` attached in under one second. The initial controlled page was Welcome. Navigated that same trial tab to `https://platform.openai.com/settings/organization/billing/credit-grants`; navigation returned exit 0. No additional trial tab, Allow click, sign-in, organization switch or site change.
+4. **Done, with explicit gaps above:** initial navigation completed before the client-rendered table appeared, so the first structural read returned no headings or tables. A subsequent read found one native table. Read its header/cell structure and four column positions, rather than matching translated credit labels. Extracted all five grants. Read-only inspection of expiry-cell metadata found no hidden timestamp/timezone. Hovering the summary amount revealed the used/total tooltip, resolving its meaning without changing account state. No table row exposed a type field or details control. **Instruction improvement:** wait for the credit table's visible DOM event before extraction; inspect the summary tooltip before interpreting a fraction. An absent type/timezone is a reportable gap, not permission to invent one.
+5. **Done:** same-session `tab-close` and `detach` both returned exit 0. Generated scratch files were deleted unread. External Chrome remains running. No site mutation or sign-in was performed.
