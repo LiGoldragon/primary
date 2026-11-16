@@ -1,0 +1,11 @@
+# Old a044 daemon Stop source audit
+
+Revision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d, the actual pre-adoption binary source. `main.rs`, `lib.rs`, `reaping.rs` and `handover_observation.rs` have zero diff from that revision in the examined guard worktree. No new-source behavior is substituted for this old path.
+
+`src/main.rs:90-91` blocks termination signals before threads start. The watcher at186-190 calls `nexus.stop(&sockets)` on the termination event. `lib.rs:2341-2370` requests stop, fails retirement-observation queues, announces changes and connects sockets to wake accept loops. It does not dispatch Refresh/Replace/Restart, create a successor, call native close/resume or record a flow Stopped. `handover_observation.rs:135-143` fail_all merely fails subscription queues. `main.rs:156-203` joins scoped workers and drops the Nexus; no replacement call is in the shutdown tail.
+
+The reaping supervisor checks stop before its next pass (`reaping.rs:1260-1273`); its stop_all (`1245-1255`) cancels pane observations with NexusStopped and joins them, rather than requesting a replacement. The actual service has no ExecStop/ExecStopPost and kills only its own cgroup; Field `flows/ad72ed/guard86s0-prereq.md` places Fable645002 outside that group.
+
+**Conclusion:** the old daemon Stop action itself starts no replacement and requests no native harness termination. This is distinct from a claim that Stop atomically cancels every already-admitted lifecycle operation. Accepted connections are joined (`lib.rs:2268-2274`), and a lifecycle effect already executing before stop is not proven harmless merely by reading StopsNexus. The existing snapshot does not reveal whether one exists. No raw Memory read, native inspection or mutation was used. The new binary must hold protected recovery effects under20nx; the old shutdown finding must retain this in-flight limitation rather than asserting global quiescence from a stop flag.
+
+Execution status: source audit only, no old/new Stop fixture has run here. Include a mocked actual StopsNexus path fixture asserting no native close/start/resume and unchanged flow identity/obligations; it must distinguish pre-existing work from effects caused by Stop.
