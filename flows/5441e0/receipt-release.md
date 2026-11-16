@@ -21,3 +21,7 @@ Field is sole runtime actor. Revalidate actual parent at use; current Memory AS 
 ## Evidence
 
 `/tmp/flow-5441e0-cohort-gate-a044/` source gate/push/postread; gate log SHA e7b62deee1b4a44a1eea802ade5abf6fd1d47123b55d31eb5d2b2c1a73c0b366. `/tmp/flow-5441e0-release/`: remote producer metadata, home/consumer exact revisions/diffs/lock audits/push postreads; `home-gate/terminal.json` enumerates98 checks. No build/generation process remains active.
+
+## Field Evaluate / activation handoff event
+
+Fieldgw0m reports exact consumer667 Evaluate **635 Succeeded** and direct typed Psychetxz0 authority for the sole Ouranos Realize/Activate exception. Existing Field runtimeworker owns the entire operation; no duplicate Evaluate/Realize/activation by this flow. Actual activation/serving evidence is still pending. Mind flowNexus retains domain evidence review for existing ab4e4b and082e0f once each after the actual active event, using Field's retained pre-transition handover/queue/native-count baseline. No forced refresh, resubmission or extra witness.
