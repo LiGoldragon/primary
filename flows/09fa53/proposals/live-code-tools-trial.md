@@ -12,6 +12,10 @@ Status: l0mm remains open. **Superseded by Opus 4hk2:** drop the filesystem A/B,
 
 The rest of this file records the original broader proposal for traceability.
 
+### Version-specific preflight finding
+
+The published [lspmux 0.3.0 package README](https://docs.rs/crate/lspmux/0.3.0) is reachable even though Codeberg is not. It documents workspace/environment-based instance sharing, a Unix socket option and explicit `--server-path`, but its command list includes `reload` and omits the survey's `sync`. Therefore `sync` is not yet a verified available operation for the selected artifact. Check actual version/help/source during authorized provisioning; freshness must be demonstrated with that artifact rather than assumed from the survey. The README also says server-originated requests are dropped. Supply initialization settings explicitly and test readiness, request handling and shared-process identity before any model trial. Its internal timed garbage collection is an existing-tool behavior, not a proposed new polling mechanism.
+
 ## Corpus decision
 
 Read the remote-server survey in `flows/72fb9a/research/semantic-code-survey.md` before this design. Read the raw instruction in `vision-raw/why-is-rust-analyzer-running.md`: rust-analyzer must not start automatically. Only manually started Prometheus processes are proposed.
