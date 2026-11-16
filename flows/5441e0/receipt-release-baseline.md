@@ -1,0 +1,9 @@
+# Receipt release: pre-activation witness baseline
+
+Field request 8x8n; sole runtime actor remains Field. Captured supported Current, Inspect and ReadQueueDeliveries for Mind herdrNexus Sol and Mind research Sol at 2026-11-16 01:43:05 UTC. Packet: `/tmp/flow-5441e0-release/live-baseline/`; `baseline.json` records actual handover existence, hashes, modification times and native bindings. Both handovers exist. Current bindings remain ab4e4b / 01a1e0f7-c34a-77f1-bf22-c73ab4e4b921 and 082e0f / 01a1e0ea-6e0b-75d0-a98e-0ee082e0f13a.
+
+At 01:46:21 UTC the already verified read-only native protocol (thread/read and thread/turns/list only) returned all 18 / 24 turns, without errors or remaining pages. Metadata, user-text hashes and request-marker matches are retained in each witness subdirectory; no unrelated raw prompt text is saved. Native status reads idle / active respectively; these are not observations of Flow rest or its internal letter ledger.
+
+Current-thread attempt projections contain 38 / 27 Uncertain rows. All original seven herdr witness IDs wtdi, tq5c, od5g, zl75, qvhm, 35qa, yin7 have one native request marker apiece. All 27 current research IDs have one apiece. Other herdr IDs vcxy and cupa already have two markers before adoption: no claim that every historical request appeared once is warranted. Counts are exact textual request-marker matches, not semantic proof that every match was an independently delivered envelope. Retained full turn hashes bind later comparisons.
+
+Inspect exposes empty visible queue vectors. ReadQueueDeliveries projects delivery attempts, not a supported unsent-held queue or live letter-ledger dump. Those limits remain explicit; neither historical totals nor native status substitute for pending-work evidence. No new request, native turn, Refresh, restart, provider call or state mutation was performed. Field received packet notices 3dff and p6zx. Await Field actual active event before post-adoption observations.
