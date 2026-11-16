@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-15",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-15",
+  "reused": false,
+  "prompt_sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b",
+  "job": "raw-general-082e0f-6b7e6d3273de4949bb9003345e1d5ce0",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-6b7e6d3273de4949bb9003345e1d5ce0",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 964,
+    "output_tokens": 158
+  },
+  "raw_estimated_cost_usd": "0.003508",
+  "retained_usd": "0.003508",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4098,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status/handover notice about Field66f659 refreshing, not a fresh actionable request. Recipient state (hot/asleep/fresh context) is unknown, and pending work already covers the read-only battery lanes under a wider pause. Starting a fresh flow would add no value and risk disturbing those preserved gates, so it should stay queued for the heartbeat recipient."
+      }
+    }
+  }
+}

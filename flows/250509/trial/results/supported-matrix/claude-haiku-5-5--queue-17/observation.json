@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 2897,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f99a2c6e5ff74f548bcfc69ea7592058",
+    "ledger": {
+      "committed_usd": "6.138760480",
+      "job": "raw-general-082e0f-f99a2c6e5ff74f548bcfc69ea7592058",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "b7040da70cf64d17532f22bd50c1480d54179537a7eaf021c1e27edb2ac42833",
+      "reservation_sha256": "07d68d6b580acf156d9ea7aaca460315d06871141ba230a035f35ad92620efca",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.000923125",
+      "unreserved_usd": "30.861239520"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The recipient's state is unknown (hot, asleep, or fresh-context start cannot be determined), and the message is a source-review-only request that explicitly withholds new live-readiness or arm authority and states that no authority carries over automatically; the root is to issue a separate bounded order after review. Nothing in the message requires an immediate fresh start, so the message should stay queued until the recipient is able to take it up.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0001641",
+      "http_status": 200,
+      "job": "raw-general-082e0f-f99a2c6e5ff74f548bcfc69ea7592058",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "b7040da70cf64d17532f22bd50c1480d54179537a7eaf021c1e27edb2ac42833",
+      "retained_bound_usd": "0.000923125",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 821,
+        "output_tokens": 164
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown (hot, asleep, or fresh-context start cannot be determined), and the message is a source-review-only request that explicitly withholds new live-readiness or arm authority and states that no authority carries over automatically; the root is to issue a separate bounded order after review. Nothing in the message requires an immediate fresh start, so the message should stay queued until the recipient is able to take it up."
+      }
+    }
+  }
+}

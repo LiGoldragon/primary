@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-05",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-05",
+  "reused": false,
+  "prompt_sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611",
+  "job": "raw-general-082e0f-b72ced4dbdab4eeb8dbeb92e66eae462",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b72ced4dbdab4eeb8dbeb92e66eae462",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 894,
+    "output_tokens": 162
+  },
+  "raw_estimated_cost_usd": "0.003408",
+  "retained_usd": "0.003408",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3702,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message reports an investigation that pending work shows is already complete, with findings delivered to field-data.md, so it adds no new work. A follow-up event-driven worker is still waiting on a genuine Lock/IdleHint event, and the wider pause holds, so starting a fresh flow would be redundant. The recipient's hot or asleep state is unknown, but nothing here requires fresh-context action."
+      }
+    }
+  }
+}

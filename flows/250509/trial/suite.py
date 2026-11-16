@@ -48,6 +48,17 @@ def verify(config):
     return counts
 
 
+def admission_counts(config, slot):
+    policy = config.get("input_admission", {}).get(slot["model"])
+    if policy is None:
+        return None
+    counts = {"prompt_utf8_bytes": len(Path(slot["prompt_file"]).read_bytes()),
+              "system_utf8_bytes": policy["system_utf8_bytes"],
+              "framing_allowance": policy["framing_allowance"]}
+    counts["conservative_local_total"] = sum(counts.values())
+    return counts
+
+
 def observe(config, slot):
     if slot.get("reuse"):
         # Reuse only exact prior question/model/prompt bytes, not a similar case.
@@ -89,6 +100,16 @@ def run(config):
             verify(config)
             directory = output / slot["identifier"]
             directory.mkdir()  # Existing slot, successful or uncertain, is never repeated.
+            counts = admission_counts(config, slot)
+            if counts is not None and counts["conservative_local_total"] > config["input_admission"][slot["model"]]["maximum_input_tokens"]:
+                # Known local ineligibility: no subprocess, reservation or provider call.
+                write_once(directory / "preflight.json", {"input_admission_counts": counts, "paid_call": False})
+                write_once(directory / "measurement.json", {"slot": slot["identifier"], "model": slot["model"], "case": slot["case"],
+                    "prompt_sha256": slot["prompt_sha256"], "outcome": {"kind": "RefusedBeforeCall", "reason": "ConservativeInputBound"},
+                    "input_admission_counts": counts, "paid_call": False, "job": None, "stop_reason": None,
+                    "raw_estimated_cost_usd": "0", "retained_usd": "0"})
+                print(json.dumps({"slot": slot["identifier"], "outcome": "RefusedBeforeCall", "paid_call": False}), flush=True)
+                continue
             if not slot.get("reuse"):
                 require(spent + Decimal(config["reservation_bounds"][slot["model"]]) <= limit,
                         "next full reservation cannot fit the remaining trial envelope")
@@ -108,6 +129,8 @@ def run(config):
                 "elapsed_milliseconds": observation["elapsed_milliseconds"], "outcome": observation["outcome"],
             })
             print(json.dumps({"slot": slot["identifier"], "outcome": observation["outcome"]["kind"], "observed_trial_retained_usd": str(spent)}), flush=True)
+            require(stop_reason in config.get("accepted_stop_reasons", ["end_turn", "refusal", "max_tokens"]),
+                    "incomplete model output; preserve this attempt and stop without retry")
 
 
 def main():

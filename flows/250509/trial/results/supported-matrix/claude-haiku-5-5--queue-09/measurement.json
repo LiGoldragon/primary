@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-09",
+  "model": "claude-haiku-5-5",
+  "case": "queue-09",
+  "reused": false,
+  "prompt_sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571",
+  "job": "raw-general-082e0f-a9d2197d631a4678a85efaca604318b6",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-a9d2197d631a4678a85efaca604318b6",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 871,
+    "output_tokens": 181
+  },
+  "raw_estimated_cost_usd": "0.0001776",
+  "retained_usd": "0.000996875",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2822,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a bounded read-only battery/notification audit whose scope and output path are narrow, but recipient state is unknown and the pending-work record shows the preceding x01q investigation and the d2is follow-ups are already owned by other workers. Starting a fresh Field heartbeat flow risks duplicating or colliding with those lanes and with the wider pause, so the message should remain queued until the recipient's state and ownership of the audit lane are confirmed."
+      }
+    }
+  }
+}

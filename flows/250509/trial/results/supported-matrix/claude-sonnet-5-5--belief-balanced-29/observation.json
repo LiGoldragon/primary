@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 3699,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-e53e3049b67c413ea2f17b34f65c333f",
+    "ledger": {
+      "committed_usd": "6.567334355",
+      "job": "raw-general-082e0f-e53e3049b67c413ea2f17b34f65c333f",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "27a210b4abe2fbc92778f7d94788c91de4d5f3b867860cca7d69cb646094a3be",
+      "reservation_sha256": "9631ef702d1e12ef3afc3ceb53f0f366d38ec9607a10923d5932fa49dab847b7",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.036562",
+      "unreserved_usd": "30.432665645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Elsewhere\",\"module\":\"vision:energy-nexus:1\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.036562",
+      "http_status": 200,
+      "job": "raw-general-082e0f-e53e3049b67c413ea2f17b34f65c333f",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "27a210b4abe2fbc92778f7d94788c91de4d5f3b867860cca7d69cb646094a3be",
+      "retained_bound_usd": "0.036562",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18031,
+        "output_tokens": 50
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:energy-nexus:1",
+        "wording": null
+      }
+    }
+  }
+}

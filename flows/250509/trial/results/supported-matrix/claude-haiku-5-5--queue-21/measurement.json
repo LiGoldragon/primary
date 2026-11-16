@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-21",
+  "model": "claude-haiku-5-5",
+  "case": "queue-21",
+  "reused": false,
+  "prompt_sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56",
+  "job": "raw-general-082e0f-d57d802914074baa9d894d57f26e528a",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d57d802914074baa9d894d57f26e528a",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1089,
+    "output_tokens": 220
+  },
+  "raw_estimated_cost_usd": "0.0002189",
+  "retained_usd": "0.001230625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3235,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The queued message is a status report on publications and pending work: Chronos is published once, Listener is unpublished, and aspect-nexuses is blocked on a source heading. It asks the recipient for concrete actions (republish the Psyche book via Haiku, rule on dc7b, and build once the heading gets a title). The recipient's current state is unknown, but the pending work is substantive and time-sensitive, and the message reads as a self-contained handoff that a fresh context can act on from its own contents, so starting a fresh flow is the better recommendation over leaving it queued indefinitely."
+      }
+    }
+  }
+}

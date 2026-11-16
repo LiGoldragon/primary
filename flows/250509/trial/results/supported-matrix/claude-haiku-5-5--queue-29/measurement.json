@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-29",
+  "model": "claude-haiku-5-5",
+  "case": "queue-29",
+  "reused": false,
+  "prompt_sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce",
+  "job": "raw-general-082e0f-f893b08d80764e01a0d1f7e14d8c4491",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f893b08d80764e01a0d1f7e14d8c4491",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 652,
+    "output_tokens": 263
+  },
+  "raw_estimated_cost_usd": "0.0001967",
+  "retained_usd": "0.001065",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3164,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The queued message is a cancellation/clarification notice, not a request to act: it cancels a proof restart and a no-new-lifecycle window, but states trials still require frozen packets, native mapping verification, and fresh Field clearance, and that source-only preparation continues. Recipient state (hot, asleep, or fresh context) is unknown but not essential to this recommendation. The pending work shows the conditional Coresiyq trial is blocked: medium effort semantics are unverified, 12 isolated native sessions have no confirmed capacity, and Field has forbidden new lifecycle/config mutations until release. Starting a fresh flow would not be justified, so the message should remain queued until those gates are cleared."
+      }
+    }
+  }
+}

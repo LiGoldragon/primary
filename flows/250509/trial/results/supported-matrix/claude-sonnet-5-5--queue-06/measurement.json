@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-06",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-06",
+  "reused": false,
+  "prompt_sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c",
+  "job": "raw-general-082e0f-9384259be9b849eba47dcb5eb030e03e",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-9384259be9b849eba47dcb5eb030e03e",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 894,
+    "output_tokens": 121
+  },
+  "raw_estimated_cost_usd": "0.002998",
+  "retained_usd": "0.002998",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4018,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a completion/closure notice that needs no new flow or action. The recipient's state is unknown, but the pending work is about closing out this investigation, so it can be absorbed into existing context. Starting a fresh flow would add no value and would risk disturbing the paused state."
+      }
+    }
+  }
+}

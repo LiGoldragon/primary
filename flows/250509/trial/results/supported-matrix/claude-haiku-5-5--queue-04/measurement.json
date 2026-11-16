@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-04",
+  "model": "claude-haiku-5-5",
+  "case": "queue-04",
+  "reused": false,
+  "prompt_sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462",
+  "job": "raw-general-082e0f-06037dbb2cd540289c197ccfd206ea6b",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-06037dbb2cd540289c197ccfd206ea6b",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 559,
+    "output_tokens": 140
+  },
+  "raw_estimated_cost_usd": "0.0001259",
+  "retained_usd": "0.000699375",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2636,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The message transfers an active browser/DevTools lane and its handoff briefs to the recipient, who is the intended owner; the recipient's hot/asleep state is unknown, but the queued message is itself the work to pick up, and pending_work is empty, so a fresh flow is warranted to act on the transfer rather than leave it queued."
+      }
+    }
+  }
+}

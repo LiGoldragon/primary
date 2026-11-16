@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-17",
+  "model": "claude-haiku-5-5",
+  "case": "queue-17",
+  "reused": false,
+  "prompt_sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221",
+  "job": "raw-general-082e0f-f99a2c6e5ff74f548bcfc69ea7592058",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f99a2c6e5ff74f548bcfc69ea7592058",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 821,
+    "output_tokens": 164
+  },
+  "raw_estimated_cost_usd": "0.0001641",
+  "retained_usd": "0.000923125",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2897,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown (hot, asleep, or fresh-context start cannot be determined), and the message is a source-review-only request that explicitly withholds new live-readiness or arm authority and states that no authority carries over automatically; the root is to issue a separate bounded order after review. Nothing in the message requires an immediate fresh start, so the message should stay queued until the recipient is able to take it up."
+      }
+    }
+  }
+}

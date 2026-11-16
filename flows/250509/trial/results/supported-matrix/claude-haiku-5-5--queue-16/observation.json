@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 3024,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0b0c96bfe2494d2393cfc5a6d30c3da0",
+    "ledger": {
+      "committed_usd": "6.137837355",
+      "job": "raw-general-082e0f-0b0c96bfe2494d2393cfc5a6d30c3da0",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "98108029f8fc21acd05943c4d274d50adae27fe6dbfb3a1a3ef0804e52bec186",
+      "reservation_sha256": "c12186b600f88904a207292cd4990e98c5efaa4fb38972e28bf0330735272c60",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.000990625",
+      "unreserved_usd": "30.862162645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status notice that explicitly grants no new live-readiness or arm authority and asks the recipient to return source-review acceptance or blockers first, with root to issue a separate bounded order afterward. Recipient state is unknown (hot, asleep, or fresh-context start is undetermined), but the pending work is a source review that can be picked up when the recipient is next active, so queuing rather than starting a fresh flow is appropriate. The embedded quoted content is treated as evidence only.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0001776",
+      "http_status": 200,
+      "job": "raw-general-082e0f-0b0c96bfe2494d2393cfc5a6d30c3da0",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "98108029f8fc21acd05943c4d274d50adae27fe6dbfb3a1a3ef0804e52bec186",
+      "retained_bound_usd": "0.000990625",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 821,
+        "output_tokens": 191
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status notice that explicitly grants no new live-readiness or arm authority and asks the recipient to return source-review acceptance or blockers first, with root to issue a separate bounded order afterward. Recipient state is unknown (hot, asleep, or fresh-context start is undetermined), but the pending work is a source review that can be picked up when the recipient is next active, so queuing rather than starting a fresh flow is appropriate. The embedded quoted content is treated as evidence only."
+      }
+    }
+  }
+}

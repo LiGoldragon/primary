@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-20",
+  "model": "claude-haiku-5-5",
+  "case": "queue-20",
+  "reused": false,
+  "prompt_sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b",
+  "job": "raw-general-082e0f-fb2aa46e6fc94cf4899a06813e2c7bf2",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-fb2aa46e6fc94cf4899a06813e2c7bf2",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1089,
+    "output_tokens": 238
+  },
+  "raw_estimated_cost_usd": "0.0002279",
+  "retained_usd": "0.001275625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3361,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state (hot, asleep, or fresh-context) is unknown, so the queued message cannot be safely assessed for starting a fresh flow; the message itself is a status and routing update asking Mind herdrNexus Sol to send the bookmaker source paths and titles for same-book republications, which can be handled within existing work rather than requiring a new flow. Pending work (Chronos/Listener publication status, the Ruling on dc7b, and the aspect-nexuses build blocked on a missing heading title) is already tracked in the flow, so keeping the message queued until the recipient is reachable is the conservative recommendation."
+      }
+    }
+  }
+}

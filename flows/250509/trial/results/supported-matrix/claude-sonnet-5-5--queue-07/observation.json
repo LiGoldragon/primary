@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 4133,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-038c16d167ca40e78c93f699515ddee3",
+    "ledger": {
+      "committed_usd": "6.628614355",
+      "job": "raw-general-082e0f-038c16d167ca40e78c93f699515ddee3",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "77fde928d35881680caaf6a02daf4a68e1208921c9a2b3adb7eb036373d21723",
+      "reservation_sha256": "897b0c9e40f4d9f596f4be94de1e9f1d3e1b4401a9c459b580e47a9cdfab85bd",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.003258",
+      "unreserved_usd": "30.371385645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message only restates the d2is authorization already in progress: step 1 is complete and the step 2 listener is waiting on a genuine Lock/IdleHint event. Two workers already hold these lanes, so a fresh flow would duplicate them. Recipient state is unknown, but the message adds no new action needing a fresh start, so it should stay queued.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.003258",
+      "http_status": 200,
+      "job": "raw-general-082e0f-038c16d167ca40e78c93f699515ddee3",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "77fde928d35881680caaf6a02daf4a68e1208921c9a2b3adb7eb036373d21723",
+      "retained_bound_usd": "0.003258",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 894,
+        "output_tokens": 147
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message only restates the d2is authorization already in progress: step 1 is complete and the step 2 listener is waiting on a genuine Lock/IdleHint event. Two workers already hold these lanes, so a fresh flow would duplicate them. Recipient state is unknown, but the message adds no new action needing a fresh start, so it should stay queued."
+      }
+    }
+  }
+}

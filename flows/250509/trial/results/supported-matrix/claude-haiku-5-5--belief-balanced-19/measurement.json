@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--belief-balanced-19",
+  "model": "claude-haiku-5-5",
+  "case": "belief-balanced-19",
+  "reused": false,
+  "prompt_sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac",
+  "job": "raw-general-082e0f-46e43f4dc0ba473b8e2e43bdaa6defc2",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-46e43f4dc0ba473b8e2e43bdaa6defc2",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 17827,
+    "output_tokens": 79
+  },
+  "raw_estimated_cost_usd": "0.0018222",
+  "retained_usd": "0.011339375",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2378,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "A flow woken for a permaflow is almost always a fresh flow; an old one is resumed only when the new input is literally the continuation of that topic."
+      }
+    }
+  }
+}

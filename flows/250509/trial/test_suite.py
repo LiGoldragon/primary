@@ -77,6 +77,20 @@ class SerialDriverTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "processor unsuccessful"):
             suite.valid_receipt({"processor_exit": 2, "receipt": None})
 
+    def test_input_bound_refuses_locally_without_subprocess(self):
+        self.config["input_admission"] = {"fixture": {"system_utf8_bytes": 2, "framing_allowance": 1, "maximum_input_tokens": 3}}
+        with patch("suite.observe") as observe:
+            suite.run(self.config)
+            observe.assert_not_called()
+        result = json.loads((self.root / "results/one/measurement.json").read_text())
+        self.assertEqual(result["outcome"]["kind"], "RefusedBeforeCall")
+        self.assertFalse(result["paid_call"])
+        self.assertIsNone(result["job"])
+
+    def test_conservative_count_is_bytes_not_observed_tokens(self):
+        self.config["input_admission"] = {"fixture": {"system_utf8_bytes": 2, "framing_allowance": 1024, "maximum_input_tokens": 20000}}
+        self.assertEqual(suite.admission_counts(self.config, self.slot)["conservative_local_total"], 1033)
+
 
 if __name__ == "__main__":
     unittest.main()

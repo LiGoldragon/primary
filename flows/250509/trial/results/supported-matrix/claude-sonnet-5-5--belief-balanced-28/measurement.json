@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-28",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-28",
+  "reused": false,
+  "prompt_sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d",
+  "job": "raw-general-082e0f-c74897bc3a8349c99f0bb1b865ba604b",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-c74897bc3a8349c99f0bb1b865ba604b",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 18012,
+    "output_tokens": 134
+  },
+  "raw_estimated_cost_usd": "0.037364",
+  "retained_usd": "0.037364",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4077,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The submitted line describes the Mind Nexus, which is not the subject of the supplied snapshot (vision:flow-nexus:0). The snapshot contains no content about issues, dependencies or version control to compare against. The one candidate module, vision:mind-nexus:0, is named but its contents are not supplied, so repetition, collision or placement cannot be judged."
+  }
+}

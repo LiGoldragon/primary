@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 2507,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-48e17c329f144345821e778d5d15802f",
+    "ledger": {
+      "committed_usd": "6.005563605",
+      "job": "raw-general-082e0f-48e17c329f144345821e778d5d15802f",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "ecdcbe93d9ebb5a229add6d10432b0d2f11bc04303a91e0dc7b57f28f959f7a8",
+      "reservation_sha256": "fb2982ace4b325fc14a6b31cff153be2d6fc2ada5d88310f5439666c02a77844",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.001396875",
+      "unreserved_usd": "30.994436395"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Repeats\",\"line\":\"vision:mind-nexus:0:L8\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0002286",
+      "http_status": 200,
+      "job": "raw-general-082e0f-48e17c329f144345821e778d5d15802f",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "ecdcbe93d9ebb5a229add6d10432b0d2f11bc04303a91e0dc7b57f28f959f7a8",
+      "retained_bound_usd": "0.001396875",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2031,
+        "output_tokens": 51
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "vision:mind-nexus:0:L8",
+        "wording": null
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 2622,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-25a180a6d8964cc38804987eb0fd712b",
+    "ledger": {
+      "committed_usd": "5.988230480",
+      "job": "raw-general-082e0f-25a180a6d8964cc38804987eb0fd712b",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "c5160831e397377b95fe636c977949c39e0872d1e4d39db0ed409e5f7f0f3634",
+      "reservation_sha256": "d36c360f2398988cbf7588dc11fe06bff7d7faaff9b65c36dc15649bc6891f2d",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.00163125",
+      "unreserved_usd": "31.011769520"
+    },
+    "result": {
+      "answer": "I cannot make an admission judgment because the evidence does not include the proposed belief line text that the case refers to. The \"submitted\" field contains a description of the judgment process itself (an agent submitting a line, then checks for repetition, wrong module, and inadequate module naming), not the belief line to be judged. Without the actual candidate line, I cannot determine whether it repeats, collides with, or belongs elsewhere than the snapshot's module.\n\n{\"kind\":\"Refused\",\"reason\":\"The supplied evidence describes the admission procedure but does not contain the proposed belief line to judge; the submitted text is a meta-description of the judgment process rather than a candidate line.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0002825",
+      "http_status": 200,
+      "job": "raw-general-082e0f-25a180a6d8964cc38804987eb0fd712b",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "c5160831e397377b95fe636c977949c39e0872d1e4d39db0ed409e5f7f0f3634",
+      "retained_bound_usd": "0.00163125",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1750,
+        "output_tokens": 215
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "answer does not match declared type"
+  }
+}

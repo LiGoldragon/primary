@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-30",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-30",
+  "reused": false,
+  "prompt_sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2",
+  "job": "raw-general-082e0f-b5394560d7c1418a8711b2ac6b926179",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b5394560d7c1418a8711b2ac6b926179",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 652,
+    "output_tokens": 193
+  },
+  "raw_estimated_cost_usd": "0.003234",
+  "retained_usd": "0.003234",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4655,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a conditional, informational trial proposal, not an actionable launch request. Medium-effort semantics are unverified, no 12-slot capacity is established, and Field currently forbids new lifecycle/config mutations. Pending work states that cancellation is not launch permission and trials still need frozen packets and fresh Field clearance. Recipient state is unknown, but starting a fresh flow now would not advance anything blocked on those gates, so it should stay queued for the recipient's existing context."
+      }
+    }
+  }
+}

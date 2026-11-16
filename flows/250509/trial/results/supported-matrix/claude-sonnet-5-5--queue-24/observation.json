@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 4765,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-3ab874bc7f214f0aaf7fac60d44c0500",
+    "ledger": {
+      "committed_usd": "6.683732355",
+      "job": "raw-general-082e0f-3ab874bc7f214f0aaf7fac60d44c0500",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "716165e06dd7f97a357341495c66deb58920462f66be51e844f26f5299e78300",
+      "reservation_sha256": "f4a12ce97039e453fb62bef0e9b3c20bec7fa58164818195f5490ef619a558c0",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.003158",
+      "unreserved_usd": "30.316267645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is an informational republication note about an artifact link/version that fits the existing pending work (bookmaker republication tracking); the recipient's state is unknown, and nothing in it demands a fresh flow, so it can wait in the queue to be folded into the current context.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.003158",
+      "http_status": 200,
+      "job": "raw-general-082e0f-3ab874bc7f214f0aaf7fac60d44c0500",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "716165e06dd7f97a357341495c66deb58920462f66be51e844f26f5299e78300",
+      "retained_bound_usd": "0.003158",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 994,
+        "output_tokens": 117
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is an informational republication note about an artifact link/version that fits the existing pending work (bookmaker republication tracking); the recipient's state is unknown, and nothing in it demands a fresh flow, so it can wait in the queue to be folded into the current context."
+      }
+    }
+  }
+}

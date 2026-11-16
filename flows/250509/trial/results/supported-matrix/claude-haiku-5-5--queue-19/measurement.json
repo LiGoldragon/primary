@@ -1,0 +1,23 @@
+{
+  "slot": "claude-haiku-5-5--queue-19",
+  "model": "claude-haiku-5-5",
+  "case": "queue-19",
+  "reused": false,
+  "prompt_sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c",
+  "job": "raw-general-082e0f-713bf924038d44fab881e9482db4d0ce",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-713bf924038d44fab881e9482db4d0ce",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 559,
+    "output_tokens": 94
+  },
+  "raw_estimated_cost_usd": "0.0001029",
+  "retained_usd": "0.000584375",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2403,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is unknown and essential to the judgment: it is unclear whether the recipient is hot, asleep, or would start with fresh context, so whether StartFresh is appropriate cannot be determined. Refusing rather than guessing."
+  }
+}

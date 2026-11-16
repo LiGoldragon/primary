@@ -1,0 +1,23 @@
+{
+  "slot": "claude-haiku-5-5--queue-25",
+  "model": "claude-haiku-5-5",
+  "case": "queue-25",
+  "reused": false,
+  "prompt_sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38",
+  "job": "raw-general-082e0f-bb463edea1854850a912d6ea7fbfb404",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-bb463edea1854850a912d6ea7fbfb404",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1042,
+    "output_tokens": 106
+  },
+  "raw_estimated_cost_usd": "0.0001572",
+  "retained_usd": "0.00091625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2612,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The recipient's state (hot, asleep, or fresh context) is unknown and essential to judging whether to start a fresh flow. The message also reports Proposal 6 blocked on a missing title, with no republication path available, so the pending work cannot be assessed against a known recipient state."
+  }
+}

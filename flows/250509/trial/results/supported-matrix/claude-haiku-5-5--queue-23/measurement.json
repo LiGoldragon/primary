@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-23",
+  "model": "claude-haiku-5-5",
+  "case": "queue-23",
+  "reused": false,
+  "prompt_sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888",
+  "job": "raw-general-082e0f-f1c4097ab53b47d59343d45235be8f31",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f1c4097ab53b47d59343d45235be8f31",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1089,
+    "output_tokens": 233
+  },
+  "raw_estimated_cost_usd": "0.0002254",
+  "retained_usd": "0.001263125",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3495,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state (hot, asleep, or fresh-context) is unknown, and the message is a status report with no request requiring immediate action from the recipient. The blocking item is a source edit that the sender explicitly says they have not made: Proposal 6's heading on line 99 of aspect-nexuses.md lacks a title, which the source owner (Fable) must supply, so no fresh flow can usefully build or publish yet. Pending work also involves Psyche book republication and a ruling on dc7b that depend on other parties, so the message should remain queued until the source is titled or the recipient is confirmed active to act on it."
+      }
+    }
+  }
+}

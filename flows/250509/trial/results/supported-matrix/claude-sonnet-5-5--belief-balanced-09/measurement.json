@@ -1,0 +1,30 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-09",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-09",
+  "reused": false,
+  "prompt_sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c",
+  "job": "raw-general-082e0f-24c6f85407f7401cb60fc6cfc94f79bd",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-24c6f85407f7401cb60fc6cfc94f79bd",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2450,
+    "output_tokens": 50
+  },
+  "raw_estimated_cost_usd": "0.0054",
+  "retained_usd": "0.0054",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2700,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "intent:belief-modules:0:L14",
+        "wording": null
+      }
+    }
+  }
+}

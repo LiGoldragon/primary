@@ -1,0 +1,30 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-21",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-21",
+  "reused": false,
+  "prompt_sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9",
+  "job": "raw-general-082e0f-e2d199cc11594a4cbd01e1e5e3628081",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-e2d199cc11594a4cbd01e1e5e3628081",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 6882,
+    "output_tokens": 48
+  },
+  "raw_estimated_cost_usd": "0.014244",
+  "retained_usd": "0.014244",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2973,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Collides",
+        "line": "vision:nexus-v1:L117",
+        "wording": null
+      }
+    }
+  }
+}

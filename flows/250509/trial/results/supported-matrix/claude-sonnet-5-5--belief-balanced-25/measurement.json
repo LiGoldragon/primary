@@ -1,0 +1,30 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-25",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-25",
+  "reused": false,
+  "prompt_sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1",
+  "job": "raw-general-082e0f-f92bf9065434402fb074957eb1daf6d8",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f92bf9065434402fb074957eb1daf6d8",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2837,
+    "output_tokens": 45
+  },
+  "raw_estimated_cost_usd": "0.006124",
+  "retained_usd": "0.006124",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2777,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:code:0",
+        "wording": null
+      }
+    }
+  }
+}

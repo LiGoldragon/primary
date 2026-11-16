@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 2396,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-82cbb3e2f26c4ee0bf5747a7ac566916",
+    "ledger": {
+      "committed_usd": "6.139329855",
+      "job": "raw-general-082e0f-82cbb3e2f26c4ee0bf5747a7ac566916",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "d62c208271e9b977caa9b2c4f6ca35072c9ecc0d33462d53390014a567b905ce",
+      "reservation_sha256": "927fbbd03b0cad27c65c0e18ea4b687c3bc1374fc9dff518782e0f4dc2b6991e",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.000569375",
+      "unreserved_usd": "30.860670145"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"Recipient state is explicitly unknown (hot, asleep, or fresh context undetermined), and that state is essential to choosing between starting a fresh flow and keeping the message queued, so no recommendation can be made without it.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0000999",
+      "http_status": 200,
+      "job": "raw-general-082e0f-82cbb3e2f26c4ee0bf5747a7ac566916",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "d62c208271e9b977caa9b2c4f6ca35072c9ecc0d33462d53390014a567b905ce",
+      "retained_bound_usd": "0.000569375",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 559,
+        "output_tokens": 88
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is explicitly unknown (hot, asleep, or fresh context undetermined), and that state is essential to choosing between starting a fresh flow and keeping the message queued, so no recommendation can be made without it."
+  }
+}

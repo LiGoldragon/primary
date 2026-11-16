@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--belief-balanced-18",
+  "model": "claude-haiku-5-5",
+  "case": "belief-balanced-18",
+  "reused": false,
+  "prompt_sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520",
+  "job": "raw-general-082e0f-8420ef518a34484abdb50dd272489ba7",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-8420ef518a34484abdb50dd272489ba7",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 6996,
+    "output_tokens": 67
+  },
+  "raw_estimated_cost_usd": "0.0007331",
+  "retained_usd": "0.00454",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2144,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "The built-in default configuration is independent of this and is what gives the socket path on which the Configure signal arrives."
+      }
+    }
+  }
+}

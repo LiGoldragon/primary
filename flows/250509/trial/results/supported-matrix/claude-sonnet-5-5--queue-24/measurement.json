@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-24",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-24",
+  "reused": false,
+  "prompt_sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef",
+  "job": "raw-general-082e0f-3ab874bc7f214f0aaf7fac60d44c0500",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-3ab874bc7f214f0aaf7fac60d44c0500",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 994,
+    "output_tokens": 117
+  },
+  "raw_estimated_cost_usd": "0.003158",
+  "retained_usd": "0.003158",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4765,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is an informational republication note about an artifact link/version that fits the existing pending work (bookmaker republication tracking); the recipient's state is unknown, and nothing in it demands a fresh flow, so it can wait in the queue to be folded into the current context."
+      }
+    }
+  }
+}

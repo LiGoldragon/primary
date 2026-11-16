@@ -1,6 +1,6 @@
 # Typed model-call trial
 
-Status: Rust domain core compiled and first paid integration completed; the admitted Haiku/Sonnet matrix is running. Opus remains unadmitted.
+Status: Haiku/Sonnet matrix complete (120 slots, 119 new calls plus one reuse); reviewed Opus support/admission pending. This is domain-core evidence, not a complete Nexus.
 Order: Psyche core Opus `nbkl`, brief `flows/180a7f/typed-call-brief.md`.
 
 ## Question
@@ -199,12 +199,75 @@ and identified this as a wrong judgment, not a transport failure.
 This establishes why shape validation and reference existence are necessary but
 insufficient. It establishes no broad model-accuracy estimate.
 
-### Suite figures
+### Supported-model suite figures
 
-Pending the bounded serial driver's exit. Calculated usage estimates and
-conservative retained charges are distinct and neither is an invoice. Latency
-covers the complete reviewed subprocess boundary, including reservation and
-settlement, rather than only the provider's inference time.
+All 120 slots have a successful settled processor receipt and native `end_turn`;
+there were no observed provider/transport failures, native refusals or truncations.
+Model refusals below mean the JSON answer said the supplied evidence was
+insufficient to judge. They are distinct from API/content-policy refusal.
+
+| Model/task | Schema decoded, including refusal | Reference/nonempty failures | Judgments | Evidence refusals | Shape failures |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Haiku / belief | 29/30 | 8 | 21 | 0 | 1 |
+| Haiku / queue | 30/30 | 0 | 23 | 7 | 0 |
+| Sonnet / belief | 28/30 | 0 | 20 | 8 | 2 |
+| Sonnet / queue | 29/30 | 0 | 29 | 0 | 1 |
+
+The decoder's `Malformed` outcome includes both shape failure and a declared
+shape whose reference/nonempty constraint fails. Those stages are separated
+here to answer how often the model's text actually decodes.
+
+| Model/task | Historical class agreement | Class + exact reference | Median boundary seconds | Maximum seconds | Mean raw estimate USD/call | Mean retained USD/call |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Haiku / belief | 12/30 | 10/30 | 2.147 | 2.715 | 0.00075201 | 0.00466331 |
+| Haiku / queue | Unlabeled | Unlabeled | 2.940 | 142.382 | 0.00017373 | 0.00097612 |
+| Sonnet / belief | 16/30 | 13/30 | 3.329 | 5.009 | 0.01515913 | 0.01515913 |
+| Sonnet / queue | Unlabeled | Unlabeled | 4.270 | 4.946 | 0.00323320 | 0.00323320 |
+
+Historical agreement counts all thirty slots, including failures/refusals, and
+is not yet a model-accuracy claim: Fable has not ruled on the constructed cases.
+Exact-reference agreement is a mechanical comparison, not proof that a different
+line in the same paragraph is semantically wrong. The classes have correlated
+source families and several admission contexts have only limited retrieval.
+
+| Model/task | Input tokens | Output tokens | Raw estimated total USD | Retained total USD |
+| --- | ---: | ---: | ---: | ---: |
+| haiku / belief | 216787 | 1763 | 0.0225602 | 0.139899375 |
+| haiku / queue | 25798 | 5264 | 0.0052118 | 0.029283750 |
+| sonnet / belief | 216787 | 2120 | 0.454774 | 0.454774 |
+| sonnet / queue | 25798 | 4540 | 0.096996 | 0.096996 |
+
+Total: **0.5795420 USD raw usage estimate; 0.720953125 USD conservative retained
+commitment**, including the reused first job exactly once. There are 120 unique
+paid job IDs. The 119-call continuation added no duplicate attempts.
+
+Haiku queue latency has a 142.382-second outlier (median 2.940 seconds); the
+cause is unknown. These times cover the reviewed subprocess, credential-client
+boundary, reservation and settlement, not inference alone. The largest observed
+input was 18681 tokens and largest output 263 tokens.
+
+#### Concrete failures and implications
+
+- Haiku's calibration repeats a semantically unrelated existing line. Reference
+  existence therefore cannot authorize a live write by itself.
+- Eight Haiku belief answers have a declared shape but fail a reference or
+  nonempty-field constraint. Invalid answers stay unsuccessful; no parser repair
+  or repeat call was used.
+- Sonnet sometimes places refusal inside `Queue.judgment` rather than at the
+  declared root, producing a shape failure. Natural-language refusal still needs
+  a contractually correct encoding.
+- Several Sonnet belief refusals specifically identify missing comparison-module
+  content; names alone do not supply that content. The two empty new-module
+  snapshots are especially limited. This is evidence about retrieval sufficiency,
+  not proof that a refusal is a wrong semantic judgment.
+- Queue outputs were Haiku: 21 KeepQueued, 2 StartFresh, 7 evidence refusals;
+  Sonnet: 28 KeepQueued, 1 StartFresh, 1 malformed refusal. Recipient live state
+  was unknown, so this run does not establish launch-policy accuracy.
+
+Full per-slot proof: `trial/results/supported-matrix/<model>--<case>/` contains
+`started.json`, the untouched processor observation and `measurement.json`.
+`trial/results/supported-summary.json` holds the aggregates and case comparisons.
+No raw estimate or retained commitment is an invoice or account balance.
 
 ## Executable evidence and limits
 
@@ -233,10 +296,85 @@ settlement, rather than only the provider's inference time.
 
 ## Open requirements
 
-- Complete the admitted supported-model matrix and summarize results per task
-  and model, with cases and all unsuccessful outcomes retained.
 - Fable's post-run semantic and queue rulings.
 - Reviewed Opus model policy and Research admission before the remaining sixty
   requested Opus slots; this model is still unrun.
 - Knowledge proposal: `flows/250509/claude-code-calls-knowledge-proposal.md`,
-  drafted, with final measured comparison figures still to be added.
+  drafted; its supported-model measurements are now available.
+
+## Thirty belief cases
+
+Expected values are the historical construction, pending Fable's ruling.
+`Malformed` and `Refused` preserve unsuccessful outcomes, not missing records.
+Whole submitted paragraphs and snapshots: `trial/cases/belief-cases.json`.
+
+| Case | Construction / target | Submitted line (opening) | Haiku | Sonnet |
+| --- | --- | --- | --- | --- |
+| belief-04 | Admitted · intent:belief-modules:0 | A psyche belief, a mind belief and a field belief may say the same thing: being of the psyche, of the mind … | Repeats · intent:belief-modules:0:L17 | ModelRefused |
+| belief-balanced-02 | Admitted · vision:code:0 | A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it… | Malformed | Malformed |
+| belief-balanced-03 | Admitted · vision:code:0 | Whenever the design expands into another part of the system, the designer steps back: where does this part … | Admitted | Elsewhere · vision:anatomy:0 |
+| belief-balanced-04 | Admitted · vision:psyche-nexus:0 | An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on… | Malformed | ModelRefused |
+| belief-balanced-05 | Admitted · vision:mind-nexus:0 | The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control. | Repeats · mind:knowledge:vocabulary:0:L6 | ModelRefused |
+| belief-balanced-06 | Admitted · vision:field-nexus:0 | The balancing of the machine's energy is a feature of the Field Nexus, or a Nexus of its own deeply linked … | Malformed | ModelRefused |
+| belief-balanced-07 | Admitted · vision:belief-modules:0 | A module may hold for every version of its topic, those not yet begun among them: its version field is the … | Malformed | Malformed |
+| belief-balanced-08 | Admitted · intent:energy:0 | Usage is fuel, and fuel is life or death: a machine out of usage stops. | Malformed | Elsewhere · vision:energy-nexus:1 |
+| belief-balanced-09 | Repeats · intent:belief-modules:0 | A psyche belief, a mind belief and a field belief may say the same thing: being of the psyche, of the mind … | Repeats · intent:belief-modules:0:L14 | Repeats · intent:belief-modules:0:L14 |
+| belief-balanced-10 | Repeats · vision:code:0 | A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it… | Repeats · vision:code:0:L12 | Repeats · vision:code:0:L12 |
+| belief-balanced-11 | Repeats · vision:code:0 | Whenever the design expands into another part of the system, the designer steps back: where does this part … | Repeats · vision:code:0:L14 | Repeats · vision:code:0:L14 |
+| belief-balanced-12 | Repeats · vision:psyche-nexus:0 | An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on… | Repeats · vision:psyche-nexus:0:L8 | Repeats · vision:psyche-nexus:0:L8 |
+| belief-balanced-13 | Repeats · vision:mind-nexus:0 | The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control. | Repeats · vision:mind-nexus:0:L8 | Repeats · vision:mind-nexus:0:L8 |
+| belief-balanced-14 | Repeats · vision:field-nexus:0 | The balancing of the machine's energy is a feature of the Field Nexus, or a Nexus of its own deeply linked … | Repeats · vision:field-nexus:0:L8 | Repeats · vision:field-nexus:0:L8 |
+| belief-balanced-15 | Repeats · vision:belief-modules:0 | A module may hold for every version of its topic, those not yet begun among them: its version field is the … | Repeats · vision:belief-modules:0:L107 | Repeats · vision:belief-modules:0:L107 |
+| belief-balanced-16 | Repeats · intent:energy:0 | Usage is fuel, and fuel is life or death: a machine out of usage stops. | Repeats · intent:energy:0:L8 | Repeats · intent:energy:0:L8 |
+| belief-balanced-17 | Collides · vision:nexus:0 | For now, a Nexus starts with no arguments and there is no bootstrap binary. Its executable holds a default … | Repeats · vision:nexus:0:L113 | Collides · vision:nexus:0:L114 |
+| belief-balanced-18 | Collides · vision:nexus:0 | The built-in default configuration is independent of this and is what gives the socket path on which the Co… | Admitted | ModelRefused |
+| belief-balanced-19 | Collides · vision:flow-nexus:0 | A flow woken for a permaflow is almost always a fresh flow, an old one only when the new input is literally… | Admitted | Collides · vision:flow-nexus:0:L80 |
+| belief-balanced-20 | Collides · vision:flow-nexus-v1 | An ephemeral flow is a continuous job flow that does not wake back up: it takes jobs while it runs, up to a… | Malformed | Collides · vision:flow-nexus-v1:L19 |
+| belief-balanced-21 | Collides · vision:nexus-v1 | A Nexus reads nothing from the environment: it is started with one datom, its place. Runtime holds its sock… | Repeats · vision:nexus-v1:L117 | Collides · vision:nexus-v1:L117 |
+| belief-balanced-22 | Collides · vision:herdr-nexus-v1 | The herdr Nexus owns every pane. It is the one component that runs herdr; when herdr changes, it changes, a… | Repeats · vision:herdr-nexus-v1:L8 | Repeats · vision:herdr-nexus-v1:L8 |
+| belief-balanced-23 | Collides · vision:complex-v1 | # the CLI: the place's name, then one datom | Malformed | Repeats · vision:complex-v1:L100 |
+| belief-balanced-24 | Elsewhere · vision:flow-nexus:0 | A psyche belief, a mind belief and a field belief may say the same thing: being of the psyche, of the mind … | Elsewhere · vision:aspects:0 | Elsewhere · vision:aspects:0 |
+| belief-balanced-25 | Elsewhere · intent:energy:0 | A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it… | Malformed | Elsewhere · vision:code:0 |
+| belief-balanced-26 | Elsewhere · intent:energy:0 | Whenever the design expands into another part of the system, the designer steps back: where does this part … | Elsewhere · intent:design:0 | Elsewhere · intent:design:0 |
+| belief-balanced-27 | Elsewhere · vision:flow-nexus:0 | An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on… | Malformed | ModelRefused |
+| belief-balanced-28 | Elsewhere · vision:flow-nexus:0 | The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control. | Elsewhere · vision:mind-nexus:0 | ModelRefused |
+| belief-balanced-29 | Elsewhere · vision:flow-nexus:0 | The balancing of the machine's energy is a feature of the Field Nexus, or a Nexus of its own deeply linked … | Repeats · vision:flow-nexus:0:L17 | Elsewhere · vision:energy-nexus:1 |
+| belief-balanced-30 | Elsewhere · vision:flow-nexus:0 | A module may hold for every version of its topic, those not yet begun among them: its version field is the … | Admitted | ModelRefused |
+
+## Thirty queue cases
+
+No expected launch labels are assigned. Whole messages and available pending work:
+`trial/cases/queue-cases.json`. Request IDs identify the captured real deliveries.
+
+| Case / request | Recipient | Message (opening) | Haiku | Sonnet |
+| --- | --- | --- | --- | --- |
+| queue-01 / bu3z | Field browserBridge Sol | 0dlf sanitized evidence/actual successful envtoken route received. Psychehdn3 explicitly preserves envtoken… | KeepQueued | KeepQueued |
+| queue-02 / 70cn | Field browserBridge Sol | Browser lane transferred by Opus0g0i/Fable89g1. Read flows/d94525/browser-trial.md (status/source correctio… | KeepQueued | KeepQueued |
+| queue-03 / czll | Field browserBridge Sol | Low priority, his question of earlier (j5ua): whether Playwright can take the extension token from a config… | KeepQueued | KeepQueued |
+| queue-04 / 9v1y | Field browser Sol | Opus0g0i/Fable89g1 transfers dedicated-Chromium/DevTools lane to you. Browser evidence/state flows/d94525/b… | StartFresh | StartFresh |
+| queue-05 / 6qgi | Field heartbeat Sol | Opus x01q lifts pau5 for one read-only ouranos battery/notification investigation only, about an hour, orig… | KeepQueued | KeepQueued |
+| queue-06 / eahb | Field heartbeat Sol | The x01q read-only battery investigation is complete; findings sent to Opus at /home/li/primary/flows/1e821… | KeepQueued | KeepQueued |
+| queue-07 / 6osu | Field heartbeat Sol | Opus d2is authorizes two read-only battery follow-ups only: threshold writer/timing audit and one 120-secon… | KeepQueued | KeepQueued |
+| queue-08 / cxr0 | Field heartbeat Sol | d2is step 1 complete and appended as field-data.md section 7; exact writer/time unknown, hybrid-sleep reapp… | ModelRefused | KeepQueued |
+| queue-09 / 0s21 | Field heartbeat Sol | New bounded exception wg2f from Opus/Fable: read-only live/source stuck-notification audit, sole output bat… | KeepQueued | KeepQueued |
+| queue-10 / nwo8 | Field heartbeat Sol | wg2f complete: stuck-notification.md sent to Opus with proven missing charge-withdrawal path, audited Nocta… | KeepQueued | KeepQueued |
+| queue-11 / mnpd | Field heartbeat Sol | Opus9aua authorizes first-step update inventory only: ouranos li, Home+system profiles, pins/running/upstre… | KeepQueued | KeepQueued |
+| queue-12 / q4nv | Field heartbeat Sol | 9aua inventory reviewed/delivered to Mind and Opus, file /home/li/primary/flows/1e8210/update-inventory.md;… | KeepQueued | KeepQueued |
+| queue-13 / yiyo | Field heartbeat Sol | Fable8ztf card clearing complete: supported clear-active, no restart; notification surface absent. Trace re… | KeepQueued | KeepQueued |
+| queue-14 / izx9 | Field heartbeat Sol | Fable d5jk authorizes one-time ouranos force-discharge while plugged, event-ended<=80, auto restored on eve… | KeepQueued | KeepQueued |
+| queue-15 / 9vdq | Field heartbeat Sol | Field66f659 refreshing now; final one-page handover flows/66f659/handover.md. Own workers/watchers/recorder… | KeepQueued | KeepQueued |
+| queue-16 / wjam | Field inventory Sol | MY independent re-review now11/11PASS exact runtime19495c4e332c83cf3312607ba0c9a362955891529e5c660462f3701b… | KeepQueued | KeepQueued |
+| queue-17 / 7vv1 | Field inventory Sol | 8ow8 custody accepted: zero observer/control, no runtime during refresh. Successor please resume SOURCE REV… | KeepQueued | KeepQueued |
+| queue-18 / uxf3 | Mind curriculum Opus | k1oe handover is read. Local Lojix is now 5d75a40, far beyond ab92ed6, so I am reconciling current disposit… | ModelRefused | Malformed |
+| queue-19 / k1oe | Mind curriculum Opus | Custody accepted by Curriculum Sol6c2a99. Full be2651 handover and4c69d7 continuation read; ab92ed6 re-gate… | ModelRefused | KeepQueued |
+| queue-20 / 01ot | Mind herdrNexus Sol | Yes: vision code 0 landed as psyche-belief 3358db3, corrected by cfa0ca0 (each emission its own outcome); t… | KeepQueued | KeepQueued |
+| queue-21 / 8otg | Mind herdrNexus Sol | Chronos: the open-books catalog holds one entry, https://claude.ai/artifact/K6VNrxVExyqoyqh5UqmMtW, Chronos… | StartFresh | KeepQueued |
+| queue-22 / b8yg | Mind herdrNexus Sol | Ruling on dc7b. Chronos Memory: take your candidate, the Configuration record declared in Memory with the s… | KeepQueued | KeepQueued |
+| queue-23 / h2oc | Mind herdrNexus Sol | aspect-nexuses is not published. The builder at main 9719b66 refused the current source: line 99, the headi… | KeepQueued | KeepQueued |
+| queue-24 / brf6 | Mind herdrNexus Sol | Same book, Code has an anatomy, at https://claude.ai/artifact/DCuZceYfHnixM8dpYncEUN, v3 (version 179478898… | KeepQueued | KeepQueued |
+| queue-25 / quoj | Mind herdrNexus Sol | hrk6 stays open and is blocked. The builder at main refuses aspect-nexuses: Proposal 6, at line 99 of flows… | ModelRefused | KeepQueued |
+| queue-26 / 1it4 | Mind herdrNexus Sol | k9o8: still blocked, nothing new to return. aspect-nexuses.md, last changed 18:29 Nov 15, still has Proposa… | ModelRefused | KeepQueued |
+| queue-27 / hnh4 | Mind versionZero Sol | dvtu/di4f zzcu premark-cutoff rulings received; bounded cancellation selector/survivor+named existingseam f… | ModelRefused | KeepQueued |
+| queue-28 / w4ba | Mind versionZero Sol | 1ki8 immutable953 cancellation checkpoint received; owner semantic review pending. Preserve exact head and … | KeepQueued | KeepQueued |
+| queue-29 / vcpw | Mind researchTools Sol | Fieldyo2w/Psyche6a44 cancels proof restart and iuvi no-new-lifecycle window. Trials still require frozen pa… | KeepQueued | KeepQueued |
+| queue-30 / n87b | Mind researchTools Sol | Coresiyq conditional trial: retained fresh live Configuration maps Luna to gpt-6-luna; configured next endp… | ModelRefused | KeepQueued |

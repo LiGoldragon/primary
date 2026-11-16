@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 1969,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-6804601bb827448ca94afe3a84c941dc",
+    "ledger": {
+      "committed_usd": "6.004166730",
+      "job": "raw-general-082e0f-6804601bb827448ca94afe3a84c941dc",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "0f69cc73da948d32f7c41aa51dd053a61850b1e58129a7e6b0e14b0ec639dca1",
+      "reservation_sha256": "a016a9be2afd9c663a604381ffa40d03d39dd1b531aea61d11a2ea788a8a7b95",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.002315",
+      "unreserved_usd": "30.995833270"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Repeats\",\"line\":\"vision:psyche-nexus:0:L8\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0003756",
+      "http_status": 200,
+      "job": "raw-general-082e0f-6804601bb827448ca94afe3a84c941dc",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "0f69cc73da948d32f7c41aa51dd053a61850b1e58129a7e6b0e14b0ec639dca1",
+      "retained_bound_usd": "0.002315",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 3496,
+        "output_tokens": 52
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "vision:psyche-nexus:0:L8",
+        "wording": null
+      }
+    }
+  }
+}

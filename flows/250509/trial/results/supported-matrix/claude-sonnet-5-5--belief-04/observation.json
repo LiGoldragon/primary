@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 3602,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5a85f85ef16848e19ddc24881cf037b0",
+    "ledger": {
+      "committed_usd": "6.156980355",
+      "job": "raw-general-082e0f-5a85f85ef16848e19ddc24881cf037b0",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "83de2c9ae284ea0e6985bb830245213cc0b9a26325f1823aef8ef38ca0de9341",
+      "reservation_sha256": "5cbf7a0712e284ba2bd11ee8973c1e25de3239ce27c90b01e1d39133799e47fe",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.005608",
+      "unreserved_usd": "30.843019645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The snapshot contains only the belief-modules lines and vocabulary entries; it holds no content from the psyche, mind or field modules, so I cannot judge whether the submitted line repeats, collides with, or belongs elsewhere than the supplied lines, or whether it is admissible as stated.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.005608",
+      "http_status": 200,
+      "job": "raw-general-082e0f-5a85f85ef16848e19ddc24881cf037b0",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "83de2c9ae284ea0e6985bb830245213cc0b9a26325f1823aef8ef38ca0de9341",
+      "retained_bound_usd": "0.005608",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2249,
+        "output_tokens": 111
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot contains only the belief-modules lines and vocabulary entries; it holds no content from the psyche, mind or field modules, so I cannot judge whether the submitted line repeats, collides with, or belongs elsewhere than the supplied lines, or whether it is admissible as stated."
+  }
+}

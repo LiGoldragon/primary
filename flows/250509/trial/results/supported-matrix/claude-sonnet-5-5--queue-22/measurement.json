@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-22",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-22",
+  "reused": false,
+  "prompt_sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7",
+  "job": "raw-general-082e0f-ad9025e2233b4ea9912b17c8817625ad",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ad9025e2233b4ea9912b17c8817625ad",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1089,
+    "output_tokens": 179
+  },
+  "raw_estimated_cost_usd": "0.003968",
+  "retained_usd": "0.003968",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4942,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a ruling addressed to several recipients (Chronos Memory, Listener Emission, plus republish and notify instructions) and depends on the 'dc7b' context and on a check with 29. The recipient's state is unknown and the message does not mention the pending work, so starting a fresh flow without that context risks acting on an incomplete picture. The ruling is not self-contained, so it should stay queued until the recipient can read it alongside the pending work."
+      }
+    }
+  }
+}

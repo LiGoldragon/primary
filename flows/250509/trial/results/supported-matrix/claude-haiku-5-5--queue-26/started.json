@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-haiku-5-5--queue-26",
+    "model": "claude-haiku-5-5",
+    "case": "queue-26",
+    "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--queue-26.txt",
+    "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

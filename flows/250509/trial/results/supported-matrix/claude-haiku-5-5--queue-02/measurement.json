@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-02",
+  "model": "claude-haiku-5-5",
+  "case": "queue-02",
+  "reused": false,
+  "prompt_sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde",
+  "job": "raw-general-082e0f-fae6978e8e5746dd9fc3d3897c770c7e",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-fae6978e8e5746dd9fc3d3897c770c7e",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 841,
+    "output_tokens": 176
+  },
+  "raw_estimated_cost_usd": "0.0001721",
+  "retained_usd": "0.000965625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2653,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown (hot, asleep, or fresh context is not captured), and the message is a sender-stopped handoff that explicitly says all browser work is halted, with no active relay, a cause still unknown, and no verified pairing holder. Pending items are either already-resolved runtime questions or a low-priority one-line research ask with no urgency, so starting a fresh flow now would add activity against an explicit stop without a clear need."
+      }
+    }
+  }
+}

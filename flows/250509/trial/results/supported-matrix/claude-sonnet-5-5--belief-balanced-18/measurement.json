@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-18",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-18",
+  "reused": false,
+  "prompt_sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520",
+  "job": "raw-general-082e0f-8d175165d5fe4989816d34060c7f723c",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-8d175165d5fe4989816d34060c7f723c",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 6996,
+    "output_tokens": 211
+  },
+  "raw_estimated_cost_usd": "0.016102",
+  "retained_usd": "0.016102",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4677,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The submitted line depends on an unresolved referent: 'independent of this' has no antecedent in the snapshot. It also asserts that a built-in default configuration supplies the socket path for the Configure signal, which is not established by the evidence. Existing lines say the socket paths are held in the standard metadata tree, that Configure is carried on the meta socket, and that Configure is reachable on the ordinary socket while the first-configuration record is unset. None of this states or contradicts a built-in default giving the socket path, so the evidence is insufficient to admit, repeat, collide with, or place the line elsewhere."
+  }
+}

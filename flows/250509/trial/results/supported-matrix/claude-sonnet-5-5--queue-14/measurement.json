@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-14",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-14",
+  "reused": false,
+  "prompt_sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb",
+  "job": "raw-general-082e0f-96ae13abbae84af5a8f7bfcfb06846cf",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-96ae13abbae84af5a8f7bfcfb06846cf",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 920,
+    "output_tokens": 158
+  },
+  "raw_estimated_cost_usd": "0.00342",
+  "retained_usd": "0.00342",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4269,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is an incremental update to existing battery work, and the recipient's hot or asleep state is unknown. A battery worker is already preparing the guarded transaction, and the pending items show active bounded lanes with a wider pause in force. Starting a fresh flow would duplicate those lanes and risk breaking the pause, so the message belongs in the existing queue until the recipient picks it up."
+      }
+    }
+  }
+}

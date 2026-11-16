@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-02",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-02",
+  "reused": false,
+  "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045",
+  "job": "raw-general-082e0f-deae6c14b45248deb434c7e4e3dfe968",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-deae6c14b45248deb434c7e4e3dfe968",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2047,
+    "output_tokens": 33
+  },
+  "raw_estimated_cost_usd": "0.004424",
+  "retained_usd": "0.004424",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2923,
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "answer does not match declared type"
+  }
+}

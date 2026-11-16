@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 2474,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-a6c73c1072514438b438e1879e27e360",
+    "ledger": {
+      "committed_usd": "6.122088605",
+      "job": "raw-general-082e0f-a6c73c1072514438b438e1879e27e360",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "d17d93fcbd7188136f8815860adc0c0d38550d07797c27c0787438b20ea0a1d3",
+      "reservation_sha256": "200b1ef498a541cdbd51d7ed1e1f70e2bb251deabd6f27f265e50a56d3b492c7",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.011875625",
+      "unreserved_usd": "30.877911395"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"A module may hold for every version of its topic, those not yet begun among them: its version field is the word all, and a flow bound to any version of the topic is given it.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0019081",
+      "http_status": 200,
+      "job": "raw-general-082e0f-a6c73c1072514438b438e1879e27e360",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "d17d93fcbd7188136f8815860adc0c0d38550d07797c27c0787438b20ea0a1d3",
+      "retained_bound_usd": "0.011875625",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18681,
+        "output_tokens": 80
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "A module may hold for every version of its topic, those not yet begun among them: its version field is the word all, and a flow bound to any version of the topic is given it."
+      }
+    }
+  }
+}

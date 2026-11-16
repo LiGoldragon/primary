@@ -1,0 +1,15 @@
+{
+  "slot": {
+    "identifier": "claude-haiku-5-5--belief-04",
+    "model": "claude-haiku-5-5",
+    "case": "belief-04",
+    "call_file": "/home/li/primary/flows/250509/trial/calibration-call.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/calibration-prompt.txt",
+    "prompt_sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152",
+    "reuse": {
+      "call_file": "/home/li/primary/flows/250509/trial/calibration-call.json",
+      "observation_file": "/home/li/primary/flows/250509/trial/results/calibration-observation.json"
+    }
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

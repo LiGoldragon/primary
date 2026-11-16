@@ -1,0 +1,30 @@
+{
+  "slot": "claude-haiku-5-5--belief-balanced-29",
+  "model": "claude-haiku-5-5",
+  "case": "belief-balanced-29",
+  "reused": false,
+  "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6",
+  "job": "raw-general-082e0f-cd830b1ff686485088f7e616004cf528",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-cd830b1ff686485088f7e616004cf528",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 18031,
+    "output_tokens": 51
+  },
+  "raw_estimated_cost_usd": "0.0018286",
+  "retained_usd": "0.011396875",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2377,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "vision:flow-nexus:0:L17",
+        "wording": null
+      }
+    }
+  }
+}

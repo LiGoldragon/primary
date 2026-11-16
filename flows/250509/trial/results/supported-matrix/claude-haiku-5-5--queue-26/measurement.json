@@ -1,0 +1,23 @@
+{
+  "slot": "claude-haiku-5-5--queue-26",
+  "model": "claude-haiku-5-5",
+  "case": "queue-26",
+  "reused": false,
+  "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667",
+  "job": "raw-general-082e0f-d3845a21471248cabd62febe6e9f3699",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d3845a21471248cabd62febe6e9f3699",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1041,
+    "output_tokens": 118
+  },
+  "raw_estimated_cost_usd": "0.0001631",
+  "retained_usd": "0.000945625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2873,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is unknown and essential: the captured Flow Queues record says only that the message was queued for Mind herdrNexus Sol, with no information on whether the recipient is hot, asleep, or would start with fresh context. Judging whether to start a fresh flow depends on that, so I refuse rather than guess."
+  }
+}

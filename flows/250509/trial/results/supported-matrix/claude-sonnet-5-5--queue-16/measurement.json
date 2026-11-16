@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-16",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-16",
+  "reused": false,
+  "prompt_sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96",
+  "job": "raw-general-082e0f-1e747c41840f46449b618b935fab693d",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1e747c41840f46449b618b935fab693d",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 821,
+    "output_tokens": 140
+  },
+  "raw_estimated_cost_usd": "0.003042",
+  "retained_usd": "0.003042",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4331,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a review-ready notice that duplicates the already-pending source-review task for the same exact report and runtime hashes. It adds no new authority and requests no new work beyond returning blockers or acceptance. Recipient state is unknown, but a fresh flow would add nothing beyond the existing pending item, so it should stay queued."
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 2291,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5b871624b0d14696be94c38a285e09b2",
+    "ledger": {
+      "committed_usd": "6.129569855",
+      "job": "raw-general-082e0f-5b871624b0d14696be94c38a285e09b2",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "a434bf1da532594a7506a7275b1b68f3d7c696950d0ddede245860c800b8bfd0",
+      "reservation_sha256": "2ea4011757de62bee2b57f577ef977d361da44cf6120fcc125815e82949de26e",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.00077625",
+      "unreserved_usd": "30.870430145"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"Recipient state is explicitly unknown (hot, asleep, or fresh context undetermined), and that state is essential to judging whether to start a fresh flow versus keep the message queued. Refusing rather than guessing.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0001329",
+      "http_status": 200,
+      "job": "raw-general-082e0f-5b871624b0d14696be94c38a285e09b2",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "a434bf1da532594a7506a7275b1b68f3d7c696950d0ddede245860c800b8bfd0",
+      "retained_bound_usd": "0.00077625",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 894,
+        "output_tokens": 87
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is explicitly unknown (hot, asleep, or fresh context undetermined), and that state is essential to judging whether to start a fresh flow versus keep the message queued. Refusing rather than guessing."
+  }
+}

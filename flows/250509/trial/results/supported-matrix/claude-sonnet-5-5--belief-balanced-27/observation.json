@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 3983,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b566ce6358e14d068659b57c950b5390",
+    "ledger": {
+      "committed_usd": "6.493408355",
+      "job": "raw-general-082e0f-b566ce6358e14d068659b57c950b5390",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f36b3a7c309a49035bac4101740f4b217e37b57cb8e024740797052a9171bb23",
+      "reservation_sha256": "5633eb377d965a637584203f516b290a2bfe6e58be4837eda0d512e54f332faa",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.037198",
+      "unreserved_usd": "30.506591645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The snapshot covers only vision:flow-nexus:0 and part of the vocabulary module. It has no text of the belief-admission judgment or belief-modules modules, so I cannot tell whether the submission repeats or collides with an existing line, or which module it belongs in.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.037198",
+      "http_status": 200,
+      "job": "raw-general-082e0f-b566ce6358e14d068659b57c950b5390",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f36b3a7c309a49035bac4101740f4b217e37b57cb8e024740797052a9171bb23",
+      "retained_bound_usd": "0.037198",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18079,
+        "output_tokens": 104
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot covers only vision:flow-nexus:0 and part of the vocabulary module. It has no text of the belief-admission judgment or belief-modules modules, so I cannot tell whether the submission repeats or collides with an existing line, or which module it belongs in."
+  }
+}

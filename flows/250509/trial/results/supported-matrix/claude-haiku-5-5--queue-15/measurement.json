@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-15",
+  "model": "claude-haiku-5-5",
+  "case": "queue-15",
+  "reused": false,
+  "prompt_sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b",
+  "job": "raw-general-082e0f-03b2b59cc4e149a79bd9313a8fe8f22a",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-03b2b59cc4e149a79bd9313a8fe8f22a",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 964,
+    "output_tokens": 191
+  },
+  "raw_estimated_cost_usd": "0.0001919",
+  "retained_usd": "0.00108",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3044,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The queued handover is a status report that Field is refreshing its context, with its own workers quiescent and remaining work held. Pending items are read-only battery investigations whose outputs go to Opus, and a live follow-up lane is already assigned to two workers. Recipient state is unknown, but starting a fresh flow would add a new actor to lanes already owned by others and risk duplicating or interfering with the active battery follow-ups; the message can remain queued for Field heartbeat Sol without action."
+      }
+    }
+  }
+}

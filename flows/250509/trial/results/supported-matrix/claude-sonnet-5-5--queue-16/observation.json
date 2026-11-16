@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 4331,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1e747c41840f46449b618b935fab693d",
+    "ledger": {
+      "committed_usd": "6.657444355",
+      "job": "raw-general-082e0f-1e747c41840f46449b618b935fab693d",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "90e4e36950d64de7e8f3bd35b9af6745afa860bbeaac3383f05ba774a2e3937e",
+      "reservation_sha256": "3af56be82e9163adfebf46ca75444dc60821cf9b006b3508ab0a9132ecbcb325",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.003042",
+      "unreserved_usd": "30.342555645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a review-ready notice that duplicates the already-pending source-review task for the same exact report and runtime hashes. It adds no new authority and requests no new work beyond returning blockers or acceptance. Recipient state is unknown, but a fresh flow would add nothing beyond the existing pending item, so it should stay queued.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.003042",
+      "http_status": 200,
+      "job": "raw-general-082e0f-1e747c41840f46449b618b935fab693d",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "90e4e36950d64de7e8f3bd35b9af6745afa860bbeaac3383f05ba774a2e3937e",
+      "retained_bound_usd": "0.003042",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 821,
+        "output_tokens": 140
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a review-ready notice that duplicates the already-pending source-review task for the same exact report and runtime hashes. It adds no new authority and requests no new work beyond returning blockers or acceptance. Recipient state is unknown, but a fresh flow would add nothing beyond the existing pending item, so it should stay queued."
+      }
+    }
+  }
+}

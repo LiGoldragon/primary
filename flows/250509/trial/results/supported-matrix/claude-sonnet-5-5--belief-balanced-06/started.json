@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-sonnet-5-5--belief-balanced-06",
+    "model": "claude-sonnet-5-5",
+    "case": "belief-balanced-06",
+    "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--belief-balanced-06.txt",
+    "prompt_sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

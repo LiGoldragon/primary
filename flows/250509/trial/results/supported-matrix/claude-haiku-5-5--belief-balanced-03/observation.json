@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 1821,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0ac086b5db2147938a5e9d08781604ff",
+    "ledger": {
+      "committed_usd": "5.986599230",
+      "job": "raw-general-082e0f-0ac086b5db2147938a5e9d08781604ff",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "ec210173e2b478df2a6b74d912a9819d3f64226a9cb2d385b4af8d19e4d70423",
+      "reservation_sha256": "4fb475cb504fbff0d671ff0a13537168a51daf06d5538ab4c8c521c546f9a170",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.0014875",
+      "unreserved_usd": "31.013400770"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0002479",
+      "http_status": 200,
+      "job": "raw-general-082e0f-0ac086b5db2147938a5e9d08781604ff",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "ec210173e2b478df2a6b74d912a9819d3f64226a9cb2d385b4af8d19e4d70423",
+      "retained_bound_usd": "0.0014875",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1984,
+        "output_tokens": 99
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal."
+      }
+    }
+  }
+}

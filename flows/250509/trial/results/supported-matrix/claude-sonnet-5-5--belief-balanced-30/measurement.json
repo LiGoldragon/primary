@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-30",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-30",
+  "reused": false,
+  "prompt_sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4",
+  "job": "raw-general-082e0f-941bbfdeee724098a456c43494f583db",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-941bbfdeee724098a456c43494f583db",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 18681,
+    "output_tokens": 145
+  },
+  "raw_estimated_cost_usd": "0.038812",
+  "retained_usd": "0.038812",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 5009,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot is the flow-nexus module and says nothing about modules holding every version of a topic, a version field set to all, or flows binding to any version. Whether the line repeats, collides with or belongs in another module cannot be judged from this evidence, since versioning and bindings are covered only by modules whose text is not supplied (for example vision:far-versioning:0 or vision:belief-modules:0)."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 2144,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-8420ef518a34484abdb50dd272489ba7",
+    "ledger": {
+      "committed_usd": "6.021708605",
+      "job": "raw-general-082e0f-8420ef518a34484abdb50dd272489ba7",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "0e52650875fc04d900e43eb7929c9a2864ca28947c89fc64bcf3fcf094618c44",
+      "reservation_sha256": "45570bf54cdcd1b62d591decaaf6bdd5480893860e6c47b25b235a3c97990d26",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.00454",
+      "unreserved_usd": "30.978291395"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"The built-in default configuration is independent of this and is what gives the socket path on which the Configure signal arrives.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0007331",
+      "http_status": 200,
+      "job": "raw-general-082e0f-8420ef518a34484abdb50dd272489ba7",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "0e52650875fc04d900e43eb7929c9a2864ca28947c89fc64bcf3fcf094618c44",
+      "retained_bound_usd": "0.00454",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 6996,
+        "output_tokens": 67
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "The built-in default configuration is independent of this and is what gives the socket path on which the Configure signal arrives."
+      }
+    }
+  }
+}

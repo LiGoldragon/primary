@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 4133,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d025ce5f9ded49688bbb7e8adc3c85e6",
+    "ledger": {
+      "committed_usd": "6.663054355",
+      "job": "raw-general-082e0f-d025ce5f9ded49688bbb7e8adc3c85e6",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "3267f45e3a48d677eba33d47413f2b74d7cd5136ce6887d0a834b3cdd0a1432e",
+      "reservation_sha256": "f12d3d52c664d774a125b6dfdf9cf4445224f9a269aead8502ea1b4457670595",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.002488",
+      "unreserved_usd": "30.336945645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"Refused\",\"reason\":\"Recipient state (hot, asleep, or fresh-context) is unknown and essential to deciding whether a fresh flow is warranted. The message also asks the recipient to identify which Lojix report/head supersedes be2651, which depends on context I cannot verify, so I cannot responsibly recommend starting a fresh flow.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.002488",
+      "http_status": 200,
+      "job": "raw-general-082e0f-d025ce5f9ded49688bbb7e8adc3c85e6",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "3267f45e3a48d677eba33d47413f2b74d7cd5136ce6887d0a834b3cdd0a1432e",
+      "retained_bound_usd": "0.002488",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 559,
+        "output_tokens": 137
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "answer does not match declared type"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-01",
+  "model": "claude-haiku-5-5",
+  "case": "queue-01",
+  "reused": false,
+  "prompt_sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997",
+  "job": "raw-general-082e0f-1de0d61d4c8440d6aad70d10a09fc0ba",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1de0d61d4c8440d6aad70d10a09fc0ba",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 841,
+    "output_tokens": 185
+  },
+  "raw_estimated_cost_usd": "0.0001766",
+  "retained_usd": "0.000988125",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3192,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown (hot, asleep, or fresh context undetermined), and the message is an informational sanitized update rather than a request needing immediate action; it explicitly states no runtime action is requested. Pending work for browserBridge Sol is a transferred browser lane with an unresolved relay/token issue and low-priority research, and it is not clear a fresh flow is warranted now versus keeping the message queued until the recipient can pick it up in its existing context."
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "paid_calls": 0,
+  "synthetic_processor": "/tmp/typed-call-opus-envelope-sudzlmkn/emit.py",
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "synthetic accepted wording"
+      }
+    }
+  },
+  "added_fields_accepted": [
+    "input_admission_counts",
+    "stop_reason"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-20",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-20",
+  "reused": false,
+  "prompt_sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b",
+  "job": "raw-general-082e0f-5d73f1b6669142f490e7ff47a7f3c4cc",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5d73f1b6669142f490e7ff47a7f3c4cc",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1089,
+    "output_tokens": 123
+  },
+  "raw_estimated_cost_usd": "0.003408",
+  "retained_usd": "0.003408",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4283,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is informational (commit refs, bookmaker identity, republication routing) and requires no immediate action or fresh context. The recipient's state is unknown, but nothing urgent justifies starting a new flow; the recipient can absorb it with its existing pending work when it next runs."
+      }
+    }
+  }
+}

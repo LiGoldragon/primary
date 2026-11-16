@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-28",
+  "model": "claude-haiku-5-5",
+  "case": "queue-28",
+  "reused": false,
+  "prompt_sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7",
+  "job": "raw-general-082e0f-81ece975875f43dba5fef009c324620d",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-81ece975875f43dba5fef009c324620d",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 644,
+    "output_tokens": 238
+  },
+  "raw_estimated_cost_usd": "0.0001834",
+  "retained_usd": "0.0009975",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3251,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown: it is unclear whether Mind versionZero Sol is hot, asleep, or would start with fresh context. The message is a status and checkpoint notice that asks for owner semantic review and preservation of the exact head, and it explicitly withholds acceptance and execution claims. Pending work shows a live exclusive wholegate (guard894) and held holds on other oracles, so starting a fresh flow now would risk competing with heavy work and could disturb a corrected candidate that Research is still freezing. Keeping the message queued until the recipient is confirmed available and the gate is released is the safer recommendation."
+      }
+    }
+  }
+}

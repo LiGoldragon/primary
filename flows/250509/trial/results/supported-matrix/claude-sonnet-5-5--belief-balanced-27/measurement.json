@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-27",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-27",
+  "reused": false,
+  "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57",
+  "job": "raw-general-082e0f-b566ce6358e14d068659b57c950b5390",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b566ce6358e14d068659b57c950b5390",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 18079,
+    "output_tokens": 104
+  },
+  "raw_estimated_cost_usd": "0.037198",
+  "retained_usd": "0.037198",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3983,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot covers only vision:flow-nexus:0 and part of the vocabulary module. It has no text of the belief-admission judgment or belief-modules modules, so I cannot tell whether the submission repeats or collides with an existing line, or which module it belongs in."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-11",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-11",
+  "reused": false,
+  "prompt_sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c",
+  "job": "raw-general-082e0f-ec07760106714d3186d61904cf41ce6d",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ec07760106714d3186d61904cf41ce6d",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 906,
+    "output_tokens": 163
+  },
+  "raw_estimated_cost_usd": "0.003442",
+  "retained_usd": "0.003442",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3552,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message authorizes a bounded, read-only first-step inventory that Field has already started and is coordinating with Mind0btn. It is a status/authorization update, not a new independent task, and the recipient's hot or cold state is unknown, so starting a fresh context would add nothing. The pending d2is idle listener and the wider pause continue, so it should stay queued for the existing Field heartbeat flow."
+      }
+    }
+  }
+}

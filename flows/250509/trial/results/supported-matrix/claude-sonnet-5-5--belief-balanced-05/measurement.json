@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-05",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-05",
+  "reused": false,
+  "prompt_sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f",
+  "job": "raw-general-082e0f-51922b2c101c4a3c9d599460b81acfc9",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-51922b2c101c4a3c9d599460b81acfc9",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1682,
+    "output_tokens": 115
+  },
+  "raw_estimated_cost_usd": "0.004514",
+  "retained_usd": "0.004514",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3539,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot for vision:mind-nexus:0 contains no lines (only vocabulary lines from another module are shown), so there is no evidence about the Mind Nexus's role to judge repetition, collision, or whether the claim belongs in another module such as vision:versioning:0 or vision:code:0."
+  }
+}

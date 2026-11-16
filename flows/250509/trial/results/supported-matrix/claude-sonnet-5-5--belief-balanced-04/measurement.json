@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--belief-balanced-04",
+  "model": "claude-sonnet-5-5",
+  "case": "belief-balanced-04",
+  "reused": false,
+  "prompt_sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee",
+  "job": "raw-general-082e0f-f784d31f6b3b472f932d7aaaed5de1c9",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f784d31f6b3b472f932d7aaaed5de1c9",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1750,
+    "output_tokens": 163
+  },
+  "raw_estimated_cost_usd": "0.00513",
+  "retained_usd": "0.00513",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3550,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot shows only the target module's lines, and they are vocabulary definitions that do not touch the submitted line about the admission judgment. No visible line repeats or contradicts it. The supplied module names do not show whether another module, such as vision:psyche-nexus:0, vision:belief-nexus:0 or vision:belief-modules:0, is a better home, or whether the target module is inadequately named. The evidence is insufficient for a placement judgment."
+  }
+}

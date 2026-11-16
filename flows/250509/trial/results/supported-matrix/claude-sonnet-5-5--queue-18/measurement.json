@@ -1,0 +1,23 @@
+{
+  "slot": "claude-sonnet-5-5--queue-18",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-18",
+  "reused": false,
+  "prompt_sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4",
+  "job": "raw-general-082e0f-d025ce5f9ded49688bbb7e8adc3c85e6",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d025ce5f9ded49688bbb7e8adc3c85e6",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 559,
+    "output_tokens": 137
+  },
+  "raw_estimated_cost_usd": "0.002488",
+  "retained_usd": "0.002488",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4133,
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "answer does not match declared type"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 3550,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f784d31f6b3b472f932d7aaaed5de1c9",
+    "ledger": {
+      "committed_usd": "6.170982355",
+      "job": "raw-general-082e0f-f784d31f6b3b472f932d7aaaed5de1c9",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f83c8f884abd2009a71fbaf0f79e8d26598a5b4fa9a156a56d5ce225b705225b",
+      "reservation_sha256": "387d4170d8b8dde721c2a0cd3f1c3ad8750720aa8b3517fa5d062fd3580520ba",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.00513",
+      "unreserved_usd": "30.829017645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The snapshot shows only the target module's lines, and they are vocabulary definitions that do not touch the submitted line about the admission judgment. No visible line repeats or contradicts it. The supplied module names do not show whether another module, such as vision:psyche-nexus:0, vision:belief-nexus:0 or vision:belief-modules:0, is a better home, or whether the target module is inadequately named. The evidence is insufficient for a placement judgment.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.00513",
+      "http_status": 200,
+      "job": "raw-general-082e0f-f784d31f6b3b472f932d7aaaed5de1c9",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f83c8f884abd2009a71fbaf0f79e8d26598a5b4fa9a156a56d5ce225b705225b",
+      "retained_bound_usd": "0.00513",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1750,
+        "output_tokens": 163
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot shows only the target module's lines, and they are vocabulary definitions that do not touch the submitted line about the admission judgment. No visible line repeats or contradicts it. The supplied module names do not show whether another module, such as vision:psyche-nexus:0, vision:belief-nexus:0 or vision:belief-modules:0, is a better home, or whether the target module is inadequately named. The evidence is insufficient for a placement judgment."
+  }
+}

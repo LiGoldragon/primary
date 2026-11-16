@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 4077,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-c74897bc3a8349c99f0bb1b865ba604b",
+    "ledger": {
+      "committed_usd": "6.530772355",
+      "job": "raw-general-082e0f-c74897bc3a8349c99f0bb1b865ba604b",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "c5753b36629c90982904fa0bca08f4157cd2874fb6ac2b8dea114d5fe629ae46",
+      "reservation_sha256": "cf076f23a217aadec9ceb5b13f284c7f0171034df0fd94c1422a9d006286133b",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.037364",
+      "unreserved_usd": "30.469227645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The submitted line describes the Mind Nexus, which is not the subject of the supplied snapshot (vision:flow-nexus:0). The snapshot contains no content about issues, dependencies or version control to compare against. The one candidate module, vision:mind-nexus:0, is named but its contents are not supplied, so repetition, collision or placement cannot be judged.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.037364",
+      "http_status": 200,
+      "job": "raw-general-082e0f-c74897bc3a8349c99f0bb1b865ba604b",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "c5753b36629c90982904fa0bca08f4157cd2874fb6ac2b8dea114d5fe629ae46",
+      "retained_bound_usd": "0.037364",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 18012,
+        "output_tokens": 134
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The submitted line describes the Mind Nexus, which is not the subject of the supplied snapshot (vision:flow-nexus:0). The snapshot contains no content about issues, dependencies or version control to compare against. The one candidate module, vision:mind-nexus:0, is named but its contents are not supplied, so repetition, collision or placement cannot be judged."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "elapsed_milliseconds": 2873,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d3845a21471248cabd62febe6e9f3699",
+    "ledger": {
+      "committed_usd": "6.147942355",
+      "job": "raw-general-082e0f-d3845a21471248cabd62febe6e9f3699",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "88c06f05e6c4e47e4ec7e3c5154dd99a8c231edc334ee9a85a87770cb5682524",
+      "reservation_sha256": "8944b954b2b27c48aaadb44e668642891013eb5f1ec2a4c460989628853610d8",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.000945625",
+      "unreserved_usd": "30.852057645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"Recipient state is unknown and essential: the captured Flow Queues record says only that the message was queued for Mind herdrNexus Sol, with no information on whether the recipient is hot, asleep, or would start with fresh context. Judging whether to start a fresh flow depends on that, so I refuse rather than guess.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0001631",
+      "http_status": 200,
+      "job": "raw-general-082e0f-d3845a21471248cabd62febe6e9f3699",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "88c06f05e6c4e47e4ec7e3c5154dd99a8c231edc334ee9a85a87770cb5682524",
+      "retained_bound_usd": "0.000945625",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1041,
+        "output_tokens": 118
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is unknown and essential: the captured Flow Queues record says only that the message was queued for Mind herdrNexus Sol, with no information on whether the recipient is hot, asleep, or would start with fresh context. Judging whether to start a fresh flow depends on that, so I refuse rather than guess."
+  }
+}

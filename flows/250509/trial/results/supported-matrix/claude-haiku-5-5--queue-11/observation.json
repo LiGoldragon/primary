@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 2644,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-7e5775dfa4d04d96b48027eb78b99b9e",
+    "ledger": {
+      "committed_usd": "6.132571730",
+      "job": "raw-general-082e0f-7e5775dfa4d04d96b48027eb78b99b9e",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "9e0461d657775e5e608a85b57429be0af87f3b8c464770c00b179c3b11186748",
+      "reservation_sha256": "1f317dbb0ee4e7fa9082eb9ab49e60c20bebe76210b328d5d03aa0a3b93e29c5",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.00097375",
+      "unreserved_usd": "30.867428270"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The recipient's state is unknown, so the message is not clearly serviced by a hot flow, and the pending work shows related read-only battery investigation and an event-waiting listener still in progress. The message is a status/authorization update for an inventory task that overlaps existing workers, so starting a fresh flow would risk duplication; keep it queued for the Field heartbeat to coordinate with the existing lanes.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0001721",
+      "http_status": 200,
+      "job": "raw-general-082e0f-7e5775dfa4d04d96b48027eb78b99b9e",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "9e0461d657775e5e608a85b57429be0af87f3b8c464770c00b179c3b11186748",
+      "retained_bound_usd": "0.00097375",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 906,
+        "output_tokens": 163
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown, so the message is not clearly serviced by a hot flow, and the pending work shows related read-only battery investigation and an event-waiting listener still in progress. The message is a status/authorization update for an inventory task that overlaps existing workers, so starting a fresh flow would risk duplication; keep it queued for the Field heartbeat to coordinate with the existing lanes."
+      }
+    }
+  }
+}

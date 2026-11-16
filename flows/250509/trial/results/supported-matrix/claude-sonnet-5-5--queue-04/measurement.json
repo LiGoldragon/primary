@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-04",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-04",
+  "reused": false,
+  "prompt_sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462",
+  "job": "raw-general-082e0f-0e67472180504598a4f96972e0d6261a",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0e67472180504598a4f96972e0d6261a",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 559,
+    "output_tokens": 179
+  },
+  "raw_estimated_cost_usd": "0.002908",
+  "retained_usd": "0.002908",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4224,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The message is a substantive lane handoff (dedicated-Chromium/DevTools ownership, pointers to evidence and brief files, standing authorization, deferred research transferred) and the sender has stopped all browser work, so the recipient must take over. Pending work is empty, so a fresh flow would not displace anything. Recipient hot/asleep state is unknown but not essential, since the message is self-contained with file pointers and a fresh context can start from them."
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-05",
+  "model": "claude-haiku-5-5",
+  "case": "queue-05",
+  "reused": false,
+  "prompt_sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611",
+  "job": "raw-general-082e0f-c2a3588a2ab64a88862992ace4458f12",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-c2a3588a2ab64a88862992ace4458f12",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 894,
+    "output_tokens": 199
+  },
+  "raw_estimated_cost_usd": "0.0001889",
+  "retained_usd": "0.00105625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2594,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown: the message is queued for Field heartbeat Sol and it is unclear whether that recipient is hot, asleep, or would start with fresh context. Pending work shows an active event-driven worker still waiting on a genuine Lock/IdleHint event for step 2, and the message reports closure of the x01q lane and a task that never reached this flow. Starting a fresh flow now would duplicate or race work already in progress, so the message should remain queued for the existing heartbeat to pick up."
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-haiku-5-5--belief-balanced-14",
+    "model": "claude-haiku-5-5",
+    "case": "belief-balanced-14",
+    "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-haiku-5-5--belief-balanced-14.txt",
+    "prompt_sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

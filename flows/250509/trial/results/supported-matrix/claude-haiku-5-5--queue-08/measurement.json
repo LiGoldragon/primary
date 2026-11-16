@@ -1,0 +1,23 @@
+{
+  "slot": "claude-haiku-5-5--queue-08",
+  "model": "claude-haiku-5-5",
+  "case": "queue-08",
+  "reused": false,
+  "prompt_sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5",
+  "job": "raw-general-082e0f-5b871624b0d14696be94c38a285e09b2",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5b871624b0d14696be94c38a285e09b2",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 894,
+    "output_tokens": 87
+  },
+  "raw_estimated_cost_usd": "0.0001329",
+  "retained_usd": "0.00077625",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2291,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Recipient state is explicitly unknown (hot, asleep, or fresh context undetermined), and that state is essential to judging whether to start a fresh flow versus keep the message queued. Refusing rather than guessing."
+  }
+}

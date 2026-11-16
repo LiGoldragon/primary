@@ -1,0 +1,29 @@
+{
+  "slot": "claude-haiku-5-5--queue-11",
+  "model": "claude-haiku-5-5",
+  "case": "queue-11",
+  "reused": false,
+  "prompt_sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c",
+  "job": "raw-general-082e0f-7e5775dfa4d04d96b48027eb78b99b9e",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-7e5775dfa4d04d96b48027eb78b99b9e",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 906,
+    "output_tokens": 163
+  },
+  "raw_estimated_cost_usd": "0.0001721",
+  "retained_usd": "0.00097375",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2644,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The recipient's state is unknown, so the message is not clearly serviced by a hot flow, and the pending work shows related read-only battery investigation and an event-waiting listener still in progress. The message is a status/authorization update for an inventory task that overlaps existing workers, so starting a fresh flow would risk duplication; keep it queued for the Field heartbeat to coordinate with the existing lanes."
+      }
+    }
+  }
+}

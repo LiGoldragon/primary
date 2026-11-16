@@ -1,0 +1,48 @@
+{
+  "elapsed_milliseconds": 3235,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d57d802914074baa9d894d57f26e528a",
+    "ledger": {
+      "committed_usd": "6.142420480",
+      "job": "raw-general-082e0f-d57d802914074baa9d894d57f26e528a",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "51930d93677c3e63201b811a2c6ac42a035d06350c6e0e991fe53c6ad716d3dc",
+      "reservation_sha256": "4b802932870e1c5cc4b06d79bc42ce6a6a67fa57228dc8f5ef4fc84c8dd1a29a",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.001230625",
+      "unreserved_usd": "30.857579520"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"StartFresh\",\"reason\":\"The queued message is a status report on publications and pending work: Chronos is published once, Listener is unpublished, and aspect-nexuses is blocked on a source heading. It asks the recipient for concrete actions (republish the Psyche book via Haiku, rule on dc7b, and build once the heading gets a title). The recipient's current state is unknown, but the pending work is substantive and time-sensitive, and the message reads as a self-contained handoff that a fresh context can act on from its own contents, so starting a fresh flow is the better recommendation over leaving it queued indefinitely.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0002189",
+      "http_status": 200,
+      "job": "raw-general-082e0f-d57d802914074baa9d894d57f26e528a",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "51930d93677c3e63201b811a2c6ac42a035d06350c6e0e991fe53c6ad716d3dc",
+      "retained_bound_usd": "0.001230625",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1089,
+        "output_tokens": 220
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The queued message is a status report on publications and pending work: Chronos is published once, Listener is unpublished, and aspect-nexuses is blocked on a source heading. It asks the recipient for concrete actions (republish the Psyche book via Haiku, rule on dc7b, and build once the heading gets a title). The recipient's current state is unknown, but the pending work is substantive and time-sensitive, and the message reads as a self-contained handoff that a fresh context can act on from its own contents, so starting a fresh flow is the better recommendation over leaving it queued indefinitely."
+      }
+    }
+  }
+}

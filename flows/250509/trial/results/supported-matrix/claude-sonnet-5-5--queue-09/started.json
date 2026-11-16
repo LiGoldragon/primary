@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-sonnet-5-5--queue-09",
+    "model": "claude-sonnet-5-5",
+    "case": "queue-09",
+    "call_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/suite-inputs/claude-sonnet-5-5--queue-09.txt",
+    "prompt_sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

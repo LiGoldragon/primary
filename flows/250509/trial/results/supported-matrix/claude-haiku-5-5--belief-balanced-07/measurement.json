@@ -1,0 +1,23 @@
+{
+  "slot": "claude-haiku-5-5--belief-balanced-07",
+  "model": "claude-haiku-5-5",
+  "case": "belief-balanced-07",
+  "reused": false,
+  "prompt_sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c",
+  "job": "raw-general-082e0f-6bf8d3099b394368a9c1851fb9636a09",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-6bf8d3099b394368a9c1851fb9636a09",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 5448,
+    "output_tokens": 49
+  },
+  "raw_estimated_cost_usd": "0.0005693",
+  "retained_usd": "0.0035275",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 2051,
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "task, reference or nonempty-field constraint failed"
+  }
+}

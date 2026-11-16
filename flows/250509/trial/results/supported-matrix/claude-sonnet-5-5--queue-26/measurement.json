@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-26",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-26",
+  "reused": false,
+  "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667",
+  "job": "raw-general-082e0f-38710e6d42b64a17ba49c460eb91afb1",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-38710e6d42b64a17ba49c460eb91afb1",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1041,
+    "output_tokens": 171
+  },
+  "raw_estimated_cost_usd": "0.003792",
+  "retained_usd": "0.003792",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4896,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status report that nothing new can be returned and the builder is blocked until Fable supplies the Proposal 6 title or changes the file. It asks for no action from Sol, and it contradicts Sol's pending reading that 5b and 6 are landed. That is worth surfacing, but recipient state is unknown and the pending work is substantial, so it does not justify a fresh flow. Deliver it when Sol is next active."
+      }
+    }
+  }
+}

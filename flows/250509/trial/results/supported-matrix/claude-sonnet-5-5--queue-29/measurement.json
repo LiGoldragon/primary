@@ -1,0 +1,29 @@
+{
+  "slot": "claude-sonnet-5-5--queue-29",
+  "model": "claude-sonnet-5-5",
+  "case": "queue-29",
+  "reused": false,
+  "prompt_sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce",
+  "job": "raw-general-082e0f-cfbec13b16cd4f1295e268ccbcff2001",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-cfbec13b16cd4f1295e268ccbcff2001",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 652,
+    "output_tokens": 153
+  },
+  "raw_estimated_cost_usd": "0.002834",
+  "retained_usd": "0.002834",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 4171,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message cancels a restart and a no-new-lifecycle window but explicitly says it is not launch permission. Trials still need frozen packets, native mapping verification, and fresh Field runtime/resource clearance. The recipient's state is unknown, and nothing in the message requires immediate action beyond continuing source-only preparations, so a fresh flow is not warranted."
+      }
+    }
+  }
+}
