@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 8213,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-78e71b64b7a44238a4fd55a9cfa6c596",
+    "ledger": {
+      "committed_usd": "7.352594355",
+      "job": "raw-general-082e0f-78e71b64b7a44238a4fd55a9cfa6c596",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f4a0cea9f4c52cc61cebc95c2d6e26ec8cab5d3c9d004aafda59af8669f227b8",
+      "reservation_sha256": "0e7ddc89a89fd447b43015cbacd2a2638946a255de42d0b1695edd81446d6fc7",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01116",
+      "unreserved_usd": "29.647405645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The recipient's state is unknown: it could be hot, asleep, or about to start with a fresh context. That state is essential for deciding whether to start a fresh flow or keep the message queued, especially since related custody work by Sol6c2a99 is already pending and incomplete.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01116",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2511,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1337,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-78e71b64b7a44238a4fd55a9cfa6c596",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f4a0cea9f4c52cc61cebc95c2d6e26ec8cab5d3c9d004aafda59af8669f227b8",
+      "retained_bound_usd": "0.01116",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 560,
+        "output_tokens": 446
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The recipient's state is unknown: it could be hot, asleep, or about to start with a fresh context. That state is essential for deciding whether to start a fresh flow or keep the message queued, especially since related custody work by Sol6c2a99 is already pending and incomplete."
+  }
+}

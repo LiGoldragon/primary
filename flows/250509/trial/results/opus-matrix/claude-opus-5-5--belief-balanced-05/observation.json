@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6998,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ad0c06c582574337bf29611ea549afcb",
+    "ledger": {
+      "committed_usd": "6.791510355",
+      "job": "raw-general-082e0f-ad0c06c582574337bf29611ea549afcb",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "70d1c8aaa44460ab3bf2431f9b97d0a780c1a3d3fbc5424f2fa238cd2bc6dddc",
+      "reservation_sha256": "5d9592f55ceaa19c63ac604476c6c5a7e7eda68f0399b86d27eeed0851540052",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.014052",
+      "unreserved_usd": "30.208489645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.014052",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 5074,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 3900,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-ad0c06c582574337bf29611ea549afcb",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "70d1c8aaa44460ab3bf2431f9b97d0a780c1a3d3fbc5424f2fa238cd2bc6dddc",
+      "retained_bound_usd": "0.014052",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1683,
+        "output_tokens": 366
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control."
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-05",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-05",
+  "reused": false,
+  "prompt_sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f",
+  "job": "raw-general-082e0f-ad0c06c582574337bf29611ea549afcb",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ad0c06c582574337bf29611ea549afcb",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1683,
+    "output_tokens": 366
+  },
+  "raw_estimated_cost_usd": "0.014052",
+  "retained_usd": "0.014052",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 6998,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "The Mind Nexus tracks issues and dependencies, and everything that touches the code and its version control."
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8211,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-87f908054718469eaa9fe4103d69ddab",
+    "ledger": {
+      "committed_usd": "7.364774355",
+      "job": "raw-general-082e0f-87f908054718469eaa9fe4103d69ddab",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "e6bafc5e2c5a1de353d3daa2a5066ebc3f39acb51ab0b4a759c92c7f731b12bc",
+      "reservation_sha256": "ab8da5de55816ac533a0ebfb3f09ba0ac42240548f7765b942f801518d57419c",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01218",
+      "unreserved_usd": "29.635225645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message only acknowledges custody and says audit and release are still incomplete, so it gives no new actionable trigger. It is anchored to ab92ed6, while the pending work notes local Lojix is now at 5d75a40, far beyond that. It also does not say which current report or head supersedes be2651, or whether k1oe can close. The pending reconciliation should absorb it, so this holds whether the recipient is hot, asleep, or fresh.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01218",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2511,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1337,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-87f908054718469eaa9fe4103d69ddab",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "e6bafc5e2c5a1de353d3daa2a5066ebc3f39acb51ab0b4a759c92c7f731b12bc",
+      "retained_bound_usd": "0.01218",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 560,
+        "output_tokens": 497
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message only acknowledges custody and says audit and release are still incomplete, so it gives no new actionable trigger. It is anchored to ab92ed6, while the pending work notes local Lojix is now at 5d75a40, far beyond that. It also does not say which current report or head supersedes be2651, or whether k1oe can close. The pending reconciliation should absorb it, so this holds whether the recipient is hot, asleep, or fresh."
+      }
+    }
+  }
+}

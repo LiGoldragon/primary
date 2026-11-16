@@ -1,0 +1,23 @@
+{
+  "slot": "claude-opus-5-5--queue-22",
+  "model": "claude-opus-5-5",
+  "case": "queue-22",
+  "reused": false,
+  "prompt_sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7",
+  "job": "raw-general-082e0f-beecc9f0bc8841a09462b8300b6f9927",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-beecc9f0bc8841a09462b8300b6f9927",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1090,
+    "output_tokens": 725
+  },
+  "raw_estimated_cost_usd": "0.01886",
+  "retained_usd": "0.01886",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 11079,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The recipient's state is unknown and decides the answer. The ruling is actionable work: revise Chronos Memory and Listener Emission, check with 29, republish, and send Psyche core Opus the links. But it depends on prior context ('your candidate', 'dc7b'). If Mind herdrNexus Sol is hot, a fresh flow would duplicate work. If it is asleep or would start with a fresh context, it may lack the candidates the ruling refers to. Without knowing which, StartFresh and KeepQueued cannot be told apart responsibly."
+  }
+}

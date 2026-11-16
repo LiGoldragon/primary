@@ -1,0 +1,1123 @@
+{
+  "binary": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
+  "processor_configuration": "/home/li/primary/flows/250509/trial/processor.json",
+  "output_directory": "/home/li/primary/flows/250509/trial/results/opus-matrix",
+  "maximum_slots_per_model": 60,
+  "http_cap_per_slot": 1,
+  "maximum_retained_usd": "10",
+  "initial_retained_usd": "0.741493125",
+  "reservation_bounds": {
+    "claude-opus-5-5": "0.10048"
+  },
+  "accepted_stop_reasons": [
+    "end_turn",
+    "refusal"
+  ],
+  "input_admission": {
+    "claude-opus-5-5": {
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "maximum_input_tokens": 20000
+    }
+  },
+  "slots": [
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-02",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-02",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-02.txt",
+      "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-03",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-03",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-03.txt",
+      "prompt_sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-04",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-04",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-04.txt",
+      "prompt_sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-05",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-05",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-05.txt",
+      "prompt_sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-06",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-06",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-06.txt",
+      "prompt_sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-07",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-07",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-07.txt",
+      "prompt_sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-08",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-08",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-08.txt",
+      "prompt_sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-09",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-09",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-09.txt",
+      "prompt_sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-10",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-10",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-10.txt",
+      "prompt_sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-11",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-11",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-11.txt",
+      "prompt_sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-12",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-12",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-12.txt",
+      "prompt_sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-13",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-13",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-13.txt",
+      "prompt_sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-14",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-14",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-14.txt",
+      "prompt_sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-15",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-15",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-15.txt",
+      "prompt_sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-16",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-16",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-16.txt",
+      "prompt_sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-17",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-17",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-17.txt",
+      "prompt_sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-18",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-18",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-18.txt",
+      "prompt_sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-19",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-19",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.txt",
+      "prompt_sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-20",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-20",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.txt",
+      "prompt_sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-21",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-21",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-21.txt",
+      "prompt_sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-22",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-22",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.txt",
+      "prompt_sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-23",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-23",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-23.txt",
+      "prompt_sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-24",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-24",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.txt",
+      "prompt_sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-25",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-25",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-25.txt",
+      "prompt_sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-26",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-26",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-26.txt",
+      "prompt_sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-27",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-27",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.txt",
+      "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-28",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-28",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.txt",
+      "prompt_sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-29",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-29",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.txt",
+      "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "identifier": "claude-opus-5-5--belief-balanced-30",
+      "model": "claude-opus-5-5",
+      "case": "belief-balanced-30",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.txt",
+      "prompt_sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-01",
+      "model": "claude-opus-5-5",
+      "case": "queue-01",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-01.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-01.txt",
+      "prompt_sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-02",
+      "model": "claude-opus-5-5",
+      "case": "queue-02",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-02.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-02.txt",
+      "prompt_sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-03",
+      "model": "claude-opus-5-5",
+      "case": "queue-03",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-03.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-03.txt",
+      "prompt_sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-04",
+      "model": "claude-opus-5-5",
+      "case": "queue-04",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-04.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-04.txt",
+      "prompt_sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-05",
+      "model": "claude-opus-5-5",
+      "case": "queue-05",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-05.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-05.txt",
+      "prompt_sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-06",
+      "model": "claude-opus-5-5",
+      "case": "queue-06",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-06.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-06.txt",
+      "prompt_sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-07",
+      "model": "claude-opus-5-5",
+      "case": "queue-07",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-07.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-07.txt",
+      "prompt_sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-08",
+      "model": "claude-opus-5-5",
+      "case": "queue-08",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-08.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-08.txt",
+      "prompt_sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-09",
+      "model": "claude-opus-5-5",
+      "case": "queue-09",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-09.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-09.txt",
+      "prompt_sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-10",
+      "model": "claude-opus-5-5",
+      "case": "queue-10",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-10.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-10.txt",
+      "prompt_sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-11",
+      "model": "claude-opus-5-5",
+      "case": "queue-11",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-11.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-11.txt",
+      "prompt_sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-12",
+      "model": "claude-opus-5-5",
+      "case": "queue-12",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-12.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-12.txt",
+      "prompt_sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-13",
+      "model": "claude-opus-5-5",
+      "case": "queue-13",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-13.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-13.txt",
+      "prompt_sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-14",
+      "model": "claude-opus-5-5",
+      "case": "queue-14",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-14.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-14.txt",
+      "prompt_sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-15",
+      "model": "claude-opus-5-5",
+      "case": "queue-15",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-15.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-15.txt",
+      "prompt_sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-16",
+      "model": "claude-opus-5-5",
+      "case": "queue-16",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-16.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-16.txt",
+      "prompt_sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-17",
+      "model": "claude-opus-5-5",
+      "case": "queue-17",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-17.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-17.txt",
+      "prompt_sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-18",
+      "model": "claude-opus-5-5",
+      "case": "queue-18",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-18.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-18.txt",
+      "prompt_sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-19",
+      "model": "claude-opus-5-5",
+      "case": "queue-19",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-19.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-19.txt",
+      "prompt_sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-20",
+      "model": "claude-opus-5-5",
+      "case": "queue-20",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-20.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-20.txt",
+      "prompt_sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-21",
+      "model": "claude-opus-5-5",
+      "case": "queue-21",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-21.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-21.txt",
+      "prompt_sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-22",
+      "model": "claude-opus-5-5",
+      "case": "queue-22",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-22.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-22.txt",
+      "prompt_sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-23",
+      "model": "claude-opus-5-5",
+      "case": "queue-23",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.txt",
+      "prompt_sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-24",
+      "model": "claude-opus-5-5",
+      "case": "queue-24",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-24.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-24.txt",
+      "prompt_sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-25",
+      "model": "claude-opus-5-5",
+      "case": "queue-25",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-25.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-25.txt",
+      "prompt_sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-26",
+      "model": "claude-opus-5-5",
+      "case": "queue-26",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-26.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-26.txt",
+      "prompt_sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-27",
+      "model": "claude-opus-5-5",
+      "case": "queue-27",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-27.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-27.txt",
+      "prompt_sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-28",
+      "model": "claude-opus-5-5",
+      "case": "queue-28",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-28.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-28.txt",
+      "prompt_sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-29",
+      "model": "claude-opus-5-5",
+      "case": "queue-29",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-29.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-29.txt",
+      "prompt_sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "identifier": "claude-opus-5-5--queue-30",
+      "model": "claude-opus-5-5",
+      "case": "queue-30",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-30.json",
+      "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-30.txt",
+      "prompt_sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    }
+  ],
+  "frozen_files": [
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/INSTALL.md",
+      "sha256": "6bd8957eee7af984168d01ab0668142a765d04fb181b724874d2303d234ddc49"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/REPORT.md",
+      "sha256": "2352339ec3e80216ec21ff16bacaf1e0b7b1440f61fb3bc29fbad81b87269a31"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/SHA256SUMS",
+      "sha256": "e83502b347c322f26c309a4d71d7dd45161fb4eb71b6075300d434c1203e89a7"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/SOURCES.md",
+      "sha256": "b141dba07f04fc777a9f044fbda24b7d82786d255be0197bd0c62ffc0762a76c"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/baseline.snapshot.jsonl",
+      "sha256": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/bootstrap-prompt.fixture.txt",
+      "sha256": "a104880d88f859681c839efcbde5728a89b65c1c3dda1ebca3c872aa308719af"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/consumer-inventory.json",
+      "sha256": "e22c9bf06e326419d077c0642774797c8c0413245545497eb634f4c1893122e1"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/frozen_raw_ledger.fixture.py",
+      "sha256": "b03f6c005567eb6e1930ab61044e0e0fefec21e8ad65e526af440662fb7ec97b"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+      "sha256": "f1efba4869f6c0f5ed4168a3496c2a94abf5a44e0feeed4e4e01bfb0b36a384f"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+      "sha256": "ff03df399ef583456e3b10c343a9c404c168638768c16c15be6339e49133be0d"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+      "sha256": "ed2333eedc6934cc161528e79871ff47c775fe624c5acdeee5b69b471ee5af27"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+      "sha256": "df589bf985e8c700ae3cad0a98e8c70fdddca3ad535e457cb4ba9315ccc61642"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/opus-policy.json",
+      "sha256": "e93274ba305f0fedba0c1edaa4388f7500d122cbf0ef4041c2184b6c7c3f2db0"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/opus-synthetic-proof.json",
+      "sha256": "7216ab9110ca63b650e0e7bf45db9938ec2a5fe3e1cffadbdaabc9d0db109839"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+      "sha256": "a2010528244b534b77b084b0b0b7f6636393b55b9f4e45cc3e6bc47ef0606006"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+      "sha256": "10b93e709fa761faf61f54d57737114b604b11a206dacb1e66cd058804965755"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+      "sha256": "c5e4009647705d175ec482a9848d8233023f14e47475f76acec7617443a45c84"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw-policy.json",
+      "sha256": "e29ad8545ebc79fcbda5341fed81cd85ba28f7916e4b8ebd7e3d7b196d6386ac"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+      "sha256": "00ced57948d0bdac8ff9a872973cc425ad42d25f9881e83f5ccdd518c25e44e2"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+      "sha256": "037c9aff5d3cba3cae26ebc53fe2b5b55bceb8a0464a976cc4373f6be99e096a"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/read-only-history-proof.json",
+      "sha256": "621b1bf3199dc0d672d8aa89b2e58f235f2473f5b5532ceda8f5e0d90f8e8470"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settle_job.py",
+      "sha256": "6f963b3d467820932affa05ea6cf8b3d8db45c23eac41db4edad2f1546b01d86"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+      "sha256": "d164258f6a4c3e8f9bc0a6587b43135e6f9b9a0df90e160d58c2b8c0a27efa5d"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-synthetic-proof.json",
+      "sha256": "44c2d522608409a4ce9c5c13c62ac2f5543f360f7fa1e954b134779da7895796"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+      "sha256": "99a849de42a58ea0d3767f6f8c208b2bf35ca03297e6656a7a537390085b1dcc"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/superseded-wide-opus-policy.json",
+      "sha256": "e2e9a75d55ba4a4658102256c3855f1d56ba7a845e0980ad9d8dd701f7afbf11"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/test_opus.py",
+      "sha256": "50cedc7f2fe5068455192021b9b5c218c2be04b03aa3ea0558709f575e4d3a34"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/test_raw.py",
+      "sha256": "9b0719c746995623d47cbc3674628e627875ab94b7ea1fec2a01773f3a6b5036"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/test_settlement.py",
+      "sha256": "b8bd395c19ffaa7d903dc17a3124b4b6fc590fff68676159e858079aa3069e36"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/tests.log",
+      "sha256": "fd6b23153c29a4d2a655fae364186051b79bea231d6de9a8d4ba184efb190faa"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/validate_history.py",
+      "sha256": "5db5d6da96b5f5143b53baf445018bd10465a866fde628314f6ccd3ab416627c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/cases/belief-cases.json",
+      "sha256": "1139a43744dc439a188c189c136c0ec883a581e6d8022d0401e3a50288c2967e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/cases/queue-cases.json",
+      "sha256": "b445918f9ee4e894b9337f9927dd19c57eb0db33b759aab0b90950f5f2cf6db8"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-04.json",
+      "sha256": "eed8a7de31fc5c827a50038f88e162226ca192203352255e46215ecc76936833"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-04.txt",
+      "sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-02.json",
+      "sha256": "566084420b0c33625ba993ca3013b891dec48ab3cd512cba7a782a25f402d9e6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-02.txt",
+      "sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-03.json",
+      "sha256": "7d8df73a66b0c814d46c8eb3d384b688be1f2efcf9b00e6991bfcb227e4ee0db"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-03.txt",
+      "sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-04.json",
+      "sha256": "22ca3480e39f03aee46d77c1e90d041d32011a897fb23744f25e6f346098d0e3"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-04.txt",
+      "sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-05.json",
+      "sha256": "3108cee15bf26850933d7f47e819ecefb172b10530ac06113141211ed896edbf"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-05.txt",
+      "sha256": "dda57787f6c14ec42971c3120c8a13afe6fe7e601d03978860a85aadbbff638f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-06.json",
+      "sha256": "ebe1fad903b4684b55eb0c2ab927172a567bb10829dc54a8bd9b437c1a637349"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-06.txt",
+      "sha256": "bc329403a3dd23c761dbb7d83a182c96fe5c277e653ea113dacd113656beed65"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-07.json",
+      "sha256": "e33a781c0c7d9f11a98a7227b562aa4faf9577d0b82537392af620414b3ddea7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-07.txt",
+      "sha256": "0ceaf97bc6cd5e10ab328b41f17cefc39dbfcae75c99952b274f72c5dc785e8c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-08.json",
+      "sha256": "550c93a58510b3de12c92816688290b053161d168f585a6c10a5351f45cb609f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-08.txt",
+      "sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-09.json",
+      "sha256": "3ce93ea138a355466ec6e8d6bd2a4e2020a4c6066932ba5ad7f6109a46e49cec"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-09.txt",
+      "sha256": "6c559555b321a47cf1b1e3f6a776b6cef87152c63400bb16dd55706ccaebd85c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-10.json",
+      "sha256": "6fb4d575e3ecafeb1fa517481002f607172913e97babd88de07a6c2579741501"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-10.txt",
+      "sha256": "f8ef8604949d914b3578bfdbab2d133245aa19753d0234c7981b89f3685b23dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-11.json",
+      "sha256": "ed634b9679507d8323abb2d4086e79568fd25e47167048b56fa51a54ad6c0d80"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-11.txt",
+      "sha256": "e6593efc0dba41913704818999365033fb8c274c2ab60b6452987143cc89b017"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-12.json",
+      "sha256": "56ee39b4be690bbd203d3375dbfb6338eed797271d324813f7ace5b64b2da369"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-12.txt",
+      "sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-13.json",
+      "sha256": "3f61ffd2aaf30491163295b4080fc1624d88cd442e7c604e5f47c130707419d5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-13.txt",
+      "sha256": "12476efd8bd1ebdd1a690aba1459cc6d8cae5f51cf7f9e19f49f624261b60b2a"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-14.json",
+      "sha256": "18da4d851fcdd6e9d50901786ac22014f8ab1d67955115cdebd0027dce1cdf30"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-14.txt",
+      "sha256": "b8a737310bbf240dc6828a2de035c990a5b218f455d10eaea157fbce68f7b0dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-15.json",
+      "sha256": "f9a4ff868ccf67412077b1d74a8738c0228af37e228e625245dfe32754a96f8e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-15.txt",
+      "sha256": "dde4d1e42f53aaf3e358407522f4bbb971d7435aed032befd664e40f739558f4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-16.json",
+      "sha256": "800d5488a6a46f1f2b574e893229b09f48c1257ceccfe92fefc7cc5fd4dc9bbb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-16.txt",
+      "sha256": "0cf0b20679552bb66e8b4d0259f405c472776fe26f9515884f4aa6418b6a75eb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-17.json",
+      "sha256": "d723adfeb10479c6f6ce19946bb60ad77901d75dc993665c6e1d7e1e2689a1a0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-17.txt",
+      "sha256": "d0eda2dea2aa96aaf410ce45997dae661debcb9accfe83125f910c9204bc2b0e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-18.json",
+      "sha256": "8481c3ee5213490294383110a7628213135e42942bf2c9fdfb107ac0ac2e1614"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-18.txt",
+      "sha256": "84498ed2d50351eb422f292d806f323301a20ccaa917081ed4c3a9625c169520"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.json",
+      "sha256": "78cb82fbbd3fe0e2fac0b7ff49f28869e47e7fa0f1ad729dd132df7f6627e161"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.txt",
+      "sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.json",
+      "sha256": "23fdb263788fd93199fac09189cad59a87a5baed650e027130d7ea6e8a7ec4dd"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.txt",
+      "sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-21.json",
+      "sha256": "9538c5a02add583899589038cdbd45d775393805ed5eeb04b7866cca0cca91c7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-21.txt",
+      "sha256": "ae848cf213a6972b55b1ef1aeea3173637f9cdc2318b909d41eb6b8ad76dc3d9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.json",
+      "sha256": "70b04250b0014ab2a3138c84fc741b7e64d709ec997338af57df8bc4a6cf8bb1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.txt",
+      "sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-23.json",
+      "sha256": "ba9ef70042666ebbfed374ca9aee65237f7f1a716a9f777824a5d57a72466fc0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-23.txt",
+      "sha256": "d28de3db049b49096a04e2ea131f67bf3eab328c36d6e1c78026dea319f2e5be"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.json",
+      "sha256": "9578ee941070951d34d620f42369af5de403dbbe20190ef9f19ecaf4a16ed5e5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.txt",
+      "sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-25.json",
+      "sha256": "9c0b6f2cdb332bd1aefe87511a29e1e97e41b3dd52faaed26599d4b32195467c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-25.txt",
+      "sha256": "5e18d24421040bd8ce419be3054545d164415341898524815f0be84cd97a00c1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-26.json",
+      "sha256": "fb489f653f40c38b736e33868b121e29ddb658b62493baa224b7fbc83305f7a3"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-26.txt",
+      "sha256": "f19716deec09f457dcc76095d776247b430f2755c672d1479ebb436b794deea0"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.json",
+      "sha256": "0505c8255cc7d1037e0b1a8f6254b0eeeefa31a1856bbb0a62892e516cd955f4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.txt",
+      "sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.json",
+      "sha256": "207ca68fdfa50c962c6f6163601fc9180096a6800a8e791e802ce3f2e92c846d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.txt",
+      "sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.json",
+      "sha256": "fde936d25ea4de03e18584871127f3cd63c66b9f323baeeda93de75a3734457f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.txt",
+      "sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.json",
+      "sha256": "29912ce007bb04a2aa4220ec194ef1df6c803cbf161a6a7108f360f4e2ee9100"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.txt",
+      "sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-01.json",
+      "sha256": "1ac2dcc9a4d6477ba84e1fa88650c44ec6fd7cd2675f89db45d2d60a6ed46698"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-01.txt",
+      "sha256": "cbfa2935f8dc4b9806475b5c45c968ebfb699535ade27a890894fd939a2f6997"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-02.json",
+      "sha256": "0e567478624797b4e0e3b70be40622801897f94abdb4237e814c8bafb4c62ce5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-02.txt",
+      "sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-03.json",
+      "sha256": "f41602a0be48c2b64b9bd7bc2ffbbdc70a6b7ef472afc0eb4db946d970482d9d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-03.txt",
+      "sha256": "4146f83879dd37aaad826c0a17ff10350b84c4ece7597ca0c5d3e4b48c7554dc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-04.json",
+      "sha256": "fb40789a73576821a20f0f7206756d83647fd3c39a503b8d8e809410b65f02b2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-04.txt",
+      "sha256": "842b997722eb36daf80a2ca286a70e17dee25634b3f248f8a0b8b4c726f4b462"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-05.json",
+      "sha256": "f493a01c8b33264fdd0cf0899b535faea951f46f5e160c22d5524ac0b3d05c6d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-05.txt",
+      "sha256": "26dbdbb2957f87345068f6fb8a24b6c507b57896f16b7d64a32bdc10024e9611"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-06.json",
+      "sha256": "8e4e3e7768dc072145755a5a2cdcb176a572d36f82ea7f62850ac02787e7debd"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-06.txt",
+      "sha256": "335fb168bc40031d14f61321b8fd32522126061f9051ce8fcb5711c860e9ed1c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-07.json",
+      "sha256": "cabac185e068ba49bc6c17c341a11e4b1f070ff75807abe203c4ce3b688062a3"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-07.txt",
+      "sha256": "b765b125f169444c63496782cf1113715c1f2954d1f5abf97147996d5b1269fa"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-08.json",
+      "sha256": "30778ac410cb6ef34d82387182f5d14a02971b3f8ddac3514b1572686c154ab8"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-08.txt",
+      "sha256": "0f2d6e06ef0a125b2bb676be7a0950d6976284ec3b1d10d9911b921054844ac5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-09.json",
+      "sha256": "d8aa5ff2c5ff40354215317a36be036d68993a2ff0ac9395655487e7108b0652"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-09.txt",
+      "sha256": "deb918b3b8ed634cb4ac40e4f7d72b267e69eb9c379e496d3660661e90aa5571"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-10.json",
+      "sha256": "bb9580f0dfd314b25b29ecf83f12cb7960b11bdd5693c98d66f367d2e9f3b70d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-10.txt",
+      "sha256": "12c4ebadf8b96787b327d4b5aab1e9de4cb5e829dfab4c63bfa86706b44bbcb5"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-11.json",
+      "sha256": "98f191e4e3a072af30c89e43602785920950e82d16df971036e3592984dcb858"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-11.txt",
+      "sha256": "37ff4e06d904d1064f11001a33244f18f14184eb7e522213738e07e155210a2c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-12.json",
+      "sha256": "0b65e81b625c71981244a514bcd9a0d7e3bf37872d6bb8d5e1e89410a089c1fc"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-12.txt",
+      "sha256": "1171d9995a4a11a59893e6f0524b7a99d240984256e56cb1d107a5fabc34d78e"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-13.json",
+      "sha256": "6de28a4afb83e9edfa9aa04ff35aa1198bf037e53ffa934dde6c474276c81102"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-13.txt",
+      "sha256": "ee448f096b33c33209f9a2a12aab10cb5c2fc187f5ab9f4666c0c4275982f277"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-14.json",
+      "sha256": "f4fb0884f3228074ed8d852a25df9b775a1085db890295f28e229b87a474678d"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-14.txt",
+      "sha256": "54c29fd84a7fb43a9cd85d2454a4272d9ac0867cde3ba9b27e573c23a1e9fedb"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-15.json",
+      "sha256": "c9207f90c3ee2974e9a51bcf949596ea33c0ebe16185a680105535b4d3fef794"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-15.txt",
+      "sha256": "98c8c83a8d0bb94c5a078f75bbd638cd8d3862edfacc2f3c47f8352c28e7b38b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-16.json",
+      "sha256": "5792d2aa4e834d83a936378895986a276595cff4741ff011d8720381a0925dc3"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-16.txt",
+      "sha256": "757eb6146fa3341578c528f16e1d3e2adf4c5991f876e3e939fb41f682445a96"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-17.json",
+      "sha256": "678034da559b5b7b95c3f9c81ba1ad5b778c0bfe83756e6d3b40ce7d796f1f2f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-17.txt",
+      "sha256": "3b9f10651571d737d6db5a558ed9b5ce7d881f59b515030b1f3973e5ce504221"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-18.json",
+      "sha256": "e9f0bf9491d46f9cd07c55fe2649b79f607293ec74bfeb5633c0335fbff91d86"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-18.txt",
+      "sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-19.json",
+      "sha256": "3041c375b70100c18ed8ccd882e520bf5b89e9014479e5a7daef7570cb920a71"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-19.txt",
+      "sha256": "ffeec0c3aee9da51506e1d3b3d6aef2714921e22dac88d3b026c08667b81c25c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-20.json",
+      "sha256": "3c465b1a96d56c2b2be595fd5e8e3730309d5b3fe146991b8930ec6b6a76979f"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-20.txt",
+      "sha256": "94c3c5d809d4778d7201889a6bb1d95916cbd5ee15acdea37aed68a261efae8b"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-21.json",
+      "sha256": "5aaa0e30357be54b2bccdae6801fd0eea302fbb6010aae3d10846c17b6ca89e7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-21.txt",
+      "sha256": "5f47c4070fc38254d8bfed92b13662ba58ced4114462f84218c81b829db3bd56"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-22.json",
+      "sha256": "104a0356ce2b02c32b15ada3180b3d0d800bcf1a46ecc2a615314f3297f727ce"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-22.txt",
+      "sha256": "a824f79bebb5e44c8eb639fb09e7eebcef549a40960bd93dc0058cad118f5ba7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.json",
+      "sha256": "75ca124dbbda6973002f45d979da576ecb2ccae75232d9c371a9b39bfba69065"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.txt",
+      "sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-24.json",
+      "sha256": "72a62a5d069e96354021b8b3090395fae3f0f2b425fb83f5201812faefe5a70c"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-24.txt",
+      "sha256": "0f7439ba2585a9025ca838c72c818c87399f0c7ecc02c95e1a6e2a570d956cef"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-25.json",
+      "sha256": "0eed1de4bdd51ba078ea17e5680ebc1b5a22f89a263d2999bebde3c09548b9dd"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-25.txt",
+      "sha256": "70c4f36bc7e26ba332ff15dc5d98e8f1935b964d06fd4e0413aff7a9e363cd38"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-26.json",
+      "sha256": "30799d47bced039754ca7ac5f4f446bf3fe44517fb4db72b34866394ce833765"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-26.txt",
+      "sha256": "21eeb1fedc75477305dc59aa73bd981c9b64857a4e73da26dd68ba53d39d9667"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-27.json",
+      "sha256": "0bd9ac8633137459eae513fc2fae3c9603f27f64d2456864d9eef6b033e82225"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-27.txt",
+      "sha256": "88cc0abe219ecb344188cf70f9b5b9e591e400b885b2644a949eaa29650b0af6"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-28.json",
+      "sha256": "e8f142f85185926ad9013c72e8c6e48d120cffd0693cb8bd81f2f74d26a9a295"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-28.txt",
+      "sha256": "d7b1f72cca2c27cbdc2f2e07274e8751f083cc94c34532ffda792a72017796b7"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-29.json",
+      "sha256": "00bc1f58f2119774f7886ce20ceac2cef88ce047192b892491d58d38cc4dcbe1"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-29.txt",
+      "sha256": "8b1b246518ccf796a495c56d6a9abae6f17039e886025baa9033e4317cc3efce"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-30.json",
+      "sha256": "a9bd6f347e08070afb8eba88a1165f43f1046437f4d11447e70f39abb3091281"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-30.txt",
+      "sha256": "79dd767bc83c5552c758b6f099d8b8e54eb6e6d578b1b2200789ccc2e27108b2"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/processor.json",
+      "sha256": "c9ba9ea8815fe059f7777a97c8fc75ee345f7ae3a67e3b768b500b0be4e99dc9"
+    },
+    {
+      "path": "/home/li/primary/flows/250509/trial/suite.py",
+      "sha256": "80bd322decf00d25d76b04432ec6524e9550102db96d526a494552d07204c44a"
+    },
+    {
+      "path": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
+      "sha256": "ecd75629f915161da4c7b476a4087b9125cbc008286c812c11ace8ae158df73c"
+    }
+  ]
+}

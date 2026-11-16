@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7101,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-9501ccdb02dd4ba3ac1702d87ad1ed31",
+    "ledger": {
+      "committed_usd": "7.142454355",
+      "job": "raw-general-082e0f-9501ccdb02dd4ba3ac1702d87ad1ed31",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "079b989f704c7f45b2888cf0ff09de43cfe42de1ef3aa2839a8be67b0bef0fb0",
+      "reservation_sha256": "efd091303d2b976425e4d948a45d6f6c7456de06764ced2d2fc75074d356e44f",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.010008",
+      "unreserved_usd": "29.857545645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is an informational status relay that explicitly requests no runtime action, secret duplication, or browser restart. It is relevant context for the pending low-priority token-input research but does not unblock or require urgent work. It can wait for the recipient's next ordinary turn, so the recipient's unknown hot or asleep state is not essential to this judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.010008",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3343,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2169,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-9501ccdb02dd4ba3ac1702d87ad1ed31",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "079b989f704c7f45b2888cf0ff09de43cfe42de1ef3aa2839a8be67b0bef0fb0",
+      "retained_bound_usd": "0.010008",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 842,
+        "output_tokens": 332
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is an informational status relay that explicitly requests no runtime action, secret duplication, or browser restart. It is relevant context for the pending low-priority token-input research but does not unblock or require urgent work. It can wait for the recipient's next ordinary turn, so the recipient's unknown hot or asleep state is not essential to this judgment."
+      }
+    }
+  }
+}

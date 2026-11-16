@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6827,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1fc551d9caaa4ea9931c5bc6c42ec888",
+    "ledger": {
+      "committed_usd": "7.247366355",
+      "job": "raw-general-082e0f-1fc551d9caaa4ea9931c5bc6c42ec888",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "bf3d4bf9d77b40c813c43fc16015bde501b5ce33c6aa2535ec31d96519583be8",
+      "reservation_sha256": "59a4c35a5b20fadb314655cc3f7bfe488a34f06d65c36528a951e75f3da5ca42",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.010108",
+      "unreserved_usd": "29.752633645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status report. It says wg2f is complete, the card was untouched, the worker stopped, and the d2is idle listener is still waiting for a genuine session event. It grants no new scope: the wider pause holds and h6zj deployment is not granted. It adds nothing beyond the existing d2is pending work that would justify a fresh flow, so the recipient's unknown state does not change the judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.010108",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3449,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2275,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-1fc551d9caaa4ea9931c5bc6c42ec888",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "bf3d4bf9d77b40c813c43fc16015bde501b5ce33c6aa2535ec31d96519583be8",
+      "retained_bound_usd": "0.010108",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 887,
+        "output_tokens": 328
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status report. It says wg2f is complete, the card was untouched, the worker stopped, and the d2is idle listener is still waiting for a genuine session event. It grants no new scope: the wider pause holds and h6zj deployment is not granted. It adds nothing beyond the existing d2is pending work that would justify a fresh flow, so the recipient's unknown state does not change the judgment."
+      }
+    }
+  }
+}

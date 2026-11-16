@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8649,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-fe8e10329a1d491bae34fc970106e9c4",
+    "ledger": {
+      "committed_usd": "7.298818355",
+      "job": "raw-general-082e0f-fe8e10329a1d491bae34fc970106e9c4",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "de325c89006dd2fed02d6773ccf318f0a97a8d6a2c445d67b5e14a90897c1f30",
+      "reservation_sha256": "a43b68fed9640a262c827f1b7183453cb38de9d1ea249c1442f8f74f65ad5bd9",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.012064",
+      "unreserved_usd": "29.701181645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status update on the existing ouranos battery work. It reports Fable d5jk's one-time force-discharge authorization and a worker already preparing it, and it notes side items (np67 inventory request, update candidate, idle lock listener) that are already handled or waiting. All of this continues the pending battery lanes under x01q and d2is. A fresh flow would lose that context and risk duplicating the work, and the recipient's unknown state does not change this judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.012064",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3584,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2410,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-fe8e10329a1d491bae34fc970106e9c4",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "de325c89006dd2fed02d6773ccf318f0a97a8d6a2c445d67b5e14a90897c1f30",
+      "retained_bound_usd": "0.012064",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 921,
+        "output_tokens": 419
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status update on the existing ouranos battery work. It reports Fable d5jk's one-time force-discharge authorization and a worker already preparing it, and it notes side items (np67 inventory request, update candidate, idle lock listener) that are already handled or waiting. All of this continues the pending battery lanes under x01q and d2is. A fresh flow would lose that context and risk duplicating the work, and the recipient's unknown state does not change this judgment."
+      }
+    }
+  }
+}

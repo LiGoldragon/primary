@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 9506,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-a88f2f9b5164452eb959437fe6e289b3",
+    "ledger": {
+      "committed_usd": "7.454026355",
+      "job": "raw-general-082e0f-a88f2f9b5164452eb959437fe6e289b3",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "fa44b760232163b5e5e92ca540e8d1f1ee9e0b0ceea70452a2a4767507f45ba5",
+      "reservation_sha256": "d173396b944c47ed50c16bdf7484cc7440615f5732f3946a951b2ece12113c9e",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.014712",
+      "unreserved_usd": "29.545973645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message only reports that hrk6 and k9o8 remain blocked because Proposal 6 in aspect-nexuses.md still lacks a title. It produces nothing to act on: no URL, version, retained HTML, status-prepared source or receipt, and the source is unchanged. The pending republication work is gated on that same missing title, so a fresh flow would have nothing new to do. It can stay queued until the title lands or the recipient next runs. The recipient's unknown hot, asleep or fresh state does not change this outcome.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.014712",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3855,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2681,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-a88f2f9b5164452eb959437fe6e289b3",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "fa44b760232163b5e5e92ca540e8d1f1ee9e0b0ceea70452a2a4767507f45ba5",
+      "retained_bound_usd": "0.014712",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1043,
+        "output_tokens": 527
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message only reports that hrk6 and k9o8 remain blocked because Proposal 6 in aspect-nexuses.md still lacks a title. It produces nothing to act on: no URL, version, retained HTML, status-prepared source or receipt, and the source is unchanged. The pending republication work is gated on that same missing title, so a fresh flow would have nothing new to do. It can stay queued until the title lands or the recipient next runs. The recipient's unknown hot, asleep or fresh state does not change this outcome."
+      }
+    }
+  }
+}

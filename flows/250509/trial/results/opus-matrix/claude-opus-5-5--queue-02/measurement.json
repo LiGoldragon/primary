@@ -1,0 +1,29 @@
+{
+  "slot": "claude-opus-5-5--queue-02",
+  "model": "claude-opus-5-5",
+  "case": "queue-02",
+  "reused": false,
+  "prompt_sha256": "7a6a98b8901fb4288468ce87854d0e01ce3f04b74ca7d8e62f32fb8ba42eebde",
+  "job": "raw-general-082e0f-cb7a064c056c43a2a70dec0340fb7292",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-cb7a064c056c43a2a70dec0340fb7292",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 842,
+    "output_tokens": 666
+  },
+  "raw_estimated_cost_usd": "0.016688",
+  "retained_usd": "0.016688",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 10699,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The message is a self-contained lane handoff: the sender stops all browser work, so no one else holds the browser lane. It points to flows/d94525/browser-trial.md and a scratch pointer, which lets a fresh context pick it up without prior history. It also transfers the deferred token-input research, which overlaps pending item j5ua. The recipient's hot or asleep status is unknown, but that does not change whether the message merits a fresh flow, so it is not essential here."
+      }
+    }
+  }
+}

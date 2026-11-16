@@ -1,0 +1,21 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-27",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-27",
+  "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57",
+  "outcome": {
+    "kind": "RefusedBeforeCall",
+    "reason": "ConservativeInputBound"
+  },
+  "input_admission_counts": {
+    "prompt_utf8_bytes": 42509,
+    "system_utf8_bytes": 150,
+    "framing_allowance": 1024,
+    "conservative_local_total": 43683
+  },
+  "paid_call": false,
+  "job": null,
+  "stop_reason": null,
+  "raw_estimated_cost_usd": "0",
+  "retained_usd": "0"
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7207,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-e0a8a8b38e3c40c19d784e895a53c22f",
+    "ledger": {
+      "committed_usd": "7.390574355",
+      "job": "raw-general-082e0f-e0a8a8b38e3c40c19d784e895a53c22f",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "9155c12c1b83d207998b1932d3680ad0235cc54e3a0ed2abc2a658ec42242e38",
+      "reservation_sha256": "a65754a37dbea6a736185a2260084546c51d8a2166f7200484ce2a6255c50bfc",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01144",
+      "unreserved_usd": "29.609425645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status report with no new request: it lists catalog facts for Chronos and Listener and says no publication is pending. Those facts serve the already-pending ruling to republish the books. They can be delivered with that work, so knowing the recipient's state is not needed to decide.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01144",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3977,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2803,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-e0a8a8b38e3c40c19d784e895a53c22f",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "9155c12c1b83d207998b1932d3680ad0235cc54e3a0ed2abc2a658ec42242e38",
+      "retained_bound_usd": "0.01144",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1090,
+        "output_tokens": 354
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status report with no new request: it lists catalog facts for Chronos and Listener and says no publication is pending. Those facts serve the already-pending ruling to republish the books. They can be delivered with that work, so knowing the recipient's state is not needed to decide."
+      }
+    }
+  }
+}

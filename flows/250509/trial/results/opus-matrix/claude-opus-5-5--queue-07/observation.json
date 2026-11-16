@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 5659,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-188246696a6e43a39076c91832d46cb9",
+    "ledger": {
+      "committed_usd": "7.214930355",
+      "job": "raw-general-082e0f-188246696a6e43a39076c91832d46cb9",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "69460295c90122a646ce98b6961cdec3070655b8a615c521a777d3520a3d3df4",
+      "reservation_sha256": "e92ed394a6719fb81368eaa8aaba9b94ea31417bb3577910897e22c5900b68c9",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.00908",
+      "unreserved_usd": "29.785069645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"Pending work shows the d2is authorization is already being carried out. Step 1 is complete and appended as field-data.md section 7. The step 2 event-driven listener is acknowledged and waiting for a genuine Lock or IdleHint event. A fresh flow would duplicate or disrupt the work in progress. The wider pause still holds, so the unknown recipient state does not change this.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.00908",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3461,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2287,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-188246696a6e43a39076c91832d46cb9",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "69460295c90122a646ce98b6961cdec3070655b8a615c521a777d3520a3d3df4",
+      "retained_bound_usd": "0.00908",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 895,
+        "output_tokens": 275
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "Pending work shows the d2is authorization is already being carried out. Step 1 is complete and appended as field-data.md section 7. The step 2 event-driven listener is acknowledged and waiting for a genuine Lock or IdleHint event. A fresh flow would duplicate or disrupt the work in progress. The wider pause still holds, so the unknown recipient state does not change this."
+      }
+    }
+  }
+}

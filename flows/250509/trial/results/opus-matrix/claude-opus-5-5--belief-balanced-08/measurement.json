@@ -1,0 +1,29 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-08",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-08",
+  "reused": false,
+  "prompt_sha256": "5d2621bfa59a723d0872beef1320424559278ffc2be69029f7bfe008bfa36020",
+  "job": "raw-general-082e0f-afd2e111dfde43f6abd7d401956e3176",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-afd2e111dfde43f6abd7d401956e3176",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2628,
+    "output_tokens": 568
+  },
+  "raw_estimated_cost_usd": "0.021872",
+  "retained_usd": "0.021872",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 8724,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Usage is fuel, and fuel is life or death: a machine out of usage stops."
+      }
+    }
+  }
+}

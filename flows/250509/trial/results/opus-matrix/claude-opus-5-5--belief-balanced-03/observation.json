@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8638,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-ab2503177d4248fcba895b1db3667ae7",
+    "ledger": {
+      "committed_usd": "6.758634355",
+      "job": "raw-general-082e0f-ab2503177d4248fcba895b1db3667ae7",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "963d5441de2c214e5976b3297753a44751e1748e9b44647ffd4f89452ebcd8e6",
+      "reservation_sha256": "d9228df9f9fd76d350ae2eab78151fec1f4c8d86011b1d5f90959ac251950a9b",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.019",
+      "unreserved_usd": "30.241365645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.019",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 5843,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 4669,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-ab2503177d4248fcba895b1db3667ae7",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "963d5441de2c214e5976b3297753a44751e1748e9b44647ffd4f89452ebcd8e6",
+      "retained_bound_usd": "0.019",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1985,
+        "output_tokens": 553
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal."
+      }
+    }
+  }
+}

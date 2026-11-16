@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 4193,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5671e5c46ae340c48f0fff9b88de4823",
+    "ledger": {
+      "committed_usd": "6.958294355",
+      "job": "raw-general-082e0f-5671e5c46ae340c48f0fff9b88de4823",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "75d499f4543c46b73eded1c2fb48d0145c4a8cfc437627adbb75ae7c3c3d5809",
+      "reservation_sha256": "a3f2eb72e5dc8cffc26679bb31f84d4cc8ebc8ce0556e9a9a21162f7287b6b20",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.025204",
+      "unreserved_usd": "30.041705645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Repeats\",\"line\":\"vision:belief-modules:0:L107\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.025204",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 15951,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 14777,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-5671e5c46ae340c48f0fff9b88de4823",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "75d499f4543c46b73eded1c2fb48d0145c4a8cfc437627adbb75ae7c3c3d5809",
+      "retained_bound_usd": "0.025204",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 5941,
+        "output_tokens": 72
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "vision:belief-modules:0:L107",
+        "wording": null
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 4987,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b8b51129cd28463ba974ec6ccb54c5dc",
+    "ledger": {
+      "committed_usd": "7.098954355",
+      "job": "raw-general-082e0f-b8b51129cd28463ba974ec6ccb54c5dc",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "3642d11ce9bfa75c41ad34e99c85865b7799fab784e4a1b267a7633ec2395350",
+      "reservation_sha256": "cd00b262a0ce21ee8f1c2af51f01bb5fc478a0168a76e1e9afbc3ec442cb40f1",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.028224",
+      "unreserved_usd": "29.901045645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Collides\",\"line\":\"vision:complex-v1:L100\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.028224",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 16007,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 14833,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-b8b51129cd28463ba974ec6ccb54c5dc",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "3642d11ce9bfa75c41ad34e99c85865b7799fab784e4a1b267a7633ec2395350",
+      "retained_bound_usd": "0.028224",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 6111,
+        "output_tokens": 189
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Collides",
+        "line": "vision:complex-v1:L100",
+        "wording": null
+      }
+    }
+  }
+}

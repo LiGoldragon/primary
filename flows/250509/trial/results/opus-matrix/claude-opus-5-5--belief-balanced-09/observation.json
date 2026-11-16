@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 4391,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d19bd427365942cd85f7e87ee7e73323",
+    "ledger": {
+      "committed_usd": "6.871246355",
+      "job": "raw-general-082e0f-d19bd427365942cd85f7e87ee7e73323",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "eae5c05872c080c7ad47f904d1c691d1f82b1f095a7c92cd6a6db53765ad621e",
+      "reservation_sha256": "a6684b5614f7bcffa70316d19294bc3995cbc58fef0e2d37e4fa362c4bb27bff",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.011164",
+      "unreserved_usd": "30.128753645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Repeats\",\"line\":\"intent:belief-modules:0:L14\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.011164",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 7340,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 6166,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-d19bd427365942cd85f7e87ee7e73323",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "eae5c05872c080c7ad47f904d1c691d1f82b1f095a7c92cd6a6db53765ad621e",
+      "retained_bound_usd": "0.011164",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2451,
+        "output_tokens": 68
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "intent:belief-modules:0:L14",
+        "wording": null
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6309,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-39f25b0aec0f437dbf77de5a46000bd3",
+    "ledger": {
+      "committed_usd": "7.193350355",
+      "job": "raw-general-082e0f-39f25b0aec0f437dbf77de5a46000bd3",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "765cf0f068b7905208887f0370bef8d563da452cdbced545bb737889b6184589",
+      "reservation_sha256": "5b5681df76720dbd4f1e3895ba264ae8290ae55288490022fdd14e85979ebe44",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01",
+      "unreserved_usd": "29.806649645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The queued x01q message is stale. Pending work shows the x01q investigation already completed and was reported to Opus. It was superseded by the d2is follow-ups: step 1 is done and step 2's event-driven listener is acknowledged and waiting. A fresh flow from this message would repeat finished work or conflict with the active listener and the wider pause. The recipient's hot or asleep status does not change this, so it is not essential.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3461,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2287,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-39f25b0aec0f437dbf77de5a46000bd3",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "765cf0f068b7905208887f0370bef8d563da452cdbced545bb737889b6184589",
+      "retained_bound_usd": "0.01",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 895,
+        "output_tokens": 321
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The queued x01q message is stale. Pending work shows the x01q investigation already completed and was reported to Opus. It was superseded by the d2is follow-ups: step 1 is done and step 2's event-driven listener is acknowledged and waiting. A fresh flow from this message would repeat finished work or conflict with the active listener and the wider pause. The recipient's hot or asleep status does not change this, so it is not essential."
+      }
+    }
+  }
+}

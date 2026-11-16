@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8207,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5058f4d314e44d66810f0336545b6bda",
+    "ledger": {
+      "committed_usd": "7.311478355",
+      "job": "raw-general-082e0f-5058f4d314e44d66810f0336545b6bda",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "7cc0ff4fff17fc45463f64f896c2d558fdf8ee638f7416477ab4de77c4a5ecd4",
+      "reservation_sha256": "fc9938dce0500f506f979a4125a5c0967b59505808139346b521c1b0890b57c1",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01266",
+      "unreserved_usd": "29.688521645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status and handover report, not a new request. Its own work is quiescent, its continuation Taskhaca is already accepted with no resend, d5jk stays open, the ub5l/2zei holds continue, and all gates are preserved. Nothing in it needs a fresh flow, and it does not change the pending battery follow-ups or the wider pause. It can wait in the queue for the existing handover (flows/66f659/handover.md) to be read. The recipient's unknown state does not matter for this judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01266",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3605,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2431,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-5058f4d314e44d66810f0336545b6bda",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "7cc0ff4fff17fc45463f64f896c2d558fdf8ee638f7416477ab4de77c4a5ecd4",
+      "retained_bound_usd": "0.01266",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 965,
+        "output_tokens": 440
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status and handover report, not a new request. Its own work is quiescent, its continuation Taskhaca is already accepted with no resend, d5jk stays open, the ub5l/2zei holds continue, and all gates are preserved. Nothing in it needs a fresh flow, and it does not change the pending battery follow-ups or the wider pause. It can wait in the queue for the existing handover (flows/66f659/handover.md) to be read. The recipient's unknown state does not matter for this judgment."
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7967,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-c06795d2a9a6462d9f07d1334fc13f8d",
+    "ledger": {
+      "committed_usd": "7.510598355",
+      "job": "raw-general-082e0f-c06795d2a9a6462d9f07d1334fc13f8d",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "1c009bdafac6e781d7b7b2fb7b6ca59b3dca892e6cc0eba3f05f5aca2be7f75d",
+      "reservation_sha256": "4d0dc7212a5a2ede97853090bf6df1c03f3226a0ae482e3570bdac62aac9d12e",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.011532",
+      "unreserved_usd": "29.489401645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is informational and blocked on prerequisites: medium-effort semantics are unverified, 12-slot availability is not established, and declarations, cleanup, and capacity still need Core/Field review. Frozen packets also come before scheduling. Pending work confirms that Field runtime/resource clearance is still required and that cancelling the no-new-lifecycle window is not launch permission. Nothing here is urgent enough to justify a fresh flow, so the recipient's unknown state does not change the outcome.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.011532",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2804,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1630,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-c06795d2a9a6462d9f07d1334fc13f8d",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "1c009bdafac6e781d7b7b2fb7b6ca59b3dca892e6cc0eba3f05f5aca2be7f75d",
+      "retained_bound_usd": "0.011532",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 653,
+        "output_tokens": 446
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is informational and blocked on prerequisites: medium-effort semantics are unverified, 12-slot availability is not established, and declarations, cleanup, and capacity still need Core/Field review. Frozen packets also come before scheduling. Pending work confirms that Field runtime/resource clearance is still required and that cancelling the no-new-lifecycle window is not launch permission. Nothing here is urgent enough to justify a fresh flow, so the recipient's unknown state does not change the outcome."
+      }
+    }
+  }
+}

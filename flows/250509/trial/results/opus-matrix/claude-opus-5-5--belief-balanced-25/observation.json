@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 7328,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-2f4a00f326734f97bd038c2fff2d2b04",
+    "ledger": {
+      "committed_usd": "7.118046355",
+      "job": "raw-general-082e0f-2f4a00f326734f97bd038c2fff2d2b04",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "6470c3f95e47162aecb2017b3cb31786bca36ee99fb466851cbdc95bc2a9c981",
+      "reservation_sha256": "f32a6e7f2d8175f375f93594d2c5f92080244a5a2a37e3135fbb2d40d56ed119",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.019092",
+      "unreserved_usd": "29.881953645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Elsewhere\",\"module\":\"intent:design:0\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.019092",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 7980,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 6806,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-2f4a00f326734f97bd038c2fff2d2b04",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "6470c3f95e47162aecb2017b3cb31786bca36ee99fb466851cbdc95bc2a9c981",
+      "retained_bound_usd": "0.019092",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2838,
+        "output_tokens": 387
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "intent:design:0",
+        "wording": null
+      }
+    }
+  }
+}

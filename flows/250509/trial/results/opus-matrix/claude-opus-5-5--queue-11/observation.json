@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7811,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-e29cb886045a4e268b5931fdfd37c17f",
+    "ledger": {
+      "committed_usd": "7.260454355",
+      "job": "raw-general-082e0f-e29cb886045a4e268b5931fdfd37c17f",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "d5e591a068f3c23d61452343d9f3d2ee42d169b18e70a6c9b29a22ea5846ada8",
+      "reservation_sha256": "a442996fcde2471b3ba86c0071c6e3a15ac337aff580d8982b27e926f8b816a7",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.013088",
+      "unreserved_usd": "29.739545645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message reports first-step update inventory work that Field already owns inside existing flow 1e8210 (output /home/li/primary/flows/1e8210/update-inventory.md). Field is already coordinating with Mind0btn to avoid duplicating workers. The d2is battery listener stays active in the same flow, and wider pauses still hold. Nothing here calls for a separate fresh flow, so the unknown recipient state does not change the judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.013088",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3537,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2363,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-e29cb886045a4e268b5931fdfd37c17f",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "d5e591a068f3c23d61452343d9f3d2ee42d169b18e70a6c9b29a22ea5846ada8",
+      "retained_bound_usd": "0.013088",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 907,
+        "output_tokens": 473
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message reports first-step update inventory work that Field already owns inside existing flow 1e8210 (output /home/li/primary/flows/1e8210/update-inventory.md). Field is already coordinating with Mind0btn to avoid duplicating workers. The d2is battery listener stays active in the same flow, and wider pauses still hold. Nothing here calls for a separate fresh flow, so the unknown recipient state does not change the judgment."
+      }
+    }
+  }
+}

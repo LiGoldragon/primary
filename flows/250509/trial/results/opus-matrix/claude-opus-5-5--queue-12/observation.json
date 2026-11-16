@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7854,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f634f7798de04bf5a35e971ee972612a",
+    "ledger": {
+      "committed_usd": "7.273582355",
+      "job": "raw-general-082e0f-f634f7798de04bf5a35e971ee972612a",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "3dcf98bebfd28eb2517aabbf6bdeea0ef5f5ba244ca90e9dd3ba1ddd4962909a",
+      "reservation_sha256": "5229cd0c0712ec5c5fc453bd32fd46dce4c284704e7872f8958f4db73a5b927d",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.013128",
+      "unreserved_usd": "29.726417645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status update on bounded, read-only work already inside flow 1e8210: 9aua is delivered, the izxy listeners are live, and the d2is idle listener is waiting on a genuine Lock/IdleHint event. It explicitly says the wider pause holds, and it asks nothing new of the recipient; the one real X click is requested of Fable. That makes it a continuation of pending work rather than grounds for a fresh flow, so the unknown recipient context does not change the judgment.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.013128",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3511,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2337,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-f634f7798de04bf5a35e971ee972612a",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "3dcf98bebfd28eb2517aabbf6bdeea0ef5f5ba244ca90e9dd3ba1ddd4962909a",
+      "retained_bound_usd": "0.013128",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 917,
+        "output_tokens": 473
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status update on bounded, read-only work already inside flow 1e8210: 9aua is delivered, the izxy listeners are live, and the d2is idle listener is waiting on a genuine Lock/IdleHint event. It explicitly says the wider pause holds, and it asks nothing new of the recipient; the one real X click is requested of Fable. That makes it a continuation of pending work rather than grounds for a fresh flow, so the unknown recipient context does not change the judgment."
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 9043,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-4fcbd211484f40929440bb18851debc5",
+    "ledger": {
+      "committed_usd": "7.183350355",
+      "job": "raw-general-082e0f-4fcbd211484f40929440bb18851debc5",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "e6c1e4578b6befccc98da4725c2687f529534e6a8a007bf1324d16c539e61e4e",
+      "reservation_sha256": "5623cd9bf8ffd0b8212f3c5c3620d2ae4954ad550b65188261b5104a34b848f3",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.0132",
+      "unreserved_usd": "29.816649645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"Whether to start a fresh flow depends on the recipient's state, which the evidence marks as unknown. The message is a substantive lane handoff: the Chromium/DevTools lane, token-input research, and handshake ownership move to Field browser Sol, and the sender stops all browser work. If Field browser Sol is already active, it would pick the message up from the queue. If it is asleep or would start with a fresh context, a new flow might be warranted. Pending work is empty, so it adds nothing to decide between the two. Without the recipient's state, neither StartFresh nor KeepQueued can be justified.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0132",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2504,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1330,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-4fcbd211484f40929440bb18851debc5",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "e6c1e4578b6befccc98da4725c2687f529534e6a8a007bf1324d16c539e61e4e",
+      "retained_bound_usd": "0.0132",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 560,
+        "output_tokens": 548
+      }
+    }
+  },
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "Whether to start a fresh flow depends on the recipient's state, which the evidence marks as unknown. The message is a substantive lane handoff: the Chromium/DevTools lane, token-input research, and handshake ownership move to Field browser Sol, and the sender stops all browser work. If Field browser Sol is already active, it would pick the message up from the queue. If it is asleep or would start with a fresh context, a new flow might be warranted. Pending work is empty, so it adds nothing to decide between the two. Without the recipient's state, neither StartFresh nor KeepQueued can be justified."
+  }
+}

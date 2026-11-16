@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6935,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-842f2aed8b664fb9becf43f8f82c2398",
+    "ledger": {
+      "committed_usd": "7.205850355",
+      "job": "raw-general-082e0f-842f2aed8b664fb9becf43f8f82c2398",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "567790af50ff5d284eb021773f7e94afe01541eae9903d7ae697f9eebf7acd56",
+      "reservation_sha256": "7effa7222f9b7a916a8f6732a0746aee604686bddf4acb9b0d62dcedb889ba68",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.0125",
+      "unreserved_usd": "29.794149645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a closure notice: the read-only x01q/d2is battery investigation is complete, findings were sent to Opus, all workers and observations ended, nothing changed, and Field returns to pau5 with Lojix still paused. It asks for no new work, so starting a fresh flow is not warranted. The unknown recipient state is not essential because the message needs no action whether the recipient is hot, asleep, or fresh. Its only effect is to close the pending lanes, including the event-driven Step 2 listener, which can be reconciled whenever the queue is next read.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0125",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3461,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2287,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-842f2aed8b664fb9becf43f8f82c2398",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "567790af50ff5d284eb021773f7e94afe01541eae9903d7ae697f9eebf7acd56",
+      "retained_bound_usd": "0.0125",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 895,
+        "output_tokens": 446
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a closure notice: the read-only x01q/d2is battery investigation is complete, findings were sent to Opus, all workers and observations ended, nothing changed, and Field returns to pau5 with Lojix still paused. It asks for no new work, so starting a fresh flow is not warranted. The unknown recipient state is not essential because the message needs no action whether the recipient is hot, asleep, or fresh. Its only effect is to close the pending lanes, including the event-driven Step 2 listener, which can be reconciled whenever the queue is next read."
+      }
+    }
+  }
+}

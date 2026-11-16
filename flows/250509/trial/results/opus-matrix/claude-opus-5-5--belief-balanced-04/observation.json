@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 9144,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5c1ceddaac5f44619d1fc7828e990915",
+    "ledger": {
+      "committed_usd": "6.777458355",
+      "job": "raw-general-082e0f-5c1ceddaac5f44619d1fc7828e990915",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "3e66ff6ab33d7f5afefe79a883c0ae7d960bc90d73eb3c59568c15e56f9c1c78",
+      "reservation_sha256": "4e43e03be113c99a5b10cead36d9bc9898d0526538354b3970bf262cf15172a7",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.018824",
+      "unreserved_usd": "30.222541645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on the submission before anything changes. The judgment asks whether the line is already said somewhere in the psyche, the same or nearly; whether it is going into the wrong module; and whether the module it is going into is inadequately named.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.018824",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 5319,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 4145,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-5c1ceddaac5f44619d1fc7828e990915",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "3e66ff6ab33d7f5afefe79a883c0ae7d960bc90d73eb3c59568c15e56f9c1c78",
+      "retained_bound_usd": "0.018824",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1751,
+        "output_tokens": 591
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on the submission before anything changes. The judgment asks whether the line is already said somewhere in the psyche, the same or nearly; whether it is going into the wrong module; and whether the module it is going into is inadequately named."
+      }
+    }
+  }
+}

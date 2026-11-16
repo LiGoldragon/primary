@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8628,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f4c1998e1aef4ab183843cdafbc80cc6",
+    "ledger": {
+      "committed_usd": "7.286754355",
+      "job": "raw-general-082e0f-f4c1998e1aef4ab183843cdafbc80cc6",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "8ec9d22c77db9b3cc694fbaf6d8f15ac18552d03d5d2ae0a7ed6d3f72cd2400e",
+      "reservation_sha256": "781825b92d0e09db26827bf2bb3ca4e615529e8f7950e57197dbdc52a69b4d3d",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.013172",
+      "unreserved_usd": "29.713245645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a status report. It covers card clearing done, recorders finalizing, q188 proof published with a non-activating Realize being prepared, and the d2is note with its task closed. It asks for no action and does not conflict with the paused pending work, so it can wait for normal delivery. The recipient's unknown state does not change this.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.013172",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3482,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2308,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-f4c1998e1aef4ab183843cdafbc80cc6",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "8ec9d22c77db9b3cc694fbaf6d8f15ac18552d03d5d2ae0a7ed6d3f72cd2400e",
+      "retained_bound_usd": "0.013172",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 893,
+        "output_tokens": 480
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a status report. It covers card clearing done, recorders finalizing, q188 proof published with a non-activating Realize being prepared, and the d2is note with its task closed. It asks for no action and does not conflict with the paused pending work, so it can wait for normal delivery. The recipient's unknown state does not change this."
+      }
+    }
+  }
+}

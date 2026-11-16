@@ -1,0 +1,30 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-12",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-12",
+  "reused": false,
+  "prompt_sha256": "63b20060440e51c1973c1eed89ff013b350bae63b40e3dc37c7bcdf141c83f79",
+  "job": "raw-general-082e0f-e5d5f0345b3b4b45a0626baa109a9d08",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-e5d5f0345b3b4b45a0626baa109a9d08",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 3497,
+    "output_tokens": 52
+  },
+  "raw_estimated_cost_usd": "0.015028",
+  "retained_usd": "0.015028",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 3974,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Repeats",
+        "line": "vision:psyche-nexus:0:L8",
+        "wording": null
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 10699,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-cb7a064c056c43a2a70dec0340fb7292",
+    "ledger": {
+      "committed_usd": "7.159142355",
+      "job": "raw-general-082e0f-cb7a064c056c43a2a70dec0340fb7292",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f170ae52a50e4e7379c446afce7589602d7781e41b4a21c21d59399bd0bd4fbc",
+      "reservation_sha256": "d0f934b4b53af526772b79606c73ccc08e10a50c1c8f0d06228769897afb4f5e",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.016688",
+      "unreserved_usd": "29.840857645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"StartFresh\",\"reason\":\"The message is a self-contained lane handoff: the sender stops all browser work, so no one else holds the browser lane. It points to flows/d94525/browser-trial.md and a scratch pointer, which lets a fresh context pick it up without prior history. It also transfers the deferred token-input research, which overlaps pending item j5ua. The recipient's hot or asleep status is unknown, but that does not change whether the message merits a fresh flow, so it is not essential here.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.016688",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3343,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2169,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-cb7a064c056c43a2a70dec0340fb7292",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f170ae52a50e4e7379c446afce7589602d7781e41b4a21c21d59399bd0bd4fbc",
+      "retained_bound_usd": "0.016688",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 842,
+        "output_tokens": 666
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "StartFresh",
+        "reason": "The message is a self-contained lane handoff: the sender stops all browser work, so no one else holds the browser lane. It points to flows/d94525/browser-trial.md and a scratch pointer, which lets a fresh context pick it up without prior history. It also transfers the deferred token-input research, which overlaps pending item j5ua. The recipient's hot or asleep status is unknown, but that does not change whether the message merits a fresh flow, so it is not essential here."
+      }
+    }
+  }
+}

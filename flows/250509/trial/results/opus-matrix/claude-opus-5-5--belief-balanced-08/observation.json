@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8724,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-afd2e111dfde43f6abd7d401956e3176",
+    "ledger": {
+      "committed_usd": "6.860082355",
+      "job": "raw-general-082e0f-afd2e111dfde43f6abd7d401956e3176",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f7cce62e12d50fd111b05aa7a37d5fc102c99d47fe42dd2e5ad0d5453a2ac81e",
+      "reservation_sha256": "70524ff6b89f1d15c4e3d9c30ae7a7d9eef782d1a487f9b420955f0db1f7573c",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.021872",
+      "unreserved_usd": "30.139917645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"Usage is fuel, and fuel is life or death: a machine out of usage stops.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.021872",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 7413,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 6239,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-afd2e111dfde43f6abd7d401956e3176",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f7cce62e12d50fd111b05aa7a37d5fc102c99d47fe42dd2e5ad0d5453a2ac81e",
+      "retained_bound_usd": "0.021872",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2628,
+        "output_tokens": 568
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Usage is fuel, and fuel is life or death: a machine out of usage stops."
+      }
+    }
+  }
+}

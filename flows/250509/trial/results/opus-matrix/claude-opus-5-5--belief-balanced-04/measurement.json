@@ -1,0 +1,29 @@
+{
+  "slot": "claude-opus-5-5--belief-balanced-04",
+  "model": "claude-opus-5-5",
+  "case": "belief-balanced-04",
+  "reused": false,
+  "prompt_sha256": "bfaa1f34dc6e81c6e4d72423e4af6d538e153be5eca015b4c8583a4dd9fadcee",
+  "job": "raw-general-082e0f-5c1ceddaac5f44619d1fc7828e990915",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5c1ceddaac5f44619d1fc7828e990915",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1751,
+    "output_tokens": 591
+  },
+  "raw_estimated_cost_usd": "0.018824",
+  "retained_usd": "0.018824",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 9144,
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "An agent that wants a line in the psyche submits it through the regular interface, and a judgment is run on the submission before anything changes. The judgment asks whether the line is already said somewhere in the psyche, the same or nearly; whether it is going into the wrong module; and whether the module it is going into is inadequately named."
+      }
+    }
+  }
+}

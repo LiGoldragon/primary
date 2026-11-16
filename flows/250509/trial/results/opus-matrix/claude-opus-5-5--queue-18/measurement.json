@@ -1,0 +1,23 @@
+{
+  "slot": "claude-opus-5-5--queue-18",
+  "model": "claude-opus-5-5",
+  "case": "queue-18",
+  "reused": false,
+  "prompt_sha256": "ffd0dad959a90cbaba059a49b078298c7186c6e0e85de35b3ae10493fc3466e4",
+  "job": "raw-general-082e0f-78e71b64b7a44238a4fd55a9cfa6c596",
+  "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-78e71b64b7a44238a4fd55a9cfa6c596",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 560,
+    "output_tokens": 446
+  },
+  "raw_estimated_cost_usd": "0.01116",
+  "retained_usd": "0.01116",
+  "stop_reason": "end_turn",
+  "elapsed_milliseconds": 8213,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The recipient's state is unknown: it could be hot, asleep, or about to start with a fresh context. That state is essential for deciding whether to start a fresh flow or keep the message queued, especially since related custody work by Sol6c2a99 is already pending and incomplete."
+  }
+}

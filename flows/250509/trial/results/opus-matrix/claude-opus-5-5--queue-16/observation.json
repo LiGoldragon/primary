@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8342,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b36f7e5aced84201807a0f7cf67a6560",
+    "ledger": {
+      "committed_usd": "7.323646355",
+      "job": "raw-general-082e0f-b36f7e5aced84201807a0f7cf67a6560",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "ca6fe1bfbc6a1568c91937695b9eb5f60367b1de4325e077928bbbc2bc0bb8d4",
+      "reservation_sha256": "33de1ac4ff8d9258a66fc62e903b95f93a008ddf9be9bfaf3e243f7a447e4dae",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.012168",
+      "unreserved_usd": "29.676353645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message adds no new task. It is a review-ready notice for the same report f96889ac / runtime 19495c4e that the pending custody handoff already assigns: source review only, returning blockers or acceptance before any live-readiness or arm authority. It grants no new authority, and the pending work forbids repeated refresh. The heavy slot is held exclusively by Flowguard894. Starting a fresh flow would duplicate the existing successor's work, so the message can wait in the queue. The recipient's unknown hot or asleep status does not change this outcome.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.012168",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3102,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1928,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-b36f7e5aced84201807a0f7cf67a6560",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "ca6fe1bfbc6a1568c91937695b9eb5f60367b1de4325e077928bbbc2bc0bb8d4",
+      "retained_bound_usd": "0.012168",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 822,
+        "output_tokens": 444
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message adds no new task. It is a review-ready notice for the same report f96889ac / runtime 19495c4e that the pending custody handoff already assigns: source review only, returning blockers or acceptance before any live-readiness or arm authority. It grants no new authority, and the pending work forbids repeated refresh. The heavy slot is held exclusively by Flowguard894. Starting a fresh flow would duplicate the existing successor's work, so the message can wait in the queue. The recipient's unknown hot or asleep status does not change this outcome."
+      }
+    }
+  }
+}

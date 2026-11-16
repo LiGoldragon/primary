@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8063,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d99a2affe91b4d368fc0561c1f13bf95",
+    "ledger": {
+      "committed_usd": "7.439314355",
+      "job": "raw-general-082e0f-d99a2affe91b4d368fc0561c1f13bf95",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "57683cf876a93bfe357ef830237570d36b1b3c037d07fe79b884a65ae28a9fc4",
+      "reservation_sha256": "376c338f9f755cf96209cbc9504b67bad791a20ad0d5dc96c3f5186ffe5c7d0c",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01136",
+      "unreserved_usd": "29.560685645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is an informational status update reporting the URL and version of an already-built same-book render (Code has an anatomy, v3), which another flow built. It asks for no new work. It fits the existing pending thread on republishing books and reporting links to Psyche core Opus, so it belongs with that context rather than a fresh flow. The recipient's unknown hot/asleep state is not essential, because the content alone does not justify a fresh start.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01136",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3661,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2487,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-d99a2affe91b4d368fc0561c1f13bf95",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "57683cf876a93bfe357ef830237570d36b1b3c037d07fe79b884a65ae28a9fc4",
+      "retained_bound_usd": "0.01136",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 995,
+        "output_tokens": 369
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is an informational status update reporting the URL and version of an already-built same-book render (Code has an anatomy, v3), which another flow built. It asks for no new work. It fits the existing pending thread on republishing books and reporting links to Psyche core Opus, so it belongs with that context rather than a fresh flow. The recipient's unknown hot/asleep state is not essential, because the content alone does not justify a fresh start."
+      }
+    }
+  }
+}

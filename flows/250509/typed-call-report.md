@@ -164,7 +164,10 @@ The queue set contains thirty real queued messages captured from `flow Queues`,
 with sender, recipient, request id and source offset. Up to three other queued
 messages for that recipient provide pending-work context. Whether its next wake
 would be warm or fresh was not established. This unknown is stated in the
-question, not replaced with an invented live state. These cases remain unlabeled
+question, not replaced with an invented live state. Sender and priority are
+retained in provenance but were not fields of the model-facing queue question;
+this run therefore does not test whether the model uses those scheduling inputs.
+These cases remain unlabeled
 for Fable's post-run ruling; no queue accuracy is measurable yet.
 
 Historical construction is the provisional comparison oracle, not Fable's final
@@ -293,6 +296,28 @@ No raw estimate or retained commitment is an invoice or account balance.
   snapshot; no concurrency or durable-transaction guarantee is inferred.
 - Both Rust and driver fixtures are implementer-authored, not independently run
   by a separate tester flow.
+
+## What the experiment changes in the next design
+
+1. A decoded answer and an existing line ID are only structural guarantees. The
+   live admission gate needs a separately reviewed semantic policy and evidence.
+2. A proposed change should say whether it adds, replaces, clarifies or retires
+   a line, with the affected target and authorization. A historically landed
+   replacement is not necessarily an admissible additional line against its old
+   snapshot. Old Spirit's explicit operation kinds already addressed this.
+3. Comparison retrieval must be an explicit typed input: which modules and
+   revisions were considered, and whether the evidence is sufficient. A module
+   name is not its content; empty new-module targets need relevant neighbors.
+4. A queue decision needs recipient warmth/continuity state, pending obligations,
+   and the message's typed priority and sender where scheduling uses them.
+   The result of this text-only, state-unknown trial must not launch live flows.
+5. The paid boundary is reusable: a typed Emission can use the separately owned
+   processor without receiving credentials or owning accounting. The next Nexus
+   can replace this trial's JSON/process artifact boundary with its binary Signal
+   contracts and generated Ethos types while preserving those responsibilities.
+6. Native output completion, conservative input admission and retained accounting
+   are different checks. Report their outcomes separately rather than hiding an
+   unfinished or ineligible request behind a successful HTTP response.
 
 ## Open requirements
 

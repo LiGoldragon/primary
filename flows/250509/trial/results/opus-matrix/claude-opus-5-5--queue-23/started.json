@@ -1,0 +1,11 @@
+{
+  "slot": {
+    "identifier": "claude-opus-5-5--queue-23",
+    "model": "claude-opus-5-5",
+    "case": "queue-23",
+    "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.json",
+    "prompt_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--queue-23.txt",
+    "prompt_sha256": "8b744a354ec07afa22e7982f5bed0161bde3e8c7f5e04a20fd65e27cc4903888"
+  },
+  "instruction": "No retry; inspect authoritative processor evidence after uncertainty."
+}

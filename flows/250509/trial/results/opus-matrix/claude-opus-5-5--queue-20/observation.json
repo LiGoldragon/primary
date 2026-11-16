@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 8543,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-cc9cd7f7063841b68b060fe7c5456521",
+    "ledger": {
+      "committed_usd": "7.379134355",
+      "job": "raw-general-082e0f-cc9cd7f7063841b68b060fe7c5456521",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "40ccb1da232a8268b439799a4edee4936b68b7afd997bad7c40c6372c0a87d29",
+      "reservation_sha256": "d0a10e862afb3df365a3d1a3764bbc4dbba377c5c68690fcdf447e2aacef2594",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01436",
+      "unreserved_usd": "29.620865645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is not a new task. It answers questions inside work already pending: it gives the landed emission commits (3358db3, corrected by cfa0ca0) and names the bookmaker to use for the Chronos/Listener republication that the dc7b ruling requires. It only makes sense with that existing flow's context, so it should wait for that flow rather than start a fresh one. The recipient's unknown state does not change this, because the judgment rests on the message's dependence on pending work.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01436",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3977,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2803,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-cc9cd7f7063841b68b060fe7c5456521",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "40ccb1da232a8268b439799a4edee4936b68b7afd997bad7c40c6372c0a87d29",
+      "retained_bound_usd": "0.01436",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1090,
+        "output_tokens": 500
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is not a new task. It answers questions inside work already pending: it gives the landed emission commits (3358db3, corrected by cfa0ca0) and names the bookmaker to use for the Chronos/Listener republication that the dc7b ruling requires. It only makes sense with that existing flow's context, so it should wait for that flow rather than start a fresh one. The recipient's unknown state does not change this, because the judgment rests on the message's dependence on pending work."
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6075,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-fbbb5a497d6b4d67a69af88ad1009e03",
+    "ledger": {
+      "committed_usd": "6.739634355",
+      "job": "raw-general-082e0f-fbbb5a497d6b4d67a69af88ad1009e03",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "b9314090a527eeb253ecd8465eebca594bd33ac75f5ac9de481f8f2076ea8dc0",
+      "reservation_sha256": "1109f919d59cbec8bb9f74e5cc2c6cc721a0a3399bc744b1318a91a1f662da1f",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.015952",
+      "unreserved_usd": "30.260365645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it does. Code that keeps growing in one direction is missing an abstraction: a truck seventy-three meters long is a train not yet seen, which needs its carts linked and a rail to run on, or a fleet of trucks, which needs a coordinator and its drivers; the ground it is to cover decides which.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.015952",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 6009,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 4835,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-fbbb5a497d6b4d67a69af88ad1009e03",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "b9314090a527eeb253ecd8465eebca594bd33ac75f5ac9de481f8f2076ea8dc0",
+      "retained_bound_usd": "0.015952",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2048,
+        "output_tokens": 388
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Admission",
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it does. Code that keeps growing in one direction is missing an abstraction: a truck seventy-three meters long is a train not yet seen, which needs its carts linked and a rail to run on, or a fleet of trucks, which needs a coordinator and its drivers; the ground it is to cover decides which."
+      }
+    }
+  }
+}

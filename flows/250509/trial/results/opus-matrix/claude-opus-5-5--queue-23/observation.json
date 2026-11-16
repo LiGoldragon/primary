@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 11025,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0a115320b7484155bf78ee5b268151fc",
+    "ledger": {
+      "committed_usd": "7.427954355",
+      "job": "raw-general-082e0f-0a115320b7484155bf78ee5b268151fc",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "f80cc5a54caa80a698707a1cc88561479627e9b3ac98799f076e249aadf23d29",
+      "reservation_sha256": "92f467f4f8e88fbd91fb21816447037808eeb14b9605a53ecc2399819773a4d1",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01852",
+      "unreserved_usd": "29.572045645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message reports a blocked republication: aspect-nexuses cannot be built until Fable supplies the missing Proposal 6 title at line 99. The sender is waiting on an author's input, not asking the recipient for urgent independent work. The report belongs to the ongoing d9cedc proposal and republication work already in the pending items, so a fresh context would lack the needed background. The recipient's unknown state does not change this, since nothing here justifies a new flow.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01852",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3977,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2803,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-0a115320b7484155bf78ee5b268151fc",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "f80cc5a54caa80a698707a1cc88561479627e9b3ac98799f076e249aadf23d29",
+      "retained_bound_usd": "0.01852",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1090,
+        "output_tokens": 708
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message reports a blocked republication: aspect-nexuses cannot be built until Fable supplies the missing Proposal 6 title at line 99. The sender is waiting on an author's input, not asking the recipient for urgent independent work. The report belongs to the ongoing d9cedc proposal and republication work already in the pending items, so a fresh context would lack the needed background. The recipient's unknown state does not change this, since nothing here justifies a new flow."
+      }
+    }
+  }
+}

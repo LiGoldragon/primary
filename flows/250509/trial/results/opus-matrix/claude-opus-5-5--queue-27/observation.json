@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7977,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-5d9de53c42dd4f338a7d4fe52295d482",
+    "ledger": {
+      "committed_usd": "7.477294355",
+      "job": "raw-general-082e0f-5d9de53c42dd4f338a7d4fe52295d482",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "8e2dc33370cd4b0c82b8a848210bf6f4688b04294783f250215df96537f73f20",
+      "reservation_sha256": "eab80db1af2bf210111210eed8ddb742f060adddf1f83cc76ff01553e1770bf6",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.0105",
+      "unreserved_usd": "29.522705645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is mainly an acknowledgment and hold notice, so it does not justify starting fresh even though the recipient's state is unknown. It requires a corrected immutable diff or audit before any new review or uptake. It also keeps the oracle, gen, dependency, test-execution and whole-gate holds in place, with no whole-feature acceptance. Guard894's exclusive whole-gate run is in progress and the message forbids competing heavy work. The pending work already covers the related cancellation checkpoint and its review, so the message can wait.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0105",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2772,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1598,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-5d9de53c42dd4f338a7d4fe52295d482",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "8e2dc33370cd4b0c82b8a848210bf6f4688b04294783f250215df96537f73f20",
+      "retained_bound_usd": "0.0105",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 645,
+        "output_tokens": 396
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is mainly an acknowledgment and hold notice, so it does not justify starting fresh even though the recipient's state is unknown. It requires a corrected immutable diff or audit before any new review or uptake. It also keeps the oracle, gen, dependency, test-execution and whole-gate holds in place, with no whole-feature acceptance. Guard894's exclusive whole-gate run is in progress and the message forbids competing heavy work. The pending work already covers the related cancellation checkpoint and its review, so the message can wait."
+      }
+    }
+  }
+}

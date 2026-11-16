@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7387,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-6f33eddf55f84c65b18a628b13dcfa46",
+    "ledger": {
+      "committed_usd": "7.486854355",
+      "job": "raw-general-082e0f-6f33eddf55f84c65b18a628b13dcfa46",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "740ce42e5e70ee6032d515a24483e997fa0985838f86e31084fd6371e97ca9fd",
+      "reservation_sha256": "994d2c097327c564bff23c4640cba374a74164ff05e346b4af22b1b59536920d",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.00956",
+      "unreserved_usd": "29.513145645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The message is a checkpoint acknowledgment with holds. Owner semantic review is pending, and the API review waits on Research freezing the corrected candidate. All other holds remain. The pending Guard894 exclusive wholegate is running with no competing heavy work, so nothing actionable justifies a fresh flow, whatever the recipient's unknown state.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.00956",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 2772,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1598,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-6f33eddf55f84c65b18a628b13dcfa46",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "740ce42e5e70ee6032d515a24483e997fa0985838f86e31084fd6371e97ca9fd",
+      "retained_bound_usd": "0.00956",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 645,
+        "output_tokens": 349
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The message is a checkpoint acknowledgment with holds. Owner semantic review is pending, and the API review waits on Research freezing the corrected candidate. All other holds remain. The pending Guard894 exclusive wholegate is running with no competing heavy work, so nothing actionable justifies a fresh flow, whatever the recipient's unknown state."
+      }
+    }
+  }
+}

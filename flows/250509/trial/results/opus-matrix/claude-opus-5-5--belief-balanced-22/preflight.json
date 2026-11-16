@@ -1,0 +1,9 @@
+{
+  "input_admission_counts": {
+    "prompt_utf8_bytes": 26128,
+    "system_utf8_bytes": 150,
+    "framing_allowance": 1024,
+    "conservative_local_total": 27302
+  },
+  "paid_call": false
+}

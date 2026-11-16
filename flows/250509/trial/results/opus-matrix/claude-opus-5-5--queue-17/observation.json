@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 11111,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-b503a87b87154ab3aeca6abd21e9653c",
+    "ledger": {
+      "committed_usd": "7.341434355",
+      "job": "raw-general-082e0f-b503a87b87154ab3aeca6abd21e9653c",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "cb40fafba0c58e15ae1de0015e06d8c4136adc2e6055d453330a2aa5079ad632",
+      "reservation_sha256": "8e2d1a72ef44fa7cc06abdf40ac164dbdcd64909acb969db6095b8ca35ab023c",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.017788",
+      "unreserved_usd": "29.658565645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"The queued message mostly repeats the existing pending notice: the same 11/11 PASS on runtime19495c4e/reportf96889ac, a private installed262 bus rather than the system bus, a request for source review only, and no new live-readiness or arm authority. It adds the 8ow8 custody note, the packet and report paths, and the instruction to review the prior 7o02 defects. None of that is urgent; it can wait in the queue alongside the pending work. The sender explicitly forbids a repeated refresh. Although the recipient's state is unknown, this judgment does not depend on it.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.017788",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3102,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 1928,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-b503a87b87154ab3aeca6abd21e9653c",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "cb40fafba0c58e15ae1de0015e06d8c4136adc2e6055d453330a2aa5079ad632",
+      "retained_bound_usd": "0.017788",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 822,
+        "output_tokens": 725
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "The queued message mostly repeats the existing pending notice: the same 11/11 PASS on runtime19495c4e/reportf96889ac, a private installed262 bus rather than the system bus, a request for source review only, and no new live-readiness or arm authority. It adds the 8ow8 custody note, the packet and report paths, and the instruction to review the prior 7o02 defects. None of that is urgent; it can wait in the queue alongside the pending work. The sender explicitly forbids a repeated refresh. Although the recipient's state is unknown, this judgment does not depend on it."
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "authority": {
+    "research_notice": "npts",
+    "relayed_opus_order": "z3ns",
+    "implementation_question": "kvlm",
+    "scope": "Exactly the eight same prompts that were locally ineligible under 20000; one call each, no retries; output remains 1024; source review and Research installation/admission required; no override in this trial."
+  },
+  "authority_packet": "/home/li/primary/flows/250509/opus-eight-bound-authority.md",
+  "entries": [
+    {
+      "case": "belief-balanced-19",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-19.json",
+      "prompt_sha256": "01ddfe627ca6bc5533df36b0067cb4ac9cb7b91dec51c505d9a68a9dfaeb80ac",
+      "prompt_utf8_bytes": 41894,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 43068,
+      "requested_approved_input_bound": 43068,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-20",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-20.json",
+      "prompt_sha256": "2bcff9ac33fc402dd1bff37b41d820009bf9c587d32ccffea51e1ec3420f007f",
+      "prompt_utf8_bytes": 40164,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 41338,
+      "requested_approved_input_bound": 41338,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-22",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-22.json",
+      "prompt_sha256": "751e0dc3e87bffdd93a4032d5d325e3eee248a9f4b1b9d5ef85b00df8836a155",
+      "prompt_utf8_bytes": 26128,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 27302,
+      "requested_approved_input_bound": 27302,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-24",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-24.json",
+      "prompt_sha256": "4ca9d68fead6e9322f1acfa999fc649a66ec34db99cad3b792381f658a44c3da",
+      "prompt_utf8_bytes": 42662,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 43836,
+      "requested_approved_input_bound": 43836,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-27",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-27.json",
+      "prompt_sha256": "13ff4d814309fb21d0c28747576d54e983f62831ab2c64a7d6c72ebe1813dd57",
+      "prompt_utf8_bytes": 42509,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 43683,
+      "requested_approved_input_bound": 43683,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-28",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-28.json",
+      "prompt_sha256": "e4b0c43ed91e5b294458ba2e486370270f47b57aab998d5df994c811bc17726d",
+      "prompt_utf8_bytes": 42266,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 43440,
+      "requested_approved_input_bound": 43440,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-29",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-29.json",
+      "prompt_sha256": "53a8e2d071af3d9f23f93a07042a7847d688f2cc73211b1d2d0cb9df8174cdf6",
+      "prompt_utf8_bytes": 42303,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 43477,
+      "requested_approved_input_bound": 43477,
+      "above_60000": false
+    },
+    {
+      "case": "belief-balanced-30",
+      "model": "claude-opus-5-5",
+      "prompt_path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.txt",
+      "call_file": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-balanced-30.json",
+      "prompt_sha256": "54b659b6f605806ab822cd3877539d7b079c26dc926bf6eeecd2510636eeaee4",
+      "prompt_utf8_bytes": 43785,
+      "system_utf8_bytes": 150,
+      "framing_allowance": 1024,
+      "conservative_local_total": 44959,
+      "requested_approved_input_bound": 44959,
+      "above_60000": false
+    }
+  ]
+}

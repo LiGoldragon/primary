@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 6805,
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-81e96e924be8409f99c387b0340c9aa2",
+    "ledger": {
+      "committed_usd": "7.237258355",
+      "job": "raw-general-082e0f-81e96e924be8409f99c387b0340c9aa2",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "2967e58aab65fd99868b9605b9b25188b481214a239174e7659b6560c2740d78",
+      "reservation_sha256": "f3e69973c4a444572e6afa98493930baabc315d548de677df4518ef5337dca2a",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.011348",
+      "unreserved_usd": "29.762741645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Queue\",\"judgment\":{\"kind\":\"KeepQueued\",\"reason\":\"wg2f is a bounded extension of the existing battery investigation. It says a notification worker owns the audit and the d2is idle listener is still waiting, so it depends on live context from the current flow. The pending work shows that flow still holding the d2is lanes under the wider pause. Starting a fresh flow would split that context, so the message should stay queued for the existing flow. The recipient's unknown state does not change this.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.011348",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 3432,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 2258,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-81e96e924be8409f99c387b0340c9aa2",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "2967e58aab65fd99868b9605b9b25188b481214a239174e7659b6560c2740d78",
+      "retained_bound_usd": "0.011348",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 872,
+        "output_tokens": 393
+      }
+    }
+  },
+  "outcome": {
+    "kind": "Answered",
+    "answer": {
+      "kind": "Queue",
+      "judgment": {
+        "kind": "KeepQueued",
+        "reason": "wg2f is a bounded extension of the existing battery investigation. It says a notification worker owns the audit and the d2is idle listener is still waiting, so it depends on live context from the current flow. The pending work shows that flow still holding the d2is lanes under the wider pause. Starting a fresh flow would split that context, so the message should stay queued for the existing flow. The recipient's unknown state does not change this."
+      }
+    }
+  }
+}
