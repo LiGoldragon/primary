@@ -19,7 +19,7 @@ fn main() -> ExitCode {
                 if call.prompt_file != std::path::Path::new(&arguments[3]) {
                     return Err("prompt path must equal the typed call path".into());
                 }
-                fs::write(&call.prompt_file, call.question.prompt()?)
+                fs::write(&call.prompt_file, call.question.prompt(&call.instruction)?)
                     .map_err(|error| error.to_string())?;
             }
             "invoke" => {

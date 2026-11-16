@@ -1,7 +1,131 @@
+use typed_call_trial::Receivable;
 use typed_call_trial::{
     Admission, Answer, BeliefLine, Committable, Decodable, Emittable, ModelCall, Outcome,
     Processor, Promptable, Question, Snapshot,
 };
+
+struct ReceiptFixture {
+    root: std::path::PathBuf,
+    call: ModelCall,
+}
+trait ReceiptBuildable {
+    fn create(stop_reason: &str, model: &str) -> Self;
+    fn receipt(&self) -> serde_json::Value;
+}
+impl ReceiptBuildable for ReceiptFixture {
+    fn create(stop_reason: &str, model: &str) -> Self {
+        let unique = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .expect("clock")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "typed-call-fixture-{}-{unique}",
+            std::process::id()
+        ));
+        std::fs::create_dir(&root).expect("scratch");
+        std::fs::write(
+            root.join("response.json"),
+            serde_json::to_vec(&serde_json::json!({"model":model,"stop_reason":stop_reason}))
+                .expect("json"),
+        )
+        .expect("proof");
+        Self {
+            root,
+            call: ModelCall {
+                model: "fixture-model".into(),
+                question: Question::admission(),
+                prompt_file: "/nonexistent/prompt".into(),
+                instruction: "fixture policy".into(),
+            },
+        }
+    }
+    fn receipt(&self) -> serde_json::Value {
+        serde_json::json!({"artifact_directory":self.root,"result":{"state":"Succeeded","settlement_appended":true,"answer":"{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"accepted\"}}"}})
+    }
+}
+impl Drop for ReceiptFixture {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.root);
+    }
+}
+
+#[test]
+fn settled_receipt_requires_native_end_turn() {
+    let fixture = ReceiptFixture::create("end_turn", "fixture-model");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(0))
+            .outcome,
+        Outcome::Answered { .. }
+    ));
+}
+#[test]
+fn settled_but_truncated_is_not_a_judgment() {
+    let fixture = ReceiptFixture::create("max_tokens", "fixture-model");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(0))
+            .outcome,
+        Outcome::Truncated { .. }
+    ));
+}
+#[test]
+fn native_refusal_is_its_own_outcome() {
+    let fixture = ReceiptFixture::create("refusal", "fixture-model");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(0))
+            .outcome,
+        Outcome::ModelRefused { .. }
+    ));
+}
+#[test]
+fn native_model_mismatch_refuses() {
+    let fixture = ReceiptFixture::create("end_turn", "another-model");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(0))
+            .outcome,
+        Outcome::ProviderFailed { .. }
+    ));
+}
+#[test]
+fn missing_native_proof_refuses() {
+    let fixture = ReceiptFixture::create("end_turn", "fixture-model");
+    std::fs::remove_file(fixture.root.join("response.json")).expect("remove");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(0))
+            .outcome,
+        Outcome::ProviderFailed { .. }
+    ));
+}
+#[test]
+fn processor_failure_refuses_without_retry() {
+    let fixture = ReceiptFixture::create("end_turn", "fixture-model");
+    assert!(matches!(
+        fixture
+            .call
+            .observe(fixture.receipt(), 123, Some(2))
+            .outcome,
+        Outcome::ProviderFailed { .. }
+    ));
+}
+#[test]
+fn unsettled_success_refuses() {
+    let fixture = ReceiptFixture::create("end_turn", "fixture-model");
+    let mut receipt = fixture.receipt();
+    receipt["result"]["settlement_appended"] = false.into();
+    assert!(matches!(
+        fixture.call.observe(receipt, 123, Some(0)).outcome,
+        Outcome::ProviderFailed { .. }
+    ));
+}
 
 trait Fixture {
     fn admission() -> Self;
@@ -167,12 +291,13 @@ fn duplicate_identifiers_refuse_before_prompt() {
     if let Question::Admission { snapshot, .. } = &mut question {
         snapshot.lines.push(snapshot.lines[0].clone());
     }
-    assert!(question.prompt().is_err());
+    assert!(question.prompt("fixture policy").is_err());
 }
 #[test]
 fn missing_prompt_never_executes_processor() {
     let call = ModelCall {
         model: "fixture-model".into(),
+        instruction: "fixture policy".into(),
         question: Question::admission(),
         prompt_file: "/nonexistent/typed-call-fixture".into(),
     };
