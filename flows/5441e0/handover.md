@@ -1,5 +1,8 @@
 # 5441e0 handover
 
+SendSeveral0k7j resumed plan review: only behavior-preserving typedorigin/sharedread-onlymode-evidence abstraction released, exactdiff before singleton/Simplifiedbehavior. Unknownmode localtypednotRegular; transaction/declarationcutoffguard proof owedowner. Psyche consolidated existingdesignQuestion pending senderFailedobservation vs wholeWithdrawn/routedtypedoutcome, unresolvedmode refusal meaning, aggregate/capacity precedence; no new schema/recovery/string substitute authorized.953/fourseams preserved. Guard66generation still awaitsfreshField+exactretainedrecipe, no process.
+
+
 COMMUNICATION lyxl/Core0fom: stop sending Fable status notices (published/landed/started/received/done); ONLY design/rulings. Links to published pages go to flows/03ebbe/handover.md, to no flow. Exact words relayed to coordinated MindversionZero/nixCriomos/curriculum. Corec84l reconfirms resume fullpace/currentAwake5441e0; no coldwake. Field freshgeneration requestfhk0 already admitted, do NOTduplicate. No source/gen process started; pinnedrecipe0rug pending.
 
 
