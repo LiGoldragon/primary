@@ -18,3 +18,5 @@ Sole Home consumer integrator Mind nixCriomos Sol (handoff j7jn answered r6qd) p
 
 ## Workspace
 Primary report commits56d698fa4,fa5f652dd,c0e177ff8 contain only this flow's report. Preserve all unrelated dirty files and Energy stage-one rewrite work. Authored belief repositories are under /git/github.com/LiGoldragon; generated skill trees are read-only and skills load only by injection. No new browser work or credential probe has run at this handover's creation.
+
+Browser consent ready: exact installed0.5.0/0.2.1 warning and scope in browser-trial.md. It grants debugger capabilities, not read-only enforcement; selected tab initially,0.5.0 Playwright group can expand. Token-free relay needs manual approval each new connection; detach leaves Chrome/account sessions running. Main requests informed yes through Opus/Fable before opening prompt. Attach stdout/stderr must be discarded (not logged), then only filtered credit rows may return. No attach/account read performed.
