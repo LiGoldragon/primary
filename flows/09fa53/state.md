@@ -1,0 +1,13 @@
+# researchTools 09fa53
+
+Open task: Opus l0mm. Latest controlling change: Opus 4hk2 drops filesystem A/B and model strata; select least-setup tree access and run tool-versus-text-search pairs on Flow/Lojix with cheap Codex.
+
+- Proposal committed as 8696f0a3d, reduced by c452119a0: `flows/09fa53/proposals/live-code-tools-trial.md`.
+- Read-only independent Ouranos archives: `/tmp/research-tools-09fa53.RK73td/flow` at published `a044e39ac2bc19cdcd3d435c75448d8697c6a17d`; sibling `lojix` at published `5d75a4032079cd942a3d4f5ba676da9ade5e8249`. Owners n8yv/dya8/tpjf establish identities and read-only boundaries. Source fixture boundary EMPTY; no canonical source mutation or linked worktree.
+- Frozen source-only questions: scratch `oracle/questions.md`, SHA256 `86bb3243957f7851ee62618dab7db6949cefcacd34784028701ccd4382d89d40`.
+- Frozen hand-written source-audited 32-fact key: scratch `oracle/answer-key.md`, SHA256 `aa477308e22927a03453d567aaf4cfed9f7d4187f7bbb546b7b0a219119b0a55`. No answerer has begun. Oracle separation is tool-policy isolation, not an OS sandbox claim.
+- Core qn6y conditionally authorizes twelve fresh Luna/Medium native Codex sessions, two corpora × three tool pairs × two arms, one pair at a time. Flow owner must verify actual provider/model/effort before launch. Asked for read-only mapping and draft declarations; no mutation or launch requested.
+- Field ll20/bkvb/z5v5 and Core mfvd hold ALL runtime/provisioning/launch while txz0/hcxc restart and f4jx diagnostics have priority. Runtime actor/slot and remote roots unallocated. Existing Ouranos sshfs and ast-grep are observations only; least-setup candidate is sshfs. No synchronizer provisioning, A/B or paid Claude runner remains.
+- No trial process, mount, tool build, remote command, runtime reservation or benchmark session exists. No adoption or installation.
+
+Next event: Field explicit lifecycle-window release plus fresh scoped runtime clearance. Next work: exact executable provisioning/compiler guard/cleanup packet, live lspmux viability, native client URI mapping, Nix-ranked-map packaging; then frozen launch-ready command boundary and settings receipts. Source-only packet refinement may continue during the hold. Final report belongs beside `flows/72fb9a/research/semantic-code-map.md`; Done l0mm only after measurements and cleanup, with report path and figures in one line.
