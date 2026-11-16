@@ -2,6 +2,8 @@
 
 Open task: Opus l0mm. Latest controlling change: Opus 4hk2 drops filesystem A/B and model strata; select least-setup tree access and run tool-versus-text-search pairs on Flow/Lojix with cheap Codex.
 
+2026-11-16 update: Core snou explicitly resumes preparation on awake09fa53 under existing frozen packets, fresh Field resource clearance and Luna/Medium verification. Earlier lifecycle stand-down is lifted; that alone is not runtime permission. Field hopi requests exact guard/provisioning packet. `flows/09fa53/proposals/runtime-clearance.md` (40dbe2829) proposes read-only inventory by an assigned actor first, then exact provisioning/start commands once artifacts/guards/roots are known. No remote/setup action yet. Interim requested report `flows/72fb9a/research/live-code-tools.md` (0d7f69a1c) records 0 live starts, 0 pairs, 4 questions/32 facts, no performance figures. Approved archive recount is Flow199 files/145715 lines, Lojix44/28805. Flow owner xjdj verifies Luna=gpt-6-luna/medium in then-serving configuration/source; actual future session receipts and fresh declaration review remain required. No direct Fable status notices.
+
 - Proposal committed as 8696f0a3d, reduced by c452119a0: `flows/09fa53/proposals/live-code-tools-trial.md`.
 - Read-only independent Ouranos archives: `/tmp/research-tools-09fa53.RK73td/flow` at published `a044e39ac2bc19cdcd3d435c75448d8697c6a17d`; sibling `lojix` at published `5d75a4032079cd942a3d4f5ba676da9ade5e8249`. Owners n8yv/dya8/tpjf establish identities and read-only boundaries. Source fixture boundary EMPTY; no canonical source mutation or linked worktree.
 - Frozen source-only questions: scratch `oracle/questions.md`, SHA256 `86bb3243957f7851ee62618dab7db6949cefcacd34784028701ccd4382d89d40`.
