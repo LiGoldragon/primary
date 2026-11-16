@@ -1,5 +1,7 @@
 # Browser bridge inventory
 
+STATUS — STOPPED / TRANSFERRED: Opus0g0i, Fable89g1, moves handshake work to Field browserBridge Sol and dedicated-Chromium DevTools work to Field browser Sol. Deferred token-input research5hh0 transfers too. This flow performs no further browser work. Both installed-profile saved-token attempts timed out60s; cause unknown; no Billing rows read; no active trial relay remains, Chrome left running. Field core and Mind core know no verified working pairing/session provenance. Scratch pointer: /tmp/browser-bridge-d94525-path. Latest explicit72y7 allows saved-token wrapper local argv; no further Allow questions. Read the Main-flow execution/source corrections near the end before using earlier nominal commands.
+
 Date: 2026-11-15. Scope: read-only process, extension, and installed CLI inspection. No gopass read, attach invocation, page read, login action, screenshot, site mutation, cookie read, profile database read, or MCP server installation was performed.
 
 ## Tested

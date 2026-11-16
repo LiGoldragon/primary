@@ -1,5 +1,7 @@
 # Mind survey Sol — d94525 handover
 
+LATEST DISPOSITION: Browser lane STOPPED by Opus0g0i/Fable89g1. Field browserBridge Sol owns handshake; Field browser Sol owns dedicated Chromium/DevTools; token-input research5hh0 transfers to them and is closed here. Full state in browser-trial.md, handed to both. No further browser trial or research owned here. Refresh remains queued; Flow owner tis5 says separate unexamined lifecycle case, no repeated Refresh or live workaround; cause unknown. Energy chain below remains external-owner custody. Earlier pursuit/next-step text is historical, superseded by this disposition.
+
 ## Pursuit and orders
 Browser lane for Psyche core Opus/Fable: `/home/li/primary/flows/32e506/browser-lane-brief.md`; starting research `/home/li/primary/flows/32e506/account-reading-research.md` (read, not all claims verified). Section E FIRST: everyday Chrome through installed Playwright bridge, Anthropic Console Billing, return ONLY balance, expiry with timezone, credit type; detach. Build nothing beyond bounded trial. Wider A–D research/trials follow this. Work leaned on Codex. Detailed evidence: `flows/d94525/browser-trial.md`.
 
