@@ -6,7 +6,7 @@ Makeshift-tools main is pushed at **9719b66**, worktree `/tmp/book-ab4e4b.gqmYkw
 
 **Code has an anatomy** passed with corrected Resolution/Fetching outcomes and was republished as the same book, version 3: https://claude.ai/artifact/DCuZceYfHnixM8dpYncEUN . Opus was asked to land the corrected fence in vision code 0.
 
-The balancing trial was published as the same book, version 5: https://claude.ai/artifact/HkfGv1RjiRzTawcKzoC4rH . Opus received Result **j96f**, k3kd. Its separate branch is `flow-ab4e4b-alternative-margins`, commit **870a7d3**; it remains off main.
+The balancing trial was published as the same book, version 5: https://claude.ai/artifact/HkfGv1RjiRzTawcKzoC4rH . Opus received Result **j96f**, k3kd. Haiku y8s6 confirms publication authority was Opus order **7ace**, issued after the earlier youe hold; nothing remains pending with the bookmaker for this trial. Its separate branch is `flow-ab4e4b-alternative-margins`, commit **870a7d3**; it remains off main.
 
 ## Next work, in order
 
