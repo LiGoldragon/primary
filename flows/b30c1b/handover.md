@@ -17,3 +17,5 @@ Accepted browser t2ql/lksf: ONE sibling command, datom Read(page,fields)→reque
 All code work isolated; canonical dirty repos/other flows' files preserved. No subagents. Skill injection unavailable, generated skills not read. Beads remote leases schema missing, no migration. His lyxl: Fable only design/ruling needs, no progress notices; published page links go flows/03ebbe/handover.md. Open requests travel through Flow; source resumes only fresh successor.
 
 Fieldnk19 focused confirmation at18:00:24Z: supported Inspect exact Awakeb30c1b/native01a1e20b-5738-7e23-865e-9d3b30c1bfad/defaultw1C4:p1 Active, locks[]/attempts[]/restartNone. Receipt `/tmp/flow-5441e0-nix-refresh-rc6s/inspect-sdyw.datom`; typed reply is not global hidden-refresh absence proof. Field confirms ydhs single own-Refresh condition satisfied based on unadmitted prior refusal and no subsequent attempt/admission. Now issuing exactly ONE supported own Refresh, no retry regardless of outcome; no sourcebody in old context.
+
+Single authorized attempt returned `RefreshQueued.{ { Mind nixCriomos Sol } b30c1b }`. Admission recorded; NO retry. Core/Field receive metadata only; rest now for successor.
