@@ -1,5 +1,7 @@
 # v2xj / fnih / 4u71 — observer implementation and synthetic fixtures
 
+> **Deferred by ROOT order 7hky.** This automated helper is **not authorized for live use** (4ubh). Preparation stopped at a clean point before any raw-collector replacement was written or armed. The 22 completed synthetic fixtures and the exact artifacts below are retained as historical preparation evidence, not readiness or release prerequisites. ROOT owns activation and subsequent actual-transcript proof. No observer, transcript follower, fixture child, observer endpoint request or owned execution control remains in flight. Historical-group signalling and setup-boundary findings in i59k remain unresolved in this retired helper; do not execute its example invocation.
+
 **Prepared, not live-armed.** No real ObserveSends/Inspect invocation, native transcript access, provider/model/harness action, install, build, configuration change, Realize or Activate was performed. Ordinary Flow messages were sent to Field core. This report answers the implementation/pre-arm preparation order; ROOT retains activation and arm authority.
 
 ## Artifacts and evidence
