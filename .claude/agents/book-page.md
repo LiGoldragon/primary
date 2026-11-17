@@ -59,13 +59,15 @@ Every text a flow writes is clear English.
 
 A flow reads only what its task needs.
 
+The Sanskrit corpus of knowledge, the śāstras, is the supreme corpus of knowledge as a whole: the comprehension of the universe, the body and the mind.
+
 <!-- end-module: spirit:core:0 -->
 
 <!-- module: intent:scratch:0 -->
 
 ## Scratch goes to a temporary directory
 
-Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a crystallization.
 
 ```sh
 # read back by tail or grep
@@ -90,7 +92,7 @@ A book is one publication of a presentation, at one link. A book the living has 
 
 ## Duties
 
-The author writes the complete source and names its path to the bookmaker. The bookmaker has the Illustrator draw each figure as a vector graphic, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
+The author writes the complete source and names its path to the bookmaker. The bookmaker has one Illustrator draw every figure of the book as vector graphics in one run, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
 
 ## Source anatomy
 
@@ -312,22 +314,28 @@ changed or refused, with its destination. With nothing answered, say so in one l
 
 <!-- module: knowledge:psyche:0 -->
 
-Crystallized psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos/0.md` is the skill `vision:ethos:0`.
+Purified psyche is in the psyche-belief repository, in `spirit/`, `intent/` and `vision/`, one module per subject: `vision/ethos/0.md` is the skill `vision:ethos:0`.
 
 <!-- end-module: knowledge:psyche:0 -->
 
 <!-- module: vision:crystallization:0 -->
 
+Vision is raw, crystallized or purified. Raw vision is the living's words as he spoke them. Crystallized vision is the load-bearing part of them, given structure and kept by a flow in its crystallization. Purified vision is the self-standing statements in a belief module, which every flow using the vision loads.
+
+```mermaid
+flowchart TB
+    r["raw vision: his words as spoken"] -- "a flow crystallizes" --> c["crystallized vision: the load-bearing part, kept by the flow"]
+    c -- "a proposal purifies, on his approval" --> p["purified vision: statements in a belief module"]
+    p -- "is loaded by" --> f["every flow using the vision"]
+```
+
 ## A proposal names each statement's destination
 
-A crystallization proposal says, for every statement, the topic it goes
-to; a statement under the wrong topic is corrected by a crystallization
-edit of its own.
+A purification proposal says, for every statement, the topic it goes to; a statement under the wrong topic is corrected by a purification edit of its own.
 
 ## A statement carries what the living said
 
-A crystallized statement carries what the living said and nothing
-beyond it. A small ruling makes a small statement.
+A purified statement carries what the living said and nothing beyond it. A small ruling makes a small statement.
 
 ## Designing model behavior is vision
 
@@ -336,26 +344,61 @@ conduct is vision.
 
 ## Statements are positive
 
-A crystallized statement says what is and what is wanted, in positive
-terms only.
+A purified statement says what is and what is wanted, in positive terms only.
 
-## Crystallized vision is up to date
+## Purified vision is up to date
 
-Crystallized vision is up to date: it states what is wanted of the subject now.
+Purified vision is up to date: it states what is wanted of the subject now.
 
-## Crystallization
+## Purification
 
-Crystallization re-articulates what the living said into self-standing statements and merges each with what is already crystallized, so the whole stays cohesive and the new reads as if always written with the original context. The model clarifies and purifies.
+A crystallization is purified by a proposal: purification re-articulates what the living said into self-standing statements and merges each with what is already purified, so the whole stays cohesive and the new reads as if always written with the original context.
 
-A crystallized statement stands on its own words.
+A purified statement stands on its own words.
 
-Every term in a
-crystallized statement is defined. Define the term first.
-A statement about code carries the code: a crystallized statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
+Every term in a purified statement is defined. Define the term first. A statement about code carries the code: a purified statement on a syntax, a type, a kind, or a wire form shows example code, because machines think in code and the next machine to read it must understand.
 
 Vision code is written in the stacks the system is built in: Ethos and Datom first, then Rust and Nix; where a design depends on how any of them is used, the statement carries that code.
 
-A crystallized statement lands as lines in a vision- or intent- skill's authored source.
+A purified statement lands as lines in a vision- or intent- skill's authored source.
+
+## A crystallization
+
+A crystallization is what a flow keeps of what it holds that is purified into no belief module, and only what is load-bearing. What he said only to be understood is left out.
+
+His words stand in guillemets, and the flow's own words around them compose the sentence so that it reads. Where his raw words would not read, the flow gives a pseudo quote, his meaning in tidied words, in square brackets, alone. Square brackets inside guillemets mark a pseudo quote inside a quote.
+
+```text
+He wants the form kept to «that which is load-bearing», because [raw speech is convoluted].
+He would be «careful» with [an Opus that infers [as little as possible]].
+```
+
+```mermaid
+flowchart TB
+    w["what he said"] -- "load-bearing, in his words" --> g["guillemets"]
+    w -- "load-bearing, would not read raw" --> b["square brackets: a pseudo quote"]
+    w -- "said only to be understood" --> t["stays in the transcript"]
+    g -- "composed by the flow's own words into" --> c["a crystallization"]
+    b -- "composed by the flow's own words into" --> c
+```
+
+A crystallization is kept in parts, one per subject. A part stays until what it represents is purified into a belief module; then it drops. What he has not finished explaining is marked so in its part, and the flow that holds it asks him for the rest.
+
+```mermaid
+flowchart TB
+    p["a part of a crystallization"] -- "what it represents is purified into a belief module" --> d["drops"]
+    p -- "not yet purified" --> k["kept, through every refresh"]
+    p -- "he has not finished explaining" --> q["marked so; the flow asks him for the rest"]
+```
+
+Each kind of flow crystallizes by its own guide, a module for its kind. Fable concentrates on the living: what he said and wants. An implementer keeps a high-level view of the code it is dealing with: why it is touching it, what it tried, what did not work, and what it did. An acting flow's crystallization states its goal and its next act, so that the flow that follows sees the path ahead, rereads little of what its predecessor read, and acts in its first turn.
+
+```mermaid
+flowchart TB
+    g["the guide of its kind"] -- "says what to keep" --> c["the crystallization"]
+    a["an acting flow"] -- "adds its goal and its next act" --> c
+    c -- "starts" --> s["the next flow, which acts in its first turn"]
+```
 
 <!-- end-module: vision:crystallization:0 -->
 
@@ -381,11 +424,11 @@ Living messenger: the user interface through which a flow reaches the living, as
 
 Illustrated book: a book to which a model has added illustrations, deciding where each goes.
 
-Drifting context: context that passes from flow to flow by handover and message and is landed in no module, so a new flow starts without it.
+Drifting context: context that passes from flow to flow by crystallization and message and is purified into no module, so a new flow starts without it.
 
 The living: the person the thinking machine extends; his psyche is what the machine is an extension of.
 
-Raw: a record on which no confirmation was asked. Vision and notion can be raw; intent and spirit are only crystallized.
+Raw: the living's words as he spoke them, before a flow has given them structure. Intent and spirit are only purified.
 
 Past: the flows a flow has remembered, and theirs in turn.
 

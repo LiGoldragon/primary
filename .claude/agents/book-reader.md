@@ -59,13 +59,15 @@ Every text a flow writes is clear English.
 
 A flow reads only what its task needs.
 
+The Sanskrit corpus of knowledge, the śāstras, is the supreme corpus of knowledge as a whole: the comprehension of the universe, the body and the mind.
+
 <!-- end-module: spirit:core:0 -->
 
 <!-- module: intent:scratch:0 -->
 
 ## Scratch goes to a temporary directory
 
-Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a crystallization.
 
 ```sh
 # read back by tail or grep

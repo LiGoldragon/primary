@@ -59,13 +59,15 @@ Every text a flow writes is clear English.
 
 A flow reads only what its task needs.
 
+The Sanskrit corpus of knowledge, the śāstras, is the supreme corpus of knowledge as a whole: the comprehension of the universe, the body and the mind.
+
 <!-- end-module: spirit:core:0 -->
 
 <!-- module: intent:scratch:0 -->
 
 ## Scratch goes to a temporary directory
 
-Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a crystallization.
 
 ```sh
 # read back by tail or grep
@@ -80,11 +82,11 @@ The calling flow writes the presentation source file and gives its path in the b
 
 Use the configured book builder for the complete page. The builder renders what it is given; a source that fails the builder's check is yours to fix. Fix the form: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. Re-check, then build. Change no proposed wording; return to the author, with the fault named, only a source whose content is wrong.
 
-Read the source in order. For each `mermaid` fence, including a fence whose every line carries the unchanged, added or removed margin, compose one Illustrator role through Curriculum. Give that Illustrator only that fence and the figure grammar. Save its result as `fig-N.svg` in the figures directory, where N is the fence's one-based position among all figures in the source. Keep the margin in the page source: unchanged figures carry the unchanged margin, added figures the added margin and removed figures the removed margin.
+Read the source in order and collect every `mermaid` fence to be drawn, including a fence whose every line carries the unchanged, added or removed margin, each numbered N by its one-based position among all figures in the source. Compose one Illustrator role through Curriculum for the whole book, and give it every fence with its number and the figure grammar, in one run. It saves each figure as `fig-N.svg` in the figures directory. Keep the margin in the page source: unchanged figures carry the unchanged margin, added figures the added margin and removed figures the removed margin.
 
 A figure is drawn from its fence's Mermaid text as it stands at this publication. Save that text beside its figure as `fig-N.mmd`; at every publication, a `fig-N.svg` whose `fig-N.mmd` is absent or differs from the fence now at position N is redrawn before the build.
 
-Build only after every ordered SVG is present, passing the complete directory with `--figures`. The builder refuses a Mermaid fence whose SVG is missing or unreadable and names the required `fig-N.svg`; send those exact words back to that fence's Illustrator for retry. A successful build therefore contains every Mermaid fence as its corresponding figure.
+Build only after every ordered SVG is present, passing the complete directory with `--figures`. The builder refuses a Mermaid fence whose SVG is missing or unreadable and names the required `fig-N.svg`; send those exact words back to the book's Illustrator for retry. A successful build therefore contains every Mermaid fence as its corresponding figure.
 
 Publish the builder's resulting page once with Artifact and Send its title and link through flow to the flow that ordered the book. If publishing fails, Send that flow the concrete blocker.
 
@@ -110,7 +112,7 @@ A book is one publication of a presentation, at one link. A book the living has 
 
 ## Duties
 
-The author writes the complete source and names its path to the bookmaker. The bookmaker has the Illustrator draw each figure as a vector graphic, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
+The author writes the complete source and names its path to the bookmaker. The bookmaker has one Illustrator draw every figure of the book as vector graphics in one run, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
 
 ## Source anatomy
 

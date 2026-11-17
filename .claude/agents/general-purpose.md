@@ -58,13 +58,15 @@ Every text a flow writes is clear English.
 
 A flow reads only what its task needs.
 
+The Sanskrit corpus of knowledge, the śāstras, is the supreme corpus of knowledge as a whole: the comprehension of the universe, the body and the mind.
+
 <!-- end-module: spirit:core:0 -->
 
 <!-- module: intent:scratch:0 -->
 
 ## Scratch goes to a temporary directory
 
-Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a handover.
+Build output, a log, a diff, a probe, every file a flow makes for its own work, goes to a temporary directory: the harness scratchpad, or one made with mktemp -d. The primary workspace and the flow directory hold only what is landed or what the living reads, a proposal or a crystallization.
 
 ```sh
 # read back by tail or grep
@@ -89,7 +91,7 @@ A book is one publication of a presentation, at one link. A book the living has 
 
 ## Duties
 
-The author writes the complete source and names its path to the bookmaker. The bookmaker has the Illustrator draw each figure as a vector graphic, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
+The author writes the complete source and names its path to the bookmaker. The bookmaker has one Illustrator draw every figure of the book as vector graphics in one run, builds the page with the repository builder, publishes it, and Sends its title and link through flow to the flow that ordered the book. Only the bookmaker publishes. A source that fails the builder's check is the bookmaker's to fix: headings, signs, context lines, the proposal form, and a Mermaid fence among removed lines, which is rendered as removed lines and never drawn. The bookmaker changes no proposed wording; a source whose content is wrong returns to the author with the fault named. A redo replaces the same edition and resolves the comment threads the source answers. The builder's checker and its one stylesheet guarantee the page; a fault found on a published page is fixed in the builder or the figure grammar.
 
 ## Source anatomy
 
