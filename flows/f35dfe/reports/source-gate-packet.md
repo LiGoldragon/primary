@@ -52,3 +52,14 @@ Proposed supervision: one foreground owned process/group, stdout+stderr retained
 ## Independent frwm draft
 
 The same uninstalled draft `flows/437627/knowledge/harness-idle/0.md` includes the app-server A1–A5 third witness and bounded B1–B4 plan, documented in primary commit `da27bd524`. This does not arm B1 or any harness, app-server, nix shell or provider call. Its unverified controls remain explicit UNKNOWN. It does not expand this source/gate scope.
+
+
+## hb0c actual gate terminal
+
+The single exact approved whole projected-Home command ran **once**, start `2026-11-17T00:57:00.063549+00:00`, end `2026-11-17T00:58:44.152849+00:00`, elapsed104.097s. `nix-fast-build` exit **0**; supervising outer Python command exit **0** (terminal session21337). Launcher PID/group10514 and supervisor10506 are absent; the owned process group is empty. **98/98 EVAL attributes and 98/98 BUILD attributes succeeded**, with identical attribute sets and zero failed rows. The configuration-removal fixture `flow-memory-configuration` has successful EVAL and BUILD rows.
+
+Actual full command/identity: scratch `gate-start.json`; full output `gate.log`; launcher and supervisor exits/end/group check `gate-receipt.json`; original machine results `gate-results.json`; attribute-set/count/fixture audit `gate-summary.json`. Log SHA-256: `21fbf92c1e982828a712c747511344fe6bed65418675d8e86d31ad4082b09417`. `GATE-SHA256SUMS` hashes these records and the supervision script. The approved launcher does not separately expose each raw Nix subcommand's numeric exit in its JSON result interface: actual launcher/supervisor codes are0/0, and per-attribute success/error records are retained without manufacturing raw exit codes.
+
+The full log ends with the actual remote cleanup invocation `ssh prometheus.goldragon.criome -- rm -rf /tmp/tmp.Mjk2xlCwlI`. A separate read-only point-in-time receipt at `2026-11-17T01:00:04.284228+00:00` confirms that exact temporary path is absent and no current-user Nix/evaluator process contains the unique gate temp/source marker. See `remote-cleanup-check.py` and `remote-cleanup-receipt.json`; this scoped owned-worker check is not a global daemon census or a universal detached-descendant guarantee. No other worker was stopped or altered.
+
+No source correction, retry, second gate, consumer build, publication, runtime action, harness run or nix shell occurred. Source references remain Home3d242cd6cf3cdb93b953579af7ae2247bf3f8a79 and consumer1ff53f67e40d15d3dae5e071f19f9b3b79636487; both worktrees remain clean. Lock370 remains retained pending Field core's finite-custody/publication instruction. **Gate is green; publication and runtime still await their own authorization.**
