@@ -63,3 +63,22 @@ Actual full command/identity: scratch `gate-start.json`; full output `gate.log`;
 The full log ends with the actual remote cleanup invocation `ssh prometheus.goldragon.criome -- rm -rf /tmp/tmp.Mjk2xlCwlI`. A separate read-only point-in-time receipt at `2026-11-17T01:00:04.284228+00:00` confirms that exact temporary path is absent and no current-user Nix/evaluator process contains the unique gate temp/source marker. See `remote-cleanup-check.py` and `remote-cleanup-receipt.json`; this scoped owned-worker check is not a global daemon census or a universal detached-descendant guarantee. No other worker was stopped or altered.
 
 No source correction, retry, second gate, consumer build, publication, runtime action, harness run or nix shell occurred. Source references remain Home3d242cd6cf3cdb93b953579af7ae2247bf3f8a79 and consumer1ff53f67e40d15d3dae5e071f19f9b3b79636487; both worktrees remain clean. Lock370 remains retained pending Field core's finite-custody/publication instruction. **Gate is green; publication and runtime still await their own authorization.**
+
+
+## 8u1v ordered publication and custody release — final
+
+Producer Home was published first, followed by a successful fresh immutable readback; only then was the consumer published and read back. Every push and readback exited0. Exact actual commands:
+
+```sh
+git -C /git/worktrees/home-handover-once-f35dfe push origin 3d242cd6cf3cdb93b953579af7ae2247bf3f8a79:refs/heads/field/f35dfe-home-once
+git -C /git/worktrees/home-handover-once-f35dfe ls-remote --exit-code origin refs/heads/field/f35dfe-home-once
+git -C /git/worktrees/criomos-handover-once-f35dfe push origin 1ff53f67e40d15d3dae5e071f19f9b3b79636487:refs/heads/field/f35dfe-consumer-once
+git -C /git/worktrees/criomos-handover-once-f35dfe ls-remote --exit-code origin refs/heads/field/f35dfe-consumer-once
+```
+
+- home: push `2026-11-17T01:01:05.587555+00:00` → `2026-11-17T01:01:07.989389+00:00`; fresh readback `2026-11-17T01:01:09.934094+00:00`: `3d242cd6cf3cdb93b953579af7ae2247bf3f8a79	refs/heads/field/f35dfe-home-once`.
+- consumer: push `2026-11-17T01:01:09.940572+00:00` → `2026-11-17T01:01:12.633743+00:00`; fresh readback `2026-11-17T01:01:14.561294+00:00`: `1ff53f67e40d15d3dae5e071f19f9b3b79636487	refs/heads/field/f35dfe-consumer-once`.
+
+Consumer materialization reference for **ROOT-owned** Lojix Evaluate: `github:LiGoldragon/CriomOS?rev=1ff53f67e40d15d3dae5e071f19f9b3b79636487`. It is directly parented by actual669b38611b5cf022714fdf06953a069995503b4e, pins published Home3d242cd6cf3cdb93b953579af7ae2247bf3f8a79, and retains Energy761a9119dd78eb2020040bc897e885a378c00b95. Producer Home is directly descended through exact-removal a52366151c9c39d7aac241d6701becb96463aa97 from actual39face790daf37b5949c1bf067599cbf52e56321. Root must still perform fresh actual-parent/configuration/Fable checks and its own Evaluate → Realize → Activate/live acceptance; this packet makes no deployment claim.
+
+Receipts: scratch `home-push.log`, `home-remote-readback.txt`, `consumer-push.log`, `consumer-remote-readback.txt`, and structured `publication-receipts.json`. Both worktrees are clean, every source/gate/publication control is terminal, and no harness/observer was started. **Lock370 was released after both remote readbacks**, with the complete `Released` echo retained in `release.receipt` and zero-control facts in `source-gate-final-control.json`. No main/tag/force/merge, source change, regate, consumer build, configuration write or runtime operation occurred. `PUBLICATION-SHA256SUMS` hashes the publication/control receipts. This ends this source/gate custody and does not allocate a new heavy slot or any frwm runtime.
