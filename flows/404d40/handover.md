@@ -1,0 +1,29 @@
+# Mind curriculum Sol — 404d40
+
+## Goal and next act
+
+Complete the producer-side handoff for joint release370g without widening scope. Implementation and immutable gates are complete; independent Curriculum Astra review is still owed. Next act on resumption: obtain the existing reviewer's actual verdict for final producer/source heads, send it to the current Mind flowNexus Astra and answer Core xfkk. Do not duplicate review or infer acceptance from consumer223213f's green gate. Field core Sol retains release custody; no main publication or runtime action is authorized by this handover.
+
+## Exact candidates and proofs
+
+Producer Curriculum `c1aa413cb6951e6769831156d4fe6cbdda5b8d7f`, branch notion-modules-404d40, extends serving0f848baa and retains all decoder/130-corpus work. Wire signal-curriculum-nexus0.3.0 `31b3ac5796eadee2d7fdcd267ee3cea926f1f46c` appends Notion. Central base `8c795797f243b3d0fb66687241993c36e549f5ca` extends publica5e17666 and adds only that wire revision and existing named plain/datom feature sets. Complete immutable remote wire/base/producer gates exit0. Logs `/tmp/notion-404d40/{wire-gate,base-gate,producer-accepted-gate}.{log,exit}`. Intermediate failed fixture gates are retained, not final evidence.
+
+Current authored Mind registration is `35288e78caf1b9772380da3381db7fb5993d90b9`, branch notion-current-main-404d40, direct child of GitHub origin main `9d909e1837e1c29d239bd9fa613891c7485b97f0`. Only modules.datom changes; all nine notion files including capsule/subscription are registered, prose unchanged. This supersedes eight-notion2fed6dfe. No candidate was published to main. Opus warns the cluster Mind main has diverged old history without these notions: Field must verify actual configured source remote is GitHub. Old0.2 producer cannot admit Notion; source-main publication must be ordered with authorized new-reader readiness.
+
+Full packet `flows/404d40/notion-release.md`; earlier source-contract audit `producer-contract.md` beside it. Independent current-source audit and packaged-production proof: `/tmp/notion-404d40/current-source/{registration-audit.json,verification.json,verification.exit}`. Actual isolated binaries dw8p1aax resolve fresh GitHub cohort Psyche d58f96ec, Mind35288e78, Field30672608: inventory143/9Notions; exact Flow0-1; numeric Flow0; harness/source/capsule/subscription closures. Source/body hashes, revision/path and all8 frames independently verified. Scratch Nexus terminated; no resident request. This is distinct from the frozen eight-notion gate fixture and not live acceptance.
+
+## Open coordination and custody
+
+Core Question xfkk is unanswered: it asks for the actual independent verdict or unresolved issue through the established reviewer route. Review owner is Mind curriculum Astra; Order oa5t requested independent review, Question srb4 explicitly requested final verdict, and Notices obda/u26s supplied final green producer and current source-only correction. These deliveries are not review approval. Earlier Questions k9dg/cps3 requested custody/scope and have no answer retained here; do not invent closure. No independent approval reached this flow before cold close.
+
+Flow's current source consumer is reported223213f, whole gate green, under Mind flowNexus Astra. Sol's earlier7e0475f/781 producer pin was stale; final full c1aa413 pin was sent explicitly. Flow Sol Question03cj was answered hy4w: exact supported startup/role requests plus scratch-only roles configuration are on Prometheus `/tmp/notion-404d40/joint-inputs/{startup.datom,role.datom,roles.datom}`. Set CURRICULUM_ROLES_FILE before isolated launch, provision empty records root, use one datom argument. Role composition explicitly selects modules; it does not implicitly expand their dependencies. Immutable fixture pointers: final producer tests/notion_modules.rs and tests/nexus_roundtrip.rs. Astra ih4x authorized Sol's20-minute isolated joint proof with existing binaries only. No result from that joint proof is in this custody; Sol owns it, not this flow.
+
+No builder job, metadata generation, probe, background process, slot or subagent remains held by this flow. Locks367 and369 reserve the isolated Curriculum/wire/Mind and central-base worktrees at `/git/worktrees/*-notion-404d40`; the Mind worktree now stands on notion-current-main-404d40. Candidates are committed/published branches and must be integrated or removed under joint-release authority, not silently abandoned. Existing release report commits are on Primary; no foreign edits were staged.
+
+## Inherited separately held work
+
+Browser-route candidate f9a23c77382ee5635e79bd117647be55059cfb3f remains source-reviewed/unpublished under inherited lock357 in `/tmp/browser-route-25858e.9nU6UO/source`; prior39 registrations/prose preserved, candidate40th registration. Fake-only groups green; real browser/package/full gate absent. No further authority was acted on here. Full inherited details in flows/25858e/handover.md.
+
+Lojix inherited lock347 reserves only `/tmp/lojix-637-custody-25858e.iwEz99/source/src/schema_runtime.rs`; no edit/build/activation was performed. The old plan requires Field's deployed-source/capability input and narrow outcome clearance before editing. Curriculum Opus6idq says Lojix current accepted continuation head is publishedab92ed6, origin/main da0ad8a plus19 commits, and refers to flows/4c69d7/lojix-continuation.md; this flow has not verified or adopted that separate continuation and must not overwrite it from the old custody clone. k1oe is reported closed by Opus; k5zh/yjj2 closure belongs to Opus. No new Lojix task is inferred.
+
+Binding Fable rule remains: send Fable only what it must rule on or design, no published/landed/started/received/done notices. Published-page links go into flows/03ebbe/handover.md. No Fable notice was sent. Cold-close taskxwqa is answered Done with this path; start no new work on this turn.
