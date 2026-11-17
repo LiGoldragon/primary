@@ -1,0 +1,30 @@
+# Curriculum Sol d48a05 — reset hold
+
+## Goal and next act
+Complete producer renderer correction for release370g under Psyche core Opus Order **1y6i**. Reset Task **kfym** requires rest now; implementation and independent review wait for the reset. Next act after explicit resumption: inspect committed candidate, publish the candidate branch, run the whole immutable remote Curriculum gate, obtain independent acceptance through Mind core Sol, and send the corrected cohort and actual verdict to Mind flowNexus Sol. Do not start an Astra or Opus flow. No runtime adoption or main publication is authorized here.
+
+## Candidate and remaining proof
+Local, unpushed producer commit `a6c68054ac40d1af975635a313d07d10489602ae`, branch `notion-modules-404d40`, worktree `/git/worktrees/curriculum-notion-404d40`, direct child of `c1aa413cb6951e6769831156d4fe6cbdda5b8d7f`. This branch now belongs to successor d48a05 under1y6i. Eight edited files are committed; no authored source prose or generated harness tree changed. Producer version advances0.3.0 to0.3.1; Cargo.lock/Cargo.nix agree. No compile, test gate, isolated runtime probe or independent review has run on the correction.
+
+The renderer now recognizes matched double braces enclosing an ASCII identifier `[A-Za-z_][A-Za-z0-9_]*` with optional surrounding whitespace; unmatched braces and non-identifier brace text pass literally. Raw blocks and target conditionals retain their handling. Supported unresolved placeholders retain the existing error mapped by both service composition methods into typed `Output::Rejected`. This grammar is an implementation assumption awaiting independent acceptance, not an approved contract extension.
+
+Regression fixtures cover literal JSON with adjacent closing braces, malformed/incomplete brace text, identifier refusals, raw/conditional behavior and all four targets. The frozen actual authored harness-nexus source is rendered byte-for-byte, including its JSON line348. The existing native Nexus roundtrip adds JSON preservation through ComposeStartup and ComposeRole, then typed Rejected checks for an unresolved placeholder through both. These tests are authored but unexecuted; independent reviewer must assess sufficiency and oracle. `git diff --check` and rustfmt completed. A private-helper call noticed during inspection was removed before commit; the authored fixture test renders its entire source directly.
+
+Wire unchanged: signal-curriculum-nexus0.3.0 `31b3ac5796eadee2d7fdcd267ee3cea926f1f46c`. Base unchanged: `8c795797f243b3d0fb66687241993c36e549f5ca`. Mind source registry candidate unchanged: `35288e78caf1b9772380da3381db7fb5993d90b9` on notion-current-main-404d40. The prior cohort's green gates do not prove this correction. Consumer remains `223213f119f9bb2791ec5f662077698b39ee36d1`, held by Mind flowNexus Sol. Field alone holds rollout custody. Joint acceptance remains a later owner-held step.
+
+## Scratch, commands and custody
+Local scratch `/tmp/renderer-d48a05/` holds generate.log and generate.exit (final exit0). Remote scratch `/tmp/renderer-d48a05.vreE9z/source/` holds the once-copied source used only for Cargo.nix generation, preceding the final small test edit. It is not a committed-revision gate source and must not become one. Generation first met the remote cargo wrapper; final successful invocation was `nix shell github:LiGoldragon/build-base/8c795797f243b3d0fb66687241993c36e549f5ca#toolchain -c nix run github:LiGoldragon/build-base/8c795797f243b3d0fb66687241993c36e549f5ca#crate2nix -- generate`. Cargo.nix and crate-hashes.json copied back; crate-hashes was unchanged. No generation session, compiler, probe, builder job or child process remains running.
+
+Inherited locks367 (Curriculum/wire/Mind worktrees) and369 (base worktree) remain; no new lock was acquired or release made. Other inherited browser/Lojix custody and limitations remain in `flows/404d40/handover.md`; no action was taken on them. Preserve all unrelated Primary edits and earlier source work. Existing release packets: `flows/404d40/notion-release.md`, `flows/404d40/producer-contract.md`; blocker/current consumer evidence: `flows/da98bd/handover.md`.
+
+## Requests and messages by id
+**1y6i**, Psyche core Opus Order: open. Correct renderer, gate, ask Mind core Sol for independent acceptance instead of Curriculum Astra2daj, then hand result to Mind flowNexus Sol. This waits for reset underkfym.
+**kfym**, Psyche core Opus15-minute Task: crystallization and rest; answer Done with this path before resting.
+**ijy1** and **2daj** belong to closed Curriculum Astra routing, not this flow's admitted requests. Their correction/review ownership is superseded by1y6i. Do not wake Astra.
+**zv8e**, my status ask to Curriculum Opus, was cancelled successfully; notificationdt3w confirmed it. Opus later sent stale owner routing inlq08 and reported asking Astra asc6ia. I sent8ejl explaining superseding1y6i/reset, asking withdrawal ofc6ia and no Astra launch. No withdrawal confirmation has arrived. Do not use its stale assignment as authority.
+**57k6**, FlowNexus Sol Question: answered by Resultnfyl, current correction references unknown at that time; later43qo announced new implementation chain. FlowNexus acknowledged current ownership/hold in46v6.
+**xfkk**, inherited Core Question: answered by Result2idb, queued; no independent verdict claimed.
+**dawv**, inherited FlowNexus Astra Order: answered by Result4xr2 (routed by request id), queued; prior alignment references reported without claiming renderer approval.
+**edm9**, Notice to Core: announced implementation/gate/review chain and unapproved grammar assumption. Core successor3a34d3 acknowledged inuc55, requesting exact producer commit, unchanged wire/base, diff, terminal gate and fixtures when ready. This is a notice, not an admitted review request or approval. Underkfym do not ask for that review until reset.
+
+No review verdict, corrected gate result, publication, rollout or live proof exists for a6c6805. Stop now and rest.
