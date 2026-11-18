@@ -29,6 +29,62 @@ def write_once(path, data):
         stream.write(data)
 
 
+def retain_evidence(root, destination):
+    """Copy bounded evidence and transcript files into a fresh outside directory."""
+    root, destination = Path(root), Path(destination)
+    if not root.is_absolute() or not destination.is_absolute():
+        raise CustodyError('retention paths must be absolute')
+    root_real = os.path.realpath(root, strict=True)
+    parent_real = os.path.realpath(destination.parent, strict=True)
+    target = os.path.join(parent_real, destination.name)
+    if os.path.commonpath((root_real, target)) == root_real:
+        raise CustodyError('retention directory must be outside workload root')
+    os.mkdir(target, 0o700)
+    for name in ('evidence', 'transcripts'):
+        source = root / name
+        if not source.exists():
+            if name == 'evidence':
+                raise CustodyError('evidence directory unavailable')
+            continue
+        st = source.lstat()
+        if not stat.S_ISDIR(st.st_mode) or st.st_uid != os.getuid():
+            raise CustodyError('invalid retention source')
+        for directory, dirs, files in os.walk(source, followlinks=False):
+            relative = Path(directory).relative_to(root)
+            output_dir = Path(target) / relative
+            output_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+            for child in dirs:
+                info = (Path(directory) / child).lstat()
+                if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid():
+                    raise CustodyError('unsafe directory in evidence')
+            for child in files:
+                path = Path(directory) / child
+                info = path.lstat()
+                if stat.S_ISFIFO(info.st_mode):
+                    continue
+                if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or info.st_nlink != 1:
+                    raise CustodyError('unsafe file in evidence')
+                fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+                try:
+                    observed = os.fstat(fd)
+                    if (observed.st_dev, observed.st_ino) != (info.st_dev, info.st_ino):
+                        raise CustodyError('evidence changed during retention')
+                    output = os.open(output_dir / child, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+                    try:
+                        while True:
+                            data = os.read(fd, 1048576)
+                            if not data:
+                                break
+                            view = memoryview(data)
+                            while view:
+                                view = view[os.write(output, view):]
+                    finally:
+                        os.close(output)
+                finally:
+                    os.close(fd)
+    return target
+
+
 def provider(manifest, name):
     entry = manifest['operator_providers'][name]
     path, expected = entry['path'], entry['sha256']
@@ -155,12 +211,17 @@ def production_compare(root):
             raise CustodyError('production witness changed: ' + part)
 
 
-def read_fifo(fd, deadline):
+def read_fifo(fd, deadline, abort_fds=()):
     selector = selectors.DefaultSelector()
-    selector.register(fd, selectors.EVENT_READ)
+    selector.register(fd, selectors.EVENT_READ, 'fifo')
     try:
-        if not selector.select(max(0, deadline - time.monotonic())):
+        for abort_fd in abort_fds:
+            selector.register(abort_fd, selectors.EVENT_READ, 'abort')
+        events = selector.select(max(0, deadline - time.monotonic()))
+        if not events:
             raise CustodyError('startup handshake deadline expired')
+        if any(key.data == 'abort' for key, _ in events):
+            raise CustodyError('startup peer or forwarding failure')
         data = os.read(fd, 65536)
         if not data.endswith(b'\n') or b'\n' in data[:-1]:
             raise CustodyError('malformed handshake')
@@ -217,6 +278,7 @@ def unlink_auth_after_terminal(manifest):
 
 def in_unit(manifest, workload, envelope_path, envelope_hash):
     """Called by the reviewed service entrypoint, not enabled as a CLI."""
+    deadline = time.monotonic() + 1200
     root = Path(manifest['root'])
     envelope_bytes = Path(envelope_path).read_bytes()
     if bootstrap.hashlib.sha256(envelope_bytes).hexdigest() != envelope_hash:
@@ -237,7 +299,7 @@ def in_unit(manifest, workload, envelope_path, envelope_hash):
     try:
         os.write(ready, (json.dumps({'pid': os.getpid(), 'start_ticks': start_ticks(os.getpid()),
                                      'invocation_id': os.environ.get('INVOCATION_ID')}) + '\n').encode())
-        saved = read_fifo(go, time.monotonic() + manifest['handshake_timeout_seconds'])
+        saved = read_fifo(go, time.monotonic() + manifest['handshake_timeout_seconds'], (peer_fd,))
         identity = saved['unit']
         if before_digest(root) != saved['production_before_sha256']:
             raise CustodyError('production-before handshake mismatch')
@@ -247,7 +309,7 @@ def in_unit(manifest, workload, envelope_path, envelope_hash):
         if cgroup_identity(identity['ControlGroup'])['inode'] != saved['cgroup']['inode']:
             raise CustodyError('go cgroup inode mismatch')
         with bootstrap.Bootstrap(manifest, identity) as owner:
-            workload(owner, peer_fd, envelope['nonce'])
+            workload(owner, peer_fd, envelope['nonce'], deadline)
     finally:
         os.close(peer_fd)
         os.close(ready)
@@ -268,13 +330,18 @@ def guarded_stop(manifest, saved):
     return result.stdout
 
 
-def _wait_process(process, deadline):
+def _wait_process(process, deadline, failure_fd=None):
     fd = os.pidfd_open(process.pid)
     selector = selectors.DefaultSelector()
     try:
         selector.register(fd, selectors.EVENT_READ)
-        if not selector.select(max(0, deadline - time.monotonic())):
+        if failure_fd is not None:
+            selector.register(failure_fd, selectors.EVENT_READ)
+        events = selector.select(max(0, deadline - time.monotonic()))
+        if not events:
             raise CustodyError('unit terminal event not observed')
+        if failure_fd is not None and any(key.fd == failure_fd for key, _ in events):
+            raise CustodyError('operator forwarding failed: ' + os.read(failure_fd, 4096).decode('utf-8', 'replace'))
         return process.wait()
     finally:
         selector.close()
@@ -322,8 +389,12 @@ def operator(manifest, manifest_path, expected_manifest_digest):
     process = None
     saved = None
     terminal = False
+    launch_pidfd = None
     status = {'custody': 'not-started'}
     old_handlers = {}
+    forward_thread = None
+    stop_read, stop_write = os.pipe2(os.O_CLOEXEC | os.O_NONBLOCK)
+    failure_read, failure_write = os.pipe2(os.O_CLOEXEC | os.O_NONBLOCK)
     def interrupted(signum, frame):
         raise CustodyError('operator interrupted: ' + str(signum))
     try:
@@ -343,7 +414,18 @@ def operator(manifest, manifest_path, expected_manifest_digest):
         finally:
             os.close(log)
         status['custody'] = 'launch-uncertain'
-        ready = read_fifo(read_fd, time.monotonic() + manifest['handshake_timeout_seconds'])
+        launch_pidfd = os.pidfd_open(process.pid)
+        def forward():
+            try:
+                forward_operator_input(root, envelope['nonce'], process, stop_read)
+            except BaseException as exc:
+                try:
+                    os.write(failure_write, str(exc).encode('utf-8', 'replace')[:4096] or b'forwarding failed')
+                except OSError:
+                    pass
+        forward_thread = threading.Thread(target=forward, name='operator-forward', daemon=True)
+        forward_thread.start()
+        ready = read_fifo(read_fd, time.monotonic() + manifest['handshake_timeout_seconds'], (failure_read, launch_pidfd))
         identity = unit_show(manifest)
         if identity['Id'] != manifest['unit_name'] or identity['InvocationID'] != ready['invocation_id'] or int(identity['MainPID']) != ready['pid']:
             raise CustodyError('startup unit identity mismatch')
@@ -365,7 +447,7 @@ def operator(manifest, manifest_path, expected_manifest_digest):
         if len(message) > 4096 or os.write(go_fd, message) != len(message):
             raise CustodyError('startup go write incomplete')
         status['custody'] = 'owned'
-        code = _wait_process(process, time.monotonic() + manifest['terminal_timeout_seconds'])
+        code = _wait_process(process, time.monotonic() + manifest['terminal_timeout_seconds'], failure_read)
         terminal = True
         status['systemd_run_exit'] = code
         if code:
@@ -373,6 +455,11 @@ def operator(manifest, manifest_path, expected_manifest_digest):
     except BaseException as exc:
         status['error'] = str(exc)
     finally:
+        if forward_thread is not None:
+            os.write(stop_write, b'x')
+            forward_thread.join(timeout=manifest['control_timeout_seconds'])
+            if forward_thread.is_alive():
+                status['forward_error'] = 'forwarding thread did not terminate'
         if process is not None and not terminal and saved is not None:
             try:
                 output = guarded_stop(manifest, saved)
@@ -399,8 +486,13 @@ def operator(manifest, manifest_path, expected_manifest_digest):
             signal.signal(sig, handler)
         os.close(read_fd)
         os.close(go_fd)
+        for fd in (stop_read, stop_write, failure_read, failure_write):
+            os.close(fd)
+        if launch_pidfd is not None:
+            os.close(launch_pidfd)
         write_once(root / 'evidence/operator-status.json', (json.dumps(status, sort_keys=True) + '\n').encode())
-    if status.get('error') or status.get('stop_error') or status.get('reconciliation_error') or status['custody'] != 'terminal-and-empty':
+        retain_evidence(root, manifest['retained_evidence'])
+    if status.get('error') or status.get('stop_error') or status.get('reconciliation_error') or status.get('forward_error') or status['custody'] != 'terminal-and-empty':
         raise CustodyError('run incomplete; see retained operator status')
     return status
 

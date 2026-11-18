@@ -7,6 +7,25 @@ import orchestration as o
 
 
 class CustodyFixtures(unittest.TestCase):
+    def test_evidence_retained_outside_workload(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d) / 'workload'
+            (root / 'evidence').mkdir(parents=True)
+            (root / 'evidence' / 'receipt').write_text('receipt')
+            retained = Path(d) / 'retained'
+            o.retain_evidence(root, retained)
+            self.assertEqual((retained / 'evidence' / 'receipt').read_text(), 'receipt')
+
+    def test_retention_rejects_inside_root_and_symlinks(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d) / 'workload'
+            (root / 'evidence').mkdir(parents=True)
+            with self.assertRaises(o.CustodyError):
+                o.retain_evidence(root, root / 'retained')
+            (root / 'evidence' / 'link').symlink_to('/etc/passwd')
+            with self.assertRaises(o.CustodyError):
+                o.retain_evidence(root, Path(d) / 'retained')
+
     def test_identity_rejects_wrong_id_or_group(self):
         value = dict(Id='a', InvocationID='b', ControlGroup='/user.slice/a', MainPID='3',
                      ExecMainStartTimestampMonotonic='4', ExecStart='x')
@@ -38,7 +57,7 @@ class CustodyFixtures(unittest.TestCase):
     def test_handshake_rejects_bad_envelope(self):
         with mock.patch.object(o.selectors, 'DefaultSelector') as factory, \
              mock.patch.object(o.os, 'read', return_value=b'{}\n{}\n'):
-            factory.return_value.select.return_value = [object()]
+            factory.return_value.select.return_value = [(mock.Mock(data='fifo'), 1)]
             with self.assertRaises(o.CustodyError):
                 o.read_fifo(1, o.time.monotonic() + 1)
 

@@ -3,7 +3,7 @@
 import json
 import pathlib
 import sys
-import os, re, hashlib, subprocess, shlex, stat
+import os, re, hashlib, subprocess, shlex, stat, time
 
 EXPECTED_COMMIT = "fe5a6930871707a7086c9a647867a519734220ef"
 
@@ -96,10 +96,10 @@ def canonical_manifest_hash(manifest):
 
 
 def validate(manifest):
-    required = {'candidate_commit', 'root', 'unit_name', 'session', 'user', 'host_path',
+    required = {'candidate_commit', 'root', 'retained_evidence', 'unit_name', 'session', 'user', 'host_path',
                 'providers', 'operator_providers', 'operator_environment', 'production', 'contexts',
                 'admission', 'driver', 'artifacts', 'auth_target',
-                'expected_configuration', 'rehearsal_sha256', 'handshake_timeout_seconds',
+                'expected_configuration', 'handshake_timeout_seconds',
                 'control_timeout_seconds', 'terminal_timeout_seconds', 'startup_timeout_seconds'}
     if not isinstance(manifest, dict) or set(manifest) != required:
         raise AdmissionError('manifest must contain the exact schema')
@@ -109,13 +109,16 @@ def validate(manifest):
             raise AdmissionError('operator environment contains unreviewed fields')
     if manifest['candidate_commit'] != EXPECTED_COMMIT:
         raise AdmissionError('candidate commit differs from reviewed source')
+    root, retained = manifest['root'], manifest['retained_evidence']
+    if (not isinstance(root, str) or not isinstance(retained, str) or
+        not os.path.isabs(root) or not os.path.isabs(retained) or
+        os.path.normpath(root) != root or os.path.normpath(retained) != retained or
+        os.path.commonpath((root, retained)) == root):
+        raise AdmissionError('retention must be an absolute normalized path outside the workload root')
     if manifest['auth_target'] != '/home/li/.codex-next-5ck97j38j3sb/auth.json':
         raise AdmissionError('auth target differs from approved target')
     if not isinstance(manifest['expected_configuration'], str) or not manifest['expected_configuration'].startswith('Configuration.'):
         raise AdmissionError('exact reviewed Configuration required')
-    hashes = manifest['rehearsal_sha256']
-    if set(hashes) != {'sender', 'receiver'} or any(not re.fullmatch('[0-9a-f]{64}', x) for x in hashes.values()):
-        raise AdmissionError('reviewed rehearsal hashes required')
     for name in ('handshake_timeout_seconds', 'control_timeout_seconds', 'terminal_timeout_seconds', 'startup_timeout_seconds'):
         value = manifest[name]
         if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 < value <= 1200:
@@ -200,23 +203,34 @@ def configure_and_rehearse(owner):
             raise AdmissionError('private Configuration does not have exactly two synthetic rows')
     if '/home/li/.local/bin' in config:
         raise AdmissionError('production wrapper in private Configuration')
+    hashes = {}
     for side, topic in (('sender', 'proposalTwoSender'), ('receiver', 'proposalTwoReceiver')):
         request = f'Rehearse.{{ {{ Mind {topic} Luna }} Predecessors.0 «Report ready only.» }}'
         result = private_call(owner, side + '-rehearsed', 'flow', request)
-        if not result.strip().startswith('Rehearsed.') or hashlib.sha256(result.encode()).hexdigest() != m['rehearsal_sha256'][side]:
-            raise AdmissionError('rehearsal is not the explicitly reviewed command: ' + side)
+        if not result.strip().startswith('Rehearsed.'):
+            raise AdmissionError('rehearsal refused: ' + side)
+        hashes[side] = hashlib.sha256(result.encode()).hexdigest()
+    return hashes
 
 
-def private_workload(owner, peer_fd, nonce):
+def private_workload(owner, peer_fd, nonce, deadline):
     import orchestration
+    import matrix
     owner.stage()
     for name, value in owner.manifest['contexts'].items():
         owner.archive_context(name, value['repository'], value['revision'])
     owner.compile_place(receipt)
     orchestration.auth_link(owner.manifest)
     owner.start_services()
-    configure_and_rehearse(owner)
-    raise AdmissionError('native matrix not assembled: retained rehearsal is not a completed run')
+    owner.bind_service_endpoint('flow', 'flow_daemon', owner.manifest['root'] + '/runtime/nexus/proposalTwo/flow.sock')
+    owner.bind_service_endpoint('codex', 'raw_codex', owner.manifest['root'] + '/runtime/codex/control.sock')
+    channel = matrix.EvidenceChannel(owner.manifest['root'], peer_fd, {}, owner.manifest['providers'])
+    try:
+        hashes = configure_and_rehearse(owner)
+        channel.review_rehearsals(hashes, min(deadline, time.monotonic() + owner.manifest['control_timeout_seconds']))
+        matrix.run_matrix(owner, channel, deadline, private_call, receipt_tokens, receipt)
+    finally:
+        channel.close()
 
 
 def main(argv):

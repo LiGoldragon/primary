@@ -13,7 +13,9 @@ from pathlib import Path
 import selectors
 import shlex
 import signal
+import socket
 import stat
+import struct
 import subprocess
 import time
 
@@ -104,6 +106,7 @@ class Bootstrap:
         self.manifest = manifest
         self.identity = unit_identity
         self.children = []
+        self.services = {}
         self.old_handlers = {}
         self.entered = False
 
@@ -284,4 +287,44 @@ class Bootstrap:
              [root + '/runtime/nexus/proposalTwo/flow.sock', root + '/runtime/nexus/proposalTwo/flow-meta.sock']),
         )
         for name, argv, sockets in specs:
-            self.start_ready(name, argv, sockets, deadline)
+            self.services[name] = self.start_ready(name, argv, sockets, deadline)
+
+    def bind_service_endpoint(self, name, provider, endpoint):
+        """Bind an owned live process and the peer of its private Unix socket."""
+        self._require_owner()
+        child = self.services[name]
+        proc = Path('/proc') / str(child.pid)
+        pidfd = os.pidfd_open(child.pid)
+        selector = selectors.DefaultSelector()
+        try:
+            selector.register(pidfd, selectors.EVENT_READ)
+            if selector.select(0):
+                raise BootstrapError(name + ' exited before endpoint binding')
+            fields = (proc / 'stat').read_text().rsplit(')', 1)[1].split()
+            ticks = int(fields[19])
+            executable = os.path.realpath(proc / 'exe', strict=True)
+            if executable != os.path.realpath(self.manifest['providers'][provider]['path'], strict=True):
+                raise BootstrapError(name + ' executable mismatch')
+            group = (proc / 'cgroup').read_text().splitlines()
+            expected_group = self.identity['ControlGroup']
+            if not any(line == '0::' + expected_group or line.startswith('0::' + expected_group + '/') for line in group):
+                raise BootstrapError(name + ' outside owned cgroup')
+            sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            try:
+                sock.settimeout(self.manifest['control_timeout_seconds'])
+                sock.connect(endpoint)
+                pid, uid, gid = struct.unpack('3i', sock.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize('3i')))
+            finally:
+                sock.close()
+            if pid != child.pid or uid != os.getuid() or selector.select(0):
+                raise BootstrapError(name + ' socket peer identity mismatch')
+            after = (proc / 'stat').read_text().rsplit(')', 1)[1].split()
+            if int(after[19]) != ticks:
+                raise BootstrapError(name + ' process identity changed')
+            record = {'pid': pid, 'uid': uid, 'gid': gid, 'start_ticks': ticks,
+                      'executable': executable, 'cgroup': group, 'endpoint': endpoint}
+            _write(Path(self.manifest['root']) / 'evidence' / (name + '.endpoint.json'), json.dumps(record, sort_keys=True) + '\n')
+            return record
+        finally:
+            selector.close()
+            os.close(pidfd)

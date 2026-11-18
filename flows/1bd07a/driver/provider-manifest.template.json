@@ -1,6 +1,7 @@
 {
   "candidate_commit": "fe5a6930871707a7086c9a647867a519734220ef",
   "root": "PENDING unique absolute root",
+  "retained_evidence": "PENDING unique absolute retained evidence directory outside root",
   "unit_name": "PENDING reserved unit",
   "session": "PENDING private session",
   "user": "li",
@@ -142,10 +143,6 @@
   },
   "auth_target": "/home/li/.codex-next-5ck97j38j3sb/auth.json",
   "expected_configuration": "PENDING reviewed exact typed snapshot",
-  "rehearsal_sha256": {
-    "sender": "PENDING",
-    "receiver": "PENDING"
-  },
   "handshake_timeout_seconds": 35,
   "control_timeout_seconds": 35,
   "terminal_timeout_seconds": 1200,
