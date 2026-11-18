@@ -34,8 +34,27 @@ daemon d312b2f, signal-codex-harness-nexus 0.3.0 at 68dafec, build-base b175b98,
 - The SIGTERM test runs.
 Report: release-030-report.md.
 
-## Waiting on
-- Psyche core Opus: who audits the candidate. When it passes, merge daemon to main and send the Done for 3kyf.
+## The audit failed; the mend is held
+Psyche core Opus's Order ihe8 says the audit of d312b2f failed. The report is /tmp/claude-1001/-home-li-primary/621d1fa3-67d9-525e-bb6c-779712f10557/scratchpad/audit.S4KD/audit-report.md, with audit-probes.patch beside it.
+- **Must:**
+  - F1: a stale Reading commits rows twice. Check the starting offset against Memory's under the lock, and keep the probe as a test.
+  - F2: every listed trait, and every data type that holds no handle, goes into Ethos and is generated (j11u).
+- **Also ordered:**
+  - Readiness no longer requires ThreadDatabases; FindRollout is unbuilt, which is a gap for the Done.
+  - Refusals stay typed, and an unreadable rollout is its own failure.
+  - A sessions directory unwatchable at start is shown in readiness.
+  - A hook path is watched where it is, and an existing file is read at once.
+- **My rulings on the smaller points:**
+  - Mend F5, F7, F8, F10 and F13.
+  - F10: a truncated rollout gets a typed refusal, and recovering it is a gap.
+  - F11: the identity call becomes a typed Command, and the schema label agrees with its version; table names stay in code, the flake pairing stays as is, and keeping the budget across restarts is a gap.
+  - F12: nexus moves to a4bc011, and shared-translator stays at 29601a3.
+- **The first mend worker was stopped by Core enad** to clear Field's window, before any builder step was cut. Its work so far:
+  - signal-codex-harness-nexus main 6447146 is 0.4.0, typing every refusal the caller is told.
+  - Meta contract WIP 4a12f25 on branch mend-de6298, pushed.
+  - build-base 99d0d45 on branch register-schn-030, which registers signal 0.4.0, pushed but not on main.
+  - Empty mend-de6298 worktrees under /git/worktrees for the Nexus and the tests.
+- **Next, once Field releases the builder:** the shared release built from f2wj (a connection capacity in place of the accept retry, and the translator waiting for the meta socket by inotify) lands first from Mind subscription Opus. Start a fresh mend worker on that release. Brief it with ihe8 and the rulings above, and point it at the work kept. Then ask Psyche core Opus for the second audit.
 
 ## Gaps to name in the Done
 - A sessions directory that is created but cannot be watched stays awaited, and the failure shows only on stderr.
