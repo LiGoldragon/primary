@@ -46,9 +46,25 @@ def receipt_tokens(text):
             result.append(text[start:i])
     return result
 
+def canonical_expected_tokens(text):
+    """Render expected String tokens using the pinned codec's bare-string rule."""
+    canonical = []
+    for token in receipt_tokens(text):
+        if isinstance(token, tuple) and token[0] == 'quoted':
+            value = token[1]
+            if value and not any(ch.isspace() or ch in '{}[]<>«»();' for ch in value):
+                if canonical and isinstance(canonical[-1], str) and canonical[-1].endswith('.'):
+                    canonical[-1] += value
+                else:
+                    canonical.append(value)
+                continue
+        canonical.append(token)
+    return canonical
+
+
 def receipt(actual, expected):
     actual_tokens = receipt_tokens(actual)
-    if not actual_tokens or actual_tokens != receipt_tokens(expected):
+    if not actual_tokens or actual_tokens != canonical_expected_tokens(expected):
         raise AdmissionError("typed receipt mismatch")
 
 def render_prompts(root, flow, task_id):

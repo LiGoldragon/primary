@@ -22,6 +22,15 @@ class ReceiptTests(unittest.TestCase):
         with self.assertRaises(controller.AdmissionError):
             controller.receipt('«Unconfigured»', 'Unconfigured')
 
+    def test_expected_strings_use_pinned_canonical_bare_rule(self):
+        controller.receipt('Compiled./tmp/place.signal', 'Compiled.«/tmp/place.signal»')
+        controller.receipt('Configured.Nexus.{ /tmp/root ! }', 'Configured.Nexus.{ «/tmp/root» «!» }')
+        controller.receipt('Configured.HarnessHook./nix/store/hook', 'Configured.HarnessHook.«/nix/store/hook»')
+        controller.receipt('Answered.{ P2-kept-answer }', 'Answered.{ «P2-kept-answer» }')
+        controller.receipt('Compiled.«/tmp/path with space»', 'Compiled.«/tmp/path with space»')
+        with self.assertRaises(controller.AdmissionError):
+            controller.receipt('Configured.Nexus.{ /tmp/other ! }', 'Configured.Nexus.{ «/tmp/root» «!» }')
+
 
 class CustodyTests(unittest.TestCase):
     def setUp(self):

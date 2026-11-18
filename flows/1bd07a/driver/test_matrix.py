@@ -72,7 +72,7 @@ class MatrixFixtures(unittest.TestCase):
         def call(owner, label, binary, request):
             if label == 'kept-question':
                 return 'SendAccepted.{ kp01 3 Queued }'
-            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ kp01 «P2-kept-answer» } }'
+            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ kp01 P2-kept-answer } }'
         with mock.patch.object(matrix, 'control_question', return_value='control'):
             self.assertEqual(matrix.kept_answer_case(owner, channel, ledger, 1, call, controller.receipt_tokens, controller.receipt), 'kp01')
         channel.receive_reply_outcome.assert_called_once()
