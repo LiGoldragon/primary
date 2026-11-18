@@ -29,13 +29,16 @@ class BootstrapTests(unittest.TestCase):
                 'git': {'path': git}, 'tar': {'path': shutil.which('false') if bad_extractor else shutil.which('tar')}}}
         instance = bootstrap.Bootstrap(manifest, {})
         def command(name, argv, **kwargs):
-            process = subprocess.Popen(argv, stderr=subprocess.DEVNULL, **kwargs)
+            kwargs.setdefault('stderr', subprocess.DEVNULL)
+            process = subprocess.Popen(argv, **kwargs)
             instance.children.append(process)
             return process
         with mock.patch.object(instance, '_require_owner'), mock.patch.object(instance, 'command', side_effect=command):
             if bad_revision or bad_extractor:
-                with self.assertRaises(bootstrap.BootstrapError):
+                with self.assertRaises(bootstrap.BootstrapError) as failure:
                     instance.archive_context('mind-belief', str(repository), revision)
+                if bad_revision:
+                    self.assertIn('fatal:', str(failure.exception))
             else:
                 instance.archive_context('mind-belief', str(repository), revision)
                 self.assertEqual((root / 'contexts/mind-belief/fixture').read_text(), 'archive content\n')

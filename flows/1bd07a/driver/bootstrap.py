@@ -18,6 +18,7 @@ import stat
 import struct
 import subprocess
 import time
+import tempfile
 
 
 class BootstrapError(Exception):
@@ -189,13 +190,16 @@ class Bootstrap:
         destination.mkdir(mode=0o700)
         git = self.manifest['providers']['git']['path']
         tar = self.manifest['providers']['tar']['path']
-        archive = self.command('git-archive', [git, '-C', repository, 'archive', revision], stdout=subprocess.PIPE)
-        extract = self.command('tar-extract', [tar, '-x', '-C', str(destination)], stdin=archive.stdout)
-        archive.stdout.close()
-        _, extract_error = extract.communicate()
-        archive.wait()
+        with tempfile.TemporaryFile() as archive_stderr:
+            archive = self.command('git-archive', [git, '-C', repository, 'archive', revision], stdout=subprocess.PIPE, stderr=archive_stderr)
+            extract = self.command('tar-extract', [tar, '-x', '-C', str(destination)], stdin=archive.stdout)
+            archive.stdout.close()
+            _, extract_error = extract.communicate()
+            archive.wait()
+            archive_stderr.seek(0)
+            archive_error = archive_stderr.read()
         if extract.returncode or archive.returncode:
-            raise BootstrapError('context archive failed: ' + repr((archive.returncode, extract.returncode, extract_error)))
+            raise BootstrapError('context archive failed: ' + repr((archive.returncode, extract.returncode, archive_error, extract_error)))
         (destination / '.git').mkdir(mode=0o700)
         _write(destination / '.git/HEAD', revision + '\n')
 

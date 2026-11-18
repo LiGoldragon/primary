@@ -205,10 +205,16 @@ def production_capture(manifest, side):
 
 
 def production_compare(root):
+    from controller import production_compare as compare, AdmissionError
     evidence = Path(root) / 'evidence'
-    for part in ('configuration.datom', 'fable-current.datom', 'services', 'clients'):
-        if (evidence / ('production-before.' + part)).read_bytes() != (evidence / ('production-after.' + part)).read_bytes():
-            raise CustodyError('production witness changed: ' + part)
+    parts = ('configuration.datom', 'fable-current.datom', 'services', 'clients')
+    before = {part: (evidence / ('production-before.' + part)).read_bytes() for part in parts}
+    after = {part: (evidence / ('production-after.' + part)).read_bytes() for part in parts}
+    try:
+        compare(before, after)
+    except AdmissionError as error:
+        raise CustodyError(str(error)) from error
+
 
 
 def read_fifo(fd, deadline, abort_fds=()):

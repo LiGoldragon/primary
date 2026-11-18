@@ -32,6 +32,35 @@ class ReceiptTests(unittest.TestCase):
             controller.receipt('Configured.Nexus.{ /tmp/other ! }', 'Configured.Nexus.{ «/tmp/root» «!» }')
 
 
+class ProductionEqualityTests(unittest.TestCase):
+    def snapshot(self):
+        fields = ['[]'] * 22
+        fields[14] = '{ 57976 15236 14322 }'
+        return ('Configuration.{ ' + ' '.join(fields) + ' }\n').encode()
+
+    def witness(self, configuration):
+        return {'configuration.datom': configuration, 'fable-current.datom': b'Fable',
+                'services': b'services', 'clients': b'clients'}
+
+    def test_only_counter_field_digits_may_change(self):
+        before = self.snapshot()
+        after = before.replace(b'57976 15236 14322', b'57982 15237 14325')
+        controller.production_compare(self.witness(before), self.witness(after))
+
+    def test_every_other_byte_remains_protected(self):
+        before = self.snapshot()
+        for after in (before.replace(b'[]', b'[ 57976 ]', 1),
+                      before.replace(b'Configuration.{ ', b'Configuration.{  '),
+                      before.replace(b'{ 57976', b'{  57976'),
+                      before.replace(b' }\n', b' }')):
+            with self.subTest(after=after), self.assertRaises(controller.AdmissionError):
+                controller.production_compare(self.witness(before), self.witness(after))
+        changed = self.witness(before)
+        changed['services'] += b'!'
+        with self.assertRaises(controller.AdmissionError):
+            controller.production_compare(self.witness(before), changed)
+
+
 class CustodyTests(unittest.TestCase):
     def setUp(self):
         self.identity = dict(Id='proposal2-test.service', InvocationID='abc',

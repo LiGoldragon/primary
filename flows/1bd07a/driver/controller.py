@@ -86,9 +86,51 @@ def unit_guard(saved, observed):
 def cgroup_guard(expected, observed):
     raise AdmissionError("cgroup inode and kernel population witness unavailable; retain custody")
 
+def protected_configuration(data):
+    """Exclude only the three integers in ConfigurationSnapshot field 14."""
+    text = data.decode('utf-8') if isinstance(data, bytes) else data
+    tokens = list(re.finditer(r'«(?:\\.|[^»])*»|[{}\[\]]|[^\s{}\[\]«»]+', text))
+    if len(tokens) < 3 or tokens[0].group() != 'Configuration.' or tokens[1].group() != '{':
+        raise AdmissionError('invalid production Configuration')
+    fields = []
+    i = 2
+    while i < len(tokens) and tokens[i].group() != '}':
+        start = i
+        if tokens[i].group().endswith('.'):
+            i += 1
+        if i >= len(tokens):
+            raise AdmissionError('incomplete production Configuration')
+        if tokens[i].group() in ('{', '['):
+            depth = 1
+            i += 1
+            while i < len(tokens) and depth:
+                depth += tokens[i].group() in ('{', '[')
+                depth -= tokens[i].group() in ('}', ']')
+                i += 1
+            if depth:
+                raise AdmissionError('incomplete production Configuration')
+        else:
+            i += 1
+        fields.append((tokens[start].start(), tokens[i-1].end()))
+    if len(fields) != 22 or i != len(tokens)-1:
+        raise AdmissionError('unexpected production Configuration shape')
+    start, end = fields[14]
+    counter = text[start:end]
+    if not re.fullmatch(r'{\s*[0-9]+\s+[0-9]+\s+[0-9]+\s*}', counter):
+        raise AdmissionError('invalid production counter field')
+    return (text[:start] + re.sub(r'[0-9]+', '<counter>', counter) + text[end:]).encode('utf-8')
+
+
 def production_compare(before, after):
     required=("configuration.datom","fable-current.datom","services","clients")
-    if any(before.get(k) is None or before.get(k)!=after.get(k) for k in required): raise AdmissionError("production witness changed/incomplete")
+    for name in required:
+        left, right = before.get(name), after.get(name)
+        if left is None or right is None:
+            raise AdmissionError("production witness incomplete")
+        if name == 'configuration.datom':
+            left, right = protected_configuration(left), protected_configuration(right)
+        if left != right:
+            raise AdmissionError("production witness changed: " + name)
 
 def unit_stop_command(saved, observed, unit, systemctl):
     unit_guard(saved, observed)
