@@ -24,3 +24,9 @@ Requested independent audit from existing Mind harnessNexus Opus: exact parents/
 New published-source whole immutable Prometheus gate started against **0f822a45**, scratch `/tmp/flow-history-a7785f.bleCmg/published-gate-0f822a45.log`; foreground process completed **EXIT0**. The migration witness at log line70 stamps `current=0f822a458becf99d2dc5d5880b9aae80c6017e08`, predecessorf7d2336, actual-process old-write/current-serve/current-reopen/malformed-rollback. Unchanged crate builds were reused; the revision-stamped process check ran anew. Earlier1d3f633a gate is not claimed as this SHA's witness, because process checks stamp sourceRevision.
 
 After audit and green gate, request Core's exact main FF admission, then confirm published main. No force, source reconciliation, repin, live action or sv0s Done authorized by this report.
+
+## Admitted main fast-forward completed
+
+Core **al03** admitted exact nonforce main FF conditional on unchanged old main. Fresh read was **1d3f633a89b3bab8d5ff844db8c07a05c795c5f0**. Ancestry and exact tree equality were checked, then ordinary `git push origin 0f822a458becf99d2dc5d5880b9aae80c6017e08:refs/heads/main` succeeded. Fresh `ls-remote` readback and subsequent `git fetch origin main` / FETCH_HEAD both confirmed **0f822a458becf99d2dc5d5880b9aae80c6017e08**. Recovery19378 `merge-base --is-ancestor` against fetched published main passed. No source change or new pin occurred. Existing new-SHA published gate and migration witness above bind exactly this main commit. The two audit fixture divergences and unknown-writer limitation remain explicitly retained above; they are not passing feature tests.
+
+Field handoff must use the new immutable main SHA0f822a45 for feature0.59.2, with exact recovery19378 reachable from it. This main receipt adds no runtime authority, no Energy integration receipt and no relaxation of quiet-window/cohort/socket-peer conditions.
