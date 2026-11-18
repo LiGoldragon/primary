@@ -29,7 +29,7 @@ Field runs it. It replaces no production unit, wrapper, place, registry or Memor
 
 ## Stage files (Field only after review)
 
-The shell below is run from an ordinary login shell, with the five reviewed
+The shell below is run in Bash from an ordinary login shell, with the five reviewed
 inputs above exported. Its commands create only a newly allocated directory.
 Do not run the stale capsule helper. Run one block at a time and retain receipts.
 
@@ -40,7 +40,7 @@ RAW_CODEX=/nix/store/r0k59hi2q6di7xhmqxp11vygy4hclzyy-codex-next-candidate-0.161
 AUTH_TARGET=/home/li/.codex-next-5ck97j38j3sb/auth.json
 ROOT=$(mktemp -d /tmp/proposal2-e7552e.XXXXXXXX)
 chmod 700 "$ROOT"
-mkdir -p "$ROOT"/{home,config/nexus/proposalTwo,config/herdr,runtime/nexus/proposalTwo,runtime/curriculum,runtime/codex,state,codex/sessions,source/flows,contexts,bin,evidence}
+mkdir -p "$ROOT"/{home,config/nexus/proposalTwo,config/herdr/sessions/proposal2-e7552e,runtime/nexus/proposalTwo,runtime/curriculum,runtime/codex,state,codex/sessions,source/flows,contexts,bin,evidence}
 SESSION=proposal2-e7552e
 printf '{ proposalTwo }\n' > "$ROOT/config/nexus/flow-nexus.datom"
 printf '{ proposalTwo «%s/runtime/nexus/proposalTwo» «%s/state» }\n' "$ROOT" "$ROOT" > "$ROOT/place.datom"
@@ -104,28 +104,90 @@ pmeta() { private "$FLOW_PACKAGE/bin/flow-meta" "$1"; }
 
 ## Start only private processes; keep their exact PIDs
 
+The following event-only barrier is part of the proposed command packet. Stage
+it as `$ROOT/bin/ready.py` before any process start. Python3 must be present in
+HOST_PATH. Its inotify watches are installed before spawn; pidfd exit and the
+startup deadline share the selector. It writes one READY/FAIL receipt to a FIFO
+and stays the child's supervisor until exit. It never probes on a timer.
+
 ```sh
-private "$HERDR" --session "$SESSION" server > "$ROOT/evidence/herdr.log" 2>&1 &
-HERDR_PID=$!
-private "$CURRICULUM_PACKAGE/bin/curriculum-nexus" > "$ROOT/evidence/curriculum.log" 2>&1 &
-CURRICULUM_PID=$!
-private "$RAW_CODEX" app-server --remote-control --listen "unix://$ROOT/runtime/codex/control.sock" > "$ROOT/evidence/codex.log" 2>&1 &
-CODEX_PID=$!
-private "$FLOW_PACKAGE/bin/flow-nexus-daemon" proposalTwo > "$ROOT/evidence/flow.log" 2>&1 &
-FLOW_PID=$!
-printf '%s %s\n' herdr "$HERDR_PID" curriculum "$CURRICULUM_PID" codex "$CODEX_PID" flow "$FLOW_PID" > "$ROOT/evidence/pids"
+cat > "$ROOT/bin/ready.py" <<'PY'
+import ctypes, os, selectors, signal, stat, subprocess, sys, time
+fifo, pidfile, seconds, *args = sys.argv[1:]
+split = args.index('--')
+paths, command = args[:split], args[split+1:]
+libc = ctypes.CDLL(None, use_errno=True)
+fd = libc.inotify_init1(os.O_CLOEXEC | os.O_NONBLOCK)
+if fd < 0: raise OSError(ctypes.get_errno(), 'inotify_init1')
+for directory in sorted({os.path.dirname(p) for p in paths}):
+    if libc.inotify_add_watch(fd, os.fsencode(directory), 0x100 | 0x80 | 0x4) < 0:
+        raise OSError(ctypes.get_errno(), directory)
+child = subprocess.Popen(command, start_new_session=True)
+with open(pidfile, 'x') as f: f.write(str(child.pid) + '\n')
+def stop(*unused):
+    try: os.killpg(child.pid, signal.SIGTERM)
+    except ProcessLookupError: pass
+signal.signal(signal.SIGTERM, stop)
+signal.signal(signal.SIGINT, stop)
+selector = selectors.DefaultSelector()
+selector.register(fd, selectors.EVENT_READ, 'filesystem')
+pidfd = os.pidfd_open(child.pid)
+selector.register(pidfd, selectors.EVENT_READ, 'exit')
+def placed():
+    try: return all(stat.S_ISSOCK(os.stat(p).st_mode) for p in paths)
+    except FileNotFoundError: return False
+end = time.monotonic() + float(seconds)
+ready = placed()
+while not ready:
+    events = selector.select(max(0, end - time.monotonic()))
+    if not events: break
+    if any(key.data == 'exit' for key, mask in events): break
+    for key, mask in events:
+        if key.data == 'filesystem':
+            try: os.read(fd, 65536)
+            except BlockingIOError: pass
+    ready = placed()
+with open(fifo, 'w') as f: f.write(('READY ' if ready else 'FAIL ') + str(child.pid) + '\n')
+selector.close(); os.close(pidfd); os.close(fd)
+if not ready:
+    stop()
+    try: child.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        os.killpg(child.pid, signal.SIGKILL); child.wait()
+    sys.exit(1)
+sys.exit(child.wait())
+PY
+start_ready() {
+ NAME=$1; SOCKETS=$2; shift 2
+ FIFO="$ROOT/evidence/$NAME.fifo"
+ mkfifo "$FIFO"
+ # SOCKETS is a reviewed space-separated list under ROOT; ROOT has no spaces.
+ private python3 "$ROOT/bin/ready.py" "$FIFO" "$ROOT/evidence/$NAME.pid" 30 $SOCKETS -- "$@" > "$ROOT/evidence/$NAME.log" 2>&1 &
+ SUPERVISOR=$!
+ printf '%s %s\n' "$NAME" "$SUPERVISOR" >> "$ROOT/evidence/supervisors"
+ if ! RECEIPT=$(timeout --signal=TERM --kill-after=5s 35s sh -c 'IFS= read -r line < "$1"; printf "%s\n" "$line"' sh "$FIFO"); then
+  kill -TERM "$SUPERVISOR" 2>/dev/null || :
+  wait "$SUPERVISOR" || :
+  return 1
+ fi
+ printf '%s\n' "$RECEIPT" > "$ROOT/evidence/$NAME.ready"
+ case "$RECEIPT" in READY\ *) ;; *) return 1 ;; esac
+}
+start_ready herdr "$ROOT/config/herdr/sessions/$SESSION/herdr.sock" "$HERDR" --session "$SESSION" server
+start_ready curriculum "$ROOT/runtime/curriculum/curriculum.sock" "$CURRICULUM_PACKAGE/bin/curriculum-nexus"
+start_ready codex "$ROOT/runtime/codex/control.sock" "$RAW_CODEX" app-server --remote-control --listen "unix://$ROOT/runtime/codex/control.sock"
+start_ready flow "$ROOT/runtime/nexus/proposalTwo/flow.sock $ROOT/runtime/nexus/proposalTwo/flow-meta.sock" "$FLOW_PACKAGE/bin/flow-nexus-daemon" proposalTwo
+private "$HERDR" --session "$SESSION" workspace list > "$ROOT/evidence/herdr-probe.json"
+private "$CURRICULUM_PACKAGE/bin/curriculum" 'ResolveSkills.[ spirit:core ]' > "$ROOT/evidence/curriculum-probe.datom"
+pmeta Configuration > "$ROOT/evidence/unconfigured-probe.datom"
+# The final probe must report Unconfigured, not a production Configuration.
 ```
 
-Each start needs an event-bound ready/exit barrier before proceeding: Herdr's
-private session socket; Curriculum `$ROOT/runtime/curriculum/curriculum.sock`;
-Codex `$ROOT/runtime/codex/control.sock`; Flow both `$ROOT/runtime/nexus/proposalTwo/flow{,-meta}.sock`.
-The operator must install the filesystem event watch before launching each
-process and race readiness against that exact child's exit and a reviewed
-startup deadline. A direct CLI probe after the event must succeed. No sleep,
-repeated probe, production-session reuse or guessed readiness. The barrier
-command is still an explicit packet-review gap: do not execute this start block
-until its exact supported event helper is supplied. This is not a runnable
-bootstrap claim yet.
+The FIFO wait has its own35-second deadline. A supervisor failure before its
+receipt stops this phase and terminates/waits only that supervisor; Field still
+reconciles any recorded child group before cleanup. The roots/socket-parent
+directories exist before these commands. The30/35-second startup deadlines are
+proposed test configuration; accept them explicitly, without silent retry.
 
 ## Configure only fresh Memory
 
@@ -180,8 +242,8 @@ cuts remain owed before test execution.
 ## Stop and evidence custody
 
 Field uses pmeta Close only for the two recorded synthetic FlowIds, then
-terminates/waits only FLOW_PID, CODEX_PID, CURRICULUM_PID and HERDR_PID (and
-attributable children) from this packet. Never use killall or a name-only match.
+terminates only the child process groups recorded in evidence/*.pid and waits
+for their recorded supervisors; their pidfd/child.wait establishes exit. Never use killall or a name-only match.
 Check production service/process/config identity against the pretest receipt,
 without replay or restart. Preserve evidence/transcripts/config and hashes in a
 separate retained report location before removing only this ROOT; unlink the
@@ -190,7 +252,7 @@ child retains the test resource slot and is reported to Core/Field.
 
 ## Outstanding admission facts
 
-Concrete package paths/local availability; exact event-ready helper; reviewed
+Concrete package paths/local availability; event-ready helper review; reviewed
 native matrix/budget; Field/Harness credential-source review; Core bootstrap
 review/resource admission; whole gate terminal result. None is inferred from
 this proposal. Source pins and raw configuration are now specified rather than
