@@ -36,7 +36,7 @@ inputs above exported. Its commands create only a newly allocated directory.
 Do not run the stale capsule helper. Run one block at a time and retain receipts.
 
 ```sh
-set -eu
+set -euo pipefail
 : "${FLOW_PACKAGE:?}" "${CURRICULUM_PACKAGE:?}" "${PLACE_COMPILER:?}" "${HERDR:?}" "${HOST_PATH:?}"
 RAW_CODEX=/nix/store/r0k59hi2q6di7xhmqxp11vygy4hclzyy-codex-next-candidate-0.161.0-alpha.2/bin/codex
 AUTH_TARGET=/home/li/.codex-next-5ck97j38j3sb/auth.json
@@ -44,6 +44,19 @@ ROOT=$(mktemp -d /tmp/proposal2-e7552e.XXXXXXXX)
 chmod 700 "$ROOT"
 mkdir -p "$ROOT"/{home,config/nexus/proposalTwo,config/herdr/sessions/proposal2-e7552e,runtime/nexus/proposalTwo,runtime/curriculum,runtime/codex,state,codex/sessions,source/flows,contexts,bin,evidence}
 SESSION=proposal2-e7552e
+# Before any credential link or child, verify reviewed absolute executables.
+for PROGRAM in "$RAW_CODEX" "$HERDR" "$PLACE_COMPILER/bin/nexus-configure" \
+ "$FLOW_PACKAGE/bin/flow" "$FLOW_PACKAGE/bin/flow-meta" \
+ "$FLOW_PACKAGE/bin/flow-nexus-daemon" "$FLOW_PACKAGE/bin/flow-hook" \
+ "$CURRICULUM_PACKAGE/bin/curriculum" "$CURRICULUM_PACKAGE/bin/curriculum-nexus"
+do test -x "$PROGRAM"; done
+for PROGRAM in python3 timeout git tar; do command -v "$PROGRAM"; done
+printf '#!/bin/sh\nexec "%s" "$@"\n' "$HERDR" > "$ROOT/bin/herdr"
+chmod 700 "$ROOT/bin/herdr"
+readlink -f "$HERDR" > "$ROOT/evidence/herdr-executable"
+# Required before first child: the final cleanup block below owns all starts.
+: > "$ROOT/evidence/supervisors"
+: > "$ROOT/evidence/flow-ids"
 printf '{ proposalTwo }\n' > "$ROOT/config/nexus/flow-nexus.datom"
 printf '{ proposalTwo «%s/runtime/nexus/proposalTwo» «%s/state» }\n' "$ROOT" "$ROOT" > "$ROOT/place.datom"
 "$PLACE_COMPILER/bin/nexus-configure" "Compile.{ «$ROOT/place.datom» «$ROOT/config/nexus/proposalTwo/flow-nexus.signal» }" > "$ROOT/evidence/place.receipt"
@@ -76,7 +89,15 @@ model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 CONFIG
 # Metadata only; do not cat/hash/copy the target. Stop if not the approved file.
-test -f "$AUTH_TARGET"
+python3 - "$AUTH_TARGET" "$ROOT/evidence/auth-target-metadata.json" <<'PYAUTH'
+import json, os, stat, sys
+s = os.stat(sys.argv[1], follow_symlinks=False)
+assert stat.S_ISREG(s.st_mode) and s.st_uid == os.getuid()
+with open(sys.argv[2], 'x') as f:
+    json.dump(dict(uid=s.st_uid, mode=oct(stat.S_IMODE(s.st_mode)),
+                   device=s.st_dev, inode=s.st_ino, size=s.st_size,
+                   mtime_ns=s.st_mtime_ns), f)
+PYAUTH
 test ! -e "$ROOT/codex/auth.json"
 ln -s "$AUTH_TARGET" "$ROOT/codex/auth.json"
 test "$(readlink "$ROOT/codex/auth.json")" = "$AUTH_TARGET"
@@ -89,7 +110,7 @@ in this operator shell, not changes to a user profile:
 ```sh
 private() {
  env -i HOME="$ROOT/home" USER=li LOGNAME=li LANG=C.UTF-8 \
- PATH="$FLOW_PACKAGE/bin:$ROOT/bin:$HOST_PATH" \
+ PATH="$ROOT/bin:$FLOW_PACKAGE/bin:$HOST_PATH" \
  XDG_CONFIG_HOME="$ROOT/config" XDG_DATA_HOME="$ROOT/home/.local/share" \
  XDG_STATE_HOME="$ROOT/home/.local/state" XDG_CACHE_HOME="$ROOT/home/.cache" \
  XDG_RUNTIME_DIR="$ROOT/runtime" CODEX_HOME="$ROOT/codex" \
@@ -173,7 +194,7 @@ start_ready() {
   return 1
  fi
  printf '%s\n' "$RECEIPT" > "$ROOT/evidence/$NAME.ready"
- case "$RECEIPT" in READY\ *) ;; *) return 1 ;; esac
+ case "$RECEIPT" in READY\ *) ;; *) wait "$SUPERVISOR" || :; return 1 ;; esac
 }
 start_ready herdr "$ROOT/config/herdr/sessions/$SESSION/herdr.sock" "$HERDR" --session "$SESSION" server
 start_ready curriculum "$ROOT/runtime/curriculum/curriculum.sock" "$CURRICULUM_PACKAGE/bin/curriculum-nexus"
@@ -251,6 +272,27 @@ without replay or restart. Preserve evidence/transcripts/config and hashes in a
 separate retained report location before removing only this ROOT; unlink the
 private auth link as a link, never operate on its target. Any uncertain remaining
 child retains the test resource slot and is reported to Core/Field.
+
+## Review corrections and remaining execution blockers
+
+Core independent source review `/tmp/proposal2-bootstrap-audit.6xPziC/report.md`
+accepted the isolation shape and credential-source semantics. This revision
+pins bare daemon Herdr through ROOT/bin/herdr, selects both required startup
+modules, uses Bash pipefail, validates tool availability, records permitted
+credential metadata and reaps a FAIL supervisor. Field/Harness independently
+confirmed exact selected raw source semantics (r6ix); no cross-process refresh
+lock or atomic-write guarantee exists, so truncate/interleave races must be
+explicitly accepted by Opus before execution. No login/logout/device login,
+credential copy or mode change belongs to this test.
+
+Still required before this packet becomes executable: enforced captured typed
+Compiled/Unconfigured/Configured/Rehearsed/Started comparisons; global cleanup
+trap installed before the first child; exact FlowId/native-descendant closure
+and production before/after witness commands. Current snippets are not to be
+run until these are replaced by a reviewed fail-closed controller. The separate
+`native-matrix.md` now supplies the proposed sequence/IDs/cuts and20-minute,
+12-instructed-turns-per-address budget; Opus approval requested. Neither this
+review nor a green whole gate admits native execution by itself.
 
 ## Outstanding admission facts
 
