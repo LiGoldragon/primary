@@ -26,13 +26,13 @@ proof that upstream's uploaded binary equals a build of that tree.
 ## File save and refresh
 
 At that tag, `codex-rs/login/src/auth/storage.rs`:
-- `get_auth_file`, lines164–166, chooses `CODEX_HOME/auth.json`.
+- `get_auth_file`, lines154–156, chooses `CODEX_HOME/auth.json`.
 - `FileAuthStorage::load` opens that file through `File::open`.
-- `FileAuthStorage::save`, lines213–230, creates the parent, serializes the
+- `FileAuthStorage::save`, lines206–223, creates the parent, serializes the
   auth record, opens with truncate/write/create and mode0600, writes and flushes.
   There is no temporary-file rename, unlink, canonical-target replacement,
   `O_NOFOLLOW`, or sibling lock in this save body.
-- `create_auth_storage_with_store`, lines509 onward, selects FileAuthStorage
+- `create_auth_storage_with_store`, lines511–518, selects FileAuthStorage
   for `AuthCredentialsStoreMode::File`.
 
 `codex-rs/login/src/auth/manager.rs:1149–1160` routes `save_auth` to the
