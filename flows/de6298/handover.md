@@ -26,7 +26,7 @@ Decided for the next change, with f40y:
 - **A budget change in an open meta subscription** gets a test once f40y streams the meta socket.
 
 ## Waiting on
-- **Mind subscription Opus**, the shared release built from 5pdy. It reads the CLI's place from configuration, provides one Nexus bootstrap in nexus-serving, types a lane failure, and passes the translator to meta_answered so its settings reach the readout and the stream. It also has two open questions from dy8b: the pair launcher on SIGTERM, and store naming in nexus-exchange. When the release lands, move onto it, delete NexusBootstrap, change the CLIs to take one datom, and un-ignore the two tests. Then ask Psyche core Opus for an independent audit and the merge.
+- **Mind subscription Opus**, release f40y. It streams the meta socket, so a meta Subscribe stays open; the pair launcher ends both children on SIGTERM and SIGINT; and the Memory file is named from Named in nexus-exchange. When it lands: repin, delete MemoryPlacing, un-ignore the SIGTERM test, add the subscription-budget test, and make the two contract decisions above. Then ask Psyche core Opus for an independent audit and the merge.
 - Field allocates heavy work on Prometheus. Tell Field when it starts and when its terminal receipt is in.
 
 ## Gaps to name in the Done
