@@ -25,3 +25,7 @@ Owned local timeout PID/PGID1347632 exited and its exact group is absent (`local
 ## Scope and next boundary
 
 This closes the concrete package-output/local-presence gap, subject to Core acceptance. Independent whole-gate source provenance and its separately accepted stamp limit remain as recorded; no diagnostic was relabelled. Driver assembly still needs its complete lifecycle/matrix, one coherent manifest/provider binding, unrun fixtures admitted/executed separately, independent final artifact review and Field native admission. No credential was read/linked, no private service or native flow started, no live configuration/deployment changed, no main/tag/pin changed. These outputs are evidence, not native authorization.
+
+## Core disposition — rq5a
+
+Core accepted the terminal0/exact three EVAL/BUILD/DOWNLOAD results, local seven-executable presence/SHA+NAR metadata, bounded process/scratch cleanup, and **released the allocation**. Final driver must bind these exact immutable outputs/source pins/derivers/readback evidence. Native/auth/service execution remains unauthorized until assembled controller+real fixtures/final hash receive independent review, Field checks and Psyche acceptance.
