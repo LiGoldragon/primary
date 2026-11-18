@@ -1,23 +1,30 @@
 # Proposal 2 — corrected fixtures ready; gate and bootstrap controller next
 
 Act on a8fa first. Thresholdjebp refresh was accepted RefreshQueued e7552e.
-Current.Awake.e7552e confirmed again before Core rbs0 grant execution. ONE gate
-is NOW OWNED/ACTIVE: d44 wholechecks, foregroundcontroller6217, PGID1072878,
-evidence /tmp/flow-order-gate3-e7552e.rhMrKvW8 (pointer /tmp/flow-order-gate3-e7552e.path).
-Wait its terminal and reconcile before rest/refresh; NO second gate/retry. Source427/packet422 inherited; own packet431. No publication,
+Current.Awake.e7552e confirmed before executing Core rbs0 gate. That gate is
+NOW TERMINAL EXIT1; no owned heavy/native process remains. Evidence
+`/tmp/flow-order-gate3-e7552e.rhMrKvW8`,21:01:14–21:02:38UTC. 17success/3fail
+(default/flow-nexus/migration): my new assert_eq compares outerResult containing
+StoreError, which has noPartialEq (E0369 queue_operations.rs503–514). Tests did
+not run. EXACTnextfix: replace that assert_eq with assert!(matches!(samecall,
+Ok(Err(signal_flow::Refusal::Unresolved)))); no StoreError derive/productionedit.
+Asked Core sourceonlygrant, then childreview/freshgate. NOedit/retryyet.
+LocalPGID1072878gone, remotezero nixbld after+freshread, ownedNFBscratch
+/tmp/tmp.bFfEeMVuCU absent; evidence/logs/results retained. AwaitCorecleanup
+acceptance/release. PriorRefreshQueued is real; do not repeat it.
+Source427/packet422 inherited; own packet431. No publication,
 merge, native launch or live change. All other inherited work stays behind a8fa.
 
-**Next:** Current clean candidate
+**Next:** Current failed-compilation fixture candidate
 **d44ce7f8d1cef27fc0af3340d298571ab010399c**, soleparent
 93efdac3eecee4ece5f602258fe04d43f573eae1, in
 `/git/worktrees/flow-order-lifetime-2b25fa`, branch order-lifetime-2b25fa.
-Coreh6e3 authorized fixtureONLY correction; rbs0 then admitted exactd44 gate
-while independent tiny-delta audit runs. Any auditfinding stops/reports before
-acceptance. Gate started21:01:14UTC, same runner/bounds; directSTART sent Core/Field. Only
+Coreh6e3 authorized fixtureONLY correction; rbs0 then admitted exactd44 gate (terminal above).
+Independent tiny-delta audit was parallel; its actual result is still pending. Only
 `crates/flow-nexus/tests/unit/queue_operations.rs`25+/6-: unbound test retains
 Order→Result `Ok(Err(signal_flow::Refusal::Unresolved))`, adds Question-positive;
 close-request answered fixture Order→Question, comments updated. Rustfmt/diff
-pass; fixtures UNRUN. Exact child sent Core; rbs0 granted the active gate above. No automatic retry.
+pass; fixtures UNRUN. Exact child sent Core; rbs0 granted the terminal gate above. No automatic retry.
 
 Gate1 at7a97f37c failed obsolete imports,17checks pass; Core5e91 admitted exact
 removal, committed93efd. Gate2 Coretke4 at93efd **EXIT1:1058Flowtests PASS,
