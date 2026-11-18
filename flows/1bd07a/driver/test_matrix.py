@@ -395,6 +395,23 @@ class LaunchFixtures(unittest.TestCase):
         with self.assertRaises(matrix.MatrixError):
             matrix.verify_successor_inspect(text.replace('/private/runtime', '/foreign/runtime'), binding, '/private', controller.receipt_tokens)
 
+    def test_inspect_unavailable_endpoint_preserves_native_and_herdr_identity(self):
+        import controller
+        binding = {'flow_id': 'cf5866', 'native_session': '01a1f10f-a0e7-77c1-a6c3-610cf586613c',
+                   'herdr_session': 'p2-2b0256fb', 'agent': 'codex-agent', 'pane': 'w1:p1', 'terminal': 'term-bound'}
+        text = ('Inspected.{ { { Mind proposalTwoSender Luna } Awake.cf5866 [] [] } '
+                '{ Some.{ cf5866 01a1f10f-a0e7-77c1-a6c3-610cf586613c Codex Unavailable '
+                'Available.{ p2-2b0256fb codex-agent w1:p1 term-bound } Unbound Active } None } [] [] None Released }')
+        matrix.verify_bound_inspect(text, binding, '/private', 'proposalTwoSender', controller.receipt_tokens)
+        for original, changed in (('cf5866', 'wrongflow'),
+                                  (binding['native_session'], 'wrongnative'),
+                                  ('p2-2b0256fb', 'other-session'), ('codex-agent', 'other-agent'),
+                                  ('w1:p1', 'w1:p2'), ('term-bound', 'other-terminal'),
+                                  ('Active', 'Stopped'), ('Unavailable', 'Unknown')):
+            with self.subTest(field=original), self.assertRaises(matrix.MatrixError):
+                matrix.verify_bound_inspect(text.replace(original, changed), binding, '/private',
+                                            'proposalTwoSender', controller.receipt_tokens)
+
     def test_refresh_queued_waits_for_real_changed_successor(self):
         from unittest import mock
         import controller

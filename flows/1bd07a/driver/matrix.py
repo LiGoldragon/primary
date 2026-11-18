@@ -406,10 +406,16 @@ def verify_bound_inspect(text, binding, root, topic, receipt_tokens):
             raise MatrixError('Inspect has no bound FlowNode')
         node = seat[1]
         route = [binding['herdr_session'], binding['agent'], binding['pane'], binding['terminal']]
-        if (len(node) != 9 or node[:3] != [binding['flow_id'], binding['native_session'], 'Codex'] or
-            node[3] != 'Available.' or node[4] != [root + '/runtime/codex/control.sock', 'Ready'] or
-            node[5:7] != ['Available.', route] or node[8] != 'Active'):
-            raise MatrixError('Inspect FlowNode differs from successor identity or private endpoint')
+        if node[:3] != [binding['flow_id'], binding['native_session'], 'Codex']:
+            raise MatrixError('Inspect FlowNode differs from bound native identity')
+        if node[3] == 'Unavailable':
+            tail = node[4:]
+        elif node[3] == 'Available.' and node[4] == [root + '/runtime/codex/control.sock', 'Ready']:
+            tail = node[5:]
+        else:
+            raise MatrixError('Inspect endpoint differs from private endpoint')
+        if len(tail) != 4 or tail[:2] != ['Available.', route] or tail[3] != 'Active':
+            raise MatrixError('Inspect FlowNode differs from bound Herdr route or lifecycle')
     except (IndexError, TypeError) as exc:
         raise MatrixError('incomplete Inspect receipt') from exc
 
