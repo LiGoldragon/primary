@@ -6,6 +6,17 @@ Psyche rules that **neither a transition query nor hook capture is added to0.59.
 
 This supersedes the unresolved witness/capture requirements described in the source assessment below. It does not close cohort integration, remote inventory or readiness. Unknown/Blocked/Gone or identity ambiguity has no inferred Resting/Acting mapping here; Field escalates the exact observations. No live proof has occurred.
 
+## Exact status mapping for Field (okge / 8wlh)
+
+| Exact Herdr agent_status | Cutover interpretation | SetState for an affected flow or Field ROOT |
+|---|---|---|
+| `idle` | At rest | `SetState.{ <exact-flow-id> Resting }` |
+| `done` | At rest after a turn; source treats it as prompt-accepting rest | `SetState.{ <exact-flow-id> Resting }` |
+| `working` | Acting | `SetState.{ <exact-flow-id> Acting }` |
+| `blocked`, missing, other/unknown, gone, identity mismatch | No supported Resting/Acting inference in this packet | Escalate the exact pair to Psyche; no automatic mapping |
+
+The first reading admits the window only with `idle`/`done` for every pane except Field ROOT. Preserve both raw readings, their times and identity bindings. Unchanged resting status needs no SetState. A changed raw status (including idle→done) or ROOT gets the mapped write; list it in the receipt. Before Resume, send Psyche both readings for every affected Codex flow, ROOT included if Codex. SetState answers StateSet after appending an Overridden transition; it does not alter native execution, the Codex turn ledger, permaflow Awake/Asleep, pending work or background-task state. The revised ruling accepts this bounded operation with that Codex escalation, not a claim that the ledger was repaired.
+
 ## Source assessment and authority
 
 This is the source report Field requested, not deployment admission. Immutable feature **1d3f633a89b3bab8d5ff844db8c07a05c795c5f0**, Flow0.59.2, is clean/published and has both whole immutable gates green. Source root below is `/git/worktrees/manual-hold-56ca20/flow/crates/flow-nexus/`; the contract root is adjacent `meta-signal-flow/ethos/signal.ethos`. Recovery remains **19378d08e1c25b780e0d671bb45a3819a7fbccb7**. No runtime operation or production source change occurred in this successor.
