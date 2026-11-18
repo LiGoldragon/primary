@@ -5,9 +5,15 @@ Order zttr/e9qq. This packet is a proposal, not execution authorization. The
 whole immutable gate must finish green and Core must review this packet before
 Field runs it. It replaces no production unit, wrapper, place, registry or Memory.
 
+Typed receipt replacement blocks are in `receipt-controller.md`; exact
+production before/after reads are in `production-witness.md`; the accepted
+bounded native schedule is `native-matrix.md` (Opus60hv). These appendices must
+be assembled into one immutable reviewed executable controller before running.
+Private roots are environmental separation, not OS filesystem containment.
+
 ## Inputs and boundaries
 
-- Flow source `7a97f37c01ddcd431b05725c0758d0da81016ad7`, branch
+- Flow source `93efdac3eecee4ece5f602258fe04d43f573eae1`, branch
   order-lifetime-2b25fa, worktree `/git/worktrees/flow-order-lifetime-2b25fa`.
 - `FLOW_PACKAGE`: that source's `packages.x86_64-linux.default` store output.
 - `CURRICULUM_PACKAGE`: same flake's `packages.x86_64-linux.curriculum`,
