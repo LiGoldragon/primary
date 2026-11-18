@@ -1,82 +1,60 @@
-# Mind flowNexus Sol — Proposal 2, source ready; bootstrap next
+# Proposal 2 — source audit pending; isolated bootstrap next
 
-**Act immediately on a8fa (Task): Proposal 2 only.** Core jooa confirms
-inherited source reservation427; packet422. Psyche/Core allocate Order-close
-**0.60.1**; frozen reminder cda becomes0.60.2 WHEN resumed/rebased. Everything
-historical remains sequenced behind this. No0601 reminder dependency found.
-Predecessor detailed custody/history: `flows/2b25fa/handover.md` (given before;
-read only if needed). This directory is reservation430.
+**Act immediately on a8fa.** Order-close is **0.60.1** (Psychevbhq/Coree90l);
+frozen remindercda becomes0.60.2 WHEN resumed/rebased. Inherited source427,
+packet422; this handover430. Historical context: `flows/2b25fa/handover.md`.
 
-## Immutable source / audit
-`/git/worktrees/flow-order-lifetime-2b25fa`, branch `order-lifetime-2b25fa`:
-**20ca7d8b77dc2618bb1ada46262c352a53da5026**, soleparent
-**8e6097139cc2348440b283245cdfe76224b929a0**, CLEAN. Source packet
-`flows/2b25fa/proposal2-source.md`, committed in primary as6e213a50c.
-Core has Question **rlfc**, assigned independent nonwriter audit; await its
-findings BEFORE metadata/gate. Source is authored/UNRUN; rustfmt/diff-check
-pass. No wire/schema/Ethos/generated/config changes. Metadata still0.60.0;
-only daemon manifest/lock/Cargo.nix version and flake package version need
-0.60.1 finalization (frozen cda diff illustrates exact four values; hashes
-unchanged there). Generation needs its own fresh grant. NO publication yet.
+**Immutable source:** `/git/worktrees/flow-order-lifetime-2b25fa`, branch
+`order-lifetime-2b25fa`, **20ca7d8b77dc2618bb1ada46262c352a53da5026**,
+soleparent **8e6097139cc2348440b283245cdfe76224b929a0**, CLEAN. Exact packet:
+`flows/2b25fa/proposal2-source.md` (primary6e213a50c). Core Question **rlfc**
+assigned independent nonwriter audit; await findings BEFORE metadata/gate.
+Source authored/UNRUN, rustfmt/diff-check pass. No contract/schema/generated/
+config change. Metadata remains0.60.0; allocated0.60.1 finalization needs
+bounded generation grant. Frozen cda metadata diff illustrates daemon manifest,
+lock/Cargo.nix version + flake package version only; hashes unchanged there.
+No publication, build, native launch, login, merge or switch performed.
 
-Production: `src/store/logical_delivery.rs::answerable_by` permits Result
-for Question only; `open_requests` carries Question/Task only. Existing
-binding IDs/delivery history persist; no invented Answered/Read/archive.
-`src/send_tool.rs::BecomesRequest/BecomesMessage` now builds PUBLIC types;
-`handle_send_call` calls shared resolver before routing/keeping Results,
-fixing private Result(empty logicalID) bypass. Tool kinds unchanged; ordinary
-CLI supplies Task/Done/Living. Ten-file commit, remaining edits fixtures/docs.
-Named tests cover Claude+Codex successor Order exclusion, Question/Task ID
-carry/deadline, queued/uncertain/delivered five-kind matrix, native-tool
-Order/Task rejection, Question routed/kept/replay/duplicate, migration old
-Order refusal + currentQuestion positive path. Historical fixtures untouched.
-**Psyche on8b/Core0dfu RULED** retain Answer query current meaning thisrelease;
-its historical binding Open for Order is accepted exception. Typed
-not-answerable belongs NEXTsignal release. Do NOT widen source for that read.
+**Code:** `src/store/logical_delivery.rs::answerable_by` accepts Result only
+for Question; `open_requests` carries only Question/Task. Historical IDs and
+delivery state persist, no invented Answered/Read/archive. `src/send_tool.rs`
+constructs public SendableRequest/Message and resolves before routing/keeping;
+fixes private Result(empty logicalID) bypass, tool kinds unchanged. Other
+edits are fixtures/docs. Tests cover two-harness successor exclusion/carry,
+state/kind matrix, native-tool refusal/Question routed/kept/replay, migration
+oldOrder refusal and currentQuestion positive. **Psycheon8b/Core0dfu RULED:**
+keep Answer query current meaning thisrelease; historical Open-bit exception
+accepted, typed not-answerable is NEXTsignal. Do not widen source for it.
 
-## Bootstrap — own next work, not Field's design task
-Psyche **zttr**, Fieldognt/czl7, Corek2of: no capsule tool exists; WE own exact
-commands/place/config for isolated SECONDdaemon, own sockets/FRESHMemory/
-Herdrsession/privateHOME/CODEXHOME/appserver/Curriculum. Field RUNS only the
-reviewed packet; no native launch/login authorized now. NO bootstrap written
-yet: source pointers alone were insufficient. Do not run stale2738-line
-`capsule/flow-capsule.clj` wholesale (it has old configure-only assumptions,
-shared auth link and hardwired paths). Relevant raw interface pointers:
-- `src/main.rs`, `src/place.rs`, flow-place/src/lib.rs: daemon one place-name,
-  XDG_CONFIG_HOME/nexus/<name>/flow-nexus.signal; CLI config `{ name }` in
-  nexus/flow-nexus.datom. Existing runtime/state dirs required. Package.default
-  daemon/clients/flow-hook; packages.nexus-configure compiles Place datom.
-- Exactmeta313bc05 ethos/signal.ethos lines466–600: Configure.Nexus has source,
-  TWO CodexEndpoint structs, harnessprofiles, metaaspects, optionalMessage
-  path/binary, Curriculum socket, lease, optionalpresentation, Herdrsession.
-  Configure.Models/Thresholds/Metaflows are whole families ONLY in fresh store.
-  Permaflow: Address,OptionRoot,LeaveOuts,SystemModules,PromptModules,Kind,
-  ToolSet,Continuity,Purpose,Records. Use synthetic Luna proof topics only.
-- Own pinned Curriculum **60609c55f90432782625275294636a4e396d9497**,
-  packages.curriculum. Its service::directory uses XDG_RUNTIME_DIR/curriculum,
-  curriculum.sock; env layout2 + three authored repository dirs + refresh
-  program + own CURRICULUM_RECORDS_DIR. startup needs >=1 authored module;
-  copy pinned authored inputs into isolation, no productionrecords/replay.
-- capsule helper lines1231–1458 illustrate raw Herdr server, private appserver
-  `app-server --remote-control --listen unix://...`, place compilation, but
-  are evidence NOT approved runnable recipe. Native tool subscribes only to
-  threads daemon's own Memory holds. CLI isolation alone is insufficient.
+**Bootstrap is OUR next work.** Psyche **zttr**, Fieldognt/czl7, Corek2of:
+write exact raw commands/place/config for isolated SECONDdaemon, own sockets,
+FRESHMemory, Herdrsession, privateHOME/CODEXHOME/appserver/Curriculum. Field
+runs reviewed packet. Nothing runnable written yet; pointers alone insufficient.
+Do not run stale `capsule/flow-capsule.clj` wholesale (shared auth/obsolete
+configure-only assumptions). Lines1231–1458 illustrate individual interfaces.
+Source pointers: Flow `src/main.rs`, `src/place.rs`, flow-place/src/lib.rs;
+package.default has daemon/clients/hook, packages.nexus-configure compiles
+Place; CLI config `{ name }` plus own XDG_CONFIG_HOME place file. Meta exact
+313bc05 ethos/signal.ethos466–600 spells Configure.Nexus/Models/Metaflows.
+Own Curriculum package pinned **60609c55f90432782625275294636a4e396d9497**:
+service.rs directory XDG_RUNTIME_DIR/curriculum/curriculum.sock; registry.rs
+layout2/three authored roots/refresh-program env; own RECORDS_DIR; startup.rs
+requires >=1 authored module. Copy pinned authored inputs, no productionrecords.
+Native tool subscriber uses only daemon-owned thread records; CLI separation
+alone is insufficient. Synthetic Luna proof topics only, preserve production.
 
-**Credential blocker**: Field answered **ofaf** (our question) no credential
-copy/read/device-login approval. Field asks Psyche native/credential ruling;
-await it. Field owns exact supported native executable/version read-only fact.
-Luna actualmodel/effort can be read ONLY model definition in frozenConfig
-`/tmp/s4s7-configuration-2219e4.4q4cGYOs/configuration.datom`; never replay it.
-Local help only run: codex-next0.161.0-alpha.2 supports login --device-auth and
-stdin --with-api-key/--with-access-token; NO login/secret read/copy performed.
+**Credential blocker:** Field **ofaf** forbids credential copy/read/device
+login until Psyche choice; Field asks that ruling and obtains native executable/
+version. Actual Luna model/effort: read ONLY model definition from frozenConfig
+`/tmp/s4s7-configuration-2219e4.4q4cGYOs/configuration.datom`, never replay it.
+Help-only observation: codex-next0.161.0-alpha.2 supports device-auth and stdin
+login interfaces; no secret or login used. Wait for approved contract.
 
-## Release chain / resource
-Core audits source and owns every metadata/gate grant; Field currently owns
-one bounded trace phase, NO concurrent heavy phase or automatic takeover.
-Then immutable whole Prometheus checks, reviewed isolated native matrix +
-successor, nonwriter audit commit+evidence vs proposal, Psycheacceptance,
-main/next switch. Field eventual live custody; **narrowactivation includes ALL
-Ouranosordinary0.68 consumers/Energy**, no67backport or assumed0600equivalence.
-Contracts signal68/319e3c3, meta89.0.1/313bc05, base7fca4d5, translator6892a15.
-No owned build/native/background process; no test/gate/live success claimed.
-Taska8fa remains open. Sourceaudit and bootstrap/credential ruling are next.
+**Chain:** Core sourceaudit → granted metadata → exact immutable whole
+Prometheusgate → reviewed isolated native matrix/successor → nonwriter audit
+commit+evidence → Psycheacceptance → main/next switch. Field currently owns
+single tracephase; NO heavy grant/concurrency/automatic takeover. Source gate
+recipe remains predecessor packet. Narrowactivation includes ALL Ouranosordinary
+0.68 peers/Energy, no67backport or presumed0600equivalence. Contracts68/319e3c3,
+meta89.0.1/313bc05, base7fca4d5, translator6892a15. Taska8fa stays open.
+No owned background/build/native process remains. Next: audit reply and bootstrap.
