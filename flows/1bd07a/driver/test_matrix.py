@@ -4,16 +4,57 @@ import matrix
 
 
 class MatrixFixtures(unittest.TestCase):
+    def test_request_id_exact_lowercase_base36(self):
+        for value in ('0000', 'abcd', '9z0a'):
+            self.assertTrue(matrix.valid_request_id(value))
+        for value in ('abc', 'abcde', 'AB12', 'a-12', 'é123', '', None):
+            self.assertFalse(matrix.valid_request_id(value))
+
+    def test_unknown_draw_collision_stops_before_instruction(self):
+        from unittest import mock
+        ledger = matrix.Evidence()
+        ledger.request('O', 'aa01', 'Order'); ledger.request('Q', 'aa02', 'Question'); ledger.request('T', 'aa03', 'Task', 15)
+        channel = mock.Mock()
+        channel.requests = {'O': 'aa01'}
+        channel.controls = {'aaaa': 'sender'}
+        with mock.patch.object(matrix.secrets, 'choice', return_value='a'), mock.patch.object(matrix, 'control_question') as question:
+            with self.assertRaises(matrix.MatrixError):
+                matrix.collect_phase_a_consumption(mock.Mock(), channel, ledger, 1, object(), object())
+            question.assert_not_called()
+
+    def test_delivery_state_complete_nested_decode_and_malformed_rejection(self):
+        import controller
+        valid = ('Queued', 'Attempting', 'Uncertain', 'Delivered', 'Read', 'Withdrawn', 'Archived',
+                 'Retryable.HistoryAbsent', 'Retryable.WakeRefused.CompositionRefused.Unconfigured',
+                 'Retryable.WakeRefused.HarnessSpawnRefused.{ Herdr.{ None «error» } Some.{ session Answered Archived } }',
+                 'Failed.Locked', 'Failed.Held.{ { Mind topic Luna } { Field other Sol } 1 }',
+                 'Failed.Unidentified.{ Some.{ session pane } None Some.«native» 123 { 1 2 } }',
+                 'Failed.Oversized.{ 5 4 }')
+        for value in valid:
+            with self.subTest(value=value):
+                parsed = matrix.typed_receipt(value, controller.receipt_tokens)
+                _, remaining = matrix.consume_typed(matrix.delivery_state_schema(), parsed)
+                self.assertEqual(remaining, [])
+        for value in ('Retryable.', 'Retryable.HistoryAbsent.extra', 'Failed.', 'Failed.Oversized.{ 5 }',
+                      'Failed.Unidentified.[]', 'Failed.Locked.extra', 'Retryable.WakeRefused.Bogus'):
+            with self.subTest(value=value), self.assertRaises(matrix.MatrixError):
+                parsed = matrix.typed_receipt(value, controller.receipt_tokens)
+                _, remaining = matrix.consume_typed(matrix.delivery_state_schema(), parsed)
+                if remaining: raise matrix.MatrixError('trailing state input')
+        for value in ('Retryable.HistoryAbsent', 'Failed.Locked'):
+            with self.assertRaises(matrix.MatrixError):
+                matrix.parse_visible_admission('SendAccepted.{ aa01 1 ' + value + ' }', controller.receipt_tokens)
+
     def test_phase_a_reply_order_and_duplicate_new_calls(self):
         from unittest import mock
         owner = mock.Mock(manifest={'root': '/private', 'providers': {'flow': {'path': '/flow'}}})
         ledger = matrix.Evidence()
-        ledger.request('O', 'order1', 'Order')
-        ledger.request('Q', 'question1', 'Question')
-        ledger.request('T', 'task1', 'Task', 15)
+        ledger.request('O', 'or01', 'Order')
+        ledger.request('Q', 'qu01', 'Question')
+        ledger.request('T', 'ta01', 'Task', 15)
         channel = mock.Mock()
         with mock.patch.object(matrix, 'control_question', return_value='control'):
-            matrix.collect_phase_a_reply_outcomes(owner, channel, ledger, 'unknown1', 1, object(), object())
+            matrix.collect_phase_a_reply_outcomes(owner, channel, ledger, 'un01', 1, object(), object())
         outcomes = channel.receive_reply_outcome.call_args_list
         self.assertEqual([c.args[0] for c in outcomes], ['result-order', 'result-task', 'done-question', 'result-unknown', 'result-question', 'done-task', 'duplicate-result', 'duplicate-done'])
         self.assertEqual([c.args[3] for c in outcomes], ['unresolved', 'unresolved', 'unresolved', 'unresolved', 'accepted', 'accepted', 'unresolved', 'unresolved'])
@@ -30,10 +71,10 @@ class MatrixFixtures(unittest.TestCase):
         ledger = matrix.Evidence()
         def call(owner, label, binary, request):
             if label == 'kept-question':
-                return 'SendAccepted.{ kept1 3 Queued }'
-            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ kept1 «P2-kept-answer» } }'
+                return 'SendAccepted.{ kp01 3 Queued }'
+            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ kp01 «P2-kept-answer» } }'
         with mock.patch.object(matrix, 'control_question', return_value='control'):
-            self.assertEqual(matrix.kept_answer_case(owner, channel, ledger, 1, call, controller.receipt_tokens, controller.receipt), 'kept1')
+            self.assertEqual(matrix.kept_answer_case(owner, channel, ledger, 1, call, controller.receipt_tokens, controller.receipt), 'kp01')
         channel.receive_reply_outcome.assert_called_once()
         channel.receive_consumption.assert_called_once()
 
@@ -42,7 +83,7 @@ class MatrixFixtures(unittest.TestCase):
         owner = mock.Mock(manifest={'root': '/private', 'providers': {'flow': {'path': '/flow'}}})
         channel = mock.Mock()
         def admission(label, kind, marker, deadline, receipt_tokens):
-            return {'request_id': 'id' + label, 'minutes': 15 if kind == 'Task' else None}
+            return {'request_id': {'O':'aa01', 'Q':'aa02', 'T':'aa03', 'N':'aa04', 'L':'aa05'}[label], 'minutes': 15 if kind == 'Task' else None}
         channel.receive_admission.side_effect = admission
         ledger = matrix.Evidence()
         def call(owner, label, binary, request):
@@ -64,22 +105,22 @@ class MatrixFixtures(unittest.TestCase):
 
     def test_request_ids_are_dynamic_unique_and_kind_bound(self):
         evidence = matrix.Evidence()
-        evidence.request('Q2', 'actual-q', 'Question')
-        with self.assertRaises(matrix.MatrixError): evidence.request('T2', 'actual-q', 'Task', 123)
-        with self.assertRaises(matrix.MatrixError): evidence.request('O2', 'actual-o', 'Question')
+        evidence.request('Q2', 'aq01', 'Question')
+        with self.assertRaises(matrix.MatrixError): evidence.request('T2', 'aq01', 'Task', 123)
+        with self.assertRaises(matrix.MatrixError): evidence.request('O2', 'ao01', 'Question')
 
     def test_carry_and_order_exclusion(self):
         evidence = matrix.Evidence()
-        evidence.request('O2', 'o_actual', 'Order')
-        evidence.request('Q2', 'q_actual', 'Question')
-        evidence.request('T2', 't_actual', 'Task', 15)
-        evidence.successor('q_actual t_actual 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97', 'old', 'new', 15)
+        evidence.request('O2', 'oo01', 'Order')
+        evidence.request('Q2', 'qq01', 'Question')
+        evidence.request('T2', 'tt01', 'Task', 15)
+        evidence.successor('qq01 tt01 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97', 'old', 'new', 15)
         evidence.refreshes = 0
         with self.assertRaises(matrix.MatrixError):
-            evidence.successor('q_actual t_actual 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97 P2-order-carry-excluded-7a97', 'old', 'new', 15)
+            evidence.successor('qq01 tt01 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97 P2-order-carry-excluded-7a97', 'old', 'new', 15)
         evidence.refreshes = 0
         with self.assertRaises(matrix.MatrixError):
-            evidence.successor('q_actual t_actual 99 P2-task-carry-required-7a97', 'old', 'new', 99)
+            evidence.successor('qq01 tt01 99 P2-task-carry-required-7a97', 'old', 'new', 99)
 
     def test_budget_and_targets(self):
         evidence = matrix.Evidence()
@@ -129,12 +170,12 @@ class ChannelFixtures(unittest.TestCase):
             self.channel._source({'path': 'evidence/link', 'sha256': digest})
 
     def test_duplicate_and_spurious_cut_rejected(self):
-        self.channel.register_control('control1', 'sender')
-        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'control1')
+        self.channel.register_control('ct01', 'sender')
+        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'ct01')
         with self.assertRaises(matrix.MatrixError):
-            self.channel.expect('cut-b', 'O', 'sender', 'Order', 'marker', 'control1')
+            self.channel.expect('cut-b', 'O', 'sender', 'Order', 'marker', 'ct01')
         with self.assertRaises(matrix.MatrixError):
-            self.channel.expect('cut-b', 'Q', 'receiver', 'Question', 'marker', 'control1')
+            self.channel.expect('cut-b', 'Q', 'receiver', 'Question', 'marker', 'ct01')
 
     def test_dynamic_rehearsal_review_binds_both_actual_hashes(self):
         import json
@@ -179,7 +220,7 @@ class ChannelFixtures(unittest.TestCase):
         import hashlib, json
         import controller
         from unittest import mock
-        invocation = matrix.native_send('proposalTwoSender', 'Result', 'body', 'request1')
+        invocation = matrix.native_send('proposalTwoSender', 'Result', 'body', 'rq01')
         call = json.dumps({'call_id': 'call1', 'arguments': invocation}).encode()
         response = json.dumps({'success': False, 'contentItems': [{'type': 'inputText', 'text': 'Refused.Unresolved'}]}).encode()
         (self.root / 'evidence' / 'call').write_bytes(call)
@@ -196,9 +237,9 @@ class ChannelFixtures(unittest.TestCase):
         import hashlib, json
         import controller
         from unittest import mock
-        invocation = matrix.native_send('proposalTwoSender', 'Result', 'P2-kept-answer', 'request1')
+        invocation = matrix.native_send('proposalTwoSender', 'Result', 'P2-kept-answer', 'rq01')
         call = json.dumps({'call_id': 'call-kept', 'arguments': invocation}).encode()
-        response = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Kept.{ Sender.{ Mind other Luna } request1 }'}]}).encode()
+        response = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Kept.{ Sender.{ Mind other Luna } rq01 }'}]}).encode()
         (self.root / 'evidence' / 'call').write_bytes(call)
         (self.root / 'evidence' / 'response').write_bytes(response)
         event = {'cut': 'reply-outcome', 'label': 'kept', 'surface': 'native', 'identity': {'pane': 'r'},
@@ -208,57 +249,78 @@ class ChannelFixtures(unittest.TestCase):
             with self.assertRaises(matrix.MatrixError):
                 self.channel.receive_reply_outcome('kept', 'native', invocation, 'kept', 1, controller.receipt_tokens)
 
+    def test_accepted_reply_rejects_another_answered_id_on_both_surfaces(self):
+        import hashlib, json
+        import controller
+        from unittest import mock
+        for index, surface in enumerate(('native', 'cli')):
+            with self.subTest(surface=surface):
+                invocation = (matrix.native_send('proposalTwoSender', 'Result', 'body', 'aa01') if surface == 'native' else
+                              matrix.private_cli({'root': '/private', 'providers': {'flow': {'path': '/flow'}}}, 'Send.{ { Mind proposalTwoSender Luna } Soft.Done.{ aa01 «body» } }'))
+                call = json.dumps({'call_id': 'case' + str(index), 'arguments' if surface == 'native' else 'command': invocation}).encode()
+                text = ('Accepted.{ Sender.{ Mind proposalTwoReceiver Luna } { Mind proposalTwoSender Luna } { aa02 2 Delivered } }'
+                        if surface == 'native' else 'SendAccepted.{ aa02 2 Delivered }')
+                response = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': text}]}).encode() if surface == 'native' else text.encode()
+                (self.root / 'evidence' / ('call' + str(index))).write_bytes(call)
+                (self.root / 'evidence' / ('response' + str(index))).write_bytes(response)
+                event = {'cut': 'reply-outcome', 'label': 'wrong-' + surface, 'surface': surface, 'identity': {'pane': 'r'},
+                         'invocation': {'path': 'evidence/call' + str(index), 'sha256': hashlib.sha256(call).hexdigest()},
+                         'response': {'path': 'evidence/response' + str(index), 'sha256': hashlib.sha256(response).hexdigest()}}
+                with mock.patch.object(self.channel, '_next_frame', return_value=json.dumps(event).encode()):
+                    with self.assertRaises(matrix.MatrixError):
+                        self.channel.receive_reply_outcome('wrong-' + surface, surface, invocation, 'accepted', 1, controller.receipt_tokens, 'aa01')
+
     def test_control_answer_waits_for_native_kept_evidence(self):
         import hashlib, json
         import controller
         from unittest import mock
-        self.channel.register_control('control1', 'receiver')
-        call = json.dumps({'call_id': 'control-call', 'arguments': {'kind': 'Result', 'request': 'control1'}}).encode()
-        response = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Kept.{ Sender.{ Mind proposalTwoReceiver Luna } control1 }'}]}).encode()
+        self.channel.register_control('ct01', 'receiver')
+        call = json.dumps({'call_id': 'control-call', 'arguments': {'kind': 'Result', 'request': 'ct01'}}).encode()
+        response = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Kept.{ Sender.{ Mind proposalTwoReceiver Luna } ct01 }'}]}).encode()
         (self.root / 'evidence' / 'call').write_bytes(call)
         (self.root / 'evidence' / 'response').write_bytes(response)
-        event = {'cut': 'control-completion', 'request_id': 'control1', 'side': 'receiver', 'identity': {'pane': 'r'},
+        event = {'cut': 'control-completion', 'request_id': 'ct01', 'side': 'receiver', 'identity': {'pane': 'r'},
                  'invocation': {'path': 'evidence/call', 'sha256': hashlib.sha256(call).hexdigest()},
                  'response': {'path': 'evidence/response', 'sha256': hashlib.sha256(response).hexdigest()}}
         def private_call(owner, label, binary, request):
             self.assertIn('control-call', self.channel.invocations)
-            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ control1 «done» } }'
+            return 'Answered.{ Sender.{ Mind proposalTwoReceiver Luna } Soft.Result.{ ct01 «done» } }'
         with mock.patch.object(self.channel, '_next_frame', return_value=json.dumps(event).encode()):
             matrix.close_control_questions(object(), self.channel, 1, private_call, controller.receipt_tokens)
-        self.assertEqual(self.channel.closed_controls, {'control1'})
+        self.assertEqual(self.channel.closed_controls, {'ct01'})
 
-    def test_missing_transcript_and_invented_id_refused(self):
+    def test_missing_transcript_and_in01_id_refused(self):
         import hashlib, json
         from unittest import mock
-        receipt = {'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Accepted.{ real-id }'}]}
+        receipt = {'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Accepted.{ re01 }'}]}
         data = json.dumps(receipt).encode()
         (self.root / 'evidence' / 'receipt').write_bytes(data)
-        self.channel.register_control('control1', 'sender')
-        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'control1')
+        self.channel.register_control('ct01', 'sender')
+        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'ct01')
         event = {'cut':'cut-a','label':'O','side':'sender','kind':'Order','marker':'marker',
-                 'control_id':'control1','request_id':'invented','minutes':None,
+                 'control_id':'ct01','request_id':'in01','minutes':None,
                  'receipt':{'path':'evidence/receipt','sha256':hashlib.sha256(data).hexdigest()},
                  'transcript':{'path':'transcripts/missing','sha256':'0'*64},
-                 'acknowledgement':'marker invented','identity':{'pane':'s'},
+                 'acknowledgement':'marker in01','identity':{'pane':'s'},
                  'reader_side':'receiver','reader_identity':{'pane':'r'}}
         with mock.patch.object(self.channel, '_next_frame', return_value=json.dumps(event).encode()):
             with self.assertRaises((matrix.MatrixError, OSError)):
                 self.channel.receive(1)
 
-    def test_invented_id_not_present_in_receipt(self):
+    def test_in01_id_not_present_in_receipt(self):
         import hashlib, json
         from unittest import mock
-        receipt = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Accepted.{ real-id }'}]}).encode()
-        transcript = b'ack marker invented\n'
+        receipt = json.dumps({'success': True, 'contentItems': [{'type': 'inputText', 'text': 'Accepted.{ re01 }'}]}).encode()
+        transcript = b'ack marker in01\n'
         (self.root / 'evidence' / 'receipt').write_bytes(receipt)
         (self.root / 'transcripts' / 'reply').write_bytes(transcript)
-        self.channel.register_control('control1', 'sender')
-        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'control1')
+        self.channel.register_control('ct01', 'sender')
+        self.channel.expect('cut-a', 'O', 'sender', 'Order', 'marker', 'ct01')
         event = {'cut':'cut-a','label':'O','side':'sender','kind':'Order','marker':'marker',
-                 'control_id':'control1','request_id':'invented','minutes':None,
+                 'control_id':'ct01','request_id':'in01','minutes':None,
                  'receipt':{'path':'evidence/receipt','sha256':hashlib.sha256(receipt).hexdigest()},
                  'transcript':{'path':'transcripts/reply','sha256':hashlib.sha256(transcript).hexdigest()},
-                 'acknowledgement':'ack marker invented','identity':{'pane':'s'},
+                 'acknowledgement':'ack marker in01','identity':{'pane':'s'},
                  'reader_side':'receiver','reader_identity':{'pane':'r'}}
         with mock.patch.object(self.channel, '_next_frame', return_value=json.dumps(event).encode()):
             with self.assertRaises(matrix.MatrixError):
@@ -343,9 +405,9 @@ class LaunchFixtures(unittest.TestCase):
         channel.identity = {'receiver': old}
         channel.controls = {}
         channel.closed_controls = set()
-        channel.receive_successor.return_value = (new, 'q2 t2 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97')
+        channel.receive_successor.return_value = (new, 'qq02 tt02 15 P2-question-carry-required-7a97 P2-task-carry-required-7a97')
         ledger = matrix.Evidence()
-        ledger.request('O2', 'o2', 'Order'); ledger.request('Q2', 'q2', 'Question'); ledger.request('T2', 't2', 'Task', 15)
+        ledger.request('O2', 'oo02', 'Order'); ledger.request('Q2', 'qq02', 'Question'); ledger.request('T2', 'tt02', 'Task', 15)
         replies = {'receiver-refresh': 'RefreshQueued.{ { Mind proposalTwoReceiver Luna } old }',
                    'successor-current': 'Current.Awake.new',
                    'successor-inspect': 'Inspected.fixture'}
@@ -364,7 +426,7 @@ class LaunchFixtures(unittest.TestCase):
     def test_successor_reply_order_and_closure_pair(self):
         from unittest import mock
         ledger = matrix.Evidence()
-        ledger.request('O2', 'o2', 'Order'); ledger.request('Q2', 'q2', 'Question'); ledger.request('T2', 't2', 'Task', 15)
+        ledger.request('O2', 'oo02', 'Order'); ledger.request('Q2', 'qq02', 'Question'); ledger.request('T2', 'tt02', 'Task', 15)
         ledger.task_cutoffs['T2'] = float('inf')
         owner = mock.Mock(manifest={'root': '/private', 'providers': {'flow': {'path': '/flow'}}})
         channel = mock.Mock()

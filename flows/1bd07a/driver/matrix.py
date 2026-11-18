@@ -40,29 +40,189 @@ def valid_id(value):
     return isinstance(value, str) and bool(re.fullmatch(r'[A-Za-z0-9_-]+', value))
 
 
-def parse_visible_admission(text, receipt_tokens):
-    """Decode the released VisibleSendAcceptance or Sent request identity."""
+def valid_request_id(value):
+    return isinstance(value, str) and bool(re.fullmatch(r'[0-9a-z]{4}', value))
+
+
+def typed_receipt(text, receipt_tokens):
+    """Read all delimiters, retaining struct/vector and quoted-string distinctions."""
     tokens = receipt_tokens(text)
-    def string(value):
-        return value[1] if isinstance(value, tuple) and value[0] == 'quoted' else value
-    if len(tokens) == 1 and isinstance(tokens[0], str) and tokens[0].startswith('Sent.'):
-        request_id = tokens[0][len('Sent.'):]
-        if valid_id(request_id):
-            return request_id
-    if len(tokens) >= 6 and tokens[:2] == ['SendAccepted.', '{'] and tokens[-1] == '}':
-        request_id, cursor, state = string(tokens[2]), tokens[3], tokens[4]
-        states = ('Queued', 'Attempting', 'Retryable.', 'Uncertain', 'Delivered', 'Read', 'Failed.', 'Withdrawn', 'Archived')
-        if valid_id(request_id) and isinstance(cursor, str) and cursor.isdecimal() and isinstance(state, str) and any(state == item or (item.endswith('.') and state.startswith(item)) for item in states):
-            stack = []
-            for token in tokens[4:-1]:
-                if token in ('{', '['):
-                    stack.append(token)
-                elif token in ('}', ']'):
-                    if not stack or stack.pop() != ('{' if token == '}' else '['):
-                        raise MatrixError('unbalanced send admission')
-            if not stack:
-                return request_id
+    def read(index, end):
+        out = []
+        while index < len(tokens) and tokens[index] != end:
+            token = tokens[index]
+            if token in ('{', '['):
+                nested, index = read(index + 1, '}' if token == '{' else ']')
+                out.append(('struct' if token == '{' else 'vector', nested))
+            elif token in ('}', ']'):
+                raise MatrixError('mismatched receipt delimiter')
+            else:
+                out.append(token)
+                index += 1
+        if end is not None:
+            if index >= len(tokens): raise MatrixError('unterminated receipt')
+            index += 1
+        return out, index
+    result, index = read(0, None)
+    if index != len(tokens): raise MatrixError('trailing receipt input')
+    return result
+
+
+def enum(*names, **payloads):
+    return ('enum', {**{name: None for name in names}, **payloads})
+
+
+def struct(*fields):
+    return ('struct', fields)
+
+
+def option(schema):
+    return enum('None', Some=schema)
+
+
+def consume_typed(schema, items):
+    if not items: raise MatrixError('missing typed payload')
+    head, tail = items[0], items[1:]
+    if schema == 'string':
+        if isinstance(head, tuple) and len(head) == 2 and head[0] == 'quoted': return head[1], tail
+        if isinstance(head, str) and head: return head, tail
+        raise MatrixError('invalid string payload')
+    if schema == 'integer':
+        if not isinstance(head, str) or not re.fullmatch(r'-?(0|[1-9][0-9]*)', head) or not -(2**63) <= int(head) < 2**63:
+            raise MatrixError('invalid integer payload')
+        return head, tail
+    kind, fields = schema
+    if kind == 'struct':
+        if not isinstance(head, tuple) or len(head) != 2 or head[0] != 'struct': raise MatrixError('expected struct payload')
+        values, remaining = [], head[1]
+        for field in fields:
+            value, remaining = consume_typed(field, remaining)
+            values.append(value)
+        if remaining: raise MatrixError('extra struct payload')
+        return values, tail
+    if kind != 'enum' or not isinstance(head, str): raise MatrixError('invalid variant')
+    for name, payload in fields.items():
+        if payload is None and head == name: return name, tail
+        prefix = name + '.'
+        if payload is not None and head.startswith(prefix):
+            suffix = head[len(prefix):]
+            value, remaining = consume_typed(payload, ([suffix] if suffix else []) + tail)
+            return (name, value), remaining
+    raise MatrixError('unknown or malformed variant')
+
+
+def delivery_state_schema():
+    text, integer = 'string', 'integer'
+    aspect = enum('Psyche', 'Mind', 'Field')
+    model = enum('Fable', 'Opus', 'Sonnet', 'Haiku', 'Astra', 'Sol', 'Luna', 'Terra')
+    address = struct(aspect, text, model)
+    process = struct(integer, integer)
+    lock = struct(address, address, integer)
+    seat = struct(option(struct(text, text)), option(text), option(text), integer, process)
+    minutes = enum('Zero', 'Negative', 'Unreachable')
+    unknown = enum('Address', 'Flow', 'Key', Lock=lock)
+    refusal = enum('Locked', 'Awake', 'Asleep', 'Lapsed', 'NotConfigured', 'NotMessage', 'Unresolved',
+                   'RequestIdSpaceFull', 'RequestIdDrawsCollided', Held=lock, Unknown=unknown, Taken=address,
+                   Unidentified=seat, Store=text, NotSendServer=process, Oversized=struct(integer, integer),
+                   Direct=text, TopicRefused=text, MinutesRefused=minutes, PermaflowHeld=address)
+    fault = enum('InvalidPredecessor', 'RootUnresolved', 'NotUtf8', Unreadable=text)
+    composition = enum('InvalidLaunchRequestId', 'InvalidModelName', 'InvalidEffort', 'InvalidToolSet',
+        'InvalidHerdrSessionName', 'InvalidSystemModules', 'InvalidPromptModules', 'InvalidRemembering',
+        'InexactModel', 'Unconfigured', 'PresentationUnavailable', 'Unrecorded',
+        HandoverUnreadable=struct(text, fault), RecoveryUnavailable=struct(address, text, text),
+        RecoveryPredecessorMismatch=struct(address, address, text, text, text))
+    flags = enum('UnclosedSingleQuote', 'UnclosedDoubleQuote', 'TrailingEscape')
+    binding = enum('PaneMismatch', 'TerminalMismatch', 'HarnessMismatch', 'NotReady', 'ReservedIdentityMismatch',
+                   'ClaimUnavailable', 'ObservationRefused', 'TransportRefused', 'Unclassified')
+    native_target = enum('HerdrUnreadable', 'PaneMismatch', 'NoNativeSession', 'IdentityInexact')
+    registration = enum('RouteUnverified', 'RoleConflict', 'RoleUnrecorded', 'PaneBindingForeign',
+                        'AcknowledgementMismatch', 'PromptNotCanonical', 'TranscriptBoundary', 'ThreadNotNamed',
+                        'Unclassified', NativeTarget=native_target)
+    stage = enum('Open', 'CodexThread', 'Spawn', 'Bind', 'Naming', 'Receipt', 'Confirm', 'Unclassified')
+    failure = enum('PaneTargetMismatch', 'NativeSessionMissing', 'NativeIdentityConflict', 'FlowClaimUnavailable',
+        'HarnessMismatch', 'HerdrUnreadable', 'ForeignBinding', 'InvalidFlowId', 'NotReady', 'TranscriptUnreadable',
+        'TitleReadbackDiffers', 'CodexNamingRefused', 'PaneLabelRefused', 'AdapterRefused', 'BoundaryMismatch',
+        'ThreadNotNamed', 'PartDiffers', 'LeaveOutShown', 'ModelOrEffortDiffers', 'SessionUnrecorded',
+        'Unclassified', 'SendToolUnsupported', 'WorkspaceLabelRefused')
+    context = enum('ComposerUnavailable', 'MetaflowMismatch', 'PayloadMismatch', 'RecordMissing', 'SystemTooLarge',
+                   'ModuleTooLarge', ComposerRejected=text, ModuleMissing=option(text))
+    leave = enum('ClaudeAiConnectors', 'ConfiguredMcpServers', 'AgentTool', 'ExplorePlanAgents', 'FileTools',
+        'WorkflowTool', 'ScheduleWakeupTool', 'ReportFindingsTool', 'ListAgentsTool', 'CronTools', 'WebTools',
+        'DeferredTools', 'SkillTool', 'BundledSkills', 'ClaudeMd', 'GitInstructions', 'AttributionReminder',
+        'UserSettings', 'ToolSearch', 'BashTool', 'CodexSkillListing', 'CodexAgentsMd', 'CodexCollaborationMode',
+        'CodexEnvironmentContext', 'CodexPermissions', 'CodexDeveloperInstructions')
+    leave_refusal = enum(Indispensable=leave, NeedsWorkflowLeftOut=leave, NotForHarness=leave)
+    spawn_cause = enum('ControlCharacter', 'CommandTooLong', Herdr=struct(option(text), text))
+    opened = struct(text, enum('Answered', 'InProgress', 'Unanswered', 'Unread'), enum('Archived', 'ArchiveRefused'))
+    spawn = struct(spawn_cause, option(opened))
+    start = enum('LaunchRequestConflict', 'LaunchPersistenceRefused', 'IntentPersistenceRefused',
+        'OriginUnavailable', 'AddressAwake', 'Undeclared', CompositionRefused=composition,
+        MalformedHarnessFlags=flags, NativeLaunchRefused=struct(stage, failure), BindingRefused=binding,
+        RegistrationRefused=registration, ContextRefused=context, LeaveOutRefused=leave_refusal,
+        HarnessSpawnRefused=spawn, ModelRefused=enum('Unconfigured', Differs=text), TopicRefused=text)
+    retry = enum('HistoryAbsent', 'HandOverRefused', 'OwnerResolvedAbsent', WakeRefused=start)
+    return enum('Queued', 'Attempting', 'Uncertain', 'Delivered', 'Read', 'Withdrawn', 'Archived',
+                Retryable=retry, Failed=refusal)
+
+
+def decode_visible_acceptance(value):
+    if not isinstance(value, tuple) or value[0] != 'struct': raise MatrixError('invalid visible acceptance')
+    fields = value[1]
+    request_id, fields = consume_typed('string', fields)
+    cursor, fields = consume_typed('integer', fields)
+    state, fields = consume_typed(delivery_state_schema(), fields)
+    if fields or not valid_request_id(request_id) or int(cursor) < 0:
+        raise MatrixError('invalid acceptance identity, cursor or trailing payload')
+    if isinstance(state, tuple) and state[0] in ('Failed', 'Retryable'):
+        raise MatrixError('delivery is failed or retryable, not a completed admission')
+    return request_id
+
+
+def parse_visible_admission(text, receipt_tokens):
+    parts = typed_receipt(text, receipt_tokens)
+    if len(parts) == 1 and isinstance(parts[0], str) and parts[0].startswith('Sent.'):
+        request_id = parts[0][len('Sent.'):]
+        if valid_request_id(request_id): return request_id
+    if len(parts) == 2 and parts[0] == 'Sent.':
+        request_id, remaining = consume_typed('string', parts[1:])
+        if not remaining and valid_request_id(request_id): return request_id
+    if len(parts) == 2 and parts[0] == 'SendAccepted.':
+        return decode_visible_acceptance(parts[1])
     raise MatrixError('not a typed visible admission')
+
+
+def decode_native_acceptance(text, sender, target, receipt_tokens):
+    parts = typed_receipt(text, receipt_tokens)
+    if len(parts) != 2 or parts[0] != 'Accepted.' or not isinstance(parts[1], tuple) or parts[1][0] != 'struct':
+        raise MatrixError('invalid native acceptance')
+    fields = parts[1][1]
+    address_schema = struct(enum('Mind'), 'string', enum('Luna'))
+    sender_value, fields = consume_typed(enum(Sender=address_schema), fields)
+    target_value, fields = consume_typed(address_schema, fields)
+    if sender_value != ('Sender', ['Mind', sender, 'Luna']) or target_value != ['Mind', target, 'Luna']:
+        raise MatrixError('native acceptance sender or target mismatch')
+    if len(fields) != 1: raise MatrixError('native acceptance arity mismatch')
+    return decode_visible_acceptance(fields[0])
+
+
+def decode_cli_done_request(command, receipt_tokens):
+    import shlex
+    try:
+        argv = shlex.split(command)
+    except ValueError as exc:
+        raise MatrixError('invalid CLI invocation') from exc
+    if len(argv) != 3 or not argv[0].startswith('XDG_CONFIG_HOME=') or not os.path.isabs(argv[1]):
+        raise MatrixError('invalid private CLI invocation')
+    parts = typed_receipt(argv[2], receipt_tokens)
+    if len(parts) != 2 or parts[0] != 'Send.':
+        raise MatrixError('not a Send invocation')
+    address = struct(enum('Mind'), 'string', enum('Luna'))
+    value, remaining = consume_typed(struct(address, enum(Soft=enum(Done=struct('string', 'string')))), parts[1:])
+    if remaining or value[0] != ['Mind', 'proposalTwoSender', 'Luna']:
+        raise MatrixError('Done invocation target mismatch')
+    request_id = value[1][1][1][0]
+    if not valid_request_id(request_id): raise MatrixError('invalid Done request ID')
+    return request_id
 
 
 def control_question(owner, side, prompt, ledger, private_call, receipt_tokens):
@@ -116,7 +276,7 @@ def collect_phase_b_admissions(owner, channel, ledger, deadline, private_call, r
 
 def collect_phase_a_consumption(owner, channel, ledger, deadline, private_call, receipt_tokens):
     ids = {name: ledger.requests[name]['id'] for name in ('O', 'Q', 'T')}
-    unknown = secrets.token_hex(16)
+    unknown = ''.join(secrets.choice('0123456789abcdefghijklmnopqrstuvwxyz') for _ in range(4))
     if unknown in channel.requests.values() or unknown in channel.controls:
         raise MatrixError('unknown request ID collided')
     ids['unknown'] = unknown
@@ -143,7 +303,7 @@ def collect_phase_b_consumption(owner, channel, ledger, deadline, private_call, 
 def collect_phase_a_reply_outcomes(owner, channel, ledger, unknown, deadline, private_call, receipt_tokens):
     """Require each distinct receiver call's raw invocation and typed result."""
     ids = {name: ledger.requests[name]['id'] for name in ('O', 'Q', 'T')}
-    if not valid_id(unknown) or unknown in ids.values():
+    if not valid_request_id(unknown) or unknown in ids.values():
         raise MatrixError('invalid unknown request identity')
     target = 'proposalTwoSender'
     result = native_send(target, 'Result', 'P2-result-before', ids['Q'])
@@ -159,7 +319,8 @@ def collect_phase_a_reply_outcomes(owner, channel, ledger, unknown, deadline, pr
         ('duplicate-done', 'cli', good_done, 'unresolved'),
     )
     for label, surface, invocation, expected in rows:
-        channel.receive_reply_outcome(label, surface, invocation, expected, deadline, receipt_tokens)
+        answered = ids['Q'] if label == 'result-question' else ids['T'] if label == 'done-task' else None
+        channel.receive_reply_outcome(label, surface, invocation, expected, deadline, receipt_tokens, answered)
     prompt = ('Report that you read P2-result-before for Question ' + ids['Q'] +
               ' and P2-done-before for Task ' + ids['T'] +
               ', naming each original RequestId. Close this instruction Question with a Result.')
@@ -326,7 +487,8 @@ def complete_successor_carry(owner, channel, ledger, deadline, private_call, rec
     for label, surface, invocation, expected in rows:
         if time.monotonic() >= ledger.task_cutoffs['T2']:
             raise MatrixError('conservative Task budget expired')
-        channel.receive_reply_outcome(label, surface, invocation, expected, deadline, receipt_tokens)
+        answered = ids['Q2'] if label == 'carry-result' else ids['T2'] if label == 'carry-done' else None
+        channel.receive_reply_outcome(label, surface, invocation, expected, deadline, receipt_tokens, answered)
     prompt = ('Report that you read P2-result-carry for Question ' + ids['Q2'] +
               ' and P2-done-carry for Task ' + ids['T2'] +
               ', naming each original RequestId. Close this instruction Question with a Result.')
@@ -454,7 +616,7 @@ class Evidence:
             raise MatrixError('instructed turn budget exceeded')
 
     def request(self, label, request_id, kind, minutes=None):
-        if KINDS.get(label) != kind or not valid_id(request_id):
+        if KINDS.get(label) != kind or not valid_request_id(request_id):
             raise MatrixError('request kind or ID mismatch')
         if label in self.requests or any(row['id'] == request_id for row in self.requests.values()):
             raise MatrixError('duplicate label or request ID')
@@ -489,7 +651,7 @@ def native_send(target, kind, body, request_id=None):
     result = {'target': {'aspect': 'Mind', 'topic': target, 'model': 'Luna'},
               'priority': 'Soft', 'kind': kind, 'body': body}
     if kind == 'Result':
-        if not valid_id(request_id):
+        if not valid_request_id(request_id):
             raise MatrixError('Result requires captured request ID')
         result['request'] = request_id
     elif request_id is not None:
@@ -705,7 +867,7 @@ class EvidenceChannel:
         self.selector.unregister(fd)
 
     def register_control(self, control_id, side):
-        if not valid_id(control_id) or side not in ('sender', 'receiver') or control_id in self.controls:
+        if not valid_request_id(control_id) or side not in ('sender', 'receiver') or control_id in self.controls or control_id in self.requests.values():
             raise MatrixError('invalid or reused control Question ID')
         self.controls[control_id] = side
 
@@ -818,7 +980,7 @@ class EvidenceChannel:
             if set(event) != {'cut', 'label', 'kind', 'marker', 'request_id', 'minutes', 'invocation', 'receipt', 'identity'} or event['cut'] != 'admission' or event['label'] != label or event['kind'] != kind or event['marker'] != marker or event['identity'] != self.identity['sender']:
                 raise MatrixError('admission cut identity mismatch')
             request_id = event['request_id']
-            if not valid_id(request_id) or request_id in self.requests.values() or request_id in self.controls:
+            if not valid_request_id(request_id) or request_id in self.requests.values() or request_id in self.controls:
                 raise MatrixError('invalid or reused admission request')
             if kind == 'Task':
                 if event['minutes'] != 15 or isinstance(event['minutes'], bool):
@@ -846,11 +1008,7 @@ class EvidenceChannel:
                 if payload['success'] is not True or len(items) != 1 or items[0]['type'] != 'inputText':
                     raise MatrixError('invalid native tool admission')
                 text = items[0]['text']
-                tokens = [t[1] if isinstance(t, tuple) else t for t in receipt_tokens(text)]
-                prefix = ['Accepted.', '{', 'Sender.', '{', 'Mind', 'proposalTwoSender', 'Luna', '}', '{', 'Mind', 'proposalTwoReceiver', 'Luna', '}', '{']
-                if (len(tokens) != 19 or tokens[:14] != prefix or tokens[14] != request_id or
-                    not isinstance(tokens[15], str) or not tokens[15].isdecimal() or
-                    tokens[16] not in ('Queued', 'Attempting', 'Uncertain', 'Delivered', 'Read', 'Withdrawn', 'Archived') or tokens[-2:] != ['}', '}']):
+                if decode_native_acceptance(text, 'proposalTwoSender', 'proposalTwoReceiver', receipt_tokens) != request_id:
                     raise MatrixError('native send not accepted')
             elif parse_visible_admission(text, receipt_tokens) != request_id:
                 raise MatrixError('CLI send request mismatch')
@@ -893,7 +1051,7 @@ class EvidenceChannel:
         self.consumed.add(label)
         return event
 
-    def receive_reply_outcome(self, label, surface, invocation, expected, deadline, receipt_tokens):
+    def receive_reply_outcome(self, label, surface, invocation, expected, deadline, receipt_tokens, answered_id=None):
         """Read Field-captured native/CLI invocation and its corresponding reply."""
         if surface not in ('native', 'cli') or expected not in ('unresolved', 'accepted', 'kept'):
             raise MatrixError('invalid reply outcome specification')
@@ -924,14 +1082,18 @@ class EvidenceChannel:
                 if tokens != [wanted]:
                     raise MatrixError('unresolved response mismatch')
             elif expected == 'accepted':
+                if not valid_request_id(answered_id):
+                    raise MatrixError('answered request ID missing')
                 if surface == 'native':
-                    prefix = ['Accepted.', '{', 'Sender.', '{', 'Mind', 'proposalTwoReceiver', 'Luna', '}', '{', 'Mind', 'proposalTwoSender', 'Luna', '}', '{']
-                    if (len(tokens) != 19 or tokens[:14] != prefix or tokens[-2:] != ['}', '}'] or
-                        not valid_id(tokens[14]) or not isinstance(tokens[15], str) or not tokens[15].isdecimal() or
-                        tokens[16] not in ('Queued', 'Attempting', 'Uncertain', 'Delivered', 'Read', 'Withdrawn', 'Archived')):
-                        raise MatrixError('native accepted response mismatch')
+                    if invocation.get('request') != answered_id:
+                        raise MatrixError('native invocation answers another request')
+                    admitted = decode_native_acceptance(response, 'proposalTwoReceiver', 'proposalTwoSender', receipt_tokens)
                 else:
-                    parse_visible_admission(response, receipt_tokens)
+                    if decode_cli_done_request(invocation, receipt_tokens) != answered_id:
+                        raise MatrixError('CLI invocation answers another request')
+                    admitted = parse_visible_admission(response, receipt_tokens)
+                if admitted != answered_id:
+                    raise MatrixError('admitted reply answers another request')
             else:
                 wanted = ['Kept.', '{', 'Sender.', '{', 'Mind', 'proposalTwoReceiver', 'Luna', '}', invocation['request'], '}'] if surface == 'native' else []
                 values = [t[1] if isinstance(t, tuple) else t for t in tokens]
@@ -945,7 +1107,7 @@ class EvidenceChannel:
         return response
 
     def receive_routed_consumption(self, label, request_id, marker, deadline):
-        if label in self.consumed or not valid_id(request_id):
+        if label in self.consumed or not valid_request_id(request_id):
             raise MatrixError('invalid routed consumption cut')
         frame = self._next_frame(deadline)
         index = self.counter
@@ -1064,7 +1226,7 @@ class EvidenceChannel:
         if any(event[key] != value for key, value in expected.items()):
             raise MatrixError('out-of-order, wrong-side or wrong-kind evidence')
         request_id = event['request_id']
-        if not valid_id(request_id) or request_id in self.requests.values() or request_id in self.controls:
+        if not valid_request_id(request_id) or request_id in self.requests.values() or request_id in self.controls:
             raise MatrixError('invalid or previously used request ID')
         if event['identity'] != self.identity.get(event['side']):
             raise MatrixError('pane/session/process identity does not match observed cut')
@@ -1135,7 +1297,7 @@ def render_phase_a_sender(manifest):
 
 def render_phase_a_receiver(manifest, ids):
     required = ('O', 'Q', 'T', 'unknown')
-    if set(ids) != set(required) or any(not valid_id(ids[k]) for k in required) or len(set(ids.values())) != len(ids):
+    if set(ids) != set(required) or any(not valid_request_id(ids[k]) for k in required) or len(set(ids.values())) != len(ids):
         raise MatrixError('distinct captured phase A IDs and reviewed unknown ID required')
     target = 'proposalTwoSender'
     wrong_order = native_send(target, 'Result', 'P2-result-order-refusal', ids['O'])
@@ -1165,7 +1327,7 @@ def render_phase_b_sender(manifest):
 
 
 def render_successor_inspect(ids):
-    if set(ids) != {'Q2', 'T2'} or any(not valid_id(v) for v in ids.values()):
+    if set(ids) != {'Q2', 'T2'} or any(not valid_request_id(v) for v in ids.values()):
         raise MatrixError('captured carry IDs required')
     return ('Report the original carried Question and Task IDs, Task Minutes and Task text. '
             'Keep both unanswered and finish this instruction Question with a Result.')
@@ -1173,7 +1335,7 @@ def render_successor_inspect(ids):
 
 def render_successor(manifest, ids):
     required = ('O2', 'Q2', 'T2')
-    if set(ids) != set(required) or any(not valid_id(ids[k]) for k in required) or len(set(ids.values())) != len(ids):
+    if set(ids) != set(required) or any(not valid_request_id(ids[k]) for k in required) or len(set(ids.values())) != len(ids):
         raise MatrixError('distinct captured carry IDs required')
     target = 'proposalTwoSender'
     answer = native_send(target, 'Result', 'P2-result-carry', ids['Q2'])
@@ -1192,7 +1354,7 @@ def render_phase_b_receiver_notice():
 
 
 def render_kept_answer(request_id):
-    if not valid_id(request_id):
+    if not valid_request_id(request_id):
         raise MatrixError('captured unbound Question ID required')
     reply = native_send('proposalTwoSender', 'Result', 'P2-kept-answer', request_id)
     return ('First report that you read P2-kept-question with RequestId ' + request_id + '. '

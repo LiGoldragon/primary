@@ -57,8 +57,8 @@ class CustodyTests(unittest.TestCase):
                 controller.metadata_record(indirect, pathlib.Path(directory, 'auth'))
 
     def test_prompt_inserts_captured_identifier(self):
-        prompts = controller.render_prompts('/private', '/package', 'abc123')
-        self.assertIn('Done.{ abc123 ', prompts[2])
+        prompts = controller.render_prompts('/private', '/package', 'ab12')
+        self.assertIn('Done.{ ab12 ', prompts[2])
         self.assertNotIn('<captured-T>', prompts[2])
         with self.assertRaises(controller.AdmissionError):
             controller.render_prompts('/private', '/package', 'x } injected')

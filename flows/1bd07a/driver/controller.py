@@ -52,7 +52,7 @@ def receipt(actual, expected):
         raise AdmissionError("typed receipt mismatch")
 
 def render_prompts(root, flow, task_id):
-    if not re.fullmatch(r"[A-Za-z0-9_-]+", task_id):
+    if not re.fullmatch(r"[0-9a-z]{4}", task_id):
         raise AdmissionError("invalid captured Task ID")
     cli = shlex.quote(os.path.join(flow,"bin/flow")); xdg=shlex.quote(os.path.join(root,"config"))
     env=f"XDG_CONFIG_HOME={xdg} {cli}"
