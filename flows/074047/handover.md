@@ -70,3 +70,26 @@ Pending inherited contract sources can be read with git show:
 ## Next steps and reporting
 
 Finish/commit actor source checkpoints and F2 coverage, obtain rulings li9u/byb4/gcyd and rename cohort custody, adopt immutable accepted shared revisions, complete typed F8/F9 mends/tests, and prepare exact dependency/version/resource packet. Ask Core for a fresh slot, regenerate dependencies and gate complete checks on builder against committed revisions. Then send gate packet to Psyche for independent second audit. 3kyf Done only with committed/gated candidate and required audit chain complete. No gate/audit/deployment success has been claimed here.
+
+## Update after the clean checkpoints and received rulings
+
+Current clean source checkpoint before actor body resumption is `b3ddfad` (core), which follows `dda787e` PublicOpening/watch capability preparation and `d260ce4` store preparation. Source review corrected d260ce4: removed empty StoreOpener/StoreFamilies behavior namespaces, generated static StoreOpening on native Store and static Familial.descriptor on each data-bearing record, fixed a wrong Self return and temporary path borrow. Generator byte-match/rustfmt/diff checks only. No CoreActor body exists at b3ddfad; production locks/OnceLock remain explicitly unfinished.
+
+Translator preparation is `721ba07`, followed by `3b39057`: removes an orphan foreign-trait implementation and adds required local accessor bodies. `settings_actor` is a separate public preparatory module, not wired into production. It owns Runtime/ActorRef/task, uses native Kameo blocking_send and stops/joins at synchronous OS-thread Drop. Production RwLock remains until approved contract integration; no arbitrary async-context safety or runtime test claim.
+
+New Psyche results supersede earlier questions:
+- gcyd: only Session→SessionId this release; ClaimIdentity stays sole identity production; Identifiable/identify waits for supplied Identifier implementation. No hash. Result to original1p59 sent as2ac0; daxc remains open pending actual rename.
+- byb4/a6ju: core `ReportFailure.ActorUnavailable.Diagnostic` and meta `ConfigurationRefusal.ActorUnavailable.Diagnostic`; meta `TranslatorUnavailable.Diagnostic` for settings actor. Remove Poisoned if no producer. The later a6ju payload spelling controls; no false Memory/InvalidBudget mapping.
+- li9u first suggested direct core listener edge, but **m9oy supersedes it** and approves generic PublicOpening with daemon native wrapper/Arc, core actor owning wrapper+Opened, no core nexus-serving dependency.
+
+Core8qmr verified accepted build-base `7fca4d583adfd2354903c59cbc7f5e928e1baa76`, Kameo0.22.2 crates.io, no git rev; existing central closure/default/macros/tracing and macros0.21.1. Closure strings are not Cargo manifest flags. No heavy grant. Core coordinates registrations.
+
+Core r6w6 says074047 owns library and Harness Signal consumers too, but Lock420 does not cover them. Request7tg1 (exact-ref followup2td5) proposes source-only separate custody before creation/edits:
+- `/git/worktrees/harness-nexus-library-074047` from `8e9878495790b49a8e1707e0018d11ad60caf0ad`;
+- `/git/worktrees/signal-codex-harness-nexus-074047` from `64471468c4b8a3a042aff3b9e2c26d7ecba1e30f`;
+- `/git/worktrees/meta-signal-codex-harness-nexus-074047` from `4a12f25b672f089151524ba86e8e33df524ba8d1`.
+Proposed versions library0.2.0, signal0.5.0, meta0.5.0; source schema/generated/bodies/member version writes, later dependency regeneration only with explicit slot. No canonical repo writes. Core lock reply remains required. `actor_tests` prepares this cohort read-only, awaiting clearance. Its later work will integrate translator adapter/tests after exact contracts exist.
+
+`actor_bodies` has been resumed with approved rulings to implement the whole core/daemon Kameo ownership replacement, not duplicate shadow state. It owns core+daemon/root manifest and flake generation list (must add translator_settings). Target approved new variants even while dependency/pin regeneration remains separate. Kameo0.22.2 local cache confirms `ask(...).blocking_send()` and tell equivalent. Pinned public Answering is spawn_blocking, meta serving is sync OS thread; construct/enter existing multithread runtime before daemon bind/spawn. In-process callers/tests need explicit blocking/runtime contract.
+
+Field credential source review (requests1ed8/g3ar/jlxl) was separately answered, source-only, no credentials or runtime: local exact upstream tag870b79fe + existing derivations confirm selected r0k59hi2q6di7xhmqxp11vygy4hclzyy0.161alpha2 release asset provenance, File backend load/save follows symlink via ordinary open/truncate/write/create, refresh persists through same backend. No source-tree-to-binary reproducibility, cross-process locking, or atomic-save claim. Replies bfav/bhf5/5rhy sent. No credential contents/links touched, no execution/build/evaluation.
