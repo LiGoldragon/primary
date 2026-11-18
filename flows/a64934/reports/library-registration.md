@@ -16,7 +16,9 @@ Repository: /git/github.com/LiGoldragon/signal-codex-harness-nexus, origin/main,
 
 The dependency alias `harness` resolves the library's exact full 3613d63 revision, with default-features=false. The consumer's datom feature forwards harness/datom, flow/datom and signal/datom and attaches its own optional datom-codec and protos. Its Cargo.nix library entry is lines 452–491: `resolvedDefaultFeatures = [ "datom" ]`; the declared datom closure is `[ "dep:datom-codec" "dep:protos" "flow/datom" ]`. Dependency declarations carry both optional edges.
 
-The consumer flake lock selects the base owner's published candidate 032a18e7 over a5a58fc and the published ethos-zero 30.1.0 generator at 415c3703621c528dd1b587725ab8cec1747cf126. No base file was edited by this flow. Consumer gate is the next action; this packet does not claim it green.
+Consumer gate at 68562da is now green (exit 0), all seven attributes including crate-features and crate-versions; log /tmp/harness-a64934.eixDmZ/signal-gate-68562da.log. It ran zero behavioral test cases.
+
+The consumer flake lock selects the base owner's published candidate 032a18e7 over a5a58fc and the published ethos-zero 30.1.0 generator at 415c3703621c528dd1b587725ab8cec1747cf126. No base file was edited by this flow. This proves the library registration candidate against the datom-enabled signal consumer; plain-consumer behavioral tests are next.
 
 ## Evidence already green
 
