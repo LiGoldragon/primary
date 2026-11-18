@@ -92,7 +92,7 @@ def _write(path, data, mode=0o600):
 
 def _socket(path):
     try:
-        return stat.S_ISSOCK(os.stat(path, follow_symlinks=False).st_mode)
+        return stat.S_ISSOCK(os.stat(path, follow_symlinks=True).st_mode)
     except FileNotFoundError:
         return False
 

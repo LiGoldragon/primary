@@ -1,12 +1,41 @@
 """Unrun source fixtures for immutable admission and schema checks."""
 import copy
 import json
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 import unittest
 import controller
 
 
 class WiringTests(unittest.TestCase):
+    def test_isolated_main_registers_controller_without_import_path_changes(self):
+        script = r"""
+import pathlib, sys, types
+path = pathlib.Path(sys.argv[1])
+module = types.ModuleType('__main__')
+module.__file__ = str(path)
+sys.modules['__main__'] = module
+source = path.read_text().split("if __name__ == '__main__':")[0]
+exec(compile(source, str(path), 'exec'), module.__dict__)
+module.validate = lambda value: {'artifacts': {name: {'path': name} for name in ('bootstrap', 'orchestration', 'matrix')}}
+module.verify_admission = lambda value: None
+module.verify_artifacts = lambda value: {
+    'bootstrap': b'', 'matrix': b'',
+    'orchestration': b'from controller import protected_configuration\ndef operator(*args):\n    assert protected_configuration.__module__ == "__main__"\n'}
+assert module.main(['controller.py', 'run', sys.argv[2]]) == 0
+print('isolated loader PASS')
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / 'manifest.json'
+            manifest.write_text('{}')
+            result = subprocess.run([sys.executable, '-I', '-B', '-c', script,
+                                     str(Path(controller.__file__).resolve()), str(manifest)],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('isolated loader PASS', result.stdout)
+
     def test_initial_turn_ends_require_both_exact_flow_ids(self):
         from unittest import mock
         import matrix

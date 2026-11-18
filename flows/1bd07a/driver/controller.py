@@ -304,6 +304,7 @@ def main(argv):
         verify_admission(manifest)
         sources = verify_artifacts(manifest)
         import types
+        sys.modules['controller'] = sys.modules[__name__]
         for name in ('bootstrap', 'orchestration', 'matrix'):
             module = types.ModuleType(name)
             module.__file__ = manifest['artifacts'][name]['path']

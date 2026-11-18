@@ -2,6 +2,7 @@
 import tempfile
 import shutil
 import subprocess
+import socket
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -10,6 +11,21 @@ import bootstrap
 
 
 class BootstrapTests(unittest.TestCase):
+    def test_socket_readiness_accepts_advertised_alias_only_to_socket(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with socket.socket(socket.AF_UNIX) as listener:
+                listener.bind(str(root / 'physical'))
+                (root / 'advertised').symlink_to(root / 'physical')
+                (root / 'file').write_text('not a socket')
+                (root / 'file-alias').symlink_to(root / 'file')
+                (root / 'broken').symlink_to(root / 'absent')
+                self.assertTrue(bootstrap._socket(root / 'physical'))
+                self.assertTrue(bootstrap._socket(root / 'advertised'))
+                for name in ('file', 'file-alias', 'broken', 'absent'):
+                    with self.subTest(name=name):
+                        self.assertFalse(bootstrap._socket(root / name))
+
     def archive_fixture(self, directory, *, bad_revision=False, bad_extractor=False):
         root = Path(directory)
         repository = root / 'repository'
