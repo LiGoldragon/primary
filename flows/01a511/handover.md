@@ -1,86 +1,70 @@
-# Proposal 2 — source audit pending; isolated bootstrap next
+# Proposal 2 — final metadata ready; Core whole gate and bootstrap next
 
-**Act immediately on a8fa.** Order-close is **0.60.1** (Psychevbhq/Coree90l);
-frozen remindercda becomes0.60.2 WHEN resumed/rebased. Inherited source427,
-packet422; this handover430. Historical context: `flows/2b25fa/handover.md`.
+**Act immediately on a8fa.** Priority Order-close is **0.60.1**; frozen
+remindercda becomes0.60.2 WHEN resumed/rebased. Source427, packet422 inherited;
+this handover430. Historical custody: `flows/2b25fa/handover.md`.
 
-**Immutable source:** `/git/worktrees/flow-order-lifetime-2b25fa`, branch
-`order-lifetime-2b25fa`, **20ca7d8b77dc2618bb1ada46262c352a53da5026**,
-soleparent **8e6097139cc2348440b283245cdfe76224b929a0**, CLEAN. Exact packet:
-`flows/2b25fa/proposal2-source.md` (primary6e213a50c). Core Question **rlfc**
-assigned independent nonwriter audit; await findings BEFORE metadata/gate.
-Source authored/UNRUN, rustfmt/diff-check pass. No contract/schema/generated/
-config change. Metadata remains0.60.0; allocated0.60.1 finalization needs
-bounded generation grant. Frozen cda metadata diff illustrates daemon manifest,
-lock/Cargo.nix version + flake package version only; hashes unchanged there.
-No publication, build, native launch, login, merge or switch performed.
+## Exact candidate / admission
+`/git/worktrees/flow-order-lifetime-2b25fa`, branch `order-lifetime-2b25fa`,
+**7a97f37c01ddcd431b05725c0758d0da81016ad7**, CLEAN. Parent
+**20ca7d8b77dc2618bb1ada46262c352a53da5026**, soleparent8e6097139cc2348440b283245cdfe76224b929a0.
+Core dw8q independent SOURCEPASS: `/tmp/order-lifetime-audit.l9U4PX/report.md`.
+Metadata descendant changes exactly FOUR0.60.0→0.60.1 values: daemonmanifest,
+rootlock/Cargo.nix daemonversion, flakepackageversion. All manifests/lock/
+Cargo.nix/hashes/flake.lock match alreadygenerated cda artifact byte-for-byte;
+reused it, NO freshgeneration/build claim. Core must acceptreuse or grant
+freshgeneration; exactmetadatareview and immutablewholegate remain owed.
 
-**Code:** `src/store/logical_delivery.rs::answerable_by` accepts Result only
-for Question; `open_requests` carries only Question/Task. Historical IDs and
-delivery state persist, no invented Answered/Read/archive. `src/send_tool.rs`
-constructs public SendableRequest/Message and resolves before routing/keeping;
-fixes private Result(empty logicalID) bypass, tool kinds unchanged. Other
-edits are fixtures/docs. Tests cover two-harness successor exclusion/carry,
-state/kind matrix, native-tool refusal/Question routed/kept/replay, migration
-oldOrder refusal and currentQuestion positive. **Psycheon8b/Core0dfu RULED:**
-keep Answer query current meaning thisrelease; historical Open-bit exception
-accepted, typed not-answerable is NEXTsignal. Do not widen source for it.
+Packets `flows/2b25fa/proposal2-source.md` and **proposal2-gate.md** contain
+write-set/fixtures/gaps and exact bounded command/pins/timeout/stopcleanup.
+Core Question **uapx** deliveredUncertain, NOTresent. Earlier **rlfc** source
+review question still formally open. NO publication/merge/gate/native/live.
+Psycheig50 ordered metadata/gatepacket; DONEstaging, sentCore. Coreab7g says
+FieldtraceTERMINAL/cleanup/slotRELEASED, builderfree, NOT a guessedstartgrant.
+Gate uses unpublished immutablegit+file source, NFB2.0.4/Prometheus, onejob/
+evalworker/twocores/90mwall/5400sderivation/INT→KILL60s. No redundantcargo.
 
-**Bootstrap is OUR next work.** Psyche **zttr**, Fieldognt/czl7, Corek2of:
-write exact raw commands/place/config for isolated SECONDdaemon, own sockets,
-FRESHMemory, Herdrsession, privateHOME/CODEXHOME/appserver/Curriculum. Field
-runs reviewed packet. Nothing runnable written yet; pointers alone insufficient.
-Do not run stale `capsule/flow-capsule.clj` wholesale (shared auth/obsolete
-configure-only assumptions). Lines1231–1458 illustrate individual interfaces.
-Source pointers: Flow `src/main.rs`, `src/place.rs`, flow-place/src/lib.rs;
-package.default has daemon/clients/hook, packages.nexus-configure compiles
-Place; CLI config `{ name }` plus own XDG_CONFIG_HOME place file. Meta exact
-313bc05 ethos/signal.ethos466–600 spells Configure.Nexus/Models/Metaflows.
-Own Curriculum package pinned **60609c55f90432782625275294636a4e396d9497**:
-service.rs directory XDG_RUNTIME_DIR/curriculum/curriculum.sock; registry.rs
-layout2/three authored roots/refresh-program env; own RECORDS_DIR; startup.rs
-requires >=1 authored module. Copy pinned authored inputs, no productionrecords.
-Native tool subscriber uses only daemon-owned thread records; CLI separation
-alone is insufficient. Synthetic Luna proof topics only, preserve production.
+## Code / tests
+`src/store/logical_delivery.rs::answerable_by`: Result onlyQuestion, DoneTask;
+`open_requests`: onlyQuestion/Task, historicalIDs/delivery state preserved.
+`src/send_tool.rs`: publictypes/sharedresolver before routed/keptanswer,
+fixes privateResult(emptylogicalID) bypass; toolkindsunchanged. Other source
+edits fixtures/docs. Named Claude+Codex successor, state/kindmatrix, tool
+refusal/routed/kept/replay, restartIDreuse and migration tests AUTHORED/UNRUN.
+rustfmt/diff-check pass only. **Psycheon8b/Core0dfu RULED** keep Answerquery
+currentmeaning, historicalOpenbit exception accepted; typednotanswerable is
+NEXTsignal. No contract/schema/Ethos/generated/configchange inthisrelease.
 
-**Credential blocker:** Field **ofaf** forbids credential copy/read/device
-login until Psyche choice; Field asks that ruling and obtains native executable/
-version. Actual Luna model/effort: read ONLY model definition from frozenConfig
-`/tmp/s4s7-configuration-2219e4.4q4cGYOs/configuration.datom`, never replay it.
-Help-only observation: codex-next0.161.0-alpha.2 supports device-auth and stdin
-login interfaces; no secret or login used. Wait for approved contract.
+## Exact isolated bootstrap still OUR work
+Psychezttr/Fieldognt/Corek2of: write rawcommands/place/config for SECONDdaemon,
+ownsockets/FRESHMemory/privateHOME/CODEXHOME/appserver/Herdrsession/Curriculum.
+Field RUNS reviewedpacket. No runnablebootstrapwrittenyet; pointers insufficient.
+Do not run stale2738-line capsulehelper wholesale. Its1231–1458 illustrate
+interfaces only. Flow src/main.rs/place.rs, flow-place/src/lib.rs and exact
+meta313bc05 ethos/signal.ethos466–600 spell rawconfiguration. Packages.default
+hasdaemon/clients/hook; nexus-configure compilesPlace. CLI `{ name }` and own
+XDG_CONFIG_HOME placefile. OwnCurriculum pinned60609c55f90432782625275294636a4e396d9497:
+service.rs XDG_RUNTIME_DIR/curriculum/socket; registry.rs layout2/threeauthored
+roots/refreshprogram; ownRECORDS_DIR; startup.rs >=1authoredmodule required.
+Pinned authoredcopies only, noproductionrecords/replay. SyntheticLunatopics.
 
-**Chain:** Core sourceaudit → granted metadata → exact immutable whole
-Prometheusgate → reviewed isolated native matrix/successor → nonwriter audit
-commit+evidence → Psycheacceptance → main/next switch. Field currently owns
-single tracephase; NO heavy grant/concurrency/automatic takeover. Source gate
-recipe remains predecessor packet. Narrowactivation includes ALL Ouranosordinary
-0.68 peers/Energy, no67backport or presumed0600equivalence. Contracts68/319e3c3,
-meta89.0.1/313bc05, base7fca4d5, translator6892a15. Taska8fa stays open.
-No owned background/build/native process remains. Next: audit reply and bootstrap.
+**Credential5pje RULED:** NOdevice-login/copy; privateCODEXHOME/auth.json
+SYMBOLICLINK to oneproductionauth.json. Allotherboundariesprivate. MUSTverify
+actualinstalled save/refresh follows linkedtarget; semanticsUNKNOWN, noauthread/
+linkcreated. Fieldxt8o binary `/nix/store/z5fprnr4ny9rgk8yn3f5s4vaj84ak76x-codex-next/bin/codex-next`,
+0.161.0-alpha.2, precompiledsource notyetfound; stalehelperclaims0.167 behavior,
+notproof. ActualLunamodel/effort: ONLYmodeldefinition from frozenConfiguration
+`/tmp/s4s7-configuration-2219e4.4q4cGYOs/configuration.datom`, neverreplaywhole.
 
-**Latest event dw8q:** Independent SOURCEPASS exact20ca7d8b; report
-`/tmp/order-lifetime-audit.l9U4PX/report.md`, no correctness findings. Core
-NOW authorizes own0.60.1 metadata only: daemonmanifest/flakeversion/rootlock/
-Cargo.nix ownpackage metadata; preserve ALLbase/contracts/deps/features/hashes.
-Prepare bounded regenerationpacket; NO heavySTART during Field3i9y trace.
-Finalmetadata commit then exactdelta review and immutablewholegate. No
-publication/runtime inferred. Immediate nextact is metadata packet + bootstrap.
-Fieldxt8o pins native `/nix/store/z5fprnr4ny9rgk8yn3f5s4vaj84ak76x-codex-next/bin/codex-next`;
-Psyche **5abw** holds credential/nativefamily choice, no approval yet.
-
-**Current superseding state:** ownRefresh returned `RefreshRejected.Locked`,
-Core informedirlh; NO successor yet/no repeat/unlock/cancel. Psycheig50 then
-ordered metadata now. FINALcandidate **7a97f37c01ddcd431b05725c0758d0da81016ad7**,
-parent20ca7d8b, CLEAN. Four metadata values only; exact artifact reused from
-cda with allCargo manifests/lock/Cargo.nix/hashes/flake.lock identical. No
-freshgeneration claim. `flows/2b25fa/proposal2-gate.md` (primary90234f5c6)
-requests Core acceptreuse or grantgeneration, exactdelta review, immutable
-wholegate via pinned git+file (unpublishedcommit), no heavySTART by us.
-Psycheig50 says Fieldtraceended; Core must reconcile resource event.
-Field5pje conveys Psychecredentialruling: NOdevice-login/copy; private
-CODEXHOME/auth.json SYMBOLICLINK to single productionauth, rest private.
-MUSTverify installed save/refresh follows linkedtarget before runnableplan.
-Noauthread/link made. Localderivation confirms0.161alpha.2 is precompiled
-`/nix/store/all2fqwvi92d1llgzhglcx5dk8x048sw-codex-x86_64-unknown-linux-musl.tar.gz`;
-its source/symlinksave semantics remain UNKNOWN (stalehelper says0.167).
+## Lifecycle / following chain
+OwnthresholdRefresh refusedLocked; no successorclaimed. **Psycheughp nowUNLOCKED
+andauthorizes ONEretry AFTERmetadata/gatepacket; conditionmet, retryrequested
+atendofthisturn.** Coreirlh/ab7g knowsactualowner01a511, noselfUnlock/Renew.
+Field **528n** Question newlyopen: decode actual0593 Inspect fieldorder in
+`/tmp/a1rq-inspect-2219e4.qok3FRrI/inspect.datom`; no guess fromOrchestratelocks,
+no lifecycleaction needed. Route/answer source-only whenable.
+Next: Coreexactmetadatareview/grantwholegate → ALLtests → reviewedbootstrap/
+nativematrix+successor → nonwritercommit+evidenceaudit → Psycheacceptance →
+main/nextswitch. Fieldlivecustody; narrowactivationALLOuranosordinary0.68
+peers/Energy, no67backport/assumed0600equivalence. Pins68/319e3c3, meta89.0.1/
+313bc05, base7fca4d5, translator6892a15. Taska8fa OPEN. Noownedbackgroundprocess.
