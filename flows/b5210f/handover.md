@@ -11,7 +11,7 @@ Read first: flows/a64934/handover.md (rulings u1cs/cjdi, etmf, j11u), the notion
 ## Published (all on main, canonical clones /git/github.com/LiGoldragon)
 - signal-codex-harness-nexus **0.2.0, 8bd9dc6**, green. `ReportRefused.ReportFailure.[ Unconfigured Unregistered.Session Unidentified.IdentityFailure Unrecorded.Diagnostic ]`; IdentityFailure lives here.
 - meta-signal-codex-harness-nexus **0.2.0, 8a504bc**, green. Now a crate. `Configuration` follows each `Set`. Capacity.Integer is declared locally, because the base holds nexus in its plain set only. Refusals: InvalidCapacity, InvalidPath, Unrecorded, CapacityUnset.
-- codex-harness-nexus **c476142**, a workspace of two crates. Both member checks are green; crate-versions and crate-features fail only on base registration.
+- codex-harness-nexus **88daba6** (c476142 plus src/watching.rs: `Watcher` uses notify 8.2.0 to watch each sessions directory recursively; `Waking` gives startup and woken on HarnessNexus), a workspace of two crates. Both member checks are green; crate-versions and crate-features fail only on base registration.
   - crates/codex-harness-nexus: the Ethos files emission, folding, memory, operation and runtime.
     - runtime.ethos declares the views Sessional, Operable, Planned, Settable and NamingPaths, plus Readying, Attempting, Performing, Remembering and Observing, and the type ReadyConfiguration.
     - src/store.rs: memory-engine 3261088 with three families (session, malformed row, configuration); a batch is one atomic commit.
@@ -21,10 +21,10 @@ Read first: flows/a64934/handover.md (rulings u1cs/cjdi, etmf, j11u), the notion
     - `Translator` is a unit struct, which is a known gap.
     - Its emissions: ClaimIdentity runs the flow-id producer (`codex --flows-root R`, with CODEX_SESSION_ID set); ReadRollout reads from the offset to the last whole row; IdentifyRollout reads the first session_meta row.
     - FindRollout answers **Unfound**, because there is no SQLite crate in the base. That gap goes in the Done.
-- codex-harness-nexus-tests **fb77df1**: tests/nexus.rs, ten in-process tests on the recorded rows (refusals, attach and read, a partial row, duplicate TurnEnded, malformed rows, discovery by session_meta, reopen, subscription). Not yet compiled green: it is blocked on the base registration.
+- codex-harness-nexus-tests **8d4ba9b**: tests/nexus.rs, eleven in-process tests, including the kernel watch on a nested directory and startup, on the recorded rows (refusals, attach and read, a partial row, duplicate TurnEnded, malformed rows, discovery by session_meta, reopen, subscription). Not yet compiled green: it is blocked on the base registration.
 
 ## Waiting on
-- Mind flowNexus Opus, requests **mq3x** and its addendum **q2k3**: base registration of four git crates, signal-codex-harness-nexus 8bd9dc6, meta-signal 8a504bc, codex-harness-nexus c476142 and codex-harness-translator c476142, each with named plain and datom sets. When it lands, re-lock the base in all repositories (`cargo-nix` regeneration) and gate the tests.
+- Mind flowNexus Opus, requests **mq3x**, **q2k3** and correction **fy1c**: base registration of four git crates, signal-codex-harness-nexus 8bd9dc6, meta-signal 8a504bc, codex-harness-nexus 88daba6 and codex-harness-translator 88daba6. Hold the Nexus revision still until it answers, each with named plain and datom sets. When it lands, re-lock the base in all repositories (`cargo-nix` regeneration) and gate the tests.
 - Mind subscription Opus, lil0: the serving library revision.
 
 ## Builder recipe (no local cargo)
@@ -42,7 +42,7 @@ ethos-zero 30.1.0 at /nix/store/dfz5drcy3c2afy5558ccr03iz3998zzr-rust_ethos-zero
 - a single-field struct wrapper is accepted, though vision:ethos:0 refuses one; StoredConfiguration uses it, for EngineRecord's orphan rule.
 
 ## Next
-1. The inotify watch: watch the sessions directories (IN_CREATE/IN_MOVED_TO lead to Operation::Discovering) and the watched rollouts (IN_MODIFY leads to Operation::Reading). Open the directory watches before restoring Watches, and run one startup check. No clock, no polling. Reference: energy-nexus 761a911 crates/translator/src/flow.rs:222-300 (nix inotify).
+1. DONE in 88daba6 (notify, a recursive directory watch only). Was: The inotify watch: watch the sessions directories (IN_CREATE/IN_MOVED_TO lead to Operation::Discovering) and the watched rollouts (IN_MODIFY leads to Operation::Reading). Open the directory watches before restoring Watches, and run one startup check. No clock, no polling. Reference: energy-nexus 761a911 crates/translator/src/flow.rs:222-300 (nix inotify).
 2. The daemon and the CLIs, on lil0's serving library.
 3. The candidate, then tell Psyche (an unseen Opus audits it), then Field deploys it.
 
