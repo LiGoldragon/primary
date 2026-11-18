@@ -23,13 +23,15 @@ Source still has those locks and native WatchWord. F2 remains unfinished. Transl
 
 ## Source-only investigation
 
-A new Luna/xhigh subagent, `actor_anatomy_92d3be`, distinct from stopped gu7s, read the interfaces and prepared scratch proposals only. It was forbidden source edits, heavy work, SSH, compilation and runtime tests. Its first proposal needed correction for existing Ethos rules; do not treat it as a checked contract.
+A new Luna/xhigh subagent, `actor_anatomy_92d3be`, distinct from stopped gu7s, read the interfaces and prepared scratch proposals only. It was forbidden source edits, heavy work, SSH, compilation and runtime tests. Its bounded phases are finished; no subagent remains working from this investigation.
+
+Corrected proposals and evidence are in `/tmp/actor-ethos-proof.SlmvnO/`: `core-runtime.ethos`, `translator-settings.ethos` and `evidence.md`. The old 27.0.0 checker accepted the corrected schemas. This proves old-parser acceptance only, not pinned-generator/import compatibility or exhaustive F2 coverage. The actor directly owns generated `Opened`; the watch result uses the bare owned event/failure variants, and watch consequences distinguish written paths, arrived paths and failures. These are proposals, not implementation.
 
 Proposed smallest ownership shape: one daemon/core actor owns the mutable core state and readiness, while a separate translator-settings actor avoids re-entry through synchronous core emissions. The wrappers hold native handles and actor references. Generate owned messages and capabilities in Ethos; native Actor/Message trait interactions are handwritten bodies.
 
 The pinned shared Nexus public/meta answer paths use `spawn_blocking`; the pinned translator dispatches connections on OS threads. Thus blocking Kameo adapters are plausible at those verified call sites, not established for arbitrary callers. Exact references are in the subagent's transcript. No actor bodies were written.
 
-The generator pin is `415c3703621c528dd1b587725ab8cec1747cf126` (30.1.0). It is absent from PATH. Request 9cq4 asks Core for an already-built executable path; obtaining it is not authorization for a new build. Scratch Check evidence, if later obtained from the old 27.0.0 path in 4bc17e's crystallization, must remain labelled old-parser evidence.
+The generator pin is `415c3703621c528dd1b587725ab8cec1747cf126`. It is absent from PATH. Request 9cq4 asks Core for an already-built executable path; obtaining it is not authorization for a new build. The old 27.0.0 executable in 4bc17e's crystallization exists and supplied the limited parser evidence above.
 
 ## Gate and queue authority
 
