@@ -19,3 +19,5 @@ Recovery **19378d08e1c25b780e0d671bb45a3819a7fbccb7** is exactly reachable from 
 Sent Core the graph and a proposal before any reconciliation: a separately reviewed history-only merge with exact recovery as second parent, retaining exact feature tree, then full immutable/published gate on the new revision before main. That would make the exact recovery commit reachable from main while preserving feature content. No merge or exception has been authorized or authored; Core/Psyche must choose this or an explicit recovery-branch exception. No source rewrite, force push or rollback of main is proposed.
 
 Field owns Home/client integration and runtime; remote inventory/cohort readiness and recovery-policy admission remain open. No runtime action or sv0s Done occurred.
+
+Remote package readback on Prometheus: `nix eval --raw github:LiGoldragon/flow?rev=1d3f633a89b3bab8d5ff844db8c07a05c795c5f0#packages.x86_64-linux.default.outPath` EXIT0 → `/nix/store/4gxhbiqix3x7ymyzc9ziq2xi7iijyi3z-flow-workspace-0.59.2`. This is evaluation, not a claim that the package output was built or installed.
