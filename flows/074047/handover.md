@@ -1,12 +1,14 @@
-# Harness release 3kyf — successor of074047
+# Harness release3kyf — successor of074047
 
-**Open:**3kyf (Done only with committed/gated candidate), daxc (SessionId consumer rename). Original1p59 answered2ac0: Psyche gcyd defers Identifiable/identify; keep ClaimIdentity, add no hash/Identifier. Read predecessor92d3be and de6298 handovers/audit for original obligations; longer continuation detail survives in this file at git commitfc467f4dd.
+**Open:**3kyf; daxc SessionId consumer rename. Original1p59 answered2ac0: gcyd defers Identifiable/identify; keep ClaimIdentity, no hash/Identifier. Original obligations/audit:92d3be/de6298 handovers. Detailed continuation history: this file at commitfc467f4dd.
 
-## Custody and source
+**Custody:** actual420 core/tests;432 isolated library/contracts;429 handover, owner074047. All workers stopped, all trees clean. Preserve canonical refs/anchors. No heavy grant, compilation/tests, publication, dependency regeneration or deployment; generator/format checks are not a gate.
 
-Actual locks owner074047:420 core/tests mend worktrees;432 three isolated library/contracts below;429 this handover. Preserve canonical refs/WIP anchors. All workers stopped after source commits; no background writer remains. No heavy grant, compilation/tests, publication, registry edit, dependency regeneration or deployment occurred. Source rustfmt/diff checks and limited pinned Ethos generation are not a gate.
+## Exact source
 
-| Worktree under `/git/worktrees/` | Branch | HEAD |
+All paths below are under `/git/worktrees/`:
+
+| Worktree | Branch | HEAD |
 |---|---|---|
 |codex-harness-nexus-mend-de6298|mend-de6298|`ecbfc11d421f4f98104b54ebe62751661f1dd8ba`|
 |codex-harness-nexus-tests-mend-de6298|mend-de6298|`dfbeb08c6769ab5af055a1aadf5b247c4802b541`|
@@ -14,22 +16,18 @@ Actual locks owner074047:420 core/tests mend worktrees;432 three isolated librar
 |signal-codex-harness-nexus-074047|signal-refusal-lock432|`b80a1035f3ea190381afcd974d1cee44ed68fac8`|
 |meta-signal-codex-harness-nexus-074047|meta-refusal-lock432|`d95a8580c7f6839f07ac10f63218b7bab142d909`|
 
-All clean at worker terminal receipt. Contracts were created from exact approved library8e987849, signal64471468 and meta4a12f25 anchors (canonical→anchor ancestry checked). Proposed versions library0.2/ordinary0.5/meta0.5 are source proposals, not registry/publication acceptance. Core querywwlx proposes core/daemon/translator/tests0.2; unanswered.
+Core HEAD is **SOURCE-WIP, incomplete/non-compiling expected**. `nexus.rs`: CoreActor<Translator,Opening> owns Store/translator/publishers/SessionsWatch/Opened; local native-handle HarnessNexus wrapper uses Kameo blocking_send. Generated NexusPort is sync facade; mutable NexusRuntime performs operations. Generic PublicOpening stages+publishes+sets Opened in actor order (Psychem9oy). `watching.rs` owns callback-translated notify vocabulary and directory/explicit-rollout targets. FoldRefusal imports signal; native From projection lives in signalb80a103. StoreOpening/Familial are generated static capabilities on real types.
 
-## What the source now does — and does not
+**Daemon still uses old locks/API/OnceLock.** Next replace it with runtime-before-bind/wrapper/PublicOpening integration, generate remaining daemon/watch traits, settle startup/test constructors. Preserve F1/audit mends. Update flake generation list for translator_settings/new schemas after reading ordinary rust-nix-example. No free/inherent helpers, own locks, empty behavior markers or orphan impls.
 
-**Core HEAD is explicitly SOURCE-WIP, not compiling release evidence.** `nexus.rs` now has `CoreActor<Translator,Opening>` owning Store, translator, publishers, SessionsWatch and Opened. Local native-handle `HarnessNexus { actor:ActorRef<CoreActor<...>> }` uses Kameo blocking_send. Generated `NexusPort` is the sync facade; mutable `NexusRuntime` handles report/configure/perform/watch/initialize/open/subscriptions. Listener stage+publish+Opened is one actor transition through generic PublicOpening; daemon native PublicListener shares Arc<Listeners> with acceptors. `watching.rs` classifies configured directories vs explicit rollout files, converts notify at callback to owned generated vocabulary, supports outside-dir paths. FoldRefusal is imported from ordinary signal, not duplicated; signal-owned native From projection is inb80a103. StoreOpening/Familial are generated static capabilities on actual data/native Store, no empty behavior markers.
+Translator sourcec86b1d8 integrates settings actor, SessionId, typed failures/checked budgets and preserves unrelated meta replies. Ready=ValidTextBudget depends on shared fix below; Option-only ready failure remains a gap. Tests cover stale reads, restart/appends, immediate/outside/symlink paths, malformed rows and typed startup UnwatchableDirectories, but were not run; actor-failure/constructor tests await core API.
 
-**Next required code:** daemon still uses OLD locked API/OnceLock and must be replaced with wrapper/runtime-before-bind/PublicOpening integration; startup/test constructors are not finalized. Update generation-check file list for translator_settings/new daemon schemas after reading ordinary rust-nix-example. No free functions except main, inherent helpers, own state locks, orphan foreign/foreign impls or empty behavior namespaces. Remaining handwritten daemon/watch capability traits must be generated. Preserve F1 stale-reading guard and audit mends.
+## Next sequence
 
-Translator sourcec86b1d8 integrates separate settings actor (no RwLock), typed TranslatorUnavailable, SessionId, checked budgets, preserves unrelated meta replies; generated settings actor owns/joins runtime at synchronous OS-thread boundary. `Ready=ValidTextBudget` now REQUIRES the shared native TextBudgeting impl below. `ready()` Option-only failure projection remains an explicit gap. Tests cover SessionId, F1/F3/F6/F7/F10, outside path/symlink, pair restart/live append, typed startup UnwatchableDirectories; no tests executed. In-process ctor and actor-unavailability tests await new core API.
+1. **nm6g approved, not implemented:** ordinary ReportedUnwatched.RolloutWatchFailure; RolloutWatchFailure.{FilePath Diagnostic}. Report remains committed/pending when watch placement fails.
+2. **j0uc approved, no shared custody yet:** native TextBudgeting for ValidTextBudget in owning translator-serving, own commit. Ask Core for isolated exact path/ref coordinated with subscription owner; all other serving consumers must be gated. Core notifiedt6zo (Uncertain; do not blindly resend). No local Ready wrapper: native ValidTextBudget lacks archive traits; TextLimits has them.
+3. Finish whole actor/SessionId consumer integration. ActorUnavailable.Diagnostic ordinary/meta and TranslatorUnavailable.Diagnostic meta are approved/in schemas; Poisoned/HeldLock removed, so whole-cohort compatibility needs audit. Keep SessionRecord/SessionStart names; tentative notification types do not exist. Versions library0.2/ordinary0.5/meta0.5 are proposals, not allocation/publication approval. Core querywwlx proposes core/daemon/translator/tests0.2; unanswered.
+4. Submit committed write-set/dependency/resource PLAN before metadata generation. Accepted base7fca4d583adfd2354903c59cbc7f5e928e1baa76 registers Kameo0.22.2/macros0.21.1. No accepted f2wj packet received; subscription76b588 owns it; old WIP refs are not adoption pins. No inherited slot; priority Flow gate first. Canonical build-base history differs; inherited registry worktree build-base-msc030.
+5. Complete builder gate on committed published revisions; packet to Psyche for independent audit by another flow. **Mind harnessNexus Opus held; do not wake.** No merge/deploy before audit; Field core Sol deploys. Keep3kyf open.
 
-## Latest rulings and next sequence
-
-1. **nm6g approved:** add ordinary `ReportedUnwatched.RolloutWatchFailure`, `RolloutWatchFailure.{FilePath Diagnostic}`; hook stays committed/pending when path watch placement fails. Not added yet. Wire into core projection, never Memory/Unreadable/ReportRefused.
-2. **j0uc approved:** implement `TextBudgeting for ValidTextBudget` once in owning shared translator-serving, its own commit; Ready stays native, no local wrapper. Shared source custody/reference NOT acquired. Ask Core to coordinate exact isolated path/ref with subscription owner; every other translator-serving consumer must be built. Core notifiedt6zo (Uncertain; do not resend blindly). `ValidTextBudget` lacks archive traits; `TextLimits` does have them.
-3. Finish whole core/daemon/translator/tests consumer integration, SessionId/session_id everywhere scalar id, retain SessionRecord/SessionStart names. Tentative notifications absent from actual code; invent none. ActorUnavailable.Diagnostic ordinary/meta and TranslatorUnavailable.Diagnostic meta approveda6ju and in contract sources; obsolete Poisoned/HeldLock removed, so old consumers are incompatible until whole actor release.
-4. Submit exact committed write-set/dependency/resource PLAN to Core before metadata generation. Accepted base7fca4d583adfd2354903c59cbc7f5e928e1baa76 registers Kameo0.22.2/macros0.21.1; use minimal Cargo features, not registry closure strings as flags. No f2wj accepted release received: subscription76b588 owns it; old129206c/be5c3f9/8405b0a are WIP, not adoption pins. No inherited heavy slot; priority Flow gate precedes this. Canonical build-base has unrelated history; inherited registry worktree is build-base-msc030.
-5. Gate complete checks on builder against committed published revisions, then send packet to Psyche core Opus for independent second audit **by another flow**. Mind harnessNexus Opus is held; do not wake it. No merge/deploy before audit. Field core Sol deploys accepted candidate. Keep3kyf open.
-
-Pinned ethos executable `/nix/store/dfz5drcy3c2afy5558ccr03iz3998zzr-rust_ethos-zero-30.1.0-bin/bin/ethos-zero` matches415c370 proof in92d3be handover; use Check/Generate, no local cargo/Nix evaluation. Native Kameo0.22.2 cache confirms blocking_send; public serving is spawn_blocking, meta/translator sync OS threads. Generic runtime adapters are not arbitrary async-context safe.
+Generator: `/nix/store/dfz5drcy3c2afy5558ccr03iz3998zzr-rust_ethos-zero-30.1.0-bin/bin/ethos-zero`, pinned415c370 proof in92d3be. No local cargo/evaluation. Kameo cache verifies blocking_send; public serving uses spawn_blocking, meta/translator OS threads. In-process adapters require explicit runtime/blocking context.
