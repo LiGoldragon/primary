@@ -21,6 +21,8 @@ Field runs it. It replaces no production unit, wrapper, place, registry or Memor
   bin first. Explicit private `XDG_CONFIG_HOME` makes every bare flow client reach
   only this place. Field rejects any embedded production Flow wrapper earlier
   in PATH. The raw configured native below is mandatory, not a PATH codex.
+- Curriculum owner source packet `flows/d48a05/private-curriculum-60609c.md`
+  confirms both Spirit core and Intent main-flow are required; both are selected.
 - One private auth.json link to the single next-endpoint auth file is the only
   shared state. See `credential-source.md` for exact release/save provenance,
   file-backend semantics and cross-process-refresh-lock evidence limits.
@@ -178,7 +180,7 @@ start_ready curriculum "$ROOT/runtime/curriculum/curriculum.sock" "$CURRICULUM_P
 start_ready codex "$ROOT/runtime/codex/control.sock" "$RAW_CODEX" app-server --remote-control --listen "unix://$ROOT/runtime/codex/control.sock"
 start_ready flow "$ROOT/runtime/nexus/proposalTwo/flow.sock $ROOT/runtime/nexus/proposalTwo/flow-meta.sock" "$FLOW_PACKAGE/bin/flow-nexus-daemon" proposalTwo
 private "$HERDR" --session "$SESSION" workspace list > "$ROOT/evidence/herdr-probe.json"
-private "$CURRICULUM_PACKAGE/bin/curriculum" 'ResolveSkills.[ spirit:core ]' > "$ROOT/evidence/curriculum-probe.datom"
+private "$CURRICULUM_PACKAGE/bin/curriculum" 'ResolveSources.[ { Spirit core Single.0 } { Intent main-flow Single.0 } ]' > "$ROOT/evidence/curriculum-probe.datom"
 pmeta Configuration > "$ROOT/evidence/unconfigured-probe.datom"
 # The final probe must report Unconfigured, not a production Configuration.
 ```
@@ -199,7 +201,7 @@ No HandoverPolicy, Heartbeat, production protected-address set or replay is adde
 pmeta "Configure.Nexus.{ «$ROOT/source» { «$ROOT/bin/codex-private» «$ROOT/codex» «$ROOT/runtime/codex/control.sock» [ gpt-6-luna ] } { «$ROOT/bin/codex-private» «$ROOT/codex-unused» «$ROOT/runtime/codex/unused.sock» [] } [ { Codex [ / «!» ] [ esc ] [] } ] [] None None «$ROOT/runtime/curriculum/curriculum.sock» 60 None $SESSION }"
 pmeta 'Configure.Models.[ { Luna gpt-6-luna } ]'
 pmeta "Configure.HarnessHook.«$FLOW_PACKAGE/bin/flow-hook»"
-pmeta 'Configure.Metaflows.[ { { Mind proposalTwoSender Luna } None [] [ spirit:core:0 ] [] Regular Default Maintained «Send only the explicitly assigned synthetic test requests. Stop after the assigned request; perform no other task.» [] } { { Mind proposalTwoReceiver Luna } None [] [ spirit:core:0 ] [] Regular Default Maintained «Receive the assigned synthetic requests and answer only Questions by Result and Tasks by Done when instructed. Keep each assigned identifier exact.» [] } ]'
+pmeta 'Configure.Metaflows.[ { { Mind proposalTwoSender Luna } None [] [ spirit:core:0 intent:main-flow:0 ] [] Regular Default Maintained «Send only the explicitly assigned synthetic test requests. Stop after the assigned request; perform no other task.» [] } { { Mind proposalTwoReceiver Luna } None [] [ spirit:core:0 intent:main-flow:0 ] [] Regular Default Maintained «Receive the assigned synthetic requests and answer only Questions by Result and Tasks by Done when instructed. Keep each assigned identifier exact.» [] } ]'
 pmeta Configuration > "$ROOT/evidence/fresh-configuration.datom"
 pflow 'Rehearse.{ { Mind proposalTwoSender Luna } Predecessors.0 «Report ready only.» }'
 pflow 'Rehearse.{ { Mind proposalTwoReceiver Luna } Predecessors.0 «Report ready only.» }'
