@@ -204,15 +204,14 @@ def production_capture(manifest, side):
     write_once(evidence / ('production-' + side + '.clients'), ''.join(lines).encode())
 
 
-def production_compare(root):
-    from controller import production_compare as compare, AdmissionError
+def production_compare(root, compare):
     evidence = Path(root) / 'evidence'
     parts = ('configuration.datom', 'fable-current.datom', 'services', 'clients')
     before = {part: (evidence / ('production-before.' + part)).read_bytes() for part in parts}
     after = {part: (evidence / ('production-after.' + part)).read_bytes() for part in parts}
     try:
         compare(before, after)
-    except AdmissionError as error:
+    except Exception as error:
         raise CustodyError(str(error)) from error
 
 
@@ -354,7 +353,7 @@ def _wait_process(process, deadline, failure_fd=None):
         os.close(fd)
 
 
-def operator(manifest, manifest_path, expected_manifest_digest):
+def operator(manifest, manifest_path, expected_manifest_digest, compare_production):
     """Run only from a later reviewed entrypoint after explicit admission.
 
     No retry. Any uncertain unit identity is retained and never name-killed.
@@ -480,7 +479,7 @@ def operator(manifest, manifest_path, expected_manifest_digest):
                 write_once(root / 'evidence/cgroup-terminal.json', (json.dumps(empty, sort_keys=True) + '\n').encode())
                 unlink_auth_after_terminal(manifest)
                 production_capture(manifest, 'after')
-                production_compare(root)
+                production_compare(root, compare_production)
                 status['custody'] = 'terminal-and-empty'
                 status['production'] = 'equal'
             except BaseException as exc:

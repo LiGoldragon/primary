@@ -10,7 +10,7 @@ import controller
 
 
 class WiringTests(unittest.TestCase):
-    def test_isolated_main_registers_controller_without_import_path_changes(self):
+    def test_isolated_main_passes_active_comparer_without_import_path_changes(self):
         script = r"""
 import pathlib, sys, types
 path = pathlib.Path(sys.argv[1])
@@ -23,7 +23,7 @@ module.validate = lambda value: {'artifacts': {name: {'path': name} for name in 
 module.verify_admission = lambda value: None
 module.verify_artifacts = lambda value: {
     'bootstrap': b'', 'matrix': b'',
-    'orchestration': b'from controller import protected_configuration\ndef operator(*args):\n    assert protected_configuration.__module__ == "__main__"\n'}
+    'orchestration': b'def operator(manifest, path, digest, compare):\n    assert compare.__module__ == "__main__"\n'}
 assert module.main(['controller.py', 'run', sys.argv[2]]) == 0
 print('isolated loader PASS')
 """

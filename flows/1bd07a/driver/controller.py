@@ -304,7 +304,6 @@ def main(argv):
         verify_admission(manifest)
         sources = verify_artifacts(manifest)
         import types
-        sys.modules['controller'] = sys.modules[__name__]
         for name in ('bootstrap', 'orchestration', 'matrix'):
             module = types.ModuleType(name)
             module.__file__ = manifest['artifacts'][name]['path']
@@ -312,7 +311,7 @@ def main(argv):
             exec(compile(sources[name], module.__file__, 'exec'), module.__dict__)
         import orchestration
         if argv[1] == 'run' and len(argv) == 3:
-            orchestration.operator(manifest, str(path), digest)
+            orchestration.operator(manifest, str(path), digest, production_compare)
         elif argv[1] == 'in-unit':
             orchestration.in_unit(manifest, private_workload, argv[4], argv[5])
         else:

@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 import orchestration as o
+import controller
 
 
 class CustodyFixtures(unittest.TestCase):
@@ -52,7 +53,7 @@ class CustodyFixtures(unittest.TestCase):
                 (evidence / ('production-after.' + part)).write_text('same')
             (evidence / 'production-after.clients').write_text('changed')
             with self.assertRaises(o.CustodyError):
-                o.production_compare(d)
+                o.production_compare(d, controller.production_compare)
 
     def test_handshake_rejects_bad_envelope(self):
         with mock.patch.object(o.selectors, 'DefaultSelector') as factory, \
