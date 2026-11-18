@@ -1,18 +1,23 @@
 # Proposal 2 — corrected fixtures ready; gate and bootstrap controller next
 
-Act on a8fa first. Thresholdjebp requests this refresh. No owned heavy/native
-process remains. Source427/packet422 inherited; own packet431. No publication,
+Act on a8fa first. Thresholdjebp refresh was accepted RefreshQueued e7552e.
+Current.Awake.e7552e confirmed again before Core rbs0 grant execution. ONE gate
+is NOW OWNED/ACTIVE: d44 wholechecks, foregroundcontroller6217, PGID1072878,
+evidence /tmp/flow-order-gate3-e7552e.rhMrKvW8 (pointer /tmp/flow-order-gate3-e7552e.path).
+Wait its terminal and reconcile before rest/refresh; NO second gate/retry. Source427/packet422 inherited; own packet431. No publication,
 merge, native launch or live change. All other inherited work stays behind a8fa.
 
-**Next:** Core independently rechecks clean candidate
+**Next:** Current clean candidate
 **d44ce7f8d1cef27fc0af3340d298571ab010399c**, soleparent
 93efdac3eecee4ece5f602258fe04d43f573eae1, in
 `/git/worktrees/flow-order-lifetime-2b25fa`, branch order-lifetime-2b25fa.
-Coreh6e3 authorized fixtureONLY correction. Only
+Coreh6e3 authorized fixtureONLY correction; rbs0 then admitted exactd44 gate
+while independent tiny-delta audit runs. Any auditfinding stops/reports before
+acceptance. Gate started21:01:14UTC, same runner/bounds; directSTART sent Core/Field. Only
 `crates/flow-nexus/tests/unit/queue_operations.rs`25+/6-: unbound test retains
 Order→Result `Ok(Err(signal_flow::Refusal::Unresolved))`, adds Question-positive;
 close-request answered fixture Order→Question, comments updated. Rustfmt/diff
-pass; fixtures UNRUN. Exact child sent Core, no automatic fresh gate.
+pass; fixtures UNRUN. Exact child sent Core; rbs0 granted the active gate above. No automatic retry.
 
 Gate1 at7a97f37c failed obsolete imports,17checks pass; Core5e91 admitted exact
 removal, committed93efd. Gate2 Coretke4 at93efd **EXIT1:1058Flowtests PASS,
@@ -43,7 +48,8 @@ Fieldrr5e: rawHerdr `/nix/store/9x03bz0q0a978zrzcshrlmmb4fvcmdb6-herdr-0.8.2/bin
 agentlist/get exposes pane_id,agent_session,terminal_id/title,status,revision,
 state_change_seq. Unique transient service/scope proposed: InvocationID+
 ControlGroup+ownedROOT; exact0.8.2 source and actualpane/nativechildren containment
-NOTproved. No stalePID/PGIDkill. Environmental separation≠OSfilesystemisolation.
+NOTproved. Exactinstalled Herdrsource/patch+bounded server/PTYspawnpath now
+documented in herdr-containment-source.md; runtime cgroup proof still owed. No stalePID/PGIDkill. Environmental separation≠OSfilesystemisolation.
 
 Field/Harnessr6ix confirmed exact rawr0k59hi2/0.161alpha2 source follows auth
 symlink using explicitfilebackend, refresh samepath; no atomicwrite/refreshlock.
