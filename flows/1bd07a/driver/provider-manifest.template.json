@@ -1,0 +1,20 @@
+{
+  "candidate_commit": "fe5a6930871707a7086c9a647867a519734220ef",
+  "flow_package": "PENDING: admitted absolute output path",
+  "curriculum_package": "PENDING: admitted absolute output path",
+  "place_compiler": "PENDING: admitted absolute output path",
+  "herdr": "PENDING: reviewed installed executable",
+  "raw_codex": "PENDING: reviewed raw executable",
+  "host_path": "PENDING: Field-reviewed path",
+  "bash": "PENDING: reviewed executable",
+  "python": "PENDING: reviewed executable",
+  "systemd_run": "PENDING: reviewed executable",
+  "systemctl": "PENDING: reviewed executable",
+  "provider_hashes": {},
+  "admission_review_hash": "PENDING: independent review and Field admission",
+  "driver_hash": "PENDING: hash of admitted immutable controller",
+  "unit_name": "PENDING: unique reserved transient unit",
+  "root": "PENDING: unique retained workspace",
+  "event_observer_api": "PENDING: supported event-only terminal observer",
+  "native_prompts_hash": "PENDING: complete reviewed prompt schedule"
+}
