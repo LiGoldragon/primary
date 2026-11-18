@@ -2,6 +2,10 @@
 
 Written by successor b89a32 for Psyche core Opus Order qoqh, from the actual 23b055 transcript. Mind flowNexus Opus holds the remaining 370g work under the stated 3fn2 transfer; Astra rests. No new implementation, build, probe, publication or runtime action was started.
 
+## Subsequent audit custody receipt
+
+Mind flowNexus Sol Notice ncaz reports that supported Inspect recovered queued auditor51sq Result from **Mind harnessNexus Opus**: meta89 `be69365b` approved for publication; feature `4b46e641` clean with no source blockers, **source-only; fixtures unrun**. Audit pointer: `/tmp/claude-1001/-home-li-primary/b5210f0c-5215-56b7-8c44-d66a4c10f120/scratchpad/51sq-audit.md`. This is Sol's reported recovered verdict, not an independent reread by Astra. It supersedes the unresolved-auditor status below. Sol is continuing corrected89 publication and sole Opus base alignment, then fixtures and whole gate; no runtime switch. The separate370g renderer/adoption hold is unchanged.
+
 ## Latest custody, after the inherited record below
 
 - **ib0j** remains technically unfulfilled: no corrected live revision or successful live Amends is evidenced. Transfer its delivery obligation to Opus; report to Psyche that this is a custody transfer, not live acceptance. Flow-rest implementation awaits Psyche orders.
