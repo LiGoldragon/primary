@@ -29,3 +29,5 @@ Gate only one pushed immutable revision, explicit memory cap keeping24GiB floor;
 sv0s0.59.2 is DONE and live Field-confirmed0f822a45 with Energy03fa1f45; final packet `flows/6464a1/sv0s-producer-packet.md`; Field `flows/437627/sv0s/deploy-receipt.md`. Own reports ai71-source-control.md, main-integration.md, recovery-history.md here. Quiet hold released; deferred interfaces/mutex work NOT authorized. Do not reopen old carried requests/lifecycle proofs without current direction. Core2vlp already answered; its oldgu7s ACTIVE snapshot was explicitly superseded bysqds. No pending build/tool worker process owned here.
 
 Threshold **y97e** requires this file and own Refresh. Next act: adopt417, implement hnc2 plus failing-on-ec4 regression fixtures and clippy fixture mend, source review, then request slot. No subagents spawned or code changed in this flow.
+
+Refresh attempt after this handover returned **RefreshRejected.Locked**, no successor admitted. Reported Core/Field; no Unlock, Renew, repeat Refresh or native action. Until supported resolution, a7785f remains actual owner;417 stays reserved for the permaflow.
