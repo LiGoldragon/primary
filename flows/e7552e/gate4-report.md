@@ -46,3 +46,11 @@ review, Field runtime admission, native eight-kind/successor matrix and nonwrite
 commit-plus-evidence audit against Overrides.2 remain before Psyche acceptance,
 merge or switch. Task a8fa stays open. Existing preflight failure evidence is
 retained independently and its causes remain unproved.
+
+## Core disposition —3zui
+
+Core accepts the GREEN execution verdict and bounded cleanup; allocation
+released. The unpublished stamp is not a published-SHA witness. Independent
+read-only command/artifact provenance audit assigned; no edit, rebuild or
+automatic retry is warranted from the stamp alone. Final bootstrap driver and
+output paths may continue source-only, with native/publication/merge/switch held.

@@ -14,10 +14,12 @@ fixtures, retaining exact OrderUnresolved negative. Independent fstqPASS.
 counts, source/provenance limit and cleanup in `flows/e7552e/gate4-report.md`;
 evidence `/tmp/flow-order-gate4-e7552e.O6cXFlox`. Local1236579groupgone, remote
 zero nixbld before/after/fresh, ownedNFBtmp.sJx27P3gYU absent; logs retained.
-Core ruling question **3zui**, Fieldita5, Opusug9z: migration stdout stamps
-`current=unpublished` under remoteNFB store-source eval despite exactgit+file
-invocation. Await Core acceptance vs separate revision-stamp gap; do not claim
-published stamp or start another gate/build automatically.
+Core **3zui ACCEPTED GREEN execution and cleanup; allocation RELEASED**.
+Migration `current=unpublished` is NOT a published-SHA witness. Core assigned
+independent read-only command/artifact provenance audit; retain exact invocation/
+sourcepaths/results/storeoutputs and cleancommit. No edit/rebuild/retry fromstamp
+alone. Continue source-only finaldriver/outputpaths; published provenance
+disposition follows audit. Fieldita5/Opusug9z have terminal evidence.
 
 Writer preflight clippyPASS; tests1042PASS18FAIL8ignored (17EMFILE plus one
 HerdrUnreadable, causes unproved). `preflight-report.md`, local
