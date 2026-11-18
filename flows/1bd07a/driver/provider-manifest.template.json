@@ -1,20 +1,153 @@
 {
   "candidate_commit": "fe5a6930871707a7086c9a647867a519734220ef",
-  "flow_package": "PENDING: admitted absolute output path",
-  "curriculum_package": "PENDING: admitted absolute output path",
-  "place_compiler": "PENDING: admitted absolute output path",
-  "herdr": "PENDING: reviewed installed executable",
-  "raw_codex": "PENDING: reviewed raw executable",
-  "host_path": "PENDING: Field-reviewed path",
-  "bash": "PENDING: reviewed executable",
-  "python": "PENDING: reviewed executable",
-  "systemd_run": "PENDING: reviewed executable",
-  "systemctl": "PENDING: reviewed executable",
-  "provider_hashes": {},
-  "admission_review_hash": "PENDING: independent review and Field admission",
-  "driver_hash": "PENDING: hash of admitted immutable controller",
-  "unit_name": "PENDING: unique reserved transient unit",
-  "root": "PENDING: unique retained workspace",
-  "event_observer_api": "PENDING: supported event-only terminal observer",
-  "native_prompts_hash": "PENDING: complete reviewed prompt schedule"
+  "root": "PENDING unique absolute root",
+  "unit_name": "PENDING reserved unit",
+  "session": "PENDING private session",
+  "user": "li",
+  "host_path": "PENDING reviewed absolute PATH",
+  "providers": {
+    "flow": {
+      "path": "/nix/store/76vvsfvdifhplj44d3sp6crc704wkg11-flow-workspace-0.60.1/bin/flow",
+      "sha256": "64020e4f6ca9d8354a5c4dd3c8a349eb7cbdb9f6baabd371ab833eaa4afdcb46"
+    },
+    "flow_meta": {
+      "path": "/nix/store/76vvsfvdifhplj44d3sp6crc704wkg11-flow-workspace-0.60.1/bin/flow-meta",
+      "sha256": "a79cb04161e9ae7ee9f864858798aee64b424ca7050bfe84ad55dee178175d7f"
+    },
+    "flow_daemon": {
+      "path": "/nix/store/76vvsfvdifhplj44d3sp6crc704wkg11-flow-workspace-0.60.1/bin/flow-nexus-daemon",
+      "sha256": "e0cfb2c6a08241e7d755cd69d08dc06d8d555493785e05439a9fffb8c4f7ea49"
+    },
+    "flow_hook": {
+      "path": "/nix/store/76vvsfvdifhplj44d3sp6crc704wkg11-flow-workspace-0.60.1/bin/flow-hook",
+      "sha256": "20d5c0fa33eb2554e7981f3b89becde1724a255dafd1e8db07791084a0ebaeaf"
+    },
+    "curriculum": {
+      "path": "/nix/store/ligz6rqy9dm584m1z0dbzpjzqqvycszz-rust_curriculum-0.2.0/bin/curriculum",
+      "sha256": "a0febe6abcdb2fe6c3d92a92da5854f2e51915e2bc8b172d1af42c063e57eee1"
+    },
+    "curriculum_daemon": {
+      "path": "/nix/store/ligz6rqy9dm584m1z0dbzpjzqqvycszz-rust_curriculum-0.2.0/bin/curriculum-nexus",
+      "sha256": "35d9fef8cdfa570c26ae85519c4f9e1794a44d26a39c65bb00a8cb3a71daf4d1"
+    },
+    "place_compiler": {
+      "path": "/nix/store/8b2q16kdixa8qawmci4474hdxm6zpnf7-rust_translator-0.6.0-bin/bin/nexus-configure",
+      "sha256": "edc7e6e0a5a9ac31282513dbf10c6f7e665ba0847869753883b110352119c358"
+    },
+    "herdr": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "raw_codex": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "git": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "tar": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "shell": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    }
+  },
+  "operator_providers": {
+    "systemd_run": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "systemctl": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "python": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "production_flow": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "production_meta": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    }
+  },
+  "operator_environment": {
+    "HOME": "/home/li",
+    "XDG_RUNTIME_DIR": "PENDING",
+    "PATH": "PENDING"
+  },
+  "production": {
+    "environment": {
+      "HOME": "/home/li",
+      "XDG_RUNTIME_DIR": "PENDING",
+      "PATH": "PENDING"
+    },
+    "units": [
+      "PENDING serving Flow unit",
+      "energy-nexus.service",
+      "energy-translator.service",
+      "harness-daemon.service"
+    ],
+    "wrappers": {
+      "flow": "/home/li/.local/bin/flow",
+      "flow-meta": "/home/li/.local/bin/flow-meta",
+      "flow-hook": "/home/li/.local/bin/flow-hook"
+    }
+  },
+  "contexts": {
+    "psyche-belief": {
+      "repository": "/git/github.com/LiGoldragon/psyche-belief",
+      "revision": "47384885438a86fe522b0baf68607ec3395864da"
+    },
+    "mind-belief": {
+      "repository": "/git/github.com/LiGoldragon/mind-belief",
+      "revision": "622f9104da1e677dbef3530249c3f2da89ca9be4"
+    },
+    "field-belief": {
+      "repository": "/git/github.com/LiGoldragon/field-belief",
+      "revision": "ebeedf43f5a9df0969fae821fd2778572dd05004"
+    }
+  },
+  "admission": {
+    "path": "PENDING absolute path",
+    "sha256": "PENDING sha256"
+  },
+  "driver": {
+    "path": "PENDING absolute path",
+    "sha256": "PENDING sha256"
+  },
+  "artifacts": {
+    "controller": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "bootstrap": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "orchestration": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    },
+    "matrix": {
+      "path": "PENDING absolute path",
+      "sha256": "PENDING sha256"
+    }
+  },
+  "auth_target": "/home/li/.codex-next-5ck97j38j3sb/auth.json",
+  "expected_configuration": "PENDING reviewed exact typed snapshot",
+  "rehearsal_sha256": {
+    "sender": "PENDING",
+    "receiver": "PENDING"
+  },
+  "handshake_timeout_seconds": 35,
+  "control_timeout_seconds": 35,
+  "terminal_timeout_seconds": 1200,
+  "startup_timeout_seconds": 30
 }
