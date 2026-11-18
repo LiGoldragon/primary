@@ -671,9 +671,17 @@ def private_cli(manifest, request):
            shlex.quote(manifest['providers']['flow']['path']) + ' ' + shlex.quote(request)
 
 
-def identity_binding(agent_list, agent_get, process_info, pane, native_session):
-    """Require one exact current pane; process metadata is not native-PID proof."""
+def bound_agent_matches(item, binding):
+    reported = item.get('agent_session')
+    return (item.get('name') == binding['agent'] and item.get('pane_id') == binding['pane'] and
+            item.get('terminal_id') == binding['terminal'] and
+            (reported is None or (isinstance(reported, dict) and reported.get('value') == binding['native_session'])))
+
+
+def identity_binding(agent_list, agent_get, process_info, binding):
+    """Bind supported Herdr fields to the already verified Flow/native route."""
     try:
+        pane = binding['pane']
         rows = agent_list['result']['agents']
         matches = [r for r in rows if r.get('pane_id') == pane]
         item = agent_get['result']['agent']
@@ -682,7 +690,7 @@ def identity_binding(agent_list, agent_get, process_info, pane, native_session):
             agent_get['id'] != 'cli:agent:get' or agent_get['result']['type'] != 'agent_info' or
             process_info['id'] != 'cli:pane:process_info' or process_info['result']['type'] != 'pane_process_info' or
             len(matches) != 1 or item != matches[0] or info['pane_id'] != pane or
-            item['agent_session']['value'] != native_session):
+            not bound_agent_matches(item, binding)):
             raise MatrixError('ambiguous pane/session association')
     except (KeyError, TypeError) as exc:
         raise MatrixError('incomplete pane/session association') from exc
@@ -1447,7 +1455,7 @@ def snapshot_native(owner, side, binding, label=None):
     listed = herdr_json(owner, label + '-agent-list', ['agent', 'list'])
     selected = herdr_json(owner, label + '-agent-get', ['agent', 'get', pane])
     processes = herdr_json(owner, label + '-process-info', ['pane', 'process-info', '--pane', pane])
-    info = identity_binding(listed, selected, processes, pane, binding['native_session'])
+    info = identity_binding(listed, selected, processes, binding)
     if selected['result']['agent']['terminal_id'] != binding['terminal']:
         raise MatrixError('terminal identity differs from captured launch')
     return info
@@ -1470,7 +1478,7 @@ def close_bound_flow_and_pane(owner, side, binding, private_call, receipt):
         raise MatrixError('post-close pane no longer has the captured identity')
     current = herdr_json(owner, side + '-post-close-agent', ['agent', 'get', binding['pane']])
     try:
-        if current['id'] != 'cli:agent:get' or current['result']['type'] != 'agent_info' or current['result']['agent']['agent_session']['value'] != binding['native_session']:
+        if current['id'] != 'cli:agent:get' or current['result']['type'] != 'agent_info' or not bound_agent_matches(current['result']['agent'], binding):
             raise MatrixError('post-close native session changed')
     except (KeyError, TypeError) as exc:
         raise MatrixError('post-close native session unavailable') from exc

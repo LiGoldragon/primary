@@ -131,7 +131,27 @@ class MatrixFixtures(unittest.TestCase):
 
     def test_identity_ambiguity_refused(self):
         with self.assertRaises(matrix.MatrixError):
-            matrix.identity_binding({'result': {'agents': []}}, {}, {}, 'pane', 'session')
+            matrix.identity_binding({'result': {'agents': []}}, {}, {}, {'pane': 'pane'})
+
+    def test_supported_agent_binding_optional_session_and_route(self):
+        import copy
+        binding = {'agent': 'agent', 'pane': 'pane', 'terminal': 'term', 'native_session': 'native'}
+        row = {'name': 'agent', 'pane_id': 'pane', 'terminal_id': 'term'}
+        def check(item, rows=None, process_pane='pane'):
+            return matrix.identity_binding(
+                {'id': 'cli:agent:list', 'result': {'type': 'agent_list', 'agents': [item] if rows is None else rows}},
+                {'id': 'cli:agent:get', 'result': {'type': 'agent_info', 'agent': item}},
+                {'id': 'cli:pane:process_info', 'result': {'type': 'pane_process_info', 'process_info': {'pane_id': process_pane}}}, binding)
+        self.assertEqual(check(row)['pane_id'], 'pane')
+        self.assertEqual(check(dict(row, agent_session={'value': 'native'}))['pane_id'], 'pane')
+        for changed in (dict(row, agent_session={'value': 'other'}), dict(row, name='other'),
+                        dict(row, pane_id='other'), dict(row, terminal_id='other')):
+            with self.subTest(changed=changed), self.assertRaises(matrix.MatrixError):
+                check(changed)
+        with self.assertRaises(matrix.MatrixError):
+            check(row, rows=[row, copy.deepcopy(row)])
+        with self.assertRaises(matrix.MatrixError):
+            check(row, process_pane='other')
 
 
 class ChannelFixtures(unittest.TestCase):
@@ -468,13 +488,13 @@ class LaunchFixtures(unittest.TestCase):
 
     def test_graceful_close_requires_bound_snapshot_and_typed_pane_success(self):
         from unittest import mock
-        binding = {'pane': 'pane1', 'terminal': 'terminal1', 'native_session': 'session1', 'flow_id': 'flow1'}
+        binding = {'agent': 'bound-agent', 'pane': 'pane1', 'terminal': 'terminal1', 'native_session': 'session1', 'flow_id': 'flow1'}
         with mock.patch.object(matrix, 'snapshot_native') as snapshot, \
              mock.patch.object(matrix, 'close_flow') as close, \
              mock.patch.object(matrix, 'herdr_json', side_effect=[
                  {'id': 'cli:pane:list', 'result': {'type': 'pane_list', 'panes': [
                      {'pane_id': 'pane1', 'terminal_id': 'terminal1'}]}},
-                 {'id': 'cli:agent:get', 'result': {'type': 'agent_info', 'agent': {'agent_session': {'value': 'session1'}}}},
+                 {'id': 'cli:agent:get', 'result': {'type': 'agent_info', 'agent': {'name': 'bound-agent', 'pane_id': 'pane1', 'terminal_id': 'terminal1'}}},
                  {'id': 'cli:pane:close', 'result': {'type': 'ok'}}]) as herdr:
             matrix.close_bound_flow_and_pane(object(), 'receiver', binding, object(), object())
             snapshot.assert_called_once()
@@ -483,12 +503,12 @@ class LaunchFixtures(unittest.TestCase):
 
     def test_graceful_close_refuses_unknown_pane_receipt(self):
         from unittest import mock
-        binding = {'pane': 'pane1', 'terminal': 'terminal1', 'native_session': 'session1', 'flow_id': 'flow1'}
+        binding = {'agent': 'bound-agent', 'pane': 'pane1', 'terminal': 'terminal1', 'native_session': 'session1', 'flow_id': 'flow1'}
         with mock.patch.object(matrix, 'snapshot_native'), mock.patch.object(matrix, 'close_flow'), \
              mock.patch.object(matrix, 'herdr_json', side_effect=[
                  {'id': 'cli:pane:list', 'result': {'type': 'pane_list', 'panes': [
                      {'pane_id': 'pane1', 'terminal_id': 'terminal1'}]}},
-                 {'id': 'cli:agent:get', 'result': {'type': 'agent_info', 'agent': {'agent_session': {'value': 'session1'}}}},
+                 {'id': 'cli:agent:get', 'result': {'type': 'agent_info', 'agent': {'name': 'bound-agent', 'pane_id': 'pane1', 'terminal_id': 'terminal1'}}},
                  {'result': {'type': 'ok'}}]):
             with self.assertRaises(matrix.MatrixError):
                 matrix.close_bound_flow_and_pane(object(), 'receiver', binding, object(), object())
