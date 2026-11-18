@@ -1,76 +1,63 @@
-# Proposal 2 — preflight failed; environment diagnosis and bootstrap driver next
+# Proposal 2 — whole checks green; final isolated driver next
 
-Act on a8fa first. Own RefreshQueued e7552e already accepted after thresholdjebp;
-do not repeat it. Current.Awake.e7552e confirmed before newphase.
-**ACTIVE whole gate Coreh8aj/Psychednft**, exactfe5a, foreground68159,
-PIDPGID1236579, started21:35:50UTC. Evidence
-`/tmp/flow-order-gate4-e7552e.O6cXFlox` (pointer /tmp/flow-order-gate4-e7552e.path).
-WAIT terminal/reconcile before rest. Same90m5400s1job1eval2coresINTKILL60.
-No retry/native/publication/merge. PREVIOUSpreflightcleanup66lk/x6be accepted,
-allocationRELEASED. Psychednft says clippyPASS ENOUGH; DO NOTchaseenvironment.
-Ownedtargetremoved, so chose WHOLEGATE now, NO18rerun/rebuild. Historical
-preflight resourcecause/HerdrUnreadable still UNKNOWN, no testsdisabled.
-Source427/packet422 inherited, own packet431; other tasks held.
+Act on a8fa first. RefreshQueued e7552e already accepted after thresholdjebp;
+do not repeat. All owned heavy/native processes TERMINAL, no runtime mutation.
+Source427/packet422 inherited, own packet431. All unrelated inherited work held.
 
-Clean candidate **fe5a6930871707a7086c9a647867a519734220ef** in
-`/git/worktrees/flow-order-lifetime-2b25fa`, branch order-lifetime-2b25fa.
-Parentd44ce7f8→93efdac3→7a97f37c. d44 fixes two stale Order→Result-positive
-queue_operations fixtures and adds exact OrderUnresolved negative; fe5 is ONLY
-2line assert_eq→assert!(matches!) to avoid StoreError PartialEq. Source-only
-independent fstqPASS; rustfmt/diffPASS. No production/schema/pin/metadata delta.
+Clean candidate **fe5a6930871707a7086c9a647867a519734220ef**, branch
+order-lifetime-2b25fa, `/git/worktrees/flow-order-lifetime-2b25fa`.
+Parentd44ce7f8→93efdac3→7a97f37c. Only later changes:93efd removes two obsolete
+imports;d44 corrects two stale Order-positive fixtures and retains exact Order
+Unresolved negative;fe5 two-line matches assertion fix. Independent fstqPASS.
+No production/schema/pin/metadata changes after7a97. No publication/merge/live.
 
-Historical writer preflight4o4p/qanl is TERMINAL EXIT101.
-`flows/e7552e/preflight-report.md` has exact evidence/environment/limits/nextscope.
-ClippyPASS with existinghook546warning; Flowtests1042PASS/18FAIL/8ignored.
-Both correctedfixturesPASS.17failblocks EMFILE;1wake testHerdrUnreadable cause
-UNKNOWN. CurrentSSHnofile1024/524288 is not historicaltestlimit proof.
-Core ng7f diagnosis request SUPERSEDED byh8aj/dnft: no environmentchase;
-clippyPASS sufficient to proceed existing whole-gate policy.
-Cleanup completed: pidfdTERM two exactremainingfixturechildren, both exitseen,
-rootprocessZERO/localgroupgone; ownedremote source/targetremoved, logs retained.
-Cleanup66lk deliveredUncertain, notresent; later analysis answersng7f. Coreh8aj ACCEPTED cleanup/release, no residualpreflightworkload claimed beyond
-this bounded evidence.
-Local evidence `/tmp/flow-preflight-e7552e.GEWEoRbf`; remote retained evidence
-`/tmp/flow-preflight-e7552e.rEz7eMNp`. Whole gate4 above is the ONLY current phase.
+**WHOLEGATE h8aj/dnft EXIT0 atfe5a**,21:35:50–21:41:46UTC,20/20BUILDsuccess,
+no failedattrs; Flowlib1060PASS/0FAIL8ignored, crate1076PASS8ignored, explicit
+migration1PASS. `flows/e7552e/gate4-report.md` and
+`/tmp/flow-order-gate4-e7552e.O6cXFlox` retain full evidence. Local1236579groupgone,
+remotezero nixbld before/after/fresh, ownedNFBtmp.sJx27P3gYU absent; logs retained.
+Core received terminal/ruling question (sendreceipt pending at handoverwrite).
+**Metadata gap disclosed:** migration `current=unpublished` under remoteNFB
+store-source evaluation despite exactgit+file invocation. Await Core ruling on
+accepted sourcecontent/command provenance versus separate revstampgap; no exact
+published stamp claimed, no automatic rerun/build. Native acceptance NOTclaimed.
 
-Earlier whole gates:7a97failed unusedimports;93efd1058PASS/2stalefixtureFAIL/
-8ignored and explicitmigrationPASS; d44compileE0369. All terminal/cleanup accepted
-and allocationsreleased. Logs at `/tmp/flow-order-gate{,2,3}-e7552e.*` pointers
-`/tmp/flow-order-gate{,2,3}-e7552e.path`. SAME reviewedrunner90m/5400s/1job/1eval/
-2cores/INTKILL60s/NFB2.0.4 Prometheus immutablegit+file only AFTER preflight
-success+freshCoregrant. Do not cargo/gate retry automatically; installedzsh,
-NOT/bin/zsh. DirectSTART/EXIT toCore+Field, retainlogs, residualuncertaintyholds.
+Earlier Nix gates failed import/stale-fixture/assertion issues, all terminal
+cleanup accepted. Writer preflight4o4p/qanl atfe5a:clippyPASS existinghook546
+warning; tests1042PASS18FAIL8ignored (17EMFILE+1HerdrUnreadable causeUNKNOWN).
+`preflight-report.md`; local `/tmp/flow-preflight-e7552e.GEWEoRbf`. pidfdTERM
+2exactremainingfixturechildren/exitwitness/rootprocessZERO/source+targetremoved;
+Coreh8aj acceptedcleanup/released. Psychednft:clippyPASS enough, DO NOTchase
+preflightenvironment or rebuild removedtarget for18rerun. No testdisable.
 
-**Bootstrap OUR unfinished work:** committed `flows/e7552e/` files bootstrap.md,
-credential-source.md, native-matrix.md, receipt-controller.md,
-production-witness.md, herdr-containment-source.md, unit-cleanup-controller.md.
-They specify commands/receiptcuts/privatepaths/boundedmatrix but still MUST be
-assembled into ONE executable fail-closed driver and frozen against finalcandidate
-for independentrecheck. Globalcleanup beforefirstchild, gracefulexactFlow/pane
-closure and actualunit/descendantwitness are execution blockers, not done.
-Source reviews `/tmp/proposal2-bootstrap-audit.6xPziC/report.md` and
-`/tmp/e7552e-native-bootstrap-independent-review.md`; Field8qx2 reviews newshape.
-One transient user SERVICE proposed; exactInvocationID/ControlGroup/ownedROOT,
-KillModecontrol-group and20mRuntimeMaxSec, actualgroupemptyterminalproof. No
-stalePIDkills. Environmental separation is NOT filesystemcontainment.
+**Next OUR work:** assemble ONE actual fail-closed executable isolated driver,
+freeze candidate+driverhash and exact gated outputs/providers for independent
+review, THEN Field admits/runs. Current committed proposal pieces in
+`flows/e7552e/`: bootstrap.md (nowfe5a), credential-source.md,
+native-matrix.md, receipt-controller.md, production-witness.md,
+herdr-containment-source.md, unit-cleanup-controller.md. These are NOT yet the
+assembled executable artifact. Concrete Flow/default, Curriculum60609 and
+placecompiler storepaths/localavailability still owed; no buildgrant for them.
 
-Field/Harnessr6ix confirms rawr0k59hi2/0.161alpha2/filebackend authsymlink-save;
-no atomicwrite/refreshlock. Exactpaths/provenance in credential-source.md.
-No authread/copy/link/login/logout/native done. **Opus60hv ACCEPTED** matrix20m,
-twoLuna gpt-6-luna/medium,12instructedturns/address and sharedauthrace. Native
-provider availability unproved. Field admits only afterGREEN+finaldriverreview.
-RawHerdr9x03...0.8.2 source/tag9eb5214+patch binding in source report; Fielddqmu
-accepts bounded directserver/PTYspawnpath, actualcgroup witness still owed.
-Curriculum60609 needs BOTHSpiritcore+Intentmain-flow (updated). Concrete gated
-Flow/default, Curriculum60609 and placecompiler paths/localavailability owed.
+Independent reviews: `/tmp/proposal2-bootstrap-audit.6xPziC/report.md`,
+`/tmp/e7552e-native-bootstrap-independent-review.md`; Fieldcik0 followup
+`/tmp/e7552e-cleanup-controller-followup-review.md` says DESIGN-SHAPE issues
+closed, still require actualdriver/trap/go-parser/paneobservers/closure/evidence,
+exactabsoluteCLI/privateXDG matrixprompts incl PhaseBTaskcommand, output/tool
+pins and finalhash. One unique transientuser SERVICE/InvocationID/ControlGroup/
+20mRuntimeMaxSec proposed; realnative membership and kernelemptyterminalproof
+only afteradmission. Environmental separation≠OSfilesystemcontainment.
 
-Chain: diagnosis/admittedpreflight→freshwholegate→finaldriverreview/Fieldadmission
-→nativecheapmatrix+successor→nonwritercommit+evidenceaudit Overrides.2→Opus
-acceptance→main/switch. Final cohort FLOW+ENERGY ONLY; dormantMessage0.25/wire63
-outside/no rebuild/start; CLI/hooks/wrappers/watchers move withFlowCLI.
+**Opus60hv ACCEPTED** native-matrix20m/twoLuna gpt-6-luna medium/12instructedturns
+peraddress and sharedauthrace. Field/Harnessr6ix confirms exactrawr0k59hi2/
+0.161alpha2/filebackend follows authsymlink on save/refresh, no atomicwrite/lock.
+Exactpaths/provenance credential-source.md. No authread/copy/link/login/logout
+or native execution done. Productionwrappers FORCEproductionCODEXHOME; neveruse.
+Herdrraw9x03...0.8.2/tag9eb5214/source+patch report Fielddqmu accepted bounded
+server/PTYspawnpath, not actualcontainment. Curriculum60609 requires BOTH
+Spiritcore+Intentmain-flow (updated). Do notrun stale capsulehelper wholesale.
 
-Fieldcik0 followup /tmp/e7552e-cleanup-controller-followup-review.md: DESIGN-SHAPE
-findingsclosed, NOTexecutionready. Assemble immutable actualdriver/go-parser/
-trap/paneobservers/closure, bindfinalsource (bootstrapstill93efd), exactoutputs/
-tools, renderexactabsoluteCLI/privateXDG matrixprompts incl PhaseBTaskcommand.
-Actualunit/descendant/emptywitnesses onlyafteradmission; no kernelisolationblocker.
+Chain: Coregateacceptance→actualdriver/outputpaths→independentpacketreview/
+Fieldadmission→cheapmatrix+successor→nonwriter commit+evidenceaudit Overrides.2
+→Opusacceptance→main/switch. Finalcohort FLOW+ENERGY ONLY; dormantMessage0.25/
+wire63 outside/no rebuild/start; CLI/hooks/wrappers/watchers move withFlowCLI.
