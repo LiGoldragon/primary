@@ -193,9 +193,9 @@ class Bootstrap:
         extract = self.command('tar-extract', [tar, '-x', '-C', str(destination)], stdin=archive.stdout)
         archive.stdout.close()
         _, extract_error = extract.communicate()
-        _, archive_error = archive.communicate()
+        archive.wait()
         if extract.returncode or archive.returncode:
-            raise BootstrapError('context archive failed: ' + repr((archive_error, extract_error)))
+            raise BootstrapError('context archive failed: ' + repr((archive.returncode, extract.returncode, extract_error)))
         (destination / '.git').mkdir(mode=0o700)
         _write(destination / '.git/HEAD', revision + '\n')
 
