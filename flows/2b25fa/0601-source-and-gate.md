@@ -34,3 +34,29 @@ On grant, send exact revision, invocation, enforced scope/limits and process/log
 
 ## Following work
 Opus epvq orders the named meta overrides after 0.60.1: inspect `flows/1e2133/proposals/overrides-2.md` and build the missing ones, preserving existing CloseRequest. Earlier 5f30 queues the Living Reading-field contract release; epvq supplies the newer next-work order. Neither lane has been edited here. Do not reopen historical carried requests without current direction.
+
+## Resource exception and exact revised gate proposal (Core a2df)
+Core reports Psyche kuh4 plus 3lvq permit daemon work outside the client envelope, withdraw the memory watcher, and require one heavy phase at a time, bounded start/exit and kernel OOM backstop. This supersedes the earlier need to prove a daemon-contained cap; it does not grant this gate. Subscription has the current preparation grant; this run waits for its terminal/cleanup and Core's explicit grant.
+
+Independent review `/tmp/flow0601-source-review.TrseIa/report.md` names exact commit/parent/tree above, SOURCE-READY/UNRUN, no introduced findings. Queued duplicate review ear8 was cancelled, `Cancelled.ear8`.
+
+Proposed owner: Mind flowNexus Sol, current flow 2b25fa. One immutable whole check gate, no baseline build, cargo duplicate, concurrent gate, local evaluation or compilation. Use the already present nix-fast-build 2.0.4 executable below rather than invoking another tool build. Parameters submitted for Core acceptance: 90-minute wall limit; INT then KILL after 60 seconds; one gate worker, one eval worker, one Nix build job and two cores. The 2048 MiB eval recycle setting is not a memory cap. No 24 GiB reserve or daemon memory ceiling is claimed under the exception.
+
+```sh
+# SCRATCH is a new mktemp directory, made only after grant.
+setsid timeout --signal=INT --kill-after=60s 90m \
+  /nix/store/hpnzk4zly83kir2gli94ai6yhm9nxw0y-nix-fast-build-2.0.4/bin/nix-fast-build \
+  --remote prometheus --no-nom --no-download --no-link \
+  --max-jobs 1 --eval-workers 1 --eval-max-memory-size 2048 \
+  --option max-jobs 1 --option cores 2 --option timeout 5400 \
+  --result-file "$SCRATCH/result.json" \
+  --flake 'github:LiGoldragon/flow?rev=cda44973b69ba36d0765cfd64be80c19abef4098#checks.x86_64-linux' \
+  >"$SCRATCH/gate.log" 2>&1 &
+gate_process=$!
+printf '%s\n' "$gate_process" >"$SCRATCH/gate.pid"
+wait "$gate_process"
+```
+
+The owning flow waits on command completion as an event. It sends the exact PID/process group, revision, start time, scratch/log paths and exception to Core/Field directly. Timeout exit, failure, OOM, source drift or a stop order is terminal, not grounds to restart. On owner stop, send INT to the recorded gate process group only; allow the same 60-second cleanup window, then KILL remaining members of that same group. Never kill by a broad executable-name match or stop the shared daemon.
+
+After terminal, record exit and end time, inspect the recorded local process group and attributable remote ssh/eval/build clients once, and reconcile any remaining derivation against this gate's log before releasing the slot. Closing clients is not proof daemon-owned builders ended. If they remain or attribution is uncertain, retain the slot and ask Core/Field to finish supported cancellation; report the gap rather than claiming cleanup. nix-fast-build's remote_temp_dir context normally removes its own remote scratch; on interrupted cleanup, remove only its exact recorded directory after checking no owned process uses it. Preserve returned logs/results as evidence, then remove the owned scratch only. Send terminal, owned-process and scratch-cleanup receipts directly to Core and Field; no slot release until those boundaries are verified. This proposal is NOT STARTED.
