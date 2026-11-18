@@ -2,7 +2,7 @@
 
 This appendix replaces the uncaptured place/configuration/rehearsal/launch calls
 in bootstrap.md. It is not permission to execute. All inputs remain candidate
-93efdac3, the private ROOT and explicit binaries. Whole-gate, final cleanup
+fe5a6930, the private ROOT and explicit binaries. Whole-gate, final cleanup
 controller, Field admission and final immutable-packet review remain required.
 
 Stage the checker in ROOT/bin before compiling the Place. It compares semantic

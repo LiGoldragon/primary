@@ -13,7 +13,7 @@ Private roots are environmental separation, not OS filesystem containment.
 
 ## Inputs and boundaries
 
-- Flow source `93efdac3eecee4ece5f602258fe04d43f573eae1`, branch
+- Flow source `fe5a6930871707a7086c9a647867a519734220ef`, branch
   order-lifetime-2b25fa, worktree `/git/worktrees/flow-order-lifetime-2b25fa`.
 - `FLOW_PACKAGE`: that source's `packages.x86_64-linux.default` store output.
 - `CURRICULUM_PACKAGE`: same flake's `packages.x86_64-linux.curriculum`,

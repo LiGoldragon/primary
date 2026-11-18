@@ -80,3 +80,12 @@ test limit. Then propose the smallest environment correction/instrumentation for
 separate approval. A new job, test retry, test-thread change, file-limit change
 or source change requires a fresh grant. Native bootstrap driver assembly and
 final immutable review remain owed independently; no native admission exists.
+
+## Superseding decision
+
+Coreh8aj relays Psychednft: clippyPASS is sufficient; do not pursue the proposed
+environment diagnosis. Cleanup66lk/x6be accepted, allocation released. Since
+the owned Cargo target was removed, do not rebuild it for18 selective reruns.
+Proceed exactfe5a whole gate under the existing Nix policy; this does not
+reclassify preflight failures or prove their unknown causes. Gate4 started
+21:35:50UTC; its independent result and cleanup are still awaited.
