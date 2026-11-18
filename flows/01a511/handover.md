@@ -58,3 +58,13 @@ recipe remains predecessor packet. Narrowactivation includes ALL Ouranosordinary
 0.68 peers/Energy, no67backport or presumed0600equivalence. Contracts68/319e3c3,
 meta89.0.1/313bc05, base7fca4d5, translator6892a15. Taska8fa stays open.
 No owned background/build/native process remains. Next: audit reply and bootstrap.
+
+**Latest event dw8q:** Independent SOURCEPASS exact20ca7d8b; report
+`/tmp/order-lifetime-audit.l9U4PX/report.md`, no correctness findings. Core
+NOW authorizes own0.60.1 metadata only: daemonmanifest/flakeversion/rootlock/
+Cargo.nix ownpackage metadata; preserve ALLbase/contracts/deps/features/hashes.
+Prepare bounded regenerationpacket; NO heavySTART during Field3i9y trace.
+Finalmetadata commit then exactdelta review and immutablewholegate. No
+publication/runtime inferred. Immediate nextact is metadata packet + bootstrap.
+Fieldxt8o pins native `/nix/store/z5fprnr4ny9rgk8yn3f5s4vaj84ak76x-codex-next/bin/codex-next`;
+Psyche **5abw** holds credential/nativefamily choice, no approval yet.
