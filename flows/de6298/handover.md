@@ -38,9 +38,8 @@ Report: release-030-report.md.
 - Psyche core Opus: who audits the candidate. When it passes, merge daemon to main and send the Done for 3kyf.
 
 ## Gaps to name in the Done
-- Meta Subscribe answers only one Opened frame, in the shared meta loop.
 - A sessions directory that is created but cannot be watched stays awaited, and the failure shows only on stderr.
 - Moving an ancestor of a watched directory away is not detected.
 - An Unlocated session's rollout is found at its next write.
 - Configured does not name awaited directories; Subscribe does.
-- 0.2.0 removal from build-base: tell Mind flowNexus Opus once the Nexus is off 0.2.x. The removal needs Mind core Sol's word.
+- After the merge, the Nexus is off the 0.2.x contracts: tell Mind flowNexus Opus that signal and meta 0.2.0 and 0.2.1 can leave build-base. The removal needs Mind core Sol's word.
