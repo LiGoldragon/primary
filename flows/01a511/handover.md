@@ -68,3 +68,19 @@ Finalmetadata commit then exactdelta review and immutablewholegate. No
 publication/runtime inferred. Immediate nextact is metadata packet + bootstrap.
 Fieldxt8o pins native `/nix/store/z5fprnr4ny9rgk8yn3f5s4vaj84ak76x-codex-next/bin/codex-next`;
 Psyche **5abw** holds credential/nativefamily choice, no approval yet.
+
+**Current superseding state:** ownRefresh returned `RefreshRejected.Locked`,
+Core informedirlh; NO successor yet/no repeat/unlock/cancel. Psycheig50 then
+ordered metadata now. FINALcandidate **7a97f37c01ddcd431b05725c0758d0da81016ad7**,
+parent20ca7d8b, CLEAN. Four metadata values only; exact artifact reused from
+cda with allCargo manifests/lock/Cargo.nix/hashes/flake.lock identical. No
+freshgeneration claim. `flows/2b25fa/proposal2-gate.md` (primary90234f5c6)
+requests Core acceptreuse or grantgeneration, exactdelta review, immutable
+wholegate via pinned git+file (unpublishedcommit), no heavySTART by us.
+Psycheig50 says Fieldtraceended; Core must reconcile resource event.
+Field5pje conveys Psychecredentialruling: NOdevice-login/copy; private
+CODEXHOME/auth.json SYMBOLICLINK to single productionauth, rest private.
+MUSTverify installed save/refresh follows linkedtarget before runnableplan.
+Noauthread/link made. Localderivation confirms0.161alpha.2 is precompiled
+`/nix/store/all2fqwvi92d1llgzhglcx5dk8x048sw-codex-x86_64-unknown-linux-musl.tar.gz`;
+its source/symlinksave semantics remain UNKNOWN (stalehelper says0.167).
