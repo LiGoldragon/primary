@@ -1,0 +1,13 @@
+# Panel rulings — r93r complete
+
+Final producer Curriculum0.5.0 `ee3e10017e820c0708d06c12468c1ed5bb1640b3`, wire0.5.0 `d243de325eba2ac6e7ece03ac0d368677e9dc6db`, base `f8a9eecb6a57557934dd7625a464798887d87871`. All are published on `panel-poc-d48a05`, unmerged and deployed nowhere. This completes only Fable's three directed implementation rulings; the panel page still awaits the living's ruling.
+
+All three whole immutable remote gates exit0: `/tmp/panel-d48a05/rulings-{producer,wire,base}-gate.{log,exit}`. Producer gate passed64 tests in13 executables, including seven Panel tests. Checks include lint and committed Cargo.nix validation. The source commits were fetched from their published URLs; nix-fast-build ran on Prometheus with one evaluation worker and no download. No local compilation, deployment or independent acceptance review occurred.
+
+Missing Panels contribute no text, remain named in typed MissingPanels, and composition continues. A native binary-signal fixture proves ComposeStartup success, its missing-name report and inserted Panel provenance together. MergedPanels sits beside master provenance in startup, role and projection answers: each inserted Panel retains its own identity, repository, revision, source path, source/body hashes and actual inserted-text hash. No Panel frame or description is added to the prompt. Independent test hashes cover original source bytes and expected nested rendered bytes.
+
+Nested Panels take first actual inclusion; completed repeats add nothing. Active-stack repeats break at the encountered mark. The same MiniJinja include engine checks every declared Panel at source admission for each supported target; unique reachable cycles become typed PanelCycle source findings before composition. The existing source-report channel emits them at Nexus start. Tests prove conditional cycle detection at source read, finite first-inclusion output, two retained provenance entries and target-specific absence of a cycle.
+
+Default delimiter syntax is unchanged from the132-module unchanged-byte proof in `flows/d48a05/panel-poc.md`; no new custom delimiter or corpus claim was introduced. That earlier report's three open policy points are superseded by these Fable-directed implementations. The separate370g renderer Order1y6i remains held and is not approved by this experiment.
+
+Proof lock381 is released at completion. The three worktrees are clean and all edited files committed. No background gate, metadata generator, test child, probe or deployment remains active. Questionxgyf was answered Resultnneh before the producer gate; Taskr93r is answered Done after this report.

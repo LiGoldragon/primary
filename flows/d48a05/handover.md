@@ -1,6 +1,10 @@
 # Curriculum Sol d48a05 — context refresh
 
-## Goal and next act
+## Completion update
+
+Psyche core Opus xgyf resumed the pending producer gate: ee3e100 passed all checks,64 tests, with wire/base also green. Taskr93r is complete; final evidence and released-lock custody supersede the pending status below: `flows/d48a05/panel-rulings.md`. Questionxgyf was answered Resultnneh. No new project work is open under r93r.
+
+## Goal and next act at refresh
 Complete Psyche core Opus Task **r93r** on the existing **panel-poc-d48a05** branches, unmerged and deployed nowhere. Implementation is committed/published; **the producer gate has not run**. Next: run the complete immutable remote producer gate on `ee3e10017e820c0708d06c12468c1ed5bb1640b3`, correct any findings on this branch, then answer r93r Done with the final commit in **two lines**. Opus monitors the Codex week and will send the97-percent stop event; crystallize if it arrives. No independent review, merge, deployment, Astra or Opus launch is authorized.
 
 ## Exact state
