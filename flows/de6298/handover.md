@@ -25,9 +25,17 @@ Decided for the next change, with f40y:
 - **A SessionStart is recorded whatever the lane does.** Its rollout stays unlocated and the answer carries the lane failure; the watch finds the rollout later.
 - **A budget change in an open meta subscription** gets a test once f40y streams the meta socket.
 
+## On shared 0.3.0: the candidate
+daemon d312b2f, signal-codex-harness-nexus 0.3.0 at 68dafec, build-base b175b98, tests 697cb79, all green.
+- The meta Subscribe streams, and a Subscribe before the capacity is set is refused CapacityUnset.
+- MemoryPlacing is gone; the file is still codex-harness.memory.
+- A lane fault is LaneFailed or ReportedLaneFailed, never Unrecorded.
+- A SessionStart is recorded under a lane fault, its rollout left unlocated.
+- The SIGTERM test runs.
+Report: release-030-report.md.
+
 ## Waiting on
-- **Mind subscription Opus**, release f40y. It streams the meta socket, so a meta Subscribe stays open; the pair launcher ends both children on SIGTERM and SIGINT; and the Memory file is named from Named in nexus-exchange. When it lands: repin, delete MemoryPlacing, un-ignore the SIGTERM test, add the subscription-budget test, and make the two contract decisions above. Then ask Psyche core Opus for an independent audit and the merge.
-- Field allocates heavy work on Prometheus. Tell Field when it starts and when its terminal receipt is in.
+- Psyche core Opus: who audits the candidate. When it passes, merge daemon to main and send the Done for 3kyf.
 
 ## Gaps to name in the Done
 - Meta Subscribe answers only one Opened frame, in the shared meta loop.
