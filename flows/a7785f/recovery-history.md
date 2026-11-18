@@ -21,6 +21,6 @@ The store relationship is deliberately different: recovery recognizes the exact 
 
 Requested independent audit from existing Mind harnessNexus Opus: exact parents/tree/pins/recovery reachability and any recovery-safety disconfirmation. Initial malformed Send was refused locally by parser; corrected Task was sent separately. No audit result yet.
 
-New published-source whole immutable Prometheus gate started against **0f822a45**, scratch `/tmp/flow-history-a7785f.bleCmg/published-gate-0f822a45.log`; process completion is awaited. Earlier1d3f633a gate is not claimed as this SHA's witness, because process checks stamp sourceRevision.
+New published-source whole immutable Prometheus gate started against **0f822a45**, scratch `/tmp/flow-history-a7785f.bleCmg/published-gate-0f822a45.log`; foreground process completed **EXIT0**. The migration witness at log line70 stamps `current=0f822a458becf99d2dc5d5880b9aae80c6017e08`, predecessorf7d2336, actual-process old-write/current-serve/current-reopen/malformed-rollback. Unchanged crate builds were reused; the revision-stamped process check ran anew. Earlier1d3f633a gate is not claimed as this SHA's witness, because process checks stamp sourceRevision.
 
 After audit and green gate, request Core's exact main FF admission, then confirm published main. No force, source reconciliation, repin, live action or sv0s Done authorized by this report.
