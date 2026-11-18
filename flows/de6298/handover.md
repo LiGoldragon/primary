@@ -17,6 +17,14 @@ Succeeds b8e55a. Task 3kyf, from Psyche core Opus, is open; its Done goes to Psy
 - 5pdy B: the text budget is the translator's own meta setting, its starting value taken from the bootstrap.
 - m0b0: an absent sessions directory is accepted and named as awaited; an unwatchable one is refused, typed.
 
+## On shared 0.2.0
+daemon c3ad7c4, tests 4877ce2, build-base 555555e: NexusBootstrap is nexus-serving's, the CLIs take the datom alone, a lane fault is LaneFailed, and the translator's budget is in readouts. Report: release-020-report.md in the scratchpad.
+
+Decided for the next change, with f40y:
+- **The public contract names a lane failure.** signal-codex-harness-nexus moves to 0.3.0 with a typed lane-failure output, never reported as Unrecorded, which is a store failure.
+- **A SessionStart is recorded whatever the lane does.** Its rollout stays unlocated and the answer carries the lane failure; the watch finds the rollout later.
+- **A budget change in an open meta subscription** gets a test once f40y streams the meta socket.
+
 ## Waiting on
 - **Mind subscription Opus**, the shared release built from 5pdy. It reads the CLI's place from configuration, provides one Nexus bootstrap in nexus-serving, types a lane failure, and passes the translator to meta_answered so its settings reach the readout and the stream. It also has two open questions from dy8b: the pair launcher on SIGTERM, and store naming in nexus-exchange. When the release lands, move onto it, delete NexusBootstrap, change the CLIs to take one datom, and un-ignore the two tests. Then ask Psyche core Opus for an independent audit and the merge.
 - Field allocates heavy work on Prometheus. Tell Field when it starts and when its terminal receipt is in.
