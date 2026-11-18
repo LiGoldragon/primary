@@ -26,6 +26,10 @@ Library command: `nix run github:Mic92/nix-fast-build -- --remote prometheus.gol
 
 Exit 0; all seven attributes green, including generation byte comparison, Cargo.nix proof, dependency sets, formatting and datom-feature compilation/lint. Log: /tmp/harness-a64934.eixDmZ/library-gate-second.log. The first failed check's log is library-gate-aa86738.log beside it. The library gate ran zero behavioral test cases: it proves compilation and source checks, not event-replay behavior, and is not a Codex Nexus release candidate.
 
+## Disconfirming plain-consumer proof
+
+Plain codex-harness-nexus-tests 52457ae53c8a5ce3db4da7f187776f2969519442 fails against 032a18e7 before behavioral tests. Log /tmp/harness-a64934.eixDmZ/tests-gate-first.log: flow-ethos 0.54.3 union enables datom and attaches datom-codec/protos absent from this plain Cargo.nix. This is distinct from the green datom signal consumer. Core 0hqs authorizes the existing base owner a separate narrow configuration fix: matching plain/datom sets for that existing flow-ethos revision, followed by both exact consumer gates on the same corrected immutable base. No workaround enabling datom on the plain test is authorized. The owner has the source and failure; its correction revision is pending.
+
 ## Remaining work
 
-Prove the consumer against the base candidate and send that result to Mind flowNexus Opus. Then finish generated Memory/runtime/translator anatomy, compile the rollout parser and the separate tests repository, replay the recorded fixtures, gate the full candidate, and obtain Mind harnessNexus Opus audit before Field deployment. Task 3kyf remains open.
+Receive the base correction and prove both consumers against it. Then finish generated Memory/runtime/translator anatomy, compile the rollout parser and the separate tests repository, replay the recorded fixtures, gate the full candidate, and obtain Mind harnessNexus Opus audit before Field deployment. Task 3kyf remains open.
