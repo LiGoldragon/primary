@@ -1,22 +1,35 @@
 # Proposal 2 — corrected fixtures ready; gate and bootstrap controller next
 
-Act on a8fa first. Thresholdjebp refresh was accepted RefreshQueued e7552e.
-Current.Awake.e7552e confirmed before executing Core rbs0 gate. That gate is
-NOW TERMINAL EXIT1; no owned heavy/native process remains. Evidence
-`/tmp/flow-order-gate3-e7552e.rhMrKvW8`,21:01:14–21:02:38UTC. 17success/3fail
-(default/flow-nexus/migration): my new assert_eq compares outerResult containing
-StoreError, which has noPartialEq (E0369 queue_operations.rs503–514). Tests did
-not run. EXACTnextfix: replace that assert_eq with assert!(matches!(samecall,
-Ok(Err(signal_flow::Refusal::Unresolved)))); no StoreError derive/productionedit.
-Asked Core sourceonlygrant, then childreview/freshgate. NOedit/retryyet.
-LocalPGID1072878gone, remotezero nixbld after+freshread, ownedNFBscratch
-/tmp/tmp.bFfEeMVuCU absent; evidence/logs/results retained. AwaitCorecleanup
-acceptance/release. PriorRefreshQueued is real; do not repeat it.
+Act on a8fa first. Thresholdjebp refresh was accepted RefreshQueued e7552e;
+no successor yet. ONE ACTIVE phase supersedes next whole gate: Core4o4p/qanl
+admitted writer preflight at clean **fe5a6930871707a7086c9a647867a519734220ef**,
+soleparentd44. It changes only2lines assert_eq→assert!(matches!) plusclosing
+paren, same exact OrderUnresolved negative; rustfmt/diffPASS.
+Foreground exec12995, localPIDPGID1133285, local evidence
+`/tmp/flow-preflight-e7552e.GEWEoRbf`, remote
+`/tmp/flow-preflight-e7552e.rEz7eMNp`. Corebomq/Field1i1d START receipts,
+FIFO releasedONCE; qanl confirmsdirectstart. Lockedoffline
+`cargo clippy --all-targets --locked` THEN `cargo test -p flow-nexus --locked`,
+failfast/no retry. Existing rusttoolchainm3av1.99.1/gccwrapper3d1c15.3/git8wxs
+fromgatedrv; existingbuilderCargoHomecache/noCargo config;1job/taskset2CPUs,
+30mouter/29mremote INTKILL60. ExactgitarchiveSHA
+f8a38c69033f97cf47e71d38db43cecabb014b126cb162678d4712558e8853c6.
+Existinggate flow/scgkh+flow-meta/3s3h artifacts siblinged target/debug/deps for
+CLI fixtures; no source/dependency/buildconfigedit. Scripts/logs in evidence.
+WAIT phase terminal; reportclippy/testcounts, attributablelocal/remotegroups,
+remove ONLY remote source/target after logsretained andprocessproof. Any residual
+retains slot; NO wholegate until success+freshgrant. No nativephase active.
+Gate3d44 already TERMINAL EXIT1 E0369(myassert_eq requiredStoreErrorPartialEq),
+17success/3fail/default+flow-nexus+migration; FlowtestsUNRUN. Core4kf2 accepted
+cleanup/released then admitted exact2linefix; no productionderive/schemaedit.
+Evidence `/tmp/flow-order-gate3-e7552e.rhMrKvW8`; localPGID1072878gone,
+remotezero nixbld afterfresh/ownedNFBtmp.bFfEeMVuCU absent. All logs retained.
 Source427/packet422 inherited; own packet431. No publication,
 merge, native launch or live change. All other inherited work stays behind a8fa.
 
-**Next:** Current failed-compilation fixture candidate
-**d44ce7f8d1cef27fc0af3340d298571ab010399c**, soleparent
+**Next:** Current preflight candidate (historical fixture delta below)
+**fe5a6930871707a7086c9a647867a519734220ef**, soleparent
+d44ce7f8d1cef27fc0af3340d298571ab010399c, parent
 93efdac3eecee4ece5f602258fe04d43f573eae1, in
 `/git/worktrees/flow-order-lifetime-2b25fa`, branch order-lifetime-2b25fa.
 Coreh6e3 authorized fixtureONLY correction; rbs0 then admitted exactd44 gate (terminal above).
@@ -75,3 +88,10 @@ outside/no rebuild/start; CLI/hooks/wrappers/watchers move withFlowCLI.
 528n answered r3y7: Inspect emptylocks/attempts/noRestart/Released; historical
 Lockedcause UNKNOWN. Curriculum5o8d answered mr2c: verifiedFlowlaunch consumes
 ComposeStartup; no hot-native-systemskill injection exposed/claimed.
+
+New source-only `unit-cleanup-controller.md` proposes ONE private transientuser
+service/InvocationID/ControlGroup/20m runtime with terminalempty proof, replacing
+stalePIDkills. Still MUSTassemble exactdriver/code+receipts+matrix before final
+independentpacketreview; document is not executable/permission. InstalledHerdr
+source report SHA f2ca506e71bf788aa0ad4ee23f2ffd977c9f99bd826195d3c4ff6e4f8fceb56f.
+Fielddqmu accepts boundedsourcepath, actualnativeunitmembership still owed.
