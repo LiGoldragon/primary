@@ -1,8 +1,16 @@
 # Proposal 2 — preflight failed; environment diagnosis and bootstrap driver next
 
 Act on a8fa first. Own RefreshQueued e7552e already accepted after thresholdjebp;
-do not repeat it. No owned heavy/native process remains. Source427/packet422
-inherited, own packet431. No publication/merge/native/live. All other tasks held.
+do not repeat it. Current.Awake.e7552e confirmed before newphase.
+**ACTIVE whole gate Coreh8aj/Psychednft**, exactfe5a, foreground68159,
+PIDPGID1236579, started21:35:50UTC. Evidence
+`/tmp/flow-order-gate4-e7552e.O6cXFlox` (pointer /tmp/flow-order-gate4-e7552e.path).
+WAIT terminal/reconcile before rest. Same90m5400s1job1eval2coresINTKILL60.
+No retry/native/publication/merge. PREVIOUSpreflightcleanup66lk/x6be accepted,
+allocationRELEASED. Psychednft says clippyPASS ENOUGH; DO NOTchaseenvironment.
+Ownedtargetremoved, so chose WHOLEGATE now, NO18rerun/rebuild. Historical
+preflight resourcecause/HerdrUnreadable still UNKNOWN, no testsdisabled.
+Source427/packet422 inherited, own packet431; other tasks held.
 
 Clean candidate **fe5a6930871707a7086c9a647867a519734220ef** in
 `/git/worktrees/flow-order-lifetime-2b25fa`, branch order-lifetime-2b25fa.
@@ -11,20 +19,19 @@ queue_operations fixtures and adds exact OrderUnresolved negative; fe5 is ONLY
 2line assert_eq→assert!(matches!) to avoid StoreError PartialEq. Source-only
 independent fstqPASS; rustfmt/diffPASS. No production/schema/pin/metadata delta.
 
-**Next Core decision:** writer preflight4o4p/qanl is TERMINAL EXIT101.
+Historical writer preflight4o4p/qanl is TERMINAL EXIT101.
 `flows/e7552e/preflight-report.md` has exact evidence/environment/limits/nextscope.
 ClippyPASS with existinghook546warning; Flowtests1042PASS/18FAIL/8ignored.
 Both correctedfixturesPASS.17failblocks EMFILE;1wake testHerdrUnreadable cause
 UNKNOWN. CurrentSSHnofile1024/524288 is not historicaltestlimit proof.
-Core ng7f forbids retry/newjob/wholegate/sourcechange; asks smallest bounded
-comparison with knownNixgate environment. Proposed READONLY Nixrunner/source+
-currentdaemon/SSHlimit metadata comparison, no blanketcauseclaim or testdisable.
+Core ng7f diagnosis request SUPERSEDED byh8aj/dnft: no environmentchase;
+clippyPASS sufficient to proceed existing whole-gate policy.
 Cleanup completed: pidfdTERM two exactremainingfixturechildren, both exitseen,
 rootprocessZERO/localgroupgone; ownedremote source/targetremoved, logs retained.
-Cleanup66lk deliveredUncertain, notresent; later analysis answersng7f. Await Core
-acceptance/release, no residualheavy claimed beyond this bounded evidence.
+Cleanup66lk deliveredUncertain, notresent; later analysis answersng7f. Coreh8aj ACCEPTED cleanup/release, no residualpreflightworkload claimed beyond
+this bounded evidence.
 Local evidence `/tmp/flow-preflight-e7552e.GEWEoRbf`; remote retained evidence
-`/tmp/flow-preflight-e7552e.rEz7eMNp`. No runnablephase pending.
+`/tmp/flow-preflight-e7552e.rEz7eMNp`. Whole gate4 above is the ONLY current phase.
 
 Earlier whole gates:7a97failed unusedimports;93efd1058PASS/2stalefixtureFAIL/
 8ignored and explicitmigrationPASS; d44compileE0369. All terminal/cleanup accepted
@@ -61,3 +68,9 @@ Chain: diagnosis/admittedpreflight→freshwholegate→finaldriverreview/Fieldadm
 →nativecheapmatrix+successor→nonwritercommit+evidenceaudit Overrides.2→Opus
 acceptance→main/switch. Final cohort FLOW+ENERGY ONLY; dormantMessage0.25/wire63
 outside/no rebuild/start; CLI/hooks/wrappers/watchers move withFlowCLI.
+
+Fieldcik0 followup /tmp/e7552e-cleanup-controller-followup-review.md: DESIGN-SHAPE
+findingsclosed, NOTexecutionready. Assemble immutable actualdriver/go-parser/
+trap/paneobservers/closure, bindfinalsource (bootstrapstill93efd), exactoutputs/
+tools, renderexactabsoluteCLI/privateXDG matrixprompts incl PhaseBTaskcommand.
+Actualunit/descendant/emptywitnesses onlyafteradmission; no kernelisolationblocker.
