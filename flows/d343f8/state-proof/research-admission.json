@@ -1,0 +1,12 @@
+{
+  "format": "ResearchSystemStateAdmission.v1",
+  "authority": "Research",
+  "decision": "Admitted",
+  "manifest_sha256": "0fc2bed0944deb0089d860ba5124d9e3b6f4f601b108d3a44662fce8ae7e4242",
+  "maximum_provider_calls": 3,
+  "maximum_usd": "10.00",
+  "global_unreserved_usd": "28.652623645",
+  "run_namespace": "7447ce3c-b18e-492e-b783-fe8216a37832",
+  "admitted_at_utc": "2026-11-19T06:31:20Z",
+  "expires_at_utc": "2026-11-19T06:43:47Z"
+}
