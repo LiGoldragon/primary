@@ -32,6 +32,52 @@ def strict_json(data):
     return json.loads(data, object_pairs_hook=unique, parse_constant=invalid_constant)
 
 
+def tool_evidence(call_bytes, response_bytes, surface):
+    """Read direct tool evidence or an actual retained Codex exec row pair.
+
+    The exec result is its printed JSON value, never a reconstructed RPC wrapper.
+    """
+    call = strict_json(call_bytes)
+    if call.get('type') == 'response_item':
+        reply = strict_json(response_bytes)
+        invocation, output = call['payload'], reply['payload']
+        call_id = invocation['call_id']
+        if (invocation['type'] != 'custom_tool_call' or invocation['name'] != 'exec' or
+                reply['type'] != 'response_item' or output['type'] != 'custom_tool_call_output' or
+                output['call_id'] != call_id):
+            raise MatrixError('exec invocation/result identity mismatch')
+        program = re.fullmatch(r'\s*const\s+(\w+)\s*=\s*await\s+tools\.(send|exec_command)\((.*)\);\s*text\(JSON\.stringify\(\1\)\);\s*',
+                               invocation['input'], re.S)
+        if program is None or program[2] != ('send' if surface == 'native' else 'exec_command'):
+            raise MatrixError('exec invocation is not the expected tool call')
+        # Codex writes literal JS objects with bare keys; string values stay exact.
+        pieces = re.split(r'("(?:\\.|[^"\\])*")', program[3])
+        for index in range(0, len(pieces), 2):
+            pieces[index] = re.sub(r'([A-Za-z_$][A-Za-z0-9_$]*)\s*:', r'"\1":', pieces[index])
+        arguments = strict_json(''.join(pieces))
+        items = output['output']
+        if not items or any(item['type'] != 'input_text' for item in items):
+            raise MatrixError('exec result has no printed JSON answer')
+        result = strict_json(items[-1]['text'])
+        if surface == 'native':
+            if not isinstance(result, str):
+                raise MatrixError('native exec answer is not a typed string')
+            return call_id, arguments, result, None
+        if result['exit_code'] != 0 or not isinstance(result['output'], str):
+            raise MatrixError('CLI exec command did not complete successfully')
+        return call_id, arguments['cmd'], result['output'], None
+    field = 'arguments' if surface == 'native' else 'command'
+    if set(call) != {'call_id', field}:
+        raise MatrixError('invalid direct tool invocation')
+    if surface == 'native':
+        response = strict_json(response_bytes)
+        items = response['contentItems']
+        if len(items) != 1 or items[0]['type'] != 'inputText' or not isinstance(response['success'], bool):
+            raise MatrixError('invalid direct native answer')
+        return call['call_id'], call[field], items[0]['text'], response['success']
+    return call['call_id'], call[field], response_bytes.decode('utf-8'), None
+
+
 KINDS = {'O': 'Order', 'Q': 'Question', 'T': 'Task', 'N': 'Notice', 'L': 'Living',
          'K': 'Question', 'O2': 'Order', 'Q2': 'Question', 'T2': 'Task'}
 
@@ -229,12 +275,18 @@ def quoted_content(text):
     return text.replace('\\', '\\\\').replace('«', '\\«').replace('»', '\\»')
 
 
+RESULT_INSTRUCTION = (' For every native Result, call tools.send with kind "Result" and '
+                      'request set to the captured RequestId STRING, for example "request":"abcd" '
+                      'with abcd replaced by the actual ID. Use the prescribed target and body. '
+                      'Do not use requestId or an object. Call with const r = await tools.send(the exact argument object); text(JSON.stringify(r)); to print the returned value.')
+
+
 def control_question(owner, side, prompt, ledger, private_call, receipt_tokens):
     if side not in ('sender', 'receiver') or not isinstance(prompt, str) or not prompt:
         raise MatrixError('invalid control question')
     ledger.instructed_turn(side)
     topic = 'proposalTwoSender' if side == 'sender' else 'proposalTwoReceiver'
-    quoted = quoted_content(prompt)
+    quoted = quoted_content(prompt + RESULT_INSTRUCTION)
     label = 'control-' + side + '-' + str(ledger.turns[side])
     request = 'Send.{ { Mind ' + topic + ' Luna } Soft.Question.«' + quoted + '» }'
     response = private_call(owner, label, 'flow', request)
@@ -1006,7 +1058,6 @@ class EvidenceChannel:
             elif event['minutes'] is not None:
                 raise MatrixError('unexpected Minutes')
             call_bytes = self._source(event['invocation'])
-            call = strict_json(call_bytes)
             native_bodies = {'O': 'P2-order-before: record this marker and its request id; give no Result.',
                              'Q': 'P2-question-before: keep unanswered until explicitly authorized in phase A.',
                              'N': 'P2-notice-before: record marker; no answer.',
@@ -1014,18 +1065,15 @@ class EvidenceChannel:
             cli_requests = {'T': 'Send.{ { Mind proposalTwoReceiver Luna } Soft.Task.{ 15 «P2-task-before: hold until phase A authorization.» } }',
                             'L': 'Send.{ { Mind proposalTwoReceiver Luna } Soft.Living.{ «Proposal 2 isolated matrix» «P2-living-before: record this statement.» } }',
                             'T2': 'Send.{ { Mind proposalTwoReceiver Luna } Soft.Task.{ 15 «P2-task-carry-required-7a97» } }'}
-            field = 'arguments' if label in native_bodies else 'command'
+            surface = 'native' if label in native_bodies else 'cli'
             expected_call = native_send('proposalTwoReceiver', kind, native_bodies[label]) if label in native_bodies else private_cli({'root': str(self.root), 'providers': self.providers}, cli_requests[label])
-            if set(call) != {'call_id', field} or not valid_id(call['call_id']) or call['call_id'] in self.invocations or call[field] != expected_call:
-                raise MatrixError('wrong or reused sender invocation')
             content = self._source(event['receipt'])
-            text = content.decode('utf-8')
-            if label in ('O', 'Q', 'N', 'O2', 'Q2'):
-                payload = strict_json(text)
-                items = payload['contentItems']
-                if payload['success'] is not True or len(items) != 1 or items[0]['type'] != 'inputText':
+            call_id, arguments, text, success = tool_evidence(call_bytes, content, surface)
+            if not valid_id(call_id) or call_id in self.invocations or arguments != expected_call:
+                raise MatrixError('wrong or reused sender invocation')
+            if surface == 'native':
+                if success is False:
                     raise MatrixError('invalid native tool admission')
-                text = items[0]['text']
                 if decode_native_acceptance(text, 'proposalTwoSender', 'proposalTwoReceiver', receipt_tokens) != request_id:
                     raise MatrixError('native send not accepted')
             elif parse_visible_admission(text, receipt_tokens) != request_id:
@@ -1037,7 +1085,7 @@ class EvidenceChannel:
             raise MatrixError('malformed admission evidence') from exc
         self._retain('%04d.admission.receipt' % index, content)
         self._retain('%04d.admission.invocation' % index, call_bytes)
-        self.invocations.add(call['call_id'])
+        self.invocations.add(call_id)
         self.requests[label] = request_id
         self.minutes[label] = event['minutes']
         return event
@@ -1083,17 +1131,11 @@ class EvidenceChannel:
                 raise MatrixError('reply outcome identity mismatch')
             call_bytes = self._source(event['invocation'])
             response_bytes = self._source(event['response'])
-            call = strict_json(call_bytes)
-            field = 'arguments' if surface == 'native' else 'command'
-            if set(call) != {'call_id', field} or not valid_id(call['call_id']) or call['call_id'] in self.invocations or call[field] != invocation:
+            call_id, arguments, response, success = tool_evidence(call_bytes, response_bytes, surface)
+            if not valid_id(call_id) or call_id in self.invocations or arguments != invocation:
                 raise MatrixError('wrong or reused invocation')
-            response = response_bytes.decode('utf-8')
-            if surface == 'native':
-                payload = strict_json(response)
-                items = payload['contentItems']
-                if len(items) != 1 or items[0]['type'] != 'inputText' or payload['success'] is not (expected != 'unresolved'):
-                    raise MatrixError('native outcome wrapper mismatch')
-                response = items[0]['text']
+            if surface == 'native' and success is not None and success is not (expected != 'unresolved'):
+                raise MatrixError('native outcome wrapper mismatch')
             tokens = receipt_tokens(response)
             if expected == 'unresolved':
                 wanted = 'Refused.Unresolved' if surface == 'native' else 'SendRefused.Unresolved'
@@ -1119,7 +1161,7 @@ class EvidenceChannel:
                     raise MatrixError('kept response mismatch')
         except (KeyError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise MatrixError('invalid reply outcome evidence') from exc
-        self.invocations.add(call['call_id'])
+        self.invocations.add(call_id)
         self._retain('%04d.outcome.invocation' % index, call_bytes)
         self._retain('%04d.outcome.response' % index, response_bytes)
         return response
@@ -1199,21 +1241,18 @@ class EvidenceChannel:
                 raise MatrixError('wrong control completion identity')
             call_bytes = self._source(event['invocation'])
             response_bytes = self._source(event['response'])
-            call = strict_json(call_bytes)
-            args = call['arguments']
-            if set(call) != {'call_id', 'arguments'} or not valid_id(call['call_id']) or call['call_id'] in self.invocations or args.get('kind') != 'Result' or args.get('request') != request_id:
+            call_id, args, response, success = tool_evidence(call_bytes, response_bytes, 'native')
+            if not valid_id(call_id) or call_id in self.invocations or args.get('kind') != 'Result' or args.get('request') != request_id:
                 raise MatrixError('wrong or reused control Result invocation')
-            payload = strict_json(response_bytes)
-            items = payload['contentItems']
-            if payload['success'] is not True or len(items) != 1 or items[0]['type'] != 'inputText':
+            if success is False:
                 raise MatrixError('control Result not kept')
             topic = 'proposalTwoSender' if side == 'sender' else 'proposalTwoReceiver'
-            tokens = [t[1] if isinstance(t, tuple) else t for t in receipt_tokens(items[0]['text'])]
+            tokens = [t[1] if isinstance(t, tuple) else t for t in receipt_tokens(response)]
             if tokens != ['Kept.', '{', 'Sender.', '{', 'Mind', topic, 'Luna', '}', request_id, '}']:
                 raise MatrixError('control Kept sender or ID mismatch')
         except (KeyError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise MatrixError('invalid control completion evidence') from exc
-        self.invocations.add(call['call_id'])
+        self.invocations.add(call_id)
         self._retain('%04d.control-completion.invocation' % index, call_bytes)
         self._retain('%04d.control-completion.response' % index, response_bytes)
 
