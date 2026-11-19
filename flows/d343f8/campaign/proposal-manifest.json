@@ -211,15 +211,143 @@
   "binary": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
   "processor_configuration": "/home/li/primary/flows/250509/trial/processor.json",
   "worker_policy_file": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+  "execution_closure": {
+    "worker_entrypoint": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+    "worker_python_sources": [
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+        "sha256": "889d65b842ec78ce412f4cbca07c9340a8a542ebbeeab8c95faff708254559e8"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+        "sha256": "ed2333eedc6934cc161528e79871ff47c775fe624c5acdeee5b69b471ee5af27"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+        "sha256": "0016ff2555a21ce739ceec7098cfe08f98ef6e70eda7bfd0265d54b80d4563f2"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+        "sha256": "10b93e709fa761faf61f54d57737114b604b11a206dacb1e66cd058804965755"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+        "sha256": "c5e4009647705d175ec482a9848d8233023f14e47475f76acec7617443a45c84"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+        "sha256": "00ced57948d0bdac8ff9a872973cc425ad42d25f9881e83f5ccdd518c25e44e2"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+        "sha256": "238f4a59c2cf14f9dd6a1538963992490886cfff33774540ab028ba592c38b98"
+      },
+      {
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+        "sha256": "89a534f6c231732c0c9af6c71b6f3b7e277d9f15432d1dad1e1c75718c04a0c8"
+      }
+    ],
+    "static_inputs": [
+      {
+        "role": "general_worker_policy",
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+        "sha256": "8f49359c2fab6038a5380f419d2a692df03312ff84dbf3cdde2a564bc5314e34"
+      },
+      {
+        "role": "native_worker_policy",
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+        "sha256": "a2010528244b534b77b084b0b0b7f6636393b55b9f4e45cc3e6bc47ef0606006"
+      },
+      {
+        "role": "settlement_policy",
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+        "sha256": "d164258f6a4c3e8f9bc0a6587b43135e6f9b9a0df90e160d58c2b8c0a27efa5d"
+      },
+      {
+        "role": "historical_evidence_manifest",
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+        "path": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+        "sha256": "901e5782df230c4cead9e5bf1f0aded215f80a24f3323a852a00d82775c32675"
+      },
+      {
+        "role": "transport_ca_bundle",
+        "configured_path": "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt",
+        "path": "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt",
+        "sha256": "0852886a1ca577211c55d002bca524db6e7933bb2cdf437a0a03750222970443"
+      }
+    ],
+    "executables": [
+      {
+        "role": "controller_interpreter",
+        "configured_path": "/home/li/.nix-profile/bin/python",
+        "path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc"
+      },
+      {
+        "role": "processor_interpreter",
+        "configured_path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc"
+      },
+      {
+        "role": "producer_guard_interpreter",
+        "configured_path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc"
+      },
+      {
+        "role": "curl",
+        "configured_path": "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+        "path": "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+        "sha256": "9bc8efd91113590647f352915ee115eec5283cde5a372644dc6a9b3b4c03c3f2"
+      },
+      {
+        "role": "bubblewrap",
+        "configured_path": "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+        "path": "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+        "sha256": "b45d70ccbdae62bb863c8ad5b6d3d60c2d01dbfe88ca7517edc7ce5ad86497d3"
+      },
+      {
+        "role": "credential_producer",
+        "configured_path": "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+        "path": "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+        "sha256": "dd468f777d487e37985af1c0bd6d975cb5291ff4acad239c1812781428838745"
+      }
+    ],
+    "mutable_accounting_input": {
+      "ledger_path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "device": 66306,
+      "inode": 53531629,
+      "baseline_sha256": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132",
+      "validation_owner": "pinned worker and Research ledger; ledger content is not frozen here"
+    }
+  },
   "runtime_guard_files": [
-    "/home/li/primary/flows/d343f8/campaign/generator.py",
-    "/home/li/primary/flows/d343f8/campaign/controller.py",
-    "/home/li/primary/flows/d343f8/campaign/tests.py",
-    "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
-    "/home/li/primary/flows/250509/trial/processor.json",
     "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
     "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
-    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py"
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+    "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+    "/home/li/primary/flows/250509/trial/processor.json",
+    "/home/li/primary/flows/d343f8/campaign/controller.py",
+    "/home/li/primary/flows/d343f8/campaign/generator.py",
+    "/home/li/primary/flows/d343f8/campaign/tests.py",
+    "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+    "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+    "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
+    "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+    "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+    "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt"
   ],
   "processor_timeout_seconds": 105,
   "result_directory": "/home/li/primary/flows/d343f8/campaign/results/b8b816ee-56d4-5b14-91d3-aa26db1f49cb",
@@ -309,8 +437,44 @@
       "sha256": "889d65b842ec78ce412f4cbca07c9340a8a542ebbeeab8c95faff708254559e8"
     },
     {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+      "sha256": "ed2333eedc6934cc161528e79871ff47c775fe624c5acdeee5b69b471ee5af27"
+    },
+    {
       "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
       "sha256": "0016ff2555a21ce739ceec7098cfe08f98ef6e70eda7bfd0265d54b80d4563f2"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+      "sha256": "a2010528244b534b77b084b0b0b7f6636393b55b9f4e45cc3e6bc47ef0606006"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+      "sha256": "10b93e709fa761faf61f54d57737114b604b11a206dacb1e66cd058804965755"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+      "sha256": "c5e4009647705d175ec482a9848d8233023f14e47475f76acec7617443a45c84"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+      "sha256": "00ced57948d0bdac8ff9a872973cc425ad42d25f9881e83f5ccdd518c25e44e2"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+      "sha256": "238f4a59c2cf14f9dd6a1538963992490886cfff33774540ab028ba592c38b98"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+      "sha256": "d164258f6a4c3e8f9bc0a6587b43135e6f9b9a0df90e160d58c2b8c0a27efa5d"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+      "sha256": "89a534f6c231732c0c9af6c71b6f3b7e277d9f15432d1dad1e1c75718c04a0c8"
+    },
+    {
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+      "sha256": "901e5782df230c4cead9e5bf1f0aded215f80a24f3323a852a00d82775c32675"
     },
     {
       "path": "/home/li/primary/flows/250509/trial/opus-inputs/claude-opus-5-5--belief-04.json",
@@ -1382,23 +1546,43 @@
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/controller.py",
-      "sha256": "3e61e66784f2ddbba2df6ca87a61b128ee72cd898f1d2f6f7afac85982f40556"
+      "sha256": "7920673ea9bfcf4a4335e27a3d1591baccaf1e9ca4ddfeea9b362f24c0a1d70b"
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/generator.py",
-      "sha256": "fcd382deaad56f4505c70115fea9b14f95220f851ef90b47b0c9146ff9fd4615"
+      "sha256": "7c2cd86f481905025f9c00238167dd7ab3758fe68dbb1934adf57f5cef6b96a4"
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/tests.py",
-      "sha256": "8daca3c2d48ce8c9629af0286e537e2cba51e2a504c92d266852dac3d32dac3c"
+      "sha256": "745eded8b91082976bf83e89a4a1d3e569c154ea764d2f3b2be9eabdcdf2c6da"
     },
     {
       "path": "/home/li/primary/flows/d343f8/december-campaign-proposal.md",
       "sha256": "bc1051b38e9512fd891fc6de99a9c064f27fb00654d10f0d30d09487a6d70f31"
     },
     {
+      "path": "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+      "sha256": "dd468f777d487e37985af1c0bd6d975cb5291ff4acad239c1812781428838745"
+    },
+    {
+      "path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+      "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc"
+    },
+    {
       "path": "/nix/store/cypgwgbbhngkfsjm9y634fqh861f71iv-rust_typed-call-trial-0.1.0-bin/bin/typed-call-trial",
       "sha256": "ecd75629f915161da4c7b476a4087b9125cbc008286c812c11ace8ae158df73c"
+    },
+    {
+      "path": "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+      "sha256": "b45d70ccbdae62bb863c8ad5b6d3d60c2d01dbfe88ca7517edc7ce5ad86497d3"
+    },
+    {
+      "path": "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+      "sha256": "9bc8efd91113590647f352915ee115eec5283cde5a372644dc6a9b3b4c03c3f2"
+    },
+    {
+      "path": "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt",
+      "sha256": "0852886a1ca577211c55d002bca524db6e7933bb2cdf437a0a03750222970443"
     }
   ],
   "slots": [
@@ -15653,5 +15837,5 @@
       "derived_packet": true
     }
   ],
-  "canonical_sha256": "99ee9f1c33e28caabe8bea823cc0e24ba56061aafd6f74dffd82764703ad7d21"
+  "canonical_sha256": "65e98f7ad95afa3426e6040d6a2bab142cd19b8e28cdf5e60462f7614a3f0e6a"
 }

@@ -7,6 +7,7 @@ the pinned worker and Research ledger remain authoritative for each reservation.
 from __future__ import annotations
 
 import argparse
+import ast
 from collections import Counter
 from contextlib import contextmanager
 from decimal import Decimal, InvalidOperation
@@ -58,6 +59,125 @@ def sha256_file(path: Path) -> str:
         return sha256_bytes(path.read_bytes())
     except OSError as error:
         raise CampaignError(f"cannot hash {path}: {error}") from error
+
+
+def _local_worker_source_closure(entrypoint: Path) -> list[Path]:
+    """Find Python files in the entrypoint's recursive local import closure."""
+    root = entrypoint.resolve(strict=True).parent
+    pending = [entrypoint.resolve(strict=True)]
+    found: set[Path] = set()
+    while pending:
+        source = pending.pop().resolve(strict=True)
+        if source in found:
+            continue
+        found.add(source)
+        try:
+            tree = ast.parse(source.read_text(encoding="utf-8"), filename=str(source))
+        except (OSError, UnicodeError, SyntaxError) as error:
+            raise CampaignError(f"cannot inspect execution source {source}: {error}") from error
+        modules: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                modules.update(alias.name.split(".", 1)[0] for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                modules.add(node.module.split(".", 1)[0])
+            elif isinstance(node, ast.Constant) and isinstance(node.value, str) and node.value.endswith(".py"):
+                # The worker starts producer_guard.py as a separately executed source file.
+                candidate = (root / node.value).resolve()
+                if candidate.parent == root and candidate.is_file():
+                    modules.add(candidate.stem)
+        for module in modules:
+            candidate = root / f"{module}.py"
+            if candidate.is_file():
+                pending.append(candidate)
+    return sorted(found, key=str)
+
+
+def derive_execution_closure(worker_policy_path: Path, processor_configuration_path: Path) -> dict:
+    """Describe the installed execution and accounting inputs without opening the ledger."""
+    worker_policy_path = worker_policy_path.resolve(strict=True)
+    worker_root = worker_policy_path.parent
+    policy = read_json(worker_policy_path)
+    shared = policy.get("shared")
+    require(isinstance(shared, dict), "worker shared policy is missing")
+    processor_configuration_path = processor_configuration_path.resolve(strict=True)
+    processor_configuration = read_json(processor_configuration_path)
+    processor_executable = Path(processor_configuration.get("executable", "")).resolve(strict=True)
+    arguments = processor_configuration.get("arguments")
+    require(isinstance(arguments, list) and arguments and isinstance(arguments[-1], str),
+            "processor entrypoint is missing")
+    entrypoint = Path(arguments[-1]).resolve(strict=True)
+    require(entrypoint.parent == worker_root and entrypoint.is_file(),
+            "processor entrypoint is outside the pinned worker directory")
+
+    worker_sources = _local_worker_source_closure(entrypoint)
+    native_policy_path = worker_root / "policy.json"
+    settlement_policy_path = worker_root / "settlement-policy.json"
+    for path in (worker_policy_path, native_policy_path, settlement_policy_path):
+        require(path.is_file() and not path.is_symlink(), f"worker static policy input is absent or indirect: {path}")
+    native_policy = read_json(native_policy_path)
+    settlement_policy = read_json(settlement_policy_path)
+    historical_manifest_path = Path(settlement_policy.get("historical_manifest_path", "")).resolve(strict=True)
+    ca_file_path = Path(shared.get("ca_file", "")).resolve(strict=True)
+
+    ledger_path = Path(shared.get("authoritative_ledger_path", ""))
+    ledger_identity = shared.get("authoritative_ledger_identity")
+    baseline_sha256 = shared.get("baseline_sha256")
+    require(isinstance(ledger_identity, dict) and set(ledger_identity) == {"device", "inode"},
+            "worker ledger identity is malformed")
+    require(isinstance(baseline_sha256, str) and len(baseline_sha256) == 64 and
+            baseline_sha256 == native_policy.get("baseline_sha256"),
+            "worker baseline digests disagree")
+    require(ledger_path == Path(native_policy.get("authoritative_ledger_path", "")) and
+            ledger_identity == native_policy.get("authoritative_ledger_identity"),
+            "worker ledger identity differs from native policy")
+    require(canonical_sha256(native_policy) == shared.get("native_policy_sha256"),
+            "native policy content differs from the configured policy digest")
+    require(sha256_file(historical_manifest_path) == settlement_policy.get("historical_manifest_sha256"),
+            "settlement evidence manifest digest differs from its policy")
+
+    producer_command = shared.get("producer_command")
+    require(isinstance(producer_command, list) and producer_command and isinstance(producer_command[0], str),
+            "configured credential producer executable is missing")
+    executable_paths = [
+        ("controller_interpreter", Path(sys.executable)),
+        ("processor_interpreter", processor_executable),
+        ("producer_guard_interpreter", processor_executable),
+        ("curl", Path(shared.get("curl", ""))),
+        ("bubblewrap", Path(shared.get("bubblewrap", ""))),
+        ("credential_producer", Path(producer_command[0])),
+    ]
+    executables = []
+    for role, configured_path in executable_paths:
+        resolved = configured_path.resolve(strict=True)
+        require(resolved.is_file(), f"configured execution component is not a file: {configured_path}")
+        executables.append({"role": role, "configured_path": str(configured_path),
+                            "path": str(resolved), "sha256": sha256_file(resolved)})
+    static_inputs = []
+    for role, source_path in (
+        ("general_worker_policy", worker_policy_path),
+        ("native_worker_policy", native_policy_path),
+        ("settlement_policy", settlement_policy_path),
+        ("historical_evidence_manifest", historical_manifest_path),
+        ("transport_ca_bundle", ca_file_path),
+    ):
+        require(source_path.is_file(), f"configured static input is not a file: {source_path}")
+        resolved = source_path.resolve(strict=True)
+        static_inputs.append({"role": role, "configured_path": str(source_path),
+                              "path": str(resolved), "sha256": sha256_file(resolved)})
+    return {
+        "worker_entrypoint": str(entrypoint),
+        "worker_python_sources": [{"path": str(path), "sha256": sha256_file(path)} for path in worker_sources],
+        "static_inputs": static_inputs,
+        "executables": executables,
+        "mutable_accounting_input": {
+            "ledger_path": str(ledger_path),
+            "device": ledger_identity["device"],
+            "inode": ledger_identity["inode"],
+            "baseline_sha256": baseline_sha256,
+            "validation_owner": "pinned worker and Research ledger; ledger content is not frozen here",
+        },
+    }
 
 
 def decimal(value: object, field: str) -> Decimal:
@@ -378,6 +498,30 @@ def verify_manifest(manifest_path: Path, manifest: dict | None = None) -> dict:
         require_file_digest(path, source.get("sha256"), "frozen source")
         frozen_paths[str(path.resolve())] = source["sha256"]
 
+    processor_configuration_value = value.get("processor_configuration")
+    require(isinstance(processor_configuration_value, str), "processor configuration path is missing")
+    closure = derive_execution_closure(policy_path, Path(processor_configuration_value))
+    require(value.get("execution_closure") == closure,
+            "installed execution/accounting closure differs from its frozen specification")
+    closure_paths = {
+        item["path"]
+        for group in ("worker_python_sources", "static_inputs", "executables")
+        for item in closure[group]
+    }
+    for path in closure_paths:
+        require(frozen_paths.get(path) is not None,
+                f"installed execution/accounting input is not frozen: {path}")
+    runtime_guard_values = value.get("runtime_guard_files")
+    require(isinstance(runtime_guard_values, list) and
+            all(isinstance(path, str) for path in runtime_guard_values) and
+            len(runtime_guard_values) == len(set(runtime_guard_values)),
+            "runtime guard file list is malformed")
+    runtime_guard_paths = {str(Path(path).resolve(strict=True)) for path in runtime_guard_values}
+    require(closure_paths <= runtime_guard_paths,
+            "installed execution/accounting closure is missing runtime guards")
+    require(all(path in frozen_paths for path in runtime_guard_paths),
+            "a runtime guard is absent from the frozen source list")
+
     for slot in slots:
         for path_field, hash_field in (("source_call_path", "source_call_sha256"),
                                        ("source_prompt_path", "source_prompt_sha256")):
@@ -399,6 +543,10 @@ def verify_manifest(manifest_path: Path, manifest: dict | None = None) -> dict:
 def verify_runtime_slot(manifest_path: Path, manifest: dict, slot: dict, manifest_file_sha256: str) -> Path:
     """Recheck exact inputs and critical source files immediately before a call."""
     require_file_digest(manifest_path, manifest_file_sha256, "manifest")
+    current_closure = derive_execution_closure(Path(manifest["worker_policy_file"]),
+                                               Path(manifest["processor_configuration"]))
+    require(current_closure == manifest.get("execution_closure"),
+            "installed execution/accounting closure drifted before slot invocation")
     input_path = resolve_campaign_path(manifest_path.parent, slot["call_file"])
     prompt_path = resolve_campaign_path(manifest_path.parent, slot["prompt_file"])
     require_file_digest(input_path, slot["call_sha256"], "call input")
@@ -411,8 +559,60 @@ def verify_runtime_slot(manifest_path: Path, manifest: dict, slot: dict, manifes
     return input_path
 
 
+def fsync_directory(path: Path) -> None:
+    """Persist one directory inode, failing closed when durability is unavailable."""
+    path = Path(path)
+    try:
+        directory_fd = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) |
+                               getattr(os, "O_NOFOLLOW", 0))
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    except OSError as error:
+        raise CampaignError(f"directory durability failed for {path}: {error}") from error
+
+
+def sync_directory_ancestors(path: Path) -> None:
+    """Sync a directory and every parent entry through the filesystem root."""
+    current = Path(path).resolve(strict=True)
+    require(current.is_dir(), f"durability path is not a directory: {current}")
+    while True:
+        fsync_directory(current)
+        if current.parent == current:
+            break
+        current = current.parent
+
+
+def durable_mkdir(path: Path, sync_ancestors: bool = False) -> None:
+    """Create directories one at a time and persist each new parent entry."""
+    path = Path(path)
+    missing = []
+    current = path
+    while not current.exists():
+        missing.append(current)
+        parent = current.parent
+        require(parent != current, f"no existing parent for directory {path}")
+        current = parent
+    require(current.is_dir() and not current.is_symlink(), f"directory path is not a real directory: {current}")
+    for directory in reversed(missing):
+        try:
+            directory.mkdir()
+        except FileExistsError:
+            require(directory.is_dir() and not directory.is_symlink(),
+                    f"directory path changed during creation: {directory}")
+        fsync_directory(directory)
+        fsync_directory(directory.parent)
+    if not missing:
+        fsync_directory(path)
+        if path.parent != path:
+            fsync_directory(path.parent)
+    if sync_ancestors:
+        sync_directory_ancestors(path)
+
+
 def durable_json(path: Path, value: dict, exclusive: bool = True) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    durable_mkdir(path.parent)
     flags = os.O_WRONLY | os.O_CREAT | (os.O_EXCL if exclusive else os.O_TRUNC)
     descriptor = os.open(path, flags, 0o600)
     try:
@@ -421,11 +621,7 @@ def durable_json(path: Path, value: dict, exclusive: bool = True) -> None:
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        directory_fd = os.open(path.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
-        try:
-            os.fsync(directory_fd)
-        finally:
-            os.close(directory_fd)
+        fsync_directory(path.parent)
     except BaseException:
         try:
             os.close(descriptor)
@@ -436,8 +632,11 @@ def durable_json(path: Path, value: dict, exclusive: bool = True) -> None:
 
 @contextmanager
 def exclusive_launch_lock(path: Path):
-    path.parent.mkdir(parents=True, exist_ok=True)
+    durable_mkdir(path.parent, sync_ancestors=True)
     with path.open("a+") as stream:
+        stream.flush()
+        os.fsync(stream.fileno())
+        fsync_directory(path.parent)
         try:
             fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError as error:
@@ -535,13 +734,19 @@ def one_shot_markers(output: Path) -> None:
     require(not (output / "uncertain.json").exists(), "campaign has an uncertain attempt; no replay")
 
 
+def launch_lock_path(output: Path) -> Path:
+    """Keep the exclusive launcher lock beside the fresh result namespace."""
+    output = Path(output)
+    return output.parent / f".{output.name}.controller.lock"
+
+
 def _execute_admitted_campaign(manifest_path: Path, manifest: dict, admission: dict,
                                output: Path, runner) -> dict:
     """Execute after the caller has verified the manifest and Research record."""
     frozen_manifest_hash = sha256_file(manifest_path)
-    with exclusive_launch_lock(output / ".controller.lock"):
+    with exclusive_launch_lock(launch_lock_path(output)):
         one_shot_markers(output)
-        output.mkdir(parents=True, exist_ok=True)
+        durable_mkdir(output, sync_ancestors=True)
         one_shot_markers(output)
         global_unreserved = decimal(admission["global_unreserved_usd"], "global_unreserved_usd")
         campaign_limit = decimal(admission["campaign_limit_usd"], "campaign_limit_usd")
@@ -573,7 +778,7 @@ def _execute_admitted_campaign(manifest_path: Path, manifest: dict, admission: d
             call_file = verify_runtime_slot(manifest_path, manifest, slot, frozen_manifest_hash)
 
             slot_directory = output / slot["identifier"]
-            slot_directory.mkdir()
+            durable_mkdir(slot_directory, sync_ancestors=True)
             durable_json(slot_directory / "started.json", {
                 "slot": slot["identifier"],
                 "stage_uuid": slot["stage_uuid"],

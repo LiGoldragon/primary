@@ -1,85 +1,71 @@
 # December campaign controller implementation report
 
-## Status and owned files
+## Status and frozen identity
 
-Source and unpaid fixture work is complete. Research admission is pending. No provider API, real processor `invoke`, credentials, worker policy, Rust build, deployment, or campaign execution was used. The Rust binary was used only by the generator's local `prepare` operation. The planned `results/` directory was not created.
+Unpaid source and synthetic-fixture work is complete. Research admission remains pending. No paid API call, credential invocation, real processor `invoke`, worker or ledger edit, Rust build, deployment, or campaign execution occurred. The existing Rust binary was used only for local `prepare`; no `results/` directory was created.
 
-Owned files:
+Owned files: `controller.py`, `generator.py`, `proposal-manifest.json`, `tests.py`, `implementation-report.md`, and `inputs/` (672 immutable call/prompt files).
 
-- `controller.py`
-- `generator.py`
-- `proposal-manifest.json`
-- `tests.py`
-- `inputs/` — 672 immutable call and prompt files (336 each)
-- `implementation-report.md`
+- Manifest SHA256: `c5f9523d85061823c3610bb1a3273e8b8c10950d0c0e0acb9cab152e42365307`
+- Canonical manifest SHA256: `65e98f7ad95afa3426e6040d6a2bab142cd19b8e28cdf5e60462f7614a3f0e6a`
+- Stage UUID namespace: `b8b816ee-56d4-5b14-91d3-aa26db1f49cb` (unchanged)
+- Controller SHA256: `7920673ea9bfcf4a4335e27a3d1591baccaf1e9ca4ddfeea9b362f24c0a1d70b`
+- Generator SHA256: `7c2cd86f481905025f9c00238167dd7ab3758fe68dbb1934adf57f5cef6b96a4`
+- Tests SHA256: `745eded8b91082976bf83e89a4a1d3e569c154ea764d2f3b2be9eabdcdf2c6da`
 
-Manifest SHA256: `92f45cecc386cd8b9a3361b147a469de0449a0505743fab4864d802dac6dd53b`  
-Manifest canonical SHA256: `99ee9f1c33e28caabe8bea823cc0e24ba56061aafd6f74dffd82764703ad7d21`  
-Stage UUID namespace: `b8b816ee-56d4-5b14-91d3-aa26db1f49cb`
+The refreeze preserved the exact pre-existing call and prompt bytes and hashes for all 336 slot identifiers. Research admission must bind the exact manifest hash, 336-slot ceiling, and 20 USD campaign retained ceiling, and verify the current global budget before any call.
 
-Research admission must name the exact manifest file hash above, all 336 slots, the manifest's 20 USD retained ceiling, and a current global-unreserved snapshot. No admission record is present in this work.
+## Frozen campaign and reservation bounds
 
-## Frozen work and bounds
+| Work | Cases | Slots | Admission / Queue slots |
+|---|---:|---:|---:|
+| Historical deliberate variance | 52 (22 Admission, 30 Queue) | 312 | 132 / 180 |
+| Missing-evidence derivations | 4 | 12 | 6 / 6 |
+| Declared malformed-answer probes | 4 | 12 | 6 / 6 |
+| **Maximum** | **60** | **336** | **144 / 192** |
 
-| Work | Cases | Slots | Task split |
-|---|---:|---:|---|
-| Historical deliberate variance | 52 (22 Admission, 30 Queue) | 312 | Admission 132, Queue 180 |
-| Missing-evidence derivations | 4 (2 per task) | 12 | Admission 6, Queue 6 |
-| Declared malformed-answer probes | 4 (2 per task) | 12 | Admission 6, Queue 6 |
-| **Total maximum** | 60 | **336** | Admission 144, Queue 192 |
+Each of the 52 historical cases has two prompt-identical replicates across three models. Eight historically scoped permissions remain excluded. Derived cases retain provenance and explicit withheld inputs, assert no semantic labels, and do not alter the strict decoder. Malformed probes declare the incompatible requested output format.
 
-Historical cases have two new replicates for each of three models. Their prompt bytes are checked against the historical prompt and the two new prompt hashes match. Historical receipts are baseline references only. Eight scoped historical cases remain excluded. Each of four derived cases has one slot per model; withheld inputs and wrong-format perturbations are explicit in the manifest, and derived cases have no asserted semantic label. The decoder is unchanged.
+| Model | Slots | Full bound per slot | Full reservation bound | Total output-token bound |
+|---|---:|---:|---:|---:|
+| `claude-haiku-5-5` | 112 | $0.6656 | $74.5472 | 458,752 |
+| `claude-sonnet-5-5` | 112 | $2.138112 | $239.468544 | 458,752 |
+| `claude-opus-5-5` | 112 | $0.10048 | $11.25376 | 114,688 |
+| **All models** | **336** |  | **$325.269504** | **1,032,192** |
 
-| Model | Slots | Max input tokens | Max output tokens/slot | Full reservation bound per slot | All-slot reservation bound | Total output-token bound |
-|---|---:|---:|---:|---:|---:|---:|
-| `claude-haiku-5-5` | 112 | 1,048,576 | 4,096 | $0.6656 | $74.5472 | 458,752 |
-| `claude-sonnet-5-5` | 112 | 1,048,576 | 4,096 | $2.138112 | $239.468544 | 458,752 |
-| `claude-opus-5-5` | 112 | 20,000 | 1,024 | $0.10048 | $11.25376 | 114,688 |
-| **All models** | **336** |  |  |  | **$325.269504** | **1,032,192** |
+Every Opus prompt satisfies `prompt bytes + 150 system bytes + 1,024 frame bytes <= 20,000`. The full configured reservation exceeds the 20 USD campaign ceiling, so 336 is a hard maximum, not a completion promise. Before each call, the controller requires the complete next model-specific reservation to fit the remaining campaign and global envelopes.
 
-Every generated Opus prompt satisfies `prompt UTF-8 bytes + 150 system bytes + 1,024 framing bytes <= 20,000`. The full maximum reservation exceeds the 20 USD campaign ceiling. Therefore, 336 is a hard upper limit, not a completion promise. Before each call the controller checks the whole next model-specific reservation against both the remaining campaign ceiling and the current global-unreserved amount; it stops when either cannot fit.
+## Execution closure and durable one-shot boundary
 
-## Source identity
+The manifest freezes and the controller rechecks the recursive worker Python source closure (`general_adapter.py`, `raw_adapter.py`, `raw_ledger.py`, `ledger.py`, `policy.py`, `model_policy.py`, `settlement_evidence.py`, `producer_guard.py`); `general-policy.json`, native `policy.json`, `settlement-policy.json`, the historical settlement-evidence manifest, and CA bundle; plus exact interpreter, curl, bubblewrap, and gopass file identities. It also freezes the trial processor binary/configuration and campaign sources. Runtime checks re-derive the closure before each slot and fail closed on path or digest drift.
 
-The manifest freezes the controller, generator, tests, trial processor binary and configuration, worker policy and adapter, relevant Rust processor/decoder sources, historical source packets, baseline receipts, and proposal authority. Selected pinned identities:
+The mutable authoritative ledger is recorded separately by its configured path, device/inode, and configured baseline-prefix SHA256. Ledger contents are not copied into the manifest or controller; the pinned worker and Research retain ledger validation and accounting. No ledger content was changed.
 
-- Controller: `3e61e66784f2ddbba2df6ca87a61b128ee72cd898f1d2f6f7afac85982f40556`
-- Generator: `fcd382deaad56f4505c70115fea9b14f95220f851ef90b47b0c9146ff9fd4615`
-- Tests: `8daca3c2d48ce8c9629af0286e537e2cba51e2a504c92d266852dac3d32dac3c`
-- Worker `general-policy.json`: `8f49359c2fab6038a5380f419d2a692df03312ff84dbf3cdde2a564bc5314e34`
-- Worker `general_adapter.py`: `889d65b842ec78ce412f4cbca07c9340a8a542ebbeeab8c95faff708254559e8`
-- Worker `model_policy.py`: `0016ff2555a21ce739ceec7098cfe08f98ef6e70eda7bfd0265d54b80d4563f2`
-- Trial `processor.json`: `c9ba9ea8815fe059f7777a97c8fc75ee345f7ae3a67e3b768b500b0be4e99dc9`
-- Typed-call binary: `ecd75629f915161da4c7b476a4087b9125cbc008286c812c11ace8ae158df73c`
-- Rust decoder `src/lib.rs`: `60b6d2f32abf7c50a09780561dd65029085dd267b683ddfd11222a3036688e4a`
-
-The manifest also pins `src/main.rs`, `tests/decoding.rs`, and the typed-call report. Effective model response codecs and each slot's call/prompt hashes are frozen there. The production `run_campaign` entry point uses only the frozen result directory and real subprocess boundary; result-directory and runner injection live only in the explicitly named synthetic test harness.
+Before a child boundary, the controller durably creates/syncs the result namespace and parent entries, writes and fsyncs `run-started.json`, then durably creates/syncs the slot directory and writes/fsyncs `started.json`. The exclusive launch lock is placed in the durable parent. Any directory-sync failure stops before invocation. A local order fixture confirmed every slot-directory ancestor and both intent markers were durable before the mocked child; an injected slot-directory fsync failure made zero mocked child calls and wrote no slot intent. Restart/concurrency refusal and one-call/no-replay markers remain covered.
 
 ## Local evidence
 
-Commands run from `/home/li/primary` with bytecode disabled:
+Commands executed with bytecode disabled:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/generator.py
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/tests.py
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/controller.py verify
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/controller.py dry-run
+PYTHONDONTWRITEBYTECODE=1 python -B generator.py --prepare-timeout 30
+PYTHONDONTWRITEBYTECODE=1 python -B tests.py
+PYTHONDONTWRITEBYTECODE=1 python -B controller.py verify
+PYTHONDONTWRITEBYTECODE=1 python -B controller.py dry-run
 ```
 
-The generator exited 0 and used only `prepare`; its output reported 336 slots and zero provider calls. The local fixture suite exited 0: 25 tests passed. `verify` and `dry-run` each exited 0; dry-run reported 336 maximum slots, 112 per model, zero calls, and no guarantee of completing every configured slot.
+All exited 0. Generator reported 336 slots and zero provider calls. Refreeze comparison confirmed unchanged UUID namespace and exact call/prompt bytes and hashes. All **29** local fixtures passed. `verify` and `dry-run` each reported 336 slots, 112 per model, zero calls; no result namespace was created. Fixtures cover exact count and task mix, injection/drift, per-slot bounds and output limits, prompt reuse, source provenance, missing evidence, malformed probes, budget guards, durable directory/intent ordering and injected sync failure, exclusive launch, restart/no replay, timeout/process/receipt uncertainty, refusal and decoder classification, and production API isolation.
 
-Fixtures cover exact count and category/task mix, extra-slot injection, effective per-model reservation formula and drift, model output caps, Opus byte/system/frame bounds, exact replicate prompt reuse, baseline provenance, missing evidence, malformed probes, budget admission before child, campaign and global whole-reservation guards, concurrent launch, restart/no replay, durable uncertainty after timeout/nonzero exit, invalid/missing receipts, native refusal versus task refusal, malformed decoding, max-token stop, prompt/policy/source drift, multi-text response concatenation, allowed hidden-thinking blocks, and production API refusal of result-directory redirection.
+## Limits and execution gate
 
-## Remaining limits and execution gate
+Provider outcomes are synthetic. The native-refusal fixture checks classification, not real refusal frequency or settlement. The timeout fixture makes no paid request and establishes no actual charge. These tests are not full Flow Nexus certification or Research ledger admission. Any provider or settlement uncertainty must stop the campaign and retain the full reservation.
 
-All runtime-boundary receipts and provider outcomes in tests are synthetic. A synthetic native-refusal fixture tests classification only; it does not establish real provider-refusal frequency or settlement behavior. A timeout fixture makes no real paid request and establishes no actual charge amount. Real uncertainty must continue to stop the chain and hold the full reservation. The fixtures are not a full Flow Nexus certification, deployment, or Research ledger admission.
-
-After Research admits the exact manifest hash and confirms the current global snapshot, the operational path is:
+After Research admits the exact manifest and verifies the current global budget, the pinned interpreter from `flows/250509/trial/processor.json` may run:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/controller.py verify --manifest flows/d343f8/campaign/proposal-manifest.json
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/controller.py dry-run --manifest flows/d343f8/campaign/proposal-manifest.json
-PYTHONDONTWRITEBYTECODE=1 python -B flows/d343f8/campaign/controller.py run --manifest flows/d343f8/campaign/proposal-manifest.json --research-admission /path/to/research-admission.json
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 flows/d343f8/campaign/controller.py verify --manifest flows/d343f8/campaign/proposal-manifest.json
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 flows/d343f8/campaign/controller.py dry-run --manifest flows/d343f8/campaign/proposal-manifest.json
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 flows/d343f8/campaign/controller.py run --manifest flows/d343f8/campaign/proposal-manifest.json --research-admission /path/to/research-admission.json
 ```
 
-The `run` command is not authorized by this implementation report and must not be used before Research admission. The pinned worker remains the accounting authority and retains its global gate.
+The final `run` command is not authorized before Research admission. The pinned worker remains the per-call accounting authority and enforces its global reservation gate.

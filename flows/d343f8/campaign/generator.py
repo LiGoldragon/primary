@@ -253,7 +253,7 @@ def verify_baseline_packets(variants: list[dict], suite_slots: dict[tuple[str, s
             }
 
 
-def source_file_list(variants: list[dict], binary: Path) -> list[dict]:
+def source_file_list(variants: list[dict], binary: Path, execution_closure: dict) -> list[dict]:
     paths = {
         AUTHORITY_FILE,
         TRIAL_ROOT / "opus-plan.json",
@@ -276,6 +276,8 @@ def source_file_list(variants: list[dict], binary: Path) -> list[dict]:
         paths.add(Path(variant["provenance"]["source_prompt"]))
         for receipt in variant["provenance"]["baseline_receipt_refs"].values():
             paths.add(Path(receipt["path"]))
+    for group in ("worker_python_sources", "static_inputs", "executables"):
+        paths.update(Path(item["path"]) for item in execution_closure[group])
     return [{"path": str(path.resolve(strict=True)), "sha256": hash_file(path.resolve(strict=True))}
             for path in sorted(paths, key=lambda item: str(item))]
 
@@ -458,8 +460,15 @@ def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30) -> dict:
             total_output_bound[model] += profile[model]["maximum_output_tokens"]
             total_reservation_bound[model] += bound
 
-        frozen_files = source_file_list(variants, binary)
+        execution_closure = controller.derive_execution_closure(policy_path, processor_configuration)
+        frozen_files = source_file_list(variants, binary, execution_closure)
         result_directory = output_root / "results" / str(namespace)
+        runtime_guard_paths = {
+            Path(__file__).resolve(), Path(controller.__file__).resolve(),
+            Path(__file__).with_name("tests.py").resolve(), binary, processor_configuration,
+        }
+        for group in ("worker_python_sources", "static_inputs", "executables"):
+            runtime_guard_paths.update(Path(item["path"]) for item in execution_closure[group])
         manifest = {
             "schema_version": 1,
             "campaign": "December typed-call campaign",
@@ -478,13 +487,9 @@ def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30) -> dict:
             "binary": str(binary),
             "processor_configuration": str(processor_configuration),
             "worker_policy_file": str(policy_path.resolve()),
-            "runtime_guard_files": [
-                str(path.resolve()) for path in [
-                    Path(__file__).resolve(), Path(controller.__file__).resolve(),
-                    Path(__file__).with_name("tests.py").resolve(), binary, processor_configuration,
-                    policy_path.resolve(), WORKER_ROOT / "general_adapter.py", WORKER_ROOT / "model_policy.py",
-                ]
-            ],
+            "execution_closure": execution_closure,
+            "runtime_guard_files": [str(path.resolve(strict=True))
+                                    for path in sorted(runtime_guard_paths, key=str)],
             "processor_timeout_seconds": policy["shared"]["wrapper_timeout_seconds"] + 5,
             "result_directory": str(result_directory.resolve()),
             "model_bounds": profile,

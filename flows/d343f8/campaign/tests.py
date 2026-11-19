@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import controller
 
@@ -121,6 +122,41 @@ class FrozenCampaignTests(unittest.TestCase):
         all_cases = {case for group in cases.values() for case in group}
         self.assertTrue(all_cases.isdisjoint(self.manifest["slot_contract"]["excluded_scoped_historical_cases"]))
 
+    def test_installed_execution_closure_is_frozen_and_ledger_is_separate(self):
+        closure = self.manifest["execution_closure"]
+        frozen = {item["path"] for item in self.manifest["frozen_files"]}
+        guards = set(self.manifest["runtime_guard_files"])
+        closure_paths = {
+            item["path"]
+            for group in ("worker_python_sources", "static_inputs", "executables")
+            for item in closure[group]
+        }
+        self.assertTrue(closure_paths <= frozen)
+        self.assertTrue(closure_paths <= guards)
+        module_names = {Path(item["path"]).name for item in closure["worker_python_sources"]}
+        self.assertTrue({"general_adapter.py", "raw_adapter.py", "raw_ledger.py", "ledger.py",
+                         "policy.py", "model_policy.py", "settlement_evidence.py", "producer_guard.py"}
+                        <= module_names)
+        static_roles = {item["role"] for item in closure["static_inputs"]}
+        self.assertEqual(static_roles, {"general_worker_policy", "native_worker_policy", "settlement_policy",
+                                        "historical_evidence_manifest", "transport_ca_bundle"})
+        executable_roles = {item["role"] for item in closure["executables"]}
+        self.assertEqual(executable_roles, {"controller_interpreter", "processor_interpreter",
+                                            "producer_guard_interpreter", "curl", "bubblewrap",
+                                            "credential_producer"})
+        ledger_path = closure["mutable_accounting_input"]["ledger_path"]
+        self.assertNotIn(ledger_path, frozen)
+        self.assertEqual(closure["mutable_accounting_input"]["validation_owner"],
+                         "pinned worker and Research ledger; ledger content is not frozen here")
+
+    def test_manifest_cannot_omit_a_runtime_execution_source(self):
+        changed = deepcopy(self.manifest)
+        changed["execution_closure"]["worker_python_sources"].pop()
+        changed["canonical_sha256"] = controller.canonical_sha256(
+            {key: value for key, value in changed.items() if key != "canonical_sha256"})
+        with self.assertRaisesRegex(controller.CampaignError, "closure differs"):
+            controller.verify_manifest(MANIFEST_PATH, changed)
+
     def test_extra_slot_injection_fails_hard_count(self):
         changed = deepcopy(self.manifest)
         changed["slots"].append(deepcopy(changed["slots"][0]))
@@ -176,8 +212,13 @@ class FrozenCampaignTests(unittest.TestCase):
             "prompt_sha256": controller.sha256_file(prompt_path),
         }
         frozen = {str(policy_path.resolve()): controller.sha256_file(policy_path)}
-        manifest = {"frozen_files": [{"path": str(policy_path), "sha256": frozen[str(policy_path.resolve())]}],
-                    "runtime_guard_files": [str(policy_path)]}
+        manifest = {
+            "frozen_files": [{"path": str(policy_path), "sha256": frozen[str(policy_path.resolve())]}],
+            "runtime_guard_files": [str(policy_path)],
+            "execution_closure": self.manifest["execution_closure"],
+            "worker_policy_file": self.manifest["worker_policy_file"],
+            "processor_configuration": self.manifest["processor_configuration"],
+        }
         self.assertEqual(controller.verify_runtime_slot(manifest_path, manifest, slot, manifest_hash), call_path)
 
         prompt_path.write_bytes(b"changed prompt")
@@ -304,10 +345,85 @@ class FrozenCampaignTests(unittest.TestCase):
             calls.append(args)
             return SimpleNamespace(returncode=0, stdout=b"{}")
 
-        with controller.exclusive_launch_lock(self.output / ".controller.lock"):
+        with controller.exclusive_launch_lock(controller.launch_lock_path(self.output)):
             with self.assertRaisesRegex(controller.CampaignError, "exclusive lock"):
                 controller._run_campaign_with_test_harness(MANIFEST_PATH, self.admission, self.output, runner)
         self.assertEqual(calls, [])
+
+    def test_namespace_and_slot_intent_directories_are_durable_before_child(self):
+        first_slot = self.manifest["slots"][0]
+        first_bound = controller.decimal(first_slot["reservation_bound_usd"], "first bound")
+        synthetic_admission(self.admission, str(first_bound))
+        events = []
+        original_fsync = controller.fsync_directory
+        original_durable_json = controller.durable_json
+        calls = []
+
+        def tracked_fsync(path):
+            resolved = Path(path).resolve(strict=True)
+            events.append(("fsync", resolved))
+            original_fsync(path)
+
+        def tracked_json(path, value, exclusive=True):
+            result = original_durable_json(path, value, exclusive)
+            events.append(("json", Path(path).name, Path(path).parent.resolve()))
+            return result
+
+        def runner(args, **kwargs):
+            calls.append(args)
+            slot_directory = self.output / first_slot["identifier"]
+            self.assertTrue((self.output / "run-started.json").is_file())
+            self.assertTrue((slot_directory / "started.json").is_file())
+            synced = {item[1] for item in events if item[0] == "fsync"}
+            ancestor = slot_directory.resolve(strict=True)
+            while True:
+                self.assertIn(ancestor, synced, f"directory ancestor was not synced before child: {ancestor}")
+                if ancestor.parent == ancestor:
+                    break
+                ancestor = ancestor.parent
+            run_marker = events.index(("json", "run-started.json", self.output.resolve()))
+            slot_marker = events.index(("json", "started.json", slot_directory.resolve()))
+            self.assertLess(run_marker, slot_marker)
+            events.append(("child",))
+            observation = synthetic_observation(first_slot, first_slot["reservation_bound_usd"], "Answered",
+                                                "end_turn", artifact_parent=self.root,
+                                                task_answer=valid_answer_for_task(first_slot))
+            retained = controller.decimal(observation["receipt"]["ledger"]["retained_usd"], "retained")
+            observation["receipt"]["ledger"]["unreserved_usd"] = str(first_bound - retained)
+            return SimpleNamespace(returncode=0, stdout=json.dumps(observation).encode())
+
+        with patch.object(controller, "fsync_directory", tracked_fsync), \
+                patch.object(controller, "durable_json", tracked_json):
+            with self.assertRaisesRegex(controller.CampaignError, "GlobalReservationDoesNotFit"):
+                controller._run_campaign_with_test_harness(MANIFEST_PATH, self.admission, self.output, runner)
+        self.assertEqual(len(calls), 1)
+        self.assertLess(events.index(("json", "started.json", (self.output / first_slot["identifier"]).resolve())),
+                        events.index(("child",)))
+
+    def test_directory_fsync_fault_prevents_child_and_slot_intent(self):
+        first_slot = self.manifest["slots"][0]
+        first_bound = controller.decimal(first_slot["reservation_bound_usd"], "first bound")
+        synthetic_admission(self.admission, str(first_bound))
+        slot_directory = self.output / first_slot["identifier"]
+        original_fsync = controller.fsync_directory
+        calls = []
+
+        def fail_slot_directory(path):
+            if Path(path).resolve() == slot_directory.resolve():
+                raise controller.CampaignError("injected directory fsync failure")
+            original_fsync(path)
+
+        def runner(*args, **kwargs):
+            calls.append(args)
+            return SimpleNamespace(returncode=0, stdout=b"{}")
+
+        with patch.object(controller, "fsync_directory", fail_slot_directory):
+            with self.assertRaisesRegex(controller.CampaignError, "injected directory fsync failure"):
+                controller._run_campaign_with_test_harness(MANIFEST_PATH, self.admission, self.output, runner)
+        self.assertEqual(calls, [])
+        self.assertTrue((self.output / "run-started.json").is_file())
+        self.assertTrue(slot_directory.is_dir())
+        self.assertFalse((slot_directory / "started.json").exists())
 
     def test_restart_after_started_marker_refuses_before_child(self):
         self.output.mkdir()
