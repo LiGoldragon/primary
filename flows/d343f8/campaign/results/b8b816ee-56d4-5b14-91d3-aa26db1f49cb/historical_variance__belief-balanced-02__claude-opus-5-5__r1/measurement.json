@@ -1,0 +1,34 @@
+{
+  "call_sha256": "3121b6d65e0d8e2692c8e22092f69a69d52c84cdbf83358fbe019b3759880c82",
+  "case": "belief-balanced-02",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 8129,
+  "global_unreserved_after_receipt_usd": "28.805347520",
+  "job": "raw-general-082e0f-27de86b0ce794d18b8204f08b9821d0a",
+  "model": "claude-opus-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it does. Code that keeps growing in one direction is missing an abstraction. A truck seventy-three meters long is either a train not yet seen, which needs its carts linked and a rail to run on, or a fleet of trucks, which needs a coordinator and its drivers. The ground it must cover decides which."
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "outcome_kind": "Answered",
+  "paid_call_slot": true,
+  "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045",
+  "raw_estimated_cost_usd": "0.016792",
+  "replicate": 1,
+  "slot": "historical_variance__belief-balanced-02__claude-opus-5-5__r1",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2048,
+    "output_tokens": 430
+  },
+  "worker_retained_usd": "0.016792"
+}

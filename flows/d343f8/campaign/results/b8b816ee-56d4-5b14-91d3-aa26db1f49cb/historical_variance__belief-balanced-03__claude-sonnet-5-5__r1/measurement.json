@@ -1,0 +1,35 @@
+{
+  "call_sha256": "6c482d7a795c2001aad20e2e9b8eeb5f0d1afcede20dd0e678527e4fc84a33eb",
+  "case": "belief-balanced-03",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 4793,
+  "global_unreserved_after_receipt_usd": "28.777384145",
+  "job": "raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8",
+  "model": "claude-sonnet-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:anatomy:0",
+        "wording": null
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "outcome_kind": "Answered",
+  "paid_call_slot": true,
+  "prompt_sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc",
+  "raw_estimated_cost_usd": "0.004448",
+  "replicate": 1,
+  "slot": "historical_variance__belief-balanced-03__claude-sonnet-5-5__r1",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1984,
+    "output_tokens": 48
+  },
+  "worker_retained_usd": "0.004448"
+}

@@ -1,0 +1,43 @@
+{
+  "elapsed_milliseconds": 6334,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot holds only the belief-modules module's lines and a few vocabulary lines. It contains nothing on the psyche, mind and field aspects or on how beliefs of different subjects relate, so the submitted line cannot be placed or checked for repetition or collision. Admitting it would mean guessing."
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-74587ff594014d89a6c3aced5f2b2133",
+    "ledger": {
+      "committed_usd": "8.118773480",
+      "job": "raw-general-082e0f-74587ff594014d89a6c3aced5f2b2133",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "e09240c259b61a79519033c1de3545d7b2742e04196440ac63d5553f9c990dde",
+      "reservation_sha256": "a5ba815f508852c4484d993239a7b50f9f274bf87772c6df2c1fa7a5c960177f",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.005648",
+      "unreserved_usd": "28.881226520"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The snapshot holds only the belief-modules module's lines and a few vocabulary lines. It contains nothing on the psyche, mind and field aspects or on how beliefs of different subjects relate, so the submitted line cannot be placed or checked for repetition or collision. Admitting it would mean guessing.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.005648",
+      "http_status": 200,
+      "job": "raw-general-082e0f-74587ff594014d89a6c3aced5f2b2133",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "e09240c259b61a79519033c1de3545d7b2742e04196440ac63d5553f9c990dde",
+      "retained_bound_usd": "0.005648",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2249,
+        "output_tokens": 115
+      }
+    }
+  }
+}

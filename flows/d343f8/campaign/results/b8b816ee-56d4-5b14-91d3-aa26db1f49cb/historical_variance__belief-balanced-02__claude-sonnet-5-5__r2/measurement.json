@@ -1,0 +1,28 @@
+{
+  "call_sha256": "ae4819b47438260fa8615c7df8cdaf31ba77c8c25612e886aef663b47f361f61",
+  "case": "belief-balanced-02",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 5461,
+  "global_unreserved_after_receipt_usd": "28.799531645",
+  "job": "raw-general-082e0f-dafe7ba871024e0a8b20e1ce483f563f",
+  "model": "claude-sonnet-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "answer does not match declared type"
+  },
+  "outcome_kind": "Malformed",
+  "paid_call_slot": true,
+  "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045",
+  "raw_estimated_cost_usd": "0.004424",
+  "replicate": 2,
+  "slot": "historical_variance__belief-balanced-02__claude-sonnet-5-5__r2",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2047,
+    "output_tokens": 33
+  },
+  "worker_retained_usd": "0.004424"
+}

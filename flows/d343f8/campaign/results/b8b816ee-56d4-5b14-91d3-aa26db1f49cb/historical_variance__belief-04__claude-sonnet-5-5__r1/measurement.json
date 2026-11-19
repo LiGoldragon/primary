@@ -1,0 +1,28 @@
+{
+  "call_sha256": "4b19d16634ebc3eaecf782be5b4b92662f9ce7d7f36e05bf0093f3f08fb4e408",
+  "case": "belief-04",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 6334,
+  "global_unreserved_after_receipt_usd": "28.881226520",
+  "job": "raw-general-082e0f-74587ff594014d89a6c3aced5f2b2133",
+  "model": "claude-sonnet-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot holds only the belief-modules module's lines and a few vocabulary lines. It contains nothing on the psyche, mind and field aspects or on how beliefs of different subjects relate, so the submitted line cannot be placed or checked for repetition or collision. Admitting it would mean guessing."
+  },
+  "outcome_kind": "TaskRefusal",
+  "paid_call_slot": true,
+  "prompt_sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152",
+  "raw_estimated_cost_usd": "0.005648",
+  "replicate": 1,
+  "slot": "historical_variance__belief-04__claude-sonnet-5-5__r1",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2249,
+    "output_tokens": 115
+  },
+  "worker_retained_usd": "0.005648"
+}

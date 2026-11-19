@@ -1,0 +1,49 @@
+{
+  "elapsed_milliseconds": 4979,
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal."
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1ef92fb6e1d340acbd0225b767d5905d",
+    "ledger": {
+      "committed_usd": "8.218167855",
+      "job": "raw-general-082e0f-1ef92fb6e1d340acbd0225b767d5905d",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "20d1f0468e43e9be6a714be96001501c406154eab03c87cf9021944c23276691",
+      "reservation_sha256": "d1fa92910121bec86fca369375eda23c0797d158b143ba790c84c6d23b10d25b",
+      "reservation_usd": "0.6656",
+      "retained_usd": "0.0014875",
+      "unreserved_usd": "28.781832145"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.0002479",
+      "http_status": 200,
+      "job": "raw-general-082e0f-1ef92fb6e1d340acbd0225b767d5905d",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "20d1f0468e43e9be6a714be96001501c406154eab03c87cf9021944c23276691",
+      "retained_bound_usd": "0.0014875",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1984,
+        "output_tokens": 99
+      }
+    }
+  }
+}

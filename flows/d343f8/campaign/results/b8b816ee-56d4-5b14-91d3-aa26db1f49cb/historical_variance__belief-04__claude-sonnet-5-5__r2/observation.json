@@ -1,0 +1,43 @@
+{
+  "elapsed_milliseconds": 5969,
+  "outcome": {
+    "kind": "ModelRefused",
+    "reason": "The snapshot contains only the belief-modules lines and a few vocabulary lines. It shows nothing from the psyche, mind or field aspects, so I cannot tell whether the submitted line repeats, collides with or belongs in another module."
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-048ab4fcf6c84831a9ecf45013a76dcc",
+    "ledger": {
+      "committed_usd": "8.153064605",
+      "job": "raw-general-082e0f-048ab4fcf6c84831a9ecf45013a76dcc",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "3fc580ee0b3f0bca26f2606dff56c1c3498554b1baa468a58ed60ef958c7b85c",
+      "reservation_sha256": "18f16bb1c0787304d0f06e930b3a1b4b27c3c324600c60f8866676f14ada428b",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.005428",
+      "unreserved_usd": "28.846935395"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Refused\",\"reason\":\"The snapshot contains only the belief-modules lines and a few vocabulary lines. It shows nothing from the psyche, mind or field aspects, so I cannot tell whether the submitted line repeats, collides with or belongs in another module.\"}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.005428",
+      "http_status": 200,
+      "job": "raw-general-082e0f-048ab4fcf6c84831a9ecf45013a76dcc",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "3fc580ee0b3f0bca26f2606dff56c1c3498554b1baa468a58ed60ef958c7b85c",
+      "retained_bound_usd": "0.005428",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2249,
+        "output_tokens": 93
+      }
+    }
+  }
+}

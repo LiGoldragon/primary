@@ -1,0 +1,56 @@
+{
+  "elapsed_milliseconds": 9856,
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Collides",
+        "line": "intent:belief-modules:0:L8",
+        "wording": null
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-1cdf49bcf8b044a9a768539abcf62265",
+    "ledger": {
+      "committed_usd": "8.172044605",
+      "job": "raw-general-082e0f-1cdf49bcf8b044a9a768539abcf62265",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "6d0721976f5959b3796eac55ce30b1bd9771a9b2865efbd596d9f3c70698d475",
+      "reservation_sha256": "d2d329360ccfcb3fdb9c3c982f74d258ce74a2d2252791a524a53ce26a981951",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.01898",
+      "unreserved_usd": "28.827955395"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Collides\",\"line\":\"intent:belief-modules:0:L8\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.01898",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 6757,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 5583,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-1cdf49bcf8b044a9a768539abcf62265",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "6d0721976f5959b3796eac55ce30b1bd9771a9b2865efbd596d9f3c70698d475",
+      "retained_bound_usd": "0.01898",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2250,
+        "output_tokens": 499
+      }
+    }
+  }
+}

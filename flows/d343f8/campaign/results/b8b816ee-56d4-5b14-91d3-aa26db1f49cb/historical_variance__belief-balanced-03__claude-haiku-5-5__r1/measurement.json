@@ -1,0 +1,34 @@
+{
+  "call_sha256": "a7c1f7bc258e6a69d0ab79c415ef4d7c226b1a4572ba93f785e1ef065426d7fb",
+  "case": "belief-balanced-03",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 4979,
+  "global_unreserved_after_receipt_usd": "28.781832145",
+  "job": "raw-general-082e0f-1ef92fb6e1d340acbd0225b767d5905d",
+  "model": "claude-haiku-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "Whenever the design expands into another part of the system, the designer steps back: where does this part fit, and does its shape fit its intended use? The answer may be that the whole anatomy is redone, because this is a different animal."
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "outcome_kind": "Answered",
+  "paid_call_slot": true,
+  "prompt_sha256": "77724b62fece3d4bda0118b94d4071e658fadce40a7067417533ac2bf7485dfc",
+  "raw_estimated_cost_usd": "0.0002479",
+  "replicate": 1,
+  "slot": "historical_variance__belief-balanced-03__claude-haiku-5-5__r1",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 1984,
+    "output_tokens": 99
+  },
+  "worker_retained_usd": "0.0014875"
+}

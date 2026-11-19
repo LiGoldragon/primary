@@ -1,0 +1,35 @@
+{
+  "call_sha256": "907a73aff77fc69a69699b798b41e9cdcc11c84a80d56c57304b2b744553b20d",
+  "case": "belief-04",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 9856,
+  "global_unreserved_after_receipt_usd": "28.827955395",
+  "job": "raw-general-082e0f-1cdf49bcf8b044a9a768539abcf62265",
+  "model": "claude-opus-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Collides",
+        "line": "intent:belief-modules:0:L8",
+        "wording": null
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "outcome_kind": "Answered",
+  "paid_call_slot": true,
+  "prompt_sha256": "98197a415ae0d82c4080ff3807d1e0b97c741fb61e614afa0a193ad77bc9f152",
+  "raw_estimated_cost_usd": "0.01898",
+  "replicate": 2,
+  "slot": "historical_variance__belief-04__claude-opus-5-5__r2",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2250,
+    "output_tokens": 499
+  },
+  "worker_retained_usd": "0.01898"
+}

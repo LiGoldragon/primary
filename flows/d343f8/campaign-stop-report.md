@@ -42,6 +42,21 @@ Opus `0mib` withdrew every paid authority. The admitted batch was stopped immedi
 | historical_variance__belief-balanced-03__claude-sonnet-5-5__r1 | raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8 | `/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8` |
 | historical_variance__belief-balanced-03__claude-sonnet-5-5__r2 | raw-general-082e0f-d0b9d51c8bc5494991b61f09a7f84871 | `/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-d0b9d51c8bc5494991b61f09a7f84871` |
 
+## Research reconciliation
+
+Research `7ryj`, committed `40872cc56`, independently matched 18 new reservations
+and admissions to 17 completed outcomes and settlements. Its read-only report
+is `flows/85ab00/december-reconciliation.json`. Ledger snapshot: 905 rows,
+225 settlements, SHA256 `6cc51f075e689c1ca39c7d76ab125bdec2a75080f3c438ef426fac1634a762bc`;
+committed 8.347376355 USD and unreserved 28.652623645 USD under its mechanical gate.
+
+Campaign retained commitment is 0.235774 USD: 0.135294 USD settled plus the
+interrupted 0.10048 USD full bound. The unresolved worker job is
+`raw-general-082e0f-7cf58712648f41b7ac90f898414f5d8f`; its exact provider completion
+and charge remain unknown. Research observed no matching live launcher and
+performed no ledger mutation, settlement or release. It revoked the admission
+JSON after the launch; the admission hash above is the pre-revocation evidence.
+
 ## Remaining responsibility
 
 Research reconciles the mutable ledger read-only and keeps the full interrupted reservation unless existing verified evidence establishes otherwise. No helper, provider request, settlement or release is authorized for reconciliation. This report does not modify the authoritative ledger.

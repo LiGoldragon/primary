@@ -1,0 +1,50 @@
+{
+  "elapsed_milliseconds": 4793,
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Elsewhere",
+        "module": "vision:anatomy:0",
+        "wording": null
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8",
+    "ledger": {
+      "committed_usd": "8.222615855",
+      "job": "raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "83efa893c7d7cf15188f8f0603a76ff5767bc690c5c3b9a280fbfadf1246297f",
+      "reservation_sha256": "975776164ceef3baceeaa676cdbb3cfd519117688c799bf9a86c79954d0004af",
+      "reservation_usd": "2.138112",
+      "retained_usd": "0.004448",
+      "unreserved_usd": "28.777384145"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Elsewhere\",\"module\":\"vision:anatomy:0\",\"wording\":null}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.004448",
+      "http_status": 200,
+      "job": "raw-general-082e0f-25df2d8f841b47059000bc79fb22fcd8",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "83efa893c7d7cf15188f8f0603a76ff5767bc690c5c3b9a280fbfadf1246297f",
+      "retained_bound_usd": "0.004448",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 1984,
+        "output_tokens": 48
+      }
+    }
+  }
+}

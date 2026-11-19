@@ -1,0 +1,55 @@
+{
+  "elapsed_milliseconds": 7767,
+  "outcome": {
+    "answer": {
+      "judgment": {
+        "kind": "Admitted",
+        "wording": "A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it does. Code that keeps growing in one direction is missing an abstraction: a truck seventy-three meters long is a train not yet seen, which needs its carts linked and a rail to run on, or a fleet of trucks, which needs a coordinator and its drivers; which of them, the ground it is to cover decides."
+      },
+      "kind": "Admission"
+    },
+    "kind": "Answered"
+  },
+  "processor_exit": 0,
+  "receipt": {
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-f246202c7a83494283459d371674c23a",
+    "ledger": {
+      "committed_usd": "8.216680355",
+      "job": "raw-general-082e0f-f246202c7a83494283459d371674c23a",
+      "ordinal": 1,
+      "path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "policy_sha256": "fa6cd15f329bb2c3cf725aecff198b5fc69f46c96b8dec5e6337612368ba9f48",
+      "reservation_sha256": "48e6d1d7702421440190b836b2dddbf36257067f4ce9cf8ff639386f373f8ddc",
+      "reservation_usd": "0.10048",
+      "retained_usd": "0.016212",
+      "unreserved_usd": "28.783319645"
+    },
+    "result": {
+      "answer": "{\"kind\":\"Admission\",\"judgment\":{\"kind\":\"Admitted\",\"wording\":\"A well-written machine looks like an organic being: its parts are in proportion, and its shape fits what it does. Code that keeps growing in one direction is missing an abstraction: a truck seventy-three meters long is a train not yet seen, which needs its carts linked and a rail to run on, or a fleet of trucks, which needs a coordinator and its drivers; which of them, the ground it is to cover decides.\"}}",
+      "curl_returncode": 0,
+      "estimated_cost_usd": "0.016212",
+      "http_status": 200,
+      "input_admission_counts": {
+        "conservative_local_total": 6009,
+        "framing_allowance": 1024,
+        "prompt_utf8_bytes": 4835,
+        "system_utf8_bytes": 150
+      },
+      "job": "raw-general-082e0f-f246202c7a83494283459d371674c23a",
+      "measurement_source": "response usage and independent estimate, not an invoice",
+      "ordinal": 1,
+      "outcome_appended": true,
+      "policy_sha256": "fa6cd15f329bb2c3cf725aecff198b5fc69f46c96b8dec5e6337612368ba9f48",
+      "retained_bound_usd": "0.016212",
+      "settlement_appended": true,
+      "state": "Succeeded",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 2048,
+        "output_tokens": 401
+      }
+    }
+  }
+}

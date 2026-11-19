@@ -1,0 +1,7 @@
+{
+  "instruction": "One invocation only. A result failure never permits replay.",
+  "manifest_sha256": "d2c41dee2708fda8179e62d20920ae23d9a347006b0433b4a89a45e32a75dbf3",
+  "reservation_bound_usd": "0.10048",
+  "slot": "historical_variance__belief-04__claude-opus-5-5__r1",
+  "stage_uuid": "7b36c04c-2550-596f-826d-74bfab6291b5"
+}

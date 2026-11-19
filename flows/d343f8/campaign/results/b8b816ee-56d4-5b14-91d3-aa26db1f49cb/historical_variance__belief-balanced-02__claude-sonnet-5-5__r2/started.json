@@ -1,0 +1,7 @@
+{
+  "instruction": "One invocation only. A result failure never permits replay.",
+  "manifest_sha256": "d2c41dee2708fda8179e62d20920ae23d9a347006b0433b4a89a45e32a75dbf3",
+  "reservation_bound_usd": "2.138112",
+  "slot": "historical_variance__belief-balanced-02__claude-sonnet-5-5__r2",
+  "stage_uuid": "84bcfd2d-3946-5dc1-a002-5e56531b1abb"
+}

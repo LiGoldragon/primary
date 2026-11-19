@@ -1,0 +1,28 @@
+{
+  "call_sha256": "9f3a1788384df8d4bf5d6b40c4f92f11e13c1a0fd37101fc0a19fab095e6d9c6",
+  "case": "belief-balanced-02",
+  "category": "historical_variance",
+  "elapsed_milliseconds": 4782,
+  "global_unreserved_after_receipt_usd": "28.826563520",
+  "job": "raw-general-082e0f-688e29bc69084e97855b620cdc2adeea",
+  "model": "claude-haiku-5-5",
+  "native_stop_reason": "end_turn",
+  "outcome": {
+    "kind": "Malformed",
+    "reason": "task, reference or nonempty-field constraint failed"
+  },
+  "outcome_kind": "Malformed",
+  "paid_call_slot": true,
+  "prompt_sha256": "8a0b9459cebbddbf365fb6c003f40fa67266346d5738f5da9c172e172916b045",
+  "raw_estimated_cost_usd": "0.0002272",
+  "replicate": 1,
+  "slot": "historical_variance__belief-balanced-02__claude-haiku-5-5__r1",
+  "task_kind": "Admission",
+  "usage": {
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2047,
+    "output_tokens": 45
+  },
+  "worker_retained_usd": "0.001391875"
+}
