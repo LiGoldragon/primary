@@ -1,0 +1,138 @@
+{
+  "format": "SystemStateProofConfiguration.v1",
+  "project": "system-state-proof",
+  "collection": {
+    "timeout_seconds": 15,
+    "maximum_output_bytes": 200000,
+    "snapshot_capture_maximum_age_seconds": 900,
+    "energy_observation_maximum_age_seconds": 3600,
+    "flow_list_command": [
+      "/home/li/.nix-profile/bin/herdr",
+      "agent",
+      "list"
+    ],
+    "queue_list_command": [
+      "/home/li/.local/bin/flow",
+      "Queues"
+    ],
+    "energy_commands": {
+      "Claude": [
+        "/home/li/.nix-profile/bin/energy-nexus",
+        "Read.Claude"
+      ],
+      "Codex": [
+        "/home/li/.nix-profile/bin/energy-nexus",
+        "Read.Codex"
+      ]
+    },
+    "host_command": [
+      "/run/current-system/sw/bin/ssh",
+      "-o",
+      "BatchMode=yes",
+      "-o",
+      "ConnectTimeout=8",
+      "prometheus.goldragon.criome",
+      "printf \"loadavg=\"; cat /proc/loadavg; printf \"cpu_count=\"; getconf _NPROCESSORS_ONLN"
+    ],
+    "host_name": "prometheus.goldragon.criome",
+    "datom_maximum_depth": 64,
+    "ui_status_values": [
+      "working",
+      "done"
+    ],
+    "energy_provider_names": [
+      "Claude",
+      "Codex"
+    ],
+    "host_transport_identity_files": [
+      "/home/li/.ssh/config",
+      "/home/li/.ssh/known_hosts",
+      "/etc/ssh/ssh_known_hosts"
+    ]
+  },
+  "runtime": {
+    "python_executable": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+    "adapter_executable": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+    "worker_root": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker",
+    "worker_artifact_root": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs",
+    "research_admission_path": "/home/li/primary/flows/d343f8/state-proof/research-admission.json",
+    "results_root": "/home/li/primary/flows/d343f8/state-proof/results",
+    "launch_lock_path": "/home/li/primary/flows/d343f8/state-proof/.state-proof-launch.lock",
+    "adapter_timeout_seconds": 120,
+    "maximum_stdout_bytes": 1048576,
+    "maximum_stderr_bytes": 8192
+  },
+  "budget": {
+    "maximum_provider_calls": 3,
+    "maximum_usd": "10.00",
+    "model_order": [
+      "claude-haiku-5-5",
+      "claude-sonnet-5-5",
+      "claude-opus-5-5"
+    ],
+    "model_bounds": {
+      "claude-haiku-5-5": {
+        "maximum_input_tokens": 1048576,
+        "maximum_output_tokens": 4096,
+        "reserve_input_rate_usd_per_million": "0.625",
+        "output_rate_usd_per_million": "2.50",
+        "maximum_usd": "0.66560"
+      },
+      "claude-sonnet-5-5": {
+        "maximum_input_tokens": 1048576,
+        "maximum_output_tokens": 4096,
+        "reserve_input_rate_usd_per_million": "2",
+        "output_rate_usd_per_million": "10",
+        "maximum_usd": "2.138112"
+      },
+      "claude-opus-5-5": {
+        "maximum_input_tokens": 20000,
+        "maximum_output_tokens": 1024,
+        "reserve_input_rate_usd_per_million": "4",
+        "output_rate_usd_per_million": "20",
+        "maximum_usd": "0.10048"
+      }
+    },
+    "maximum_total_reservation_usd": "2.904192"
+  },
+  "task": {
+    "name": "system-state-assessment",
+    "system_prompt": "Read the supplied prompt and report only. Use no tools, access no files or corpus, and change no state. Return only the requested compact JSON object.",
+    "prompt_template": "Assess this single system-state snapshot. Use only these observations; do not recommend or trigger actions. A flow row's working/done value is UI state, not proof that its task is healthy or complete. Queue addresses identify flows; queue contents are intentionally withheld. Host load averages measure runnable work over time, not current CPU utilization; do not infer CPU utilization from them. Energy percentages and pace labels are cached weekly Energy Nexus readings, not a policy verdict; their observation time and age are shown. Use Unknown for a judgment when the snapshot lacks relevant evidence or a configured baseline/threshold. Set flow_load to exactly one of TooMany, Appropriate, TooFew, or Unknown. Set energy_use to exactly one of TooHigh, Appropriate, TooLow, or Unknown. Return exactly one JSON object: either {\"kind\":\"Answered\",\"answer\":{\"flow_load\":\"one enum value\",\"energy_use\":\"one enum value\",\"reason\":\"nonempty evidence-based explanation\"}} or {\"kind\":\"Refused\",\"reason\":\"nonempty explanation\"}. Do not include markdown or other text.\n\nFrozen observation snapshot (JSON):\n{{snapshot_json}}",
+    "answer_schema": {
+      "kind": "Answered",
+      "answer": {
+        "flow_load": [
+          "TooMany",
+          "Appropriate",
+          "TooFew",
+          "Unknown"
+        ],
+        "energy_use": [
+          "TooHigh",
+          "Appropriate",
+          "TooLow",
+          "Unknown"
+        ],
+        "reason": "nonempty string"
+      }
+    },
+    "refusal_schema": {
+      "kind": "Refused",
+      "reason": "nonempty string"
+    },
+    "maximum_reason_characters": 1600
+  },
+  "closure": {
+    "mutable_ledger": {
+      "path_from_worker_policy": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "identity_from_worker_policy": {
+        "device": 66306,
+        "inode": 53531629
+      },
+      "baseline_sha256_from_worker_policy": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132",
+      "validation": "The unchanged worker checks current path identity, baseline bytes, reservation, outcome, settlement, and global headroom. This controller never opens or writes the ledger."
+    },
+    "derivation": "At freeze and run, recursively hash general_adapter.py local Python imports, the worker general/native/settlement policies, the settlement historical-evidence manifest, configured CA bundle, and executables derived from installed general-policy. The ledger stays mutable and is separately validated by unchanged worker."
+  }
+}

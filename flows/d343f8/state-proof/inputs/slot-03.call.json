@@ -1,0 +1,12 @@
+{
+  "format": "SystemStateProofCall.v1",
+  "hard_http_cap": 1,
+  "maximum_input_tokens": 20000,
+  "maximum_output_tokens": 1024,
+  "maximum_usd": "0.10048",
+  "model": "claude-opus-5-5",
+  "prompt_relative_path": "inputs/slot-03.prompt.txt",
+  "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+  "slot_id": "slot-03",
+  "task": "system-state-assessment"
+}

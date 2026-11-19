@@ -1,0 +1,266 @@
+{
+  "accounting_policy": "The unchanged API worker is the sole ledger writer. This controller persists response observations and receipt references only.",
+  "configuration_sha256": "e6bd783ca30d27bb41a601c676786ea0690276490ed240a1de1a53c41454777b",
+  "controller_sha256": "82a40e86f5c177d8058bfc994e04f480db86a51dfe7e2a584e096f400c170407",
+  "format": "SystemStateProofManifest.v1",
+  "frozen_at_utc": "2026-11-19T06:28:47Z",
+  "maximum_provider_calls": 3,
+  "maximum_total_reservation_usd": "2.904192",
+  "maximum_usd": "10.00",
+  "mutable_ledger": {
+    "baseline_sha256_from_worker_policy": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132",
+    "identity_from_worker_policy": {
+      "device": 66306,
+      "inode": 53531629
+    },
+    "path_from_worker_policy": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+    "validation": "The unchanged worker checks current path identity, baseline bytes, reservation, outcome, settlement, and global headroom. This controller never opens or writes the ledger."
+  },
+  "project": "system-state-proof",
+  "replay_policy": "One admitted namespace, one slot intent per invocation, no retry or restart; an existing namespace is terminal.",
+  "slots": [
+    {
+      "call_relative_path": "inputs/slot-01.call.json",
+      "call_sha256": "31df7ea07ca55f5676edd32b72c2596852013bf394db7716a7a239b846bcdbde",
+      "hard_http_cap": 1,
+      "maximum_input_tokens": 1048576,
+      "maximum_output_tokens": 4096,
+      "maximum_usd": "0.66560",
+      "model": "claude-haiku-5-5",
+      "prompt_relative_path": "inputs/slot-01.prompt.txt",
+      "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+      "slot_id": "slot-01"
+    },
+    {
+      "call_relative_path": "inputs/slot-02.call.json",
+      "call_sha256": "fd1f570af57c6940f700e529b0b14ad909a4e3ac2b6723bcad089c71ee959321",
+      "hard_http_cap": 1,
+      "maximum_input_tokens": 1048576,
+      "maximum_output_tokens": 4096,
+      "maximum_usd": "2.138112",
+      "model": "claude-sonnet-5-5",
+      "prompt_relative_path": "inputs/slot-02.prompt.txt",
+      "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+      "slot_id": "slot-02"
+    },
+    {
+      "call_relative_path": "inputs/slot-03.call.json",
+      "call_sha256": "fb812280f4781d38f4b95bae0a8c2ea7ba2530aea4a399ae6832a39d1314e93c",
+      "hard_http_cap": 1,
+      "maximum_input_tokens": 20000,
+      "maximum_output_tokens": 1024,
+      "maximum_usd": "0.10048",
+      "model": "claude-opus-5-5",
+      "prompt_relative_path": "inputs/slot-03.prompt.txt",
+      "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+      "slot_id": "slot-03"
+    }
+  ],
+  "snapshot_relative_path": "inputs/snapshot.json",
+  "snapshot_sha256": "3da81d708dfdaf1aa79fe6aed83823b11158103b2faa70ed41669d09c466aba4",
+  "source_and_runtime_closure": {
+    "executables_from_installed_policy": {
+      "bubblewrap": {
+        "configured_path": "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+        "resolved_path": "/nix/store/m50dfhnbbqpvj79i444kcdd2zsfwr4hk-bubblewrap-0.13.1/bin/bwrap",
+        "sha256": "b45d70ccbdae62bb863c8ad5b6d3d60c2d01dbfe88ca7517edc7ce5ad86497d3",
+        "size_bytes": 97312
+      },
+      "credential_producer": {
+        "configured_path": "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+        "resolved_path": "/nix/store/4lzbclhkxmkb1skhcyhdxxayj4pbgy4k-gopass-1.17.4/bin/gopass",
+        "sha256": "dd468f777d487e37985af1c0bd6d975cb5291ff4acad239c1812781428838745",
+        "size_bytes": 16464
+      },
+      "curl": {
+        "configured_path": "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+        "resolved_path": "/nix/store/qmjllrv5znaiy0bfj63160rxc8qs8nxl-curl-8.23.0-bin/bin/curl",
+        "sha256": "9bc8efd91113590647f352915ee115eec5283cde5a372644dc6a9b3b4c03c3f2",
+        "size_bytes": 288824
+      },
+      "python_controller_worker_and_guard": {
+        "configured_path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "resolved_path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+        "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc",
+        "size_bytes": 15776
+      }
+    },
+    "files": {
+      "controller/configuration.json": {
+        "configured_path": "/home/li/primary/flows/d343f8/state-proof/configuration.json",
+        "resolved_path": "/home/li/primary/flows/d343f8/state-proof/configuration.json",
+        "sha256": "e6bd783ca30d27bb41a601c676786ea0690276490ed240a1de1a53c41454777b",
+        "size_bytes": 5889
+      },
+      "controller/proof.py": {
+        "configured_path": "/home/li/primary/flows/d343f8/state-proof/proof.py",
+        "resolved_path": "/home/li/primary/flows/d343f8/state-proof/proof.py",
+        "sha256": "82a40e86f5c177d8058bfc994e04f480db86a51dfe7e2a584e096f400c170407",
+        "size_bytes": 72908
+      },
+      "controller/tests.py": {
+        "configured_path": "/home/li/primary/flows/d343f8/state-proof/tests.py",
+        "resolved_path": "/home/li/primary/flows/d343f8/state-proof/tests.py",
+        "sha256": "785f9e9b42c0e8d5424e8524c169ca63c01644296e2aec0922f0a6c497556b48",
+        "size_bytes": 20906
+      },
+      "settlement/historical-evidence-manifest": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-job-evidence-manifest.json",
+        "sha256": "901e5782df230c4cead9e5bf1f0aded215f80a24f3323a852a00d82775c32675",
+        "size_bytes": 21969
+      },
+      "transport/ca-bundle": {
+        "configured_path": "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt",
+        "resolved_path": "/nix/store/s1rlz2d0lv81wyyig1gp3mirsb8ywpb2-nss-cacert-3.131.1/etc/ssl/certs/ca-bundle.crt",
+        "sha256": "0852886a1ca577211c55d002bca524db6e7933bb2cdf437a0a03750222970443",
+        "size_bytes": 467700
+      },
+      "worker-source/general_adapter.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py",
+        "sha256": "889d65b842ec78ce412f4cbca07c9340a8a542ebbeeab8c95faff708254559e8",
+        "size_bytes": 4081
+      },
+      "worker-source/ledger.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/ledger.py",
+        "sha256": "ed2333eedc6934cc161528e79871ff47c775fe624c5acdeee5b69b471ee5af27",
+        "size_bytes": 7601
+      },
+      "worker-source/model_policy.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/model_policy.py",
+        "sha256": "0016ff2555a21ce739ceec7098cfe08f98ef6e70eda7bfd0265d54b80d4563f2",
+        "size_bytes": 8742
+      },
+      "worker-source/policy.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.py",
+        "sha256": "10b93e709fa761faf61f54d57737114b604b11a206dacb1e66cd058804965755",
+        "size_bytes": 5967
+      },
+      "worker-source/producer_guard.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/producer_guard.py",
+        "sha256": "c5e4009647705d175ec482a9848d8233023f14e47475f76acec7617443a45c84",
+        "size_bytes": 334
+      },
+      "worker-source/raw_adapter.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_adapter.py",
+        "sha256": "00ced57948d0bdac8ff9a872973cc425ad42d25f9881e83f5ccdd518c25e44e2",
+        "size_bytes": 8450
+      },
+      "worker-source/raw_ledger.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/raw_ledger.py",
+        "sha256": "238f4a59c2cf14f9dd6a1538963992490886cfff33774540ab028ba592c38b98",
+        "size_bytes": 9460
+      },
+      "worker-source/settlement_evidence.py": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement_evidence.py",
+        "sha256": "89a534f6c231732c0c9af6c71b6f3b7e277d9f15432d1dad1e1c75718c04a0c8",
+        "size_bytes": 12005
+      },
+      "worker/general-policy.json": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general-policy.json",
+        "sha256": "8f49359c2fab6038a5380f419d2a692df03312ff84dbf3cdde2a564bc5314e34",
+        "size_bytes": 8341
+      },
+      "worker/policy.json": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/policy.json",
+        "sha256": "a2010528244b534b77b084b0b0b7f6636393b55b9f4e45cc3e6bc47ef0606006",
+        "size_bytes": 4286
+      },
+      "worker/settlement-policy.json": {
+        "configured_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+        "resolved_path": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/settlement-policy.json",
+        "sha256": "d164258f6a4c3e8f9bc0a6587b43135e6f9b9a0df90e160d58c2b8c0a27efa5d",
+        "size_bytes": 4408
+      }
+    },
+    "mutable_accounting_input": {
+      "baseline_sha256": "d06595195f22bae8dc184daf8d98245c24d8d8eea06d333f11293643045c9132",
+      "device": 66306,
+      "inode": 53531629,
+      "ledger_path": "/home/li/primary/flows/082e0f/claude-api-evidence/spend-ledger.jsonl",
+      "validation_owner": "unchanged worker; ledger content remains mutable"
+    },
+    "worker_entrypoint": "/home/li/primary/flows/082e0f/claude-api-evidence/api-worker/general_adapter.py"
+  },
+  "tests_sha256": "785f9e9b42c0e8d5424e8524c169ca63c01644296e2aec0922f0a6c497556b48",
+  "worker_effective_policy": {
+    "maximum_total_reservation_usd": "2.904192",
+    "model_profiles": {
+      "claude-haiku-5-5": {
+        "codec": "DisabledThinking",
+        "inference_geo": "global",
+        "input_admission": null,
+        "maximum_input_tokens": 1048576,
+        "maximum_output_tokens": 4096,
+        "maximum_usd": "0.6656",
+        "output_config": null,
+        "output_rate_usd_per_million": "2.50",
+        "reserve_input_rate_usd_per_million": "0.625",
+        "service_tier": "standard_only",
+        "stream": false,
+        "thinking": {
+          "type": "disabled"
+        },
+        "tools": []
+      },
+      "claude-opus-5-5": {
+        "codec": "AdaptiveMedium",
+        "inference_geo": "global",
+        "input_admission": {
+          "codec": "Utf8BytesWithFraming",
+          "framing_allowance": 1024
+        },
+        "maximum_input_tokens": 20000,
+        "maximum_output_tokens": 1024,
+        "maximum_usd": "0.10048",
+        "output_config": {
+          "effort": "medium"
+        },
+        "output_rate_usd_per_million": "20",
+        "reserve_input_rate_usd_per_million": "4",
+        "service_tier": "standard_only",
+        "stream": false,
+        "thinking": {
+          "display": "omitted",
+          "type": "adaptive"
+        },
+        "tools": []
+      },
+      "claude-sonnet-5-5": {
+        "codec": "BetweenToolsLow",
+        "inference_geo": "global",
+        "input_admission": null,
+        "maximum_input_tokens": 1048576,
+        "maximum_output_tokens": 4096,
+        "maximum_usd": "2.138112",
+        "output_config": {
+          "effort": "low"
+        },
+        "output_rate_usd_per_million": "10",
+        "reserve_input_rate_usd_per_million": "2",
+        "service_tier": "standard_only",
+        "stream": false,
+        "thinking": {
+          "type": "between_tools"
+        },
+        "tools": []
+      }
+    },
+    "shared_system_prompt": "Read the supplied prompt and report only. Use no tools, access no files or corpus, and change no state. Return only the requested compact JSON object.",
+    "shared_worker_bounds": {
+      "maximum_prompt_bytes": 1048576,
+      "maximum_response_bytes": 1048576,
+      "system_prompt_sha256": "fca1fd99d269118c84df537d6634c30673754c14f7f14b8bf6e5d867fb32098f"
+    }
+  }
+}

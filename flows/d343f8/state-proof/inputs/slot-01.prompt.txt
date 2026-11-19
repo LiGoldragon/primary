@@ -1,0 +1,623 @@
+Assess this single system-state snapshot. Use only these observations; do not recommend or trigger actions. A flow row's working/done value is UI state, not proof that its task is healthy or complete. Queue addresses identify flows; queue contents are intentionally withheld. Host load averages measure runnable work over time, not current CPU utilization; do not infer CPU utilization from them. Energy percentages and pace labels are cached weekly Energy Nexus readings, not a policy verdict; their observation time and age are shown. Use Unknown for a judgment when the snapshot lacks relevant evidence or a configured baseline/threshold. Set flow_load to exactly one of TooMany, Appropriate, TooFew, or Unknown. Set energy_use to exactly one of TooHigh, Appropriate, TooLow, or Unknown. Return exactly one JSON object: either {"kind":"Answered","answer":{"flow_load":"one enum value","energy_use":"one enum value","reason":"nonempty evidence-based explanation"}} or {"kind":"Refused","reason":"nonempty explanation"}. Do not include markdown or other text.
+
+Frozen observation snapshot (JSON):
+{
+  "captured_at_utc": "2026-11-19T06:28:47Z",
+  "captured_epoch": 1795069727,
+  "energy_observation_maximum_age_seconds": 3600,
+  "format": "SystemStateProofSnapshot.v1",
+  "snapshot_capture_maximum_age_seconds": 900,
+  "sources": {
+    "energy_claude": {
+      "captured_at_utc": "2026-11-19T06:28:47Z",
+      "command_identity": {
+        "configured_path": "/home/li/.nix-profile/bin/energy-nexus",
+        "resolved_path": "/nix/store/s7gl77ws4ynpid7bq3a70cfjj16j428a-cargo-package-0.0.1/bin/energy-nexus",
+        "sha256": "396467108eefda264ac15ba9403fc1263381aa516fce9823be45bc00f825215d",
+        "size_bytes": 806456
+      },
+      "facts": {
+        "age_seconds_at_snapshot": 0,
+        "allowed": true,
+        "interpretation": "Metrics and standings are copied from deployed Energy Nexus; target payload is retained opaque.",
+        "observed_epoch": "1795069727",
+        "pace": [
+          {
+            "expected_percent": "73",
+            "legacy_trailing_values": [
+              "31",
+              "30.5",
+              "0.85"
+            ],
+            "provider": "Claude",
+            "standing": "Under",
+            "target_kind": "SpendBy",
+            "target_payload": [
+              "24",
+              "92"
+            ],
+            "used_percent": "66",
+            "window": "Week"
+          },
+          {
+            "expected_percent": "73",
+            "legacy_trailing_values": [
+              "31",
+              "30.5",
+              "1.9"
+            ],
+            "provider": "Claude",
+            "standing": "Under",
+            "target_kind": "SpendBy",
+            "target_payload": [
+              "24",
+              "92"
+            ],
+            "used_percent": "34",
+            "window": "FableWeek"
+          }
+        ],
+        "provider": "Claude",
+        "windows": [
+          {
+            "duration_minutes": "10080",
+            "name": "Week",
+            "reset_epoch": "1795266000",
+            "used_percent": "66"
+          },
+          {
+            "duration_minutes": "10080",
+            "name": "FableWeek",
+            "reset_epoch": "1795266000",
+            "used_percent": "34"
+          }
+        ]
+      },
+      "observation_metadata": {
+        "age_seconds_at_snapshot": 0,
+        "maximum_age_seconds": 3600,
+        "observed_epoch": 1795069727
+      },
+      "raw_sha256": "3815ce8b85f5c6cdab919dccd082797c857b6840b748ee3d551def1cdc4e6225",
+      "reason_code": null,
+      "source": "energy_claude",
+      "state": "Available"
+    },
+    "energy_codex": {
+      "captured_at_utc": "2026-11-19T06:28:47Z",
+      "command_identity": {
+        "configured_path": "/home/li/.nix-profile/bin/energy-nexus",
+        "resolved_path": "/nix/store/s7gl77ws4ynpid7bq3a70cfjj16j428a-cargo-package-0.0.1/bin/energy-nexus",
+        "sha256": "396467108eefda264ac15ba9403fc1263381aa516fce9823be45bc00f825215d",
+        "size_bytes": 806456
+      },
+      "facts": {
+        "age_seconds_at_snapshot": 1121,
+        "allowed": true,
+        "interpretation": "Metrics and standings are copied from deployed Energy Nexus; target payload is retained opaque.",
+        "observed_epoch": "1795068606",
+        "pace": [
+          {
+            "expected_percent": "3",
+            "legacy_trailing_values": [
+              "140",
+              "140.2",
+              "0.68"
+            ],
+            "provider": "Codex",
+            "standing": "Over",
+            "target_kind": "SpendBy",
+            "target_payload": [
+              "24",
+              "100"
+            ],
+            "used_percent": "5",
+            "window": "Week"
+          }
+        ],
+        "provider": "Codex",
+        "windows": [
+          {
+            "duration_minutes": "10080",
+            "name": "Week",
+            "reset_epoch": "1795659672",
+            "used_percent": "5"
+          }
+        ]
+      },
+      "observation_metadata": {
+        "age_seconds_at_snapshot": 1121,
+        "maximum_age_seconds": 3600,
+        "observed_epoch": 1795068606
+      },
+      "raw_sha256": "d0a5fb1fa31dba1437a53a40f8fe6803dac2f95b9d734df6b4961e6fa4b304b2",
+      "reason_code": null,
+      "source": "energy_codex",
+      "state": "Available"
+    },
+    "flow_list": {
+      "captured_at_utc": "2026-11-19T06:28:46Z",
+      "command_identity": {
+        "configured_path": "/home/li/.nix-profile/bin/herdr",
+        "resolved_path": "/nix/store/9x03bz0q0a978zrzcshrlmmb4fvcmdb6-herdr-0.8.2/bin/herdr",
+        "sha256": "ed69dd6de0f6fe3c0b495d760ffa8c049bdafe9d6645e2c31b2a99fbfe95f787",
+        "size_bytes": 22420176
+      },
+      "facts": {
+        "flow_count": 26,
+        "flows": [
+          {
+            "identity": [
+              "Field",
+              "core",
+              "Sol",
+              "2e9e53"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Field",
+              "inventory",
+              "Sol",
+              "fde58b"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Field",
+              "upkeep",
+              "Sol",
+              "da71ec"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "anatomyHunt",
+              "Sol",
+              "71d9eb"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "anatomyMap",
+              "Sol",
+              "24a85f"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "anatomyTests",
+              "Sol",
+              "5d8695"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "core",
+              "Sol",
+              "15d0eb"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "curriculum",
+              "Sol",
+              "ed2efa"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "energyNexus",
+              "Sol",
+              "d98c26"
+            ],
+            "ui_status": "working"
+          },
+          {
+            "identity": [
+              "Mind",
+              "flowNexus",
+              "Sol",
+              "e1c81b"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "harnessNexus",
+              "Sol",
+              "50cd62"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "lojix",
+              "Sol",
+              "75ec50"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "nixCriomos",
+              "Sol",
+              "effb9a"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "orchestrate",
+              "Sol",
+              "beb5e4"
+            ],
+            "ui_status": "working"
+          },
+          {
+            "identity": [
+              "Mind",
+              "research",
+              "Sol",
+              "85ab00"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "researchTools",
+              "Sol",
+              "6ac03a"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "survey",
+              "Sol",
+              "7c1717"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Mind",
+              "typedCall",
+              "Sol",
+              "d343f8"
+            ],
+            "ui_status": "working"
+          },
+          {
+            "identity": [
+              "Mind",
+              "versionZero",
+              "Sol",
+              "9cb2f2"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "beliefReview",
+              "Fable",
+              "e61c10"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "beliefReview",
+              "Opus",
+              "866473"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "book",
+              "Haiku",
+              "ef197f"
+            ],
+            "ui_status": "working"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "core",
+              "Fable",
+              "03f673"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "core",
+              "Haiku",
+              "6ce4af"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "core",
+              "Opus",
+              "9cf08d"
+            ],
+            "ui_status": "done"
+          },
+          {
+            "identity": [
+              "Psyche",
+              "core",
+              "Sonnet",
+              "c30b0f"
+            ],
+            "ui_status": "done"
+          }
+        ],
+        "status_semantics": "UI working/done values only; they do not establish task health.",
+        "ui_status_counts": {
+          "Unknown": 0,
+          "done": 22,
+          "working": 4
+        }
+      },
+      "raw_sha256": "dafb8863f0959d4899e9d29f8d07b6fbb2fc325c83afc5bf1dd43375ef67d6a8",
+      "reason_code": null,
+      "source": "flow_list",
+      "state": "Available"
+    },
+    "host_load": {
+      "captured_at_utc": "2026-11-19T06:28:47Z",
+      "command_identity": {
+        "configured_path": "/run/current-system/sw/bin/ssh",
+        "resolved_path": "/nix/store/5wyaj1kvkxbbscz6innrh6yjjkdq4qmk-openssh-10.6p1/bin/ssh",
+        "sha256": "f9a85d5f26b06c6c11d7a4bff06a379a38a70f93fc6030396cb7b8a0568a76f6",
+        "size_bytes": 1082536
+      },
+      "facts": {
+        "cpu_count": 32,
+        "host": "prometheus.goldragon.criome",
+        "load_average_1m_5m_15m": [
+          "0.05",
+          "0.02",
+          "0.00"
+        ],
+        "metric_semantics": "Load average/runnable work, not current CPU utilization.",
+        "one_minute_load_per_cpu": "0.002",
+        "runnable_tasks": 1,
+        "scheduler_entities": 819
+      },
+      "raw_sha256": "35dcbd647f14f7ca479b3c2f5235bcf26b68e175b4d0a96648cd3be05d16519f",
+      "reason_code": null,
+      "source": "host_load",
+      "state": "Available",
+      "transport_identity_files": {
+        "config": {
+          "configured_path": "/home/li/.ssh/config",
+          "resolved_path": "/nix/store/57w95g1dkcw3f7jgjqzb49700kh867jn-hm_.sshconfig",
+          "sha256": "813deb495b6d50d6d54c82ece0c66d1cb61f9c60530e064be640de2d6b1a6cc0",
+          "size_bytes": 379
+        },
+        "known_hosts": {
+          "configured_path": "/home/li/.ssh/known_hosts",
+          "resolved_path": "/home/li/.ssh/known_hosts",
+          "sha256": "b8c28a628e2f5894d80600a9d865b3f8bbaa74234fbcbe21872e97c493f3aecb",
+          "size_bytes": 14107
+        },
+        "ssh_known_hosts": {
+          "configured_path": "/etc/ssh/ssh_known_hosts",
+          "resolved_path": "/nix/store/q93xv5c0y9n2yrd5vqh4q8c1rhz36q91-etc-ssh-ssh_known_hosts",
+          "sha256": "b6cc9d538164cfc3387bec2a97e108394b904a1f8ff079466e45a2051d1df8cc",
+          "size_bytes": 1314
+        }
+      }
+    },
+    "queues": {
+      "captured_at_utc": "2026-11-19T06:28:46Z",
+      "command_identity": {
+        "configured_path": "/home/li/.local/bin/flow",
+        "resolved_path": "/nix/store/76vvsfvdifhplj44d3sp6crc704wkg11-flow-workspace-0.60.1/bin/flow",
+        "sha256": "64020e4f6ca9d8354a5c4dd3c8a349eb7cbdb9f6baabd371ab833eaa4afdcb46",
+        "size_bytes": 1346128
+      },
+      "facts": {
+        "content_policy": "All message payloads and text are withheld; only queue address and count are retained.",
+        "pending_message_count": 46,
+        "queue_count": 20,
+        "queues": [
+          {
+            "address": [
+              "Field",
+              "core",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Field",
+              "flowWatch",
+              "Haiku"
+            ],
+            "pending_messages": 2
+          },
+          {
+            "address": [
+              "Field",
+              "heartbeat",
+              "Sol"
+            ],
+            "pending_messages": 11
+          },
+          {
+            "address": [
+              "Field",
+              "protosConsumers",
+              "Sonnet"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "anatomyHunt",
+              "Sol"
+            ],
+            "pending_messages": 3
+          },
+          {
+            "address": [
+              "Mind",
+              "anatomyTests",
+              "Sol"
+            ],
+            "pending_messages": 2
+          },
+          {
+            "address": [
+              "Mind",
+              "core",
+              "Sol"
+            ],
+            "pending_messages": 3
+          },
+          {
+            "address": [
+              "Mind",
+              "curriculum",
+              "Astra"
+            ],
+            "pending_messages": 2
+          },
+          {
+            "address": [
+              "Mind",
+              "curriculum",
+              "Opus"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "datomCodec",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "energyNexus",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "flowNexus",
+              "Astra"
+            ],
+            "pending_messages": 2
+          },
+          {
+            "address": [
+              "Mind",
+              "harnessEvents",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "harnessNexus",
+              "Opus"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "herdrNexus",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "makeshiftTools",
+              "Sol"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "messengerNexus",
+              "Sol"
+            ],
+            "pending_messages": 3
+          },
+          {
+            "address": [
+              "Mind",
+              "sourceNexus",
+              "Opus"
+            ],
+            "pending_messages": 1
+          },
+          {
+            "address": [
+              "Mind",
+              "subscription",
+              "Opus"
+            ],
+            "pending_messages": 5
+          },
+          {
+            "address": [
+              "Mind",
+              "versionZero",
+              "Sol"
+            ],
+            "pending_messages": 3
+          }
+        ]
+      },
+      "raw_sha256": "c79638daf83264f16f44a77d5c52c7926f15cc70abe4e2a2fa05cb0b3a29abcb",
+      "reason_code": null,
+      "source": "queues",
+      "state": "Available"
+    }
+  }
+}

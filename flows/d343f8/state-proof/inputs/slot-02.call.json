@@ -1,0 +1,12 @@
+{
+  "format": "SystemStateProofCall.v1",
+  "hard_http_cap": 1,
+  "maximum_input_tokens": 1048576,
+  "maximum_output_tokens": 4096,
+  "maximum_usd": "2.138112",
+  "model": "claude-sonnet-5-5",
+  "prompt_relative_path": "inputs/slot-02.prompt.txt",
+  "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+  "slot_id": "slot-02",
+  "task": "system-state-assessment"
+}
