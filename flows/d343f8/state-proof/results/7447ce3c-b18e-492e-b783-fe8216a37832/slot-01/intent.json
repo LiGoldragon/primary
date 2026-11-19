@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-11-19T06:31:46Z",
+  "format": "SystemStateProofSlotIntent.v1",
+  "hard_http_cap": 1,
+  "maximum_usd": "0.66560",
+  "model": "claude-haiku-5-5",
+  "prompt_sha256": "9db078916ec8a951ae648ce081cad2a61bbd1fdc63192d17747fbc5d58ebfbcb",
+  "retry": "forbidden",
+  "slot_id": "slot-01",
+  "state": "IntentDurableBeforeAdapterBoundary"
+}

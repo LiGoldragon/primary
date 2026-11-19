@@ -1,0 +1,9 @@
+{
+  "created_at_utc": "2026-11-19T06:31:46Z",
+  "format": "SystemStateProofRunIntent.v1",
+  "manifest_sha256": "0fc2bed0944deb0089d860ba5124d9e3b6f4f601b108d3a44662fce8ae7e4242",
+  "maximum_provider_calls": 3,
+  "maximum_total_reservation_usd": "2.904192",
+  "run_namespace": "7447ce3c-b18e-492e-b783-fe8216a37832",
+  "state": "RunIntentDurableBeforeAnyAdapterBoundary"
+}

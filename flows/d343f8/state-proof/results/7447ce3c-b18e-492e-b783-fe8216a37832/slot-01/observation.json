@@ -1,0 +1,28 @@
+{
+  "maximum_usd": "0.66560",
+  "model": "claude-haiku-5-5",
+  "observation": {
+    "accounting_state": "Settled",
+    "answer": {
+      "energy_use": "Unknown",
+      "flow_load": "Unknown",
+      "reason": "flow_list shows 26 flows (22 done, 4 working by UI status only, which does not establish task health) and queues show 46 pending messages across 20 queues, but the snapshot supplies no configured baseline or threshold defining an appropriate flow count, so flow_load cannot be classified. Energy Nexus readings are fresh (Claude 0s old, Codex 1121s old, both within the 3600s maximum): Claude Week is 66% used against 73% expected (Under pace), Codex Week is 5% used against 3% expected (Over pace), and Claude FableWeek is 34% used against 73% expected (Under pace). The snapshot gives no policy verdict or target threshold that maps these pace readings to an energy_use judgment, so it is Unknown. Host load (1m 0.05 on 32 CPUs) measures runnable work only and is not used for either judgment."
+    },
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-3c049525fe014b29a39efe532b7b55f0",
+    "estimated_cost_usd": "0.0007967",
+    "held_bound_usd": "0.004771875",
+    "job": "raw-general-082e0f-3c049525fe014b29a39efe532b7b55f0",
+    "kind": "Answered",
+    "ordinal": 1,
+    "unreserved_usd": "28.647851770",
+    "usage": {
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 6307,
+      "output_tokens": 332
+    },
+    "worker_receipt_sha256": "9c168135b9abd94fdab9c5b582e1336d15f5553eb1549b5135a0cb14102dc86e"
+  },
+  "observed_at_utc": "2026-11-19T06:31:52Z",
+  "slot_id": "slot-01"
+}

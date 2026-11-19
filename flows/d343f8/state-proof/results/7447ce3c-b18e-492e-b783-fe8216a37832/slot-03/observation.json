@@ -1,0 +1,28 @@
+{
+  "maximum_usd": "0.10048",
+  "model": "claude-opus-5-5",
+  "observation": {
+    "accounting_state": "Settled",
+    "answer": {
+      "energy_use": "Unknown",
+      "flow_load": "Unknown",
+      "reason": "The snapshot and both Energy readings are within their stated maximum ages. The Claude reading is 0s old and the Codex reading is 1121s old, under the 3600s limit. Flow evidence: 26 flows with UI status 4 working and 22 done, which does not prove health or completion. There are 46 pending messages across 20 queue addresses, and several of those addresses (for example Field/heartbeat/Sol with 11, and Mind/subscription/Opus with 5) do not appear in the flow list. Host load averages are 0.05/0.02/0.00 on 32 CPUs, which shows little runnable work but not CPU utilization. No target flow count or queue threshold is configured, so flow load cannot be judged TooMany, Appropriate or TooFew. Energy evidence is mixed. Claude Week is 66% used against 73% expected (Under), and Claude FableWeek is 34% against 73% (Under). Codex Week is 5% against 3% (Over). These pace labels are cached readings, not a policy verdict, and no policy combines the providers into one judgment, so energy use is Unknown."
+    },
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0d1f9d5083df4f0ea648074c4c931be6",
+    "estimated_cost_usd": "0.040732",
+    "held_bound_usd": "0.040732",
+    "job": "raw-general-082e0f-0d1f9d5083df4f0ea648074c4c931be6",
+    "kind": "Answered",
+    "ordinal": 1,
+    "unreserved_usd": "28.591145770",
+    "usage": {
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 6308,
+      "output_tokens": 775
+    },
+    "worker_receipt_sha256": "e3f32ec6edfaecbc3dc2f8eab10233d5db8e26bce7f01295828d8d056b98559e"
+  },
+  "observed_at_utc": "2026-11-19T06:32:11Z",
+  "slot_id": "slot-03"
+}

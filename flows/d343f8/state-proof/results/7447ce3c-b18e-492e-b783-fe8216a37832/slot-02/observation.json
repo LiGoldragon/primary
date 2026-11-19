@@ -1,0 +1,28 @@
+{
+  "maximum_usd": "2.138112",
+  "model": "claude-sonnet-5-5",
+  "observation": {
+    "accounting_state": "Settled",
+    "answer": {
+      "energy_use": "Unknown",
+      "flow_load": "Unknown",
+      "reason": "Flow load: 26 flows are listed (22 done, 4 working) with 46 pending messages across 20 queues, and the host shows negligible load (1m load 0.05 on 32 CPUs, 1 runnable task). However, no configured baseline or threshold is given for an appropriate flow count or queue depth, and load averages are not CPU utilization, so too many, appropriate, or too few cannot be judged. Energy: observations are fresh (Claude age 0s, Codex 1121s, both within the 3600s maximum). Claude Week is 66% used vs 73% expected (Under) and FableWeek 34% vs 73% (Under). Codex Week is 5% vs 3% expected (Over, small absolute amount). The readings are mixed across providers and are cached pace labels, not a policy verdict, and no threshold defines too high or too low overall, so energy use cannot be determined."
+    },
+    "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-eb1b24593cf240af85c8f3e4136c212e",
+    "estimated_cost_usd": "0.015974",
+    "held_bound_usd": "0.015974",
+    "job": "raw-general-082e0f-eb1b24593cf240af85c8f3e4136c212e",
+    "kind": "Answered",
+    "ordinal": 1,
+    "unreserved_usd": "28.631877770",
+    "usage": {
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 6307,
+      "output_tokens": 336
+    },
+    "worker_receipt_sha256": "fd47dfc1a72d0414c5ac90549436d5241e482a5f48dc1d6d2e3fb98a5f3ffb06"
+  },
+  "observed_at_utc": "2026-11-19T06:32:00Z",
+  "slot_id": "slot-02"
+}

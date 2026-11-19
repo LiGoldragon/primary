@@ -1,0 +1,96 @@
+{
+  "finished_at_utc": "2026-11-19T06:32:11Z",
+  "format": "SystemStateProofObservation.v1",
+  "manifest_sha256": "0fc2bed0944deb0089d860ba5124d9e3b6f4f601b108d3a44662fce8ae7e4242",
+  "maximum_provider_calls": 3,
+  "maximum_total_reservation_usd": "2.904192",
+  "run_namespace": "7447ce3c-b18e-492e-b783-fe8216a37832",
+  "slots": [
+    {
+      "maximum_usd": "0.66560",
+      "model": "claude-haiku-5-5",
+      "observation": {
+        "accounting_state": "Settled",
+        "answer": {
+          "energy_use": "Unknown",
+          "flow_load": "Unknown",
+          "reason": "flow_list shows 26 flows (22 done, 4 working by UI status only, which does not establish task health) and queues show 46 pending messages across 20 queues, but the snapshot supplies no configured baseline or threshold defining an appropriate flow count, so flow_load cannot be classified. Energy Nexus readings are fresh (Claude 0s old, Codex 1121s old, both within the 3600s maximum): Claude Week is 66% used against 73% expected (Under pace), Codex Week is 5% used against 3% expected (Over pace), and Claude FableWeek is 34% used against 73% expected (Under pace). The snapshot gives no policy verdict or target threshold that maps these pace readings to an energy_use judgment, so it is Unknown. Host load (1m 0.05 on 32 CPUs) measures runnable work only and is not used for either judgment."
+        },
+        "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-3c049525fe014b29a39efe532b7b55f0",
+        "estimated_cost_usd": "0.0007967",
+        "held_bound_usd": "0.004771875",
+        "job": "raw-general-082e0f-3c049525fe014b29a39efe532b7b55f0",
+        "kind": "Answered",
+        "ordinal": 1,
+        "unreserved_usd": "28.647851770",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 6307,
+          "output_tokens": 332
+        },
+        "worker_receipt_sha256": "9c168135b9abd94fdab9c5b582e1336d15f5553eb1549b5135a0cb14102dc86e"
+      },
+      "observed_at_utc": "2026-11-19T06:31:52Z",
+      "slot_id": "slot-01"
+    },
+    {
+      "maximum_usd": "2.138112",
+      "model": "claude-sonnet-5-5",
+      "observation": {
+        "accounting_state": "Settled",
+        "answer": {
+          "energy_use": "Unknown",
+          "flow_load": "Unknown",
+          "reason": "Flow load: 26 flows are listed (22 done, 4 working) with 46 pending messages across 20 queues, and the host shows negligible load (1m load 0.05 on 32 CPUs, 1 runnable task). However, no configured baseline or threshold is given for an appropriate flow count or queue depth, and load averages are not CPU utilization, so too many, appropriate, or too few cannot be judged. Energy: observations are fresh (Claude age 0s, Codex 1121s, both within the 3600s maximum). Claude Week is 66% used vs 73% expected (Under) and FableWeek 34% vs 73% (Under). Codex Week is 5% vs 3% expected (Over, small absolute amount). The readings are mixed across providers and are cached pace labels, not a policy verdict, and no threshold defines too high or too low overall, so energy use cannot be determined."
+        },
+        "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-eb1b24593cf240af85c8f3e4136c212e",
+        "estimated_cost_usd": "0.015974",
+        "held_bound_usd": "0.015974",
+        "job": "raw-general-082e0f-eb1b24593cf240af85c8f3e4136c212e",
+        "kind": "Answered",
+        "ordinal": 1,
+        "unreserved_usd": "28.631877770",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 6307,
+          "output_tokens": 336
+        },
+        "worker_receipt_sha256": "fd47dfc1a72d0414c5ac90549436d5241e482a5f48dc1d6d2e3fb98a5f3ffb06"
+      },
+      "observed_at_utc": "2026-11-19T06:32:00Z",
+      "slot_id": "slot-02"
+    },
+    {
+      "maximum_usd": "0.10048",
+      "model": "claude-opus-5-5",
+      "observation": {
+        "accounting_state": "Settled",
+        "answer": {
+          "energy_use": "Unknown",
+          "flow_load": "Unknown",
+          "reason": "The snapshot and both Energy readings are within their stated maximum ages. The Claude reading is 0s old and the Codex reading is 1121s old, under the 3600s limit. Flow evidence: 26 flows with UI status 4 working and 22 done, which does not prove health or completion. There are 46 pending messages across 20 queue addresses, and several of those addresses (for example Field/heartbeat/Sol with 11, and Mind/subscription/Opus with 5) do not appear in the flow list. Host load averages are 0.05/0.02/0.00 on 32 CPUs, which shows little runnable work but not CPU utilization. No target flow count or queue threshold is configured, so flow load cannot be judged TooMany, Appropriate or TooFew. Energy evidence is mixed. Claude Week is 66% used against 73% expected (Under), and Claude FableWeek is 34% against 73% (Under). Codex Week is 5% against 3% (Over). These pace labels are cached readings, not a policy verdict, and no policy combines the providers into one judgment, so energy use is Unknown."
+        },
+        "artifact_directory": "/home/li/primary/flows/082e0f/claude-api-evidence/paid-jobs/raw-general-082e0f-0d1f9d5083df4f0ea648074c4c931be6",
+        "estimated_cost_usd": "0.040732",
+        "held_bound_usd": "0.040732",
+        "job": "raw-general-082e0f-0d1f9d5083df4f0ea648074c4c931be6",
+        "kind": "Answered",
+        "ordinal": 1,
+        "unreserved_usd": "28.591145770",
+        "usage": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 6308,
+          "output_tokens": 775
+        },
+        "worker_receipt_sha256": "e3f32ec6edfaecbc3dc2f8eab10233d5db8e26bce7f01295828d8d056b98559e"
+      },
+      "observed_at_utc": "2026-11-19T06:32:11Z",
+      "slot_id": "slot-03"
+    }
+  ],
+  "started_at_utc": "2026-11-19T06:31:46Z",
+  "state": "Complete"
+}
