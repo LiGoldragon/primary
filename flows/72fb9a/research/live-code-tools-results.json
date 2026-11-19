@@ -1,0 +1,1165 @@
+{
+  "trial": "l0mm / 6ac03a",
+  "date": "2026-11-19",
+  "valid_sessions": [
+    {
+      "name": "flow-lsp-control",
+      "start": "2026-11-19T04:49:21.155170+00:00",
+      "elapsed_seconds": 193.74580197199248,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f223-49c6-7271-af3f-54acefc089be"
+      ],
+      "usage": [
+        {
+          "input_tokens": 302902,
+          "cached_input_tokens": 251776,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 9965,
+          "reasoning_output_tokens": 7900
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T22-49-21-01a1f223-49c6-7271-af3f-54acefc089be.jsonl",
+      "prompt_sha256": "e57494a25d26d01c055cd516d4cdb18c9aff81c3acea3928251677a2d034ac91",
+      "tool_text_o200k_tokens": 20403,
+      "tool_text_bytes": 81033,
+      "tool_output_items": 20,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 24,
+        "custom_tool_call": 10,
+        "custom_tool_call_output": 10
+      },
+      "query_text_o200k_tokens": 1208,
+      "transcript_sha256": "42b4f8b66eb143f0eca7e9cbb4d69a2c6334bd90b6f52097e3f49432c3b3ae3f",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missing_units": [],
+        "false_positive_claims": [],
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "answer": "`SendsAs` is implemented for `Address` and `SentBy`; `MeasuresSendPayload` is implemented for `Request` and `Message`. The `Request` implementation clones the request into `Message::Soft` and measures that message. ([sending.rs (55\u201383)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:55))\n\nThe projection returns **`VisibleNativeInput`**. Measurement supplies a placeholder request ID, `\"0000\"`, and the sender converted by `sent_by()`. The `Message::Soft` projection builds a visible input whose delivered message contains the converted request. `delivered_request` maps each request variant to its corresponding `DeliveredRequest` variant. ([sending.rs (82\u201397)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:82), [message_projection.rs (182\u2013238, 251\u2013287)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:182); the `Message::Soft` shape is defined in [delivery.rs (10\u201314)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-ethos/src/generated/delivery.rs:10))\n\nCompact call tree from the entry point:\n\n```text\nRequest::native_prompt_bytes [MeasuresSendPayload impl]\n\u2514\u2500 clone Request; construct Message::Soft\n   \u2514\u2500 Message::native_prompt_bytes [MeasuresSendPayload impl]\n      \u251c\u2500 construct RequestId(\"0000\")\n      \u251c\u2500 vec![...] [macro expansion; one projected input]\n      \u2502  \u2514\u2500 ProjectsAdmittedMessage::admitted_input [trait method]\n      \u2502     \u251c\u2500 sender.sent_by() [SendsAs trait method]\n      \u2502     \u2514\u2500 Message projection\n      \u2502        \u2514\u2500 request.delivered_request(id) [DeliversRequest trait method]\n      \u2502           \u2514\u2500 match request variant; construct DeliveredRequest\n      \u2514\u2500 datomize(Vec::new()) \u2192 protosize() \u2192 compact() \u2192 len()\n```\n\nThe trait calls here are statically resolved; the source shows no `dyn` dispatch. `vec!` is the explicit macro boundary. The encoding steps are calls through the imported `Datomizable`, `Protosizable`, and `Compactable` traits; their implementations are not established by this source. ([sending.rs (42, 86\u201396)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:42))\n\nThe concrete sender type is **unknown from this entry point alone**: its parameter is `&impl SendsAs`. The source establishes the two available implementations\u2014`Address` converts to `SentBy::Sender(address.clone())`, while `SentBy` returns a clone\u2014but does not establish which type a caller supplies. ([sending.rs (55\u201369, 73\u201379)](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:55))",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nTrace native Send payload measurement starting at `Request::native_prompt_bytes`. Which concrete types implement `SendsAs` and `MeasuresSendPayload`, and how does the request become the measured representation? Identify the type returned by the projection used during measurement. Include the compact outgoing-call tree reachable from the entry point, distinguishing direct calls from trait-dispatch and macro expansion boundaries. Explain which concrete sender implementation can be established from this entry point alone. Cite the definitions and implementation locations that establish the answer.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "flow-lsp-tool-final",
+      "start": "2026-11-19T05:47:52.431199+00:00",
+      "elapsed_seconds": 688.8172026090324,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f258-dd55-7833-831b-18fedf71f0a7"
+      ],
+      "usage": [
+        {
+          "input_tokens": 604246,
+          "cached_input_tokens": 557056,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 18803,
+          "reasoning_output_tokens": 13123
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-47-52-01a1f258-dd55-7833-831b-18fedf71f0a7.jsonl",
+      "prompt_sha256": "629ab03e236626120f5a76457c1940625b440470fa0b555bac409478c0f26105",
+      "tool_text_o200k_tokens": 32607,
+      "tool_text_bytes": 107089,
+      "tool_output_items": 67,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 33,
+        "custom_tool_call": 14,
+        "custom_tool_call_output": 14
+      },
+      "query_text_o200k_tokens": 4486,
+      "transcript_sha256": "bb74f7dd91f5f53d74ce058dd4ffc9076f56c4bf6ea8168b3a77d5e2fdd0abc7",
+      "score": {
+        "credited_units": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missing_units": [
+          2
+        ],
+        "false_positive_claims": [],
+        "tp": 7,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.875
+      },
+      "answer": "### Implementations and measurement\n\n- `SendsAs` is implemented for `Address` and `SentBy` ([trait](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:55>), [Address impl](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:59>), [SentBy impl](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:65>)).\n- `MeasuresSendPayload` is implemented for `Request` and `Message` ([trait](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:72>), [Request impl](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:76>), [Message impl](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:82>)).\n- The Request implementation clones the request, wraps it as `Message::Soft`, then measures that Message. The Message implementation uses the four-character placeholder ID `\"0000\"`, projects the message with `sender.sent_by()`, puts the result in a one-item `vec!`, then calls `datomize`, `protosize`, `compact`, and `len` ([wrap](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:78>), [placeholder](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:84>), [projection call](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:87>), [vector macro](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:86>), [serialization chain](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:93>)).\n- The projection returns **`VisibleNativeInput`**: that return type appears in the trait signature and the `Message` implementation ([signature](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:252>), [implementation](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:262>), [return type](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:267>)). Its comment describes the projection as the public form typed to the recipient ([comment](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:259>)).\n\n### Compact outgoing tree\n\n```text\nRequest::native_prompt_bytes\n  \u251c\u2500 clone Request\n  \u251c\u2500 construct Message::Soft\n  \u2514\u2500 MeasuresSendPayload::native_prompt_bytes on Message [Message impl established]\n       \u251c\u2500 construct placeholder RequestId\n       \u251c\u2500 vec![ ... ] [macro boundary]\n       \u2502    \u2514\u2500 ProjectsAdmittedMessage::admitted_input [static trait dispatch;\n       \u2502         Message impl established]\n       \u2502         \u2514\u2500 SendsAs::sent_by [generic trait dispatch]\n       \u2514\u2500 datomize \u2192 protosize \u2192 compact \u2192 len\n            [trait-method chain; deeper targets unresolved]\n```\n\nThe live outgoing tree confirms the Request-to-Message call, `Soft` construction, and clone. For the Message implementation it surfaced `RequestId`, `to_owned`, and `Vec::new`, but omitted the source-visible projection and serialization calls; I treat those as source-verified calls, not as LSP-confirmed callees. The serialization traits are imported at [sending.rs:41](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:41>) and [sending.rs:42](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:42>); macro expansion details were unavailable.\n\n**Unknown from this entry point:** which concrete `SendsAs` implementation a particular invocation uses. Its parameter is `&impl SendsAs`; the corpus establishes `Address` and `SentBy` as implementations, but this entry point does not identify the caller\u2019s type.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nTrace native Send payload measurement starting at `Request::native_prompt_bytes`. Which concrete types implement `SendsAs` and `MeasuresSendPayload`, and how does the request become the measured representation? Identify the type returned by the projection used during measurement. Include the compact outgoing-call tree reachable from the entry point, distinguishing direct calls from trait-dispatch and macro expansion boundaries. Explain which concrete sender implementation can be established from this entry point alone. Cite the definitions and implementation locations that establish the answer.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nLive-LSP arm: native reads and text search plus this live-LSP command. No AST outline, ranked map or web browsing. You may read /tmp/research-tools-6ac03a.A0E7wt/lsp.py only to understand usage; its siblings and all other trial data remain excluded. Obtain definitions, implementations, type-at-position (hover), workspace symbols and a recursive outgoing tree, then verify in source. Unavailable or partial results remain unknown; call hierarchy is not proof of concrete generic dispatch or actor hops.\npython3 /tmp/research-tools-6ac03a.A0E7wt/lsp.py query --socket /tmp/research-tools-6ac03a.A0E7wt/flow.sock --method METHOD [--symbol NAME] [--file RELATIVE_PATH --line ONE_BASED_LINE --column ONE_BASED_COLUMN] [--depth 3] [--timeout 60]\nMETHOD: workspace/symbol, textDocument/definition, textDocument/implementation, textDocument/hover, outgoing-tree. Lines and columns are 1-based; columns are UTF-16 units (ASCII positions suffice). The server is manually running and its Cargo workspace loaded successfully. Checks, build scripts and proc macros are disabled. Do not stop/reconfigure the server. outgoing-tree recursively expands call hierarchy to the supplied depth, preserving null or partial results.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 7,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 1
+      }
+    },
+    {
+      "name": "flow-outline-control",
+      "start": "2026-11-19T04:56:28.890323+00:00",
+      "elapsed_seconds": 273.5014723110944,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f229-d09a-7811-9297-c7c06f292a0d"
+      ],
+      "usage": [
+        {
+          "input_tokens": 1581241,
+          "cached_input_tokens": 1472640,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 13891,
+          "reasoning_output_tokens": 9128
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T22-56-29-01a1f229-d09a-7811-9297-c7c06f292a0d.jsonl",
+      "prompt_sha256": "279e41f94b4aead97ba7d8e66c6363b51abbc05e1196d9277271c8dd03e82126",
+      "tool_text_o200k_tokens": 89743,
+      "tool_text_bytes": 347702,
+      "tool_output_items": 62,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 37,
+        "custom_tool_call": 22,
+        "custom_tool_call_output": 22
+      },
+      "query_text_o200k_tokens": 3166,
+      "transcript_sha256": "5a23a824ecccd5bba3950453034097b927a882e4a7764fd7d8a08f182def1f89",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          7,
+          8
+        ],
+        "missing_units": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "false_positive_claims": [],
+        "tp": 4,
+        "fp": 0,
+        "fn": 4,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      "answer": "### Ordinary CLI `Send`\n\n1. **Parse and locate the Nexus.** The CLI accepts one inline `Input` datom, reads the configured place\u2019s runtime, and turns the datom into a typed `signal_flow::Input`. A `Send` carries an explicit recipient `Address`; the CLI tests show relative recipients are rejected. ([`main.rs:9\u201353`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:9), [`main.rs:137\u2013188`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:137))\n\n2. **Connect and frame the request.** The client opens a Unix socket, sends a length-prefixed rkyv greeting, and waits for a matching contract receipt before sending the `Input`. Frames use a four-byte big-endian length and are capped at 1 MiB. The Nexus likewise greets first, then reads and decodes one ordinary input frame; an ordinary request gets one reply frame. ([`client.rs:23\u201359, 66\u2013118`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:23), [`lib.rs:2752\u20132818, 2026\u20132045`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2752))\n\n3. **Derive the sender from the caller.** On socket acceptance, the Nexus reads the kernel peer PID and captures its process identity; `Send` itself supplies no sender field. The Nexus checks that identity against its records and resolves caller evidence, including live flow and pane evidence. A bound caller sends as its flow\u2019s address; a recognized sending authority supplies its address; otherwise the sender is `Unbound`. ([`lib.rs:1787\u20131843`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:1787), [`caller.rs:458\u2013534`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/caller.rs:458), [`sending.rs:125\u2013145, 235\u2013252`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:125))\n\n4. **Resolve and route the message.** The Nexus maps the typed send into its internal message and resolves `Result`/`Done` request IDs against open answer bindings. Ordinary requests go to the supplied address. An answer goes to the sender of the request it names, regardless of the supplied address; if that sender has no address, the answer is kept with the request and closes it in the same commit. ([`sending.rs:295\u2013343`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:295), [`logical_delivery.rs:625\u2013632, 1775\u20131837`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:625), [`kept_answer.rs:1\u20135, 91\u2013155`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/kept_answer.rs:1))\n\n5. **Admit durably; attempt direct work when eligible.** Soft messages are marked `Queue`; abrupt priorities are marked `Wake`. Under the dispatch gate, the Nexus resolves the recipient, checks the message, and commits a queue entry with request binding, logical delivery identity, cursor, and delivery event. The store returns `SendAccepted` with state `Queued` after that commit. The Nexus requests a direct lease for abrupt work or for a live awake recipient known to be resting; otherwise the accepted request remains pending. ([`sending.rs:239\u2013309, 345\u2013404`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:239), [`logical_delivery.rs:2111\u20132150, 2161\u20132197, 2339\u20132348`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2111))\n\n6. **Reply, then schedule pending work.** The visible acceptance exposes the request ID, delivery cursor, and current delivery state. Direct completion counts as `Sent` only with `Delivered` or `Read` evidence; a direct attempt can instead remain accepted as queued, attempting, or uncertain. If `send_request` returns a pending address, the adapter writes the reply, drops the connection, then invokes `wake_due` after the write attempt. That operation checks whether queued work is due for an awake/resting seat or an asleep seat to wake. ([`message_projection.rs:113\u2013135`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:113), [`sending.rs:195\u2013223, 1334\u20131435, 1544\u20131569`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:195), [`connection_adapter.rs:188\u2013196, 308\u2013342, 448\u2013461`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:188), [`waking.rs:1616\u20131645`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:1616))\n\n**What acceptance establishes:** durable admission and the reported delivery state at that point. By itself, it does not establish eventual handoff, reading, or an answer; those remain unknown from an accepted response alone.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nExplain the path of an ordinary CLI Send through the Flow Nexus: parsing and connection, request framing, authenticated sender, message resolution/routing, durable admission, direct-versus-pending work and post-reply wake. Stop at the scheduling boundary; do not enumerate every native harness delivery backend. Explain what an accepted response establishes and what it leaves pending. Cite the architectural relationships in source.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "flow-outline-tool",
+      "start": "2026-11-19T05:01:02.403296+00:00",
+      "elapsed_seconds": 258.2302649449557,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f22d-fd01-79a1-8299-8bb4abcd07a3"
+      ],
+      "usage": [
+        {
+          "input_tokens": 1257774,
+          "cached_input_tokens": 1154688,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 13176,
+          "reasoning_output_tokens": 8316
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-01-02-01a1f22d-fd01-79a1-8299-8bb4abcd07a3.jsonl",
+      "prompt_sha256": "481b9fd687960c0e8393f1c6d4cf5ac1d291abc0228b7605e6769d42f4bc40e4",
+      "tool_text_o200k_tokens": 84255,
+      "tool_text_bytes": 329024,
+      "tool_output_items": 40,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 33,
+        "custom_tool_call": 20,
+        "custom_tool_call_output": 20
+      },
+      "query_text_o200k_tokens": 3041,
+      "transcript_sha256": "048a5bf97270feae81b7db389d2ae79a9b8bb85ca0319dd1bb33f046baa63b61",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          7,
+          8
+        ],
+        "missing_units": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "false_positive_claims": [
+          "Claims wake_due acts only for asleep recipients; waking.rs:1616 first drains awake work."
+        ],
+        "tp": 4,
+        "fp": 1,
+        "fn": 4,
+        "precision": 0.8,
+        "recall": 0.5
+      },
+      "answer": "## Verified path\n\n- **Parse and connect:** `flow` accepts one inline Input datom, actualizes it as `signal_flow::Input`, and gets the ordinary socket from the selected place\u2019s runtime; its main path then calls `FlowClient`. The CLI test shows a typed `Send` example: [`main.rs:42`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:42), [`main.rs:78`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:78), [`main.rs:140`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:140). The client connects over Unix socket, greets first, and proceeds only on a matching contract digest: [`client.rs:32`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:32), [`client.rs:69`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:69).\n\n- **Framing and decode:** The query is rkyv-encoded behind a four-byte big-endian length; frames over 1 MiB are rejected. The Nexus settles the greeting before reading and decoding the ordinary Input: [`client.rs:72`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:72), [`lib.rs:2030`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2030), [`lib.rs:2809`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2809), [`undecodable.rs:90`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/undecodable.rs:90).\n\n- **Sender identity:** `Send` supplies no sender. On accept, the Nexus gets the peer PID from kernel credentials and captures its process start identity; it uses that live process and Flow\u2019s records to resolve a bound or sending address. Missing or conflicting evidence yields `Unbound`: [`lib.rs:1839`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:1839), [`store.rs:5397`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store.rs:5397), [`caller.rs:458`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/caller.rs:458), [`caller.rs:513`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/caller.rs:513), [`sending.rs:132`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:132).\n\n- **Resolve and route:** The Nexus resolves the sendable request while preserving its priority. A `Result` or `Done` must resolve against its named request; answer routing uses that request\u2019s sender address, or keeps the answer with the request if there is no sender address. Other messages use the requested address: [`logical_delivery.rs:1775`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:1775), [`sending.rs:302`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:302), [`sending.rs:316`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:316).\n\n- **Durable admission:** Abrupt messages are admitted with `Wake` delivery; Soft messages with `Queue`. Admission adds the request to the recipient queue and commits its delivery snapshot, event, and request binding atomically. The returned acceptance initially reports `Queued`: [`sending.rs:295`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:295), [`logical_delivery.rs:2143`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2143), [`logical_delivery.rs:2167`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2167), [`logical_delivery.rs:2339`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2339).\n\n- **Direct versus pending:** Abrupt work requests the direct path; Soft work does so when the recipient is live, awake, and resting. Otherwise it remains queued. Soft work arriving during a turn waits for the idle/turn-end event. If an accepted send remains pending, the adapter attaches `WakeDue(address)` after the reply write attempt and connection close; `wake_due` acts only when the recipient is asleep with work that wakes it: [`sending.rs:351`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:351), [`waking.rs:158`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:158), [`connection_adapter.rs:188`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:188), [`connection_adapter.rs:341`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:341), [`connection_adapter.rs:459`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:459), [`waking.rs:665`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:665).\n\n## What acceptance establishes\n\n`SendAccepted` reports a durable logical delivery with its request ID, cursor, and visible delivery state. It establishes admission, not recipient delivery or reading; the direct-send code treats `Delivered` or `Read` evidence as the basis for `Sent`, not admission or submission alone: [`message_projection.rs:121`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:121), [`sending.rs:195`](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:195).\n\n**Unknown from acceptance alone:** whether or when the recipient will process the message. Work can still be queued or awaiting a wake or turn-end scheduling event.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nExplain the path of an ordinary CLI Send through the Flow Nexus: parsing and connection, request framing, authenticated sender, message resolution/routing, durable admission, direct-versus-pending work and post-reply wake. Stop at the scheduling boundary; do not enumerate every native harness delivery backend. Explain what an accepted response establishes and what it leaves pending. Cite the architectural relationships in source.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nOutline arm: native reads and text search plus ast-grep outline. No live LSP, ranked map, semantic index or web browsing. Run `ast-grep outline -l rust --items structure --color never PATH` on your root, a source subdirectory, or individual files. The tool also supports --json=compact. You may consult `ast-grep outline --help` only for usage. All tool paths must remain within your corpus root.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 3,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "flow-map-control",
+      "start": "2026-11-19T05:05:20.644873+00:00",
+      "elapsed_seconds": 254.55889197799843,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f231-edde-7f01-8b1f-15c75a8d0c7b"
+      ],
+      "usage": [
+        {
+          "input_tokens": 791330,
+          "cached_input_tokens": 702720,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 13265,
+          "reasoning_output_tokens": 8274
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-05-21-01a1f231-edde-7f01-8b1f-15c75a8d0c7b.jsonl",
+      "prompt_sha256": "279e41f94b4aead97ba7d8e66c6363b51abbc05e1196d9277271c8dd03e82126",
+      "tool_text_o200k_tokens": 76823,
+      "tool_text_bytes": 301446,
+      "tool_output_items": 24,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 10,
+        "reasoning": 26,
+        "custom_tool_call": 12,
+        "custom_tool_call_output": 12
+      },
+      "query_text_o200k_tokens": 3002,
+      "transcript_sha256": "13b6cbc64348bd54b37be7fd970eae88b3620267854933b3b6b8745d6b9fe619",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          7,
+          8
+        ],
+        "missing_units": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "false_positive_claims": [],
+        "tp": 4,
+        "fp": 0,
+        "fn": 4,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      "answer": "### Verified path\n\n1. **Parse and connect.** The CLI accepts one inline `Input` datom, parses it as `signal_flow::Input`, and derives the ordinary socket path from the configured place ([main.rs:9](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:9), [main.rs:42](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:42), [main.rs:46](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:46)). The client connects, sends a length-prefixed Signal greeting, and proceeds only if the receipt matches the contract digest; it then sends the serialized `Input` in another length-prefixed frame ([client.rs:36](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:36), [client.rs:52](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:52), [client.rs:69](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:69), [client.rs:73](/tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:73)). The Nexus greets before decoding the request, reads one frame, and dispatches the decoded ordinary input ([lib.rs:2030](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2030), [lib.rs:2035](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2035), [lib.rs:2039](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2039)).\n\n2. **Authenticate sender; resolve and route.** The connection captures the peer process from kernel credentials; `Send` does not supply its own sender. Flow maps that process to its sending authority and uses the bound metaflow\u2019s address, or `Unbound` when no sender address is established ([caller.rs:82](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/caller.rs:82), [sending.rs:137](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:137), [sending.rs:142](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:142)). The Nexus resolves the public message and preserves its priority; `Result` and `Done` must name an open, answerable request ([sending.rs:295](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:295), [logical_delivery.rs:1796](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:1796)). An answer routes to that request\u2019s original sender; if it has no sender address, Flow keeps the answer with the request instead ([sending.rs:318](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:318), [kept_answer.rs:112](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/kept_answer.rs:112), [sending.rs:327](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:327)).\n\n3. **Admit, then choose direct or pending work.** Admission appends a queue entry and atomically records its delivery snapshot and open request-ID binding; the store returns `SendAccepted` with a request ID, cursor, and initial `Queued` state ([logical_delivery.rs:2136](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2136), [logical_delivery.rs:2167](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2167), [logical_delivery.rs:2339](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2339), [logical_delivery.rs:2341](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2341)). Abrupt-priority sends request direct work; a Soft send does so when the recipient is live and resting. Otherwise an accepted send remains pending on the address\u2019s queue ([sending.rs:351](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:351), [sending.rs:354](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:354), [sending.rs:397](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:397), [sending.rs:402](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:402)).\n\n4. **Post-reply scheduling boundary.** When the send has pending work, the adapter attaches `WakeDue` to an `AfterAnyWrite` completion. It writes the response, drops the connection, then performs that operation; `wake_due` checks for work to hand to a resting seat or a due wake ([connection_adapter.rs:190](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:190), [connection_adapter.rs:309](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:309), [connection_adapter.rs:341](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:341), [connection_adapter.rs:459](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:459), [waking.rs:1616](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:1616)).\n\n### What acceptance means\n\n`SendAccepted` establishes durable admission and exposes the request ID, cursor, and current delivery state ([message_projection.rs:121](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:121)). It does **not** establish successful delivery or that the recipient read the request. Direct work returns `Sent` only with `Delivered` or `Read` evidence ([sending.rs:195](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:195), [sending.rs:213](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:213)). At acceptance, queued work may still await scheduling; an answerable request may also remain open until a matching `Result` or `Done` closes it ([logical_delivery.rs:2190](/tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2190)).",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nExplain the path of an ordinary CLI Send through the Flow Nexus: parsing and connection, request framing, authenticated sender, message resolution/routing, durable admission, direct-versus-pending work and post-reply wake. Stop at the scheduling boundary; do not enumerate every native harness delivery backend. Explain what an accepted response establishes and what it leaves pending. Cite the architectural relationships in source.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "flow-map-tool",
+      "start": "2026-11-19T05:09:35.212380+00:00",
+      "elapsed_seconds": 282.8246591500938,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f235-d037-76b1-a9b2-19bdaebab7f8"
+      ],
+      "usage": [
+        {
+          "input_tokens": 961428,
+          "cached_input_tokens": 847872,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 14956,
+          "reasoning_output_tokens": 9215
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-09-35-01a1f235-d037-76b1-a9b2-19bdaebab7f8.jsonl",
+      "prompt_sha256": "8c1a690e0701a892d09d82dc2c70fbadb11af668cb72371c2aa4b404f9d99119",
+      "tool_text_o200k_tokens": 99297,
+      "tool_text_bytes": 385847,
+      "tool_output_items": 36,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 27,
+        "custom_tool_call": 12,
+        "custom_tool_call_output": 12
+      },
+      "query_text_o200k_tokens": 3917,
+      "transcript_sha256": "a76d6b3a004c493cfeeaa4da8566cc288184792c1a28c76bf600a1e81883c1c1",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          4,
+          6,
+          7,
+          8
+        ],
+        "missing_units": [
+          3,
+          5
+        ],
+        "false_positive_claims": [],
+        "tp": 6,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.75
+      },
+      "answer": "### Path\n\n- **Parse and connect.** The CLI accepts one inline Flow `Input` datom, actualizes it as `signal_flow::Input`, and resolves the configured place\u2019s ordinary socket ([`main.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:9>, [`main.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/main.rs:42>)). `FlowClient` connects, sends the Signal greeting, and requires the matching contract digest before sending the input ([`client.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:23>).\n\n- **Frame and identify the caller.** The client serializes the input into a length-prefixed rkyv frame; the ordinary socket reads the greeting first, then one bounded frame and decodes it ([`client.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow/src/client.rs:66>, [`lib.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2030>, [`lib.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:2802>)). On accept, the Nexus gets the kernel peer PID and pairs it with the process start time, guarding against PID reuse ([`lib.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/lib.rs:1834>, [`store.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store.rs:5392>)). For `Input::Send`, the adapter passes that process evidence to `send_request`; sender authority comes from Flow\u2019s records and resolves to the bound metaflow address, an explicitly sending address, or `Unbound` ([`connection_adapter.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:188>, [`caller.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/caller.rs:458>, [`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:132>)). The sender is not supplied as a Send field ([`message.ethos`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-ethos/ethos/message.ethos:16>)).\n\n- **Resolve and route.** The Nexus checks the topic, derives `Wake` delivery for abrupt priority and `Queue` for Soft, then resolves the typed request ([`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:260>, [`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:295>)). Results and Done messages must match an open, answerable request ID; their route is the original request\u2019s sender address, regardless of the Send\u2019s addressed recipient. If that sender has no address, the answer is kept with the request ([`logical_delivery.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:1775>, [`kept_answer.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/kept_answer.rs:91>)). Other messages use the supplied address. The Nexus also checks the rendered prompt-size budget before admission ([`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:300>)).\n\n- **Admit durably.** For a normal routed message, the store requires a known metaflow, mints request and logical-delivery identities, adds the sender, policy and message to its queue, and commits the queue row and delivery records atomically. The returned acceptance starts in `Queued` ([`logical_delivery.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2036>, [`logical_delivery.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2135>, [`logical_delivery.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/store/logical_delivery.rs:2339>)). The Nexus separately records the Send outcome; failure of that journal write does not undo a durable admission ([`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:431>)).\n\n- **Direct work, pending work, and wake.** After admission, the Nexus attempts direct work for abrupt messages, or for Soft messages when a live Awake seat is resting now. If direct work is unavailable, it returns an acceptance with the recipient address pending; Soft work at a busy Awake seat waits for its idle event ([`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:345>, [`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:397>, [`waking.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:17>)). A pending address schedules `WakeDue` after the reply write attempt. That operation rechecks durable state, drains an eligible Awake seat, or wakes an Asleep seat when work makes a wake due ([`connection_adapter.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:188>, [`connection_adapter.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/connection_adapter.rs:308>, [`waking.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/waking.rs:1616>)). This stops at scheduling; it does not trace native delivery.\n\n**What acceptance means.** `SendAccepted` exposes a request ID, delivery cursor and delivery state ([`message_projection.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/message_projection.rs:121>)). It establishes durable logical admission, not a native receipt. Direct work may still return acceptance as queued, attempting or uncertain; Flow returns `Sent` only on positive `Delivered` or `Read` evidence ([`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:195>, [`sending.rs`](</tmp/research-tools-09fa53.RK73td/flow/crates/flow-nexus/src/sending.rs:1544>)).\n\n**Limit:** the source establishes process and Flow attribution, not the human at the keyboard. If peer-process evidence is unavailable, the Send path treats the caller as `Unbound`; absent later delivery evidence, acceptance leaves completion pending or unresolved.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nExplain the path of an ordinary CLI Send through the Flow Nexus: parsing and connection, request framing, authenticated sender, message resolution/routing, durable admission, direct-versus-pending work and post-reply wake. Stop at the scheduling boundary; do not enumerate every native harness delivery backend. Explain what an accepted response establishes and what it leaves pending. Cite the architectural relationships in source.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/flow.\nRanked-map arm: native reads and text search plus the prebuilt fixed-budget ranked Rust repository map at /tmp/research-tools-6ac03a.A0E7wt/flow-map.txt. You may read that file, but no sibling trial file. It was produced by a Nix-built tool on a lexical symbol-reference graph with PageRank, limited to 16,000 UTF-8 bytes (not a semantic call graph). Read it to guide source retrieval. No live LSP, AST outline, semantic index or web browsing.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 1
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "lojix-lsp-control",
+      "start": "2026-11-19T05:14:18.045057+00:00",
+      "elapsed_seconds": 180.65227543294895,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f23a-2104-7972-aeb7-aa746299d409"
+      ],
+      "usage": [
+        {
+          "input_tokens": 244296,
+          "cached_input_tokens": 206080,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 9317,
+          "reasoning_output_tokens": 6773
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-14-18-01a1f23a-2104-7972-aeb7-aa746299d409.jsonl",
+      "prompt_sha256": "313a5cb8889ba47f47f458008617f0797baca74764f9cc74b177e44411aaa7fe",
+      "tool_text_o200k_tokens": 28378,
+      "tool_text_bytes": 112250,
+      "tool_output_items": 34,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 17,
+        "custom_tool_call": 7,
+        "custom_tool_call_output": 7
+      },
+      "query_text_o200k_tokens": 1083,
+      "transcript_sha256": "9da660b7aca26ce69fa85b641b08575cb1a3df93710e4ad6f0984571a8a8be78",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missing_units": [],
+        "false_positive_claims": [
+          "Claims the accepted handle returns before pipeline effects run; daemon.rs:710-718 spawns before the actor reply, without that ordering guarantee."
+        ],
+        "tp": 8,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.8888888888888888,
+        "recall": 1.0
+      },
+      "answer": "## Boundary and types\n\nThere is no `Daemon::submit_deploy` method in this checkout. `Daemon` stores configuration and a state path; the owner request method is `RequestServable::submit_deploy`, implemented for `RequestWorker`. The owner route decodes `MetaIngress::Deploy(request)` and calls it. ([src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:102), lines 102\u2013108, 452\u2013456, 474\u2013475, 508\u2013519, 548\u2013561)\n\nThe request is `memory::DeploySubmission` (`Host` or `UserEnvironment`); `meta::DeployRequest` is an alias for that same type. The worker wraps it in `AdmitDeploy` and asks its `ActorRef<DeployJobs>`. The actor\u2019s reply type is `DeployAdmission`: `Accepted(DeployHandle)`, `Rejected(RejectedDeploy)`, or `Refused(RefusedDeploy)`. The worker maps those to `MetaEgress::DeployAccepted`, `DeployRejected`, or `DeployRefused`. ([src/runtime_model.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_model.rs:627), lines 627\u2013630, 845\u2013853, 855\u2013862; [src/schema_runtime.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:167), lines 167\u2013173; [src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:935), lines 935\u2013960)\n\n## Outgoing-call tree\n\n```text\nserve_owner\n\u2514\u2500 RequestWorker::submit_deploy                         [direct Rust call]\n   \u2514\u2500 deploy_jobs.ask(AdmitDeploy { request })          [Kameo message hop]\n      \u2514\u2500 Message<AdmitDeploy>::handle on DeployJobs     [actor dispatch]\n         \u251c\u2500 at_capacity?\n         \u2502  \u2514\u2500 yes: engine.reject_deployment_in_flight\n         \u2502     \u2514\u2500 reject_submission \u2192 store rejection\n         \u2502        \u2514\u2500 RejectedDeploy, or RefusedDeploy if write fails\n         \u2514\u2500 no: engine.submit_deploy\n            \u251c\u2500 not accepted: return Rejected/Refused; no launch\n            \u2514\u2500 accepted: active_count += 1\n               \u2514\u2500 launch_pipeline\n                  \u2514\u2500 tokio::spawn { drive_submitted_deploy\n                     \u2514\u2500 jobs.tell(DeployCompleted)          [Kameo message hop]\n                        \u2514\u2500 DeployJobs handles completion; decrement count }\n   \u2514\u2500 map DeployAdmission to MetaEgress and write owner reply\n```\n\nThe first Kameo boundary is specifically `ActorRef::ask` at `src/daemon.rs` lines 548\u2013560; `DeployJobs::handle` is the framework-dispatched receiver at lines 959\u2013987, not a direct Rust call from `RequestWorker::submit_deploy`. The completion `tell` at lines 710\u2013718 is another message hop; its handler decrements the count at lines 992\u20131001. `launch_pipeline` itself is a direct trait-method call, and it starts the pipeline in a Tokio task. ([src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:700), lines 700\u2013718, 959\u20131001)\n\n## Capacity and acceptance\n\n`DeployJobs::at_capacity` checks `active_count >= cap`; the runtime starts it with `MAXIMUM_CONCURRENT_DEPLOYS = 8`. At capacity, the handler skips normal submission and calls `reject_deployment_in_flight`, which records a correlated `DeploymentInFlight` rejection. A failed durable rejection write yields `RefusedDeploy`; otherwise the result is `RejectedDeploy`. ([src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:270), lines 270\u2013272, 314\u2013319, 700\u2013702, 967\u2013973; [src/schema_runtime.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3799), lines 3799\u20133804, 3634\u20133651)\n\nOn the available-capacity path, the relevant implementation is `impl DeployDriving for SchemaRuntime`: `submit_deploy` runs the request rejection guard, then records the submitted deployment. On success it returns the handle; the actor increments `active_count`, launches the pipeline, and replies with that handle before pipeline effects run. Other submission outcomes do not launch a pipeline. ([src/schema_runtime.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3792), lines 3792\u20133829; [src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:974), lines 974\u2013985; [src/schema_runtime.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4725), lines 4725\u20134764)\n\nThe similarly named `TestJobs` path is separate: its `at_capacity`, `launch_pipeline`, and `handle` concern `AdmitTest`/`TestAdmission`, not `AdmitDeploy`. Within `DeployJobs`, the other `handle` implementations are for completion and reconciliation. ([src/daemon.rs](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1218), lines 1218\u20131283, 1298\u20131352, and 995\u20131017)\n\nOne code detail: if the `ask` itself errors, the implementation returns `Error::UnexpectedFrame` (lines 557\u2013560); it does not construct a `DeployAdmission` reply in that case.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nTrace daemon owner Deploy submission from `Daemon::submit_deploy` through admission, taking care with repeated `submit_deploy`, `handle`, `at_capacity` and `launch_pipeline` names. What request and response types cross this boundary, which actor handles the message, and what happens at capacity or on acceptance? Include a compact outgoing-call tree and identify exactly where a Kameo message hop must be represented separately rather than claimed as a direct Rust call edge. Cite the relevant trait implementation and distinguish the similarly named test path.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "lojix-lsp-tool-repeat",
+      "start": "2026-11-19T05:41:22.510303+00:00",
+      "elapsed_seconds": 308.76950378203765,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f252-ea94-72a1-b1ea-3a0cdba39d3b"
+      ],
+      "usage": [
+        {
+          "input_tokens": 733920,
+          "cached_input_tokens": 656896,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 16087,
+          "reasoning_output_tokens": 10364
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-41-23-01a1f252-ea94-72a1-b1ea-3a0cdba39d3b.jsonl",
+      "prompt_sha256": "f4444fe41717d6af87cfc60cd3d53a8766f47425be3510e7f3241bc45e0771ae",
+      "tool_text_o200k_tokens": 49622,
+      "tool_text_bytes": 185342,
+      "tool_output_items": 49,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 10,
+        "reasoning": 31,
+        "custom_tool_call": 13,
+        "custom_tool_call_output": 13
+      },
+      "query_text_o200k_tokens": 3650,
+      "transcript_sha256": "50ed0b58bb5941c8d712dbc97aa81536073945907f69ea8026c0bf8ce3c17545",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missing_units": [],
+        "false_positive_claims": [],
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0
+      },
+      "answer": "### Verified trace\n\nThere is no `Daemon::submit_deploy` method in this checkout: `Daemon` holds configuration and a state path ([daemon.rs:105](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:105)). `LojixRuntime::handle_connection` creates a `RequestWorker` ([daemon.rs:417](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:417)); its owner path dispatches `MetaIngress::Deploy` to the worker\u2019s `submit_deploy` ([daemon.rs:518](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:518)). That method is implemented under `RequestServable` and takes `memory::DeploySubmission`, returning `Result<memory::MetaEgress>` ([daemon.rs:548](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:548)).\n\nThe actor request is `AdmitDeploy { request: memory::DeploySubmission }`; its reply is `DeployAdmission::{Accepted(DeployHandle), Rejected(RejectedDeploy), Refused(RefusedDeploy)}` ([daemon.rs:935](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:935), [daemon.rs:942](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:942)). The worker awaits `deploy_jobs.ask(...)` and maps those reply variants to `MetaEgress::{DeployAccepted, DeployRejected, DeployRefused}` ([daemon.rs:549](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:549), [daemon.rs:551](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:551), [runtime_model.rs:855](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_model.rs:855)). The result is raised to the owner response and framed ([adapters.rs:837](/tmp/research-tools-09fa53.RK73td/lojix/src/adapters.rs:837), [daemon.rs:531](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:531)).\n\n```text\nLojixRuntime::handle_connection\n  -> RequestWorker::serve_owner\n  -> RequestWorker::submit_deploy\n  -> ActorRef<DeployJobs>::ask(AdmitDeploy { request })\n  == Kameo message delivery; not a direct Rust call ==>\n  <DeployJobs as Message<AdmitDeploy>>::handle\n     \u251c\u2500 at capacity: reject as DeploymentInFlight; return DeployAdmission\n     \u2514\u2500 capacity available: SchemaRuntime::submit_deploy\n          \u251c\u2500 rejected/refused: return DeployAdmission\n          \u2514\u2500 accepted: increment active_count -> launch_pipeline\n               -> tokio::spawn -> drive_submitted_deploy\n               -> jobs.tell(DeployCompleted)\n               == Kameo message delivery ==>\n               <DeployJobs as Message<DeployCompleted>>::handle\n  <- DeployAdmission -> MetaEgress -> owner response\n```\n\nThe `ask` call is the precise actor boundary: the reference is `ActorRef<DeployJobs>`, and the message is `AdmitDeploy` ([daemon.rs:445](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:445), [daemon.rs:549](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:549)). The receiving implementation is `<DeployJobs as Message<AdmitDeploy>>::handle`, with `type Reply = DeployAdmission` ([daemon.rs:959](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:959)). The LSP tree stops at `ActorRef::ask`; it does not establish generic actor dispatch. The hop above is supported by the typed actor reference, message, and matching trait implementation\u2014not a direct Rust call edge.\n\n`DeployProcessable` is implemented for `DeployJobs`: `at_capacity` is `active_count >= cap` ([daemon.rs:684](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:684), [daemon.rs:700](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:700)). At capacity, the handler calls `reject_deployment_in_flight` ([daemon.rs:967](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:967)); the `DeployDriving for SchemaRuntime` implementation assigns `DeploymentInFlight` ([schema_runtime.rs:3792](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3792), [schema_runtime.rs:3803](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3803)). That rejection is durably recorded; if the write fails, the outcome is instead `Refused(DurableWriteFailed)` ([schema_runtime.rs:3640](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3640), [schema_runtime.rs:3648](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3648)).\n\nWith capacity available, the handler calls `engine.submit_deploy` ([daemon.rs:978](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:978)). This is a distinct synchronous method on `DeployDriving for SchemaRuntime`; its `meta::DeployRequest` is an alias for `DeploySubmission` ([schema_runtime.rs:172](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:172), [schema_runtime.rs:3806](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3806)). On acceptance, `record_deploy_submitted` persists the `Submitted` job and accepted marker and seeds the in-flight pipeline ([schema_runtime.rs:4725](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4725), [schema_runtime.rs:4768](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4768)). The actor then increments its count and launches the pipeline ([daemon.rs:980](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:980), [daemon.rs:981](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:981)). The spawned task drives the submitted deploy and later tells the actor `DeployCompleted`, whose handler decrements the count ([daemon.rs:710](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:710), [daemon.rs:717](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:717), [daemon.rs:1000](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1000)).\n\n### Similar names and limits\n\n`TestJobs` has its own `at_capacity`, `launch_pipeline`, and `handle`, but handles `AdmitTest`/`TestRequest`; it is not the deploy admission path ([daemon.rs:1218](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1218), [daemon.rs:1313](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1313)). The `#[cfg(test)]` module separately tests deploy-job reconciliation, not owner submission ([daemon.rs:1020](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1020)). Kameo\u2019s internal scheduler implementation remains outside the permitted corpus; the source establishes the message and handler relationship, but not those internals.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nTrace daemon owner Deploy submission from `Daemon::submit_deploy` through admission, taking care with repeated `submit_deploy`, `handle`, `at_capacity` and `launch_pipeline` names. What request and response types cross this boundary, which actor handles the message, and what happens at capacity or on acceptance? Include a compact outgoing-call tree and identify exactly where a Kameo message hop must be represented separately rather than claimed as a direct Rust call edge. Cite the relevant trait implementation and distinguish the similarly named test path.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nLive-LSP arm: native reads and text search plus this live-LSP command. No AST outline, ranked map or web browsing. You may read /tmp/research-tools-6ac03a.A0E7wt/lsp.py only to understand usage; its siblings and all other trial data remain excluded. Obtain definitions, implementations, type-at-position (hover), workspace symbols and a recursive outgoing tree, then verify in source. Unavailable or partial results remain unknown; call hierarchy is not proof of concrete generic dispatch or actor hops.\npython3 /tmp/research-tools-6ac03a.A0E7wt/lsp.py query --socket /tmp/research-tools-6ac03a.A0E7wt/lojix.sock --method METHOD [--symbol NAME] [--file RELATIVE_PATH --line ONE_BASED_LINE --column ONE_BASED_COLUMN] [--depth 3] [--timeout 60]\nMETHOD: workspace/symbol, textDocument/definition, textDocument/implementation, textDocument/hover, outgoing-tree. Lines and columns are 1-based; columns are UTF-16 units (ASCII positions suffice). The server is manually running and its Cargo workspace loaded successfully. Checks, build scripts and proc macros are disabled. Do not stop/reconfigure the server. outgoing-tree recursively expands call hierarchy to the supplied depth, preserving null or partial results.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 7,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 1
+      }
+    },
+    {
+      "name": "lojix-outline-control",
+      "start": "2026-11-19T05:21:28.757259+00:00",
+      "elapsed_seconds": 192.25499291007873,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f240-b362-7781-9fd3-42453e2a210c"
+      ],
+      "usage": [
+        {
+          "input_tokens": 561276,
+          "cached_input_tokens": 470784,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10033,
+          "reasoning_output_tokens": 7025
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-21-29-01a1f240-b362-7781-9fd3-42453e2a210c.jsonl",
+      "prompt_sha256": "2f3d4fe5d9ae5bbe7d74228a5129da46814c8e7b72db37e4a6ec08243b123fd1",
+      "tool_text_o200k_tokens": 52532,
+      "tool_text_bytes": 220148,
+      "tool_output_items": 24,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 8,
+        "reasoning": 24,
+        "custom_tool_call": 12,
+        "custom_tool_call_output": 12
+      },
+      "query_text_o200k_tokens": 1263,
+      "transcript_sha256": "f566a700f6258f4faf650abba9f379616b7126797f3925cfef47aa0f0d8298e2",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        "missing_units": [
+          5,
+          8
+        ],
+        "false_positive_claims": [],
+        "tp": 6,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.75
+      },
+      "answer": "## Verified flow\n\n1. **Authorization precedes decoding.** The owner listener is tagged `Owner`; its connection handler calls `serve_owner`, which authorizes the peer before reading a frame. The authority is initialized from the daemon\u2019s effective UID and GID, accepts only matching Unix peer credentials, and rejects TCP peers. [src/daemon.rs:186](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:186) [src/daemon.rs:376](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:376) [src/daemon.rs:508](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:508)\n\n2. **The frame becomes a typed owner request.** `read_body` reads a bounded frame with a 10-second timeout; its body is restored as `Signal<meta_signal_lojix::Query>` and lowered to the internal representation. The `Deploy` variant takes the dedicated submission path. [src/daemon.rs:580](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:580) [src/daemon.rs:52](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:52) [src/daemon.rs:511](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:511)\n\n3. **Admission is an actor hop; submission work is a direct call.** `submit_deploy` sends `AdmitDeploy` with `deploy_jobs.ask(...)`. The daemon-lifetime `DeployJobs` actor checks its own cap of 8 pipelines, separate from the listener\u2019s 64-request concurrency limit. At capacity it returns the typed `DeploymentInFlight` rejection. Otherwise, it directly calls `SchemaRuntime::submit_deploy`; on acceptance that call has persisted the deployment record and `Submitted` restart cursor and set the engine\u2019s deploy cursor. The actor then increments its single-writer `active_count`, launches the pipeline, and returns the admission verdict. [src/daemon.rs:258](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:258) [src/daemon.rs:264](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:264) [src/daemon.rs:967](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:967) [src/schema_runtime.rs:3714](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3714) [src/schema_runtime.rs:4725](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4725)\n\n4. **The owner receives an admission reply, not a completion reply.** The actor\u2019s accepted/rejected/refused result is mapped to the corresponding meta egress; the handler raises and serializes it, then writes the reply frame. `DeployAccepted` is only an admission handle; build, copy, and activation can still be running. [src/daemon.rs:548](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:548) [src/daemon.rs:531](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:531) [README.md:13](/tmp/research-tools-09fa53.RK73td/lojix/README.md:13)\n\n5. **The daemon task drives the pipeline and reports completion to the actor.** `DeployJobs` owns admission and lifecycle tracking; the actual pipeline runs in a separate daemon `tokio::spawn` task with the seeded `SchemaRuntime`. It calls `drive_submitted_deploy`, which runs the Nexus continuation chain to a terminal result. Success or failure is terminalized in the store; then the task sends `DeployCompleted`, and the actor decrements `active_count`. [src/daemon.rs:645](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:645) [src/daemon.rs:710](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:710) [src/schema_runtime.rs:3992](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3992) [src/schema_runtime.rs:4188](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4188) [src/schema_runtime.rs:4383](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4383) [src/daemon.rs:989](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:989)\n\n## Calls versus actor messages\n\nThe socket handler, decoding/lowering, `SchemaRuntime::submit_deploy`, and the pipeline\u2019s runner work are ordinary local calls or awaited trait methods. In particular, the Nexus runner adapter awaits the engine\u2019s memory and effect methods; those are not kameo mailbox hops. The actor hops are `ask(AdmitDeploy)` for admission and `tell(DeployCompleted)` for release. Ordinary-socket requests instead go through `execute_request` and the runner. [src/daemon.rs:482](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:482) [src/runtime_flow.rs:537](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:537) [src/runtime_flow.rs:581](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:581) [src/runtime_flow.rs:597](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:597)\n\nBecause the accepted pipeline is spawned on the daemon runtime, not owned by the short owner-connection task, disconnecting that connection does not cancel the pipeline. A disconnect during reply writing can still mean the client never receives its admission handle; the durable result remains available for later status queries. [src/daemon.rs:704](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:704) [README.md:14](/tmp/research-tools-09fa53.RK73td/lojix/README.md:14)\n\n**Documentation mismatch:** `ARCHITECTURE.md` says each connection owns its deploy cursor, but the implementation stores the deploy-job actor on the daemon runtime and hands it the pipeline engine. For this flow, the code shows daemon-owned execution rather than a connection-owned cursor. [ARCHITECTURE.md:285](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:285) [src/daemon.rs:286](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:286) [src/daemon.rs:442](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:442)",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nExplain an owner Deploy request from authorization and frame decoding through admission and reply, then pipeline completion. Identify which component owns the pipeline, how the cap is enforced and released, and why disconnecting the owner connection does not cancel the pipeline. Distinguish ordinary calls from actor message hops and cite the architectural relationships in source. Do not expand every deployment effect backend.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "lojix-outline-tool",
+      "start": "2026-11-19T05:24:41.017228+00:00",
+      "elapsed_seconds": 280.69418169604614,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f243-a29f-7f50-a085-b7ded0d7b961"
+      ],
+      "usage": [
+        {
+          "input_tokens": 1087890,
+          "cached_input_tokens": 978176,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 14484,
+          "reasoning_output_tokens": 10370
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-24-41-01a1f243-a29f-7f50-a085-b7ded0d7b961.jsonl",
+      "prompt_sha256": "2ae326faf5d042225f739c57c27b9a43bcd007fec70145a35ebd73395364fc65",
+      "tool_text_o200k_tokens": 63823,
+      "tool_text_bytes": 257414,
+      "tool_output_items": 43,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 37,
+        "custom_tool_call": 18,
+        "custom_tool_call_output": 18
+      },
+      "query_text_o200k_tokens": 2443,
+      "transcript_sha256": "44feae3fb25066dbd7ab359e0e2846f92204a4779a42718ae073fb4b62becaae",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        "missing_units": [
+          5,
+          8
+        ],
+        "false_positive_claims": [],
+        "tp": 6,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.75
+      },
+      "answer": "## Owner Deploy path\n\n1. **Authorize and decode.** The owner listener calls `authorize` before reading the request. The daemon compares the kernel-supplied Unix peer credentials with its effective uid/gid and rejects TCP peers; the owner socket is the privileged Deploy surface ([daemon.rs:345\u2013402](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:345), [ARCHITECTURE.md:82\u201395](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:82)). It reads a frame with a 10-second timeout and the shared 8 MiB frame capacity, restores the bytes as a `meta_signal_lojix::Query`, then lowers that typed query into `MetaIngress::Deploy(DeploySubmission)` ([daemon.rs:36\u201357](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:36), [daemon.rs:508\u2013512](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:508), [adapters.rs:788\u2013799](/tmp/research-tools-09fa53.RK73td/lojix/src/adapters.rs:788), [runtime_model.rs:845\u2013853](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_model.rs:845)).\n\n2. **Admit and reply.** Deploy takes a special branch: the connection task calls `submit_deploy`, which sends `AdmitDeploy` with `deploy_jobs.ask(...)`. `DeployJobs` checks its active count; at capacity it returns a typed `DeploymentInFlight` rejection. Otherwise, `SchemaRuntime::submit_deploy` runs preflight checks and records the accepted deployment/job cursor durably, then the actor increments the count and launches the pipeline ([daemon.rs:513\u2013560](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:513), [daemon.rs:959\u2013985](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:959), [schema_runtime.rs:3799\u20133829](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3799), [schema_runtime.rs:4725\u20134773](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4725)). The connection maps the verdict to the owner response, frames it, and writes it. Acceptance returns a `DeployHandle`\u2014identifier and marker\u2014not the terminal result ([daemon.rs:530\u2013537](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:530), [adapters.rs:837\u2013873](/tmp/research-tools-09fa53.RK73td/lojix/src/adapters.rs:837)).\n\n3. **Run and release the slot.** The daemon-lifetime `DeployJobs` actor owns admission and the cap count; a separate Tokio task holds the engine and drives `drive_submitted_deploy` to a terminal outcome. Success and failure are recorded as terminal deployment state; the client re-observes that outcome by deployment identifier. When the drive returns, the task sends `DeployCompleted`, and the actor decrements the count ([daemon.rs:645\u2013663](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:645), [daemon.rs:700\u2013718](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:700), [daemon.rs:989\u20131001](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:989), [schema_runtime.rs:3729\u20133739](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3729), [schema_runtime.rs:4188\u20134210](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4188), [schema_runtime.rs:4380\u20134401](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4380)). The deploy cap is 8 and is separate from the request concurrency limit of 64 ([daemon.rs:258\u2013272](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:258)).\n\n**Calls versus actor hops.** Frame handling and engine methods such as `submit_deploy` are ordinary calls in their current task. `ask(AdmitDeploy)` and `tell(DeployCompleted)` are Kameo actor message hops. The runner\u2019s memory, effect, and continuation steps call the engine through its adapter; they are runner steps, not DeployJobs mailbox messages ([runtime_flow.rs:490\u2013555](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:490), [runtime_flow.rs:563\u2013600](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:563), [ARCHITECTURE.md:198\u2013199, 303\u2013304](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:198)).\n\nAfter admission, the pipeline is a daemon-runtime task, not work awaited by the owner connection. Dropping that connection therefore drops only the submit/reply task, not the spawned pipeline ([daemon.rs:274\u2013295](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:274), [daemon.rs:704\u2013718](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:704)). The corpus\u2019s survival test verifies store reopen and correlation identity, rather than a socket disconnect ([deploy_job_survival.rs:38\u201371](/tmp/research-tools-09fa53.RK73td/lojix/tests/deploy_job_survival.rs:38)). Also, `ARCHITECTURE.md:285\u2013290` says each connection owns its pipeline cursor, which conflicts with this Deploy implementation. Finally, the code launches the task before returning the actor verdict and writing the reply frame; it establishes that the reply does not wait for pipeline completion, but does not enforce that the bytes reach the client before the first effect starts.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nExplain an owner Deploy request from authorization and frame decoding through admission and reply, then pipeline completion. Identify which component owns the pipeline, how the cap is enforced and released, and why disconnecting the owner connection does not cancel the pipeline. Distinguish ordinary calls from actor message hops and cite the architectural relationships in source. Do not expand every deployment effect backend.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nOutline arm: native reads and text search plus ast-grep outline. No live LSP, ranked map, semantic index or web browsing. Run `ast-grep outline -l rust --items structure --color never PATH` on your root, a source subdirectory, or individual files. The tool also supports --json=compact. You may consult `ast-grep outline --help` only for usage. All tool paths must remain within your corpus root.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 1,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "lojix-map-control",
+      "start": "2026-11-19T05:29:21.718062+00:00",
+      "elapsed_seconds": 230.02984586101957,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f247-eac2-7db3-9552-faf18a8bfe0d"
+      ],
+      "usage": [
+        {
+          "input_tokens": 809207,
+          "cached_input_tokens": 723328,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 11822,
+          "reasoning_output_tokens": 8277
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-29-21-01a1f247-eac2-7db3-9552-faf18a8bfe0d.jsonl",
+      "prompt_sha256": "2f3d4fe5d9ae5bbe7d74228a5129da46814c8e7b72db37e4a6ec08243b123fd1",
+      "tool_text_o200k_tokens": 73872,
+      "tool_text_bytes": 326880,
+      "tool_output_items": 30,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 29,
+        "custom_tool_call": 15,
+        "custom_tool_call_output": 15
+      },
+      "query_text_o200k_tokens": 1546,
+      "transcript_sha256": "f0115b56504361c20fa874ca96d70513fa693a7be6a33be44d7684c2313d1cbe",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        "missing_units": [
+          5,
+          8
+        ],
+        "false_positive_claims": [],
+        "tp": 6,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.75
+      },
+      "answer": "### Verified request path\n\n1. **Authorization precedes reading the request.** `serve_owner` checks the accepted connection\u2019s peer credentials before reading its frame. The peer must be a Unix peer whose kernel-supplied UID and GID match the daemon\u2019s effective UID and GID; TCP peers are rejected. The architecture also says the owner socket refuses modes granting \u201cother\u201d access. ([src/daemon.rs:508](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:508), [src/daemon.rs:383](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:383), [src/daemon.rs:393](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:393), [ARCHITECTURE.md:84](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:84))\n\n2. **Decode and route.** The worker reads a bounded Signal frame, restores it as `meta_signal_lojix::Query`, and lowers that typed request to the internal ingress form. A `Deploy` takes a special branch; it does not go through the owner path\u2019s general `execute_request` call. ([src/daemon.rs:580](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:580), [src/daemon.rs:54](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:54), [src/daemon.rs:511](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:511), [src/adapters.rs:795](/tmp/research-tools-09fa53.RK73td/lojix/src/adapters.rs:795), [src/daemon.rs:518](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:518))\n\n3. **Admission and immediate reply.** The worker sends `AdmitDeploy` to the daemon-lifetime `DeployJobs` actor with `ask`, then maps its accepted, rejected, or refused verdict to a meta egress. The actor enforces a deploy-pipeline cap of **8**, separate from the **64-request-per-listener** connection cap. Its single-writer `active_count` check rejects at capacity with a typed `DeploymentInFlight` rejection; otherwise it calls `SchemaRuntime::submit_deploy`, increments the count, and launches the pipeline before returning the accepted handle. ([src/daemon.rs:262](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:262), [src/daemon.rs:272](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:272), [src/daemon.rs:549](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:549), [src/daemon.rs:967](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:967), [src/daemon.rs:978](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:978), [src/daemon.rs:980](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:980))\n\n   On acceptance, submission durably allocates the deployment record and `Submitted` resume cursor, then constructs the correlated handle. The worker raises and serializes the verdict and writes the reply frame. That reply is admission, not pipeline completion. ([src/schema_runtime.rs:4730](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4730), [src/schema_runtime.rs:4742](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4742), [src/schema_runtime.rs:4768](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4768), [src/daemon.rs:531](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:531), [src/daemon.rs:535](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:535))\n\n### Pipeline ownership, completion, and message boundaries\n\nThe daemon-lifetime `DeployJobs` actor owns admission and the active count; after admission it launches a separate Tokio task that owns the seeded engine and drives `drive_submitted_deploy`. Success or failure is persisted as a terminal deployment record. When the drive returns, the task sends `DeployCompleted`; the actor decrements the count. The original connection receives only the handle. The terminal result is re-observed by deployment ID. ([src/daemon.rs:645](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:645), [src/daemon.rs:710](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:710), [src/schema_runtime.rs:4188](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4188), [src/schema_runtime.rs:4390](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4390), [src/daemon.rs:717](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:717), [src/daemon.rs:1000](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:1000), [src/schema_runtime.rs:3736](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3736))\n\nThe ordinary Rust calls are the worker\u2019s method calls and the engine\u2019s runner hooks. The actor hops are specifically `ask(AdmitDeploy)` and `tell(DeployCompleted)`; runner steps flow through `NexusWork`/`NexusAction` and direct engine hooks. The pipeline does not depend on the owner stream after spawn, so a disconnect after admission can lose the reply but does not cancel that task. ([src/daemon.rs:517](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:517), [src/daemon.rs:549](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:549), [src/daemon.rs:712](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:712), [src/runtime_flow.rs:547](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:547), [src/runtime_flow.rs:581](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:581), [ARCHITECTURE.md:303](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:303))\n\n**Documentation mismatch:** `ARCHITECTURE.md` says each connection owns its pipeline cursor, while this Deploy path transfers the engine to a daemon-owned task. The code verifies the detached behavior; that architecture sentence is unreconciled here. ([ARCHITECTURE.md:287](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:287), [src/daemon.rs:645](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:645))\n\n**Limit:** the shown release path runs after the drive returns; the source does not establish panic- or abort-safe cap release. The disconnect guarantee is verified for an admitted, spawned pipeline, not for a request disconnected before admission.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nExplain an owner Deploy request from authorization and frame decoding through admission and reply, then pipeline completion. Identify which component owns the pipeline, how the cap is enforced and released, and why disconnecting the owner connection does not cancel the pipeline. Distinguish ordinary calls from actor message hops and cite the architectural relationships in source. Do not expand every deployment effect backend.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nControl arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 0
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    },
+    {
+      "name": "lojix-map-tool",
+      "start": "2026-11-19T05:33:11.754340+00:00",
+      "elapsed_seconds": 221.76109668205027,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f24b-6d89-7361-9ce3-45e7f580af60"
+      ],
+      "usage": [
+        {
+          "input_tokens": 1113378,
+          "cached_input_tokens": 916992,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 11248,
+          "reasoning_output_tokens": 7492
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-33-12-01a1f24b-6d89-7361-9ce3-45e7f580af60.jsonl",
+      "prompt_sha256": "704d82017232ef12e3702c949bf68ad98958093a4a92a17d748c8511e44afe01",
+      "tool_text_o200k_tokens": 91878,
+      "tool_text_bytes": 406856,
+      "tool_output_items": 34,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 27,
+        "custom_tool_call": 17,
+        "custom_tool_call_output": 17
+      },
+      "query_text_o200k_tokens": 2196,
+      "transcript_sha256": "439cfc6b53a227ea8c07e175286086c0c6ae04696ad5709712d27ffb03568f73",
+      "score": {
+        "credited_units": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7
+        ],
+        "missing_units": [
+          5,
+          8
+        ],
+        "false_positive_claims": [
+          "Claims the client already holds the identifier when the pipeline task returns; daemon.rs:531-538,710-718 establish no such reply-before-completion ordering."
+        ],
+        "tp": 6,
+        "fp": 1,
+        "fn": 2,
+        "precision": 0.8571428571428571,
+        "recall": 0.75
+      },
+      "answer": "### Request and admission\n\nThe listener tag routes this connection to the owner handler. It authorizes the peer **before** reading: Unix peer credentials must match the daemon\u2019s effective UID and GID; TCP peers are refused. The handler then reads one length-framed body, with the default 8 MiB frame capacity and a 10-second read timeout, restores it as `meta_signal_lojix::Query`, and lowers the typed contract request to `MetaIngress::Deploy`. [daemon.rs:36\u201357](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:36) [daemon.rs:371\u2013402](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:371) [daemon.rs:508\u2013512](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:508) [adapters.rs:788\u2013797](/tmp/research-tools-09fa53.RK73td/lojix/src/adapters.rs:788)\n\n`serve_owner` special-cases Deploy: `submit_deploy` sends `AdmitDeploy` with `deploy_jobs.ask(...)`. The daemon-lifetime `DeployJobs` actor owns the pipeline cap and count. Its cap is **8**; a separate `RequestConcurrencyLimit(64)` bounds concurrent requests per listener. At capacity, the actor returns a durable, typed `DeploymentInFlight` rejection rather than queueing the deploy. Otherwise, it calls `SchemaRuntime::submit_deploy` directly; that performs preflight checks and persists the deployment identity, admission marker, and submitted resume cursor before returning the accepted handle. [daemon.rs:180\u2013197](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:180) [daemon.rs:258\u2013272](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:258) [daemon.rs:959\u2013985](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:959) [schema_runtime.rs:3706\u20133722](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3706) [schema_runtime.rs:4725\u20134773](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4725)\n\nThe actor\u2019s accepted, rejected, or refused verdict returns through the `ask`; the worker raises it to the owner response contract, encodes it, and writes the reply frame. That wire reply is the admission handle or typed rejection/refusal, not the pipeline\u2019s eventual terminal result. [daemon.rs:548\u2013560](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:548) [daemon.rs:530\u2013537](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:530) [runtime_model.rs:855\u2013868](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_model.rs:855)\n\n### Pipeline, actor hops, and disconnects\n\nOn acceptance, the actor increments its count and starts a daemon-runtime `tokio::spawn` task carrying the seeded engine. That task drives the pipeline through the Nexus runner; the runner adapter calls the engine\u2019s `decide`, memory, and effect methods directly. The actor mailbox hops are `ask(AdmitDeploy)` for admission and, after the pipeline returns, `tell(DeployCompleted)` to release the slot. The actor decrements the count on that completion message. [daemon.rs:645\u2013663](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:645) [daemon.rs:700\u2013718](/tmp/research-tools-09fa53.RK73td/lojix/src/daemon.rs:700) [runtime_flow.rs:537\u2013600](/tmp/research-tools-09fa53.RK73td/lojix/src/runtime_flow.rs:537)\n\nThe pipeline terminalizes success or failure in the store; the connection task does not send that terminal result. Its pipeline task discards the returned output after the drive completes, while the client already holds the deployment identifier for later observation. Because execution is spawned outside the connection task and the task\u2019s remaining work is reply I/O, disconnecting the owner connection **after admission and spawn** does not cancel the pipeline. [schema_runtime.rs:3730\u20133739](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:3730) [schema_runtime.rs:4188\u20134209](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4188) [schema_runtime.rs:4345\u20134401](/tmp/research-tools-09fa53.RK73td/lojix/src/schema_runtime.rs:4345)\n\n### Evidence limits\n\n`ARCHITECTURE.md` describes the owner/meta authority split and the disconnect-survival goal, but \u00a75 still says each connection owns its deploy cursor. That sentence conflicts with the daemon implementation above. [ARCHITECTURE.md:84\u201395](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:84) [ARCHITECTURE.md:48\u201350](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:48) [ARCHITECTURE.md:285\u2013290](/tmp/research-tools-09fa53.RK73td/lojix/ARCHITECTURE.md:285)\n\nThe code shows normal-return slot release after `drive_submitted_deploy`; it does not show a panic/abort handler around the spawned task. The daemon applies the 64-request limit through `triad-runtime`, but that library\u2019s permit mechanics are outside this corpus.",
+      "prompt": "You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\n\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nExplain an owner Deploy request from authorization and frame decoding through admission and reply, then pipeline completion. Identify which component owns the pipeline, how the cap is enforced and released, and why disconnecting the owner connection does not cancel the pipeline. Distinguish ordinary calls from actor message hops and cite the architectural relationships in source. Do not expand every deployment effect backend.\n\nCorpus root: /tmp/research-tools-09fa53.RK73td/lojix.\nRanked-map arm: native reads and text search plus the prebuilt fixed-budget ranked Rust repository map at /tmp/research-tools-6ac03a.A0E7wt/lojix-map.txt. You may read that file, but no sibling trial file. It was produced by a Nix-built tool on a lexical symbol-reference graph with PageRank, limited to 16,000 UTF-8 bytes (not a semantic call graph). Read it to guide source retrieval. No live LSP, AST outline, semantic index or web browsing.\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\n",
+      "retrieval_audit": {
+        "specialized_tool_mentions_in_calls": {
+          "ast-grep": 0,
+          "lsp.py": 0,
+          "-map.txt": 1
+        },
+        "oracle_path_mentioned_in_call": false,
+        "web_tool_called": false,
+        "timeout_string_blocks_including_read_client_source_not_error_count": 0
+      }
+    }
+  ],
+  "excluded_sessions": [
+    {
+      "name": "flow-lsp-tool",
+      "start": "2026-11-19T04:52:57.375112+00:00",
+      "elapsed_seconds": 211.50252793508116,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f226-965e-7142-b3e1-d5d00adb1417"
+      ],
+      "usage": [
+        {
+          "input_tokens": 462683,
+          "cached_input_tokens": 381440,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 11013,
+          "reasoning_output_tokens": 8014
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T22-52-58-01a1f226-965e-7142-b3e1-d5d00adb1417.jsonl",
+      "prompt_sha256": "629ab03e236626120f5a76457c1940625b440470fa0b555bac409478c0f26105",
+      "tool_text_o200k_tokens": 31325,
+      "tool_text_bytes": 104367,
+      "tool_output_items": 40,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 10,
+        "reasoning": 26,
+        "custom_tool_call": 12,
+        "custom_tool_call_output": 12
+      },
+      "query_text_o200k_tokens": 1839,
+      "transcript_sha256": "0cf0590e71a887cd560327ead7d0eaf5c25ff30b56a6d25085ca749b00dbbb29",
+      "exclusion_reason": "Premature cleanup mistook a setup-attempt answer file for current completion."
+    },
+    {
+      "name": "lojix-lsp-tool",
+      "start": "2026-11-19T05:17:18.704701+00:00",
+      "elapsed_seconds": 250.04754493106157,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f23c-e2b2-7f60-aec3-1f5afef608fa"
+      ],
+      "usage": [
+        {
+          "input_tokens": 344510,
+          "cached_input_tokens": 293248,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 13219,
+          "reasoning_output_tokens": 10130
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/lojix"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-17-18-01a1f23c-e2b2-7f60-aec3-1f5afef608fa.jsonl",
+      "prompt_sha256": "f4444fe41717d6af87cfc60cd3d53a8766f47425be3510e7f3241bc45e0771ae",
+      "tool_text_o200k_tokens": 34237,
+      "tool_text_bytes": 136508,
+      "tool_output_items": 24,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 26,
+        "custom_tool_call": 9,
+        "custom_tool_call_output": 9
+      },
+      "query_text_o200k_tokens": 1707,
+      "transcript_sha256": "6399c6b793ecf8d74227c115dbb9e036c6c31557c0d6cd74ceb5e016caf68053",
+      "exclusion_reason": "Premature cleanup treated answer-file existence as completion instead of waiting for native process exit."
+    },
+    {
+      "name": "flow-lsp-tool-repeat",
+      "start": "2026-11-19T05:36:53.585789+00:00",
+      "elapsed_seconds": 268.9200378720416,
+      "exit": 0,
+      "thread_ids": [
+        "01a1f24e-d006-7f30-9acc-85c8da5f05c8"
+      ],
+      "usage": [
+        {
+          "input_tokens": 453220,
+          "cached_input_tokens": 379776,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 14178,
+          "reasoning_output_tokens": 11455
+        }
+      ],
+      "receipt": {
+        "providers": [
+          "openai"
+        ],
+        "contexts": [
+          {
+            "model": "gpt-6-luna",
+            "effort": "xhigh",
+            "sandbox_policy": {
+              "type": "danger-full-access"
+            },
+            "cwd": "/tmp/research-tools-09fa53.RK73td/flow"
+          }
+        ]
+      },
+      "transcript": "/home/li/.codex-next-5ck97j38j3sb/sessions/2026/11/18/rollout-2026-11-18T23-36-54-01a1f24e-d006-7f30-9acc-85c8da5f05c8.jsonl",
+      "prompt_sha256": "629ab03e236626120f5a76457c1940625b440470fa0b555bac409478c0f26105",
+      "tool_text_o200k_tokens": 31369,
+      "tool_text_bytes": 110535,
+      "tool_output_items": 43,
+      "response_types": {
+        "additional_tools": 1,
+        "message": 9,
+        "reasoning": 35,
+        "custom_tool_call": 12,
+        "custom_tool_call_output": 12
+      },
+      "query_text_o200k_tokens": 1869,
+      "transcript_sha256": "8e807945039afd8aa6a773c47b8d981d6f9074c3d0a5a6ae24a154203ea4ad03",
+      "exclusion_reason": "A positional implementation query omitted its file. The initial client let that terminate its server; corrected client validates query variants/positions and keeps the server alive."
+    }
+  ],
+  "setup_failures": [
+    {
+      "thread_id": "01a1f221-a3e2-77f1-a743-b9f59104e532",
+      "reason": "read-only sandbox command runner lacked bubblewrap; no corpus read"
+    },
+    {
+      "thread_id": "01a1f222-28cf-7132-bd0a-61ffe0c889eb",
+      "reason": "same unavailable read-only runner; no corpus read"
+    }
+  ],
+  "source_verification": [
+    {
+      "repo": "flow",
+      "revision": "a044e39ac2bc19cdcd3d435c75448d8697c6a17d",
+      "files": 277,
+      "mismatches": [],
+      "manifest_sha256": "558614ac073b79b51e1a99abe53ace7c832ffee95b55adeddec72c38bab7316b"
+    },
+    {
+      "repo": "lojix",
+      "revision": "5d75a4032079cd942a3d4f5ba676da9ade5e8249",
+      "files": 72,
+      "mismatches": [],
+      "manifest_sha256": "94d9260a9b142f67ff1fffd3a61c6c3e6ac738bd6f11a257dabcd990b6a668aa"
+    }
+  ],
+  "oracle_erratum": "The frozen question and key call the owner helper Daemon::submit_deploy. At this revision it is RequestServable::submit_deploy implemented for RequestWorker (daemon.rs:102-108,452-475,548-561). Daemon holds configuration. Both Lojix tracing arms corrected the premise. Unit 1 is scored against the actual receiver and unchanged signature, not against the mistaken name. The original frozen key remains unchanged and is retained in this dataset.",
+  "frozen_questions": "# Question text frozen before answerers\n\n## Shared answer instructions\n\nRead only the supplied corpus root at its named immutable revision. You have fifteen minutes from the supplied start event. Answer concisely with source path/range evidence and distinguish verified relationships from unknowns. Do not read parent directories, sibling archives, oracle material, reports or other sessions. Do not modify source. Native file reads, filename listing and literal/regex text search are available in every arm. No external search, git history, semantic index, AST outline or other specialized retrieval is available unless explicitly granted by the arm. The score measures answer relationships, not tool use. Stop at the deadline and report incomplete findings honestly.\n\n## Flow tracing\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nTrace native Send payload measurement starting at `Request::native_prompt_bytes`. Which concrete types implement `SendsAs` and `MeasuresSendPayload`, and how does the request become the measured representation? Identify the type returned by the projection used during measurement. Include the compact outgoing-call tree reachable from the entry point, distinguishing direct calls from trait-dispatch and macro expansion boundaries. Explain which concrete sender implementation can be established from this entry point alone. Cite the definitions and implementation locations that establish the answer.\n\n## Flow overview\n\nRevision: a044e39ac2bc19cdcd3d435c75448d8697c6a17d.\n\nExplain the path of an ordinary CLI Send through the Flow Nexus: parsing and connection, request framing, authenticated sender, message resolution/routing, durable admission, direct-versus-pending work and post-reply wake. Stop at the scheduling boundary; do not enumerate every native harness delivery backend. Explain what an accepted response establishes and what it leaves pending. Cite the architectural relationships in source.\n\n## Lojix tracing\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nTrace daemon owner Deploy submission from `Daemon::submit_deploy` through admission, taking care with repeated `submit_deploy`, `handle`, `at_capacity` and `launch_pipeline` names. What request and response types cross this boundary, which actor handles the message, and what happens at capacity or on acceptance? Include a compact outgoing-call tree and identify exactly where a Kameo message hop must be represented separately rather than claimed as a direct Rust call edge. Cite the relevant trait implementation and distinguish the similarly named test path.\n\n## Lojix overview\n\nRevision: 5d75a4032079cd942a3d4f5ba676da9ade5e8249.\n\nExplain an owner Deploy request from authorization and frame decoding through admission and reply, then pipeline completion. Identify which component owns the pipeline, how the cap is enforced and released, and why disconnecting the owner connection does not cancel the pipeline. Distinguish ordinary calls from actor message hops and cite the architectural relationships in source. Do not expand every deployment effect backend.\n\n## Arms, applied separately\n\n- Control: shared instructions only; specialized tools are unavailable.\n- Live-LSP tracing: same tracing question and shared tools, plus the supplied remote live-LSP command. Obtain definitions, implementations, type-at-position, workspace symbols and a recursive outgoing tree. Treat unavailable or partial semantic results as unknown, using source reads to verify. No overview tool.\n- Outline overview: same overview question and shared tools, plus the supplied ast-grep outline command. No live LSP or ranked map.\n- Ranked-map overview: same overview question and shared tools, plus the supplied fixed-budget ranked repository map. No live LSP or AST outline.\n\nTool command lines, source roots, timer start/deadline, verified native model/effort and the fixed map token budget must be supplied identically within each applicable pair before launch. They are not yet allocated; this file freezes question wording, not a launch-ready runtime packet.\n",
+  "frozen_key": "# Frozen manual answer key\n\nSource-only audit 2026-11-15 by researchTools, before model trials. These are scored fact units; a unit is correct only with the named relationship, not a bag of identifiers. Each overview and tracing packet has eight units. No answerer receives this file or sibling oracle directory. Isolation is by separate corpus roots and explicit tool policy, not an operating-system access-control claim.\n\n## Flow tracing: a044e39ac2bc19cdcd3d435c75448d8697c6a17d\n\nScope: payload measurement in `crates/flow-nexus/src/sending.rs`; whole-repository searches checked implementation completeness.\n\n1. `SendsAs` implementers are `Address` and `SentBy` (59-69).\n2. `Address::sent_by` constructs `SentBy::Sender(self.clone())`; `SentBy::sent_by` clones itself (59-69).\n3. `MeasuresSendPayload` implementers are `Request` and `Message` (76-100).\n4. `Request::native_prompt_bytes` wraps a cloned request in `Message::Soft` and delegates (76-80).\n5. `Message::native_prompt_bytes` creates the placeholder `flow_ethos::RequestId` from `0000`, then calls `ProjectsAdmittedMessage::admitted_input` with itself, that ID and `sender.sent_by()` (82-93).\n6. `admitted_input` is a trait method implemented for `Message`, returning `VisibleNativeInput` (`message_projection.rs` 252-283).\n7. The measurement then datomizes, protosizes, compacts and takes byte length; it measures rendered native input, not just request text (`sending.rs` 94-98).\n8. The generic `&impl SendsAs` argument does not identify a unique concrete implementer from this method alone. An outgoing tree must distinguish the trait declaration from implementers and mark any unresolved expansion rather than assert runtime target selection (73,83).\n\n## Flow overview: same revision\n\nQuestion boundary is ordinary Send through admission and pending post-reply work, not all native harness delivery internals.\n\n1. CLI parses the datom into `signal_flow::Input` and an invocation using the configured ordinary socket (`crates/flow/src/main.rs` 18-52).\n2. `FlowClient::call` opens a Unix stream and performs the contract greeting before sending the request (`crates/flow/src/client.rs` 66-77; greeting implementation 31-59).\n3. Request and reply are rkyv-encoded with a big-endian u32 frame length; the client decodes `Output` and textualizes it through datom/protos (`client.rs` 69-77,104-125).\n4. The connection adapter's `Input::Send` branch passes the request plus authenticated caller process to `send_request` (`connection_adapter.rs` 188-196).\n5. `RunningNexus` implements `SendsRequests`; `send_request` observes the sender through `sender_of` or Unbound and uses a dispatch gate (`sending.rs` 235-268).\n6. It resolves sendable message and enforces native payload budget; answers can be routed to the original request sender or kept rather than follow the supplied recipient (`sending.rs` 300-344).\n7. `accept_logical_delivery` precedes direct completion; abrupt or a resting awake recipient can request a direct lease, otherwise accepted work gets a pending recipient (`sending.rs` 351-413).\n8. The adapter converts `pending` into `Completion::AfterAnyWrite(PostReplyOperation::WakeDue(address))`; no pending means no post-reply work. Acceptance is not proof of final native delivery (`connection_adapter.rs` 188-196).\n\n## Lojix tracing: 5d75a4032079cd942a3d4f5ba676da9ade5e8249\n\nScope: daemon deploy submission, not the similarly named schema runtime method.\n\n1. `Daemon::submit_deploy` takes `memory::DeploySubmission` and returns `Result<memory::MetaEgress>` (`src/daemon.rs` 548-563).\n2. It constructs `AdmitDeploy { request }`, asks `self.deploy_jobs` and awaits (549).\n3. `AdmitDeploy` holds `memory::DeploySubmission` (937-939); `DeployJobs` implements Kameo `Message<AdmitDeploy>` (959).\n4. The handler's `Reply` is `DeployAdmission`, whose variants are Accepted(DeployHandle), Rejected(RejectedDeploy), Refused(RefusedDeploy) (944-949,960).\n5. The handler checks `at_capacity`; true constructs a schema runtime and returns `reject_deployment_in_flight(...).into()` (967-973).\n6. Otherwise it builds a schema runtime and calls its synchronous `submit_deploy`; on acceptance increments active_count and calls `launch_pipeline` (974-985).\n7. The same daemon file contains parallel TestJobs methods with repeated `at_capacity`, `launch_pipeline` and `handle` names. These do not implement the deploy path (1231-1342 versus 672-710,959-989).\n8. The ask-to-handler relationship is a Kameo message hop, not an ordinary Rust call edge. A call tree may show `.ask` and an expansion break, but must not label the handler a directly invoked callee (549,959-966).\n\n## Lojix overview: same revision\n\nQuestion boundary is owner Deploy admission, reply and asynchronous pipeline ownership.\n\n1. Owner connection is authorized, request frame is read, parsed and lowered (`daemon.rs` 508-512).\n2. `memory::MetaIngress::Deploy` selects `self.submit_deploy(request).await` (517-518).\n3. Submission uses daemon-owned deploy_jobs ask and the AdmitDeploy handler, not a pipeline run inline in the connection task (548-549,959-985).\n4. Handler enforces the in-flight cap and submits through SchemaRuntime, launching only on accepted outcome (967-985).\n5. Accepted/Rejected/Refused become corresponding `MetaEgress::DeployAccepted/DeployRejected/DeployRefused`; actor send error returns `Error::UnexpectedFrame` (550-561).\n6. Owner reply is raised, converted to a meta frame and written back (531-538).\n7. `DeployProcessable::launch_pipeline` uses `tokio::spawn` with the engine owned in the async task and calls `drive_submitted_deploy().await`, decoupling pipeline lifetime from owner connection (710-718).\n8. Pipeline completion tells `DeployCompleted`; its handler saturating-decrements active_count to free a cap slot (717,992-1003). This second message hop is not a direct call edge.\n\n## Scoring convention\n\nNormalize answer into factual relationship claims. True positive: one supported key unit; at most one credit per unit. False negative: key unit absent or substantively wrong. False positive: unsupported/incorrect relationship claim, including invented graph edges; do not penalize an explicitly labelled unknown. Correct extra facts are listed separately and earn no extra recall. Precision = TP/(TP+FP), recall = TP/8. Report raw TP/FP/FN and adjudications, not only ratios. Mere tool invocation is not a correct answer unit. Unit scoring and extra-claim decisions are performed manually against exact source.\n",
+  "scripts": {
+    "lsp-v1.py": "import argparse,json,os,pathlib,socket,subprocess,threading,time,sys\np=argparse.ArgumentParser();p.add_argument('mode',choices=['serve','query','stop']);p.add_argument('--root');p.add_argument('--socket',required=True);p.add_argument('--analyzer');p.add_argument('--toolchain');p.add_argument('--method');p.add_argument('--file');p.add_argument('--line',type=int,default=1);p.add_argument('--column',type=int,default=1);p.add_argument('--symbol',default='');p.add_argument('--timeout',type=float,default=180);p.add_argument('--depth',type=int,default=3);p.add_argument('--offline',action='store_true');a=p.parse_args()\nif a.mode!='serve':\n s=socket.socket(socket.AF_UNIX);s.connect(a.socket);s.sendall((json.dumps(vars(a))+'\\n').encode());s.shutdown(socket.SHUT_WR)\n with s.makefile() as f: print(f.read())\n sys.exit()\nroot=pathlib.Path(a.root).resolve();env=os.environ.copy();env['PATH']=a.toolchain+'/bin:'+env['PATH'];env['CARGO_TARGET_DIR']=a.socket+'.target';env['CARGO_NET_OFFLINE']='true' if a.offline else 'false'\nlog=open(a.socket+'.stderr','w');proc=subprocess.Popen([a.analyzer],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,cwd=root,env=env);cv=threading.Condition();responses={};counter=0;state={'quiescent':False};wire=threading.Lock()\ndef send(obj):\n b=json.dumps(obj).encode()\n with wire:proc.stdin.write(('Content-Length: %d\\r\\n\\r\\n'%len(b)).encode()+b);proc.stdin.flush()\ndef reader():\n try:\n  while True:\n   headers={}\n   while True:\n    line=proc.stdout.readline()\n    if not line:return\n    if line==b'\\r\\n':break\n    k,v=line.decode().split(':',1);headers[k.lower()]=v.strip()\n   msg=json.loads(proc.stdout.read(int(headers['content-length'])))\n   with cv:\n    if 'method' not in msg and 'id' in msg:responses[msg['id']]=msg\n    elif msg.get('method')=='experimental/serverStatus':state.update(msg.get('params',{}))\n    elif 'id' in msg:\n     method=msg['method'];params=msg.get('params',{})\n     result=([None for _ in params.get('items',[])] if method=='workspace/configuration' else None)\n     send({'jsonrpc':'2.0','id':msg['id'],'result':result})\n    with open(a.socket+'.events','a') as f:f.write(json.dumps(msg)+'\\n')\n    cv.notify_all()\n except Exception as e:\n  with cv:state['error']=repr(e);cv.notify_all()\nthreading.Thread(target=reader,daemon=True).start()\ndef request(method,params,timeout=a.timeout):\n global counter\n with cv:\n  counter+=1;i=counter;send({'jsonrpc':'2.0','id':i,'method':method,'params':params})\n  ok=cv.wait_for(lambda:i in responses or 'error' in state,timeout)\n  return responses.pop(i,{'error':{'message':'response timeout' if not ok else state.get('error')}})\noptions={'checkOnSave':False,'check':{'enable':False},'cargo':{'buildScripts':{'enable':False},'offline':a.offline,'targetDir':env['CARGO_TARGET_DIR']},'procMacro':{'enable':False},'cachePriming':{'enable':False},'numThreads':2}\nprint(json.dumps(request('initialize',{'processId':os.getpid(),'rootUri':root.as_uri(),'workspaceFolders':[{'uri':root.as_uri(),'name':root.name}],'capabilities':{'experimental':{'serverStatusNotification':True},'window':{'workDoneProgress':True}},'initializationOptions':options})),flush=True)\nsend({'jsonrpc':'2.0','method':'initialized','params':{}})\nserver=socket.socket(socket.AF_UNIX);server.bind(a.socket);server.listen();print('LISTENING '+a.socket,flush=True)\ntry:\n while True:\n  conn,_=server.accept()\n  with conn:\n   q=json.loads(conn.makefile().read());start=time.monotonic()\n   if q['mode']=='stop':conn.sendall(b'{\"stopping\":true}\\n');break\n   method=q['method'];params={}\n   if method=='status':result={'state':state,'pid':proc.pid,'root':str(root),'options':options}\n   elif method=='ready':\n    with cv:cv.wait_for(lambda:state.get('quiescent') or 'error' in state,q['timeout'])\n    result=dict(state)\n   else:\n    if method=='workspace/symbol':params={'query':q['symbol']}\n    else:\n     file=(root/q['file']).resolve();params={'textDocument':{'uri':file.as_uri()},'position':{'line':q['line']-1,'character':q['column']-1}}\n     send({'jsonrpc':'2.0','method':'textDocument/didOpen','params':{'textDocument':{'uri':file.as_uri(),'languageId':'rust','version':1,'text':file.read_text()}}})\n    if method=='outgoing-tree':\n     prepared=request('textDocument/prepareCallHierarchy',params,q['timeout']);seen=set()\n     def expand(item,depth):\n      key=(item['uri'],json.dumps(item['selectionRange']));node={'item':item}\n      if key in seen or depth<=0:return node\n      seen.add(key);calls=request('callHierarchy/outgoingCalls',{'item':item},q['timeout']);node['outgoing']=calls\n      if isinstance(calls.get('result'),list):node['children']=[expand(call['to'],depth-1) for call in calls['result']]\n      return node\n     result={'prepared':prepared,'trees':[expand(i,q['depth']) for i in prepared.get('result',[]) or []]}\n    else:result=request(method,params,q['timeout'])\n   conn.sendall((json.dumps({'method':method,'elapsed_seconds':time.monotonic()-start,'response':result})+'\\n').encode())\nfinally:\n request('shutdown',None,10);send({'jsonrpc':'2.0','method':'exit','params':None})\n try:proc.wait(timeout=10)\n except subprocess.TimeoutExpired:proc.terminate();proc.wait(timeout=5)\n server.close();os.unlink(a.socket);log.close();print('STOPPED '+str(proc.returncode),flush=True)\n",
+    "lsp.py": "import argparse,json,os,pathlib,socket,subprocess,threading,time,sys\np=argparse.ArgumentParser();p.add_argument('mode',choices=['serve','query','stop']);p.add_argument('--root');p.add_argument('--socket',required=True);p.add_argument('--analyzer');p.add_argument('--toolchain');p.add_argument('--method');p.add_argument('--file');p.add_argument('--line',type=int,default=1);p.add_argument('--column',type=int,default=1);p.add_argument('--symbol',default='');p.add_argument('--timeout',type=float,default=180);p.add_argument('--depth',type=int,default=3);p.add_argument('--offline',action='store_true');a=p.parse_args()\nposition_methods={'textDocument/definition','textDocument/implementation','textDocument/hover','outgoing-tree'}\nmethods=position_methods|{'status','ready','workspace/symbol'}\ndef query_error(q):\n method=q.get('method')\n if method not in methods:return 'Unknown method; use '+', '.join(sorted(methods))\n if method in position_methods and (not q.get('file') or q.get('line',0)<1 or q.get('column',0)<1):return 'Position queries require --file, positive --line and --column.'\n return None\nif a.mode!='serve':\n if a.mode=='query' and (error:=query_error(vars(a))):p.error(error)\n s=socket.socket(socket.AF_UNIX);s.connect(a.socket);s.sendall((json.dumps(vars(a))+'\\n').encode());s.shutdown(socket.SHUT_WR)\n with s.makefile() as f: print(f.read())\n sys.exit()\nroot=pathlib.Path(a.root).resolve();env=os.environ.copy();env['PATH']=a.toolchain+'/bin:'+env['PATH'];env['CARGO_TARGET_DIR']=a.socket+'.target';env['CARGO_NET_OFFLINE']='true' if a.offline else 'false'\nlog=open(a.socket+'.stderr','w');proc=subprocess.Popen([a.analyzer],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,cwd=root,env=env);cv=threading.Condition();responses={};counter=0;state={'quiescent':False};wire=threading.Lock()\ndef send(obj):\n b=json.dumps(obj).encode()\n with wire:proc.stdin.write(('Content-Length: %d\\r\\n\\r\\n'%len(b)).encode()+b);proc.stdin.flush()\ndef reader():\n try:\n  while True:\n   headers={}\n   while True:\n    line=proc.stdout.readline()\n    if not line:return\n    if line==b'\\r\\n':break\n    k,v=line.decode().split(':',1);headers[k.lower()]=v.strip()\n   msg=json.loads(proc.stdout.read(int(headers['content-length'])))\n   with cv:\n    if 'method' not in msg and 'id' in msg:responses[msg['id']]=msg\n    elif msg.get('method')=='experimental/serverStatus':state.update(msg.get('params',{}))\n    elif 'id' in msg:\n     method=msg['method'];params=msg.get('params',{})\n     result=([None for _ in params.get('items',[])] if method=='workspace/configuration' else None)\n     send({'jsonrpc':'2.0','id':msg['id'],'result':result})\n    with open(a.socket+'.events','a') as f:f.write(json.dumps(msg)+'\\n')\n    cv.notify_all()\n except Exception as e:\n  with cv:state['error']=repr(e);cv.notify_all()\nthreading.Thread(target=reader,daemon=True).start()\ndef request(method,params,timeout=a.timeout):\n global counter\n with cv:\n  counter+=1;i=counter;send({'jsonrpc':'2.0','id':i,'method':method,'params':params})\n  ok=cv.wait_for(lambda:i in responses or 'error' in state,timeout)\n  return responses.pop(i,{'error':{'message':'response timeout' if not ok else state.get('error')}})\noptions={'checkOnSave':False,'check':{'enable':False},'cargo':{'buildScripts':{'enable':False},'offline':a.offline,'targetDir':env['CARGO_TARGET_DIR']},'procMacro':{'enable':False},'cachePriming':{'enable':False},'numThreads':2}\nprint(json.dumps(request('initialize',{'processId':os.getpid(),'rootUri':root.as_uri(),'workspaceFolders':[{'uri':root.as_uri(),'name':root.name}],'capabilities':{'experimental':{'serverStatusNotification':True},'window':{'workDoneProgress':True}},'initializationOptions':options})),flush=True)\nsend({'jsonrpc':'2.0','method':'initialized','params':{}})\nserver=socket.socket(socket.AF_UNIX);server.bind(a.socket);server.listen();print('LISTENING '+a.socket,flush=True)\ntry:\n while True:\n  conn,_=server.accept()\n  with conn:\n   q=json.loads(conn.makefile().read());start=time.monotonic()\n   if q['mode']=='stop':conn.sendall(b'{\"stopping\":true}\\n');break\n   error=query_error(q)\n   if error:\n    conn.sendall((json.dumps({'error':error})+'\\n').encode());continue\n   method=q['method'];params={}\n   if method=='status':result={'state':state,'pid':proc.pid,'root':str(root),'options':options}\n   elif method=='ready':\n    with cv:cv.wait_for(lambda:state.get('quiescent') or 'error' in state,q['timeout'])\n    result=dict(state)\n   else:\n    if method=='workspace/symbol':params={'query':q['symbol']}\n    else:\n     file=(root/q['file']).resolve()\n     if not file.is_relative_to(root) or not file.is_file():\n      conn.sendall(b'{\"error\":\"Source file must exist within corpus root\"}\\n');continue\n     params={'textDocument':{'uri':file.as_uri()},'position':{'line':q['line']-1,'character':q['column']-1}}\n     send({'jsonrpc':'2.0','method':'textDocument/didOpen','params':{'textDocument':{'uri':file.as_uri(),'languageId':'rust','version':1,'text':file.read_text()}}})\n    if method=='outgoing-tree':\n     prepared=request('textDocument/prepareCallHierarchy',params,q['timeout']);seen=set()\n     def expand(item,depth):\n      key=(item['uri'],json.dumps(item['selectionRange']));node={'item':item}\n      if key in seen or depth<=0:return node\n      seen.add(key);calls=request('callHierarchy/outgoingCalls',{'item':item},q['timeout']);node['outgoing']=calls\n      if isinstance(calls.get('result'),list):node['children']=[expand(call['to'],depth-1) for call in calls['result']]\n      return node\n     result={'prepared':prepared,'trees':[expand(i,q['depth']) for i in prepared.get('result',[]) or []]}\n    else:result=request(method,params,q['timeout'])\n   conn.sendall((json.dumps({'method':method,'elapsed_seconds':time.monotonic()-start,'response':result})+'\\n').encode())\nfinally:\n request('shutdown',None,10);send({'jsonrpc':'2.0','method':'exit','params':None})\n try:proc.wait(timeout=10)\n except subprocess.TimeoutExpired:proc.terminate();proc.wait(timeout=5)\n server.close();os.unlink(a.socket);log.close();print('STOPPED '+str(proc.returncode),flush=True)\n",
+    "ranked_map.py": "import argparse,collections,json,pathlib,re,subprocess\np=argparse.ArgumentParser();p.add_argument('root');p.add_argument('--bytes',type=int,default=16000);p.add_argument('--iterations',type=int,default=40);p.add_argument('--damping',type=float,default=.85);p.add_argument('--ast-grep',required=True);a=p.parse_args();root=pathlib.Path(a.root).resolve()\ndata=json.loads(subprocess.check_output([a.ast_grep,'outline','-l','rust','--items','structure','--json=compact',str(root)]))\nfiles={};defs=collections.defaultdict(set);items={}\nfor row in data:\n path=pathlib.Path(row['path']);name=str(path.relative_to(root));files[name]=path.read_text();items[name]=row.get('items',[])\n def visit(xs):\n  for x in xs:\n   n=x.get('name','')\n   if re.fullmatch(r'[A-Za-z_][A-Za-z_0-9]*',n):defs[n].add(name)\n   visit(x.get('members',[]))\n visit(items[name])\ngraph={f:collections.Counter() for f in files}\nfor f,text in files.items():\n for symbol,count in collections.Counter(re.findall(r'\\b[A-Za-z_][A-Za-z_0-9]*\\b',text)).items():\n  for target in defs.get(symbol,[]):\n   if f!=target:graph[f][target]+=count/len(defs[symbol])\nn=len(files);rank={f:1/n for f in files}\nfor _ in range(a.iterations):\n dangling=sum(rank[f] for f,edges in graph.items() if not edges);new={f:(1-a.damping)/n+a.damping*dangling/n for f in files}\n for f,edges in graph.items():\n  total=sum(edges.values())\n  for target,weight in edges.items():new[target]+=a.damping*rank[f]*weight/total\n rank=new\nout='Ranked Rust map: lexical symbol-reference file graph, PageRank; edges are candidates, not resolved calls.\\n'\nfor f in sorted(files,key=lambda f:(-rank[f],f)):\n lines=files[f].splitlines();block=f'\\n{f} [rank {rank[f]:.6f}]\\n'\n def render(xs,depth=0):\n  result=''\n  for x in xs:\n   row=x['range']['start']['line'];sig=x.get('signature') or lines[row].strip().split('{')[0].rstrip()\n   result+='  '*depth+f'{row+1}: {sig}\\n';result+=render(x.get('members',[]),depth+1)\n  return result\n block+=render(items[f])\n # Skip a file whose whole outline exceeds remaining budget; all files compete on rank.\n if len((out+block).encode())<=a.bytes:out+=block\nprint(out,end='')\n",
+    "map.nix": "let\n  pinned = builtins.getFlake \"github:LiGoldragon/nixpkgs/0e251e24a4f24e036a084b6b4b2d2491af4167f4\";\n  pkgs = import pinned { system = \"x86_64-linux\"; };\nin pkgs.writeScriptBin \"ranked-rust-map\" ''\n  #!${pkgs.python3}/bin/python3\n  ${builtins.readFile ./ranked_map.py}\n''\n",
+    "run_trial.py": "import datetime,hashlib,json,os,pathlib,subprocess,time\nscratch=pathlib.Path(__file__).parent;src=pathlib.Path('/tmp/research-tools-09fa53.RK73td');questions=(src/'oracle/questions.md').read_text()\nshared=questions.split('## Shared answer instructions\\n')[1].split('\\n## Flow tracing')[0]\nbase='You are a fresh benchmark answerer, not the trial manager. First read /home/li/primary/NON_MANAGEMENT_AGENTS.md, solely as instructions. That instruction file is the only permitted outside-corpus source unless your arm explicitly grants a tool path. You are not alone in the filesystem: preserve every other agent\u2019s work. Do not edit files, start other agents or send messages. Your final answer is the requested report.\\n\\n'+shared\nrecords=json.loads((scratch/'measurements.json').read_text()) if (scratch/'measurements.json').exists() else []\nfor corpus in ['flow','lojix']:\n for comparison in ['lsp','outline','map']:\n  title=corpus.title()+(' tracing' if comparison=='lsp' else ' overview');question=questions.split('## '+title+'\\n')[1].split('\\n## ')[0]\n  for arm in ['control','tool']:\n   name=f'{corpus}-{comparison}-{arm}';root=src/corpus\n   if any(r['name']==name for r in records):continue\n   grant='Control arm: only filename listing, native source reads and literal/regex text search. No AST, live LSP, semantic index, ranked map, web browsing, git history or other specialized retrieval.'\n   if arm=='tool':\n    if comparison=='lsp':\n     grant=f'''Live-LSP arm: native reads and text search plus this live-LSP command. No AST outline, ranked map or web browsing. You may read {scratch}/lsp.py only to understand usage; its siblings and all other trial data remain excluded. Obtain definitions, implementations, type-at-position (hover), workspace symbols and a recursive outgoing tree, then verify in source. Unavailable or partial results remain unknown; call hierarchy is not proof of concrete generic dispatch or actor hops.\npython3 {scratch}/lsp.py query --socket {scratch}/{corpus}.sock --method METHOD [--symbol NAME] [--file RELATIVE_PATH --line ONE_BASED_LINE --column ONE_BASED_COLUMN] [--depth 3] [--timeout 60]\nMETHOD: workspace/symbol, textDocument/definition, textDocument/implementation, textDocument/hover, outgoing-tree. Lines and columns are 1-based; columns are UTF-16 units (ASCII positions suffice). The server is manually running and its Cargo workspace loaded successfully. Checks, build scripts and proc macros are disabled. Do not stop/reconfigure the server. outgoing-tree recursively expands call hierarchy to the supplied depth, preserving null or partial results.'''\n    elif comparison=='outline':\n     grant=f'''Outline arm: native reads and text search plus ast-grep outline. No live LSP, ranked map, semantic index or web browsing. Run `ast-grep outline -l rust --items structure --color never PATH` on your root, a source subdirectory, or individual files. The tool also supports --json=compact. You may consult `ast-grep outline --help` only for usage. All tool paths must remain within your corpus root.'''\n    else:\n     grant=f'''Ranked-map arm: native reads and text search plus the prebuilt fixed-budget ranked Rust repository map at {scratch}/{corpus}-map.txt. You may read that file, but no sibling trial file. It was produced by a Nix-built tool on a lexical symbol-reference graph with PageRank, limited to 16,000 UTF-8 bytes (not a semantic call graph). Read it to guide source retrieval. No live LSP, AST outline, semantic index or web browsing.'''\n   prompt=base+'\\n'+question+f'\\nCorpus root: {root}.\\n'+grant+'\\nWork alone, with 15 minutes from this prompt. Source is read-only by permission and must remain untouched. Do not inspect other sessions, parent directories, oracle or reports. Answer with compact source ranges and distinguish unknowns.\\n'\n   (scratch/(name+'.prompt')).write_text(prompt);begin=datetime.datetime.now(datetime.timezone.utc).isoformat();start=time.monotonic()\n   cmd=['codex','exec','-m','gpt-6-luna','-c','model_reasoning_effort=\"xhigh\"','-c','approval_policy=\"never\"','--sandbox','danger-full-access','--skip-git-repo-check','-C',str(root),'--json','--output-last-message',str(scratch/(name+'.answer')),'-']\n   print('START',name,begin,flush=True)\n   with (scratch/(name+'.events')).open('w') as out,(scratch/(name+'.stderr')).open('w') as err:\n    try:run=subprocess.run(cmd,input=prompt,text=True,stdout=out,stderr=err,timeout=900);code=run.returncode\n    except subprocess.TimeoutExpired:code=124\n   elapsed=time.monotonic()-start;events=[]\n   for line in (scratch/(name+'.events')).read_text().splitlines():\n    try:events.append(json.loads(line))\n    except json.JSONDecodeError:pass\n   ids=[x['thread_id'] for x in events if x.get('type')=='thread.started'];usage=[x['usage'] for x in events if x.get('type')=='turn.completed'];receipt={};transcript=None\n   if ids:\n    # Only this just-created session is searched/read; never another answerer's transcript.\n    day=pathlib.Path(os.environ['CODEX_HOME'])/'sessions'/begin[:4]/begin[5:7]/begin[8:10]\n    candidates=list(day.glob('*'+ids[0]+'*'))\n    localday=pathlib.Path(os.environ['CODEX_HOME'])/'sessions'/datetime.datetime.fromisoformat(begin).astimezone().strftime('%Y/%m/%d')\n    if localday!=day:candidates+=list(localday.glob('*'+ids[0]+'*'))\n    if candidates:\n     transcript=str(candidates[0]);contexts=[];providers=[]\n     for line in candidates[0].read_text().splitlines():\n      x=json.loads(line)\n      if x['type']=='session_meta':providers.append(x['payload'].get('model_provider'))\n      if x['type']=='turn_context':contexts.append({k:x['payload'].get(k) for k in ['model','effort','sandbox_policy','cwd']})\n     receipt={'providers':providers,'contexts':contexts}\n   record={'name':name,'start':begin,'elapsed_seconds':elapsed,'exit':code,'thread_ids':ids,'usage':usage,'receipt':receipt,'transcript':transcript,'prompt_sha256':hashlib.sha256(prompt.encode()).hexdigest()};records.append(record)\n   (scratch/'measurements.json').write_text(json.dumps(records,indent=2));print('END',name,elapsed,code,usage,flush=True)\n   # Do not proceed with an unverified model/effort or failed native setup.\n   if code!=0 or not receipt.get('contexts') or any(x['model']!='gpt-6-luna' or x['effort']!='xhigh' for x in receipt['contexts']):\n    raise RuntimeError('Session settings/setup failed: '+name)\nprint('TRIAL COMPLETE',flush=True)\n",
+    "count_tokens.py": "import hashlib,json,pathlib,tiktoken\nroot=pathlib.Path(__file__).parent;enc=tiktoken.get_encoding('o200k_base');records=json.loads((root/'measurements.json').read_text())\nfor r in records:\n texts=[];queries=[];types={}\n for line in open(r['transcript']):\n  x=json.loads(line)\n  if x['type']!='response_item':continue\n  y=x['payload'];typ=y['type'];types[typ]=types.get(typ,0)+1\n  if typ in ['custom_tool_call_output','function_call_output']:\n   output=y['output']\n   if isinstance(output,str):texts.append(output)\n   elif isinstance(output,list):texts.extend(z.get('text','') for z in output if isinstance(z,dict))\n  if typ in ['custom_tool_call','function_call']:\n   queries.append(y.get('input',y.get('arguments','')))\n r['tool_text_o200k_tokens']=sum(len(enc.encode(s,disallowed_special=())) for s in texts);r['tool_text_bytes']=sum(len(s.encode()) for s in texts);r['tool_output_items']=len(texts);r['response_types']=types;r['query_text_o200k_tokens']=sum(len(enc.encode(s,disallowed_special=())) for s in queries)\n r['transcript_sha256']=hashlib.sha256(pathlib.Path(r['transcript']).read_bytes()).hexdigest()\nfor corpus in ['flow','lojix']:\n text=(root/(corpus+'-map.txt')).read_text();print(corpus,'map proxy tokens',len(enc.encode(text,disallowed_special=())))\n(root/'measurements-with-tool-tokens.json').write_text(json.dumps(records,indent=2))\nfor r in records:print(r['name'],round(r['elapsed_seconds'],1),r['usage'],r['tool_text_o200k_tokens'])\n"
+  },
+  "maps": {
+    "flow": "Ranked Rust map: lexical symbol-reference file graph, PageRank; edges are candidates, not resolved calls.\n\ncrates/flow-ethos/src/generated/library.rs [rank 0.086358]\n10: pub struct FlowId(pub String);\n14: pub struct Topic(pub String);\n18: pub struct Blake3(pub String);\n22: pub enum Model\n35: pub enum Subaspect\n46: pub struct Repository(pub String);\n50: pub struct Hash(pub Blake3);\n54: pub struct Path(pub String);\n58: pub struct Reason(pub String);\n62: pub struct Source\n70: pub struct Key\n77: pub struct Context(pub String);\n81: pub struct Verbatim(pub String);\n85: pub struct Minutes(pub i64);\n89: pub struct AnswerableTask\n96: pub struct RequestId(pub String);\n100: pub struct ResultPayload_Answered_Data\n108: pub enum ResultPayload\n115: pub struct DonePayload_Answered_Data\n123: pub struct Historical_Data\n130: pub enum DonePayload\n137: pub struct Living_Data\n144: pub struct Reminder_Data\n151: pub enum Request\n164: pub struct LogicalDeliveryId(pub String);\n168: pub enum Aspect\n176: pub struct Address\n184: pub enum SentBy\n193: pub struct QueueEntry\n203: pub struct NativeInput\n211: pub enum State\n218: pub struct Past(pub std::vec::Vec<FlowId>);\n222: pub struct Queue(pub std::vec::Vec<QueueEntry>);\n226: pub struct Metaflow\n235: pub struct Until(pub i64);\n239: pub struct Lock\n247: pub struct Pid(pub i64);\n251: pub struct Started(pub i64);\n255: pub struct Process\n262: pub struct OrdinarySocketPath(pub String);\n266: pub struct MetaSocketPath(pub String);\n270: pub struct StorePath(pub String);\n274: pub struct ContextRepository(pub String);\n278: pub struct DeployBinary(pub String);\n282: pub struct LandingWatch\n289: pub struct Start\n298: pub struct StoreRefusal\n305: pub struct PlaceName(pub String);\n309: pub struct CliConfiguration\n315: pub struct ConfigurationFault\n322: pub enum ConfigurationRefusal\n331: pub struct SourceRoot(pub String);\n335: pub struct ClientPath(pub String);\n339: pub struct Home(pub String);\n343: pub struct ControlSocketPath(pub String);\n347: pub struct ModelName(pub String);\n351: pub struct CodexEndpoint\n360: pub enum HarnessKind\n367: pub struct KeyName(pub String);\n371: pub struct CommandSigil(pub String);\n375: pub struct InterruptKeys(pub std::vec::Vec<KeyName>);\n379: pub struct SubmitKeys(pub std::vec::Vec<KeyName>);\n383: pub struct HarnessProfile\n392: pub struct HarnessProfiles(pub std::vec::Vec<HarnessProfile>);\n396: pub struct MetaAspects(pub std::vec::Vec<Aspect>);\n400: pub struct MessageNexusPath(pub String);\n404: pub struct MessageNexusBinary(pub String);\n408: pub struct Lease(pub i64);\n412: pub struct Nexus\n\ncrates/flow-nexus/src/lib.rs [rank 0.076385]\n38: pub(crate) mod admission;\n39: pub mod binding;\n40: pub mod caller;\n41: pub mod claude;\n42: pub mod codex;\n43: pub mod codex_turns;\n44: pub mod compacting;\n45: pub mod composition;\n46: mod connection_adapter;\n47: pub mod context;\n48: pub(crate) mod context_warnings;\n49: pub mod delivery;\n50: pub(crate) mod emission;\n51: pub mod event_wait;\n52: pub mod lean;\n53: pub mod live;\n54: pub(crate) mod message_projection;\n55: mod metaflow;\n56: pub mod model;\n57: pub mod observation_lifetime;\n58: pub mod protecting;\n59: pub mod queue_operations;\n60: pub mod recovery;\n61: pub mod reminding;\n62: pub mod repairing;\n63: pub mod restarting;\n66: mod exec_witness;\n68: mod fixture_executable;\n72: pub mod generated;\n73: pub mod handover;\n74: pub mod handover_archive;\n75: mod handover_observation;\n76: pub mod handover_reminding;\n77: pub(crate) mod harness_command;\n78: pub mod heartbeat;\n79: pub mod herdr;\n80: pub mod launching;\n81: pub mod observe_agent;\n82: pub mod observe_configuration;\n83: pub mod observe_metaflows;\n84: pub mod observe_sends;\n85: pub mod peer;\n86: pub mod performing;\n87: pub mod place;\n88: pub mod placed_socket;\n89: pub mod reaping;\n90: pub mod reporting;\n91: pub mod send_tool;\n92: pub mod sending;\n93: pub mod store;\n94: pub mod store_check;\n95: pub mod submission;\n97: mod test_faults;\n98: pub mod title;\n99: pub mod turn_ends;\n100: pub mod undecodable;\n101: pub mod values;\n102: pub mod waking;\n148: pub struct RunningNexus\n199: struct MemoryHandoverSource(Arc<FlowStore>);\n201: impl std::fmt::Debug for MemoryHandoverSource\n207: impl crate::handover::YieldsHandover for MemoryHandoverSource\n240: impl crate::composition::ReadsSuccessorRecovery for MemoryHandoverSource\n256: trait ReadsMemoryHandoverSource\n264: impl ReadsMemoryHandoverSource for MemoryHandoverSource\n277: pub trait Dispatches\n308: trait MeasuresHandoverTouch\n317: impl MeasuresHandoverTouch for RunningNexus\n339: impl Dispatches for RunningNexus\n483: struct OrdinaryCall<'nexus>\n488: impl signal_flow::Answering for OrdinaryCall<'_>\n1109: struct MetaCall<'nexus>\n1114: impl meta_signal_flow::Answering for MetaCall<'_>\n1562: pub trait OpensRunningNexus\n1574: impl OpensRunningNexus for RunningNexus\n1636: struct ConfiguredRunner\n1643: impl From<&meta_signal_flow::ConfigurationSnapshot> for ConfiguredRunner\n1670: trait StartsUnconfigured\n1674: impl StartsUnconfigured for ConfiguredRunner\n1696: trait ComposesFromConfiguration\n1700: impl ComposesFromConfiguration for ConfiguredRunner\n1718: pub trait AppliesConfiguration\n1727: impl AppliesConfiguration for RunningNexus\n1787: pub struct Connection\n1794: pub trait ServesConnection: Sized\n1827: trait ServesAttachedRetirement\n1834: impl ServesConnection for Connection\n2059: impl ServesAttachedRetirement for Connection\n2107: pub trait ConfiguresFromMeta\n2111: impl ConfiguresFromMeta for RunningNexus\n2215: pub trait ListensOnSocket\n2282: impl ListensOnSocket for RunningNexus\n2291: pub struct Stopping\n2296: impl Default for Stopping\n2309: pub trait HoldsStopRequest\n2315: impl HoldsStopRequest for Stopping\n2336: pub trait StopsNexus\n2340: impl StopsNexus for RunningNexus\n2371: pub struct TerminationSignals\n2376: pub trait WatchesTerminationSignals: Sized\n2387: impl WatchesTerminationSignals for TerminationSignals\n2470: pub trait ReconcilesListedFlows\n2475: impl ReconcilesListedFlows for RunningNexus\n2505: trait AnswersOnMeta\n2509: impl AnswersOnMeta for Output\n2529: trait DispatchesSerially\n2550: impl DispatchesSerially for RunningNexus\n2679: pub trait ServesOrdinary\n2685: impl ServesOrdinary for RunningNexus\n2695: pub trait ServesMeta\n2701: impl ServesMeta for RunningNexus\n2714: pub struct Readiness;\n2717: pub trait AnnouncesReadiness\n2723: impl AnnouncesReadiness for Readiness\n2744: pub enum GreetingEnd\n2756: pub trait GreetsPeers\n2761: impl GreetsPeers for Connection\n2789: pub trait CarriesSignalFrames\n2802: impl CarriesSignalFrames for UnixStream\n2853: mod tests\n\ncrates/signal-flow-before-request-ids/src/generated/signal.rs [rank 0.031112]\n37: pub enum Remembering\n44: pub struct LaunchRequest\n88: pub enum LeaveOut\n121: pub enum FlowKind\n128: pub enum ToolSet\n137: pub struct LaunchProfile\n155: pub struct TargetReceiptRequest\n162: pub struct PromptPart\n169: pub struct FirstPromptPayload\n177: pub struct SystemPrompt\n184: pub struct ComposedLaunch\n195: pub struct HerdrPaneBinding\n206: pub struct NativeLaunchIntent\n218: pub struct NativeLaunchBinding\n228: pub struct RegistrationAcknowledgement\n237: pub struct NativeTranscriptCursor\n248: pub struct NativeTranscriptAbsence\n257: pub enum NativeTranscriptBoundary\n264: pub struct PromptDeliveryIntent\n282: pub struct NativeTargetReceipt\n296: pub enum PromptDeliveryResult\n303: pub enum LaunchAttemptPhase\n315: pub struct LaunchAttempt\n332: pub enum LaunchStatusOutcome\n341: pub struct LaunchInspection\n349: pub enum LaunchAttemptReservation\n357: pub struct FlowOrigin\n364: pub enum Origin\n375: pub enum RouteReadiness\n382: pub struct Available_Data\n389: pub enum EndpointSelection\n396: pub struct HerdrRoute\n405: pub enum HerdrRouteSelection\n412: pub enum FlowLifecycle\n422: pub struct FlowNode\n434: pub struct Launched\n443: pub struct Refreshed\n450: pub enum BindingRefusal\n464: pub enum LeaveOutRefusal\n472: pub enum ModelRefusal\n479: pub enum ContextRefusal\n496: pub struct HerdrRefusal\n503: pub enum SpawnRefusalCause\n511: pub enum FirstTurn\n520: pub enum ThreadArchive\n527: pub struct OpenedThread\n535: pub struct HarnessSpawnRefusal\n542: pub enum NativeTargetRefusal\n551: pub enum RegistrationRefusal\n566: pub enum NativeLaunchStage\n579: pub enum NativeLaunchFailure\n607: pub struct NativeLaunchRefusal\n614: pub struct HandoverUnreadable_Data\n621: pub enum CompositionRefusal\n639: pub enum HandoverFault\n648: pub enum HarnessFlagsRefusal\n656: pub enum StartRejection\n677: pub enum RefreshRejection\n691: pub enum RecipientResolutionRejection\n698: pub enum StopRejection\n711: pub struct ResumeRefused_Data\n718: pub enum RestartRefusal\n732: pub struct Replaced\n739: pub enum ReplaceRejection\n751: pub enum ObserveSelection\n758: pub enum AgentState\n769: pub struct AgentObservation\n776: pub enum LaunchStatusRejection\n785: pub struct Caller\n793: pub enum CallerResolutionRejection\n802: pub struct Presentation\n810: pub struct SeatPane\n821: pub struct SeatEvidence\n831: pub enum Unknown_Data\n840: pub enum Refusal\n864: pub enum MinutesRefusal\n876: pub struct SendPayloadSize\n887: pub struct NativeStop\n895: pub struct NativePrompt\n903: pub struct VisibleResultPayload_Answered_Data\n910: pub enum VisibleResultPayload\n917: pub struct VisibleDonePayload_Answered_Data\n924: pub enum VisibleDonePayload\n931: pub struct Result_Data\n938: pub struct Done_Data\n945: pub enum SendableRequest\n958: pub enum SendableMessage\n966: pub enum VisibleRequest\n979: pub enum VisibleMessage\n987: pub enum VisibleSender\n995: pub struct VisibleNativeInput\n1002: pub struct SendRequest\n1013: pub struct NativeReceipt\n1021: pub enum RetryCause\n1030: pub enum DeliveryState\n1042: pub struct SendReceipt\n1049: pub struct SendFailure\n1056: pub enum SendFailureReason\n1066: pub struct SendAcceptance\n1074: pub struct DeliverySnapshot\n1084: pub struct SendObservation\n1091: pub enum DrainState\n1098: pub struct DrainOutcome\n1105: pub enum PrivateSendResponse\n1114: pub enum VisibleRefusal\n1137: pub enum VisibleUnknown\n1146: pub enum VisibleDeliveryState\n1160: pub struct VisibleSendFailure\n1166: pub enum VisibleSendFailureReason\n1176: pub struct VisibleSendAcceptance\n1183: pub struct VisibleDeliverySnapshot\n1192: pub struct VisibleSendObservation\n1199: pub enum VisibleDrainState\n1206: pub struct VisibleDrainOutcome\n1217: pub struct Section\n1225: pub struct Heading\n1232: pub struct Known_Data\n1240: pub enum Touch\n1247: pub enum HandoverRefusal\n1257: pub enum Event\n1268: pub struct Report_Data\n1275: pub struct Lock_Data\n1282: pub struct Bind_Data\n1289: pub struct Deliver_Data\n1296: pub struct IdentifyThread_Data\n1303: pub struct ObserveSender_Data\n1311: pub struct Adopt_Data\n1318: pub struct Keep_Data\n1325: pub struct Drop_Data\n1332: pub enum Query\n1367: pub enum Current_Data\n1375: pub struct Kept_Data\n1383: pub struct Dropped_Data\n1391: pub enum Response\n\ncrates/flow-ethos-before-request-ids/src/generated/library.rs [rank 0.029356]\n11: pub enum Model\n24: pub enum Subaspect\n43: pub struct Source\n51: pub struct Key\n62: pub struct Said\n71: pub struct AnswerableTask\n78: pub enum Answerable\n85: pub struct ResultPayload_Answered_Data\n92: pub enum ResultPayload\n99: pub struct DonePayload_Answered_Data\n107: pub struct Historical_Data\n114: pub enum DonePayload\n121: pub enum Request\n136: pub enum Aspect\n144: pub struct Address\n154: pub enum SentBy\n162: pub struct QueueEntry\n171: pub struct NativeInput\n179: pub enum State\n190: pub struct Metaflow\n201: pub struct Lock\n213: pub struct Process\n232: pub struct LandingWatch\n239: pub struct Start\n248: pub struct StoreRefusal\n255: pub enum StartRefusal\n271: pub struct CodexEndpoint\n284: pub enum HarnessKind\n299: pub struct HarnessProfile\n318: pub struct Nexus\n\ncrates/flow-nexus/src/herdr.rs [rank 0.023948]\n5: pub(crate) mod claude_paste;\n6: pub(crate) mod events;\n7: pub mod launch;\n8: pub mod pane;\n9: pub mod reservation;\n31: pub trait ReadsHerdrRoster\n43: pub enum PanePresence\n63: pub enum PaneOwnership\n91: pub trait OperatesHerdrPane\n96: pub trait LocatesNativeTranscripts\n104: impl LocatesNativeTranscripts for HerdrCli\n123: pub struct HerdrCli\n160: impl Default for HerdrCli\n234: pub(crate) struct HookChoice\n239: pub(crate) trait ChoosesHarnessHook: Sized\n246: impl ChoosesHarnessHook for HookChoice\n272: pub trait VerifiesFlowClaim\n276: impl ReadsHerdrRoster for HerdrCli\n296: impl OperatesHerdrPane for HerdrCli\n324: trait ReadsPromptReply\n349: impl ReadsPromptReply for ProcessReply\n397: pub trait ConfiguresHerdrCli\n421: impl ConfiguresHerdrCli for HerdrCli\n521: pub trait ReadsHerdrPanes\n573: pub enum PaneRoute\n583: pub struct ForegroundProcess\n588: impl ReadsHerdrPanes for HerdrCli\n802: impl crate::caller::KnowsHerdrServers for HerdrCli\n821: pub trait ReadsHerdrSnapshot\n830: impl ReadsHerdrSnapshot for serde_json::Value\n871: pub trait ReadsHerdrAgent\n884: impl ReadsHerdrAgent for serde_json::Value\n905: impl VerifiesFlowClaim for HerdrCli\n935: struct FlowClaim\n941: trait DecodesFlowClaim\n947: impl DecodesFlowClaim for FlowClaim\n993: mod tests\n1233: pub(crate) enum PaneClose\n1248: pub(crate) trait JudgesPaneOwnership\n1266: impl JudgesPaneOwnership for serde_json::Value\n1340: pub(crate) trait ReadsForegroundProcesses\n1348: impl ReadsForegroundProcesses for serde_json::Value\n1399: pub(crate) trait ReadsHerdrListing\n1403: impl ReadsHerdrListing for serde_json::Value\n1421: pub(crate) trait ReadsHerdrUntilCancelled\n1461: impl ReadsHerdrUntilCancelled for HerdrCli\n\ncrates/flow-nexus/src/claude.rs [rank 0.023149]\n17: pub struct ClaudeDaemon\n23: pub trait ProjectsClaudeReadiness: Sized\n35: impl ProjectsClaudeReadiness for ClaudeDaemon\n119: pub struct ClaudeSessions\n124: pub trait ReadsClaudeSessions: Sized\n133: impl ReadsClaudeSessions for ClaudeSessions\n163: pub trait LocatesClaudeTranscript\n173: pub struct ClaudeTranscriptCursor\n183: pub struct ClaudeQueuedReceipt\n190: pub enum ClaudeQueuedHistory\n208: pub trait ReadsClaudeTurns\n234: impl ReadsClaudeTurns for Path\n418: impl LocatesClaudeTranscript for Path\n438: pub trait MeasuresClaudeContext\n444: const CONTEXT_TAIL_BYTES: u64 = 4 * 1024 * 1024;\n446: impl MeasuresClaudeContext for Path\n465: trait ReadsUsageLines\n469: impl ReadsUsageLines for str\n498: trait ReadsTranscriptRow\n503: impl ReadsTranscriptRow for Value\n516: trait ParksEndpoint\n520: impl ParksEndpoint for String\n530: trait ReadsJsonFile\n534: impl ReadsJsonFile for Path\n541: trait ReadsDaemonRecord\n547: impl ReadsDaemonRecord for Value\n558: trait NormalizesState\n562: impl NormalizesState for str\n572: mod tests\n926: mod simplified_answer_tests\n\ncrates/flow-nexus/tests/unit/ending.rs [rank 0.018242]\n19: const CLEARED_SUCCESSOR_SESSION: &str = \"c1a0de00-0000-4000-8000-000000000002\";\n22: fn report(fixture: &NexusFixture, event: Event)\n37: fn session(fixture: &NexusFixture) -> String\n48: fn state(fixture: &NexusFixture) -> State\n58: fn closed(fixture: &NexusFixture) -> bool\n64: fn lifecycle(fixture: &NexusFixture) -> FlowLifecycle\n76: fn awake_seat(fixture: &NexusFixture)\n94: fn after_retire_the_flow_s_pane_is_closed()\n113: fn declare_secondary(fixture: &NexusFixture, continuity: meta_signal_flow::Continuity)\n142: fn retire_of_a_maintained_metaflow_s_flow_is_refused_and_changes_nothing()\n180: fn a_flow_whose_session_ended_has_its_pane_closed()\n206: fn a_flow_whose_pane_is_gone_exits_with_nothing_to_close()\n225: fn a_cleared_session_is_not_an_exit_and_the_next_start_rebinds_the_flow()\n273: fn a_start_after_no_clear_of_its_own_session_rebinds_nothing()\n304: fn a_retire_whose_close_herdr_refuses_answers_close_refused_and_records_nothing()\n328: fn an_exit_whose_close_herdr_refuses_is_recorded_all_the_same()\n\ncrates/flow-ethos/src/generated/mod.rs [rank 0.017092]\n1: pub mod delivery;\n2: pub mod library;\n3: pub mod message;\n\ncrates/flow-ethos-before-request-ids/src/generated/mod.rs [rank 0.017092]\n1: pub mod delivery;\n2: pub mod library;\n3: pub mod message;\n\ncrates/signal-flow-before-request-ids/src/generated/mod.rs [rank 0.013944]\n1: pub mod signal;\n\ncrates/meta-signal-flow-before-request-ids/src/generated/mod.rs [rank 0.013944]\n1: pub mod signal;\n",
+    "lojix": "Ranked Rust map: lexical symbol-reference file graph, PageRank; edges are candidates, not resolved calls.\n\nsrc/lib.rs [rank 0.169159]\n53: pub trait Payload\n66: pub mod adapters;\n68: pub mod bootstrap;\n69: pub mod client;\n70: pub mod daemon;\n72: pub mod ingress;\n73: mod inspected_text;\n75: pub mod inspection;\n76: pub mod quarantine;\n78: pub mod reconstruction;\n79: pub mod runtime_flow;\n80: pub mod runtime_model;\n81: pub mod schema_runtime;\n88: pub trait OfflineCommand: Sized\n103: pub struct Ingress;\n107: pub trait Named\n113: pub trait Budgeted\n118: impl Budgeted for Ingress\n134: pub(crate) trait HorizonArchitecture\n140: impl HorizonArchitecture for str\n154: const LOJIX_SCHEMA_VERSION: SchemaVersion = SchemaVersion::new(5);\n165: pub trait LojixRecord: EngineStoredRecord + Send + Sync + 'static\n210: impl LojixRecord for LiveGeneration\n221: impl LojixRecord for GcRoot\n232: impl LojixRecord for EventLogEntry\n243: impl LojixRecord for ContainerLifecycleRecord\n257: impl LojixRecord for DeployJob\n268: impl LojixRecord for StoredTestRun\n279: impl LojixRecord for DeploymentRecord\n290: impl LojixRecord for IdentifierAllocation\n301: impl LojixRecord for DeploymentOutboxRecord\n312: impl LojixRecord for PendingTransitionIntent\n323: impl LojixRecord for NexusConfigurationRecord\n334: static STARTUP_PROBE_IDENTIFIER: AtomicU64 = AtomicU64::new(0);\n337: pub enum Error\n455: pub trait InlineDatomArguments\n460: impl<Arguments: IntoIterator<Item = OsString>> InlineDatomArguments for Arguments\n484: pub struct LegacyStartupConfiguration\n524: pub struct TestDefaults\n539: pub enum TestMode\n544: const DEFAULT_RUNTIME_DIRECTORY: &str = \"/run/lojix\";\n545: const DEFAULT_STATE_DIRECTORY: &str = \"/var/lib/lojix\";\n548: pub trait LojixNexusConfigurable\n572: impl LojixNexusConfigurable for NexusConfiguration\n673: pub trait LegacyConfigurationArchivable\n680: impl LegacyConfigurationArchivable for LegacyStartupConfiguration\n695: impl From<&LegacyStartupConfiguration> for NexusConfiguration\n731: pub trait LegacyConfigurationMigratable\n746: pub trait TerminalOutcome\n752: impl TerminalOutcome for DeploymentTerminal\n781: pub struct EventLogRetention\n785: impl Default for EventLogRetention\n794: impl Payload for EventLogRetention\n827: pub struct Store\n841: pub struct LojixDirectory\n858: trait LojixTables: Sized\n862: impl LojixTables for LojixDirectory\n882: struct NexusConfigurationRecord\n886: impl FamilyDirectory for LojixDirectory\n908: impl std::fmt::Debug for Store\n919: pub(crate) trait IdentifierSpace\n923: impl IdentifierSpace for u64\n930: impl From<u64> for StateMarker\n942: pub(crate) trait SourceRevisionText\n954: impl SourceRevisionText for str\n973: pub(crate) trait ClosureRecord\n986: impl ClosureRecord for DeployJob\n999: impl ClosureRecord for GcRoot\n1012: pub trait DurableStore\n1049: pub(crate) trait StoreIntegrity\n1069: pub trait NexusPersistable\n1108: pub trait IdentifierAllocating\n1147: pub trait TransitionJournal\n1266: pub trait EventHistory\n1296: pub trait DeploymentLedger\n1443: pub trait GenerationLedger\n1470: pub trait TestRunLedger\n1478: impl DurableStore for Store\n1511: impl StoreIntegrity for Store\n1610: impl NexusPersistable for Store\n1815: impl IdentifierAllocating for Store\n1918: impl TransitionJournal for Store\n2405: impl EventHistory for Store\n2536: impl DeploymentLedger for Store\n3107: impl GenerationLedger for Store\n3242: impl TestRunLedger for Store\n3261: impl LegacyConfigurationMigratable for Store\n3291: impl EngineRecord for LiveGeneration\n3297: impl EngineRecord for GcRoot\n3303: impl EngineRecord for EventLogEntry\n3309: impl EngineRecord for ContainerLifecycleRecord\n3315: impl EngineRecord for DeployJob\n3321: impl EngineRecord for DeploymentRecord\n3327: impl EngineRecord for DeploymentOutboxRecord\n3333: impl EngineRecord for PendingTransitionIntent\n3339: impl EngineRecord for IdentifierAllocation\n3345: impl EngineRecord for StoredTestRun\n3351: impl EngineRecord for NexusConfigurationRecord\n3358: mod default_store_path_tests\n3413: mod transition_intent_tests\n\nsrc/runtime_model.rs [rank 0.155336]\n82: pub struct DeploymentTransport\n87: pub enum DeploymentInputMode\n94: pub enum ActivationBackend\n101: pub struct TestExecutionProfile\n110: pub enum SecretsInput\n124: pub enum SourceRevisionPolicy\n129: pub enum GenerationArtifact\n135: pub enum ActivationEffect\n143: pub enum GenerationSlot\n151: pub enum TestMode\n156: pub enum TestRunPhase\n166: pub enum FailureStage\n174: pub enum TestOutcome\n180: pub struct StateMarker\n189: pub struct NodeSelector\n197: pub struct EventLogRange\n202: pub struct TestRunLookup\n208: pub enum Selection\n216: pub struct SourceRevisionRecord\n223: pub struct Generation\n235: pub enum DeploymentEnvironment\n240: pub enum RequestedDeploymentAction\n245: pub enum DeploymentLifecycle\n257: pub enum DeploymentFailureStage\n268: pub enum DeploymentTerminalReason\n285: pub struct DeploymentFailure\n293: pub struct FailureEvidence\n299: pub struct FailedCommand\n305: pub enum DeploymentTerminal\n311: pub struct DeploymentRequestIdentity\n322: pub struct DeploymentRecord\n332: pub struct IdentifierAllocation\n338: pub struct GenerationListing\n344: pub enum DeploymentPhase\n356: pub struct DeploymentPhaseEvent\n368: pub enum OutboxDeliveryState\n376: pub struct DeploymentOutboxRecord\n384: pub struct PendingTransitionIntent\n398: pub enum TransitionIntentState\n405: pub enum CacheRetentionTransition\n414: pub struct CacheRetentionTransitionEvent\n425: pub struct TestRunRecord\n436: pub struct TestRunListing\n441: pub struct DeploymentWatch\n447: pub struct CacheRetentionWatch\n453: pub struct SubscriptionOpened\n459: pub enum HostDeployAction\n468: pub enum HostComposition\n473: pub enum UserEnvironmentAction\n479: pub enum HostSelection\n484: pub enum NodeSelection\n489: pub struct TestRun\n497: pub enum TestRequest\n502: pub struct ExtraSubstituter\n507: pub struct HostDeployment\n525: pub struct UserEnvironmentDeployment\n543: pub struct PinRequest\n550: pub struct UnpinRequest\n556: pub struct RetireRequest\n562: pub struct DeployHandle\n567: pub struct AcceptedTest\n572: pub struct AppliedPin\n580: pub struct AppliedUnpin\n588: pub struct AppliedRetire\n594: pub enum MemoryReadInput\n600: pub enum MemoryReadOutput\n607: pub struct EventLogPage\n613: pub enum MemoryWriteInput\n627: pub enum DeploySubmission\n632: pub struct ActivationCommit\n642: pub struct ContainerTransition\n650: pub enum ContainerState\n658: pub enum MemoryWriteOutput\n675: pub struct PhaseReceipt\n680: pub struct AppliedActivation\n686: pub struct ContainerReceipt\n691: pub struct RejectionReport\n696: pub enum RejectionReason\n711: pub enum QueryRejectionReason\n718: pub enum WatchRejectionReason\n724: pub enum UnwatchRejectionReason\n729: pub struct RejectedQuery\n735: pub struct RejectedUnwatch\n740: pub enum PinRejectionReason\n748: pub enum UnpinRejectionReason\n755: pub enum RetireRejectionReason\n763: pub enum TestRejectionReason\n779: pub struct RefusedDeploy\n784: pub enum DeployRefusalReason\n790: pub struct RejectedPin\n795: pub struct RejectedUnpin\n800: pub struct RejectedRetire\n805: pub struct RejectedTest\n810: pub struct ConfigurationReceipt\n815: pub enum ConfigurationRejectionReason\n820: pub struct ConfigurationRejection\n824: pub enum OrdinaryIngress\n832: pub enum OrdinaryEgress\n845: pub enum MetaIngress\n855: pub enum MetaEgress\n878: pub struct LiveGeneration\n892: pub struct GcRoot\n902: pub struct EventLogEntry\n907: pub enum LoggedEvent\n914: pub struct ContainerLifecycleRecord\n922: pub struct PersistedFlakeInputReference\n927: pub struct PersistedFlakeInputOverride\n932: pub enum DeployResumeStage\n944: pub struct DeployJob\n968: pub enum DeployJobPhase\n979: pub struct StoredTestRun\n990: pub enum Input\n995: pub enum Output\n1000: impl triad_runtime::MemoryWriteInput for MemoryWriteInput\n1001: impl triad_runtime::MemoryWriteOutput for MemoryWriteOutput\n1002: impl triad_runtime::MemoryReadInput for MemoryReadInput\n1003: impl triad_runtime::MemoryReadOutput for MemoryReadOutput\n\nsrc/schema_runtime.rs [rank 0.100822]\n45: struct HorizonUserName(String);\n47: impl TryFrom<String> for HorizonUserName\n63: impl crate::Named for HorizonUserName\n72: const FAILURE_DETAIL_BOUND: usize = 4096;\n79: pub(crate) struct StageFailure\n84: impl From<String> for StageFailure\n96: impl From<&str> for StageFailure\n102: impl From<StageFailure> for String\n113: pub(crate) trait Witnessing\n147: impl Witnessing for StageFailure\n160: mod ordinary\n167: mod meta\n199: pub struct SchemaRuntime\n221: pub struct RuntimeConfiguration\n249: pub struct EffectExecution\n256: pub trait ProgramResolution\n268: impl ProgramResolution for EffectExecution\n295: pub struct TestDefaults\n313: pub(crate) trait TestLowering\n366: impl TestLowering for TestDefaults\n453: impl From<&crate::TestDefaults> for TestDefaults\n477: enum MetaOperation\n492: pub(crate) struct ResolvedTestRun\n504: trait TestRunCommands\n529: impl TestRunCommands for ResolvedTestRun\n612: pub struct TestPipeline\n623: pub enum TestStage\n635: trait TestCursor\n660: impl TestCursor for TestPipeline\n707: pub enum TestSubmissionOutcome\n717: pub(crate) struct ClusterProjection\n723: trait ClusterTopology\n746: impl ClusterTopology for ClusterProjection\n802: struct HermeticCheck\n811: pub(crate) trait Effect\n822: trait CheckInstallable\n827: impl CheckInstallable for HermeticCheck\n841: impl Effect for HermeticCheck\n877: struct LiveTestVm\n886: trait TestVmCommands\n916: impl TestVmCommands for LiveTestVm\n979: pub enum DeploySubmissionOutcome\n988: impl From<&NexusConfiguration> for RuntimeConfiguration\n1005: impl From<&LegacyStartupConfiguration> for RuntimeConfiguration\n1019: pub trait DaemonRuntime\n1056: impl DaemonRuntime for RuntimeConfiguration\n1115: impl From<&signal_lojix::TestDefaults> for TestDefaults\n1143: trait BootOnceUnit\n1147: impl BootOnceUnit for ordinary::DeploymentIdentifier\n1158: pub struct DeployPipeline\n1206: pub enum DeployStage\n1222: enum DeployAction\n1232: trait DeployActionShape\n1249: impl DeployActionShape for DeployAction\n1289: struct FlakeReferencePolicy<'a>\n1296: trait FlakeAdmission<'a>\n1316: impl<'a> FlakeAdmission<'a> for FlakeReferencePolicy<'a>\n1446: enum EvalRefresh\n1452: trait EvalFreshness\n1464: impl EvalFreshness for EvalRefresh\n1481: struct NixFlakeMetadata\n1486: trait FlakeMetadataReading\n1502: impl FlakeMetadataReading for NixFlakeMetadata\n1547: trait DeployCursor\n1650: impl DeployCursor for DeployPipeline\n2090: pub enum DeployJobResumption\n2110: pub(crate) trait DeployJobResuming\n2161: impl DeployJobResuming for memory::DeployJob\n2255: impl From<ordinary::TestRunRecord> for memory::StoredTestRun\n2273: impl From<memory::StoredTestRun> for ordinary::TestRunRecord\n2293: trait ResumePoint\n2298: impl ResumePoint for memory::DeployResumeStage\n2319: impl From<ordinary::DeploymentPhase> for memory::DeployJobPhase\n2339: impl Default for SchemaRuntime\n2349: trait RejectionVocabulary\n2361: impl RejectionVocabulary for memory::RejectionReason\n2436: trait TerminalReason\n2440: impl TerminalReason for meta::DeployRejectionReason\n2486: trait FailureStaging\n2492: impl FailureStaging for nexus::EffectStage\n2528: trait PhaseLifecycle\n2532: impl PhaseLifecycle for ordinary::DeploymentPhase\n2550: trait ActivationSlot\n2554: impl ActivationSlot for ordinary::ActivationEffect\n2568: trait TestRunSelecting\n2572: impl TestRunSelecting for ordinary::TestRunLookup\n2586: trait GenerationSelecting\n2592: impl GenerationSelecting for ordinary::Selection\n2647: trait DeployAdmission\n2660: impl DeployAdmission for meta::DeployRequest\n2837: trait ReadMiss\n2841: impl ReadMiss for memory::MemoryReadOutput\n2850: impl From<meta::Output> for nexus::NexusAction\n2856: impl From<crate::NexusConfigurationState> for memory::ConfigurationReceipt\n2865: impl From<crate::Error> for memory::ConfigurationRejection\n2889: pub trait RuntimeCore\n2930: impl RuntimeCore for SchemaRuntime\n3006: pub(crate) trait SignalDeciding\n3106: impl SignalDeciding for SchemaRuntime\n3700: pub trait DeployDriving\n3792: impl DeployDriving for SchemaRuntime\n4413: pub trait TestDriving\n4464: impl TestDriving for SchemaRuntime\n4577: pub(crate) trait MemoryApplying\n4642: impl MemoryApplying for SchemaRuntime\n5038: pub(crate) trait MemoryObserving\n5058: impl MemoryObserving for SchemaRuntime\n5184: pub(crate) trait EffectRunning\n5249: impl EffectRunning for SchemaRuntime\n5533: struct HorizonMaterialization\n5538: impl Effect for HorizonMaterialization\n5553: trait HorizonMaterializing\n5557: impl HorizonMaterializing for HorizonMaterialization\n5579: struct MaterializationRoot\n5585: trait MaterializationLayout\n5595: impl MaterializationLayout for MaterializationRoot\n5612: struct MaterializedInputSet\n5621: trait InputSetWriting\n5634: impl InputSetWriting for MaterializedInputSet\n5687: struct GeneratedInputDirectory\n5693: trait GeneratedInputWriting: Sized\n5732: impl GeneratedInputWriting for GeneratedInputDirectory\n5829: enum GeneratedInputName\n5836: impl crate::Named for GeneratedInputName\n5849: struct DeploymentInput\n5855: trait DeploymentFlakeText: Sized\n5861: impl DeploymentFlakeText for DeploymentInput\n5891: struct ClusterSecretsDirectory\n5896: trait SecretsSource\n5907: impl SecretsSource for ClusterSecretsDirectory\n5957: struct ClusterSecretFile\n5963: trait SecretFileCopying\n5995: impl SecretFileCopying for ClusterSecretFile\n6028: struct NixSystemName(&'static str);\n6032: trait NixPlatform: Sized\n6036: impl NixPlatform for NixSystemName\n6042: impl crate::Named for NixSystemName\n6050: struct NarHash(String);\n6054: trait NarHashing\n6062: impl NarHashing for NarHash\n6094: struct SshTarget\n6104: enum RemoteUserActivationAuthority\n6112: trait SshRouting\n6133: impl SshRouting for SshTarget\n6213: struct ShellCommand(String);\n6216: trait ShellScript\n6224: impl ShellScript for ShellCommand\n6238: struct ShellArgument\n6243: trait ShellQuoting\n6251: impl ShellQuoting for ShellArgument\n6292: struct ClosureCopy\n6299: trait ClosureCopying: Sized\n6305: impl ClosureCopying for ClosureCopy\n6341: impl Effect for ClosureCopy\n6364: struct TargetStoreRealization\n6377: struct TargetGcRoot\n6384: enum TargetGcRootDirectory\n6390: trait TargetGcRooting\n6405: impl TargetGcRooting for TargetGcRoot\n6459: trait TargetStoreRealizing: Sized\n6474: impl TargetStoreRealizing for TargetStoreRealization\n6537: impl Effect for TargetStoreRealization\n6558: enum Activation\n6567: trait Activating: Sized\n6579: impl Activating for Activation\n6638: impl Effect for Activation\n6653: enum DetachedSelfActivation\n6671: struct HostActivation\n6694: trait HostActivating\n6805: impl HostActivating for HostActivation\n6996: impl Effect for HostActivation\n7016: pub(crate) struct DetachedActivationUnit\n7024: pub(crate) struct DetachedActivationObserver\n7034: pub(crate) struct DetachedActivationFailure\n7040: impl Witnessing for DetachedActivationFailure\n7061: pub(crate) enum DetachedActivationOutcome\n7070: pub(crate) trait DetachedActivation\n7112: impl DetachedActivation for DetachedActivationUnit\n7273: pub(crate) trait DetachedObserving\n7292: impl DetachedObserving for DetachedActivationObserver\n7389: pub(crate) struct DetachedActivationProxies<'a>\n7400: struct UserEnvironmentActivation\n7412: const HOME_MANAGER_DRIVER_VERSION_FLAG: &str = \"--driver-version\";\n7413: const HOME_MANAGER_DRIVER_VERSION: &str = \"1\";\n7418: trait UserEnvironmentActivating\n7470: impl UserEnvironmentActivating for UserEnvironmentActivation\n7592: impl Effect for UserEnvironmentActivation\n7612: struct NixCommand\n7618: trait NixInvoking\n7712: impl NixInvoking for NixCommand\n7907: impl Effect for NixCommand\n7995: impl nexus::NexusEngine for SchemaRuntime\n8063: mod tests\n\ntests/common/mod.rs [rank 0.049101]\n9: pub fn read_horizon(path: &std::path::Path) -> horizon_lib::HorizonDefinition\n14: fn hardware() -> Hardware\n25: fn node(name: &str, machine_definition: MachineDefinition) -> NodeDefinition\n54: fn definition(nodes: Vec<NodeDefinition>) -> HorizonDefinition\n79: fn write(path: &Path, value: HorizonDefinition)\n84: pub fn write_single_node(path: &Path)\n97: pub fn write_hosted_pair(path: &Path)\n"
+  },
+  "cleanup": {
+    "analyzer_starts": 7,
+    "all_server_logs_clean_shutdown": true,
+    "remaining_sockets": [],
+    "server_logs": [
+      "lojix-server-repeat.log",
+      "flow-server-online.log",
+      "flow-server-final.log",
+      "flow-server.log",
+      "lojix-server.log",
+      "flow-server-repeat.log",
+      "lojix-server-online.log"
+    ],
+    "guards_unchanged_by_trial": true,
+    "services_installed": 0,
+    "mounts_started": 0,
+    "active_owned_server_or_controller_processes": []
+  },
+  "scratch": "/tmp/research-tools-6ac03a.A0E7wt",
+  "frozen_questions_sha256": "86bb3243957f7851ee62618dab7db6949cefcacd34784028701ccd4382d89d40",
+  "frozen_key_sha256": "aa477308e22927a03453d567aaf4cfed9f7d4187f7bbb546b7b0a219119b0a55"
+}
