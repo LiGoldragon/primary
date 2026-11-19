@@ -29,7 +29,7 @@ def receipt_tokens(text):
                     raise AdmissionError("unescaped opening guillemet")
                 if text[i] == "\\":
                     i += 1
-                    if i >= len(text) or text[i] not in ("\\", "»"):
+                    if i >= len(text) or text[i] not in ("\\", "«", "»"):
                         raise AdmissionError("invalid quoted escape")
                 value.append(text[i])
                 i += 1

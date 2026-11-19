@@ -225,12 +225,16 @@ def decode_cli_done_request(command, receipt_tokens):
     return request_id
 
 
+def quoted_content(text):
+    return text.replace('\\', '\\\\').replace('«', '\\«').replace('»', '\\»')
+
+
 def control_question(owner, side, prompt, ledger, private_call, receipt_tokens):
     if side not in ('sender', 'receiver') or not isinstance(prompt, str) or not prompt:
         raise MatrixError('invalid control question')
     ledger.instructed_turn(side)
     topic = 'proposalTwoSender' if side == 'sender' else 'proposalTwoReceiver'
-    quoted = prompt.replace('\\', '\\\\').replace('»', '\\»')
+    quoted = quoted_content(prompt)
     label = 'control-' + side + '-' + str(ledger.turns[side])
     request = 'Send.{ { Mind ' + topic + ' Luna } Soft.Question.«' + quoted + '» }'
     response = private_call(owner, label, 'flow', request)
@@ -290,7 +294,7 @@ def collect_phase_a_consumption(owner, channel, ledger, deadline, private_call, 
 
 def collect_phase_b_consumption(owner, channel, ledger, deadline, private_call, receipt_tokens):
     ledger.instructed_turn('receiver')
-    prompt = render_phase_b_receiver_notice().replace('\\', '\\\\').replace('»', '\\»')
+    prompt = quoted_content(render_phase_b_receiver_notice())
     request = 'Send.{ { Mind proposalTwoReceiver Luna } Soft.Notice.«' + prompt + '» }'
     reply = private_call(owner, 'phase-b-receiver-notice', 'flow', request)
     parse_visible_admission(reply, receipt_tokens)

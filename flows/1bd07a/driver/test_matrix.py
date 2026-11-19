@@ -129,6 +129,14 @@ class MatrixFixtures(unittest.TestCase):
         with self.assertRaises(matrix.MatrixError): matrix.native_send('production', 'Question', 'body')
         with self.assertRaises(matrix.MatrixError): matrix.native_send('proposalTwoReceiver', 'Question', 'body', 'id')
 
+    def test_control_string_quotes_both_guillemets_and_backslashes(self):
+        import controller
+        for prompt in ('nested «Task.«content»»', 'unmatched «', 'unmatched »',
+                       'backslash \\ and \\« edge', 'plain'):
+            with self.subTest(prompt=prompt):
+                quoted = matrix.quoted_content(prompt)
+                self.assertEqual(controller.receipt_tokens('«' + quoted + '»'), [('quoted', prompt)])
+
     def test_identity_ambiguity_refused(self):
         with self.assertRaises(matrix.MatrixError):
             matrix.identity_binding({'result': {'agents': []}}, {}, {}, {'pane': 'pane'})

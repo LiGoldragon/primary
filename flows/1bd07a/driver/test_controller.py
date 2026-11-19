@@ -18,6 +18,10 @@ class ReceiptTests(unittest.TestCase):
             with self.subTest(text=text), self.assertRaises(controller.AdmissionError):
                 controller.receipt(text, 'Unconfigured')
 
+    def test_escaped_guillemet_content_is_preserved(self):
+        self.assertEqual(controller.receipt_tokens('«left \\«nested\\» right»'),
+                         [('quoted', 'left «nested» right')])
+
     def test_quoted_and_atom_are_distinct(self):
         with self.assertRaises(controller.AdmissionError):
             controller.receipt('«Unconfigured»', 'Unconfigured')
