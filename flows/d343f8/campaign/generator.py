@@ -282,13 +282,17 @@ def source_file_list(variants: list[dict], binary: Path, execution_closure: dict
             for path in sorted(paths, key=lambda item: str(item))]
 
 
-def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30) -> dict:
+def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30,
+          refresh_existing_inputs: bool = False) -> dict:
     output_root = output_root.resolve()
     if output_root != CAMPAIGN_ROOT.resolve():
         output_root.mkdir(parents=True, exist_ok=True)
     inputs_root = output_root / "inputs"
     manifest_path = output_root / "proposal-manifest.json"
-    if inputs_root.exists() or manifest_path.exists():
+    if refresh_existing_inputs:
+        if not inputs_root.is_dir() or inputs_root.is_symlink():
+            raise GenerationError("manifest refresh requires the existing immutable input directory")
+    elif inputs_root.exists() or manifest_path.exists():
         raise GenerationError("frozen campaign inputs already exist; generator will not overwrite them")
 
     opus_plan = load_json(TRIAL_ROOT / "opus-plan.json")
@@ -515,10 +519,21 @@ def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30) -> dict:
         }
         manifest["canonical_sha256"] = controller.canonical_sha256(manifest)
 
-        inputs_root.mkdir(parents=True, exist_ok=False)
-        for path, data in generated.items():
-            write_exclusive(path, data)
+        if refresh_existing_inputs:
+            expected_files = {path.resolve() for path in generated}
+            actual_files = {path.resolve() for path in inputs_root.rglob("*") if path.is_file()}
+            if actual_files != expected_files:
+                raise GenerationError("existing immutable input set differs from regenerated slots")
+            for path, data in generated.items():
+                if path.read_bytes() != data:
+                    raise GenerationError(f"existing immutable input bytes differ: {path}")
+        else:
+            inputs_root.mkdir(parents=True, exist_ok=False)
+            for path, data in generated.items():
+                write_exclusive(path, data)
         manifest_bytes = json_bytes(manifest)
+        if refresh_existing_inputs and manifest_path.exists():
+            manifest_path.unlink()
         write_exclusive(manifest_path, manifest_bytes)
         controller.verify_manifest(manifest_path)
         return manifest
@@ -529,11 +544,14 @@ def build(output_root: Path = CAMPAIGN_ROOT, prepare_timeout: int = 30) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prepare-timeout", type=int, default=30)
+    parser.add_argument("--refresh-existing-inputs", action="store_true",
+                        help="rebuild the manifest only after exact input bytes are verified")
     args = parser.parse_args()
     if args.prepare_timeout <= 0:
         raise SystemExit("prepare timeout must be positive")
     try:
-        manifest = build(prepare_timeout=args.prepare_timeout)
+        manifest = build(prepare_timeout=args.prepare_timeout,
+                         refresh_existing_inputs=args.refresh_existing_inputs)
     except (GenerationError, controller.CampaignError, OSError, subprocess.SubprocessError, json.JSONDecodeError) as error:
         print(f"generation failed: {error}", file=__import__("sys").stderr)
         return 2

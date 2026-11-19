@@ -282,7 +282,7 @@
     "executables": [
       {
         "role": "controller_interpreter",
-        "configured_path": "/home/li/.nix-profile/bin/python",
+        "configured_path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
         "path": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
         "sha256": "037ce5c074b5a35070f2b8ab0174d933c8e23b9642ee2804c7ed3d972238d7bc"
       },
@@ -1546,15 +1546,15 @@
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/controller.py",
-      "sha256": "7920673ea9bfcf4a4335e27a3d1591baccaf1e9ca4ddfeea9b362f24c0a1d70b"
+      "sha256": "d2cd59f28c688c42c80db5134cc47be8b1bb8ba7ffcf92511f61af4bd4aedf76"
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/generator.py",
-      "sha256": "7c2cd86f481905025f9c00238167dd7ab3758fe68dbb1934adf57f5cef6b96a4"
+      "sha256": "ce52caa4de88e65c142d4ff646f8a81162b7d0a87acb3287aa77a5118313f12a"
     },
     {
       "path": "/home/li/primary/flows/d343f8/campaign/tests.py",
-      "sha256": "745eded8b91082976bf83e89a4a1d3e569c154ea764d2f3b2be9eabdcdf2c6da"
+      "sha256": "0854111c92d01938294ab937ef3fb75bc99ff067b75ea48b967fb5164550ab9f"
     },
     {
       "path": "/home/li/primary/flows/d343f8/december-campaign-proposal.md",
@@ -15837,5 +15837,5 @@
       "derived_packet": true
     }
   ],
-  "canonical_sha256": "65e98f7ad95afa3426e6040d6a2bab142cd19b8e28cdf5e60462f7614a3f0e6a"
+  "canonical_sha256": "b4e4f146ffe7ef8da1949cc8ddf3cbb93bdca7941366226440e608287b4d599c"
 }

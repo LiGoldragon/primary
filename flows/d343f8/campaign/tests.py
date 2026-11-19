@@ -6,6 +6,7 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from types import SimpleNamespace
@@ -148,6 +149,15 @@ class FrozenCampaignTests(unittest.TestCase):
         self.assertNotIn(ledger_path, frozen)
         self.assertEqual(closure["mutable_accounting_input"]["validation_owner"],
                          "pinned worker and Research ledger; ledger content is not frozen here")
+
+    def test_controller_interpreter_identity_accepts_equivalent_symlink_spelling(self):
+        target = Path(sys.executable).resolve(strict=True)
+        alias = self.root / "controller-python-alias"
+        alias.symlink_to(target)
+        alias_identity = controller.executable_identity("controller_interpreter", alias)
+        target_identity = controller.executable_identity("controller_interpreter", target)
+        self.assertEqual(alias_identity, target_identity)
+        self.assertEqual(alias_identity["configured_path"], str(target))
 
     def test_manifest_cannot_omit_a_runtime_execution_source(self):
         changed = deepcopy(self.manifest)

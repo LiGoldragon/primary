@@ -6,14 +6,14 @@ Unpaid source and synthetic-fixture work is complete. Research admission remains
 
 Owned files: `controller.py`, `generator.py`, `proposal-manifest.json`, `tests.py`, `implementation-report.md`, and `inputs/` (672 immutable call/prompt files).
 
-- Manifest SHA256: `c5f9523d85061823c3610bb1a3273e8b8c10950d0c0e0acb9cab152e42365307`
-- Canonical manifest SHA256: `65e98f7ad95afa3426e6040d6a2bab142cd19b8e28cdf5e60462f7614a3f0e6a`
+- Manifest SHA256: `d2c41dee2708fda8179e62d20920ae23d9a347006b0433b4a89a45e32a75dbf3`
+- Canonical manifest SHA256: `b4e4f146ffe7ef8da1949cc8ddf3cbb93bdca7941366226440e608287b4d599c`
 - Stage UUID namespace: `b8b816ee-56d4-5b14-91d3-aa26db1f49cb` (unchanged)
-- Controller SHA256: `7920673ea9bfcf4a4335e27a3d1591baccaf1e9ca4ddfeea9b362f24c0a1d70b`
-- Generator SHA256: `7c2cd86f481905025f9c00238167dd7ab3758fe68dbb1934adf57f5cef6b96a4`
-- Tests SHA256: `745eded8b91082976bf83e89a4a1d3e569c154ea764d2f3b2be9eabdcdf2c6da`
+- Controller SHA256: `d2cd59f28c688c42c80db5134cc47be8b1bb8ba7ffcf92511f61af4bd4aedf76`
+- Generator SHA256: `ce52caa4de88e65c142d4ff646f8a81162b7d0a87acb3287aa77a5118313f12a`
+- Tests SHA256: `0854111c92d01938294ab937ef3fb75bc99ff067b75ea48b967fb5164550ab9f`
 
-The refreeze preserved the exact pre-existing call and prompt bytes and hashes for all 336 slot identifiers. Research admission must bind the exact manifest hash, 336-slot ceiling, and 20 USD campaign retained ceiling, and verify the current global budget before any call.
+The refreeze used the generator's `--refresh-existing-inputs` mode, which verifies the complete existing input set and exact bytes before writing the new manifest. It preserved all 672 input files' bytes, inodes, and modes, as well as exact call/prompt hashes and the UUID namespace. Research admission must bind the exact manifest hash, 336-slot ceiling, and 20 USD campaign retained ceiling, and verify the current global budget before any call.
 
 ## Frozen campaign and reservation bounds
 
@@ -45,16 +45,16 @@ Before a child boundary, the controller durably creates/syncs the result namespa
 
 ## Local evidence
 
-Commands executed with bytecode disabled:
+Commands executed from the campaign directory with bytecode disabled:
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python -B generator.py --prepare-timeout 30
-PYTHONDONTWRITEBYTECODE=1 python -B tests.py
-PYTHONDONTWRITEBYTECODE=1 python -B controller.py verify
-PYTHONDONTWRITEBYTECODE=1 python -B controller.py dry-run
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 -B generator.py --prepare-timeout 30 --refresh-existing-inputs
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 -B tests.py
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 -B controller.py verify
+/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14 -B controller.py dry-run
 ```
 
-All exited 0. Generator reported 336 slots and zero provider calls. Refreeze comparison confirmed unchanged UUID namespace and exact call/prompt bytes and hashes. All **29** local fixtures passed. `verify` and `dry-run` each reported 336 slots, 112 per model, zero calls; no result namespace was created. Fixtures cover exact count and task mix, injection/drift, per-slot bounds and output limits, prompt reuse, source provenance, missing evidence, malformed probes, budget guards, durable directory/intent ordering and injected sync failure, exclusive launch, restart/no replay, timeout/process/receipt uncertainty, refusal and decoder classification, and production API isolation.
+All exited 0 under the exact pinned interpreter. Generator reported 336 slots and zero provider calls. Refreeze comparison confirmed unchanged input bytes, inodes, modes, UUID namespace, and call/prompt hashes. All **30** local fixtures passed, including equivalent controller-interpreter symlink spelling. `verify` and `dry-run` each reported 336 slots, 112 per model, zero calls; no result namespace was created. Fixtures cover exact count and task mix, injection/drift, per-slot bounds and output limits, prompt reuse, source provenance, missing evidence, malformed probes, budget guards, durable directory/intent ordering and injected sync failure, exclusive launch, restart/no replay, timeout/process/receipt uncertainty, refusal and decoder classification, and production API isolation.
 
 ## Limits and execution gate
 

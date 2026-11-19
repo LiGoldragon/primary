@@ -93,6 +93,16 @@ def _local_worker_source_closure(entrypoint: Path) -> list[Path]:
     return sorted(found, key=str)
 
 
+def executable_identity(role: str, configured_path: Path) -> dict:
+    """Pin the actual executable inode, normalizing the controller's launcher alias."""
+    configured_path = Path(configured_path)
+    resolved = configured_path.resolve(strict=True)
+    require(resolved.is_file(), f"configured execution component is not a file: {configured_path}")
+    recorded_configured_path = str(resolved) if role == "controller_interpreter" else str(configured_path)
+    return {"role": role, "configured_path": recorded_configured_path,
+            "path": str(resolved), "sha256": sha256_file(resolved)}
+
+
 def derive_execution_closure(worker_policy_path: Path, processor_configuration_path: Path) -> dict:
     """Describe the installed execution and accounting inputs without opening the ledger."""
     worker_policy_path = worker_policy_path.resolve(strict=True)
@@ -147,12 +157,8 @@ def derive_execution_closure(worker_policy_path: Path, processor_configuration_p
         ("bubblewrap", Path(shared.get("bubblewrap", ""))),
         ("credential_producer", Path(producer_command[0])),
     ]
-    executables = []
-    for role, configured_path in executable_paths:
-        resolved = configured_path.resolve(strict=True)
-        require(resolved.is_file(), f"configured execution component is not a file: {configured_path}")
-        executables.append({"role": role, "configured_path": str(configured_path),
-                            "path": str(resolved), "sha256": sha256_file(resolved)})
+    executables = [executable_identity(role, configured_path)
+                   for role, configured_path in executable_paths]
     static_inputs = []
     for role, source_path in (
         ("general_worker_policy", worker_policy_path),
