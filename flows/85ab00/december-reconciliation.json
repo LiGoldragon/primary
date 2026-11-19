@@ -23,11 +23,17 @@
   },
   "unresolved_job": "raw-general-082e0f-7cf58712648f41b7ac90f898414f5d8f",
   "unresolved_slot": "historical_variance__belief-balanced-03__claude-opus-5-5__r2",
-  "termination_evidence": "TypedCall reports SIGSTOP and termination of controller3448351 and child tree. Independent post-notice process scan found no matching worker/controller/invoke process. Exact tree evidence requested from TypedCall.",
+  "termination_evidence": "TypedCall o0r5 and campaign-stop-report.md report controller3448351 SIGSTOP first; PIDs3448351,3456368,3456369,3456775,3456776,3456777 then SIGTERM; controller SIGCONT to deliver termination. No successful exit or done marker claimed. Independent post-notice process scan found no matching worker/controller/invoke process.",
   "limits": [
     "Reservation/admission counts are not an invoice or proof of exact provider charges.",
     "Interrupted request charge and provider completion are unknown; its full bound remains retained without settlement or release.",
     "No fresh model outputs were mined; original180-only knowledge task remains the sole authorized analysis scope.",
     "No paid action, credential helper invocation, ledger mutation, retry, restart or new admission is authorized."
-  ]
+  ],
+  "terminal_evidence_report": {
+    "path": "flows/d343f8/campaign-stop-report.md",
+    "sha256": "9cc9493b9dd5c9fa724fe473781f2b1433d3a315517b79a6416da4ac1337427f",
+    "source": "Mind typedCall Sol o0r5",
+    "process_tree_independently_observed_at_stop": false
+  }
 }
