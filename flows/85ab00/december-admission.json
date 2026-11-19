@@ -1,0 +1,53 @@
+{
+  "authority": "Research",
+  "status": "Admitted",
+  "admission_id": "research-85ab00-december-d2c41dee-single-run",
+  "manifest_sha256": "d2c41dee2708fda8179e62d20920ae23d9a347006b0433b4a89a45e32a75dbf3",
+  "slot_count": 336,
+  "campaign_limit_usd": "20",
+  "global_unreserved_usd": "28.888397645",
+  "authority_reference": "Psyche core Opus ak4f; December grant; fixed maximum before execution",
+  "admitted_at_utc": "2026-11-19T05:40:47.194461+00:00",
+  "permitted_executor": {
+    "aspect": "Mind",
+    "topic": "typedCall",
+    "model": "Sol"
+  },
+  "single_controller_run_authorized": true,
+  "maximum_controller_runs": 1,
+  "retry_authorized": false,
+  "restart_authorized": false,
+  "stage_uuid_namespace": "b8b816ee-56d4-5b14-91d3-aa26db1f49cb",
+  "result_directory": "/home/li/primary/flows/d343f8/campaign/results/b8b816ee-56d4-5b14-91d3-aa26db1f49cb",
+  "controller_sha256": "d2cd59f28c688c42c80db5134cc47be8b1bb8ba7ffcf92511f61af4bd4aedf76",
+  "interpreter": "/nix/store/bya4ansy58az5133kryqp2cvrxbnz8qy-python3-3.14.10/bin/python3.14",
+  "ledger_snapshot": {
+    "rows": 835,
+    "settlements": 208,
+    "committed_usd": "8.111602355",
+    "unreserved_usd": "28.888397645",
+    "sha256": "700520c09c3082eba619b5ff060f1956d9475851521cff88f646b4ba0814ed77",
+    "modified": false
+  },
+  "quiescence": {
+    "observed_at_utc": "2026-11-19T05:40:20Z",
+    "active_matching_worker_or_campaign_launchers": 0,
+    "scope": "Point-in-time process observation and typedCall djf7 custody confirmation; not a persistent process lock"
+  },
+  "review": {
+    "independent_unpaid_tests_passed": 30,
+    "verify_passed": true,
+    "dry_run_passed": true,
+    "paid_review_calls": 0
+  },
+  "execution_contract": [
+    "Only this frozen manifest and unchanged installed runtime; one child invocation at most per frozen slot.",
+    "Before every call, the full next model reservation must fit both campaign remaining and global headroom; unchanged worker global gate remains authoritative.",
+    "Campaign retained commitments plus unresolved full bounds plus the next full reservation must never exceed 20 USD.",
+    "Any uncertain transport, process, receipt or settlement stops the chain and retains the full unresolved bound; no retry or resume.",
+    "336 is a hard attempted-call maximum, not guaranteed completion. The all-slot full reservation total is 325.269504 USD.",
+    "No historical scoped permission, worker or policy modification, billing reload, budget extension, or additional campaign is authorized.",
+    "Research issues no competing paid-worker admission until this single batch closes and its ledger is reconciled.",
+    "Executor waits for process exit as an event, then returns stop reason, attempted/completed slots, exact receipt paths and a fresh ledger validation to Research; no additional run follows automatically."
+  ]
+}
