@@ -1,0 +1,35 @@
+{
+  "status": "CompleteAdmissionClosed",
+  "authority_reference": "Opus leqo directly verified pxy2; Research9h9b admission263t; terminal notice9n30",
+  "closed_at_utc": "2026-11-19T06:33:13.338118+00:00",
+  "manifest_sha256": "0fc2bed0944deb0089d860ba5124d9e3b6f4f601b108d3a44662fce8ae7e4242",
+  "run_namespace": "7447ce3c-b18e-492e-b783-fe8216a37832",
+  "original_admission_sha256": "f047d7663c00d694437dee49a8d3ffc4843583c7cf9b963859e23e9a28a9045e",
+  "original_admission_commit": "014290f93",
+  "terminal_report_path": "flows/d343f8/state-proof/results/7447ce3c-b18e-492e-b783-fe8216a37832/report.json",
+  "terminal_report_sha256": "40438bdf097af8d3c60294af4ac5052d08d7853c42ff0863509f21e9fe50e624",
+  "attempted_slots": 3,
+  "settled_slots": 3,
+  "new_unresolved_slots": 0,
+  "jobs": [
+    "raw-general-082e0f-3c049525fe014b29a39efe532b7b55f0",
+    "raw-general-082e0f-eb1b24593cf240af85c8f3e4136c212e",
+    "raw-general-082e0f-0d1f9d5083df4f0ea648074c4c931be6"
+  ],
+  "campaign_retained_usd": "0.061477875",
+  "raw_usage_estimate_usd": "0.0575027",
+  "global_committed_usd": "8.408854230",
+  "global_unreserved_usd": "28.591145770",
+  "ledger_rows": 917,
+  "ledger_settlements": 228,
+  "ledger_sha256": "409dbcd7380ce33fa70fc31323949a468ee3be1c60fbba97fae8c4a8c91709d6",
+  "ledger_modified_by_reconciliation": false,
+  "prior_unresolved_job": "raw-general-082e0f-7cf58712648f41b7ac90f898414f5d8f",
+  "prior_unresolved_bound_usd": "0.10048",
+  "prior_unresolved_still_held": true,
+  "limits": [
+    "Cost estimates and conservative retained commitments are not an invoice or provider credit balance.",
+    "This consumed admission authorizes no further run, retry, restart, variance, billing reload or ledger mutation.",
+    "No matching active paid launcher found at terminal review."
+  ]
+}

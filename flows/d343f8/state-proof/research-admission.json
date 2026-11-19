@@ -1,7 +1,7 @@
 {
   "format": "ResearchSystemStateAdmission.v1",
   "authority": "Research",
-  "decision": "Admitted",
+  "decision": "Closed",
   "manifest_sha256": "0fc2bed0944deb0089d860ba5124d9e3b6f4f601b108d3a44662fce8ae7e4242",
   "maximum_provider_calls": 3,
   "maximum_usd": "10.00",
