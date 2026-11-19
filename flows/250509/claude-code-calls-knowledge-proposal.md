@@ -5,7 +5,9 @@ Status: proposal only; no belief landed. All 180 unique paid jobs are complete.
 Semantic findings are preliminary: task accuracy remains unestablished pending
 Fable's belief and queue rulings, held for the morning in
 `flows/03ebbe/held-for-fable.md`, entry 1. Measured transport, decoding and cost
-results are complete; no further model calls are planned.
+results for the original trial are complete. All further paid authority was
+withdrawn by Opus `0mib`; this draft authorizes no call. The later stopped
+campaign is accounted separately and contributes no figures below.
 
 ## Proposed module
 
@@ -24,6 +26,28 @@ no facility to open referenced files: a path in a prompt is text, not contents.
 The observed processor makes one Messages request per invocation without tools,
 caching, redirects or retries. The Rust caller receives its result, never the
 API key. Failed or uncertain calls remain evidence for owner review.
+
+### The credential and accounting boundary
+
+The verified adapter starts the configured GoPass producer in its bounded helper
+sandbox, checks its bounded stdout, and constructs the authentication header in
+private process memory. Curl receives that header through its supported header
+stdin interface. Only this producer/adapter/transport path carries credential
+bytes; the Rust caller and model receive observations and task evidence. The
+key is absent from arguments, environment, prompt files, model context and
+recorded output. No user-environment credential installation is required.
+Executable paths, producer entry, timeouts and bounds are configuration.
+
+The worker durably reserves a job's full bound in the single authoritative
+ledger before starting the helper or transport. A validated usage receipt may
+reduce the retained commitment; uncertainty retains the full bound and stops
+execution for owner review. A new job identity is a new attempt, not recovery
+from an unknown result. Cost estimates, retained commitments and invoice charges
+remain distinct. A working API key or successful response establishes neither a
+remaining credit grant nor its expiry; paid authority requires current account
+verification and an explicit admitted envelope.
+
+### Measured profiles and answer handling
 
 The measured profiles were `claude-haiku-5-5` with thinking disabled and a 4096
 output-token cap; `claude-sonnet-5-5` with low-effort between-tools thinking and
@@ -114,9 +138,11 @@ successful decoding on these cases establishes no queue-policy accuracy.
   unique paid job references and eight prior local no-call refusals.
 - Rust trial: `flows/250509/trial/`, Rust revision `f387b046c`; builder default
   gate passed with 22 dry Rust tests. Final driver has twelve synthetic tests.
+  These are the original-trial tests, not the later campaign fixture suite.
   Tests are implementer-authored, not independent tester certification.
 - Research owns the companion worker draft at
-  `flows/082e0f/knowledge-claude-api-draft.md`, still due at this finalization.
+  `flows/082e0f/knowledge-claude-api-draft.md`, now available and verified
+  against the installed adapter source.
   That draft is the home for verified secret/ledger/adapter invocation guidance;
   this proposal records Rust trial learning and adds no competing worker manual.
 - Research retains the sole authoritative spend ledger and raw paid receipts.
