@@ -52,4 +52,10 @@ Command exited **0**. Afterwards only unrelated `context-skills.service` remaine
 
 Raw observation directory: `/tmp/bdej-upkeep-a4f252.SnAO6cXk/`: `kernel-oom.log`, `flow-restart.log`, `flow-post-restart.log`, `flow-unit.txt`, `flow-properties.txt`, `process-snapshot.txt`, `today-heavy-journal.log`, `nix-daemon-today.log`, `proposal2-units.txt`, `reset-failed.{stdout,stderr}`, `failed-after.txt`.
 
-Requested existing evidence from Field inventory0sdl, Field core75hw, and exact-source ownern2m4. CPU/memory-growth attribution and a complete today-wide local execution inventory remain open. No repair or runtime diagnostic has been admitted by this report.
+Follow-up replies:
+- Mind core3uam confirms the exact source pin and report pointers above, but holds no CPU cause or idle measurement.
+- Mind flowNexus Resultn2m4 explicitly holds no established idle-loop or memory-growth cause. Its successor receives the exact-source audit under existing Opus Order8t0w through `flows/3cd9f9/handover.md`; no runtime probe/change is implied.
+- Field inventory Result0sdl has no additional host-and-date-attributed local workload evidence. Its older synthetic and secret-audit pointers were deliberately excluded from today's inventory because their reports do not establish Ouranos plus this date. It knows no ongoing offload change.
+- Field core Notice rais subsequently reports **attempt5 newly admitted by Core926f and its local outer driver invoked**. This occurred after the process cut used above; it is new authorized local integration work, not an overlooked active cargo/eval job and not authority to move or interrupt it. Private START was not established by that notice.
+
+Field core Question75hw still asks for the current Home evaluator owner/actual host evidence. CPU/memory-growth attribution and a complete today-wide local execution inventory remain open. The source audit is held by the existing Flow owner; this report admits no repair or runtime diagnostic.
