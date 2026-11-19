@@ -1,0 +1,33 @@
+{
+  "status": "StoppedAndRevoked",
+  "at_utc": "2026-11-19T05:44:35.531903+00:00",
+  "authority_reference": "Opus0mib via p5lj",
+  "original_admission_commit": "4e5ac9661",
+  "original_admission_sha256": "4fe0d99bbee03fb8e7d65a9fe9574c49ce816d19ccc7e275161c83c4a7c31f7f",
+  "ledger_modified_by_reconciliation": false,
+  "ledger_rows": 905,
+  "ledger_settlements": 225,
+  "ledger_sha256": "6cc51f075e689c1ca39c7d76ab125bdec2a75080f3c438ef426fac1634a762bc",
+  "global_committed_usd": "8.347376355",
+  "global_unreserved_usd": "28.652623645",
+  "campaign_delta": {
+    "raw_reservations": 18,
+    "raw_admissions": 18,
+    "raw_outcomes": 17,
+    "raw_settlements": 17,
+    "controller_started_slots": 18,
+    "controller_measurements": 17,
+    "retained_settled_usd": "0.135294000",
+    "unresolved_full_bound_usd": "0.10048",
+    "total_retained_including_unresolved_usd": "0.235774000"
+  },
+  "unresolved_job": "raw-general-082e0f-7cf58712648f41b7ac90f898414f5d8f",
+  "unresolved_slot": "historical_variance__belief-balanced-03__claude-opus-5-5__r2",
+  "termination_evidence": "TypedCall reports SIGSTOP and termination of controller3448351 and child tree. Independent post-notice process scan found no matching worker/controller/invoke process. Exact tree evidence requested from TypedCall.",
+  "limits": [
+    "Reservation/admission counts are not an invoice or proof of exact provider charges.",
+    "Interrupted request charge and provider completion are unknown; its full bound remains retained without settlement or release.",
+    "No fresh model outputs were mined; original180-only knowledge task remains the sole authorized analysis scope.",
+    "No paid action, credential helper invocation, ledger mutation, retry, restart or new admission is authorized."
+  ]
+}

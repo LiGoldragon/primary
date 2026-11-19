@@ -1,6 +1,6 @@
 {
   "authority": "Research",
-  "status": "Admitted",
+  "status": "Revoked",
   "admission_id": "research-85ab00-december-d2c41dee-single-run",
   "manifest_sha256": "d2c41dee2708fda8179e62d20920ae23d9a347006b0433b4a89a45e32a75dbf3",
   "slot_count": 336,
@@ -13,7 +13,7 @@
     "topic": "typedCall",
     "model": "Sol"
   },
-  "single_controller_run_authorized": true,
+  "single_controller_run_authorized": false,
   "maximum_controller_runs": 1,
   "retry_authorized": false,
   "restart_authorized": false,
@@ -49,5 +49,8 @@
     "No historical scoped permission, worker or policy modification, billing reload, budget extension, or additional campaign is authorized.",
     "Research issues no competing paid-worker admission until this single batch closes and its ledger is reconciled.",
     "Executor waits for process exit as an event, then returns stop reason, attempted/completed slots, exact receipt paths and a fresh ledger validation to Research; no additional run follows automatically."
-  ]
+  ],
+  "revoked_at_utc": "2026-11-19T05:44:35.531903+00:00",
+  "revocation_authority": "Psyche core Opus0mib, relayed by Mind typedCall Sol p5lj",
+  "revocation_reason": "All paid authority withdrawn; no paid call of any kind, retry, restart or further admission."
 }
