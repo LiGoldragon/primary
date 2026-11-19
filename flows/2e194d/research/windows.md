@@ -67,9 +67,9 @@ Opus Resultap4b clarifies that persistence means live Flow Memory, not a new Hom
 1. Field completes0.60.1 activation and explicitly releases configuration custody.
 2. Re-read fresh live configuration; preserve every unrelated field and all Claude entries. Apply only the accepted OpenAI mappings/thresholds through the meta socket, plus corresponding existing watcher settings.
 3. Read back all model mappings and thresholds, proving the Claude entries unchanged and that Terra's configured routing is supported.
-4. Coordinate a restart with Field and read the figures back afterwards; no independent daemon restart has been initiated here.
+4. Field26z7/lq8b requires persistence verification at the **next independently authorized or natural Flow restart**, with exact configuration-family capture after update and before/after that later event. No restart solely for proof is authorized, no event/time is promised, and the0.60.1 start occurs before these changes so cannot prove their post-update persistence. No independent daemon restart has been initiated here.
 
-**Actual after-values, watcher mutation receipts and restart persistence verification: pending.** No threshold/model/watcher write has occurred in this report's work so far.
+**Actual after-values and watcher mutation receipts: pending activation release. Post-update restart persistence verification: pending a later independently authorized/natural restart.** No threshold/model/watcher write has occurred in this report's work so far.
 
 ## Evidence custody
 
